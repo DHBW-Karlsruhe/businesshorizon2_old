@@ -9,19 +9,39 @@
 		<param-name>productionMode</param-name>
 		<param-value>false</param-value>
 	</context-param>
+	
+	<!-- Spring-Konfiguration nach https://vaadin.com/wiki/-/wiki/Main/Spring%20Integration -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>  
+	<listener>
+    	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:applicationContext.xml</param-value>
+	</context-param>
+	
+	<!-- Hier wird der Vaadin-Anwendung mitgeteilt, welche Klasse zu Beginn geladen werden soll. -->
 	<servlet>
 		<servlet-name>Business Horizon 2</servlet-name>
-		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<servlet-class>dhbw.ka.mwi.businesshorizon2.SpringApplicationServlet</servlet-class>
 		<init-param>
 			<description>Vaadin application class to start</description>
 			<param-name>application</param-name>
 			<param-value>dhbw.ka.mwi.businesshorizon2.BHApplication</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applicationBean</param-name>
+			<!-- Named defined by annotation in VaadinApp class -->
+			<param-value>vaadinApp</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Business Horizon 2</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>

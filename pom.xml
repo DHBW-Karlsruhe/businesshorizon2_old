@@ -4,7 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dhbw.ka.mwi</groupId>
   <artifactId>businesshorizon2</artifactId>
-  <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <name>Vaadin Web Application</name>
 
@@ -13,6 +12,7 @@
     <vaadin.version>6.8.2</vaadin.version>
     <gwt.version>2.3.0</gwt.version>
     <gwt.plugin.version>2.2.0</gwt.plugin.version>
+    <spring.version>3.1.1.RELEASE</spring.version>
   </properties>
 
   <build>
@@ -21,8 +21,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.7</source>
+          <target>1.7</target>
         </configuration>
       </plugin>
 
@@ -88,14 +88,14 @@
           <stopPort>9966</stopPort>
           <stopKey>businesshorizon2</stopKey>
           <!-- Redeploy every x seconds if changes are detected, 0 for no automatic redeployment -->
-          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
           <!-- make sure Jetty also finds the widgetset -->
           <webAppConfig>
-            <contextPath>/businesshorizon2</contextPath>
+            <contextPath>/</contextPath>
             <baseResource implementation="org.mortbay.resource.ResourceCollection">
               <!-- Workaround for Maven/Jetty issue http://jira.codehaus.org/browse/JETTY-680 -->
               <!-- <resources>src/main/webapp,${project.build.directory}/${project.build.finalName}</resources> -->
-              <resourcesAsCSV>src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+              <resourcesAsCSV>WebContent</resourcesAsCSV>
             </baseResource>
           </webAppConfig>
         </configuration>
@@ -172,6 +172,26 @@
       <scope>provided</scope>
 	</dependency>
     -->
+    <dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-core</artifactId>
+    	<version>${spring.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-beans</artifactId>
+    	<version>${spring.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-context</artifactId>
+    	<version>${spring.version}</version>
+    </dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
   </dependencies>
 
 </project>
