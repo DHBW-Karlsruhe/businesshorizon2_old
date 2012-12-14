@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+
+import dhbw.ka.mwi.businesshorizon2.models.Period;
 
 public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView {
 	private static final long serialVersionUID = 1L;
@@ -18,8 +22,12 @@ public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView
 	@Autowired 
 	private PeriodEditPresenter presenter;
 
-	private TextField testText;
-	
+	private TextField cashFlowText;
+
+	private TextField companyValueText;
+
+	private Label titleLabel;
+
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
@@ -28,17 +36,29 @@ public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView
 	}
 	
 	private void generateUi() {
-		setSizeFull();
+		setSpacing(true);
+		setMargin(true);
 		
-		testText = new TextField();
-		testText.setWidth(100, UNITS_PERCENTAGE);
-		addComponent(testText);
+		titleLabel = new Label();
+		addComponent(titleLabel);
+		
+		cashFlowText = new TextField("Cash flow:");
+		cashFlowText.setWidth(200, UNITS_PIXELS);
+		addComponent(cashFlowText);
+		
+		companyValueText = new TextField("Cash flow:");
+		companyValueText.setWidth(200, UNITS_PIXELS);
+		addComponent(companyValueText);
 	}
 	
 	@EventHandler
 	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
-		testText.setValue(event.getPeriod().toString());
-		presenter.setCurrentPeriod(event.getPeriod());
+		BeanItem<Period> item = new BeanItem<Period>(event.getPeriod());
+
+		titleLabel.setValue("Geschäftsjahr " + event.getPeriod().getYear());
+		
+		cashFlowText.setPropertyDataSource(item.getItemProperty("cashFlow"));
+		companyValueText.setPropertyDataSource(item.getItemProperty("companyValue"));
 	}
 
 	
