@@ -15,11 +15,28 @@
 	<bean name="navigationController" class="com.mvplite.view.LiteNavigationController" scope="session">
 		<constructor-arg ref="eventBus" />
 	</bean>
+	
+	
+	
+	<!-- Models -->
+	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project" scope="session" />
 
 
 	
 	<!-- Main -->
 	<bean name="mainPresenter" class="dhbw.ka.mwi.businesshorizon2.main.MainPresenter" scope="session" />
 	<bean name="mainView" class="dhbw.ka.mwi.businesshorizon2.main.MainViewImpl" scope="session" />
+
+
+	
+	<!-- Period-List -->
+	<bean name="periodListPresenter" class="dhbw.ka.mwi.businesshorizon2.periodlist.PeriodListPresenter" scope="session" />
+	<bean name="periodListView" class="dhbw.ka.mwi.businesshorizon2.periodlist.PeriodListViewImpl" scope="session" />
+
+
+	
+	<!-- Period-Edit -->
+	<bean name="periodEditPresenter" class="dhbw.ka.mwi.businesshorizon2.periodedit.PeriodEditPresenter" scope="session" />
+	<bean name="periodEditView" class="dhbw.ka.mwi.businesshorizon2.periodedit.PeriodEditViewImpl" scope="session" />
 	
 </beans>

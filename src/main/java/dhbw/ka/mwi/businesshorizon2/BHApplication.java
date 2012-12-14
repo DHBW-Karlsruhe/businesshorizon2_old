@@ -4,13 +4,11 @@ package dhbw.ka.mwi.businesshorizon2;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
-import com.mvplite.view.LiteNavigationController;
 import com.vaadin.Application;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Window;
 
-import dhbw.ka.mwi.businesshorizon2.main.MainPresenter;
 import dhbw.ka.mwi.businesshorizon2.main.MainViewImpl;
+import dhbw.ka.mwi.businesshorizon2.main.ShowMainViewEvent;
 
 /**
  * Das ist die Haupt-Einstiegsklasse der Anwendung. Es ist vergleichbar mit der
@@ -24,8 +22,16 @@ public class BHApplication extends Application {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private MainPresenter mainPresenter;
+	private MainViewImpl mainView;
 
+	@Autowired
+	private EventBus eventBus;
+	
+	public BHApplication() {
+		Window window = new Window("Business Horizon 2");
+		setMainWindow(window);
+	}
+	
 	/**
 	 * Diese Methode ist dafuer verantwortlich, das Haupt-Fenster zu laden und
 	 * den gemanagten Windows hinzuzufuegen.
@@ -34,8 +40,9 @@ public class BHApplication extends Application {
 	 */
 	@Override
 	public void init() {
-		Window window = new Window("Business Horizon 2", (ComponentContainer) mainPresenter.getView());
-		setMainWindow(window);
+		setMainWindow(mainView);
+		eventBus.fireEvent(new ShowMainViewEvent());
 	}
+	
 
 }
