@@ -119,6 +119,15 @@
       <id>vaadin-addons</id>
       <url>http://maven.vaadin.com/vaadin-addons</url>
     </repository>
+    <repository>
+    	<id>mvplite</id>
+    	<url>https://github.com/sockeqwe/Vaadin-MVP-Lite</url>
+    	<releases>
+    		<enabled>false</enabled>
+    		<updatePolicy>always</updatePolicy>
+    		<checksumPolicy>warn</checksumPolicy>
+    	</releases>
+    </repository>
   </repositories>
 
   <!--
@@ -199,6 +208,18 @@
 		<version>${spring.version}</version>
 		<scope>test</scope>
 	</dependency>
+	<!--
+		Diese Dependency war momentan noch nicht als Maven-Dependency verfuegbar. Daher wurden die 2 jar-Files manuell 
+		hinzugefuegt. Sobald dieses Addon ins Vaadin-Maven-Repo gewandert ist, sollten die jar-Files geloescht werden
+		und dieser Code ausdokumentiert werden.
+		https://vaadin.com/directory#addon/mvp-lite
+		
+		<dependency>
+			<groupId>com.mvplite</groupId>
+			<artifactId>mvp-lite</artifactId>
+			<version>1.0</version>
+		</dependency>
+	 -->
   </dependencies>
 
 </project>

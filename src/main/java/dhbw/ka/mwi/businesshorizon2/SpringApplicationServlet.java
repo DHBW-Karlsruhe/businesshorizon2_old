@@ -29,7 +29,7 @@ public class SpringApplicationServlet extends AbstractApplicationServlet {
 			throws ClassNotFoundException {
 		return applicationClass;
 	}
-	
+	 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init(ServletConfig servletConfig) throws ServletException {
@@ -48,7 +48,15 @@ public class SpringApplicationServlet extends AbstractApplicationServlet {
 	@Override
 	protected Application getNewApplication(HttpServletRequest request)
 			throws ServletException {
+		
+		if (request.getParameter("restartApplication") != null) {
+			try {
+				request.getSession().invalidate();
+			} catch(Throwable t) {
+			}
+		}
+		
 		return (Application) applicationContext.getBean(applicationBean);
 	}
-
+	
 }
