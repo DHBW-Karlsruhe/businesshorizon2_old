@@ -7,8 +7,8 @@ import com.mvplite.event.EventBus;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
-import dhbw.ka.mwi.businesshorizon2.main.MainViewImpl;
-import dhbw.ka.mwi.businesshorizon2.main.ShowMainViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
 
 /**
  * Das ist die Haupt-Einstiegsklasse der Anwendung. Es ist vergleichbar mit der
@@ -28,6 +28,7 @@ public class BHApplication extends Application {
 	private EventBus eventBus;
 	
 	public BHApplication() {
+		setTheme("bh2");
 		Window window = new Window("Business Horizon 2");
 		setMainWindow(window);
 	}
