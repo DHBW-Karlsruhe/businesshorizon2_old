@@ -18,25 +18,43 @@
 	
 	
 	
+	<!-- Methods -->
+	<bean name="timeseries" class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries" scope="session" />
+	<bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener" scope="session" />
+	
+	
+	
 	<!-- Models -->
 	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project" scope="session" />
 
 
 	
 	<!-- Main -->
-	<bean name="mainPresenter" class="dhbw.ka.mwi.businesshorizon2.main.MainPresenter" scope="session" />
-	<bean name="mainView" class="dhbw.ka.mwi.businesshorizon2.main.MainViewImpl" scope="session" />
+	<bean name="mainPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainPresenter" scope="session" />
+	<bean name="mainView" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl" scope="session" />
 
 
 	
 	<!-- Period-List -->
-	<bean name="periodListPresenter" class="dhbw.ka.mwi.businesshorizon2.periodlist.PeriodListPresenter" scope="session" />
-	<bean name="periodListView" class="dhbw.ka.mwi.businesshorizon2.periodlist.PeriodListViewImpl" scope="session" />
+	<bean name="periodListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListPresenter" scope="session" />
+	<bean name="periodListView" class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewImpl" scope="session" />
 
 
 	
 	<!-- Period-Edit -->
-	<bean name="periodEditPresenter" class="dhbw.ka.mwi.businesshorizon2.periodedit.PeriodEditPresenter" scope="session" />
-	<bean name="periodEditView" class="dhbw.ka.mwi.businesshorizon2.periodedit.PeriodEditViewImpl" scope="session" />
+	<bean name="periodEditPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditPresenter" scope="session" />
+	<bean name="periodEditView" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl" scope="session" />
+
+
+	
+	<!-- Method-List -->
+	<bean name="methodListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListPresenter" scope="session" />
+	<bean name="methodListView" class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListViewImpl" scope="session" />
+
+
+	
+	<!-- Method-Edit -->
+	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodPresenter" scope="session" />
+	<bean name="methodView" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewImpl" scope="session" />
 	
 </beans>

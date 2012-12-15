@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.main;
+package dhbw.ka.mwi.businesshorizon2.ui.main;
 
 import javax.annotation.PostConstruct;
 
@@ -12,10 +12,14 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
-import dhbw.ka.mwi.businesshorizon2.periodedit.PeriodEditViewImpl;
-import dhbw.ka.mwi.businesshorizon2.periodedit.ShowPeriodEditEvent;
-import dhbw.ka.mwi.businesshorizon2.periodlist.PeriodListViewImpl;
-import dhbw.ka.mwi.businesshorizon2.periodlist.ShowPeriodListEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.methodlist.ShowMethodListEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.periodlist.ShowPeriodListEvent;
 
 public class MainViewImpl extends Window implements MainView {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +35,12 @@ public class MainViewImpl extends Window implements MainView {
 	
 	@Autowired
 	private PeriodEditViewImpl periodEditView;
+	
+	@Autowired
+	private MethodListViewImpl methodListView;
+	
+	@Autowired
+	private MethodViewImpl methodView;
 	
 	private VerticalSplitPanel verticalPanel;
 
@@ -70,11 +80,14 @@ public class MainViewImpl extends Window implements MainView {
 	}
 	
 	@EventHandler
-	public void onShowMainView(ShowMainViewEvent event) {
+	public void onShowMain(ShowMainViewEvent event) {
 		verticalPanel.setFirstComponent(toolbar);
 		
 		leftVerticalPanel.setFirstComponent(periodListView);
 		eventBus.fireEvent(new ShowPeriodListEvent(presenter.getPeriods()));
+		
+		leftVerticalPanel.setSecondComponent(methodListView);
+		eventBus.fireEvent(new ShowMethodListEvent());
 		
 		horizontalPanel.setSecondComponent(new Label("Hallo"));
 	}
@@ -82,6 +95,11 @@ public class MainViewImpl extends Window implements MainView {
 	@EventHandler
 	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
 		horizontalPanel.setSecondComponent(periodEditView);
+	}
+	
+	@EventHandler
+	public void onShowMethod(ShowMethodEvent event) {
+		horizontalPanel.setSecondComponent(methodView);
 	}
 
 }

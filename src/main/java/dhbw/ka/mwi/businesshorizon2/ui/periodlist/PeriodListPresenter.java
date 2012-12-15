@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.periodlist;
+package dhbw.ka.mwi.businesshorizon2.ui.periodlist;
 
 import java.util.List;
 
@@ -22,8 +22,6 @@ public class PeriodListPresenter extends Presenter<PeriodListView> {
 	@Autowired
 	private Project project;
 	
-	private PeriodListView view;
-	
 	private Period currentPeriod = null;
 	
 	@PostConstruct
@@ -31,15 +29,11 @@ public class PeriodListPresenter extends Presenter<PeriodListView> {
 		eventBus.addHandler(this);
 	}
 	
-	public void setView(PeriodListView view) {
-		this.view = view;
-	}
-
 	public void updateShowAddButton() {
 		if(project.getAvailableYears().size() > 0) {
-			view.setShowAddPeriodButton(true);
+			getView().setShowAddPeriodButton(true);
 		} else {
-			view.setShowAddPeriodButton(false);
+			getView().setShowAddPeriodButton(false);
 		}
 	}
 	
@@ -77,7 +71,7 @@ public class PeriodListPresenter extends Presenter<PeriodListView> {
 	}
 	
 	public void updatePeriods(Period selected) {
-		view.setPeriods(project.getPeriods(), selected);
+		getView().setPeriods(project.getPeriods(), selected);
 	}
 	
 	@EventHandler

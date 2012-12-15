@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.periodedit;
+package dhbw.ka.mwi.businesshorizon2.ui.periodedit;
 
 import javax.annotation.PostConstruct;
 
@@ -8,9 +8,9 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.main.ShowMainViewEvent;
 import dhbw.ka.mwi.businesshorizon2.models.Period;
-import dhbw.ka.mwi.businesshorizon2.periodlist.PeriodRemoveEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodRemoveEvent;
 
 
 public class PeriodEditPresenter extends Presenter<PeriodEditView> {
@@ -20,8 +20,6 @@ public class PeriodEditPresenter extends Presenter<PeriodEditView> {
 	private EventBus eventBus;
 	
 	private Period currentPeriod = null;
-	
-	private PeriodEditView view;
 	
 	@PostConstruct
 	public void init() {

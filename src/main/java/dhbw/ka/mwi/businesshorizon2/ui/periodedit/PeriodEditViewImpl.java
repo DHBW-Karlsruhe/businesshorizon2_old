@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.periodedit;
+package dhbw.ka.mwi.businesshorizon2.ui.periodedit;
 
 import javax.annotation.PostConstruct;
 
@@ -46,13 +46,14 @@ public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView
 		cashFlowText.setWidth(200, UNITS_PIXELS);
 		addComponent(cashFlowText);
 		
-		companyValueText = new TextField("Cash flow:");
+		companyValueText = new TextField("Bilanzwert FK:");
 		companyValueText.setWidth(200, UNITS_PIXELS);
 		addComponent(companyValueText);
 	}
 	
 	@EventHandler
 	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
+		presenter.setCurrentPeriod(event.getPeriod());
 		BeanItem<Period> item = new BeanItem<Period>(event.getPeriod());
 
 		titleLabel.setValue("Geschäftsjahr " + event.getPeriod().getYear());

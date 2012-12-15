@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.main;
+package dhbw.ka.mwi.businesshorizon2.ui.main;
 
 import java.util.Set;
 
@@ -21,15 +21,9 @@ public class MainPresenter extends Presenter<MainView>{
 	@Autowired
 	private Project project;
 	
-	private MainView view;
-	
 	@PostConstruct
 	public void init() {
 //		eventBus.addHandler(this);
-	}
-
-	public void setView(MainView view) {
-		this.view = view;
 	}
 
 	public Set<Period> getPeriods() {

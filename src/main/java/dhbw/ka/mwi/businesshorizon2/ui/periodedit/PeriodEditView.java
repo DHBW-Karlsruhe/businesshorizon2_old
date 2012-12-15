@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.periodedit;
+package dhbw.ka.mwi.businesshorizon2.ui.periodedit;
 
 import com.mvplite.view.View;
 

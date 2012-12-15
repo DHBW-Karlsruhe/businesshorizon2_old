@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.main;
+package dhbw.ka.mwi.businesshorizon2.ui.main;
 
 import com.mvplite.view.View;
 

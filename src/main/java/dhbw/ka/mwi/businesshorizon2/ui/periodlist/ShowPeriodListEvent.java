@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.periodlist;
+package dhbw.ka.mwi.businesshorizon2.ui.periodlist;
 
 import java.util.Set;
 

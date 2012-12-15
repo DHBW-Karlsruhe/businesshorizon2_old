@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.periodlist;
+package dhbw.ka.mwi.businesshorizon2.ui.periodlist;
 
 import java.util.List;
 import java.util.Set;
@@ -22,7 +22,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period;
-import dhbw.ka.mwi.businesshorizon2.periodedit.ShowPeriodEditEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
 
 public class PeriodListViewImpl extends VerticalLayout implements PeriodListView, Button.ClickListener, Property.ValueChangeListener {
 	private static final long serialVersionUID = 1L;
