@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.view.View;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -25,22 +27,7 @@ public class MainViewImpl extends Window implements MainView {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private EventBus eventBus;
-	
-	@Autowired
-	private PeriodListViewImpl periodListView;
-	
-	@Autowired
 	private MainPresenter presenter;
-	
-	@Autowired
-	private PeriodEditViewImpl periodEditView;
-	
-	@Autowired
-	private MethodListViewImpl methodListView;
-	
-	@Autowired
-	private MethodViewImpl methodView;
 	
 	private VerticalSplitPanel verticalPanel;
 
@@ -53,7 +40,6 @@ public class MainViewImpl extends Window implements MainView {
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		eventBus.addHandler(this);
 		generateUi();
 	}
 	
@@ -61,6 +47,11 @@ public class MainViewImpl extends Window implements MainView {
 		verticalPanel = new VerticalSplitPanel();
 		verticalPanel.setSizeFull();
 		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
+
+		
+		toolbar = new HorizontalLayout();
+		toolbar.addComponent(new Label("Toolbar"));
+		verticalPanel.setFirstComponent(toolbar);
 		
 		
 		horizontalPanel = new HorizontalSplitPanel();
@@ -68,38 +59,21 @@ public class MainViewImpl extends Window implements MainView {
 		horizontalPanel.setSplitPosition(330, UNITS_PIXELS);
 		verticalPanel.setSecondComponent(horizontalPanel);
 		
+		
 		leftVerticalPanel = new VerticalSplitPanel();
 		leftVerticalPanel.setSizeFull();
 		leftVerticalPanel.setSplitPosition(60, UNITS_PERCENTAGE);
 		horizontalPanel.setFirstComponent(leftVerticalPanel);
 		
-		toolbar = new HorizontalLayout();
-		toolbar.addComponent(new Label("Toolbar"));
 		
 		setContent(verticalPanel);
 	}
-	
-	@EventHandler
-	public void onShowMain(ShowMainViewEvent event) {
-		verticalPanel.setFirstComponent(toolbar);
-		
-		leftVerticalPanel.setFirstComponent(periodListView);
-		eventBus.fireEvent(new ShowPeriodListEvent(presenter.getPeriods()));
-		
-		leftVerticalPanel.setSecondComponent(methodListView);
-		eventBus.fireEvent(new ShowMethodListEvent());
-		
-		horizontalPanel.setSecondComponent(new Label("Hallo"));
-	}
-	
-	@EventHandler
-	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
-		horizontalPanel.setSecondComponent(periodEditView);
-	}
-	
-	@EventHandler
-	public void onShowMethod(ShowMethodEvent event) {
-		horizontalPanel.setSecondComponent(methodView);
+
+	@Override
+	public void showView(View leftTopView, View leftBottomView, View rightView) {
+		leftVerticalPanel.setFirstComponent((Component) leftTopView);
+		leftVerticalPanel.setSecondComponent((Component) leftBottomView);
+		horizontalPanel.setSecondComponent((Component) rightView);
 	}
 
 }

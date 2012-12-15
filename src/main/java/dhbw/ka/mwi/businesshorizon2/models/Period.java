@@ -26,7 +26,7 @@ public class Period implements Serializable, Comparable<Period> {
 
 	@Override
 	public int compareTo(Period o) {
-		return o.getYear() - this.getYear();
+		return this.getYear() - o.getYear();
 	}
 
 	public double getCashFlow() {

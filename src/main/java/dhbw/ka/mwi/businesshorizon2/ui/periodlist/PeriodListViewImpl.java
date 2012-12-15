@@ -1,7 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.ui.periodlist;
 
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
+import java.util.SortedSet;
 
 import javax.annotation.PostConstruct;
 
@@ -30,14 +32,13 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 	@Autowired
 	private PeriodListPresenter presenter;
 	
-	@Autowired
-	private EventBus eventBus;
-
 	private ListSelect listSelect;
 
 	private Button addPeriodBtn;
 
 	private Button removePeriodBtn;
+
+	private List<Integer> availableYears;
 
 	@PostConstruct
 	public void init() {
@@ -78,38 +79,41 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton() == addPeriodBtn) {
-			final Window addDialog = new Window("Periode hinzufügen");
-			addDialog.setModal(true);
-			addDialog.setWidth(300, UNITS_PIXELS);
-			addDialog.setResizable(false);
-			addDialog.setDraggable(false);
-			
-			HorizontalLayout layout = new HorizontalLayout();
-			layout.setSpacing(true);
-			layout.addComponent(new Label("Bitte Jahr wählen: "));
-			addDialog.addComponent(layout);
-			
-			List<Integer> years = presenter.getAvailableYears();
-			final NativeSelect yearSelect = new NativeSelect(null, years);
-			yearSelect.setNullSelectionAllowed(false);
-			yearSelect.setValue((int) years.get(0));
-			layout.addComponent(yearSelect);
-			
-			final Button addBtn = new Button("Hinzufügen", new Button.ClickListener() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void buttonClick(ClickEvent event) {
-					presenter.addPeriod((int) yearSelect.getValue());
-					getWindow().removeWindow(addDialog);
-				}
-			});
-			layout.addComponent(addBtn);
-			
-			getWindow().addWindow(addDialog);
+			showAddPeriodDialog();
 		} else if(event.getButton() == removePeriodBtn) {
 			presenter.removePeriod((Period) listSelect.getValue());
 		}
+	}
+	
+	private void showAddPeriodDialog() {
+		final Window addDialog = new Window("Periode hinzufügen");
+		addDialog.setModal(true);
+		addDialog.setWidth(300, UNITS_PIXELS);
+		addDialog.setResizable(false);
+		addDialog.setDraggable(false);
+		
+		HorizontalLayout layout = new HorizontalLayout();
+		layout.setSpacing(true);
+		layout.addComponent(new Label("Bitte Jahr wählen: "));
+		addDialog.addComponent(layout);
+		
+		final NativeSelect yearSelect = new NativeSelect(null, availableYears);
+		yearSelect.setNullSelectionAllowed(false);
+		yearSelect.setValue((int) availableYears.get(0));
+		layout.addComponent(yearSelect);
+		
+		final Button addBtn = new Button("Hinzufügen", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.addPeriod((int) yearSelect.getValue());
+				getWindow().removeWindow(addDialog);
+			}
+		});
+		layout.addComponent(addBtn);
+		
+		getWindow().addWindow(addDialog);
 	}
 
 	@Override
@@ -120,7 +124,7 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 	@Override
 	public void valueChange(ValueChangeEvent event) {
 		if(listSelect.getValue() != null) {
-			eventBus.fireEvent(new ShowPeriodEditEvent((Period) listSelect.getValue()));
+			presenter.selectPeriod((Period) listSelect.getValue());
 			removePeriodBtn.setEnabled(true);
 		} else {
 			removePeriodBtn.setEnabled(false);
@@ -128,12 +132,17 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 	}
 
 	@Override
-	public void setPeriods(Set<Period> periods, Period selected) {
+	public void setPeriods(NavigableSet<Period> periods, Period selected) {
 		final Container c = new IndexedContainer();
-        for (Period period : periods) {
+        for (Period period : periods.descendingSet()) {
             c.addItem(period);
         }
         listSelect.setContainerDataSource(c);
         listSelect.select(selected);
+	}
+
+	@Override
+	public void setAvailableYears(List<Integer> availableYears) {
+		this.availableYears = availableYears;
 	}
 }

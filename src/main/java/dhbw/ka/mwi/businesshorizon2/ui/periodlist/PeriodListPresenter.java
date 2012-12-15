@@ -12,6 +12,8 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
 
 public class PeriodListPresenter extends Presenter<PeriodListView> {
 	private static final long serialVersionUID = 1L;
@@ -40,43 +42,42 @@ public class PeriodListPresenter extends Presenter<PeriodListView> {
 	public void addPeriod(int year) {
 		Period period = new Period(year);
 		project.getPeriods().add(period);
+		
 		eventBus.fireEvent(new PeriodAddEvent(period));
-		setCurrentPeriod(period);
-		updatePeriods(period);
+		
+		currentPeriod = period;
+		updatePeriods();
 		updateShowAddButton();
-	}
-	
-	public Period getCurrentPeriod() {
-		return currentPeriod;
-	}
-
-	public void setCurrentPeriod(Period currentPeriod) {
-		this.currentPeriod = currentPeriod;
-	}
-
-	public List<Integer> getAvailableYears() {
-		return project.getAvailableYears();
 	}
 
 	public void removePeriod(Period period) {
 		project.getPeriods().remove(period);
 		eventBus.fireEvent(new PeriodRemoveEvent(period));
 		
-		if(currentPeriod == period) {
-			setCurrentPeriod(null);
-		}
-		
-		updatePeriods(null);
+		currentPeriod = null;
+		updatePeriods();
 		updateShowAddButton();
 	}
 	
-	public void updatePeriods(Period selected) {
-		getView().setPeriods(project.getPeriods(), selected);
+	private void updatePeriods() {
+		getView().setAvailableYears(project.getAvailableYears());
+		getView().setPeriods(project.getPeriods(), currentPeriod);
+	}
+
+	public void selectPeriod(Period period) {
+		currentPeriod = period;
+		eventBus.fireEvent(new ShowPeriodEditEvent(period));
 	}
 	
 	@EventHandler
 	public void onShowPeriodList(ShowPeriodListEvent event) {
-		updatePeriods(null);
+		updatePeriods();
+	}
+	
+	@EventHandler
+	public void onShowMethod(ShowMethodEvent event) {
+		currentPeriod = null;
+		updatePeriods();
 	}
 	
 }

@@ -22,6 +22,6 @@ public class Wiener extends Method {
 	@Override
 	public Result calculate(SortedSet<Period> periods, Callback callback)
 			throws InterruptedException {
-		return null;
+		return new Result();
 	}
 }

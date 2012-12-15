@@ -3,18 +3,19 @@ package dhbw.ka.mwi.businesshorizon2.models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Project {
 
-	protected SortedSet<Period> periods = new TreeSet<Period>();
+	protected NavigableSet<Period> periods = new TreeSet<Period>();
 
-	public SortedSet<Period> getPeriods() {
+	public NavigableSet<Period> getPeriods() {
 		return periods;
 	}
 
-	public void setPeriods(SortedSet<Period> periods) {
+	public void setPeriods(NavigableSet<Period> periods) {
 		this.periods = periods;
 	}
 	

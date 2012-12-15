@@ -20,8 +20,6 @@ public class MethodRunner extends Thread {
 	
 	private Callback callback;
 	
-	private Result result = null;
-	
 	public MethodRunner(Method method, SortedSet<Period> periods, Callback callback) {
 		if(method == null || periods == null || callback == null) {
 			throw new InvalidParameterException("No null parameters are allowed here");
@@ -35,8 +33,7 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-			result = method.calculate(periods, callback);
-			
+			Result result = method.calculate(periods, callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {
 			callback.onComplete(null);

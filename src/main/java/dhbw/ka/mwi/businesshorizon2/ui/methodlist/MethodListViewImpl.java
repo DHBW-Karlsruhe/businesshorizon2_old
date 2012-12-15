@@ -20,9 +20,6 @@ public class MethodListViewImpl extends VerticalLayout implements MethodListView
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private EventBus eventBus;
-	
-	@Autowired
 	private MethodListPresenter presenter;
 
 	private VerticalLayout methodPanel;
@@ -57,7 +54,7 @@ public class MethodListViewImpl extends VerticalLayout implements MethodListView
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					eventBus.fireEvent(new ShowMethodEvent(method));
+					presenter.selectMethod(method);
 				}
 			});
 			

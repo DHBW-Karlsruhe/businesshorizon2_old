@@ -16,9 +16,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
 public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView {
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private EventBus eventBus;
-	
 	@Autowired 
 	private PeriodEditPresenter presenter;
 
@@ -31,7 +28,6 @@ public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		eventBus.addHandler(this);
 		generateUi();
 	}
 	
@@ -50,17 +46,15 @@ public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView
 		companyValueText.setWidth(200, UNITS_PIXELS);
 		addComponent(companyValueText);
 	}
-	
-	@EventHandler
-	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
-		presenter.setCurrentPeriod(event.getPeriod());
-		BeanItem<Period> item = new BeanItem<Period>(event.getPeriod());
 
-		titleLabel.setValue("Geschäftsjahr " + event.getPeriod().getYear());
+	@Override
+	public void setPeriod(Period period) {
+		BeanItem<Period> item = new BeanItem<Period>(period);
+
+		titleLabel.setValue("Geschäftsjahr " + period.getYear());
 		
 		cashFlowText.setPropertyDataSource(item.getItemProperty("cashFlow"));
 		companyValueText.setPropertyDataSource(item.getItemProperty("companyValue"));
 	}
 
-	
 }

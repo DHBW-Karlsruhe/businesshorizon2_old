@@ -11,6 +11,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
 
 public class MethodListPresenter extends Presenter<MethodListView> {
 	private static final long serialVersionUID = 1L;
@@ -29,6 +30,10 @@ public class MethodListPresenter extends Presenter<MethodListView> {
 	@EventHandler
 	public void onShowMethodList(ShowMethodListEvent event) {
 		getView().setMethods(methods);
+	}
+
+	public void selectMethod(Method method) {
+		eventBus.fireEvent(new ShowMethodEvent(method));
 	}
 
 }

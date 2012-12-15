@@ -16,6 +16,7 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import dhbw.ka.mwi.businesshorizon2.methods.Method;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 
@@ -23,17 +24,17 @@ public class MethodViewImpl extends VerticalLayout implements MethodView, Button
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private EventBus eventBus;
-	
-	@Autowired
 	private MethodPresenter presenter;
 
 	private Panel methodPanel;
+
+	private ProgressIndicator progressBar;
+
+	private Window progressWindow;
 	
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		eventBus.addHandler(this);
 		generateUi();
 	}
 
@@ -52,17 +53,14 @@ public class MethodViewImpl extends VerticalLayout implements MethodView, Button
 		Button calcBtn = new Button("Berechnen", this);
 		addComponent(calcBtn);
 	}
-	
-	@EventHandler
-	public void onShowMethod(ShowMethodEvent event) {
-		presenter.setCurrentMethod(event.getMethod());
-		methodPanel.setCaption(event.getMethod().getName());
-	}
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		
-		final Window progressWindow = new Window("Bitte warten");
+		presenter.calculate();
+	}
+	
+	public void showProgress() {
+		progressWindow = new Window("Bitte warten");
 		progressWindow.setWidth(400, UNITS_PIXELS);
 		progressWindow.setModal(true);
 		progressWindow.setResizable(false);
@@ -77,7 +75,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodView, Button
 		progressWindow.setContent(layout);
 		
 		
-		final ProgressIndicator progressBar = new ProgressIndicator();
+		progressBar = new ProgressIndicator();
 		progressBar.setSizeFull();
 		progressBar.setPollingInterval(1000);
 		layout.addComponent(progressBar);
@@ -95,25 +93,35 @@ public class MethodViewImpl extends VerticalLayout implements MethodView, Button
 		});
 		layout.addComponent(abortBtn);
 		layout.setExpandRatio(abortBtn, 0);
-		
-		
-		MethodRunner.Callback callback = new MethodRunner.Callback() {
-			@Override
-			public void onProgressChange(float progress) {
-				synchronized (getApplication()) {
-					progressBar.setValue(progress);
-				}
+	}
+
+	@Override
+	public void showMethod(Method method) {
+		methodPanel.setCaption(method.getName());
+	}
+
+	@Override
+	public void setProgress(float progress) {
+		synchronized (getApplication()) {
+			if(progressBar != null) {
+				progressBar.setValue(progress);
 			}
-			
-			@Override
-			public void onComplete(Result result) {
+		}
+	}
+
+	@Override
+	public void hideProgress() {
+		synchronized (getApplication()) {
+			if(progressWindow != null) {
 				getWindow().removeWindow(progressWindow);
-				
-				if(result != null) {
-					getWindow().addWindow(new MethodViewResultWindow(result));
-				}
+				progressWindow = null;
+				progressBar = null;
 			}
-		};
-		presenter.calculate(callback);
+		}
+	}
+
+	@Override
+	public void showResult(Result result) {
+		getWindow().addWindow(new MethodViewResultWindow(result));
 	}
 }

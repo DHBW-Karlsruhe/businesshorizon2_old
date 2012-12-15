@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.vaadin.data.util.BeanItem;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period;
 import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
@@ -39,5 +40,11 @@ public class PeriodEditPresenter extends Presenter<PeriodEditView> {
 		if(currentPeriod == event.getPeriod()) {
 			eventBus.fireEvent(new ShowMainViewEvent());
 		}
+	}
+	
+	@EventHandler
+	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
+		currentPeriod = event.getPeriod();
+		getView().setPeriod(event.getPeriod());
 	}
 }
