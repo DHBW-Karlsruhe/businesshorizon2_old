@@ -13,7 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
-public class MethodPresenter extends Presenter<MethodView> {
+public class MethodPresenter extends Presenter<MethodView> implements MethodRunner.Callback {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -42,21 +42,7 @@ public class MethodPresenter extends Presenter<MethodView> {
 	public void calculate() {
 		getView().showProgress();
 		
-		methodRunner = new MethodRunner(currentMethod, project.getPeriods(), new MethodRunner.Callback() {
-			@Override
-			public void onProgressChange(float progress) {
-				getView().setProgress(progress);
-			}
-			
-			@Override
-			public void onComplete(Result result) {
-				getView().hideProgress();
-
-				if(result != null) {
-					getView().showResult(result);
-				}
-			}
-		});
+		methodRunner = new MethodRunner(currentMethod, project.getPeriods(), this);
 		methodRunner.start();
 	}
 
@@ -72,6 +58,20 @@ public class MethodPresenter extends Presenter<MethodView> {
 	public void onShowMethod(ShowMethodEvent event) {
 		currentMethod = event.getMethod();
 		getView().showMethod(event.getMethod());
+	}
+
+	@Override
+	public void onComplete(Result result) {
+		getView().hideProgress();
+
+		if(result != null) {
+			getView().showResult(result);
+		}
+	}
+
+	@Override
+	public void onProgressChange(float progress) {
+		getView().setProgress(progress);
 	}
 	
 }
