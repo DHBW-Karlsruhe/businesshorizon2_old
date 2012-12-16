@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.vaadin.Application;
-import com.vaadin.ui.Window;
 
 import dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
@@ -27,15 +26,21 @@ public class BHApplication extends Application {
 	@Autowired
 	private EventBus eventBus;
 	
+	/**
+	 * Der Konstruktor. Hier wird zunaechst das Theme gesetzt, so dass das Stylesheet 
+	 * 		WebContent/VAADIN/themes/bh2/styles.css
+	 * verwendet wird. 
+	 * 
+	 * @author Christian Gahlert
+	 */
 	public BHApplication() {
 		setTheme("bh2");
-		Window window = new Window("Business Horizon 2");
-		setMainWindow(window);
 	}
 	
 	/**
 	 * Diese Methode ist dafuer verantwortlich, das Haupt-Fenster zu laden und
-	 * den gemanagten Windows hinzuzufuegen.
+	 * den ShowMainViewEvent abzusetzen. Durch diesen werden die Listener (z.B. der MainPresenter)
+	 * darueber informiert, dass das Hauptfenster angezeigt wird.
 	 * 
 	 * @author Christian Gahlert
 	 */

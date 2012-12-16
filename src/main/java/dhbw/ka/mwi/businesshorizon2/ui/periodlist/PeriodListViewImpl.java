@@ -2,14 +2,11 @@ package dhbw.ka.mwi.businesshorizon2.ui.periodlist;
 
 import java.util.List;
 import java.util.NavigableSet;
-import java.util.Set;
-import java.util.SortedSet;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mvplite.event.EventBus;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -24,8 +21,13 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period;
-import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
 
+/**
+ * Dies ist die Vaadin-Implementierung der PeriodListView.
+ * 
+ * @author Christian Gahlert
+ *
+ */
 public class PeriodListViewImpl extends VerticalLayout implements PeriodListView, Button.ClickListener, Property.ValueChangeListener {
 	private static final long serialVersionUID = 1L;
 
@@ -40,12 +42,26 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 
 	private List<Integer> availableYears;
 
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
+	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
+	 * View-Komponenten.
+	 * 
+	 * @author Christian Gahlert
+	 */
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
 		generateUi();
 	}
 	
+	/**
+	 * Zunaechst wird eine Ueberschrift gesetzt, dann eine Liste fuer die Perioden
+	 * erstellt und anschliessend die Buttons zum Hinzufuegen/Entfernen unter der
+	 * Liste nebeneinander angezeigt.
+	 * 
+	 * @author Christian Gahlert
+	 */
 	private void generateUi() {
 		setSizeFull();
 		setSpacing(true);
@@ -76,6 +92,13 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 		buttonLayout.addComponent(removePeriodBtn);
 	}
 
+	/**
+	 * Der ClickListener fuer die Hinzufuegen/Entfernen-Buttons. Beim Hinzufuegen wird 
+	 * zunaechst ein Dialog-Fenster fuer die Auswahl des Jahres angezeigt. Beim Entfernen
+	 * wird der Presenter angewiesen die ausgewaehlte Periode zu entfernen.
+	 * 
+	 * @author Christian Gahlert
+	 */
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton() == addPeriodBtn) {
@@ -85,6 +108,15 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 		}
 	}
 	
+	/**
+	 * Zeige das Periode-Hinzuegen-Dialogfenster, wo zunaechst ein Text steht, dann ein 
+	 * Select fuer das Jahr ist und anschliessend ein Button. Beim Klick auf den Button
+	 * wird der Presenter darueber informiert, dass er eine neue Periode fuer das 
+	 * selektierte Jahr erstellen sollen. Gleichzeitig wird das Dialogfenster wieder 
+	 * entfernt.
+	 * 
+	 * @author Christian Gahlert
+	 */
 	private void showAddPeriodDialog() {
 		final Window addDialog = new Window("Periode hinzufügen");
 		addDialog.setModal(true);
@@ -116,21 +148,35 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
 		getWindow().addWindow(addDialog);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setShowAddPeriodButton(boolean flag) {
 		addPeriodBtn.setEnabled(flag);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void valueChange(ValueChangeEvent event) {
-		if(listSelect.getValue() != null) {
-			presenter.selectPeriod((Period) listSelect.getValue());
-			removePeriodBtn.setEnabled(true);
-		} else {
-			removePeriodBtn.setEnabled(false);
-		}
+	public void setShowRemovePeriodButton(boolean flag) {
+		removePeriodBtn.setEnabled(flag);
 	}
 
+	/**
+	 * Dies ist der ValueChange-Listener, der auf die Selektion einer Periode wartet.
+	 * 
+	 * @author Christian Gahlert
+	 */
+	@Override
+	public void valueChange(ValueChangeEvent event) {
+		presenter.selectPeriod((Period) listSelect.getValue());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setPeriods(NavigableSet<Period> periods, Period selected) {
 		final Container c = new IndexedContainer();
@@ -141,6 +187,9 @@ public class PeriodListViewImpl extends VerticalLayout implements PeriodListView
         listSelect.select(selected);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setAvailableYears(List<Integer> availableYears) {
 		this.availableYears = availableYears;
