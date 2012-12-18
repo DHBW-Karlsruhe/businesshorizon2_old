@@ -3,24 +3,22 @@ package dhbw.ka.mwi.businesshorizon2.ui.main;
 import com.mvplite.view.View;
 
 /**
- * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
- * mit denen der Presenter mit der View kommunizieren kann.
+ * Dieses Interface zeigt die von bezueglich des Hauptfensters zur Verfuegung
+ * stehenden Methoden, mit denen der Presenter mit der View kommunizieren kann.
  * 
- * @author Christian Gahlert
+ * @author Christian Gahlert, Julius Hacker
  *
  */
 public interface MainView extends View {
 
 	/**
-	 * Diese Methode ist dafuer verantwortlich, die jeweiligen 3 View-Elemente
-	 * anzuzeigen. Bei den Elementen handelt es sich um die entsprechenden
-	 * *ViewImpl-Instanzen.
+	 * Diese Methode ist dafuer verantwortlich, die untere View
+	 * anzuzeigen. Beim Parameter handelt es sich um die entsprechende
+	 * *ViewImpl-Instanz.
 	 * 
-	 * @author Christian Gahlert
-	 * @param leftTopView Die View links oben
-	 * @param leftBottomView Die View links unten
-	 * @param rightView Die View im Hauptfenster rechts
+	 * @author Christian Gahlert, Julius Hacker
+	 * @param bottomView Die View im Hauptfenster unten
 	 */
-	public void showView(View leftTopView, View leftBottomView, View rightView);
+	public void setActiveTab(int number);
 
 }

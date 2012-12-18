@@ -37,16 +37,19 @@ public class MainPresenter extends Presenter<MainView>{
 	private Project project;
 	
 	@Autowired
-	private MethodListView methodListView;
-	
+	private ContentView methodView;
+
 	@Autowired
-	private PeriodListView periodListView;
-	
+	private ContentView parameterView;
+
 	@Autowired
-	private PeriodEditView periodEditView;
-	
+	private ContentView periodView;
+
 	@Autowired
-	private MethodView methodView;
+	private ContentView processingView;
+
+	@Autowired
+	private ContentView outputView;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -69,7 +72,7 @@ public class MainPresenter extends Presenter<MainView>{
 	 */
 	@EventHandler
 	public void onShowMain(ShowMainViewEvent event) {
-		getView().showView(periodListView, methodListView, null);
+		getView().setActiveTab(0);
 		eventBus.fireEvent(new ShowMethodListEvent());
 		eventBus.fireEvent(new ShowPeriodListEvent());
 	}
@@ -84,7 +87,7 @@ public class MainPresenter extends Presenter<MainView>{
 	 */
 	@EventHandler
 	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
-		getView().showView(periodListView, methodListView, periodEditView);
+		//getView().showView(periodListView, methodListView, periodEditView);
 	}
 	
 	/**
@@ -97,7 +100,7 @@ public class MainPresenter extends Presenter<MainView>{
 	 */
 	@EventHandler
 	public void onShowMethod(ShowMethodEvent event) {
-		getView().showView(periodListView, methodListView, methodView);
+		//getView().showView(periodListView, methodListView, methodView);
 	}
 	
 }

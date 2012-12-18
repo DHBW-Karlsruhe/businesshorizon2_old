@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.view.View;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
+
+import dhbw.ka.mwi.businesshorizon2.ui.method.MethodView;
 
 /**
  * Dies ist die Vaadin-Implementierung der MainView (dem Haupt-Fenster).
  * 
- * @author Christian Gahlert
+ * @author Christian Gahlert, Julius Hacker
  *
  */
 public class MainViewImpl extends Window implements MainView {
@@ -24,13 +26,13 @@ public class MainViewImpl extends Window implements MainView {
 	@Autowired
 	private MainPresenter presenter;
 	
-	private VerticalSplitPanel verticalPanel;
-
-	private HorizontalSplitPanel horizontalPanel;
-
-	private HorizontalLayout toolbar;
-
-	private VerticalSplitPanel leftVerticalPanel;
+	private TabSheet tabsheet;
+	
+	private ContentView methodView;
+	private ContentView parameterView;
+	private ContentView periodView;
+	private ContentView processingView;
+	private ContentView outputView;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -47,52 +49,27 @@ public class MainViewImpl extends Window implements MainView {
 	
 	/**
 	 * Diese Methode setzt den Titel (im Browser-Fenster) zu "Business Horizon 2" und
-	 * erstellt die Toolbar sowie die drei variablen Komponenten.
+	 * erstellt das Tabsheet mit den einzelnen Tab-Views.
 	 * 
-	 * @author Christian Gahlert
+	 * @author Christian Gahlert, Julius Hacker
 	 */
 	private void generateUi() {
 		setCaption("Business Horizon 2");
 		
-
-		verticalPanel = new VerticalSplitPanel();
-		verticalPanel.setSizeFull();
-		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
-
+		//MethodView 
 		
-		toolbar = new HorizontalLayout();
-		toolbar.addComponent(new Label("Toolbar"));
-		verticalPanel.setFirstComponent(toolbar);
+		tabsheet = new TabSheet();
+		tabsheet.setSizeFull();
 		
-		
-		horizontalPanel = new HorizontalSplitPanel();
-		horizontalPanel.setSizeFull();
-		horizontalPanel.setSplitPosition(330, UNITS_PIXELS);
-		verticalPanel.setSecondComponent(horizontalPanel);
-		
-		
-		leftVerticalPanel = new VerticalSplitPanel();
-		leftVerticalPanel.setSizeFull();
-		leftVerticalPanel.setSplitPosition(60, UNITS_PERCENTAGE);
-		horizontalPanel.setFirstComponent(leftVerticalPanel);
-		
-		
-		setContent(verticalPanel);
+		setContent(tabsheet);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void showView(View leftTopView, View leftBottomView, View rightView) {
-		leftVerticalPanel.setFirstComponent((Component) leftTopView);
-		leftVerticalPanel.setSecondComponent((Component) leftBottomView);
-		
-		if(rightView == null) {
-			horizontalPanel.setSecondComponent(new Label("hallo"));
-		} else {
-			horizontalPanel.setSecondComponent((Component) rightView);
-		}
+	public void setActiveTab(int number) {
+		//TODO: Tabwechsel implementieren
 	}
 
 }

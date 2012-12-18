@@ -1,9 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.ui.method;
 
-import com.mvplite.view.View;
-
 import dhbw.ka.mwi.businesshorizon2.methods.Method;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
+import dhbw.ka.mwi.businesshorizon2.ui.main.ContentView;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
@@ -12,7 +11,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Result;
  * @author Christian Gahlert
  *
  */
-public interface MethodView extends View {
+public interface MethodView extends ContentView {
 
 	/**
 	 * Eine Methode zur Anzeige uebergeben.

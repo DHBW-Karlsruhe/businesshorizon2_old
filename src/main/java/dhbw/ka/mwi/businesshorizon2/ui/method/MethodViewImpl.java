@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.Resource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -171,5 +172,17 @@ public class MethodViewImpl extends VerticalLayout implements MethodView, Button
 		synchronized (getApplication()) {
 			getWindow().addWindow(new MethodViewResultWindow(result));
 		}
+	}
+	
+
+	@Override
+	public String getCaption() {
+		return "Perioden";
+	}
+
+	@Override
+	public Resource getIcon() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -44,7 +44,13 @@
 	<!-- Period-Edit -->
 	<bean name="periodEditPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditPresenter" scope="session" />
 	<bean name="periodEditView" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl" scope="session" />
+	
 
+	<bean name="methodView"     class="dhbw.ka.mwi.businesshorizon2.ui.method.MainViewImpl" scope="session" />
+	<bean name="parameterView"  class="dhbw.ka.mwi.businesshorizon2.ui.parameter.ParameterViewImpl" scope="session" />
+	<bean name="periodView"     class="dhbw.ka.mwi.businesshorizon2.ui.period.PeriodViewImpl" scope="session" />
+	<bean name="processingView" class="dhbw.ka.mwi.businesshorizon2.ui.processing.ProcessingViewImpl" scope="session" />
+	<bean name="outputView"     class="dhbw.ka.mwi.businesshorizon2.ui.output.OutputViewImpl" scope="session" />
 
 	
 	<!-- Method-List -->
