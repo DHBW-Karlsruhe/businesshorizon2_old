@@ -16,8 +16,7 @@
 		<constructor-arg ref="eventBus" />
 	</bean>
 	
-	
-	
+		
 	<!-- Methods -->
 	<bean name="timeseries" class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries" scope="session" />
 	<bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener" scope="session" />
