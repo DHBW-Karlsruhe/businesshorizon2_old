@@ -11,7 +11,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Christian Gahlert
  *
  */
-public interface PeriodEditView extends View {
+public interface PeriodEditViewInteface extends View {
 
 	/**
 	 * Uebergibt die anzuzeigende Periode.

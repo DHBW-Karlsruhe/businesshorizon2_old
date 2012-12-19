@@ -11,7 +11,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 
 /**
  * Dies ist die Vaadin-Implementierung der MethodListView.
@@ -19,7 +19,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Method;
  * @author Christian Gahlert
  *
  */
-public class MethodListViewImpl extends VerticalLayout implements MethodListView {
+public class MethodListViewImpl extends VerticalLayout implements MethodListViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -68,10 +68,10 @@ public class MethodListViewImpl extends VerticalLayout implements MethodListView
 	 * @author Christian Gahlert
 	 */
 	@Override
-	public void setMethods(SortedSet<Method> methods) {
+	public void setMethods(SortedSet<AbstractMethod> methods) {
 		methodPanel.removeAllComponents();
 		
-		for(final Method method : methods) {
+		for(final AbstractMethod method : methods) {
 			Button btn = new Button(method.getName());
 			btn.setSizeFull();
 			

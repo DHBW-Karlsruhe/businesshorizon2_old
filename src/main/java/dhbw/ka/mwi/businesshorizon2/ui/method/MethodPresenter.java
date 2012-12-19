@@ -8,7 +8,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -19,7 +19,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  * @author Christian Gahlert
  *
  */
-public class MethodPresenter extends Presenter<MethodView> implements MethodRunner.Callback {
+public class MethodPresenter extends Presenter<MethodViewInterface> implements MethodRunner.Callback {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -28,7 +28,7 @@ public class MethodPresenter extends Presenter<MethodView> implements MethodRunn
 	@Autowired
 	private Project project;
 	
-	private Method currentMethod;
+	private AbstractMethod currentMethod;
 
 	private MethodRunner methodRunner;
 

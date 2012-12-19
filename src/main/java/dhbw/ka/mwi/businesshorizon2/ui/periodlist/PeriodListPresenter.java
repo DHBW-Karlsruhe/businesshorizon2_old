@@ -22,7 +22,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
  * @author Christian Gahlert
  *
  */
-public class PeriodListPresenter extends Presenter<PeriodListView> {
+public class PeriodListPresenter extends Presenter<PeriodListViewInteface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired

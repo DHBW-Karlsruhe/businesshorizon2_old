@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.method;
 
 import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 
 /**
  * Der Event, zum Anzeigen der MethodView, der im MethodListPresenter abgesetzt wird.
@@ -13,7 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Method;
 public class ShowMethodEvent extends Event {
 	private static final long serialVersionUID = 1L;
 
-	private Method method;
+	private AbstractMethod method;
 
 	/**
 	 * Dem Event muss eine anzuzeigende Methode uebergeben werden.
@@ -21,7 +21,7 @@ public class ShowMethodEvent extends Event {
 	 * @author Christian Gahlert
 	 * @param method Die anzuzeigende Methode
 	 */
-	public ShowMethodEvent(Method method) {
+	public ShowMethodEvent(AbstractMethod method) {
 		this.method = method;
 	}
 
@@ -31,7 +31,7 @@ public class ShowMethodEvent extends Event {
 	 * @author Christian Gahlert
 	 * @return
 	 */
-	public Method getMethod() {
+	public AbstractMethod getMethod() {
 		return method;
 	}
 	

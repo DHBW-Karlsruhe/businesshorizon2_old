@@ -17,7 +17,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Christian Gahlert
  *
  */
-public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditView {
+public class PeriodEditViewImpl extends VerticalLayout implements PeriodEditViewInteface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired 

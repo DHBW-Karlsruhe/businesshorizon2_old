@@ -14,7 +14,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Christian Gahlert
  *
  */
-public interface PeriodListView extends View {
+public interface PeriodListViewInteface extends View {
 
 	/**
 	 * Gibt an, ob der "Periode hinzufuegen"-Button angezeigt werden sollte oder nicht.

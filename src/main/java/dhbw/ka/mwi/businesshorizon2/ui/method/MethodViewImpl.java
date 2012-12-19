@@ -14,7 +14,7 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 
 /**
@@ -23,7 +23,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Result;
  * @author Christian Gahlert
  *
  */
-public class MethodViewImpl extends VerticalLayout implements MethodView, Button.ClickListener {
+public class MethodViewImpl extends VerticalLayout implements MethodViewInterface, Button.ClickListener {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -133,7 +133,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodView, Button
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void showMethod(Method method) {
+	public void showMethod(AbstractMethod method) {
 		methodPanel.setCaption(method.getName());
 	}
 
