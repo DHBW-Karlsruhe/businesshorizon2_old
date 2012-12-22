@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.tests.AbstractSpringBeanTestCase;
-import dhbw.ka.mwi.businesshorizon2.tests.ui.assets.GenericEventHandler;
+import dhbw.ka.mwi.businesshorizon2.tests.ui.assets.GenericEventHandlerInteface;
 import dhbw.ka.mwi.businesshorizon2.tests.ui.assets.TestEventBus;
 
 
-abstract public class AbstractPresenterTestCase extends AbstractSpringBeanTestCase implements GenericEventHandler {
+abstract public class AbstractPresenterTestCase extends AbstractSpringBeanTestCase implements GenericEventHandlerInteface {
 
 	@Autowired
 	protected TestEventBus eventBus;
