@@ -32,6 +32,5 @@ public class MethodPresenter extends Presenter<MethodView> {
 	 */
 	@PostConstruct
 	public void init() {
-		eventBus.addHandler(this);
 	}
 }

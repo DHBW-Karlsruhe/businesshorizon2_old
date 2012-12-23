@@ -33,14 +33,12 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodView {
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Parameter"
+	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
-		Label testlabel = new Label("parametertest");
+		Label testlabel = new Label("periodentest");
 		this.addComponent(testlabel);
 	}
-
-
 }
