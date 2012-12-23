@@ -34,33 +34,44 @@
 	<bean name="mainView" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl" scope="session" />
 
 
+
+	<!-- Navigation -->
+	<bean name="navigationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationPresenter" scope="session" />
+	<bean name="navigationView" class="dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationViewImpl" scope="session"/>
+
+
+
+	<!-- ContentContainer -->
+	<bean name="contentContainerPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.contentcontainer.ContentContainerPresenter" scope="session" />
+	<bean name="contentContainerView"      class="dhbw.ka.mwi.businesshorizon2.ui.contentcontainer.ContentContainerViewImpl"  scope="session"/>
 	
-	<!-- Period-List -->
-	<bean name="periodListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListPresenter" scope="session" />
-	<bean name="periodListView" class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewImpl" scope="session" />
-
-
-	
-	<!-- Period-Edit -->
-	<bean name="periodEditPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditPresenter" scope="session" />
-	<bean name="periodEditView" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl" scope="session" />
 	
 
-	<bean name="methodView"     class="dhbw.ka.mwi.businesshorizon2.ui.method.MainViewImpl" scope="session" />
-	<bean name="parameterView"  class="dhbw.ka.mwi.businesshorizon2.ui.parameter.ParameterViewImpl" scope="session" />
-	<bean name="periodView"     class="dhbw.ka.mwi.businesshorizon2.ui.period.PeriodViewImpl" scope="session" />
-	<bean name="processingView" class="dhbw.ka.mwi.businesshorizon2.ui.processing.ProcessingViewImpl" scope="session" />
-	<bean name="outputView"     class="dhbw.ka.mwi.businesshorizon2.ui.output.OutputViewImpl" scope="session" />
-
-	
-	<!-- Method-List -->
-	<bean name="methodListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListPresenter" scope="session" />
-	<bean name="methodListView" class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListViewImpl" scope="session" />
-
-
-	
-	<!-- Method-Edit -->
+	<!-- Method-Selection -->
 	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodPresenter" scope="session" />
-	<bean name="methodView" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewImpl" scope="session" />
+	<bean name="methodView"      class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewImpl"  scope="session" />
 	
+	
+	
+	<!-- Method-Selection -->
+	<bean name="periodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.period.PeriodPresenter" scope="session" />
+	<bean name="periodView"      class="dhbw.ka.mwi.businesshorizon2.ui.period.PeriodViewImpl"  scope="session" />
+	
+	
+	
+	<!-- Method-Selection -->
+	<bean name="parameterPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.parameter.ParameterPresenter" scope="session" />
+	<bean name="parameterView"      class="dhbw.ka.mwi.businesshorizon2.ui.parameter.ParameterViewImpl"  scope="session" />
+	
+	
+	
+	<!-- Method-Selection -->
+	<bean name="processingPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.processing.ProcessingPresenter" scope="session" />
+	<bean name="processingView"      class="dhbw.ka.mwi.businesshorizon2.ui.processing.ProcessingViewImpl"  scope="session" />
+	
+	
+	
+	<!-- Method-Selection -->
+	<bean name="outputPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.output.OutputPresenter" scope="session" />
+	<bean name="outputView"      class="dhbw.ka.mwi.businesshorizon2.ui.output.OutputViewImpl"  scope="session" />
 </beans>

@@ -1,14 +1,14 @@
-package dhbw.ka.mwi.businesshorizon2.ui.main;
+package dhbw.ka.mwi.businesshorizon2.ui.contentcontainer;
 
 import com.mvplite.view.View;
+import com.vaadin.terminal.Resource;
 
 /**
  * Dieses Interface zeigt die von bezueglich des Hauptfensters zur Verfuegung
  * stehenden Methoden, mit denen der Presenter mit der View kommunizieren kann.
  * 
- * @author Christian Gahlert, Julius Hacker
+ * @author Julius Hacker
  *
  */
-public interface MainView extends View {
-
+public interface ContentView extends View {
 }

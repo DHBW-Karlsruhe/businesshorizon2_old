@@ -8,15 +8,8 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.method.MethodView;
-import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListView;
-import dhbw.ka.mwi.businesshorizon2.ui.methodlist.ShowMethodListEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditView;
-import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListView;
-import dhbw.ka.mwi.businesshorizon2.ui.periodlist.ShowPeriodListEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.navigation.ShowNavigationEvent;
 
 /**
  * Dieser Presenter ist das Kernstueck der Applikation. Er ist dafuer verantwortlich,
@@ -33,24 +26,6 @@ public class MainPresenter extends Presenter<MainView>{
 	@Autowired
 	private EventBus eventBus;
 	
-	@Autowired
-	private Project project;
-	
-	@Autowired
-	private ContentView methodView;
-
-	@Autowired
-	private ContentView parameterView;
-
-	@Autowired
-	private ContentView periodView;
-
-	@Autowired
-	private ContentView processingView;
-
-	@Autowired
-	private ContentView outputView;
-	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
@@ -63,44 +38,16 @@ public class MainPresenter extends Presenter<MainView>{
 	}
 
 	/**
-	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Setzen des Fensters) 
-	 * abgesetzt. Dabei wird links oben die Perioden-Liste, links unten die Methoden-
-	 * Liste und rechts die Start-Ansicht angezeigt.
+	 * Dieser Event wird zu Beginn der Prozesssicht abgesetzt.
+	 * Dabei wird oben die Navigation und unten die Methodenauswahl angezeigt.
 	 * 
 	 * @author Christian Gahlert
 	 * @param event
 	 */
 	@EventHandler
 	public void onShowMain(ShowMainViewEvent event) {
-		getView().setActiveTab(0);
-		eventBus.fireEvent(new ShowMethodListEvent());
-		eventBus.fireEvent(new ShowPeriodListEvent());
-	}
-	
-	/**
-	 * Dieser Event wird von dem PeriodListPresenter nach dem Klick auf eine Periode
-	 * abgesetzt. Dabei wird links oben die Perioden-Liste, links unten die Methoden-
-	 * Liste und rechts die Bearbeitungs-Ansicht fuer eine Periode angezeigt.
-	 * 
-	 * @author Christian Gahlert
-	 * @param event
-	 */
-	@EventHandler
-	public void onShowPeriodEdit(ShowPeriodEditEvent event) {
-		//getView().showView(periodListView, methodListView, periodEditView);
-	}
-	
-	/**
-	 * Dieser Event wird von dem MethodListPresenter nach dem Klick auf eine Methode
-	 * abgesetzt. Dabei wird links oben die Perioden-Liste, links unten die Methoden-
-	 * Liste und rechts die Bearbeitungs-Ansicht fuer eine Methode angezeigt.
-	 * 
-	 * @author Christian Gahlert
-	 * @param event
-	 */
-	@EventHandler
-	public void onShowMethod(ShowMethodEvent event) {
-		//getView().showView(periodListView, methodListView, methodView);
+		eventBus.fireEvent(new ShowNavigationEvent());
+		eventBus.fireEvent(new ShowNavigationStepEvent(NavigationSteps.METHOD));
 	}
 	
 }

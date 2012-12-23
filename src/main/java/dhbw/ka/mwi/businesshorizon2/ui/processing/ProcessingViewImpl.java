@@ -1,28 +1,45 @@
 package dhbw.ka.mwi.businesshorizon2.ui.processing;
 
-import com.mvplite.view.View;
-import com.vaadin.terminal.Resource;
+import javax.annotation.PostConstruct;
 
-import dhbw.ka.mwi.businesshorizon2.ui.main.ContentView;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 
 /**
- * Dieses Interface zeigt die von bezueglich des Hauptfensters zur Verfuegung
- * stehenden Methoden, mit denen der Presenter mit der View kommunizieren kann.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
  * 
- * @author Christian Gahlert, Julius Hacker
+ * @author Julius Hacker
  *
  */
-public class ProcessingViewImpl implements ProcessingView {
+public class ProcessingViewImpl extends VerticalLayout implements ProcessingView {
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public String getCaption() {
-		return "Verarbeitung";
+	@Autowired
+	private ProcessingPresenter presenter;
+
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
+	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
+	 * View-Komponenten.
+	 * 
+	 * @author Julius Hacker
+	 */
+	@PostConstruct
+	public void init() {
+		presenter.setView(this);
+		generateUi();
 	}
 
-	@Override
-	public Resource getIcon() {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Erstelle das GUI zum Prozessschritt "Szenarien"
+	 * 
+	 * @author Julius Hacker
+	 */
+	private void generateUi() {
+		Label testlabel = new Label("szenarientest");
+		this.addComponent(testlabel);
 	}
 
 }

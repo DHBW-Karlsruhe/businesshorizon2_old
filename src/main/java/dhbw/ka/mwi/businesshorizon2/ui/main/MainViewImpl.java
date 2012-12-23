@@ -4,15 +4,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mvplite.view.View;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
-import dhbw.ka.mwi.businesshorizon2.ui.method.MethodView;
+import dhbw.ka.mwi.businesshorizon2.ui.contentcontainer.ContentContainerView;
+import dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationView;
 
 /**
  * Dies ist die Vaadin-Implementierung der MainView (dem Haupt-Fenster).
@@ -26,13 +24,13 @@ public class MainViewImpl extends Window implements MainView {
 	@Autowired
 	private MainPresenter presenter;
 	
-	private TabSheet tabsheet;
+	@Autowired
+	private NavigationView navigationView;
 	
-	private ContentView methodView;
-	private ContentView parameterView;
-	private ContentView periodView;
-	private ContentView processingView;
-	private ContentView outputView;
+	@Autowired
+	private ContentContainerView contentContainerView;
+	
+	private VerticalSplitPanel splitpanel;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -54,22 +52,13 @@ public class MainViewImpl extends Window implements MainView {
 	 * @author Christian Gahlert, Julius Hacker
 	 */
 	private void generateUi() {
-		setCaption("Business Horizon 2");
+		setCaption("Business Horizon 2"); 
 		
-		//MethodView 
+		splitpanel = new VerticalSplitPanel();
+		splitpanel.setSplitPosition(75, Sizeable.UNITS_PIXELS);
+		splitpanel.setFirstComponent((Component) navigationView);
+		splitpanel.setSecondComponent((Component) contentContainerView);
 		
-		tabsheet = new TabSheet();
-		tabsheet.setSizeFull();
-		
-		setContent(tabsheet);
+		setContent(splitpanel);
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setActiveTab(int number) {
-		//TODO: Tabwechsel implementieren
-	}
-
 }
