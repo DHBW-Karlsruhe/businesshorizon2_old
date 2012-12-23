@@ -16,6 +16,8 @@
 		<constructor-arg ref="eventBus" />
 	</bean>
 	
+	<!-- Services -->
+		<bean name="authenticationService" class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" scope="singleton" />		
 		
 	<!-- Methods -->
 	<bean name="timeseries" class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries" scope="session" />
