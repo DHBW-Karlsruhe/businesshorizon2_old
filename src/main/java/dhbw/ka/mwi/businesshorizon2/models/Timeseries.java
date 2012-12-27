@@ -60,12 +60,13 @@ public class Timeseries {
 		}
 		this.tideIsReduced = false;
 	}
-	
+
 	/**
-	 * Diese Methode liefert den Wert der Trendgerade zum Zeitpunkt der übergebenen Periode zurück.
-	 * Formel: (t) = a + b *t
+	 * Diese Methode liefert den Wert der Trendgerade zum Zeitpunkt der
+	 * übergebenen Periode zurück. Formel: (t) = a + b *t
 	 * 
-	 * @param period Periode
+	 * @param period
+	 *            Periode
 	 * @return double Wert der Trendgeriode
 	 */
 	private double getTideValue(int period) {
@@ -124,8 +125,9 @@ public class Timeseries {
 	}
 
 	/**
-	 * Diese Methode berechnet den Paramater a der Trendgerade T(t) = a + b *t. Für die Berechnung wird der Paramter B benötigt.
-	 * Die Berechnung basiert auf folgender Formel: a = Durchschnitt(y) - b * Durchschnitt(t);
+	 * Diese Methode berechnet den Paramater a der Trendgerade T(t) = a + b *t.
+	 * Für die Berechnung wird der Paramter B benötigt. Die Berechnung basiert
+	 * auf folgender Formel: a = Durchschnitt(y) - b * Durchschnitt(t);
 	 * 
 	 * @authoer Kai Westerholz
 	 * @return double ParameterA
@@ -145,7 +147,7 @@ public class Timeseries {
 	public String toString() {
 		String out = "Zeitreihe:";
 		for (int key : this.timeseries.keySet()) {
-			out += (yearOfPeriodZero + key) + " : " + this.timeseries.get(key); 
+			out += (yearOfPeriodZero + key) + " : " + this.timeseries.get(key);
 		}
 		return out;
 	}
