@@ -18,7 +18,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationView;
  * @author Christian Gahlert, Julius Hacker
  *
  */
-public class MainViewImpl extends Window implements MainView {
+public class MainViewImpl extends Window implements MainViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired

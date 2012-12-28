@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
+import dhbw.ka.mwi.businesshorizon2.methods.Result;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
 /**
@@ -15,7 +17,9 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  * @author Christian Gahlert
  *
  */
-public class MethodPresenter extends Presenter<MethodView> {
+
+public class MethodPresenter extends Presenter<MethodViewInterface> implements MethodRunner.Callback {
+
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -32,5 +36,17 @@ public class MethodPresenter extends Presenter<MethodView> {
 	 */
 	@PostConstruct
 	public void init() {
+	}
+
+	@Override
+	public void onComplete(Result result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProgressChange(float progress) {
+		// TODO Auto-generated method stub
+		
 	}
 }

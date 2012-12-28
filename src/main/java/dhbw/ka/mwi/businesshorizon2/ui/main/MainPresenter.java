@@ -10,6 +10,8 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.navigation.ShowNavigationEvent;
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewInterface;
 
 /**
  * Dieser Presenter ist das Kernstueck der Applikation. Er ist dafuer verantwortlich,
@@ -20,11 +22,17 @@ import dhbw.ka.mwi.businesshorizon2.ui.navigation.ShowNavigationEvent;
  * @author Christian Gahlert
  *
  */
-public class MainPresenter extends Presenter<MainView>{
+public class MainPresenter extends Presenter<MainViewInterface>{
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private EventBus eventBus;
+	
+	@Autowired
+	private Project project;
+	
+	@Autowired
+	private MethodViewInterface methodView;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -41,7 +49,7 @@ public class MainPresenter extends Presenter<MainView>{
 	 * Dieser Event wird zu Beginn der Prozesssicht abgesetzt.
 	 * Dabei wird oben die Navigation und unten die Methodenauswahl angezeigt.
 	 * 
-	 * @author Christian Gahlert
+	 * @author Julius Hacker
 	 * @param event
 	 */
 	@EventHandler

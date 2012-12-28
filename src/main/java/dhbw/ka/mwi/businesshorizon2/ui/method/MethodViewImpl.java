@@ -13,7 +13,8 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker
  *
  */
-public class MethodViewImpl extends VerticalLayout implements MethodView {
+
+public class MethodViewImpl extends VerticalLayout implements MethodViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
