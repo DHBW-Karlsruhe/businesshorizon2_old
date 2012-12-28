@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.vaadin.Application;
 
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
 
@@ -22,6 +24,9 @@ public class BHApplication extends Application {
 
 	@Autowired
 	private MainViewImpl mainView;
+	
+	@Autowired
+	private InitialScreenViewImpl initialScreenView;
 
 	@Autowired
 	private EventBus eventBus;
@@ -46,8 +51,11 @@ public class BHApplication extends Application {
 	 */
 	@Override
 	public void init() {
-		setMainWindow(mainView);
-		eventBus.fireEvent(new ShowMainViewEvent());
+//		setMainWindow(mainView);
+//		eventBus.fireEvent(new ShowMainViewEvent());
+		setMainWindow(initialScreenView);
+		eventBus.fireEvent(new ShowInitialScreenViewEvent());
+		
 	}
 	
 

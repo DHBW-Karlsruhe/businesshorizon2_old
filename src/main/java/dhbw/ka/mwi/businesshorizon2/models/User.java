@@ -1,5 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,9 @@ import java.util.ArrayList;
  * @author Christian Scherer
  * 
  */
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	protected ArrayList<Project> projects = new ArrayList<Project>();
 

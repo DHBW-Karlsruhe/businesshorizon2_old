@@ -1,59 +1,108 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean
+		class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
 
 
-	
+
 	<!-- Application -->
-	<bean name="vaadinApp" class="dhbw.ka.mwi.businesshorizon2.BHApplication" scope="session" />
+	<bean name="vaadinApp" class="dhbw.ka.mwi.businesshorizon2.BHApplication"
+		scope="session" />
 	<bean name="eventBus" class="com.mvplite.event.EventBus" scope="session" />
-	<bean name="navigationController" class="com.mvplite.view.LiteNavigationController" scope="session">
+	<bean name="navigationController" class="com.mvplite.view.LiteNavigationController"
+		scope="session">
 		<constructor-arg ref="eventBus" />
 	</bean>
+<<<<<<< Updated upstream
 	
 		
+=======
+
+
+>>>>>>> Stashed changes
 	<!-- Methods -->
-	<bean name="timeseries" class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries" scope="session" />
-	<bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener" scope="session" />
-	
-	
-	
+	<bean name="timeseries"
+		class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries"
+		scope="session" />
+	<bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener"
+		scope="session" />
+
+
+
 	<!-- Models -->
-	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project" scope="session" />
+	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project"
+		scope="session" />
+	<bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
+		scope="session" />
 
 
-	
 	<!-- Main -->
-	<bean name="mainPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainPresenter" scope="session" />
-	<bean name="mainView" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl" scope="session" />
+	<bean name="mainPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainPresenter"
+		scope="session" />
+	<bean name="mainView" class="dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl"
+		scope="session" />
+
+	<!-- Initial-Screen -->
+	<bean name="initialScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenPresenter"
+		scope="session" />
+	<bean name="initialScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl"
+		scope="session" />
+
+	<!-- Project-List -->
+	<bean name="projectListPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.projectlist.ProjectListPresenter"
+		scope="session" />
+	<bean name="projectListView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.projectlist.ProjectListViewImpl"
+		scope="session" />
+
+	<!-- Infos -->
+	<bean name="infosViewPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.infos.InfosPresenter"
+		scope="session" />
+	<bean name="infosView" class="dhbw.ka.mwi.businesshorizon2.ui.infos.InfosViewImpl"
+		scope="session" />
 
 
-	
+
 	<!-- Period-List -->
-	<bean name="periodListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListPresenter" scope="session" />
-	<bean name="periodListView" class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewImpl" scope="session" />
+	<bean name="periodListPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListPresenter"
+		scope="session" />
+	<bean name="periodListView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewImpl"
+		scope="session" />
 
 
-	
 	<!-- Period-Edit -->
-	<bean name="periodEditPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditPresenter" scope="session" />
-	<bean name="periodEditView" class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl" scope="session" />
+	<bean name="periodEditPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditPresenter"
+		scope="session" />
+	<bean name="periodEditView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl"
+		scope="session" />
 
 
-	
 	<!-- Method-List -->
-	<bean name="methodListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListPresenter" scope="session" />
-	<bean name="methodListView" class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListViewImpl" scope="session" />
+	<bean name="methodListPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListPresenter"
+		scope="session" />
+	<bean name="methodListView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListViewImpl"
+		scope="session" />
 
 
-	
+
 	<!-- Method-Edit -->
-	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodPresenter" scope="session" />
-	<bean name="methodView" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewImpl" scope="session" />
-	
+	<bean name="methodPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodPresenter" scope="session" />
+	<bean name="methodView" class="dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewImpl"
+		scope="session" />
+
 </beans>

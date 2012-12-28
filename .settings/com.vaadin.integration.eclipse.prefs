@@ -1,5 +1,10 @@
 com.vaadin.integration.eclipse.useLatestNightly=false
+<<<<<<< Updated upstream
 com.vaadin.integration.eclipse.widgetsetBuildsSuspended=true
 com.vaadin.integration.eclipse.widgetsetCompilationEta=161410
 com.vaadin.integration.eclipse.widgetsetDirty=true
+=======
+com.vaadin.integration.eclipse.widgetsetCompilationEta=56502
+com.vaadin.integration.eclipse.widgetsetDirty=false
+>>>>>>> Stashed changes
 eclipse.preferences.version=1
