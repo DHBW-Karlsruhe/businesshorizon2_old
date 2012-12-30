@@ -19,9 +19,6 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 
 	@Autowired
 	private EventBus eventBus;
-
-	@Autowired
-	private MethodView methodView;
 	
 	@Autowired
 	private PeriodView periodView;
@@ -34,6 +31,9 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	
 	@Autowired
 	private ProcessingView processingView;
+
+	@Autowired
+	private MethodView methodView;
 
 	
 	/**

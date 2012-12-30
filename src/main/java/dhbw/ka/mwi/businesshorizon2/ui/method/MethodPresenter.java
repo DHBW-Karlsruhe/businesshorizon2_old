@@ -18,7 +18,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  *
  */
 
-public class MethodPresenter extends Presenter<MethodViewInterface> implements MethodRunner.Callback {
+public class MethodPresenter extends Presenter<MethodView> implements MethodRunner.Callback {
 
 	private static final long serialVersionUID = 1L;
 
