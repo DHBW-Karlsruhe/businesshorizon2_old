@@ -18,13 +18,8 @@
 		scope="session">
 		<constructor-arg ref="eventBus" />
 	</bean>
-<<<<<<< Updated upstream
-	
-		
-=======
 
 
->>>>>>> Stashed changes
 	<!-- Methods -->
 	<bean name="timeseries"
 		class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries"
@@ -68,7 +63,6 @@
 		scope="session" />
 	<bean name="infosView" class="dhbw.ka.mwi.businesshorizon2.ui.infos.InfosViewImpl"
 		scope="session" />
-
 
 
 	<!-- Period-List -->

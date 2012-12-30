@@ -9,7 +9,6 @@ import com.vaadin.Application;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl;
-import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
 
 /**
  * Das ist die Haupt-Einstiegsklasse der Anwendung. Es ist vergleichbar mit der
@@ -51,8 +50,7 @@ public class BHApplication extends Application {
 	 */
 	@Override
 	public void init() {
-//		setMainWindow(mainView);
-//		eventBus.fireEvent(new ShowMainViewEvent());
+
 		setMainWindow(initialScreenView);
 		eventBus.fireEvent(new ShowInitialScreenViewEvent());
 		
