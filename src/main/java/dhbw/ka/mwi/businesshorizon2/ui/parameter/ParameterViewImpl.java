@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.ui.method;
+package dhbw.ka.mwi.businesshorizon2.ui.parameter;
 
 import javax.annotation.PostConstruct;
 
@@ -8,18 +8,17 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Parameter" in Vaadin.
  * 
  * @author Julius Hacker
  *
  */
-
-public class MethodViewImpl extends VerticalLayout implements MethodView {
+public class ParameterViewImpl extends VerticalLayout implements ParameterView {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private MethodPresenter presenter;
-	
+	private ParameterPresenter presenter;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
@@ -34,12 +33,13 @@ public class MethodViewImpl extends VerticalLayout implements MethodView {
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Methoden"
+	 * Erstelle das GUI zum Prozessschritt "Parameter"
 	 * 
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
-		Label testlabel = new Label("methodtest");
+		Label testlabel = new Label("parametertest");
 		this.addComponent(testlabel);
 	}
+
 }

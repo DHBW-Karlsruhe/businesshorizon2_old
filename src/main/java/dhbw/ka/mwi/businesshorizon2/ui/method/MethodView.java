@@ -1,6 +1,6 @@
-package dhbw.ka.mwi.businesshorizon2.ui.main;
+package dhbw.ka.mwi.businesshorizon2.ui.method;
 
-import com.mvplite.view.View;
+import dhbw.ka.mwi.businesshorizon2.ui.contentcontainer.ContentView;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
@@ -9,6 +9,6 @@ import com.mvplite.view.View;
  * @author Christian Gahlert
  *
  */
-public interface MainViewInterface extends View {
+public interface MethodView extends ContentView {
 
 }

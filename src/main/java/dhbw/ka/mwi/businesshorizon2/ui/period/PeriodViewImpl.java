@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.ui.method;
+package dhbw.ka.mwi.businesshorizon2.ui.period;
 
 import javax.annotation.PostConstruct;
 
@@ -13,13 +13,12 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker
  *
  */
-
-public class MethodViewImpl extends VerticalLayout implements MethodView {
+public class PeriodViewImpl extends VerticalLayout implements PeriodView {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private MethodPresenter presenter;
-	
+	private PeriodPresenter presenter;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
@@ -34,12 +33,12 @@ public class MethodViewImpl extends VerticalLayout implements MethodView {
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Methoden"
+	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
-		Label testlabel = new Label("methodtest");
+		Label testlabel = new Label("periodentest");
 		this.addComponent(testlabel);
 	}
 }
