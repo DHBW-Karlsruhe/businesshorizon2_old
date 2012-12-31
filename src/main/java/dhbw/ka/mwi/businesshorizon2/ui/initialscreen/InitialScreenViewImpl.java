@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
@@ -23,6 +24,9 @@ import com.vaadin.ui.Window;
 public class InitialScreenViewImpl extends Window implements
 		InitialScreenViewInterface {
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
+
 
 	@Autowired
 	private InitialScreenPresenter presenter;
@@ -56,10 +60,14 @@ public class InitialScreenViewImpl extends Window implements
 	 */
 	private void generateUi() {
 		setCaption("Business Horizon 2");
+		logger.debug("Überschrift für Browser erstellt");
+
 
 		verticalPanel = new VerticalSplitPanel();
 		verticalPanel.setSizeFull();
 		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
+		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
+
 
 		heading = new HorizontalLayout();
 		title = new Label("<h1>Business Horizon 2</h1>");
@@ -67,14 +75,20 @@ public class InitialScreenViewImpl extends Window implements
 		heading.addComponent(title);
 		
 		verticalPanel.setFirstComponent(heading);
+		logger.debug("Überschrift hinzugefügt und dem vertikalen Panel übergeben");
 
+		
 		horizontalPanel = new HorizontalSplitPanel();
 		horizontalPanel.setSizeFull();
 		horizontalPanel.setSplitPosition(50, UNITS_PERCENTAGE);
 
 		verticalPanel.setSecondComponent(horizontalPanel);
+		logger.debug("Horizontales Panel für Projkte und Infos erstellt und an das vertikale Panel übergeben");
 
+		
 		setContent(verticalPanel);
+		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
+
 	}
 
 	/**

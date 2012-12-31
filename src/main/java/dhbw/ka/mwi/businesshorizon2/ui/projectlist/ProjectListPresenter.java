@@ -31,7 +31,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("ProjectListViewImpl.class");
+	private Logger logger = Logger.getLogger("ProjectListPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;

@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -12,7 +13,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ProjectListViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ShowProjectListEvent;
 
 /**
@@ -28,6 +28,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ShowProjectListEvent;
 public class InitialScreenPresenter extends
 		Presenter<InitialScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = Logger.getLogger("InitialScreenPresenter.class");
+
 
 	@Autowired
 	private EventBus eventBus;
@@ -51,6 +54,8 @@ public class InitialScreenPresenter extends
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		logger.debug("Eventhandler Hinzugefügt");
+
 	}
 
 	/**
@@ -64,22 +69,12 @@ public class InitialScreenPresenter extends
 	@EventHandler
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 		getView().showView(projectListView, infosView);
+		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent());
+		logger.debug("ShowProjectListEvent gefeuert");
 		eventBus.fireEvent(new ShowInfosEvent());
+		logger.debug("ShowInfosEvent gefeuert");
+
 	}
 
-	/**
-	 * Dieser Event wird von dem ProjectListPresenter nach dem Klick auf ein
-	 * Projekt abgesetzt. Darauf folgend soll der Wizard mit dem angeklickten
-	 * Projekt aufgerufen werden.
-	 * 
-	 * @author Christian Scheer
-	 * @param event
-	 */
-	@EventHandler
-	public void onShowProject(ShowProjectEvent event) {
-		// Hier muss nun der Aufruf zum Wizard implementiert werden
-		// siehe main aufruf
-		// getView().showView(periodListView, methodListView, methodView);
-	}
 }
