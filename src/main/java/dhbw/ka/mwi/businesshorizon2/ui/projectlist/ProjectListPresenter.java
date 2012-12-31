@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -29,6 +30,8 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  */
 public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private static final long serialVersionUID = 1L;
+
+	private Logger logger = Logger.getLogger("ProjectListViewImpl.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -67,7 +70,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		selectedProject = project;
 
 		if (selectedProject != null) {
-			eventBus.fireEvent(new ShowProjectEvent(project));
+			eventBus.fireEvent(new ShowProjectEvent(selectedProject));
+			logger.debug("ShowProjectEvent gefeuert");
+
 		}
 	}
 
@@ -80,6 +85,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
 		// derzeit keine Funktion hinterlegt
+
 	}
 
 	/**
@@ -93,6 +99,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void removeProject(Project project) {
 		user.removeProject(project);
 		eventBus.fireEvent(new ProjectRemoveEvent(project));
+		logger.debug("ProjekteRemove Event gefeuert");
+
 	}
 
 	/**
@@ -102,6 +110,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * @return Projektliste des Users
 	 */
 	public List<Project> getProjects() {
+		logger.debug("Projekte des Users werden abgerufen");
 		return user.getProjects();
 	}
 
@@ -117,22 +126,10 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	public void addProject(Project project) {
 		user.addProject(project);
+		logger.debug("Neues Projekt wurde dem User hinzugefügt");
 		eventBus.fireEvent(new ProjectAddEvent(project));
-	}
+		logger.debug("ShowAddEvent gefeuert");
 
-	/**
-	 * Diese Method feuert nun das Event zum Anzeigen des Projekts in der
-	 * Prozess (Wizard) Sicht
-	 * 
-	 * @author Christian Scherer
-	 * @param Projekt
-	 *            -Objekt, welches nun in der Prozesssicht angezeigt werden
-	 *            soll.
-	 * 
-	 */
-	public void workWithProject(Project project) {
-
-		eventBus.fireEvent(new ShowProjectEvent(project));
 	}
 
 }

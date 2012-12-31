@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.infos;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Label;
@@ -17,6 +18,8 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
 
 	private static final long serialVersionUID = 1L;
 
+	private Logger logger = Logger.getLogger("ProjectListViewImpl.class");
+	
 	@Autowired
 	private InfosPresenter presenter;
 
@@ -32,7 +35,9 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		logger.debug("View durch Presenter gesetzt");
 		generateUi();
+
 	}
 
 	public void generateUi() {
@@ -46,6 +51,8 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
                 + "<p> blabla <i>bla</i>!</p>");
 		textLabel.setContentMode(Label.CONTENT_XHTML);
 		addComponent(textLabel);
+		logger.debug("Rich text erzeugt");
+
 
 	}
 

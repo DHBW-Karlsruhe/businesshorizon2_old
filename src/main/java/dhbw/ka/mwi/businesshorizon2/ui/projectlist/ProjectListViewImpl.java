@@ -8,6 +8,7 @@ import java.util.NavigableSet;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -34,7 +35,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		ProjectListViewInterface, Button.ClickListener, LayoutClickListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	private Logger logger = Logger.getLogger("ProjectListViewImpl.class");
 
 	@Autowired
 	private ProjectListPresenter presenter;
@@ -76,14 +78,17 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		presenter.setView(this);
 
 		// 2 Dummyprojects die dem User hinzugefügt werden
-		Project p = new Project("Chris");
+		Project p = new Project("Projekt 1");
 		p.setLastChanged(new Date());
 		presenter.addProject(p);
-		p = new Project("Chris2");
+		p = new Project("Projekt 2");
 		p.setLastChanged(new Date());
 		presenter.addProject(p);
+		logger.debug("2 Dummy-Projekte Erzeugt für erste Darstellung");
+
 
 		projects = presenter.getProjects();
+		logger.debug("Projekte Geladen. Anzahl: " + projects.size());
 		generateUi();
 
 	}
@@ -106,6 +111,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		title = new Label("<h1>Meine Projekte</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
 		projectListPanel.addComponent(title);
+		logger.debug("Überschrift erstellt");
 
 		singleProjectPanel = new ArrayList<VerticalLayout>();
 		removeProjectBtn = new ArrayList<Button>();
@@ -119,11 +125,15 @@ public class ProjectListViewImpl extends VerticalLayout implements
 							.get(i));
 
 		}
+		logger.debug("Projekt-Element-Liste erzeugt");
 
 		addProjectBtn = new Button("Projekt hinzufügen", this);
 		projectListPanel.addComponent(addProjectBtn);
+		logger.debug("Hinzufüge-Button erzeugt");
 
 		addComponent(projectListPanel);
+		logger.debug("Alle UI Elemente dem Fenster hinzugefügt");
+
 	}
 
 	/**
@@ -175,6 +185,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		singleProject.addListener(this);
 
 		projectListPanel.addComponent(singleProject);
+		logger.debug("Einzelnes Projektelement erzeugt");
+
 		return singleProject;
 	}
 
@@ -206,6 +218,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		layout.addComponent(dialogAddBtn);
 
 		getWindow().addWindow(addDialog);
+		logger.debug("Hinzufüge-Dialog erzeugt");
+
 	}
 
 	/**
@@ -231,8 +245,12 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void buttonClick(ClickEvent event) {
 
 		if (event.getButton() == addProjectBtn) {
+			logger.debug("Projekt-hinzufügen Button aus dem Hauptfenster aufgerufen");
 			showAddProjectDialog();
+
 		} else if (event.getButton() == dialogAddBtn) {
+			logger.debug("Projekt-hinzufügen Button aus dem Dialogfenster aufgerufen");
+
 			project = new Project((String) tfName.getValue());
 
 			projectListPanel.removeComponent(addProjectBtn);
@@ -244,13 +262,17 @@ public class ProjectListViewImpl extends VerticalLayout implements
 							.get(projects.size()));
 
 			projectListPanel.addComponent(addProjectBtn);
+			logger.debug("Neues Projekt an hinterster Stelle eingefügt");
 
 			presenter.addProject(project);
 			getWindow().removeWindow(addDialog);
 
 		} else {
+
 			int index = removeProjectBtn.indexOf(event.getButton());
 
+			logger.debug("Projekt-löschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "+ (index+1));
+			
 			projectListPanel
 					.removeComponent((com.vaadin.ui.Component) singleProjectPanel
 							.get(index));
@@ -279,7 +301,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void layoutClick(LayoutClickEvent event) {
 
 		int index = singleProjectPanel.indexOf(event.getComponent());
-		presenter.workWithProject((Project) projects.get(index));
+		logger.debug("Projekt ausgewäht. Projektnummer: "+ (index+1));
+		presenter.projectSelected((Project) projects.get(index));
 
 	}
 

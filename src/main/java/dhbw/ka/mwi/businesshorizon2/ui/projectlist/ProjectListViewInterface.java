@@ -14,14 +14,13 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  */
 public interface ProjectListViewInterface extends View {
 
-	
 	/**
-	 * Konkrete Ausprogrammierung der UI Elemente. 
+	 * Konkrete Ausprogrammierung der UI Elemente.
 	 * 
 	 * @author Christian Scherer
 	 */
 	public void generateUi();
-	
+
 	/**
 	 * Konkrete Ausprogrammierung der der Darstellung eines einzlenen Projekts
 	 * (Name, Anzahl Perioden mit Jahren, Änderungsdatum, Löschbutton). Diese
@@ -29,11 +28,10 @@ public interface ProjectListViewInterface extends View {
 	 * auch bei der Hinzufügung eines neuen Projekts
 	 * 
 	 * @author Christian Scherer
-	 * @param das
-	 *            darzustellende Projekt und der aktuelle Index der Liste
+	 * @param project
+	 *            das darzustellende Projekt und der aktuelle Index der Liste
 	 * @return ein VerticalLayout Objekt, das zur Eingliederung in das UI dient
 	 */
 	public VerticalLayout generateSingleProjectUi(Project project, int i);
-
 
 }
