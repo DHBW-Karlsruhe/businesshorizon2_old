@@ -69,14 +69,6 @@
 	<bean name="navigationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationPresenter" scope="session" />
 	<bean name="navigationView" class="dhbw.ka.mwi.businesshorizon2.ui.navigation.NavigationViewImpl" scope="session"/>
 
-	<!-- Period-Edit -->
-	<bean name="periodEditPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditPresenter"
-		scope="session" />
-	<bean name="periodEditView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewImpl"
-		scope="session" />
-
 
 
 	<!-- ContentContainer -->
