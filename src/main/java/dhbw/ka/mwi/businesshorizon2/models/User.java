@@ -24,6 +24,17 @@ public class User implements Serializable {
 
 	protected ArrayList<Project> projects = new ArrayList<Project>();
 
+	public User() {
+
+	}
+
+	public User(String username, String password, String firstName, String lastName) {
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	/**
 	 * Gibt die dem Benutzer zugehörigen Projekte zurück
 	 * 
