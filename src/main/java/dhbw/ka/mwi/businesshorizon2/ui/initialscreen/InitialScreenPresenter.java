@@ -10,10 +10,10 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.infos.InfosViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.infos.ShowInfosEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ProjectListViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ShowProjectListEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 
 /**
  * Dieser Presenter stellt die Einganseite der Applikation darf. Er ist dafuer

@@ -10,9 +10,9 @@ import com.vaadin.Application;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.main.MainViewImpl;
-import dhbw.ka.mwi.businesshorizon2.ui.main.ShowMainViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.projectlist.ShowProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
 /**
  * Das ist die Haupt-Einstiegsklasse der Anwendung. Es ist vergleichbar mit der
@@ -28,7 +28,7 @@ public class BHApplication extends Application {
 	private Logger logger = Logger.getLogger("BHApplication.class");
 
 	@Autowired
-	private MainViewImpl processView;
+	private ProcessViewImpl processView;
 	
 	@Autowired
 	private InitialScreenViewImpl initialScreenView;
@@ -74,7 +74,7 @@ public class BHApplication extends Application {
 	public void showProcessView(ShowProjectEvent event) {
 		setMainWindow(processView);
 		this.removeWindow(initialScreenView);
-		eventBus.fireEvent(new ShowMainViewEvent());
+		eventBus.fireEvent(new ShowProcessViewEvent());
 		logger.debug("ShowMainViewEvent gefeuert");
 	}
 	
