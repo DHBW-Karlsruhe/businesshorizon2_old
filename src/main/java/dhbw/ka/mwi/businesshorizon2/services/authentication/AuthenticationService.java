@@ -104,7 +104,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	public User doLogin(String username, String password) throws UserNotFoundException {
 
 		for (User user : allUsers) {
-			if (user.getUsername() == username) {
+			if (user.getUsername().equals(username)) {
 				loggedInUsers.put(user.getUsername(), user);
 				logger.debug("User " + username + " successfully logged in.");
 				return user;
@@ -115,13 +115,14 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 
 	}
 
-	public void doLogout(User user) {
+	public void doLogout(User user) throws UserNotLoggedInException {
 
 		if (loggedInUsers.containsKey(user.getUsername())) {
 			loggedInUsers.remove(user.getUsername());
 			logger.debug("User " + user.getUsername() + " successfully logged out.");
 		} else {
 			logger.error("User " + user.getUsername() + " is already logged out.");
+			throw new UserNotLoggedInException("The user " + user.getUsername() + " is not logged in");
 		}
 
 	}

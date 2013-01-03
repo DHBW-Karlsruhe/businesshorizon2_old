@@ -32,7 +32,7 @@ public interface AuthenticationServiceInterface {
 	 * @param user
 	 *            User der ausgeloggt werden soll
 	 */
-	public void doLogout(User user);
+	public void doLogout(User user) throws UserNotLoggedInException;
 
 	/**
 	 * Methode zum registrieren eines neuen Nutzers. Implementierende Klassen
