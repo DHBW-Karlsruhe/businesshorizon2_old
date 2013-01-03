@@ -20,13 +20,19 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
 /**
- * Dies ist die Vaadin-Implementierung der PeriodListView. Die Projekte des
- * Users werden in der generateUi Methode visuell dargestellt.
+ * Dies ist die Vaadin-Implementierung der PeriodListView. Die Rahmendarstellung
+ * wird in der generateUi Methode visuell dargestellt. Die einzelnen Projekte
+ * mit Namen, Perioden, Aenderungsdatum und Loeschmethode werde in den Methoden
+ * setProjects und generateSingleProject erzeugt. Die Click-Events verschiedener
+ * werden gesammelt in der Methode buttonClick verwertet und falls Logik von
+ * noeten ist vom Presenter weiter ausgefuehrt. Die Auswahl eines Projekts wird
+ * hier mittels der layoutClick Methode realisiert und fuehrt zum Projekt-Wizard.
  * 
  * @author Christian Scherer
  * 
@@ -68,8 +74,9 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
-	 * und initialisiert die View-Komponenten. Zuvor werden noch die
-	 * anzuzeigenden Projekte des Anwenders geladen.
+	 * und initialisiert die View-Komponenten. Danach wird die durch die
+	 * generateUi Methode die festen Bestandteile der Projektliste erzeugt
+	 * (Ueberschrift, leeres ProjectListPanel und HinzufÃ¼gebutton)
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -77,41 +84,57 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void init() {
 		presenter.setView(this);
 
-		// 2 Dummyprojects die dem User hinzugefügt werden
-		Project p = new Project("Projekt 1");
-		p.setLastChanged(new Date());
-		presenter.addProject(p);
-		p = new Project("Projekt 2");
-		p.setLastChanged(new Date());
-		presenter.addProject(p);
-		logger.debug("2 Dummy-Projekte Erzeugt für erste Darstellung");
-
-
-		projects = presenter.getProjects();
-		logger.debug("Projekte Geladen. Anzahl: " + projects.size());
 		generateUi();
+		logger.debug("Initialisierung beendet");
+	}
+
+	/**
+	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
+	 * ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird durch die Methode
+	 * setProjects das ProjectListPanel mit konkreten Projekten gefÃ¼llt.
+	 * 
+	 * @author Christian Scherer
+	 */
+	private void generateUi() {
+		setSpacing(true);
+		setMargin(true);
+
+		title = new Label("<h1>Meine Projekte</h1>");
+		title.setContentMode(Label.CONTENT_XHTML);
+		addComponent(title);
+		logger.debug("Ueberschrift erstellt");
+
+		projectListPanel = new VerticalLayout();
+		projectListPanel.setSpacing(true);
+		addComponent(projectListPanel);
+		logger.debug("Leeres ProjektList Panel erstellt");
+
+		addProjectBtn = new Button("Projekt hinzufügen", this);
+		addComponent(addProjectBtn);
+		logger.debug("Hinzufuege-Button erzeugt");
+
+		logger.debug("Feste UI Elemente dem Fenster hinzugefuegt");
 
 	}
 
 	/**
-	 * Konkrete Ausprogrammierung der UI Elemente. Die Notation ist dabei
-	 * folgende: Überschrift, Projekte (Name, Anzahl Perioden mit Jahren,
-	 * Änderungsdatum, Löschbutton) und Projekt-hinzufügen-Button. für jedes
-	 * graphische Element (Projekt als "1" Element gewertet) wird der indexUi um
-	 * eins erhöht umd später neue Projekte an der richtigen Stelle Einzufügen
+	 * 
+	 * Aufruf durch den Presenter (bei Ersterstellung oder Aenderungen durch
+	 * Buttonclicks) - wobei zunÃ¤chst die Projektliste aktualisiert wird.
+	 * Zunaechst werden - falls vorhanden - die derzeitg existenten Elemente des
+	 * projectListPanel geloescht und die Liste der Projekt Layouts und
+	 * Loeschbuttons neu erstellt. Darauf folgt dann in der Schleife die
+	 * Erzeugung der einzelnen VadinKomponenten fuer jedes Projekt durch die
+	 * Methode generateSingleProjectUi.
 	 * 
 	 * @author Christian Scherer
 	 */
-	public void generateUi() {
-		setSpacing(true);
-		setMargin(true);
+	public void setProjects(List<Project> projects) {
 
-		projectListPanel = new VerticalLayout();
-		projectListPanel.setSpacing(true);
-		title = new Label("<h1>Meine Projekte</h1>");
-		title.setContentMode(Label.CONTENT_XHTML);
-		projectListPanel.addComponent(title);
-		logger.debug("Überschrift erstellt");
+		this.projects = projects;
+		logger.debug("Projektliste aktualisiert");
+		projectListPanel.removeAllComponents();
+		logger.debug("Projekt-Element-Liste geleert");
 
 		singleProjectPanel = new ArrayList<VerticalLayout>();
 		removeProjectBtn = new ArrayList<Button>();
@@ -125,56 +148,67 @@ public class ProjectListViewImpl extends VerticalLayout implements
 							.get(i));
 
 		}
+
 		logger.debug("Projekt-Element-Liste erzeugt");
-
-		addProjectBtn = new Button("Projekt hinzufügen", this);
-		projectListPanel.addComponent(addProjectBtn);
-		logger.debug("Hinzufüge-Button erzeugt");
-
-		addComponent(projectListPanel);
-		logger.debug("Alle UI Elemente dem Fenster hinzugefügt");
-
 	}
 
 	/**
 	 * Konkrete Ausprogrammierung der der Darstellung eines einzlenen Projekts
-	 * (Name, Anzahl Perioden mit Jahren, Änderungsdatum, Löschbutton). Diese
-	 * wird sowohl bei der ersten Erstellung für jedes Projekt ausgeführt wie
-	 * auch bei der Hinzufügung eines neuen Projekts. Zum Schluss wird dem
-	 * Layout noch ein Listener hinzugefügt, der durch die Methode LayoutClick
-	 * auf Klicks auf ein jeweiliges Projekt reagiert und in die Prozesssicht
-	 * des einzelnen Projekts wechselt.
+	 * (Name, Anzahl Perioden mit Jahren, Aenderungsdatum, Loeschbutton). Diese
+	 * wird sowohl bei der ersten Erstellung des UIs fuer jedes Projekt
+	 * ausgefuehrt. Die Loeschbuttons werden einer Liste an Loeschbuttons
+	 * hinzufgefuegt umd spÃ¤ter eine identifikation der Buttons in der Methode
+	 * buttonClick zu gewÃ¤hrleisten. Zum Schluss wird dem Layout noch ein
+	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
+	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
+	 * Projekts wechselt und das VerticalLayout dem projectListPanel hinzgefÃ¼gt.
 	 * 
 	 * @author Christian Scherer
 	 * @param project
 	 *            das darzustellende Projekt und der aktuelle Index der Liste
 	 * @param i
-	 *            der Index der zu erstellenden Komponente (besonders für den
-	 *            Löschbutton relevant)
+	 *            der Index der zu erstellenden Komponente (besonders fuer den
+	 *            Loeschbutton relevant)
 	 * @return ein VerticalLayout Objekt, das zur Eingliederung in das UI dient
 	 */
-	public VerticalLayout generateSingleProjectUi(Project project, int i) {
+	private VerticalLayout generateSingleProjectUi(Project project, int i) {
+
 		VerticalLayout singleProject = new VerticalLayout();
+
 		projectName = new Label(project.getName());
 		periodList = project.getPeriods();
-		if (periodList.size() > 1) {
-			periods = new Label("" + periodList.size() + " Perioden ("
+
+		// String fuer saubere Periodenausgebe erstellen. Bsp:
+		// "3 Perioden (2009-2012)"
+		String periodString;
+		switch (periodList.size()) {
+		case (0):
+			periodString = "Noch keine Perioden eingetragen";
+			break;
+		case (1):
+			periodString = "1 Periode (" + periodList.first().getYear() + ")";
+			break;
+		default: // also Anzahl der Perioden groesser 1
+			periodString = "" + periodList.size() + " Perioden ("
 					+ periodList.first().getYear() + "-"
-					+ periodList.last().getYear() + ")");
-		} else if (periodList.size() == 1) {
-			periods = new Label("1 Periode (" + periodList.first().getYear()
-					+ ")");
-		} else {
-			periods = new Label("Noch keine Perioden eingetragen");
+					+ periodList.last().getYear() + ")";
+			break;
 		}
+		periods = new Label(periodString);
+
+		// String fÃ¼r Ausgabe des letzten Ãnderungsdatum
+		String lastChangedString;
 		if (project.getLastChanged() == null) {
 			Date d = new Date();
-			lastChanged = new Label("Zuletzt geändert: " + d.toString());
+			lastChangedString = "Zuletzt geändert: " + d.toString();
 		} else {
-			lastChanged = new Label("Zuletzt geändert: "
-					+ project.getLastChanged().toString());
+			lastChangedString = "Zuletzt geädert: "
+					+ project.getLastChanged().toString();
 		}
-		removeProjectBtn.add(new Button("löschen", this));
+		lastChanged = new Label(lastChangedString);
+
+		// Liste an Buttons zur spÃ¤teren identifikation
+		removeProjectBtn.add(new Button("lÃ¶schen", this));
 
 		singleProject.addComponent(projectName);
 		singleProject.addComponent(periods);
@@ -191,13 +225,13 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Zeige das Projekt-Hinzuegen-Dialogfenster, bei dem ein Eingabefeld für
-	 * den Namen des Projekts und ein Hinzfüge-Button vorhanden ist. Funktion
+	 * Zeige das Projekt-Hinzuegen-Dialogfenster, bei dem ein Eingabefeld fuer
+	 * den Namen des Projekts und ein Hinzfuege-Button vorhanden ist. Funktion
 	 * bei geklicktem Button siehe Clicklistener in dieser Klasse.
 	 * 
 	 * @author Christian Scherer
 	 */
-	private void showAddProjectDialog() {
+	public void showAddProjectDialog() {
 		addDialog = new Window("Projekt hinzufügen");
 		addDialog.setModal(true);
 		addDialog.setWidth(400, UNITS_PIXELS);
@@ -208,8 +242,11 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		layout.setSpacing(true);
 		Label name = new Label("Bitte Name wählen: ");
 		layout.addComponent(name);
+
 		tfName = new TextField();
-		tfName.setRequiredError("Bitte Projektname angeben");
+		tfName.setRequired(true);
+		tfName.setRequiredError("Pflichtfeld");
+
 		layout.addComponent(tfName);
 		addDialog.addComponent(layout);
 
@@ -218,24 +255,23 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		layout.addComponent(dialogAddBtn);
 
 		getWindow().addWindow(addDialog);
-		logger.debug("Hinzufüge-Dialog erzeugt");
+		logger.debug("HinzufÃ¼ge-Dialog erzeugt");
 
 	}
 
 	/**
-	 * ClickListner Methode für die Reaktion auf Buttonclicks. Hier wird
-	 * entsprechend auf die Buttonclicks für das Erzeugen weiterer Projekte
-	 * reagiert, wie auch auf jene die Projekte löschen. In der ersten If
-	 * Abfrage werden die vom Hauptfenster ausgelößten Clicks zum Hinzufügen
-	 * eines neuen Objektes behandelt und die Methode für das Dialogfenster
-	 * erstellt. In der Zweiten If-Abfrage wird die im Dialogfenster ausgelößten
-	 * Clickst behandelt, wodurch eine neues Projekt erstellt und sowohl
-	 * graphisch wie auch Objektbasiert (Im User Objekt über den Presenter)
-	 * erstellt wird. In der Else Verzweigung werden dann die Lösch-Clicks für
-	 * das jeweilige Projekt behandelt. Hierbei wird zunächst durch das Event in
-	 * der Lösch-Buttonliste der Index identifiziert. Daraufhin muss sowohl auf
-	 * Objektebene und Graphisch die Listen der neuen Situation mithilfe des
-	 * Projekts bzw. des Index angepasst werden.
+	 * ClickListner Methode fuer die Reaktion auf Buttonclicks. Hier wird
+	 * entsprechend auf die Button-Clicks fuer das Erzeugen weiterer Projekte
+	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
+	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum HinzufÃ¼gen
+	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
+	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft ob
+	 * das auf "reuqired" gesetzte Textfeld auch ausgefuellt wurde - falls nicht
+	 * wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
+	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird zunÃ¤chst
+	 * durch das Event in der Loesch-Buttonliste der Index identifiziert, also
+	 * welches Projekt zu loeschen ist. Die jeweils folgende Logig ist in der je
+	 * aufgerufen Methode des Presenters zu finden.
 	 * 
 	 * @author Christian Scherer
 	 * @param event
@@ -245,41 +281,30 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void buttonClick(ClickEvent event) {
 
 		if (event.getButton() == addProjectBtn) {
-			logger.debug("Projekt-hinzufügen Button aus dem Hauptfenster aufgerufen");
-			showAddProjectDialog();
+			logger.debug("Projekt-hinzufÃ¼gen Button aus dem Hauptfenster aufgerufen");
+			presenter.addProjectDialog();
 
 		} else if (event.getButton() == dialogAddBtn) {
-			logger.debug("Projekt-hinzufügen Button aus dem Dialogfenster aufgerufen");
+			logger.debug("Projekt-hinzufÃ¼gen Button aus dem Dialogfenster aufgerufen");
 
-			project = new Project((String) tfName.getValue());
-
-			projectListPanel.removeComponent(addProjectBtn);
-
-			singleProjectPanel.add(generateSingleProjectUi(project,
-					projects.size()));
-			projectListPanel
-					.addComponent((com.vaadin.ui.Component) singleProjectPanel
-							.get(projects.size()));
-
-			projectListPanel.addComponent(addProjectBtn);
-			logger.debug("Neues Projekt an hinterster Stelle eingefügt");
-
-			presenter.addProject(project);
-			getWindow().removeWindow(addDialog);
+			if (tfName.isValid()) {
+				presenter.addProject((String) tfName.getValue());
+				getWindow().removeWindow(addDialog);
+			} else {
+				getWindow()
+						.showNotification(
+								(String) "",
+								(String) "Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
+								Notification.TYPE_ERROR_MESSAGE);
+			}
 
 		} else {
 
 			int index = removeProjectBtn.indexOf(event.getButton());
 
-			logger.debug("Projekt-löschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "+ (index+1));
-			
-			projectListPanel
-					.removeComponent((com.vaadin.ui.Component) singleProjectPanel
-							.get(index));
-			singleProjectPanel.remove(index);
+			logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "
+					+ (index + 1));
 
-			requestRepaint();
-			removeProjectBtn.remove(event.getButton());
 			presenter.removeProject((Project) projects.get(index));
 
 		}
@@ -287,11 +312,11 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * LayoutClickListner Methode für die Reaktion auf Klicks auf die einzelnen
+	 * LayoutClickListner Methode fuer die Reaktion auf Clicks auf die einzelnen
 	 * Projekte reagiert. Konkret wird hier die Verbindung zur Prozesssicht
-	 * geschaffen. Zunächst wird geprüft von welchem Projekt der Klick kommt,
-	 * und dann dieses dem Presenter übergeben, in welchem dann das Event für
-	 * das Anzeigen der Prozesssicht ausgelöst wird.
+	 * geschaffen. Zunaechst wird geprueft von welchem Projekt der Klick kommt,
+	 * und dann dieses dem Presenter Ã¼bergeben, in welchem dann das Event fuer
+	 * das Anzeigen der Prozesssicht ausgeloest wird.
 	 * 
 	 * @author Christian Scherer
 	 * @param event
@@ -301,7 +326,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void layoutClick(LayoutClickEvent event) {
 
 		int index = singleProjectPanel.indexOf(event.getComponent());
-		logger.debug("Projekt ausgewäht. Projektnummer: "+ (index+1));
+		logger.debug("Projekt ausgewaehlt. Projektnummer: " + (index + 1));
 		presenter.projectSelected((Project) projects.get(index));
 
 	}

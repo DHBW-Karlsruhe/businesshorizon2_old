@@ -12,7 +12,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 /**
  * Dies ist die Vaadin-Implementierung der MainView (dem Haupt-Fenster).
  * 
- * @author Christian Gahlert, Julius Hacker
+ * @author Julius Hacker
  *
  */
 public class ContentContainerViewImpl extends VerticalLayout implements ContentContainerView {
@@ -26,24 +26,19 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
 	 * View-Komponenten.
 	 * 
-	 * @author Christian Gahlert
+	 * @author Julius Hacker
 	 */
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
 	}
 	
 	/**
-	 * Diese Methode setzt den Titel (im Browser-Fenster) zu "Business Horizon 2" und
-	 * erstellt das Tabsheet mit den einzelnen Tab-Views.
+	 * Diese Methode uebernimmt die Anzeige der vom Presenter vorgegebenen Maske
+	 * in Vaadin.
 	 * 
-	 * @author Christian Gahlert, Julius Hacker
+	 * @author Julius Hacker
 	 */
-	private void generateUi() {
-
-	}
-	
 	public void showContentView(ContentView newView) {
 		this.removeAllComponents();
 		this.addComponent((Component) newView);

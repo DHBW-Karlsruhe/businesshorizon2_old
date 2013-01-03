@@ -15,6 +15,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewInterface;
 
+/**
+ * Die Klasse ist kuemmert sich als Container darum, dass in der Prozesssicht
+ * die richtige Maske angezeigt wird.
+ * 
+ * @author Julius Hacker
+ *
+ */
 public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private static final long serialVersionUID = 1L;
 
@@ -48,6 +55,13 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		eventBus.addHandler(this);
 	}
 	
+	/**
+	 * Diese Methode faengt die ShownavigationStepEvents ab und kuemmert sich darum,
+	 * dass die entsprechende Maske angezeigt wird.
+	 * 
+	 * @param event Der ausgeloeste ShowNavigationStepEvent
+	 * @autor Julius Hacker
+	 */
 	@EventHandler
 	public void onShowNavigationStep(ShowNavigationStepEvent event) {
 		ContentView newView = null;

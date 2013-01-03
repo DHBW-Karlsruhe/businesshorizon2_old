@@ -1,5 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -21,9 +22,6 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * entnommen, die lediglich einmal pro Session existiert, und in dem
  * project-Property gespeichert wird.
  * 
- * Todo: Variablenerklärung Eventbus: User: Benutzerobjekt maxProjects: Anzahl
- * Projkete die auf einer Seite angezeigt werden
- * 
  * 
  * @author Christian Scherer
  * 
@@ -44,8 +42,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
+	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
+	 * EventHandler und bestimmt den User, der fuer die Ermittlung der Projekte
+	 * essentiell ist.
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -53,17 +52,19 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private void init() {
 		eventBus.addHandler(this);
 		user = new User(); // TODO Hier sollte der User des
-		// Authetifizierungsprozesses ausgewählt werden
+		// Authetifizierungsprozesses ausgewaehlt werden
+
 	}
 
 	/**
 	 * Diese Methode wird von der View aufgerufen, wenn eine Projekt ausgewaehlt
-	 * wurde. Somit muss nun der Wizard für dieses Projekt und mit den
+	 * wurde. Somit muss nun der Wizard fÃ¼r dieses Projekt und mit den
 	 * gespeicherten Daten aufgerufen werden. Das Event ShowProject wird mit dem
-	 * ausgewählten Objekt ausgelöst. Somit kann der Wizard ausgeführt werden.
+	 * ausgewÃ¤hlten Objekt ausgeloest. Somit kann der Wizard ausgefuehrt werden.
 	 * 
 	 * @author Christian Scherer
 	 * @param project
+	 *            das angeklickte Projekt
 	 * 
 	 */
 	public void projectSelected(Project project) {
@@ -77,58 +78,87 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	}
 
 	/**
-	 * derzeit keine Funktion hinterlegt.
+	 * 
+	 * Aufruf nach der Initialisierung der ProjectListImpl von aussen. Es werden
+	 * die Projekte des Users ermittelt und der setProjects Methode der Impl
+	 * Ã¼bergeben um die UI-Erzeugung der Projekte anzustossen
 	 * 
 	 * @author Christian Scherer
 	 * @param event
 	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
-		// derzeit keine Funktion hinterlegt
+
+		// 2 Dummyprojects die dem User hinzugefÃ¼gt werden
+		addProject("Projekt 1");
+		addProject("Projekt 2");
+		logger.debug("2 Dummy-Projekte Erzeugt fÃ¼r erste Darstellung");
+
+		List<Project> projects = user.getProjects();
+		logger.debug("Projekte geladen. Anzahl: " + projects.size());
+
+		getView().setProjects(projects);
 
 	}
 
 	/**
-	 * Aufruf aus der Impl mit übergabe des zu löschenden Projekts in der Liste
-	 * der Projekte des Anwenders
+	 * Aufruf aus dem ClickListener der Impl mit Uebergabe des zu loeschenden
+	 * Projekts. Hier wird nun das Projekt aus dem User-Objekt entfernt, als
+	 * auch die Darstellung des projectListPanels mit der aktualisierten Liste
+	 * angestossen. Anschliessend wird das dazugehoerige Event gefeuert.
 	 * 
 	 * @author Christian Scherer
-	 * @param Project
-	 *            - Zu löschendes Projekt
+	 * @param project
+	 *            - Zu lÃ¶schendes Projekt
 	 */
 	public void removeProject(Project project) {
 		user.removeProject(project);
+		logger.debug("Projekt aus User entfernt");
+		getView().setProjects(user.getProjects());
 		eventBus.fireEvent(new ProjectRemoveEvent(project));
 		logger.debug("ProjekteRemove Event gefeuert");
 
 	}
 
 	/**
-	 * Gibt die Projekte des Users zurück.
+	 * 
+	 * Aufruf aus dem ClickListener der Impl mit Uebergabe des Namens des neuen
+	 * Projekts. Hier wird nun das Projekt erzeugt, das aktuelle Datum als
+	 * letzte Aenderung eingetragen und dem User-Objekt hinzugefuegt. Die
+	 * Darstellung des projectListPanels mit der aktualisierten Liste wird durch
+	 * das Aufrufen der setProject-Methode angestossen. Anschliessend wird das
+	 * dazugehoerige Event gefeuert.
 	 * 
 	 * @author Christian Scherer
-	 * @return Projektliste des Users
+	 * @param name
+	 *            Der Name des neue Projekt-Objekts, welches in die Liste
+	 *            hinzugefÃ¼gt werden soll
 	 */
-	public List<Project> getProjects() {
-		logger.debug("Projekte des Users werden abgerufen");
-		return user.getProjects();
+	public void addProject(String name) {
+
+		Project project = new Project(name);
+		project.setLastChanged(new Date());
+		user.addProject(project);
+		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
+
+		getView().setProjects(user.getProjects());
+
+		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
+
+		eventBus.fireEvent(new ProjectAddEvent(project));
+		logger.debug("ShowAddEvent gefeuert");
+
 	}
 
 	/**
-	 * Diese Method fügt ein neu erstelltes Projekt(Project) der
-	 * Projektliste(ArrayList<Project>) des Anwenders(User) hinzu. Anschliessend
-	 * wird das dazugehörige Event gefeuert
+	 * 
+	 * Aufruf aus dem ClickListener der Impl. Es soll lediglich das Oeffnen des
+	 * Projekt-Hinzufuege-Dialog eingeleutet der Impl angestossen werden.
 	 * 
 	 * @author Christian Scherer
-	 * @param Das
-	 *            neue Projekt-Objekt, welches in die Liste hinzugefügt werden
-	 *            soll
 	 */
-	public void addProject(Project project) {
-		user.addProject(project);
-		logger.debug("Neues Projekt wurde dem User hinzugefügt");
-		eventBus.fireEvent(new ProjectAddEvent(project));
-		logger.debug("ShowAddEvent gefeuert");
+	public void addProjectDialog() {
+		getView().showAddProjectDialog();
 
 	}
 
