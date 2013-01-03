@@ -9,6 +9,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 
+/**
+ * Diese View stellt die Vaadin-Implementierung der Navigation zur Prozessansicht dar.
+ * Sie nutzt hierzu insbesondere Vaadings Buttons.
+ * 
+ * @author Julius Hacker
+ *
+ */
 public class NavigationViewImpl extends HorizontalLayout implements NavigationViewInterface {
 	private static final long serialVersionUID = -6649221675778809749L;
 	
@@ -22,7 +29,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
 	 * View-Komponenten.
 	 * 
-	 * @author Christian Gahlert
+	 * @author Julius Hacker
 	 */
 	@PostConstruct
 	public void init() {
@@ -30,6 +37,11 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		generateUi();
 	}
 
+	/**
+	 * Diese Methode baut die Navigationsoberflaeche auf.
+	 * 
+	 * @author Julius Hacker
+	 */
 	private void generateUi() {
 		setSizeFull();
 		//setSpacing(true);
@@ -49,6 +61,13 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		//this.setComponentAlignment(this.layout, Alignment.MIDDLE_CENTER);
 	}
 
+	/**
+	 * Diese Methode fuegt der Navigation einen Navigationsbutton hinzu und registriert
+	 * einen passenden ClickListener auf ihn.
+	 * 
+	 * @param value Der Prozessschritt, der durch den Navigationsbutton repraesentiert werden soll.
+	 * @author Julius Hacker
+	 */
 	@Override
 	public void addNavigationButton(final NavigationSteps navigationStep) {
 		Button navigationButton = new Button(navigationStep.getCaption());

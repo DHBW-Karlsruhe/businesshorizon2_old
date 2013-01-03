@@ -5,9 +5,17 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
-import com.mvplite.presenter.Presenter;
 
-public class OutputPresenter extends Presenter<OutputViewInterface> {
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+
+/**
+ * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
+ * 
+ * @author Julius Hacker
+ *
+ */
+
+public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -21,6 +29,18 @@ public class OutputPresenter extends Presenter<OutputViewInterface> {
 	 */
 	@PostConstruct
 	public void init() {
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isSelectable() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

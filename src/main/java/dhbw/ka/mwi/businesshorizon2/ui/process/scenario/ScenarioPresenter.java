@@ -5,11 +5,18 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
-import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewInterface;
 
-public class ScenarioPresenter extends Presenter<ScenarioViewInterface> {
+/**
+ * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des Berechnungsszenarios.
+ * 
+ * @author Julius Hacker
+ *
+ */
+
+public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -23,6 +30,18 @@ public class ScenarioPresenter extends Presenter<ScenarioViewInterface> {
 	 */
 	@PostConstruct
 	public void init() {
+	}
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isSelectable() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

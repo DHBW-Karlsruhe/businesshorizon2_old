@@ -2,11 +2,17 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 
 import javax.annotation.PostConstruct;
 
-import com.mvplite.presenter.Presenter;
-
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
 
-public class PeriodPresenter extends Presenter<PeriodViewInterface> {
+/**
+ * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
+ * 
+ * @author Julius Hacker
+ *
+ */
+
+public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	
@@ -18,6 +24,20 @@ public class PeriodPresenter extends Presenter<PeriodViewInterface> {
 	 */
 	@PostConstruct
 	public void init() {
+	}
+
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean isSelectable() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

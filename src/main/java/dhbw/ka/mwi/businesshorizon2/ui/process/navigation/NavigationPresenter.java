@@ -9,6 +9,12 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
 
+/**
+ * Der Presenter zur Navigation der Prozessansicht.
+ * 
+ * @author Julius Hacker
+ *
+ */
 public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	private static final long serialVersionUID = 1L;
 
@@ -25,6 +31,12 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	public void init() {
 	}
 	
+	/**
+	 * Diese Methode wird von der View nach der Auswahl einer neuen Prozessmaske aufgerufen.
+	 * Sie feuert hierzu ein ShowNavigationStepEvent mit dem entsprechenden Prozessschritt.
+	 * 
+	 * @param step Anzuzeigende Prozessmaske
+	 */
 	public void showStep(NavigationSteps step) {
 		eventBus.fireEvent(new ShowNavigationStepEvent(step));
 	}

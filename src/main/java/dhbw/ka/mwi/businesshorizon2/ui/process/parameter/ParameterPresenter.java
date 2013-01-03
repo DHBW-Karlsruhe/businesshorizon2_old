@@ -2,11 +2,17 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
 import javax.annotation.PostConstruct;
 
-import com.mvplite.presenter.Presenter;
-
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
-public class ParameterPresenter extends Presenter<ParameterViewInterface> {
+/**
+ * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
+ * 
+ * @author Julius Hacker
+ *
+ */
+
+public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	
@@ -18,5 +24,19 @@ public class ParameterPresenter extends Presenter<ParameterViewInterface> {
 	 */
 	@PostConstruct
 	public void init() {
+	}
+
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean isSelectable() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

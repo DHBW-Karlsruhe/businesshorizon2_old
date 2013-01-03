@@ -5,20 +5,18 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
-import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
-import dhbw.ka.mwi.businesshorizon2.methods.Result;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 
 /**
- * Der Presenter fuer die Detail-Ansicht einer Methode. 
+ * Der Presenter fuer die Maske des Prozessschrittes zur Auswahl der Berechnungsmethoden. 
  * 
- * @author Christian Gahlert
+ * @author Julius Hacker
  *
  */
 
-public class MethodPresenter extends Presenter<MethodViewInterface> implements MethodRunner.Callback {
+public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,21 +30,21 @@ public class MethodPresenter extends Presenter<MethodViewInterface> implements M
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
 	 * 
-	 * @author Christian Gahlert
+	 * @author Julius Hacker
 	 */
 	@PostConstruct
 	public void init() {
 	}
 
 	@Override
-	public void onComplete(Result result) {
+	public boolean isValid() {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
-	public void onProgressChange(float progress) {
+	public boolean isSelectable() {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 }

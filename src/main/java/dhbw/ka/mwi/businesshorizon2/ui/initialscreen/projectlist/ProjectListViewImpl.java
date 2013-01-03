@@ -196,7 +196,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		}
 		periods = new Label(periodString);
 
-		// String fÃ¼r Ausgabe des letzten Ãnderungsdatum
+		// String fÃ¼r Ausgabe des letzten Aenderungsdatum
 		String lastChangedString;
 		if (project.getLastChanged() == null) {
 			Date d = new Date();
@@ -207,8 +207,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		}
 		lastChanged = new Label(lastChangedString);
 
-		// Liste an Buttons zur spÃ¤teren identifikation
-		removeProjectBtn.add(new Button("lÃ¶schen", this));
+		// Liste an Buttons zur spaeteren identifikation
+		removeProjectBtn.add(new Button("löschen", this));
 
 		singleProject.addComponent(projectName);
 		singleProject.addComponent(periods);
@@ -255,7 +255,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		layout.addComponent(dialogAddBtn);
 
 		getWindow().addWindow(addDialog);
-		logger.debug("HinzufÃ¼ge-Dialog erzeugt");
+		logger.debug("Hinzufuege-Dialog erzeugt");
 
 	}
 
@@ -263,14 +263,14 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * ClickListner Methode fuer die Reaktion auf Buttonclicks. Hier wird
 	 * entsprechend auf die Button-Clicks fuer das Erzeugen weiterer Projekte
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
-	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum HinzufÃ¼gen
+	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
 	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft ob
-	 * das auf "reuqired" gesetzte Textfeld auch ausgefuellt wurde - falls nicht
+	 * das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls nicht
 	 * wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
 	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird zunÃ¤chst
 	 * durch das Event in der Loesch-Buttonliste der Index identifiziert, also
-	 * welches Projekt zu loeschen ist. Die jeweils folgende Logig ist in der je
+	 * welches Projekt zu loeschen ist. Die jeweils folgende Logid ist in der je
 	 * aufgerufen Methode des Presenters zu finden.
 	 * 
 	 * @author Christian Scherer
@@ -281,11 +281,11 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void buttonClick(ClickEvent event) {
 
 		if (event.getButton() == addProjectBtn) {
-			logger.debug("Projekt-hinzufÃ¼gen Button aus dem Hauptfenster aufgerufen");
+			logger.debug("Projekt-hinzufügen Button aus dem Hauptfenster aufgerufen");
 			presenter.addProjectDialog();
 
 		} else if (event.getButton() == dialogAddBtn) {
-			logger.debug("Projekt-hinzufÃ¼gen Button aus dem Dialogfenster aufgerufen");
+			logger.debug("Projekt-hinzufügen Button aus dem Dialogfenster aufgerufen");
 
 			if (tfName.isValid()) {
 				presenter.addProject((String) tfName.getValue());

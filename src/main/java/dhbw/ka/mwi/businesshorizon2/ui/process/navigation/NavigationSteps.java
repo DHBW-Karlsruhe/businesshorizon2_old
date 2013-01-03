@@ -15,6 +15,11 @@ public enum NavigationSteps {
 		this.caption = caption;
 	}
 	
+	/**
+	 * Gibt die Buttonueberschrift des Prozessschrittes zurueck.
+	 * 
+	 * @return String mit der Buttonueberschrift des Prozessschrittes.
+	 */
 	public String getCaption() {
 		return this.caption;
 	}
