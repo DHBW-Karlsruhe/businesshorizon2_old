@@ -13,6 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
@@ -65,7 +66,7 @@ public class BHApplication extends Application {
 		
 		setMainWindow(logInScreenView);
 		eventBus.fireEvent(new ShowLogInScreenEvent());
-		
+		logger.debug("ShowLogInScreenEvent gefeuert");
 	}
 
 	/**
@@ -76,9 +77,9 @@ public class BHApplication extends Application {
 	 * @param event Der ausgeloeste ShowProjectEvent
 	 */
 	@EventHandler
-	public void showInitialView(ShowInitialScreenViewEvent event) {
+	public void showInitialView(ShowUserEvent event) {
 		setMainWindow(initialScreenView);
-		eventBus.fireEvent(new ShowInitialScreenViewEvent());
+		eventBus.fireEvent(new ShowInitialScreenViewEvent(event.getUser()));
 		this.removeWindow(logInScreenView);
 		logger.debug("ShowInitialScreenViewEvent gefeuert");
 	}
