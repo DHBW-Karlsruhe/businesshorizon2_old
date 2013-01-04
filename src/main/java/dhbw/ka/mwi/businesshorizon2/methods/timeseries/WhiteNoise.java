@@ -1,26 +1,80 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class WhiteNoise {
-	public int countOfNeededValues;
-	public double deviation;
-	public Random randomGenerator;
+//import org.apache.log4j.Logger;
 
-	public WhiteNoise(int count, double variance) {
+/**
+ * Dies ist die WhiteNoise-Klasse der Zeitreihenanalyse. -----
+ * 
+ * @author Christian Scherer
+ * 
+ */
+public class WhiteNoise {
+
+	private static final long serialVersionUID = 1L;
+
+	// private Logger logger = Logger.getLogger("WhiteNoise.class");
+
+	private double deviation;
+	private Random randomGenerator;
+	private List<Double> whiteNoiseList;
+	private int iterationSteps;
+	private int counter;
+
+	/**
+	 * Dies ist die WhiteNoise-Klasse der Zeitreihenanalyse. -----
+	 * 
+	 * @author Christian Scherer
+	 * 
+	 */
+	public WhiteNoise(int iterationSteps, double variance) {
 		this.deviation = Math.sqrt(variance);
-		this.countOfNeededValues = count;
+		this.iterationSteps = iterationSteps;
 		this.randomGenerator = new Random();
+		// logger.debug("WhiteNoise Objekt mit Anzahl vorherzusagener Perioden ("+numberPeriodsToForcast+"), Varianz ("+variance+") und Ramdom Obket Initialisiert");
+
 	}
 
+	/**
+	 * Konkrete Berechnung eines der Werte.....
+	 * 
+	 * @author Kai Westerholz
+	 * 
+	 */
 	public double getWhiteNoiseValue() {
 		return randomGenerator.nextGaussian() * deviation;
+		// logger.debug("Zufallszahl erstellt");
 	}
 
-	public static void main(String args[]) {
-		WhiteNoise test = new WhiteNoise(100, 3.5);
-		for (int i = 0; i <= 1000000; i++) {
-			System.out.println(test.getWhiteNoiseValue());
-		}
+	public double getNextValue() {
+		return whiteNoiseList.get(counter++);
 	}
+
+	public boolean hasNextValue() {
+		return whiteNoiseList.get(counter) != null;
+	}
+
+	/**
+	 * Erstellung der Liste für eine Periode über alle Iterationsschritte...
+	 * diese läuft weiter während von außen schon per getNextValue() auf das
+	 * Objekt zugegriffen wird
+	 * 
+	 * @author Christian Scherer
+	 * 
+	 */
+	public void calculateWhiteNoiseList() {
+		// so oft anzahl vorherzusehender Perioden ausführen
+		counter = 0;
+		whiteNoiseList = new ArrayList<Double>();
+
+		for (int i = 0; i < iterationSteps; i++) {
+			whiteNoiseList.add(getWhiteNoiseValue());
+		}
+		// logger.debug("Liste an Zufallszahlen für eine Zukunftszeitreihe erstellt");
+
+	}
+
 }
