@@ -90,7 +90,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	/**
 	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
-	 * ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird durch die Methode
+	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die Methode
 	 * setProjects das ProjectListPanel mit konkreten Projekten gefÃ¼llt.
 	 * 
 	 * @author Christian Scherer
@@ -157,7 +157,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * (Name, Anzahl Perioden mit Jahren, Aenderungsdatum, Loeschbutton). Diese
 	 * wird sowohl bei der ersten Erstellung des UIs fuer jedes Projekt
 	 * ausgefuehrt. Die Loeschbuttons werden einer Liste an Loeschbuttons
-	 * hinzufgefuegt umd spÃ¤ter eine identifikation der Buttons in der Methode
+	 * hinzufgefuegt umd spaeter eine identifikation der Buttons in der Methode
 	 * buttonClick zu gewÃ¤hrleisten. Zum Schluss wird dem Layout noch ein
 	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
 	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
@@ -196,7 +196,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		}
 		periods = new Label(periodString);
 
-		// String fÃ¼r Ausgabe des letzten Aenderungsdatum
+		// String fuer Ausgabe des letzten Aenderungsdatum
 		String lastChangedString;
 		if (project.getLastChanged() == null) {
 			Date d = new Date();
@@ -265,7 +265,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
 	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
-	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft ob
+	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprueft ob
 	 * das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls nicht
 	 * wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
 	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird zunÃ¤chst
@@ -315,7 +315,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * LayoutClickListner Methode fuer die Reaktion auf Clicks auf die einzelnen
 	 * Projekte reagiert. Konkret wird hier die Verbindung zur Prozesssicht
 	 * geschaffen. Zunaechst wird geprueft von welchem Projekt der Klick kommt,
-	 * und dann dieses dem Presenter Ã¼bergeben, in welchem dann das Event fuer
+	 * und dann dieses dem Presenter uebergeben, in welchem dann das Event fuer
 	 * das Anzeigen der Prozesssicht ausgeloest wird.
 	 * 
 	 * @author Christian Scherer

@@ -51,12 +51,12 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@PostConstruct
 	private void init() {
 		eventBus.addHandler(this);
-
+		logger.debug("Eventhandler Hinzugefügt");
 	}
 
 	/**
 	 * Diese Methode wird von der View aufgerufen, wenn eine Projekt ausgewaehlt
-	 * wurde. Somit muss nun der Wizard fÃ¼r dieses Projekt und mit den
+	 * wurde. Somit muss nun der Wizard fuer dieses Projekt und mit den
 	 * gespeicherten Daten aufgerufen werden. Das Event ShowProject wird mit dem
 	 * ausgewÃ¤hlten Objekt ausgeloest. Somit kann der Wizard ausgefuehrt
 	 * werden.
@@ -111,7 +111,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 * @author Christian Scherer
 	 * @param project
-	 *            - Zu lÃ¶schendes Projekt
+	 *            - Zu loeschendes Projekt
 	 */
 	public void removeProject(Project project) {
 		user.removeProject(project);
@@ -134,7 +134,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * @author Christian Scherer
 	 * @param name
 	 *            Der Name des neue Projekt-Objekts, welches in die Liste
-	 *            hinzugefÃ¼gt werden soll
+	 *            hinzugefuegt werden soll
 	 */
 	public void addProject(String name) {
 

@@ -4,19 +4,18 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.mvplite.view.View;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.LoginForm;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.LoginForm.LoginEvent;
-import com.vaadin.ui.Window.Notification;
-import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
+/**
+ * Dies ist die Vaadin-Implementierung des LogIn Screens. Diese stützt sich vor
+ * allem auf das hinzufügen eines LogIn-Forms von Vaadin welches die Darstellung
+ * wie auch Übermittlung der Werte Username und Password sicherstellt.
+ * 
+ * @author Christian Scherer
+ * 
+ */
 public class LogInScreenViewImpl extends Window implements
 		LogInScreenViewInterface {
 	private static final long serialVersionUID = 1L;
@@ -43,18 +42,20 @@ public class LogInScreenViewImpl extends Window implements
 	 * Diese Methode setzt den Titel (im Browser-Fenster) zu
 	 * "Business Horizon 2" und erstellt die LogIn Maske mit Listener. Der
 	 * Listener prüft ruft die im LogIn Event gesammelten LogIn-Daten und
-	 * übergibt Sie dem presenter zur kontrolle. Nach Kontrolle wird durch bestehen des 
+	 * übergibt sie dem presenter zur Kontrolle. Je nach ausgang der Konrolle
+	 * wird dann eine Fehlermeldung aufgerufen.
 	 * 
 	 * @author Christian Scherer
 	 */
 	private void generateUi() {
 		setCaption("Business Horizon 2");
 		logger.debug("Überschrift für Browser erstellt");
-		
+
 		LoginForm login = new LoginForm();
 		login.setWidth("100%");
 		login.setHeight("300px");
 		login.addListener(new LoginForm.LoginListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onLogin(LoginEvent event) {
@@ -67,6 +68,7 @@ public class LogInScreenViewImpl extends Window implements
 						event.getLoginParameter("username"),
 						event.getLoginParameter("password"));
 				if (!logInCheck) {
+					logger.debug("LogIn fehlgeschlagen");
 					getWindow()
 							.showNotification(
 									(String) "Anmeldung fehlgeschlagen",
@@ -75,7 +77,7 @@ public class LogInScreenViewImpl extends Window implements
 				}
 			}
 		});
-		
+
 		addComponent(login);
 		logger.debug("LogIn UI erstellt und Listener gesetzt");
 

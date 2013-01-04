@@ -10,7 +10,15 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
+
+/**
+ * 
+ * Dies ist der Presenter, der hier besonders zum Durchreichen des
+ * Authentifizierungsmechanismus gebraucht wird.
+ * 
+ * @author Christian Scherer
+ * 
+ */
 
 public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
@@ -39,8 +47,8 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	/**
 	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Setzen des
-	 * Fensters) abgesetzt. Dabei wird in auf der linken Seite die Projekt-Liste
-	 * und auf der rechten Seite die Anwenderinformationen dargestellt.
+	 * Fensters) abgesetzt. Es müssen derzeit keine Objekte hierbei geladen
+	 * werden.
 	 * 
 	 * @author Christian Scherer
 	 * @param event
@@ -60,18 +68,24 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 *            Benutzername, der eingegeben wurde
 	 * @param password
 	 *            Passwort, das eingegeben wurde
+	 * 
+	 * @TODO In der Methode statt einen neuen User zu erzeugen die
+	 *       authentifizierungsmethode rufen (siehe Kommentare in der Methode)
+	 * 
 	 */
 	public boolean checkLogin(String username, String password) {
-		// TODO: auth service rufen: user = ???.doLogin(username, password);
-		boolean confirmed = false;
-		
-		//DUMMY!
+		// TODO: sttatt user-erzeugung -> auth service rufen: user =
+		// ???.doLogin(username, password);
 		user = new User();
-		if(user!=null){
+		boolean confirmed = false;
+
+		if (user != null) {
+			logger.debug("LogIn erfolgreich");
 			eventBus.fireEvent(new ShowUserEvent(user));
+			logger.debug("ShowUserEvent gefeuert");
 			confirmed = true;
 		}
-			
+
 		return confirmed;
 	}
 

@@ -103,7 +103,7 @@ public class BHApplication extends Application {
 		initialScreenView.open(new ExternalResource(processView.getURL()));
 
 		eventBus.fireEvent(new ShowProcessViewEvent());
-		logger.debug("ShowMainViewEvent gefeuert");
+		logger.debug("ShowProzessViewEvent gefeuert");
 	}
 	
 
