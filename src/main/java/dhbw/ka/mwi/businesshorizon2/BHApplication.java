@@ -11,6 +11,8 @@ import com.vaadin.Application;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
@@ -32,6 +34,9 @@ public class BHApplication extends Application {
 	
 	@Autowired
 	private InitialScreenViewImpl initialScreenView;
+	
+	@Autowired
+	private LogInScreenViewImpl logInScreenView;
 
 	@Autowired
 	private EventBus eventBus;
@@ -58,11 +63,26 @@ public class BHApplication extends Application {
 	public void init() {
 		eventBus.addHandler(this);
 		
-		setMainWindow(initialScreenView);
-		eventBus.fireEvent(new ShowInitialScreenViewEvent());
+		setMainWindow(logInScreenView);
+		eventBus.fireEvent(new ShowLogInScreenEvent());
 		
 	}
 
+	/**
+	 * Die Methode triggert die Anzeige der Prozessansicht, sobald an einer Stelle
+	 * des Programmes ein Projekt angezeigt wurde.
+	 * 
+	 * @author Julius Hacker
+	 * @param event Der ausgeloeste ShowProjectEvent
+	 */
+	@EventHandler
+	public void showInitialView(ShowInitialScreenViewEvent event) {
+		setMainWindow(initialScreenView);
+		eventBus.fireEvent(new ShowInitialScreenViewEvent());
+		this.removeWindow(logInScreenView);
+		logger.debug("ShowInitialScreenViewEvent gefeuert");
+	}
+	
 	/**
 	 * Die Methode triggert die Anzeige der Prozessansicht, sobald an einer Stelle
 	 * des Programmes ein Projekt angezeigt wurde.

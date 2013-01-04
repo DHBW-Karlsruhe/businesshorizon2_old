@@ -34,6 +34,12 @@
 		scope="session" />
 	<bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
 		scope="session" />
+		
+	<!-- LogIn -->
+	<bean name="logInPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenPresenter"
+		scope="session" />
+	<bean name="logInScreenView" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl"
+		scope="session" />
 
 
 	<!-- Initial-Screen -->
