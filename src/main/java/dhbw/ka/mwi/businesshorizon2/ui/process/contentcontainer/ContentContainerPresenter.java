@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -10,6 +11,7 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
@@ -24,6 +26,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewInterface;
  */
 public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private static final long serialVersionUID = 1L;
+
+	private Logger logger = Logger.getLogger("NavigationViewImpl.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -43,6 +47,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	@Autowired
 	private MethodViewInterface methodView;
 
+	private int stepNumber;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -87,7 +92,49 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 			break;
 		}
 		
+		this.stepNumber = event.getStep().getNumber();
+		
 		getView().showContentView(newView);
+		
+		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
+		
+		this.switchStepButtons();
 	}
 	
+	public void showNextStep() {
+		NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
+		this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
+		
+		logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
+	
+		
+	}
+	
+	public void showPreviousStep() {
+		NavigationSteps previousScreen = NavigationSteps.getByNumber(this.stepNumber - 1);
+		this.eventBus.fireEvent(new ShowNavigationStepEvent(previousScreen));
+		
+		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + "wurde getriggert");
+	
+		
+	}
+	
+	public void switchStepButtons() {
+		logger.debug(this.stepNumber);
+		logger.debug(NavigationSteps.getStepCount());
+		
+		if(this.stepNumber < 2) {
+			getView().activateBack(false);
+		}
+		else {
+			getView().activateBack(true);
+		}
+		
+		if(this.stepNumber >= NavigationSteps.getStepCount()) {
+			getView().activateNext(false);
+		}
+		else {
+			getView().activateNext(true);
+		}
+	}
 }
