@@ -9,7 +9,7 @@ import com.mvplite.view.View;
  * @author Christian Gahlert
  *
  */
-public interface MainView extends View {
+public interface MainViewInterface extends View {
 
 	/**
 	 * Diese Methode ist dafuer verantwortlich, die jeweiligen 3 View-Elemente

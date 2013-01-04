@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.NavigableSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period;
-import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListView;
+import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewInteface;
 
-public class PeriodListViewMock implements PeriodListView {
+public class PeriodListViewMock implements PeriodListViewInteface {
 
 	private NavigableSet<Period> periods;
 	private Period selected;

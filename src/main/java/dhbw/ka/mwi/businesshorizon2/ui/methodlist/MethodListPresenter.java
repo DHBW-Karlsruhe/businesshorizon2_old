@@ -10,7 +10,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
 
 /**
@@ -23,14 +23,14 @@ import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
  * @author Christian Gahlert
  *
  */
-public class MethodListPresenter extends Presenter<MethodListView> {
+public class MethodListPresenter extends Presenter<MethodListViewInterface> {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private EventBus eventBus;
 
 	@Autowired
-	private SortedSet<Method> methods;
+	private SortedSet<AbstractMethod> methods;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -62,7 +62,7 @@ public class MethodListPresenter extends Presenter<MethodListView> {
 	 * 
 	 * @param method
 	 */
-	public void selectMethod(Method method) {
+	public void selectMethod(AbstractMethod method) {
 		eventBus.fireEvent(new ShowMethodEvent(method));
 	}
 

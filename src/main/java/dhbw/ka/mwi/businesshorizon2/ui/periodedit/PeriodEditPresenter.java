@@ -18,7 +18,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodRemoveEvent;
  * @author Christian Gahlert
  *
  */
-public class PeriodEditPresenter extends Presenter<PeriodEditView> {
+public class PeriodEditPresenter extends Presenter<PeriodEditViewInteface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired

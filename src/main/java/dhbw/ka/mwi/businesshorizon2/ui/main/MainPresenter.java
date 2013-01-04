@@ -9,13 +9,13 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.method.MethodView;
+import dhbw.ka.mwi.businesshorizon2.ui.method.MethodViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.method.ShowMethodEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListView;
+import dhbw.ka.mwi.businesshorizon2.ui.methodlist.MethodListViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.methodlist.ShowMethodListEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditView;
+import dhbw.ka.mwi.businesshorizon2.ui.periodedit.PeriodEditViewInteface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodedit.ShowPeriodEditEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListView;
+import dhbw.ka.mwi.businesshorizon2.ui.periodlist.PeriodListViewInteface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodlist.ShowPeriodListEvent;
 
 /**
@@ -27,7 +27,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodlist.ShowPeriodListEvent;
  * @author Christian Gahlert
  *
  */
-public class MainPresenter extends Presenter<MainView>{
+public class MainPresenter extends Presenter<MainViewInterface>{
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
@@ -37,16 +37,16 @@ public class MainPresenter extends Presenter<MainView>{
 	private Project project;
 	
 	@Autowired
-	private MethodListView methodListView;
+	private MethodListViewInterface methodListView;
 	
 	@Autowired
-	private PeriodListView periodListView;
+	private PeriodListViewInteface periodListView;
 	
 	@Autowired
-	private PeriodEditView periodEditView;
+	private PeriodEditViewInteface periodEditView;
 	
 	@Autowired
-	private MethodView methodView;
+	private MethodViewInterface methodView;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 

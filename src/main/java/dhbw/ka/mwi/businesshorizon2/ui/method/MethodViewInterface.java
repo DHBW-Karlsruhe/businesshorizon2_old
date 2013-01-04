@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.method;
 
 import com.mvplite.view.View;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 
 /**
@@ -12,7 +12,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Result;
  * @author Christian Gahlert
  *
  */
-public interface MethodView extends View {
+public interface MethodViewInterface extends View {
 
 	/**
 	 * Eine Methode zur Anzeige uebergeben.
@@ -20,7 +20,7 @@ public interface MethodView extends View {
 	 * @author Christian Gahlert
 	 * @param method Die anzuzeigende Methode
 	 */
-	public void showMethod(Method method);
+	public void showMethod(AbstractMethod method);
 	
 	/**
 	 * Zeige die Progressbar, waehrend die Berechnung laeuft.

@@ -4,7 +4,7 @@ import java.util.SortedSet;
 
 import com.mvplite.view.View;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
@@ -13,7 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Method;
  * @author Christian Gahlert
  *
  */
-public interface MethodListView extends View {
+public interface MethodListViewInterface extends View {
 
 	/**
 	 * Uebergibt die anzuzeigenden Methoden in sortierter Reihenfolge.
@@ -21,6 +21,6 @@ public interface MethodListView extends View {
 	 * @author Christian Gahlert
 	 * @param methods
 	 */
-	public void setMethods(SortedSet<Method> methods);
+	public void setMethods(SortedSet<AbstractMethod> methods);
 
 }

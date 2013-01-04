@@ -28,7 +28,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Christian Gahlert
  *
  */
-public class PeriodListViewImpl extends VerticalLayout implements PeriodListView, Button.ClickListener, Property.ValueChangeListener {
+public class PeriodListViewImpl extends VerticalLayout implements PeriodListViewInteface, Button.ClickListener, Property.ValueChangeListener {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
