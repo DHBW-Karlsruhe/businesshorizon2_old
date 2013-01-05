@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.navigation;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Alignment;
@@ -18,11 +19,14 @@ import com.vaadin.ui.HorizontalLayout;
  */
 public class NavigationViewImpl extends HorizontalLayout implements NavigationViewInterface {
 	private static final long serialVersionUID = -6649221675778809749L;
+
+	private Logger logger = Logger.getLogger("NavigationViewImpl.class");
 	
 	@Autowired
 	private NavigationPresenter presenter;
 	
 	private HorizontalLayout layout;
+	private HorizontalLayout innerlayout;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -44,11 +48,17 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	 */
 	private void generateUi() {
 		setSizeFull();
-		//setSpacing(true);
-		//setMargin(true);
 		
 		this.layout = new HorizontalLayout();
 		this.layout.setSizeFull();
+		
+		this.innerlayout = new HorizontalLayout();
+		
+		//logger.debug(this.getApplication().getClass());
+		
+		//ClassResource resource = new ClassResource(NavigationViewImpl.class, "src/main/resources/img/logo.png", this.getApplication());
+		//Embedded image = new Embedded("Logo", resource);
+		//this.layout.addComponent(image, 0, 0);
 		
 		this.addNavigationButton(NavigationSteps.METHOD);
 		this.addNavigationButton(NavigationSteps.PERIOD);
@@ -56,9 +66,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		this.addNavigationButton(NavigationSteps.SCENARIO);
 		this.addNavigationButton(NavigationSteps.OUTPUT);
 		
+		layout.addComponent(innerlayout);
+		layout.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
 		this.addComponent(layout);
-		
-		//this.setComponentAlignment(this.layout, Alignment.MIDDLE_CENTER);
 	}
 
 	/**
@@ -81,8 +91,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 			}
 		});
 		
-		this.layout.addComponent(navigationButton);
-		this.layout.setComponentAlignment(navigationButton, Alignment.MIDDLE_CENTER);
+		this.innerlayout.addComponent(navigationButton);
+		this.innerlayout.setComponentAlignment(navigationButton, Alignment.BOTTOM_CENTER);
+		
 	}
 
 }
