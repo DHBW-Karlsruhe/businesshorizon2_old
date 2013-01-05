@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.wiener;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 
 /**
  * Dies ist bisher nur eine Beispiel-Klasse um die Verwendung von verschiedenen
@@ -27,12 +28,9 @@ public class Wiener extends AbstractStochasticMethod {
 	}
 
 	@Override
-	public double[] calculate(
-			double[] previousValues,
-			int consideredPeriodsofPast,
-			int periodsToForecast,
-			int numberOfIterations,
-			dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator.Callback callback)
+	public double[] calculate(double[] previousValues,
+			int consideredPeriodsofPast, int periodsToForecast,
+			int numberOfIterations, Callback callback)
 			throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;

@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 
 /**
  * Dies ist die Methoden-Klasse der Zeitreihenanalyse. Hier sollte keine grosse
@@ -45,7 +46,7 @@ public class Timeseries extends AbstractStochasticMethod {
 			int consideredPeriodsofPast,
 			int periodsToForecast,
 			int numberOfIterations,
-			dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator.Callback callback)
+			Callback callback)
 			throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;

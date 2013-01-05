@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Christian Gahlert
  * 
  */
-abstract class Period implements Serializable, Comparable<Period> {
+public abstract class Period implements Serializable, Comparable<Period> {
 	private static final long serialVersionUID = 1L;
 
 	protected int year;
@@ -36,7 +36,7 @@ abstract class Period implements Serializable, Comparable<Period> {
 	 * @author Christian Gahlert
 	 * @return Das Geschaeftsjahr
 	 */
-	abstract int getYear();
+	public abstract int getYear();
 
 	/**
 	 * Diese Methode gibt an, was angezeigt werden soll, wenn eine Periode als

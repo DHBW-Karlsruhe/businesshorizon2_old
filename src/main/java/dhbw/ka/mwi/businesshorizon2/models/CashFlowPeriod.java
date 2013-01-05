@@ -25,7 +25,7 @@ public class CashFlowPeriod extends Period {
 	}
 
 	@Override
-	int getYear() {
+	public int getYear() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

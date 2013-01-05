@@ -2,8 +2,6 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.io.Serializable;
 
-import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
-
 /**
  * Diese Klasse bezeichnet eine Berechnungsmethode wie die Zeitreihenanalyse
  * oder den Wiener-Prozess und bietet einige Basis-Funktionalitaeten.
@@ -47,7 +45,7 @@ abstract public class AbstractStochasticMethod implements
 	 * 
 	 * Darueberhinaus sollte auch in regelmaessigen Abstaenden die
 	 * Callback-Methode onProgressChange() aufgerufen werden, um die Status-Bar
-	 * zu aktualisieren. Die onComplete()-Methode wird von der aufgerufenden
+	 * zu aktualisieren. Die onComplete()-Methode wird von der aufrufenden
 	 * Methode ausgefuehrt und sollte daher an dieser Stelle nicht zum Einsatz
 	 * kommen.
 	 * 
@@ -61,7 +59,7 @@ abstract public class AbstractStochasticMethod implements
 	 */
 	abstract public double[] calculate(double[] previousValues,
 			int consideredPeriodsofPast, int periodsToForecast,
-			int numberOfIterations, TimeseriesCalculator.Callback callback)
+			int numberOfIterations, Callback callback)
 			throws InterruptedException;
 
 	/**
