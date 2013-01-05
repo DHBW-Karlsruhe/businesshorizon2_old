@@ -19,8 +19,10 @@
 	
 	
 	<!-- Methods -->
+	<bean name="calculateTide" class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide" scope="session"/>
 	<bean name="timeseries" class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries" scope="session" />
 	<bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener" scope="session" />
+	
 	
 	
 	

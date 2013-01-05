@@ -1,12 +1,17 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 import java.util.ArrayList;
+import java.util.SortedSet;
 
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.LUDecomposition;
 import cern.jet.stat.Descriptive;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
+import dhbw.ka.mwi.businesshorizon2.methods.Result;
+import dhbw.ka.mwi.businesshorizon2.models.Period;
 
 /**
  * Diese Klasse stellt die Methoden zur Verfügung, die benötigt werden, um die
@@ -17,7 +22,8 @@ import cern.jet.stat.Descriptive;
  * 
  */
 
-public class AnalysisTimeseries {
+public class AnalysisTimeseries extends AbstractMethod {
+	private static final long serialVersionUID = 1L;
 	private dhbw.ka.mwi.businesshorizon2.models.Timeseries timeseries;
 	private ArrayList<Double> timeseriesArrayList;
 	private double mean;
@@ -25,11 +31,10 @@ public class AnalysisTimeseries {
 	private int consideredPeriodsOfPast;
 	private DoubleArrayList DoubleArrayListTimeseries;
 	private DoubleMatrix2D matrixValutaions;
-	private DoubleMatrix2D matrixAutoCorrelation;
 	private double yuleWalkerVariance;
 	private int numberPeriodsToForcast;
 	private int numberOfIterations;
-	private ArrayList<ArrayList<Double>> result;
+	private TimeseriesResult result;
 
 	public AnalysisTimeseries(
 			dhbw.ka.mwi.businesshorizon2.models.Timeseries timeseries,
@@ -37,7 +42,7 @@ public class AnalysisTimeseries {
 		this.timeseries = timeseries;
 		this.consideredPeriodsOfPast = periodsOfPast;
 		this.numberPeriodsToForcast = numberPeriodsToForcast;
-		this.timeseriesArrayList = timeseries.getTimeseries();
+		this.timeseriesArrayList = timeseries.getArrayList();
 		DoubleArrayListTimeseries = new DoubleArrayList();
 		for (int i = 0; i < this.timeseriesArrayList.size(); i++) {
 			DoubleArrayListTimeseries.add(this.timeseriesArrayList.get(i));
@@ -45,6 +50,14 @@ public class AnalysisTimeseries {
 		this.timeseries.reduceTide();
 		this.calculateMean();
 		this.calculateVariance();
+	}
+
+	public String getName() {
+		return "Zeitreihenanalyse";
+	}
+
+	public int getOrderKey() {
+		return 1;
 	}
 
 	public double getMean() {
@@ -79,7 +92,7 @@ public class AnalysisTimeseries {
 	 * @return double Mittelwert der Zeitreihe
 	 */
 	private double calculateMean() {
-		this.mean = Descriptive.geometricMean(DoubleArrayListTimeseries);
+		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
 		return mean;
 	}
 
@@ -94,8 +107,9 @@ public class AnalysisTimeseries {
 		if (this.mean == 0) {
 			calculateMean();
 		}
-		this.variance = Descriptive.sampleVariance(DoubleArrayListTimeseries,
-				this.mean);
+		this.variance = Descriptive.variance(DoubleArrayListTimeseries.size(),
+				Descriptive.sum(DoubleArrayListTimeseries),
+				Descriptive.sumOfSquares(DoubleArrayListTimeseries));
 		return this.variance;
 	}
 
@@ -108,8 +122,12 @@ public class AnalysisTimeseries {
 	 * @return double AutoKorrelation
 	 */
 	private double calculateAutoCorrelation(int lag) {
-		return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
-				this.mean, this.variance);
+		if (lag == 0) {
+			return 1;
+		} else {
+			return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
+					this.mean, this.variance);
+		}
 	}
 
 	/**
@@ -130,7 +148,6 @@ public class AnalysisTimeseries {
 						calculateAutoCorrelation(Math.abs(j - i)));
 			}
 		}
-		this.matrixAutoCorrelation = matrixValuations;
 		DoubleMatrix2D matrixERG = DoubleFactory2D.dense.make(
 				(int) (this.consideredPeriodsOfPast - 1), 1);
 		for (int i = 0; i < this.consideredPeriodsOfPast - 1; i++) {
@@ -172,30 +189,37 @@ public class AnalysisTimeseries {
 	 * Basis der bisherigen Werte. Es ist irrelevant, ob es sich hierbei um
 	 * einen CashFlow oder eine andere Bilanzposition handelt.
 	 * 
-	 * @param period
-	 * @return double prognostizierterter Wert
 	 */
-	public void calculateARModel() {
+
+	public Result calculate(SortedSet<Period> periods,
+			MethodRunner.Callback callback) throws InterruptedException {
+
 		this.calculateMatrixVariance();
 		WhiteNoise whiteNoise = new WhiteNoise(this.numberOfIterations,
 				this.yuleWalkerVariance);
+		int progress_complete = this.numberPeriodsToForcast
+				* (consideredPeriodsOfPast + this.numberOfIterations);
+		int progress = 0;
 		for (int i = 1; i <= this.numberPeriodsToForcast; i++) {
 			ArrayList<Double> temp = new ArrayList<Double>();
 			whiteNoise.calculateWhiteNoiseList();
 			double equalizedValuePerPeriod = 0.0;
 			double previousValue = 0.0;
 
-			for (int j = 1; j <= consideredPeriodsOfPast; j++) {
+			for (int j = 1; j <= this.consideredPeriodsOfPast; j++) {
 				if (i == 1) {
 					previousValue = this.timeseriesArrayList
 							.get(timeseriesArrayList.size() - 1);
 				} else {
-					previousValue = this.result.get(i - 1).get(j - 1);
+					previousValue = this.result.getResultList().get(i - 1)
+							.getArrayList().get(j - 1);
 				}
 
 				equalizedValuePerPeriod += matrixValutaions.get(j, 0)
 						* previousValue;
 			}
+			progress += this.consideredPeriodsOfPast;
+			Thread.currentThread().isInterrupted();
 			boolean nextNeeded = true;
 			for (int j = 0; j <= this.numberOfIterations; i++) {
 
@@ -207,10 +231,15 @@ public class AnalysisTimeseries {
 					}
 				}
 				nextNeeded = true;
-
+				if (j % 200 == 0) {
+					progress += j;
+					callback.onProgressChange((float) (progress / progress_complete));
+					Thread.currentThread().isInterrupted();
+				}
 			}
-			result.add(temp);
+			result.add(new dhbw.ka.mwi.businesshorizon2.models.Timeseries(temp,
+					this.timeseries.getYearofPeriodZero()));
 		}
-
+		return result;
 	}
 }
