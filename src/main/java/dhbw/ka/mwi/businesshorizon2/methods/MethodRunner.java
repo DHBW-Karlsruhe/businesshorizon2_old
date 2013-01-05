@@ -2,6 +2,8 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.security.InvalidParameterException;
 
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
+
 /**
  * Diese Klasse ist zur eigentlichen Ausfuehrung der Berechnungen gedacht. Dabei
  * wird fuer die Berechnung ein eigener Thread verwendet.
@@ -27,7 +29,7 @@ public class MethodRunner extends Thread {
 
 	private AbstractStochasticMethod method;
 	private double[] periods;
-	private StochasticCalculator.Callback callback;
+	private TimeseriesCalculator.Callback callback;
 
 	/**
 	 * Der Konstruktor - diesem sollte die zur Berechnung zu verwendende Methode
@@ -43,7 +45,7 @@ public class MethodRunner extends Thread {
 	 *            Das Callback
 	 */
 	public MethodRunner(AbstractStochasticMethod method, double[] periods,
-			StochasticCalculator.Callback callback) {
+			TimeseriesCalculator.Callback callback) {
 		if (method == null || periods == null || callback == null) {
 			throw new InvalidParameterException(
 					"No null parameters are allowed here");

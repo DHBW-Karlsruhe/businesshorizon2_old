@@ -45,7 +45,7 @@ public class Timeseries extends AbstractStochasticMethod {
 			int consideredPeriodsofPast,
 			int periodsToForecast,
 			int numberOfIterations,
-			dhbw.ka.mwi.businesshorizon2.methods.StochasticCalculator.Callback callback)
+			dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator.Callback callback)
 			throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
