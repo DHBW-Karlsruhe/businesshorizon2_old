@@ -27,7 +27,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewInterface;
 public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("NavigationViewImpl.class");
+	private Logger logger = Logger.getLogger("ContentContainerPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
