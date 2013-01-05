@@ -2,19 +2,19 @@ package dhbw.ka.mwi.businesshorizon2.methods.wiener;
 
 import java.util.SortedSet;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner.Callback;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 import dhbw.ka.mwi.businesshorizon2.models.Period;
 
 /**
- * Dies ist bisher nur eine Beispiel-Klasse um die Verwendung von verschiedenen Berechnungs-
- * Methoden zu verdeutlichen.
+ * Dies ist bisher nur eine Beispiel-Klasse um die Verwendung von verschiedenen
+ * Berechnungs- Methoden zu verdeutlichen.
  * 
  * @author Christian Gahlert
- *
+ * 
  */
-public class Wiener extends Method {
+public class Wiener extends AbstractStochasticMethod {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,7 +33,7 @@ public class Wiener extends Method {
 		return 2;
 	}
 
-	/** 
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
