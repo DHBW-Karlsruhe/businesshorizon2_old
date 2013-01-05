@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.wiener;
 
 import java.util.SortedSet;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.Method;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner.Callback;
 import dhbw.ka.mwi.businesshorizon2.methods.Result;
 import dhbw.ka.mwi.businesshorizon2.models.Period;
@@ -14,7 +14,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Christian Gahlert
  *
  */
-public class Wiener extends AbstractMethod {
+public class Wiener extends Method {
 	private static final long serialVersionUID = 1L;
 
 	/**
