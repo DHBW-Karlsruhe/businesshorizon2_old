@@ -12,7 +12,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Christian Gahlert
  *
  */
-abstract public class AbstractMethod implements Comparable<AbstractMethod>, Serializable {
+abstract public class Method implements Comparable<Method>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 
@@ -62,7 +62,7 @@ abstract public class AbstractMethod implements Comparable<AbstractMethod>, Seri
 	 * @see getOrderKey()
 	 */
 	@Override
-	public int compareTo(AbstractMethod o) {
+	public int compareTo(Method o) {
 		return this.getOrderKey() - o.getOrderKey();
 	}
 	

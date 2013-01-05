@@ -42,5 +42,6 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	public void showContentView(ContentView newView) {
 		this.removeAllComponents();
 		this.addComponent((Component) newView);
+		this.setSizeFull();
 	}
 }

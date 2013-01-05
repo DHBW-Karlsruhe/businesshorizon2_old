@@ -4,8 +4,11 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalSplitPanel;
+
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
@@ -14,11 +17,15 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 
-public class MethodViewImpl extends VerticalLayout implements MethodViewInterface {
+public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private MethodPresenter presenter;
+	
+	private VerticalLayout methodList;
+	private VerticalLayout inputMethod;
+	private OptionGroup methods;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -30,6 +37,11 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		methodList = new VerticalLayout();
+		inputMethod = new VerticalLayout();	
+		methods = new OptionGroup("Stochastische Berechnung:");
+		methods.setMultiSelect(true);
+		
 		generateUi();
 	}
 
@@ -38,8 +50,24 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	 * 
 	 * @author Julius Hacker
 	 */
+	
+	
 	private void generateUi() {
-		Label testlabel = new Label("methodtest");
-		this.addComponent(testlabel);
+		
+		this.setFirstComponent((Component)methodList);
+		this.setSecondComponent((Component)inputMethod);
+		
+	}
+
+	@Override
+	public void showMethod(String methodName,Boolean implemented) {
+	
+	methods.addItem(methodName);
+	if (!implemented){
+		methods.setItemEnabled(methodName, false);
+	}
+	
+	methodList.addComponent(methods);
+		
 	}
 }

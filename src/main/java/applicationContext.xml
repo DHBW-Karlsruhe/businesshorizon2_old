@@ -70,8 +70,8 @@
 	
 
 	<!-- Methodenmaske -->
-	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter" scope="session" />
 	<bean name="methodView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewImpl"  scope="session" />
+	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter" scope="session" />
 	
 	
 	

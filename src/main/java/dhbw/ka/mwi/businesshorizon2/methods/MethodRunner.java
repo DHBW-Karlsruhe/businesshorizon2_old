@@ -26,7 +26,7 @@ public class MethodRunner extends Thread {
 		public void onProgressChange(float progress);
 	}
 	
-	private AbstractMethod method;
+	private Method method;
 	private SortedSet<Period> periods;
 	private Callback callback;
 	
@@ -39,7 +39,7 @@ public class MethodRunner extends Thread {
 	 * @param periods Die zu berechnenden Perioden
 	 * @param callback Das Callback
 	 */
-	public MethodRunner(AbstractMethod method, SortedSet<Period> periods, Callback callback) {
+	public MethodRunner(Method method, SortedSet<Period> periods, Callback callback) {
 		if(method == null || periods == null || callback == null) {
 			throw new InvalidParameterException("No null parameters are allowed here");
 		}

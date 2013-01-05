@@ -10,6 +10,7 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.method.ShowMethodViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
@@ -69,6 +70,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		switch(event.getStep()) {
 		case METHOD:
 			newView = methodView;
+			eventBus.fireEvent(new ShowMethodViewEvent());
 			break;
 		case PERIOD:
 			newView = periodView;
