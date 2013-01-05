@@ -1,11 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.wiener;
 
-import java.util.SortedSet;
-
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner.Callback;
-import dhbw.ka.mwi.businesshorizon2.methods.Result;
-import dhbw.ka.mwi.businesshorizon2.models.Period;
+import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 
 /**
  * Dies ist bisher nur eine Beispiel-Klasse um die Verwendung von verschiedenen
@@ -21,24 +17,22 @@ public class Wiener extends AbstractStochasticMethod {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getName() {
-		return "Wiener-Ding";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public int getOrderKey() {
 		return 2;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Result calculate(SortedSet<Period> periods, Callback callback)
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] calculate(double[] previousValues,
+			int consideredPeriodsofPast, int periodsToForecast,
+			int numberOfIterations, Callback callback)
 			throws InterruptedException {
-		return new Result();
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
