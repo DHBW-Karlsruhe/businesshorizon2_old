@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
 import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 
 /**
  * Der Event, zum Anzeigen der MethodView, der im MethodListPresenter abgesetzt wird.
@@ -13,7 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractMethod;
 public class ShowMethodEvent extends Event {
 	private static final long serialVersionUID = 1L;
 
-	private AbstractMethod method;
+	private AbstractStochasticMethod method;
 
 	/**
 	 * Dem Event muss eine anzuzeigende Methode uebergeben werden.
@@ -21,7 +21,7 @@ public class ShowMethodEvent extends Event {
 	 * @author Christian Gahlert
 	 * @param method Die anzuzeigende Methode
 	 */
-	public ShowMethodEvent(AbstractMethod method) {
+	public ShowMethodEvent(AbstractStochasticMethod method) {
 		this.method = method;
 	}
 
@@ -31,7 +31,7 @@ public class ShowMethodEvent extends Event {
 	 * @author Christian Gahlert
 	 * @return
 	 */
-	public AbstractMethod getMethod() {
+	public AbstractStochasticMethod getMethod() {
 		return method;
 	}
 	
