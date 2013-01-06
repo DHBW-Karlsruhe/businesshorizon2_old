@@ -1,6 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.services.authentication;
 
-import org.apache.catalina.User;
+import java.io.Serializable;
+
+import dhbw.ka.mwi.businesshorizon2.models.User;
 
 /**
  * Dieses Interface stellt Methoden zur Authentifizierung einzelner Benutzer zur
@@ -11,7 +13,7 @@ import org.apache.catalina.User;
  * @author Florian Stier
  * 
  */
-public interface AuthenticationServiceInterface {
+public interface AuthenticationServiceInterface extends Serializable {
 
 	/**
 	 * Methode zum einloggen eines Benutzers. Implementierende Klassen müssen
@@ -24,7 +26,8 @@ public interface AuthenticationServiceInterface {
 	 *            Passwort des Nutzers
 	 * @return User Objekt mit Benutzerdaten
 	 */
-	public User doLogin(String username, String password);
+
+	public User doLogin(String username, String password) throws UserNotFoundException;
 
 	/**
 	 * Methode zum Ausloggen eines Users.
@@ -32,7 +35,7 @@ public interface AuthenticationServiceInterface {
 	 * @param user
 	 *            User der ausgeloggt werden soll
 	 */
-	public void doLogout(User user);
+	public void doLogout(User user) throws UserNotLoggedInException;
 
 	/**
 	 * Methode zum registrieren eines neuen Nutzers. Implementierende Klassen
@@ -48,8 +51,7 @@ public interface AuthenticationServiceInterface {
 	 * @param lastName
 	 *            Nachname des Anwenders
 	 */
-	public void registerNewUser(String username, String password,
-			String firstName, String lastName);
+	public void registerNewUser(String username, String password, String firstName, String lastName);
 
 	/**
 	 * Methode zum Löschen des als Parameter übergebenen Users.

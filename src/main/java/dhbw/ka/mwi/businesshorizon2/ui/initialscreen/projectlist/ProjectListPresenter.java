@@ -14,6 +14,8 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
 
 /**
  * 
@@ -40,6 +42,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private Project selectedProject = null;
 
+	@Autowired
+	private AuthenticationServiceInterface authenticationService;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
@@ -51,8 +56,15 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@PostConstruct
 	private void init() {
 		eventBus.addHandler(this);
-		user = new User(); // TODO Hier sollte der User des
-		// Authetifizierungsprozesses ausgewaehlt werden
+
+		// TODO Hier müssen die Userdaten vom Login Screen geholt werden
+
+		try {
+			user = authenticationService.doLogin("test@user.com", "Initial1");
+		} catch (UserNotFoundException e) {
+			logger.error("User could not be logged in"); // TODO Fehlermeldung
+															// anzeigen
+		}
 
 	}
 
@@ -60,7 +72,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * Diese Methode wird von der View aufgerufen, wenn eine Projekt ausgewaehlt
 	 * wurde. Somit muss nun der Wizard fÃ¼r dieses Projekt und mit den
 	 * gespeicherten Daten aufgerufen werden. Das Event ShowProject wird mit dem
-	 * ausgewÃ¤hlten Objekt ausgeloest. Somit kann der Wizard ausgefuehrt werden.
+	 * ausgewÃ¤hlten Objekt ausgeloest. Somit kann der Wizard ausgefuehrt
+	 * werden.
 	 * 
 	 * @author Christian Scherer
 	 * @param project
