@@ -9,8 +9,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService;
@@ -19,12 +19,8 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInExcep
 
 public class AuthenticationServiceTest {
 
+	@Autowired
 	AuthenticationService authenticationService;
-
-	@Before
-	public void setUp() throws Exception {
-		authenticationService = AuthenticationService.getInstance();
-	}
 
 	@Test
 	public void testInitializeService() {
