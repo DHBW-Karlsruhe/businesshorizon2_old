@@ -98,13 +98,19 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 
 	}
 
-	public synchronized User doLogin(String username, String password) throws UserNotFoundException {
+	public synchronized User doLogin(String username, String password) throws UserNotFoundException,
+			WrongPasswordException {
 
 		for (User user : allUsers) {
-			if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-				loggedInUsers.put(user.getUsername(), user);
-				logger.debug("User " + username + " successfully logged in.");
-				return user;
+			if (user.getUsername().equals(username)) {
+				if (user.getPassword().equals(password)) {
+					loggedInUsers.put(user.getUsername(), user);
+					logger.debug("User " + username + " successfully logged in.");
+					return user;
+				} else {
+					logger.debug("Wrong password for user " + username);
+					throw new WrongPasswordException("Wrong password for user " + username + " submitted");
+				}
 			}
 		}
 

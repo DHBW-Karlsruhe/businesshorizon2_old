@@ -27,7 +27,7 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * @return User Objekt mit Benutzerdaten
 	 */
 
-	public User doLogin(String username, String password) throws UserNotFoundException;
+	public User doLogin(String username, String password) throws UserNotFoundException, WrongPasswordException;
 
 	/**
 	 * Methode zum Ausloggen eines Users.
