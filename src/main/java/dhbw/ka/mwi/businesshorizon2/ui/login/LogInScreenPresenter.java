@@ -88,5 +88,24 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 		return confirmed;
 	}
+	
+	/**
+	 * Diese Methode wird von der LogIn Impl gerufen um zu prüfen ob ein ... Der
+	 * Aufruf wird hierbei nur an den Authentisierungsmechanismus weitergeleitet
+	 * und das Ergebnis zurückgegeben.
+	 * 
+	 * @author Christian Scherer
+	 * @param username
+	 *            Benutzername, der eingegeben wurde
+	 * @param password
+	 *            Passwort, das eingegeben wurde
+	 * 
+	 * @TODO In der Methode statt einen neuen User zu erzeugen die
+	 *       authentifizierungsmethode rufen (siehe Kommentare in der Methode)
+	 * 
+	 */
+	public void registerUser(String username, String password) {
+		;
+	}
 
 }
