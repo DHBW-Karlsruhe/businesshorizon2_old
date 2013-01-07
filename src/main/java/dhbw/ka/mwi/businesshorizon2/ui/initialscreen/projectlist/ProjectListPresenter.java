@@ -16,6 +16,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
 
 /**
  * 
@@ -64,6 +65,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		} catch (UserNotFoundException e) {
 			logger.error("User could not be logged in"); // TODO Fehlermeldung
 															// anzeigen
+		} catch (WrongPasswordException e) {
+			e.printStackTrace();
 		}
 
 	}
