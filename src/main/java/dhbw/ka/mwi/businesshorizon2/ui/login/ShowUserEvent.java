@@ -1,24 +1,20 @@
-package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
-
-import org.springframework.beans.factory.annotation.Autowired;
+package dhbw.ka.mwi.businesshorizon2.ui.login;
 
 import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 
 /**
- * Das Event, der zum Anzeigen der ProjectListView, das vom
- * InitialScreenPresenter gefeuert wird. Es beinhaltet das eingeloggte
- * User-Objekt.
+ * Der Event, der zum Anzeigen des LogIn-Screen-Fensters in der
+ * BHApplication-Klasse abgesetzt wird.
  * 
  * @author Christian Scherer
  * 
  */
-public class ShowProjectListEvent extends Event {
 
+public class ShowUserEvent extends Event {
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
 	private User user;
 
 	/**
@@ -30,7 +26,7 @@ public class ShowProjectListEvent extends Event {
 	 *            Das Objekt des erfolgreich angemeldeten User
 	 * 
 	 */
-	public ShowProjectListEvent(User user) {
+	public ShowUserEvent(User user) {
 		this.user = user;
 	}
 
@@ -43,6 +39,5 @@ public class ShowProjectListEvent extends Event {
 	 */
 	public User getUser() {
 		return this.user;
-
 	}
 }

@@ -43,9 +43,6 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private Project selectedProject = null;
 
-	@Autowired
-	private AuthenticationServiceInterface authenticationService;
-
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
@@ -57,23 +54,12 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@PostConstruct
 	private void init() {
 		eventBus.addHandler(this);
-
-		// TODO Hier müssen die Userdaten vom Login Screen geholt werden
-
-		try {
-			user = authenticationService.doLogin("test@user.com", "Initial1");
-		} catch (UserNotFoundException e) {
-			logger.error("User could not be logged in"); // TODO Fehlermeldung
-															// anzeigen
-		} catch (WrongPasswordException e) {
-			e.printStackTrace();
-		}
-
+		logger.debug("Eventhandler Hinzugefügt");
 	}
 
 	/**
 	 * Diese Methode wird von der View aufgerufen, wenn eine Projekt ausgewaehlt
-	 * wurde. Somit muss nun der Wizard fÃ¼r dieses Projekt und mit den
+	 * wurde. Somit muss nun der Wizard fuer dieses Projekt und mit den
 	 * gespeicherten Daten aufgerufen werden. Das Event ShowProject wird mit dem
 	 * ausgewÃ¤hlten Objekt ausgeloest. Somit kann der Wizard ausgefuehrt
 	 * werden.
@@ -95,15 +81,18 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 	/**
 	 * 
-	 * Aufruf nach der Initialisierung der ProjectListImpl von aussen. Es werden
-	 * die Projekte des Users ermittelt und der setProjects Methode der Impl
-	 * Ã¼bergeben um die UI-Erzeugung der Projekte anzustossen
+	 * Aufruf nach der Initialisierung der ProjectListImpl von aussen. Durch das
+	 * Event wird der eingeloggte User übergeben. Es werden die Projekte des
+	 * Users ermittelt und der setProjects Methode der Impl Uebergeben um die
+	 * UI-Erzeugung der Projekte anzustossen
 	 * 
 	 * @author Christian Scherer
 	 * @param event
 	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
+
+		user = event.getUser();
 
 		// 2 Dummyprojects die dem User hinzugefÃ¼gt werden
 		addProject("Projekt 1");
@@ -125,7 +114,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 * @author Christian Scherer
 	 * @param project
-	 *            - Zu lÃ¶schendes Projekt
+	 *            - Zu loeschendes Projekt
 	 */
 	public void removeProject(Project project) {
 		user.removeProject(project);
@@ -148,7 +137,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * @author Christian Scherer
 	 * @param name
 	 *            Der Name des neue Projekt-Objekts, welches in die Liste
-	 *            hinzugefÃ¼gt werden soll
+	 *            hinzugefuegt werden soll
 	 */
 	public void addProject(String name) {
 

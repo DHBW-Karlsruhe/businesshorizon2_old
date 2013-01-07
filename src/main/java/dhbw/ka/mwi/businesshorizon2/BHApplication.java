@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.vaadin.Application;
+import com.vaadin.terminal.ExternalResource;
 
-import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
@@ -24,45 +27,64 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
  */
 public class BHApplication extends Application {
 	private static final long serialVersionUID = 1L;
-
+	
 	private Logger logger = Logger.getLogger("BHApplication.class");
 
 	@Autowired
 	private ProcessViewImpl processView;
-
+	
 	@Autowired
 	private InitialScreenViewImpl initialScreenView;
+	
+	@Autowired
+	private LogInScreenViewImpl logInScreenView;
 
 	@Autowired
 	private EventBus eventBus;
-
-	@Autowired
-	private AuthenticationService authenticationService;
-
+	
 	/**
-	 * Der Konstruktor. Hier wird zunaechst das Theme gesetzt, so dass das
-	 * Stylesheet WebContent/VAADIN/themes/bh2/styles.css verwendet wird.
+	 * Der Konstruktor. Hier wird zunaechst das Theme gesetzt, so dass das Stylesheet 
+	 * 		WebContent/VAADIN/themes/bh2/styles.css
+	 * verwendet wird. 
 	 * 
 	 * @author Christian Gahlert
 	 */
 	public BHApplication() {
 		setTheme("bh2");
 	}
-
+	
 	/**
 	 * Diese Methode ist dafuer verantwortlich, das Haupt-Fenster zu laden und
-	 * den ShowInitialScreenViewEvent abzusetzen. Durch diesen werden die
-	 * Listener darueber informiert, dass das Hauptfenster angezeigt wird.
+	 * den ShowInitialScreenViewEvent abzusetzen. Durch diesen werden die Listener
+	 * darueber informiert, dass das Hauptfenster angezeigt wird.
 	 * 
 	 * @author Christian Gahlert
 	 */
 	@Override
 	public void init() {
 		eventBus.addHandler(this);
+		
+		setMainWindow(logInScreenView);
+		eventBus.fireEvent(new ShowLogInScreenEvent());
+		logger.debug("ShowLogInScreenEvent gefeuert");
+	}
 
+	/**
+	 * Die Methode triggert die Anzeige der Projektuebersichtsseite, sobald der User
+	 * sich erfolgreich eingeloggt hat.
+	 * 
+	 * @author Julius Hacker
+	 * @param event Der ausgeloeste ShowUserEvent
+	 */
+	@EventHandler
+	public void showInitialView(ShowUserEvent event) {
+		initialScreenView.setName("overview");
+		addWindow(initialScreenView);
 		setMainWindow(initialScreenView);
-		eventBus.fireEvent(new ShowInitialScreenViewEvent());
+		logInScreenView.open(new ExternalResource(initialScreenView.getURL()));
 
+		eventBus.fireEvent(new ShowInitialScreenViewEvent(event.getUser()));
+		logger.debug("ShowInitialScreenViewEvent gefeuert");
 	}
 
 	/**
@@ -75,10 +97,13 @@ public class BHApplication extends Application {
 	 */
 	@EventHandler
 	public void showProcessView(ShowProjectEvent event) {
+		processView.setName("process");
+		addWindow(processView);
 		setMainWindow(processView);
-		this.removeWindow(initialScreenView);
+		initialScreenView.open(new ExternalResource(processView.getURL()));
+
 		eventBus.fireEvent(new ShowProcessViewEvent());
-		logger.debug("ShowMainViewEvent gefeuert");
+		logger.debug("ShowProzessViewEvent gefeuert");
 	}
 
 }
