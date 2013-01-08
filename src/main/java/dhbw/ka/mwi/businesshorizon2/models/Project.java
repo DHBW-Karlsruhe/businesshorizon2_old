@@ -26,6 +26,8 @@ public class Project implements Serializable {
 	protected Date lastChanged;
 	
 	protected String name;
+	
+
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.

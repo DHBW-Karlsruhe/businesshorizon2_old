@@ -8,6 +8,10 @@ import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.CheckBox;
+
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 
 
 /**
@@ -26,6 +30,8 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	private VerticalLayout methodList;
 	private VerticalLayout inputMethod;
 	private OptionGroup methods;
+	private CheckBox stochastic;
+	private CheckBox deterministic;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -37,9 +43,37 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		
 		methodList = new VerticalLayout();
 		inputMethod = new VerticalLayout();	
-		methods = new OptionGroup("Stochastische Berechnung:");
+		stochastic = new CheckBox("Stochastische Berechnung");
+		deterministic = new CheckBox("Deterministische Eingabe");
+		
+		stochastic.addListener(new Button.ClickListener() {
+			
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.activateMethodType();
+				
+			}
+		});
+		
+		deterministic.addListener(new Button.ClickListener() {
+			
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.activateMethodType();
+				
+			}
+		});
+		
+		methods = new OptionGroup();
 		methods.setMultiSelect(true);
 		
 		generateUi();
@@ -62,12 +96,19 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@Override
 	public void showMethod(String methodName,Boolean implemented) {
 	
+	methodList.addComponent(stochastic);
 	methods.addItem(methodName);
 	if (!implemented){
 		methods.setItemEnabled(methodName, false);
 	}
-	
+
 	methodList.addComponent(methods);
+	methodList.addComponent(deterministic);	
+	}
+
+	@Override
+	public void enableOptions() {
+		
 		
 	}
 }

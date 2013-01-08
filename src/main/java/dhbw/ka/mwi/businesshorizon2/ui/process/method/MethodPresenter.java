@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.methods.Method;
+import dhbw.ka.mwi.businesshorizon2.ui.process.method.CheckMethodTypeEvent;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 
@@ -32,7 +33,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	
 
 	@Autowired
-	private SortedSet<Method> methods;
+	private SortedSet<AbstractStochasticMethod> methods;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -59,12 +60,22 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		return false;
 	}
 	
+	public void activateMethodType(){
+		eventBus.fireEvent(new CheckMethodTypeEvent());
+	}
+	
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event){		
 		
-		for (Method m : methods) {
+		for (AbstractStochasticMethod m : methods) {
 			getView().showMethod(m.getName(),true);
 		}
+		
+	}
+	
+	@EventHandler
+	public void onCheckMethodType(CheckMethodTypeEvent event){
+
 		
 	}
 }
