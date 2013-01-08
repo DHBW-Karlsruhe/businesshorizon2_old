@@ -60,4 +60,14 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 *            der zu löschende User
 	 */
 	public void deleteUser(User user);
+
+	/**
+	 * Methode zum zurücksetzen/erhalten des Userpasswords. In der
+	 * Implementierung könnte zum Beispiel eine Mail an den entsprechenden User
+	 * geschickt werden.
+	 * 
+	 * @param Die
+	 *            Mailadresse, für den das Passwort gelesen werden soll
+	 */
+	public void forgotPassword(String email);
 }

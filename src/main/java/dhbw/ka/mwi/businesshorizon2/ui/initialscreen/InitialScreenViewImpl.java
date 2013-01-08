@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
@@ -32,7 +32,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private HorizontalSplitPanel horizontalPanel;
 
-	private HorizontalLayout heading;
+	private VerticalLayout heading;
 
 	private Label title;
 
@@ -67,7 +67,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
-		heading = new HorizontalLayout();
+		heading = new VerticalLayout();
 		title = new Label("<h1>Business Horizon 2</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
 		heading.addComponent(title);
@@ -110,7 +110,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 *            Der angezeigte Username
 	 */
 	public void showUserData(String username) {
-		userData = new Label("<h1>" + username + "</h1>");
+		userData = new Label("<h2>" + username + "</h2>");
 		userData.setContentMode(Label.CONTENT_XHTML);
 		heading.addComponent(userData);
 	}

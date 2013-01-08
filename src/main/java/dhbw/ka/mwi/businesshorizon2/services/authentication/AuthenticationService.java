@@ -28,10 +28,14 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 
 public class AuthenticationService implements AuthenticationServiceInterface {
 
-	private static AuthenticationService INSTANCE;
+	/**
+	 * Default Serial Version ID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private File file;
-	// TODO File Location muss noch spezifiziert werden
+
+	private static final String DIRECTORY = System.getProperty("user.home") + "\\Business Horizon";
 	private static final String FILENAME = "E:\\DHBW\\5. Semester\\Business Horizon\\Repository\\Business Horizon 2\\businesshorizon2\\users.dat";
 
 	private List<User> allUsers;
@@ -177,6 +181,11 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 		} catch (IOException e) {
 			logger.error("An IOException occured: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public void forgotPassword(String email) {
+		// DUMMY
 	}
 
 }

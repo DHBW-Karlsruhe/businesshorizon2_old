@@ -25,13 +25,16 @@ public class AuthenticationDataInitializer {
 
 	private static Logger logger = Logger.getLogger(AuthenticationDataInitializer.class);
 
+	private static File file;
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			File file = new File(
-					"E:\\DHBW\\5. Semester\\Business Horizon\\Repository\\Business Horizon 2\\businesshorizon2\\users.dat");
+			file = new File(System.getProperty("user.home") + "\\Business Horizon");
+			file.mkdir();
+			file = new File("C:\\Users\\Florian Stier\\Business Horizon\\users.dat");
 			if (!file.exists()) {
 				file.createNewFile();
 			}
@@ -79,9 +82,9 @@ public class AuthenticationDataInitializer {
 			outputStream.close();
 
 		} catch (FileNotFoundException e) {
-			logger.error("FileNotFoundException occured: The given file does not exist.");
+			logger.error("FileNotFoundException occured: The given file does not exist." + file.getAbsolutePath());
 		} catch (IOException e) {
-			logger.error("IOException occured: Could not create file.");
+			logger.error("IOException occured: Could not create file." + file.getAbsolutePath());
 		}
 	}
 }

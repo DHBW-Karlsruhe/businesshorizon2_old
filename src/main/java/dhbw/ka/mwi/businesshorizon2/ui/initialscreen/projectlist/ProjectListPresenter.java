@@ -14,9 +14,6 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
 
 /**
  * 
@@ -91,8 +88,6 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
-
-		user = event.getUser();
 
 		// 2 Dummyprojects die dem User hinzugefÃ¼gt werden
 		addProject("Projekt 1");
