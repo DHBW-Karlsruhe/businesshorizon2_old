@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
+import dhbw.ka.mwi.businesshorizon2.models.SelectedMethod;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -27,7 +28,9 @@ public class Project implements Serializable {
 	
 	protected String name;
 	
-
+	protected NavigableSet<SelectedMethod> selectedMethods = new TreeSet<SelectedMethod>();
+	
+		
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
