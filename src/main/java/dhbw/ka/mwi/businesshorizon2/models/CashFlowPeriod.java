@@ -9,25 +9,21 @@ public class CashFlowPeriod extends Period {
 
 	public CashFlowPeriod(int year) {
 		this.year = year;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public double getCashflow() {
-		// TODO Auto-generated method stub
 		return this.cashFlow;
 	}
 
 	@Override
 	public double getWert() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.cashFlow;
 	}
 
 	@Override
 	public int getYear() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.year;
 	}
 
 }

@@ -57,7 +57,7 @@ abstract public class AbstractStochasticMethod implements
 	 * @return Das Result-Objekt dieser Berechnung
 	 * @throws InterruptedException
 	 */
-	abstract public double[] calculate(double[] previousValues,
+	abstract public double[][] calculate(double[] previousValues,
 			int consideredPeriodsofPast, int periodsToForecast,
 			int numberOfIterations, Callback callback)
 			throws InterruptedException;

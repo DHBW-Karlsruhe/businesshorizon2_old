@@ -51,7 +51,7 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-			double[] result = method.calculate(periods, 1, 1, 1, callback);
+			double[][] result = method.calculate(periods, 1, 1, 1, callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {
 			callback.onComplete(null);

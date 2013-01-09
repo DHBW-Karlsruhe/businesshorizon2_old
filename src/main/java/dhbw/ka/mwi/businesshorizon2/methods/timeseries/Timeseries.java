@@ -41,12 +41,9 @@ public class Timeseries extends AbstractStochasticMethod {
 	 */
 
 	@Override
-	public double[] calculate(
-			double[] previousValues,
-			int consideredPeriodsofPast,
-			int periodsToForecast,
-			int numberOfIterations,
-			Callback callback)
+	public double[][] calculate(double[] previousValues,
+			int consideredPeriodsofPast, int periodsToForecast,
+			int numberOfIterations, Callback callback)
 			throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;

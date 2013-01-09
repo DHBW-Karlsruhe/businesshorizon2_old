@@ -28,7 +28,7 @@ public class Wiener extends AbstractStochasticMethod {
 	}
 
 	@Override
-	public double[] calculate(double[] previousValues,
+	public double[][] calculate(double[] previousValues,
 			int consideredPeriodsofPast, int periodsToForecast,
 			int numberOfIterations, Callback callback)
 			throws InterruptedException {

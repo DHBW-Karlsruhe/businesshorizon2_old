@@ -1,21 +1,12 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.SortedSet;
-
-import dhbw.ka.mwi.businesshorizon2.models.Period;
-import dhbw.ka.mwi.businesshorizon2.models.Timeseries;
-
 public class CalculateTide implements CalculateTideInterface {
 
 	private double reduceTideParameterA;
 	private double reduceTideParameterB;
-	private boolean tideCalculated = false;
-	private boolean tideIsReduced = false;
 	private double averageTimeseries;
 	private double averagePeriod;
-	private SortedSet<Period> timeseries;
+	private double[] timeseries;
 
 	/**
 	 * Diese Methode bereinigt die Zeitreihe um die Trendgerade und berechnet
@@ -23,64 +14,19 @@ public class CalculateTide implements CalculateTideInterface {
 	 * 
 	 * @author Kai Westerholz
 	 */
-	public void setTimeseries(
-			dhbw.ka.mwi.businesshorizon2.models.Timeseries timeseries) {
-		this.timeseries = timeseries.getTimeseries();
-	}
 
-	public void reduceTide() {
-		if (this.tideIsReduced) {
-			return;
-		}
-		if (!tideCalculated) {
-			this.calculateTideParameterB();
-			this.calculateTideParameterA();
-			this.tideCalculated = true;
-		}
-		/**
-		 * for (int i = 0; i < timeseries.size(); i++) { timeseries.set(i,
-		 * (this.getTideValue(i) - timeseries.get(i))); }
-		 */
-		Period period;
-		int periodCount = 0;
-		Iterator<Period> it = timeseries.iterator();
-		while (it.hasNext()) {
-			period = it.next();
-			period.setCashFlow(this.getTideValue(periodCount)
-					- period.getCashFlow());
-			periodCount++;
-		}
-		this.tideIsReduced = true;
+	public double[] reduceTide(double[] timeseries) {
+		this.timeseries = timeseries;
 
-	}
+		double parameterB = this.calculateTideParameterB(timeseries);
+		this.reduceTideParameterB = parameterB;
+		this.reduceTideParameterA = this.calculateTideParameterA(parameterB);
 
-	/**
-	 * Diese Methode addiert zur Zeitreihe die Werte der Trendgerade nach
-	 * folgender Formel: Y(t) = T(t) + Y*(t)
-	 * 
-	 * @author Kai Westerholz
-	 */
-
-	public void addTide() {
-		if (!this.tideIsReduced) {
-			return;
-		}
-		/**
-		 * for (int i = 0; i < timeseries.size(); i++) { timeseries.set(i,
-		 * (this.getTideValue(i) + timeseries.get(i))); }
-		 */
-
-		Period period;
-		int periodCount = 0;
-		Iterator<Period> it = timeseries.iterator();
-		while (it.hasNext()) {
-			period = it.next();
-			period.setCashFlow(this.getTideValue(periodCount)
-					+ period.getCashFlow());
-			periodCount++;
+		for (int i = 0; i < timeseries.length; i++) {
+			timeseries[i] = (this.getTideValue(i) - timeseries[i]);
 		}
 
-		this.tideIsReduced = false;
+		return timeseries;
 	}
 
 	/**
@@ -93,7 +39,6 @@ public class CalculateTide implements CalculateTideInterface {
 	 *            Periode
 	 * @return double Wert der Trendgeriode
 	 */
-	@Override
 	public double getTideValue(int period) {
 		return (this.reduceTideParameterA + this.reduceTideParameterB * period);
 	}
@@ -107,19 +52,18 @@ public class CalculateTide implements CalculateTideInterface {
 	public double calculateAverageTimeseries() {
 		if (this.averageTimeseries == 0) {
 			double sum = 0;
-			/**
-			 * for (int i = 0; i < timeseries.size(); i++) { sum +=
-			 * timeseries.get(i); }
-			 */
 
-			Period period;
-			Iterator<Period> it = timeseries.iterator();
-			while (it.hasNext()) {
-				period = it.next();
-				sum += period.getCashFlow();
+			for (int i = 0; i < timeseries.length; i++) {
+				sum += timeseries[i];
 			}
 
-			this.averageTimeseries = (sum / timeseries.size());
+			/**
+			 * Period period; Iterator<Period> it = timeseries.iterator(); while
+			 * (it.hasNext()) { period = it.next(); sum += period.getCashFlow();
+			 * }
+			 */
+
+			this.averageTimeseries = (sum / (timeseries.length));
 		}
 		return this.averageTimeseries;
 	}
@@ -132,19 +76,12 @@ public class CalculateTide implements CalculateTideInterface {
 	 */
 	public double calculateAveragePeriods() {
 		double sum = 0;
-		/**
-		 * for (int i = 0; i < timeseries.size(); i++) { sum += i; }
-		 */
 
-		int periodCount = 0;
-		Iterator<Period> it = timeseries.iterator();
-		while (it.hasNext()) {
-			it.next();
-			sum += periodCount;
-			periodCount++;
+		for (int i = 0; i < timeseries.length; i++) {
+			sum += i;
 		}
 
-		this.averagePeriod = (sum / timeseries.size());
+		this.averagePeriod = (sum / timeseries.length);
 		return this.averagePeriod;
 
 	}
@@ -157,30 +94,19 @@ public class CalculateTide implements CalculateTideInterface {
 	 * @author Kai Westerholz
 	 * @return double ParameterB
 	 */
-	private double calculateTideParameterB() {
+	private double calculateTideParameterB(double[] timeseries) {
 		double averageTimeseries = this.calculateAverageTimeseries();
 		double averagePeriods = this.calculateAveragePeriods();
 		double numerator = 0;
 		double denominator = 0;
-		/**
-		 * for (int i = 0; i < this.timeseries.size(); i++) { numerator += (i -
-		 * averagePeriods) (timeseries.get(i) - averageTimeseries); denominator
-		 * += Math.pow((i - averagePeriods), 2); }
-		 */
 
-		Period period;
-		int periodCount = 0;
-		Iterator<Period> it = timeseries.iterator();
-		while (it.hasNext()) {
-			period = it.next();
-			numerator += (periodCount - averagePeriods)
-					* (period.getCashFlow() - averageTimeseries);
-			denominator += Math.pow((periodCount - averagePeriods), 2);
-			periodCount++;
+		for (int i = 0; i < timeseries.length; i++) {
+			numerator += (i - averagePeriods)
+					* (timeseries[i] - averageTimeseries);
+			denominator += Math.pow((i - averagePeriods), 2);
 		}
 
-		this.reduceTideParameterB = numerator / denominator;
-		return this.reduceTideParameterB;
+		return numerator / denominator;
 	}
 
 	/**
@@ -191,28 +117,9 @@ public class CalculateTide implements CalculateTideInterface {
 	 * @author Kai Westerholz
 	 * @return double ParameterA
 	 */
-	private double calculateTideParameterA() {
-		this.reduceTideParameterA = this.calculateAverageTimeseries()
-				- (this.reduceTideParameterB * this.calculateAveragePeriods());
-		return this.reduceTideParameterA;
+	private double calculateTideParameterA(double parameterB) {
+		return reduceTideParameterA = this.calculateAverageTimeseries()
+				- (parameterB * this.calculateAveragePeriods());
 	}
 
-	public static void main(String[] args) {
-		ArrayList<Double> timeseries = new ArrayList<Double>();
-		timeseries.add(638.07);
-		timeseries.add(680.01);
-		timeseries.add(988.85);
-		timeseries.add(1686.7);
-		timeseries.add(1504.92);
-		timeseries.add(1826.95);
-		timeseries.add(1607.90);
-		timeseries.add(1826.82);
-		timeseries.add(1950.00);
-		timeseries.add(2158.00);
-		Timeseries ts = new Timeseries(timeseries, 2012);
-		System.out.println(ts);
-		ts.reduceTide();
-		System.out.println(ts);
-
-	}
 }
