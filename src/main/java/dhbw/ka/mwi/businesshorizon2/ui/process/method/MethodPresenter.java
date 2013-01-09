@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -36,6 +37,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	
 	private SortedSet<AbstractStochasticMethod> methods;
 	private InputType inputType;
+	
+	private Logger logger = Logger.getLogger(MethodPresenter.class);
 
 	
 	/**
@@ -49,7 +52,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		eventBus.addHandler(this);
 		this.methods = project.getMethods();
 		inputType = project.getInputType();
-		
+		logger.debug("Hallo");
 	}
 
 	@Override

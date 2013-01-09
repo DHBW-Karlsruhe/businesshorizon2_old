@@ -16,5 +16,7 @@ public interface MethodViewInterface extends ContentView {
 	public void enableOptions();
 	
 	public void enableMethodSelection(Boolean state);
+	
+	public void showInputMethodSelection(Boolean statisitc);
 
 }

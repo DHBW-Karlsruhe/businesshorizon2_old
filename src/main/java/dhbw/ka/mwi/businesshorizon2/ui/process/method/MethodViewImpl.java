@@ -6,12 +6,14 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 
@@ -29,11 +31,13 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	@Autowired
 	private MethodPresenter presenter;
+	private Panel methodPanel = new Panel();
 	private VerticalLayout methodList = new VerticalLayout();
 	private VerticalLayout inputMethod = new VerticalLayout();
 	private OptionGroup methods = new OptionGroup();
 	private CheckBox stochastic = new CheckBox("Stochastische Berechnung");
 	private CheckBox deterministic = new CheckBox("Deterministische Eingabe");
+	
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -48,6 +52,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		presenter.setView(this);
 		stochastic.setImmediate(true);
 		deterministic.setImmediate(true);
+		methodPanel.setStyleName(Reindeer.PANEL_LIGHT);
 		
 		stochastic.addListener(new Button.ClickListener() {
 			
@@ -103,9 +108,10 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		
 		this.setFirstComponent((Component)methodList);
 		this.setSecondComponent((Component)inputMethod);
+		methodPanel.addComponent(methods);
 		
 		methodList.addComponent(stochastic);
-		methodList.addComponent(methods);		
+		methodList.addComponent(methodPanel);		
 		methodList.addComponent(deterministic);
 		
 	}
@@ -133,6 +139,12 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@Override
 	public void enableMethodSelection(Boolean state) {
 		methods.setEnabled(state);
+		
+	}
+
+	@Override
+	public void showInputMethodSelection(Boolean statisitc) {
+		// TODO Auto-generated method stub
 		
 	}
 }
