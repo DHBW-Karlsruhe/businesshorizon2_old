@@ -3,8 +3,8 @@ install: ant
 jdk: oraclejdk7
 script: "ant unittests"
 notifications:
-  email: 
-    recipients:
-      - wouf-it@chrisgahlert.com
-    on_success: never
-    on_failure: change
+	email: 
+		recipients:
+			- wouf-it@chrisgahlert.com
+		on_success: never
+		on_failure: change
