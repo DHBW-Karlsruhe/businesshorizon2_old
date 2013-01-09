@@ -44,10 +44,6 @@ public class User implements Serializable {
 		this.setPassword(password);
 	}
 
-	public User() {
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * Gibt den Vorname des User-Objekts zurück
 	 * 
