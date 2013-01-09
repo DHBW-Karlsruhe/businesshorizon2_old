@@ -31,9 +31,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@Autowired
 	private Project project;
 	
-
-	@Autowired
 	private SortedSet<AbstractStochasticMethod> methods;
+
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -44,12 +43,14 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		this.methods = project.getMethods();
+		
 	}
 
 	@Override
 	public boolean isValid() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	
@@ -57,7 +58,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@Override
 	public boolean isSelectable() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	public void activateMethodType(){
@@ -66,9 +67,11 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event){		
-		
+	
+
 		for (AbstractStochasticMethod m : methods) {
-			getView().showMethod(m.getName(),true);
+			getView().showMethod(m.getName(),m.getImplemented(),m.getSelected());
+
 		}
 		
 	}

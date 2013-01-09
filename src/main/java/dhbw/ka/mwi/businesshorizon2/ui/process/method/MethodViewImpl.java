@@ -1,15 +1,14 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.CheckBox;
-
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -25,13 +24,12 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private MethodPresenter presenter;
-	
-	private VerticalLayout methodList;
-	private VerticalLayout inputMethod;
-	private OptionGroup methods;
-	private CheckBox stochastic;
-	private CheckBox deterministic;
+	private MethodPresenter presenter;	
+	private VerticalLayout methodList = new VerticalLayout();
+	private VerticalLayout inputMethod = new VerticalLayout();
+	private OptionGroup methods = new OptionGroup();
+	private CheckBox stochastic = new CheckBox("Stochastische Berechnung");
+	private CheckBox deterministic = new CheckBox("Deterministische Eingabe");
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -40,18 +38,13 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	 * 
 	 * @author Julius Hacker
 	 */
+	
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
 		
-		methodList = new VerticalLayout();
-		inputMethod = new VerticalLayout();	
-		stochastic = new CheckBox("Stochastische Berechnung");
-		deterministic = new CheckBox("Deterministische Eingabe");
-		
 		stochastic.addListener(new Button.ClickListener() {
 			
-
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -60,10 +53,9 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 				
 			}
 		});
-		
 		deterministic.addListener(new Button.ClickListener() {
+	
 			
-
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -72,8 +64,6 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 				
 			}
 		});
-		
-		methods = new OptionGroup();
 		methods.setMultiSelect(true);
 		
 		generateUi();
@@ -91,19 +81,20 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		this.setFirstComponent((Component)methodList);
 		this.setSecondComponent((Component)inputMethod);
 		
+		methodList.addComponent(stochastic);
+		methodList.addComponent(methods);		
+		methodList.addComponent(deterministic);
+		
 	}
 
 	@Override
-	public void showMethod(String methodName,Boolean implemented) {
-	
-	methodList.addComponent(stochastic);
-	methods.addItem(methodName);
-	if (!implemented){
-		methods.setItemEnabled(methodName, false);
-	}
+	public void showMethod(String methodName,Boolean implemented, Boolean selected) {
+		
+		methods.addItem(methodName);
+		methods.setItemEnabled(methodName, implemented);
+		methods.select(methodName);
 
-	methodList.addComponent(methods);
-	methodList.addComponent(deterministic);	
+
 	}
 
 	@Override

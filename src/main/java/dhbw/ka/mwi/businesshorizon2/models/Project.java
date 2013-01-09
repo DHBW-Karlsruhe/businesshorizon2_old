@@ -6,7 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.SortedSet;
 import java.util.TreeSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.SelectedMethod;
 
 /**
@@ -30,7 +35,8 @@ public class Project implements Serializable {
 	
 	protected NavigableSet<SelectedMethod> selectedMethods = new TreeSet<SelectedMethod>();
 	
-		
+	@Autowired
+	private SortedSet<AbstractStochasticMethod> methods;	
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -137,6 +143,14 @@ public class Project implements Serializable {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	public SortedSet<AbstractStochasticMethod> getMethods() {
+		return methods;
+	}
+
+	public void setMethods(SortedSet<AbstractStochasticMethod> methods) {
+		this.methods = methods;
 	}
 
 }

@@ -13,7 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.Callback;
  */
 public class Timeseries extends AbstractStochasticMethod {
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -50,6 +50,11 @@ public class Timeseries extends AbstractStochasticMethod {
 			throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Boolean getImplemented() {
+		return true;
 	}
 
 }

@@ -24,7 +24,7 @@ public class Wiener extends AbstractStochasticMethod {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Wiener Prozess";
 	}
 
 	@Override
@@ -34,5 +34,10 @@ public class Wiener extends AbstractStochasticMethod {
 			throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Boolean getImplemented() {
+		return false;
 	}
 }

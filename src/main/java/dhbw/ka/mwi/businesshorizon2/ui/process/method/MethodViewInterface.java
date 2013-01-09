@@ -1,8 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
-import java.util.SortedSet;
-
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
 /**
@@ -14,7 +11,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
  */
 public interface MethodViewInterface extends ContentView {
 	
-	public void showMethod(String methodName,Boolean implemented);
+	public void showMethod(String methodName,Boolean implemented, Boolean selected);
 	
 	public void enableOptions();
 

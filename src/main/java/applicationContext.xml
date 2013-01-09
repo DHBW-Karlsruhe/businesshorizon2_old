@@ -26,7 +26,8 @@
 		scope="session" />
 	<bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener"
 		scope="session" />
-
+	<bean name="random" class="dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk"
+		scope="session" />
 
 
 	<!-- Models -->

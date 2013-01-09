@@ -4,4 +4,9 @@ import com.mvplite.event.Event;
 
 public class CheckMethodTypeEvent extends Event {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 }
