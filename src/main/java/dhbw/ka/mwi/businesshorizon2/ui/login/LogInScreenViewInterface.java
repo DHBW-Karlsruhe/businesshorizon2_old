@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
 import com.mvplite.view.View;
+import com.vaadin.ui.Window;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
@@ -19,5 +20,23 @@ import com.mvplite.view.View;
 public interface LogInScreenViewInterface extends View {
 
 	void showErrorMessage(String message);
+
+	String getEmailAdress();
+
+	String getPassword();
+
+	String getFirstName();
+
+	String getCompany();
+
+	String getLastName();
+
+	String getPasswordRep();
+
+	void showRegisterUserDialog();
+
+	Window getRegDialog();
+
+	void closeDialog(Window window);
 
 }

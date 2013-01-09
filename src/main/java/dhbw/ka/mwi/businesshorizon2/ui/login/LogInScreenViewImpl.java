@@ -26,7 +26,8 @@ import com.vaadin.ui.Window;
  * 
  */
 
-public class LogInScreenViewImpl extends Window implements LogInScreenViewInterface, ClickListener {
+public class LogInScreenViewImpl extends Window implements
+		LogInScreenViewInterface, ClickListener {
 	private static final long serialVersionUID = 1L;
 
 	private Logger logger = Logger.getLogger("LogInScreenViewImpl.class");
@@ -87,9 +88,11 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 			public void onLogin(LoginEvent event) {
 				getWindow().showNotification(
 						"New Login",
-						"Username: " + event.getLoginParameter("username") + ", password: "
+						"Username: " + event.getLoginParameter("username")
+								+ ", password: "
 								+ event.getLoginParameter("password"));
-				presenter.doLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
+				presenter.doLogin(event.getLoginParameter("username"),
+						event.getLoginParameter("password"));
 
 			}
 		});
@@ -109,7 +112,8 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 	}
 
 	public void showErrorMessage(String message) {
-		getWindow().showNotification((String) "Anmeldung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
+		getWindow().showNotification((String) "Anmeldung fehlgeschlagen",
+				message, Notification.TYPE_ERROR_MESSAGE);
 	}
 
 	/**
@@ -123,44 +127,25 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if (event.getButton() == registerBtn) {
-			registerUserDialog();
+			presenter.registerUserDialog();
 		} else if (event.getButton() == dialogRegBtn) {
 
-			Boolean samePassword = presenter.validatePassword((String) passwordFieldPassword.getValue(),
-					(String) passwordFieldPasswordRep.getValue());
+			presenter.registerUser();
 
-			if (samePassword) {
-				logger.debug("Passwordgleichheit gewaehrleistet");
-
-				if (textfieldFirstName.isValid() && textfieldLastName.isValid() && textfieldCompany.isValid()
-						&& passwordFieldPassword.isValid() && passwordFieldPasswordRep.isValid()) {
-
-					logger.debug("Alle Eingabefelder wurden vom Anwender befuellt.");
-
-					presenter.registerUser((String) textfieldFirstName.getValue(),
-							(String) textfieldLastName.getValue(), (String) textfieldCompany.getValue(),
-							(String) textfieldEmailAdress.getValue(), (String) passwordFieldPassword.getValue());
-					getWindow().removeWindow(regDialog);
-
-				} else {
-					getWindow().showNotification((String) "", (String) "Bitte füllen Sie alle Felder aus.  ",
-							Notification.TYPE_ERROR_MESSAGE);
-					logger.debug("Es wurden nicht alle Eingabefelder vom Anwender befüllt.");
-
-				}
-			} else {
-				logger.debug("Die eingegebenen Passwoerter stimmen nicht mit ueberein.");
-
-				getWindow()
-						.showNotification(
-								(String) "",
-								(String) "Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre eingabe",
-								Notification.TYPE_ERROR_MESSAGE);
-			}
 		} else if (event.getButton() == passwordForgotBtn) {
 			presenter.passwordForgot();
 			logger.debug("Password vergessen außgelöst.");
 		}
+	}
+	
+	/**
+	 * Schließt das übergebene (Dialog)Fensters.
+	 * 
+	 * @author Christian Scherer
+	 * @param window Fenster das zu schliessen ist
+	 */
+	public void closeDialog(Window window){
+		getWindow().removeWindow(window);
 	}
 
 	/**
@@ -169,7 +154,7 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 	 * 
 	 * @author Christian Scherer
 	 */
-	private void registerUserDialog() {
+	public void showRegisterUserDialog() {
 
 		regDialog = new Window("Benutzer bei Business Horizon registrieren");
 		regDialog.setModal(true);
@@ -211,7 +196,8 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 		passwordFieldPassword.setRequiredError("Pflichtfeld");
 		fl.addComponent(passwordFieldPassword);
 
-		passwordFieldPasswordRep = new PasswordField("Bitte Passwort wiederholen:");
+		passwordFieldPasswordRep = new PasswordField(
+				"Bitte Passwort wiederholen:");
 		passwordFieldPasswordRep.setRequired(true);
 		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");
 		fl.addComponent(passwordFieldPasswordRep);
@@ -226,5 +212,84 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 
 		logger.debug("Registrier-Dialog erzeugt");
 	}
+
+	/**
+	 * Getter Methode für die Mailadresse des Registrierungsdialogs
+	 * 
+	 * @author Christian Scherer
+	 * @return mailadresse des Benutzers
+	 */
+	@Override
+	public String getEmailAdress() {
+		return (String) textfieldEmailAdress.getValue();
+	}
+
+	/**
+	 * Getter Methode für das Passwort des Registrierungsdialogs
+	 * 
+	 * @author Christian Scherer
+	 * @return Passwort des Benutzers
+	 */
+	@Override
+	public String getPassword() {
+		return (String) passwordFieldPassword.getValue();
+	}
+	
+	/**
+	 * Getter Methode für das Passwort-Wiederholung des Registrierungsdialogs
+	 * 
+	 * @author Christian Scherer
+	 * @return Passwort-Wiedholung des Benutzers
+	 */
+	@Override
+	public String getPasswordRep() {
+		return (String) passwordFieldPasswordRep.getValue();
+	}
+
+	/**
+	 * Getter Methode für den Vornamen des Registrierungsdialogs
+	 * 
+	 * @author Christian Scherer
+	 * @return Vorname des Benutzers
+	 */
+	@Override
+	public String getFirstName() {
+		return (String) textfieldFirstName.getValue();
+	}
+
+	/**
+	 * Getter Methode für den Unternehmensnamen des Registrierungsdialogs
+	 * 
+	 * @author Christian Scherer
+	 * @return Unternehmensname des Benutzers
+	 */
+	@Override
+	public String getCompany() {
+		return (String) textfieldCompany.getValue();
+	}
+
+	/**
+	 * Getter Methode für den Nachnamen des Registrierungsdialogs
+	 * 
+	 * @author Christian Scherer
+	 * @return Nachname des Benutzers
+	 */
+	@Override
+	public String getLastName() {
+		return (String) textfieldLastName.getValue();
+	}
+
+	/**
+	 * Getter Methode für das Dialogfenster
+	 * 
+	 * @author Christian Scherer
+	 * @return Dialogfenster des Registrierungsdialog
+	 */
+	@Override
+	public Window getRegDialog() {
+		return this.regDialog;
+	}
+
+	
 
 }

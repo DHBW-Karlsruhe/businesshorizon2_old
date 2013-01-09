@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.vaadin.ui.Window;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
@@ -37,6 +38,12 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
+
+	private String emailAdress;
+	private String password;
+	private String firstName;
+	private String lastName;
+	private String company;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -100,47 +107,85 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	}
 
 	/**
-	 * Diese Methode wird von der LogIn Impl gerufen um zu prüfen ob ein ... Der
-	 * Aufruf wird hierbei nur an den Authentisierungsmechanismus weitergeleitet
-	 * und das Ergebnis zurückgegeben.
+	 * Diese Methode wird von der LogIn Impl gerufen um zu prüfen ob es
+	 * Null-Werte gibt und ob die Passwoerter gleich sind. Bei Erfolg wird der
+	 * Aufruf an den Authentisierungsmechanismus weitergeleitet und das Ergebnis
+	 * zurückgegeben. Bei Misserfolg werden die entsprechenden Fehler geworfen
 	 * 
 	 * @author Christian Scherer
-	 * @param firstName
-	 *            Vorname, der eingegeben wurde
-	 * @param lastName
-	 *            Nachname, der eingegeben wurde
-	 * @param emailAdress
-	 *            Mailadresse, die eingegeben wurde
-	 * @param company
-	 *            Unternehmen, das eingegeben wurde
-	 * @param password
-	 *            Passwort, das eingegeben wurde
 	 * 
-	 * @TODO In der Methode statt einen neuen User zu erzeugen die
-	 *       authentifizierungsmethode rufen (siehe Kommentare in der Methode)
 	 * 
 	 */
-	public void registerUser(String firstName, String lastName, String company, String emailAdress, String password) {
+	public void registerUser() {
 		try {
-			authenticationService.registerNewUser(emailAdress, password, firstName, lastName, company);
-			logger.debug("Registrierung abgeschlossen.");
+			this.emailAdress = getView().getEmailAdress();
+			this.password = getView().getPassword();
+			this.firstName = getView().getFirstName();
+			this.lastName = getView().getLastName();
+			this.company = getView().getCompany();
+
+			if (validatePassword() && validateNoNullPointer()) {
+
+				logger.debug("Alle Eingabefelder wurden vom Anwender befuellt und die Passwoerter stimmen ueberein.");
+				authenticationService.registerNewUser(emailAdress, password,
+						firstName, lastName, company);
+				logger.debug("Registrierung abgeschlossen.");
+				getView().closeDialog(getView().getRegDialog());
+
+			}
+
 		} catch (UserAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
+			logger.debug("Der Benutzer Existiert bereizts.");
 			return;
 		}
 
 	}
 
 	/**
+	 * Prueft ob alle Eingabefelder mit mindestens einem Zeichen befuellt wurden
+	 * 
+	 * @author Christian Scherer
+	 * @return noNullPointer Ist false wenn NullPointer bestehen (leere Strings)
+	 *         und true wenn alle Strings einen Wert enthalten
+	 */
+	private boolean validateNoNullPointer() {
+		boolean noNullPointer;
+		if (emailAdress.isEmpty() || password.isEmpty() || firstName.isEmpty()
+				|| lastName.isEmpty() || company.isEmpty()) {
+			noNullPointer = false;
+			getView().showErrorMessage("Bitte füllen Sie alle Felder aus.");
+		} else {
+			noNullPointer = true;
+		}
+
+		return noNullPointer;
+	}
+
+	/**
 	 * Prueft ob das Passwort gleich der Passwortwiederholung ist und gibt
 	 * "true" fuer uebereinstimmung und "false" fuer keine Uebereinstimmung
-	 * zurueck
+	 * zurueck. Bei keiner Uebereinstimmung wird zudem eine Fehlermeldung an die
+	 * ViewImpl zur Ausgabe zurueckgegeben.
 	 * 
 	 * @author Christian Scherer
 	 * @return Ob die beiden Passwörter gleich sind oder nicht
 	 */
-	public boolean validatePassword(String password, String passwordRep) {
-		return password.equals(passwordRep);
+	private boolean validatePassword() {
+
+		String password = getView().getPassword();
+		String passwordRep = getView().getPasswordRep();
+		boolean passwordValid;
+
+		if (password.equals(passwordRep)) {
+			passwordValid = true;
+		} else {
+			passwordValid = false;
+			getView()
+					.showErrorMessage(
+							"Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre eingabe");
+		}
+		return passwordValid;
 
 	}
 
@@ -152,8 +197,17 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @TODO authentifizierungsmethode rufen
 	 */
 	public void passwordForgot() {
-		// Authentifizierungssmethode für vergessenens PAsswort aufrufen
+		// Authentifizierungssmethode für vergessenens Passwort aufrufen
 
+	}
+
+	/**
+	 * Ruft die Methode showRegisterUserDialog() der ViewImpl auf.
+	 * 
+	 * @author Christian Scherer
+	 */
+	public void registerUserDialog() {
+		getView().showRegisterUserDialog();
 	}
 
 }
