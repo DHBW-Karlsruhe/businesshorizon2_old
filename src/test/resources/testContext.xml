@@ -16,6 +16,5 @@
 		Ueberschreiben moeglich wird) und dass der Scope der Selbe ist (i.d.R. "session").
 	-->
 	
-	<bean name="periodListView" class="dhbw.ka.mwi.businesshorizon2.tests.ui.periodlist.assets.PeriodListViewMock" scope="session" />
 		
 </beans>
