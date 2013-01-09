@@ -20,8 +20,8 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * die Kommunikation mit der User Datenbank herstellen und die
 	 * Authentifizierung durchführen.
 	 * 
-	 * @param username
-	 *            Anmeldename eines Nutzers
+	 * @param emailAdress
+	 *            E-Mail Adresse des Users zum Anmelden
 	 * @param password
 	 *            Passwort des Nutzers
 	 * @return User Objekt mit Benutzerdaten
@@ -42,16 +42,18 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * müssen eine Verbindung zur Datenbank herstellen und einen neuen User mit
 	 * den übergebenen Parametern anlegen.
 	 * 
-	 * @param username
-	 *            Name zur Anmeldung eines Users
+	 * @param emailAdress
+	 *            E-Mail Adresse des Users zum anmelden
 	 * @param password
 	 *            Passwort zum Anmeldenamen
 	 * @param firstName
 	 *            Vorname des Anwenders
 	 * @param lastName
 	 *            Nachname des Anwenders
+	 * @throws UserAlreadyExistsException
 	 */
-	public void registerNewUser(String username, String password, String firstName, String lastName, String company);
+	public void registerNewUser(String emailAdress, String password, String firstName, String lastName, String company)
+			throws UserAlreadyExistsException;
 
 	/**
 	 * Methode zum Löschen des als Parameter übergebenen Users.

@@ -11,6 +11,7 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
 
@@ -95,6 +96,63 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			eventBus.fireEvent(new ShowUserEvent(user));
 			logger.debug("ShowUserEvent gefeuert");
 		}
+
+	}
+
+	/**
+	 * Diese Methode wird von der LogIn Impl gerufen um zu prüfen ob ein ... Der
+	 * Aufruf wird hierbei nur an den Authentisierungsmechanismus weitergeleitet
+	 * und das Ergebnis zurückgegeben.
+	 * 
+	 * @author Christian Scherer
+	 * @param firstName
+	 *            Vorname, der eingegeben wurde
+	 * @param lastName
+	 *            Nachname, der eingegeben wurde
+	 * @param emailAdress
+	 *            Mailadresse, die eingegeben wurde
+	 * @param company
+	 *            Unternehmen, das eingegeben wurde
+	 * @param password
+	 *            Passwort, das eingegeben wurde
+	 * 
+	 * @TODO In der Methode statt einen neuen User zu erzeugen die
+	 *       authentifizierungsmethode rufen (siehe Kommentare in der Methode)
+	 * 
+	 */
+	public void registerUser(String firstName, String lastName, String company, String emailAdress, String password) {
+		try {
+			authenticationService.registerNewUser(emailAdress, password, firstName, lastName, company);
+			logger.debug("Registrierung abgeschlossen.");
+		} catch (UserAlreadyExistsException e) {
+			getView().showErrorMessage(e.getMessage());
+			return;
+		}
+
+	}
+
+	/**
+	 * Prueft ob das Passwort gleich der Passwortwiederholung ist und gibt
+	 * "true" fuer uebereinstimmung und "false" fuer keine Uebereinstimmung
+	 * zurueck
+	 * 
+	 * @author Christian Scherer
+	 * @return Ob die beiden Passwörter gleich sind oder nicht
+	 */
+	public boolean validatePassword(String password, String passwordRep) {
+		return password.equals(passwordRep);
+
+	}
+
+	/**
+	 * Ruft die Methode des AutehnticationService zur Behandlung eines
+	 * vergessenen Passworts auf.
+	 * 
+	 * @author Christian Scherer
+	 * @TODO authentifizierungsmethode rufen
+	 */
+	public void passwordForgot() {
+		// Authentifizierungssmethode für vergessenens PAsswort aufrufen
 
 	}
 

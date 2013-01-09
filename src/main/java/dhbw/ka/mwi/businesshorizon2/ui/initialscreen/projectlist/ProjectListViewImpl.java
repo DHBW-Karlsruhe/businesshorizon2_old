@@ -11,9 +11,12 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -32,7 +35,8 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  * setProjects und generateSingleProject erzeugt. Die Click-Events verschiedener
  * werden gesammelt in der Methode buttonClick verwertet und falls Logik von
  * noeten ist vom Presenter weiter ausgefuehrt. Die Auswahl eines Projekts wird
- * hier mittels der layoutClick Methode realisiert und fuehrt zum Projekt-Wizard.
+ * hier mittels der layoutClick Methode realisiert und fuehrt zum
+ * Projekt-Wizard.
  * 
  * @author Christian Scherer
  * 
@@ -90,8 +94,9 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	/**
 	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
-	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die Methode
-	 * setProjects das ProjectListPanel mit konkreten Projekten gefÃ¼llt.
+	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die
+	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
+	 * gefÃ¼llt.
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -161,7 +166,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * buttonClick zu gewÃ¤hrleisten. Zum Schluss wird dem Layout noch ein
 	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
 	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
-	 * Projekts wechselt und das VerticalLayout dem projectListPanel hinzgefÃ¼gt.
+	 * Projekts wechselt und das VerticalLayout dem projectListPanel
+	 * hinzgefÃ¼gt.
 	 * 
 	 * @author Christian Scherer
 	 * @param project
@@ -227,32 +233,40 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	/**
 	 * Zeige das Projekt-Hinzuegen-Dialogfenster, bei dem ein Eingabefeld fuer
 	 * den Namen des Projekts und ein Hinzfuege-Button vorhanden ist. Funktion
-	 * bei geklicktem Button siehe Clicklistener in dieser Klasse.
+	 * bei geklicktem Button siehe Clicklistener in dieser Klasse. Das
+	 * horizontale Layout zur Darstellung besitzt ein Formlayout und den Button,
+	 * die nebeneinander dargestellt werden.
 	 * 
 	 * @author Christian Scherer
 	 */
 	public void showAddProjectDialog() {
 		addDialog = new Window("Projekt hinzufügen");
 		addDialog.setModal(true);
-		addDialog.setWidth(400, UNITS_PIXELS);
+		addDialog.setWidth(430, UNITS_PIXELS);
 		addDialog.setResizable(false);
 		addDialog.setDraggable(false);
 
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setSpacing(true);
-		Label name = new Label("Bitte Name wählen: ");
-		layout.addComponent(name);
+
+		FormLayout formLayout = new FormLayout();
+		formLayout.setMargin(false);
+		formLayout.setSpacing(false);
 
 		tfName = new TextField();
+		tfName.setCaption("Bitte Namen wählen:");
 		tfName.setRequired(true);
+		tfName.addValidator(new StringLengthValidator(
+				"Der Projektname muss zwischen 2 und 20 Zeichen lang sein.", 2,
+				20, false));
 		tfName.setRequiredError("Pflichtfeld");
-
-		layout.addComponent(tfName);
-		addDialog.addComponent(layout);
+		formLayout.addComponent(tfName);
+		layout.addComponent(formLayout);
 
 		dialogAddBtn = new Button("Hinzufügen", this);
-
 		layout.addComponent(dialogAddBtn);
+
+		addDialog.addComponent(layout);
 
 		getWindow().addWindow(addDialog);
 		logger.debug("Hinzufuege-Dialog erzeugt");
@@ -265,13 +279,13 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
 	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
-	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprueft ob
-	 * das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls nicht
-	 * wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
-	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird zunÃ¤chst
-	 * durch das Event in der Loesch-Buttonliste der Index identifiziert, also
-	 * welches Projekt zu loeschen ist. Die jeweils folgende Logid ist in der je
-	 * aufgerufen Methode des Presenters zu finden.
+	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprueft
+	 * ob das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls
+	 * nicht wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann
+	 * die Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
+	 * zunÃ¤chst durch das Event in der Loesch-Buttonliste der Index
+	 * identifiziert, also welches Projekt zu loeschen ist. Die jeweils folgende
+	 * Logid ist in der je aufgerufen Methode des Presenters zu finden.
 	 * 
 	 * @author Christian Scherer
 	 * @param event

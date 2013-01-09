@@ -138,14 +138,23 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	 * Beim Registrieren eines neuen Users wird dieser zum einen zur Liste aller
 	 * existierender User hinzugefügt und des Weiteren die Datei mit den
 	 * Userinformationen neu geschrieben.
+	 * 
+	 * @throws UserAlreadyExistsException
 	 */
 	public synchronized void registerNewUser(String emailAdress, String password, String firstName, String lastName,
-			String company) {
+			String company) throws UserAlreadyExistsException {
 		User user = new User(firstName, lastName, company, emailAdress, password);
+
+		for (User existingUser : allUsers) {
+			if (emailAdress.equals(existingUser.getEmailAdress())) {
+				throw new UserAlreadyExistsException("An User with email adress " + emailAdress + " already exists");
+			}
+		}
+
 		allUsers.add(user);
 
 		try {
-			// eventuell muss file vorher gelöscht werden???
+
 			FileOutputStream fileOutput = new FileOutputStream(file);
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 
