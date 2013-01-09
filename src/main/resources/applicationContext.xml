@@ -19,13 +19,8 @@
 		<constructor-arg ref="eventBus" />
 	</bean>
 
-	<!-- Services -->
-	<bean name="authenticationService" class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" scope="singleton"/>
-	
+
 	<!-- Methods -->
-	<bean name="calculateTide"
-		class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide"
-		scope="session" />
 	<bean name="timeseries"
 		class="dhbw.ka.mwi.businesshorizon2.methods.timeseries.Timeseries"
 		scope="session" />
@@ -34,17 +29,10 @@
 
 
 
-	
 	<!-- Models -->
 	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project"
 		scope="session" />
 	<bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
-		scope="session" />
-		
-	<!-- LogIn -->
-	<bean name="logInPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenPresenter"
-		scope="session" />
-	<bean name="logInScreenView" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl"
 		scope="session" />
 
 
@@ -72,6 +60,7 @@
 	<!-- Process-Navigation -->
 	<bean name="navigationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationPresenter" scope="session" />
 	<bean name="navigationView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationViewImpl"  scope="session"/>
+
 
 
 	<!-- ContentContainer -->
