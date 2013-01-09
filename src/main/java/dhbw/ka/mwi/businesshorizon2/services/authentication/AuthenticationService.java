@@ -36,7 +36,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	private File file;
 
 	private static final String DIRECTORY = System.getProperty("user.home") + "\\Business Horizon";
-	private static final String FILENAME = "E:\\DHBW\\5. Semester\\Business Horizon\\Repository\\Business Horizon 2\\businesshorizon2\\users.dat";
+	private static final String FILENAME = "C:\\Users\\Florian Stier\\Business Horizon\\users.dat";
 
 	private List<User> allUsers;
 	private Map<String, User> loggedInUsers;
@@ -102,34 +102,34 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 
 	}
 
-	public synchronized User doLogin(String username, String password) throws UserNotFoundException,
+	public synchronized User doLogin(String emailAdress, String password) throws UserNotFoundException,
 			WrongPasswordException {
 
 		for (User user : allUsers) {
-			if (user.getUsername().equals(username)) {
+			if (user.getEmailAdress().equals(emailAdress)) {
 				if (user.getPassword().equals(password)) {
-					loggedInUsers.put(user.getUsername(), user);
-					logger.debug("User " + username + " successfully logged in.");
+					loggedInUsers.put(user.getEmailAdress(), user);
+					logger.debug("User " + emailAdress + " successfully logged in.");
 					return user;
 				} else {
-					logger.debug("Wrong password for user " + username);
-					throw new WrongPasswordException("Wrong password for user " + username + " submitted");
+					logger.debug("Wrong password for user " + emailAdress);
+					throw new WrongPasswordException("Wrong password for user " + emailAdress + " submitted");
 				}
 			}
 		}
 
-		throw new UserNotFoundException("User " + username + " doesn't exist.");
+		throw new UserNotFoundException("User " + emailAdress + " doesn't exist.");
 
 	}
 
 	public synchronized void doLogout(User user) throws UserNotLoggedInException {
 
-		if (loggedInUsers.containsKey(user.getUsername())) {
-			loggedInUsers.remove(user.getUsername());
-			logger.debug("User " + user.getUsername() + " successfully logged out.");
+		if (loggedInUsers.containsKey(user.getEmailAdress())) {
+			loggedInUsers.remove(user.getEmailAdress());
+			logger.debug("User " + user.getEmailAdress() + " successfully logged out.");
 		} else {
-			logger.error("User " + user.getUsername() + " is already logged out.");
-			throw new UserNotLoggedInException("The user " + user.getUsername() + " is not logged in");
+			logger.error("User " + user.getEmailAdress() + " is already logged out.");
+			throw new UserNotLoggedInException("The user " + user.getEmailAdress() + " is not logged in");
 		}
 
 	}
@@ -139,8 +139,9 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	 * existierender User hinzugefügt und des Weiteren die Datei mit den
 	 * Userinformationen neu geschrieben.
 	 */
-	public synchronized void registerNewUser(String username, String password, String firstName, String lastName) {
-		User user = new User(username, password, firstName, lastName);
+	public synchronized void registerNewUser(String emailAdress, String password, String firstName, String lastName,
+			String company) {
+		User user = new User(firstName, lastName, company, emailAdress, password);
 		allUsers.add(user);
 
 		try {

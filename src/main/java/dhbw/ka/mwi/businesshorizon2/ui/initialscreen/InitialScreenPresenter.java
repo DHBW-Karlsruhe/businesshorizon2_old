@@ -75,7 +75,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 
 		user = event.getUser();
-		getView().showUserData(user.getUsername());
+		getView().showUserData(user.getCompany());
 		getView().showView(projectListView, infosView);
 		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));

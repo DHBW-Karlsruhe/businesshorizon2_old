@@ -14,22 +14,135 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	protected ArrayList<Project> projects = new ArrayList<Project>();
-
-	private String username;
-	private String password;
 	private String firstName;
 	private String lastName;
+	private String company;
+	private String emailAdress;
+	private String password;
+
+	protected ArrayList<Project> projects = new ArrayList<Project>();
 
 	public User() {
 
 	}
 
-	public User(String username, String password, String firstName, String lastName) {
-		this.username = username;
-		this.password = password;
+	/**
+	 * Konstruktor des User Objekts
+	 * 
+	 * @author Christian Scherer
+	 */
+	public User(String firstName, String lastName, String company,
+			String emailAdress, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.company = company;
+		this.emailAdress = emailAdress;
+		this.setPassword(password);
+	}
+
+	/**
+	 * Gibt den Vorname des User-Objekts zurück
+	 * 
+	 * @author Christian Scherer
+	 * @return Vorname des Users
+	 */
+	public String getFirstName() {
+		return this.firstName;
+	}
+	
+	/**
+	 * Setzt den Vornamen des User-Objekts
+	 * 
+	 * @author Christian Scherer
+	 * @param firstName
+	 *            Vornamen des Users
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * Gibt den Nachname des User-Objekts zurück
+	 * 
+	 * @author Christian Scherer
+	 * @return Nachname des Users
+	 */
+	public String getLastName() {
+		return this.lastName;
+	}
+	
+	/**
+	 * Setzt den Nachnamen des User-Objekts
+	 * 
+	 * @author Christian Scherer
+	 * @param lastName
+	 *            Nachname des Users
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * Gibt das Unternehmen des User-Objekts zurück
+	 * 
+	 * @author Christian Scherer
+	 * @return Unternehmen des Users
+	 */
+	public String getCompany() {
+		return this.company;
+	}
+	
+	/**
+	 * Setzt das Unternehmen des User-Objekts
+	 * 
+	 * @author Christian Scherer
+	 * @param company
+	 *            Unternehmen des Users
+	 */
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	/**
+	 * Gibt die Emailadresse des User-Objekts zurück
+	 * 
+	 * @author Christian Scherer
+	 * @return Emailadresse des Users
+	 */
+	public String getEmailAdress() {
+		return this.emailAdress;
+	}
+	
+	/**
+	 * Setzt die Emailadresse des User-Objekts
+	 * 
+	 * @author Christian Scherer
+	 * @param emailAdress
+	 *            Emailadresse des Users
+	 */
+	public void setEmailAdress(String emailAdress) {
+		this.emailAdress = emailAdress;
+	}
+
+	/**
+	 * Gibt das Passwort des User-Objekts zurück
+	 * 
+	 * @author Christian Scherer
+	 * @return Passwort des Users
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Setzt das Passwort des User-Objekts
+	 * 
+	 * @author Christian Scherer
+	 * @param password
+	 *            Passwort des Users
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**
@@ -64,36 +177,4 @@ public class User implements Serializable {
 		projects.remove(project);
 	}
 
-	public String getUsername() {
-		return username;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-}

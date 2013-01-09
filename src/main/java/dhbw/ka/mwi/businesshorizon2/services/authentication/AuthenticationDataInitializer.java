@@ -58,19 +58,17 @@ public class AuthenticationDataInitializer {
 
 				System.out.println("Insert data for User " + i + ":");
 				System.out.println("E-Mail address: ");
-				String email = stdIn.readLine();
+				String emailAdress = stdIn.readLine();
 				System.out.println("Password: ");
 				String password = stdIn.readLine();
 				System.out.println("First Name: ");
 				String firstName = stdIn.readLine();
 				System.out.println("Last Name: ");
 				String lastName = stdIn.readLine();
+				System.out.println("Company: ");
+				String company = stdIn.readLine();
 
-				User user = new User();
-				user.setUsername(email);
-				user.setPassword(password);
-				user.setFirstName(firstName);
-				user.setLastName(lastName);
+				User user = new User(firstName, lastName, company, emailAdress, password);
 
 				objectOut.writeObject(user);
 
