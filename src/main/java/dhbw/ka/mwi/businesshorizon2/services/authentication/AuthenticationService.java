@@ -36,7 +36,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	private File file;
 
 	private static final String DIRECTORY = System.getProperty("user.home") + "\\Business Horizon";
-	private static final String FILENAME = "C:\\Users\\Florian Stier\\Business Horizon\\users.dat";
+	private static final String FILENAME = "\\users.dat";
 
 	private List<User> allUsers;
 	private Map<String, User> loggedInUsers;
@@ -49,7 +49,14 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	@PostConstruct
 	public void init() {
 
-		file = new File(FILENAME);
+		file = new File(DIRECTORY);
+
+		if (!file.exists()) {
+			file.mkdir();
+			logger.debug("New directory created at: " + file.getAbsolutePath());
+		}
+
+		file = new File(DIRECTORY + FILENAME);
 
 		if (!file.exists()) {
 			try {
@@ -104,16 +111,17 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 
 	public synchronized User doLogin(String emailAdress, String password) throws UserNotFoundException,
 			WrongPasswordException {
-
-		for (User user : allUsers) {
-			if (user.getEmailAdress().equals(emailAdress)) {
-				if (user.getPassword().equals(password)) {
-					loggedInUsers.put(user.getEmailAdress(), user);
-					logger.debug("User " + emailAdress + " successfully logged in.");
-					return user;
-				} else {
-					logger.debug("Wrong password for user " + emailAdress);
-					throw new WrongPasswordException("Wrong password for user " + emailAdress + " submitted");
+		if (allUsers != null) {
+			for (User user : allUsers) {
+				if (user.getEmailAdress().equals(emailAdress)) {
+					if (user.getPassword().equals(password)) {
+						loggedInUsers.put(user.getEmailAdress(), user);
+						logger.debug("User " + emailAdress + " successfully logged in.");
+						return user;
+					} else {
+						logger.debug("Wrong password for user " + emailAdress);
+						throw new WrongPasswordException("Wrong password for user " + emailAdress + " submitted");
+					}
 				}
 			}
 		}
@@ -144,6 +152,11 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	public synchronized void registerNewUser(String emailAdress, String password, String firstName, String lastName,
 			String company) throws UserAlreadyExistsException {
 		User user = new User(firstName, lastName, company, emailAdress, password);
+
+		if (allUsers == null) {
+			allUsers = new ArrayList<User>();
+			loggedInUsers = new LinkedHashMap<String, User>();
+		}
 
 		for (User existingUser : allUsers) {
 			if (emailAdress.equals(existingUser.getEmailAdress())) {
