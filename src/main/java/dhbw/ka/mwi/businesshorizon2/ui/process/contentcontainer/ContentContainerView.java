@@ -21,4 +21,6 @@ public interface ContentContainerView extends View {
 	 * @author Julius Hacker
 	 */
 	public void showContentView(ContentView newView);
+	public void activateNext(boolean activate);
+	public void activateBack(boolean activate);
 }
