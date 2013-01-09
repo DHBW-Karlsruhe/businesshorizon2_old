@@ -1,7 +1,8 @@
 language: java
 jdk: oraclejdk7
+script: "mvn test"
 notifications:
-	email: 
+	email:
 		recipients:
 			- wouf-it@chrisgahlert.com
 		on_success: never
