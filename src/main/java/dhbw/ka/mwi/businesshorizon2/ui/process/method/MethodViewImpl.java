@@ -46,6 +46,8 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		stochastic.setImmediate(true);
+		deterministic.setImmediate(true);
 		
 		stochastic.addListener(new Button.ClickListener() {
 			
@@ -53,8 +55,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.toggleMethodType();
-				
+				presenter.toggleMethodType(true,event.getButton().booleanValue());				
 			}
 		});
 		deterministic.addListener(new Button.ClickListener() {
@@ -64,7 +65,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.toggleMethodType();
+				presenter.toggleMethodType(false,event.getButton().booleanValue());
 				
 			}
 		});
@@ -126,6 +127,12 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@Override
 	public void enableOptions() {
 		
+		
+	}
+
+	@Override
+	public void enableMethodSelection(Boolean state) {
+		methods.setEnabled(state);
 		
 	}
 }

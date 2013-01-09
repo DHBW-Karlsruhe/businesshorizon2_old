@@ -9,7 +9,7 @@ package dhbw.ka.mwi.businesshorizon2.models;
  * 
  */
 
-public class SelectedInputType  {
+public class InputType  {
 	
 	/**
 	 * 
@@ -17,6 +17,8 @@ public class SelectedInputType  {
 	
 	private Boolean stochastic;
 	private Boolean deterministic;
+	private int stochasticInput;
+	private int deterministicInput;
 	
 
 	public Boolean getStochastic() {

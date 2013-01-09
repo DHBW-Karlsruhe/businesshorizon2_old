@@ -14,5 +14,7 @@ public interface MethodViewInterface extends ContentView {
 	public void showMethod(String methodName,Boolean implemented, Boolean selected);
 	
 	public void enableOptions();
+	
+	public void enableMethodSelection(Boolean state);
 
 }

@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.models.SelectedInputType;
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -25,6 +25,8 @@ import dhbw.ka.mwi.businesshorizon2.models.SelectedInputType;
  * 
  */
 public class Project implements Serializable {
+
+
 	private static final long serialVersionUID = 1L;
 	
 	protected NavigableSet<Period> periods = new TreeSet<Period>();
@@ -33,7 +35,7 @@ public class Project implements Serializable {
 	
 	protected String name;
 	
-	protected SelectedInputType inputType;
+	protected InputType inputType;
 	
 	@Autowired
 	private SortedSet<AbstractStochasticMethod> methods;	
@@ -54,7 +56,7 @@ public class Project implements Serializable {
 	 * @author Christian Scherer
 	 */
 	public Project(){
-		this.inputType = new SelectedInputType();
+		this.inputType = new InputType();
 	}
 	
 	
@@ -149,9 +151,8 @@ public class Project implements Serializable {
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
-
-	public void setMethods(SortedSet<AbstractStochasticMethod> methods) {
-		this.methods = methods;
+	
+	public InputType getInputType() {
+		return inputType;
 	}
-
 }

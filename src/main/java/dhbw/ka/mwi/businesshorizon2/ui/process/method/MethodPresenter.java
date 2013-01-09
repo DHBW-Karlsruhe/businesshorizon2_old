@@ -6,7 +6,6 @@ import java.util.SortedSet;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.log4j.Logger;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
@@ -14,6 +13,7 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.CheckMethodTypeEvent;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 
 /**
@@ -27,15 +27,15 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Logger logger = Logger.getLogger("MethodPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private Project project;
 	
 	private SortedSet<AbstractStochasticMethod> methods;
+	private InputType inputType;
 
 	
 	/**
@@ -48,6 +48,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	public void init() {
 		eventBus.addHandler(this);
 		this.methods = project.getMethods();
+		inputType = project.getInputType();
 		
 	}
 
@@ -65,8 +66,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		return true;
 	}
 	
-	public void toggleMethodType(){
-		eventBus.fireEvent(new CheckMethodTypeEvent());
+	public void toggleMethodType(Boolean stochastic,Boolean checked){
+		eventBus.fireEvent(new CheckMethodTypeEvent(stochastic,checked));
 	}
 	
 	public void toggleMethod(Set<String> checkedMethods){
@@ -79,15 +80,32 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 		for (AbstractStochasticMethod m : methods) {
 			getView().showMethod(m.getName(),m.getImplemented(),m.getSelected());
-
 		}
 		
+		Boolean state = inputType.getStochastic();
+		
+		if (state != null){
+			getView().enableMethodSelection(state);
+		}
+		else{
+			inputType.setStochastic(false);
+			getView().enableMethodSelection(false);
+		}
 	}
 	
 	@EventHandler
 	public void onCheckMethodType(CheckMethodTypeEvent event){
 		
+		Boolean check = event.getChecked();
+		Boolean stoch = event.getStochastic();
 		
+		if (stoch){
+			inputType.setStochastic(check);
+			getView().enableMethodSelection(check);
+		}
+		else if (!stoch){
+			inputType.setDeterministic(check);
+		}
 		
 	}
 	
@@ -105,6 +123,5 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			}
 		}
 		
-		logger.debug("Angewählte Methoden "+ methods.toString());
 	}
 }
