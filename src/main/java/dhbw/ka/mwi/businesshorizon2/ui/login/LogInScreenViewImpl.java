@@ -226,4 +226,5 @@ public class LogInScreenViewImpl extends Window implements LogInScreenViewInterf
 
 		logger.debug("Registrier-Dialog erzeugt");
 	}
+
 }

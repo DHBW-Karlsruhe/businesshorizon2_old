@@ -1,7 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
@@ -18,7 +16,6 @@ public class ShowProjectListEvent extends Event {
 
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
 	private User user;
 
 	/**
