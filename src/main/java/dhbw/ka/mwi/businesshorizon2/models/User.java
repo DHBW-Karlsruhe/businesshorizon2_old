@@ -22,11 +22,17 @@ public class User implements Serializable {
 
 	protected ArrayList<Project> projects = new ArrayList<Project>();
 
-	public User() {
-
+	public User(){
+		
 	}
-
-	public User(String firstName, String lastName, String company, String emailAdress, String password) {
+	
+	/**
+	 * Konstruktor des User Objekts
+	 * 
+	 * @author Christian Scherer
+	 */
+	public User(String firstName, String lastName, String company,
+			String emailAdress, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.company = company;
