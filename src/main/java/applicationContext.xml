@@ -32,8 +32,8 @@
 	<!-- Models -->
 	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project"
 		scope="session" />
-	<bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
-		scope="session" />
+	<!-- <bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
+		scope="session" />-->
 
 
 	<!-- Initial-Screen -->

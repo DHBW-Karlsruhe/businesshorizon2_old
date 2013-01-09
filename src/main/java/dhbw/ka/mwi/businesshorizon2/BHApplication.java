@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.vaadin.Application;
+import com.vaadin.terminal.Terminal;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
@@ -77,6 +78,4 @@ public class BHApplication extends Application {
 		eventBus.fireEvent(new ShowProcessViewEvent());
 		logger.debug("ShowMainViewEvent gefeuert");
 	}
-	
-
 }
