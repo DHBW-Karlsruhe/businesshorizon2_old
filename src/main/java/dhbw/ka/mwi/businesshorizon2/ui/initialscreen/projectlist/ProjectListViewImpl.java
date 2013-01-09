@@ -14,15 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodInterface;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
 /**
@@ -32,7 +32,8 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  * setProjects und generateSingleProject erzeugt. Die Click-Events verschiedener
  * werden gesammelt in der Methode buttonClick verwertet und falls Logik von
  * noeten ist vom Presenter weiter ausgefuehrt. Die Auswahl eines Projekts wird
- * hier mittels der layoutClick Methode realisiert und fuehrt zum Projekt-Wizard.
+ * hier mittels der layoutClick Methode realisiert und fuehrt zum
+ * Projekt-Wizard.
  * 
  * @author Christian Scherer
  * 
@@ -49,7 +50,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	private List<Project> projects;
 
-	NavigableSet<Period> periodList;
+	NavigableSet<PeriodInterface> periodList;
 
 	private Project project;
 
@@ -90,8 +91,9 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	/**
 	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
-	 * ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird durch die Methode
-	 * setProjects das ProjectListPanel mit konkreten Projekten gefÃ¼llt.
+	 * ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird durch die
+	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
+	 * gefÃ¼llt.
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -161,7 +163,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * buttonClick zu gewÃ¤hrleisten. Zum Schluss wird dem Layout noch ein
 	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
 	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
-	 * Projekts wechselt und das VerticalLayout dem projectListPanel hinzgefÃ¼gt.
+	 * Projekts wechselt und das VerticalLayout dem projectListPanel
+	 * hinzgefÃ¼gt.
 	 * 
 	 * @author Christian Scherer
 	 * @param project
@@ -265,13 +268,13 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
 	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
-	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft ob
-	 * das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls nicht
-	 * wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
-	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird zunÃ¤chst
-	 * durch das Event in der Loesch-Buttonliste der Index identifiziert, also
-	 * welches Projekt zu loeschen ist. Die jeweils folgende Logid ist in der je
-	 * aufgerufen Methode des Presenters zu finden.
+	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft
+	 * ob das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls
+	 * nicht wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann
+	 * die Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
+	 * zunÃ¤chst durch das Event in der Loesch-Buttonliste der Index
+	 * identifiziert, also welches Projekt zu loeschen ist. Die jeweils folgende
+	 * Logid ist in der je aufgerufen Methode des Presenters zu finden.
 	 * 
 	 * @author Christian Scherer
 	 * @param event
