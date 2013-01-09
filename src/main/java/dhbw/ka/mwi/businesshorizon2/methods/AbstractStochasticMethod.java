@@ -13,7 +13,7 @@ abstract public class AbstractStochasticMethod implements
 		Comparable<AbstractStochasticMethod>, Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	protected Boolean selected;
+	protected Boolean selected = false;
 	
 	public Boolean getSelected() {
 		return selected;

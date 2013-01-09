@@ -32,7 +32,7 @@ public class RandomWalk extends AbstractStochasticMethod {
 
 	@Override
 	public Boolean getImplemented() {
-		return false;
+		return true;
 	}
 
 }

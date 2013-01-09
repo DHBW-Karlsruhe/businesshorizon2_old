@@ -1,9 +1,10 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Component;
@@ -11,6 +12,9 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+
 
 
 /**
@@ -24,7 +28,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private MethodPresenter presenter;	
+	private MethodPresenter presenter;
 	private VerticalLayout methodList = new VerticalLayout();
 	private VerticalLayout inputMethod = new VerticalLayout();
 	private OptionGroup methods = new OptionGroup();
@@ -49,7 +53,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.activateMethodType();
+				presenter.toggleMethodType();
 				
 			}
 		});
@@ -60,11 +64,29 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.activateMethodType();
+				presenter.toggleMethodType();
 				
 			}
 		});
 		methods.setMultiSelect(true);
+		methods.setImmediate(true);
+		methods.addListener(new Property.ValueChangeListener() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				
+				if (event.getProperty() instanceof Set<?>){
+				presenter.toggleMethod((Set<String>) event.getProperty());
+				}
+				
+				getWindow().showNotification("Selected method: " + event.getProperty());
+
+				
+			}
+		});
 		
 		generateUi();
 	}
@@ -92,7 +114,11 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		
 		methods.addItem(methodName);
 		methods.setItemEnabled(methodName, implemented);
-		methods.select(methodName);
+		
+		if (selected){
+			methods.select(methodName);
+		}
+		
 
 
 	}

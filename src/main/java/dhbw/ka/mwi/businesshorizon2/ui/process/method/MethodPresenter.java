@@ -1,10 +1,12 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.Logger;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
@@ -24,6 +26,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = Logger.getLogger("MethodPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -61,8 +65,12 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		return true;
 	}
 	
-	public void activateMethodType(){
+	public void toggleMethodType(){
 		eventBus.fireEvent(new CheckMethodTypeEvent());
+	}
+	
+	public void toggleMethod(Set<String> checkedMethods){
+		eventBus.fireEvent(new CheckMethodEvent(checkedMethods));
 	}
 	
 	@EventHandler
@@ -78,7 +86,25 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	
 	@EventHandler
 	public void onCheckMethodType(CheckMethodTypeEvent event){
-
 		
+		
+		
+	}
+	
+	@EventHandler
+	public void onCheckMethod(CheckMethodEvent event){
+		Set<String> checkedUIMethods = event.getCheckedMethods();
+		
+		for (AbstractStochasticMethod m : methods){
+			m.setSelected(false);
+			for (String n : checkedUIMethods){				
+				if (m.getName().equals(n)){
+					m.setSelected(true);
+				}
+				
+			}
+		}
+		
+		logger.debug("Angewählte Methoden "+ methods.toString());
 	}
 }
