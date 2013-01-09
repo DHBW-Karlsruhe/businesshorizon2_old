@@ -1,7 +1,5 @@
 language: java
-install: mvn
 jdk: oraclejdk7
-script: "ant unittests"
 notifications:
 	email: 
 		recipients:
