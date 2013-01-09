@@ -26,13 +26,7 @@ public class User implements Serializable {
 
 	}
 
-	/**
-	 * Konstruktor des User Objekts
-	 * 
-	 * @author Christian Scherer
-	 */
-	public User(String firstName, String lastName, String company,
-			String emailAdress, String password) {
+	public User(String firstName, String lastName, String company, String emailAdress, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.company = company;
@@ -49,7 +43,7 @@ public class User implements Serializable {
 	public String getFirstName() {
 		return this.firstName;
 	}
-	
+
 	/**
 	 * Setzt den Vornamen des User-Objekts
 	 * 
@@ -70,7 +64,7 @@ public class User implements Serializable {
 	public String getLastName() {
 		return this.lastName;
 	}
-	
+
 	/**
 	 * Setzt den Nachnamen des User-Objekts
 	 * 
@@ -91,7 +85,7 @@ public class User implements Serializable {
 	public String getCompany() {
 		return this.company;
 	}
-	
+
 	/**
 	 * Setzt das Unternehmen des User-Objekts
 	 * 
@@ -112,126 +106,7 @@ public class User implements Serializable {
 	public String getEmailAdress() {
 		return this.emailAdress;
 	}
-	
-	/**
-	 * Setzt die Emailadresse des User-Objekts
-	 * 
-	 * @author Christian Scherer
-	 * @param emailAdress
-	 *            Emailadresse des Users
-	 */
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
-	}
 
-	/**
-	 * Gibt das Passwort des User-Objekts zurück
-	 * 
-	 * @author Christian Scherer
-	 * @return Passwort des Users
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * Setzt das Passwort des User-Objekts
-	 * 
-	 * @author Christian Scherer
-	 * @param password
-	 *            Passwort des Users
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * Konstruktor des User Objekts
-	 * 
-	 * @author Christian Scherer
-	 */
-	public User(String firstName, String lastName, String company,
-			String emailAdress, String password) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.company = company;
-		this.emailAdress = emailAdress;
-		this.setPassword(password);
-	}
-
-	/**
-	 * Gibt den Vorname des User-Objekts zurück
-	 * 
-	 * @author Christian Scherer
-	 * @return Vorname des Users
-	 */
-	public String getFirstName() {
-		return this.firstName;
-	}
-	
-	/**
-	 * Setzt den Vornamen des User-Objekts
-	 * 
-	 * @author Christian Scherer
-	 * @param firstName
-	 *            Vornamen des Users
-	 */
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	/**
-	 * Gibt den Nachname des User-Objekts zurück
-	 * 
-	 * @author Christian Scherer
-	 * @return Nachname des Users
-	 */
-	public String getLastName() {
-		return this.lastName;
-	}
-	
-	/**
-	 * Setzt den Nachnamen des User-Objekts
-	 * 
-	 * @author Christian Scherer
-	 * @param lastName
-	 *            Nachname des Users
-	 */
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	/**
-	 * Gibt das Unternehmen des User-Objekts zurück
-	 * 
-	 * @author Christian Scherer
-	 * @return Unternehmen des Users
-	 */
-	public String getCompany() {
-		return this.company;
-	}
-	
-	/**
-	 * Setzt das Unternehmen des User-Objekts
-	 * 
-	 * @author Christian Scherer
-	 * @param company
-	 *            Unternehmen des Users
-	 */
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
-	/**
-	 * Gibt die Emailadresse des User-Objekts zurück
-	 * 
-	 * @author Christian Scherer
-	 * @return Emailadresse des Users
-	 */
-	public String getEmailAdress() {
-		return this.emailAdress;
-	}
-	
 	/**
 	 * Setzt die Emailadresse des User-Objekts
 	 * 
@@ -296,4 +171,4 @@ public class User implements Serializable {
 		projects.remove(project);
 	}
 
-	}
+}
