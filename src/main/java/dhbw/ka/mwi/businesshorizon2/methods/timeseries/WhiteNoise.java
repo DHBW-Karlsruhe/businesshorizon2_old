@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 import java.util.Random;
 
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Dies ist die WhiteNoise-Klasse der Zeitreihenanalyse. Sie stellt mit der
@@ -16,7 +16,7 @@ public class WhiteNoise {
 
 	private static final long serialVersionUID = 1L;
 
-	// private Logger logger = Logger.getLogger("WhiteNoise.class");
+	private Logger logger = Logger.getLogger("WhiteNoise.class");
 
 	private double deviation;
 	private Random randomGenerator;
@@ -35,7 +35,8 @@ public class WhiteNoise {
 	public WhiteNoise(double variance) {
 		this.deviation = Math.sqrt(variance);
 		this.randomGenerator = new Random();
-		// logger.debug("WhiteNoise Objekt Standardabweichung ("+this.deviation+") und Ramdom Obket Initialisiert");
+		logger.debug("WhiteNoise Objekt Standardabweichung (" + this.deviation
+				+ ") und Ramdom Objekt Initialisiert");
 
 	}
 

@@ -1,7 +1,17 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
+import org.apache.log4j.Logger;
+
+/**
+ * Diese Klasse stellt die Methoden für die Trendbereinigung zur Verfügung.
+ * 
+ * @author Kai Westerholz
+ * 
+ */
+
 public class CalculateTide implements CalculateTideInterface {
 
+	private Logger logger = Logger.getLogger("CalculateTide.class");
 	private double reduceTideParameterA;
 	private double reduceTideParameterB;
 	private double averageTimeseries;
@@ -13,6 +23,10 @@ public class CalculateTide implements CalculateTideInterface {
 	 * diese wenn nötig. Die Formel der Bereinigung lautet: Y*(t) = T(t) - Y(t)
 	 * 
 	 * @author Kai Westerholz
+	 * 
+	 * @param Zeitreihe
+	 *            der Zeitreihe
+	 * @result Trendbereinigte Zeitreihe
 	 */
 
 	public double[] reduceTide(double[] timeseries) {
@@ -25,7 +39,7 @@ public class CalculateTide implements CalculateTideInterface {
 		for (int i = 0; i < timeseries.length; i++) {
 			timeseries[i] = (this.getTideValue(i) - timeseries[i]);
 		}
-
+		logger.debug("Timeseries reduced.");
 		return timeseries;
 	}
 
@@ -56,12 +70,6 @@ public class CalculateTide implements CalculateTideInterface {
 			for (int i = 0; i < timeseries.length; i++) {
 				sum += timeseries[i];
 			}
-
-			/**
-			 * Period period; Iterator<Period> it = timeseries.iterator(); while
-			 * (it.hasNext()) { period = it.next(); sum += period.getCashFlow();
-			 * }
-			 */
 
 			this.averageTimeseries = (sum / (timeseries.length));
 		}

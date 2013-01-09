@@ -1,5 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
+import org.apache.log4j.Logger;
+
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -19,9 +21,8 @@ import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 
 public class AnalysisTimeseries extends AbstractStochasticMethod {
 	private static final long serialVersionUID = 1L;
-	private double mean;
+	private Logger logger = Logger.getLogger("AnalysisTimeseries.class");
 	private double variance;
-	private int consideredPeriodsOfPast;
 	private DoubleArrayList DoubleArrayListTimeseries;
 	private DoubleMatrix2D matrixValutaions;
 	private double yuleWalkerVariance;
@@ -32,10 +33,6 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 
 	public int getOrderKey() {
 		return 1;
-	}
-
-	public double getMean() {
-		return mean;
 	}
 
 	public double getVariance() {
@@ -54,6 +51,7 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 				DoubleArrayListTimeseries.size(),
 				Descriptive.sum(DoubleArrayListTimeseries),
 				Descriptive.sumOfSquares(DoubleArrayListTimeseries));
+		logger.debug("Variance of Timeseries calculated.");
 		return variance;
 	}
 
@@ -80,6 +78,10 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 	 * Diese Methode stellt das Lineare Gleichungssystem auf, das benötigt wird,
 	 * um die Schätzwerte ci der Zeitreihenanalyse zu erhalten und löst dieses.
 	 * Die berechneten Werte
+	 * 
+	 * @param consideredPeriodsOfPast
+	 * @return Matrix der C Werte
+	 * @author Kai Westerholz
 	 */
 	private DoubleMatrix2D calculateValuations(int consideredPeriodsOfPast) {
 
@@ -105,9 +107,11 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 
 		try {
 			matrixC = lUDecomp.solve(matrixERG);
+			logger.debug("C-Values of Yule-Walker-Equitation calculated.");
 		} catch (IllegalArgumentException exception) {
 			// TODO: Exception Handling
-			System.out.println(exception.getMessage());
+			logger.debug("Calculation of C-Values failed!");
+
 		}
 		return matrixC;
 	}
@@ -119,119 +123,114 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 	 * @param matrix
 	 *            Matrix aus der die Varianz berechnet werden soll
 	 * @return double Varianz aus YuleWalkerGleichung
+	 * 
+	 * @author Kai Westerholz
 	 */
 	private double calculateMatrixVariance(int consideredPeriodsOfPast) {
 
 		this.matrixValutaions = calculateValuations(consideredPeriodsOfPast);
-		;
 		double variance = calculateAutoCorrelation(0);
 		for (int i = 1; i <= consideredPeriodsOfPast; i++) {
 			variance -= this.matrixValutaions.get(i - 1, 0)
 					* calculateAutoCorrelation(i);
 		}
+		logger.debug("Variance of Yule-Walker-Equitation calculated.");
 		return variance;
 	}
 
 	/**
 	 * Diese Methode berechnet den prognostizierten Wert für die Periode auf
-	 * Basis der bisherigen Werte. Es ist irrelevant, ob es sich hierbei um
-	 * einen CashFlow oder eine andere Bilanzposition handelt.
+	 * Basis der beobachteten Zeitreihe
 	 * 
+	 * @author Kai Westerholz
 	 */
-
-	// public double[] calculate(SortedSet<Period> periods, Callback callback)
-	// throws InterruptedException {
-	//
-	// this.calculateMatrixVariance();
-	// WhiteNoise whiteNoise = new WhiteNoise(this.numberOfIterations,
-	// this.yuleWalkerVariance);
-	// int progress_complete = this.numberPeriodsToForcast
-	// * (consideredPeriodsOfPast + this.numberOfIterations);
-	// int progress = 0;
-	/**
-	 * for (int i = 1; i <= this.numberPeriodsToForcast; i++) {
-	 * ArrayList<Double> temp = new ArrayList<Double>();
-	 * whiteNoise.calculateWhiteNoiseList(); double equalizedValuePerPeriod =
-	 * 0.0; double previousValue = 0.0;
-	 * 
-	 * for (int j = 1; j <= this.consideredPeriodsOfPast; j++) { if (i == 1) {
-	 * previousValue = this.timeseriesArrayList .get(timeseriesArrayList.size()
-	 * - 1); } else { previousValue = this.result.getResultList().get(i - 1)
-	 * .getArrayList().get(j - 1); }
-	 * 
-	 * equalizedValuePerPeriod += matrixValutaions.get(j, 0) previousValue; }
-	 * progress += this.consideredPeriodsOfPast;
-	 * Thread.currentThread().isInterrupted(); boolean nextNeeded = true; for
-	 * (int j = 0; j <= this.numberOfIterations; i++) {
-	 * 
-	 * while (nextNeeded) { if (whiteNoise.hasNextValue()) {
-	 * temp.add(whiteNoise.getNextValue() + equalizedValuePerPeriod); nextNeeded
-	 * = false; } } nextNeeded = true; if (j % 200 == 0) { progress += j;
-	 * callback.onProgressChange((float) (progress / progress_complete));
-	 * Thread.currentThread().isInterrupted(); } } result.add(new
-	 * dhbw.ka.mwi.businesshorizon2.models.Timeseries(temp,
-	 * this.timeseries.getYearofPeriodZero())); }
-	 */
-	// return new double[1];
-	// }
 
 	@Override
 	public double[][] calculate(double[] previousValues,
-			int consideredPeriodsofPast, int periodsToForecast,
+			int consideredPeriodsOfPast, int periodsToForecast,
 			int numberOfIterations, Callback callback)
 			throws InterruptedException {
+		// vorbereitene Initialisierung
 		double[][] returnValues = new double[periodsToForecast][numberOfIterations];
-		this.consideredPeriodsOfPast = consideredPeriodsofPast;
+		int progress_complete = periodsToForecast
+				* (consideredPeriodsOfPast + numberOfIterations);
+		int progress = 0;
 
+		// Trendbereinigung der Zeitreihe
 		CalculateTide tide = new CalculateTide();
 		previousValues = tide.reduceTide(previousValues);
+
+		/**
+		 * Übertraugung der Werte der Zeitreihe in eine DoubleArrayList. Diese
+		 * wird von der COLT Bibliothek verwendet zur Lösung der Matrix.
+		 */
+
 		this.DoubleArrayListTimeseries = new DoubleArrayList();
 		for (int i = 0; i < previousValues.length; i++) {
 			this.DoubleArrayListTimeseries.add(previousValues[i]);
 		}
-		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
+
+		// Start der zur Prognose benötigten Berechnungen
 		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
 		this.yuleWalkerVariance = this
 				.calculateMatrixVariance(consideredPeriodsOfPast);
+
 		WhiteNoise whiteNoise = new WhiteNoise(this.yuleWalkerVariance);
-		int progress_complete = periodsToForecast
-				* (consideredPeriodsOfPast + numberOfIterations);
-		int progress = 0;
-		for (int i = 1; i <= periodsToForecast; i++) {
+
+		// Start der Prognose
+		for (int forecast = 1; forecast <= periodsToForecast; forecast++) {
 			double[] forecastsForPeriod = new double[numberOfIterations];
 			double equalizedValuePerPeriod = 0.0;
 			double previousValue = 0.0;
 
-			for (int j = 1; j <= this.consideredPeriodsOfPast; j++) {
-
-				if ((i - j) < 1) {
-					int oldIndex = previousValues.length - 1 - Math.abs(i - j);
-					previousValue = previousValues[oldIndex];
-				} else {
-					previousValue = returnValues[i - 1][(int) (Math.random() * numberOfIterations)];
-				}
-
-				equalizedValuePerPeriod += matrixValutaions.get(j - 1, 0)
-						* previousValue;
-			}
 			progress += consideredPeriodsOfPast;
 			Thread.currentThread().isInterrupted();
-			double newTide = tide.getTideValue(i + consideredPeriodsOfPast);
+			double newTide = tide.getTideValue(forecast
+					+ consideredPeriodsOfPast);
 
-			for (int j = 0; j < numberOfIterations; j++) {
+			for (int iterationStep = 0; iterationStep < numberOfIterations; iterationStep++) {
 
-				// forecastsForPeriod[j] = (double) (whiteNoise
-				// .getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
-				forecastsForPeriod[j] = (double) ((newTide - equalizedValuePerPeriod));
+				for (int past = 1; past <= consideredPeriodsOfPast; past++) {
 
-				if (j % 200 == 0) {
-					progress += j;
+					/**
+					 * Für die Formel des AR-Model wird eine bestimmte Anzahl an
+					 * bisherigen Perioden betrachtet. Der Term (i-j) gibt an
+					 * wie viele dieser Perioden aus den Beobachtungen gespeißt
+					 * werden. Ist der Termn (i-j) kleiner als 1 werden
+					 * Beobachtungswerte herangezogen. Ansonsten werden bereits
+					 * prognostizierte Werte verwendet Da das Array der
+					 * Beobachtungswerte den ältesten Wert beim Index = 0 hat
+					 * wird der letzte Werte abzüglich der bereits betraachteten
+					 * Werte benötigt.
+					 */
+					if ((forecast - past) < 1) {
+						int oldIndex = previousValues.length - 1
+								- Math.abs(forecast - past);
+						previousValue = previousValues[oldIndex];
+					} else {
+						previousValue = returnValues[forecast - 1][iterationStep];
+					}
+
+					equalizedValuePerPeriod += matrixValutaions
+							.get(past - 1, 0) * previousValue;
+				}
+
+				// Eigentliche Berechnung
+				forecastsForPeriod[iterationStep] = (double) (whiteNoise
+						.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
+				// Vergleichswert ohne Weißes Rauschen
+				forecastsForPeriod[iterationStep] = (double) ((newTide - equalizedValuePerPeriod));
+
+				if (iterationStep % 200 == 0) {
+					progress += iterationStep;
 					// callback.onProgressChange((float) (progress /
 					// progress_complete));
-					// Thread.currentThread().isInterrupted();
+					Thread.currentThread().isInterrupted();
 				}
 			}
-			returnValues[i - 1] = forecastsForPeriod;
+			returnValues[forecast - 1] = forecastsForPeriod;
+			logger.debug("Period " + forecast + "  of " + periodsToForecast
+					+ " predicted.");
 
 		}
 		return returnValues;
@@ -250,7 +249,9 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		Callback callback = null;
 		try {
 			result = al.calculate(timeseries, 5, 2, 100000, callback);
+			System.out.println(result[0][0]);
 			System.out.println(result[1][0]);
+			System.out.println("1.6686479843069828E8 - 1.650882630275696E8");
 		} catch (InterruptedException e) {
 			System.out.println("Error al.calculate");
 			System.out.println(e.getClass());
