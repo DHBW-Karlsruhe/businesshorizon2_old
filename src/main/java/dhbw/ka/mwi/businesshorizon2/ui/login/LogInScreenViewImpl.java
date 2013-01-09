@@ -1,18 +1,11 @@
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
 import javax.annotation.PostConstruct;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
@@ -20,7 +13,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.Window;
 
 /**
@@ -41,6 +33,7 @@ public class LogInScreenViewImpl extends Window implements
 	private LogInScreenPresenter presenter;
 
 	private Window regDialog;
+	private FormLayout fl;
 	private TextField textfieldEmailAdress;
 	private TextField textfieldFirstName;
 	private TextField textfieldLastName;
@@ -49,6 +42,7 @@ public class LogInScreenViewImpl extends Window implements
 	private PasswordField passwordFieldPasswordRep;
 	private Button dialogRegBtn;
 	private Button registerBtn;
+	private Button passwordForgotBtn;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -82,7 +76,7 @@ public class LogInScreenViewImpl extends Window implements
 		login.setUsernameCaption("Benutzername");
 		login.setPasswordCaption("Passwort");
 		login.setWidth("100%");
-		//login.setHeight("300px");
+		// login.setHeight("300px");
 		login.addListener(new LoginForm.LoginListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -111,9 +105,12 @@ public class LogInScreenViewImpl extends Window implements
 		addComponent(login);
 
 		registerBtn = new Button("Registrieren", this);
-		registerBtn.addListener(this);
+		
+		passwordForgotBtn = new Button("Passwort vergessen", this);
+		passwordForgotBtn.setEnabled(false);
 
 		addComponent(registerBtn);
+		addComponent(passwordForgotBtn);
 
 		logger.debug("LogIn UI erstellt und Listener gesetzt");
 
@@ -132,27 +129,46 @@ public class LogInScreenViewImpl extends Window implements
 		if (event.getButton() == registerBtn) {
 			registerUserDialog();
 		} else if (event.getButton() == dialogRegBtn) {
-			if (textfieldEmailAdress.isValid()) {
 
-				if (passwordFieldPassword.getValue().equals(
-						(String) passwordFieldPasswordRep.getValue())) {
-					presenter.registerUser((String)textfieldEmailAdress.getValue(),
-							passwordFieldPassword.toString());
+			Boolean samePassword = presenter.validatePassword(
+					(String) passwordFieldPassword.getValue(),
+					(String) passwordFieldPasswordRep.getValue());
+
+			if (samePassword) {
+				logger.debug("Passwordgleichheit gewaehrleistet");
+
+				if (textfieldFirstName.isValid() && textfieldLastName.isValid()
+						&& textfieldCompany.isValid()
+						&& passwordFieldPassword.isValid()
+						&& passwordFieldPasswordRep.isValid()) {
+					
+					logger.debug("Alle Eingabefelder wurden vom Anwender befuellt.");
+
+					presenter.registerUser(
+							(String) textfieldFirstName.getValue(),
+							(String) textfieldLastName.getValue(),
+							(String) textfieldCompany.getValue(),
+							(String) textfieldEmailAdress.getValue(),
+							(String) passwordFieldPassword.getValue());
 					getWindow().removeWindow(regDialog);
-				} else {
-					getWindow().showNotification(
-							(String) "PW 1 nicht gleich 2 ",
-							(String) "Bitte geben Sie nur EIN Passwort ein.",
-							Notification.TYPE_ERROR_MESSAGE);
-				}
 
+				} else {
+					getWindow().showNotification((String) "",
+							(String) "Bitte füllen Sie alle Felder aus.  ",
+							Notification.TYPE_ERROR_MESSAGE);
+					logger.debug("Es wurden nicht alle Eingabefelder vom Anwender befüllt.");
+
+				}
 			} else {
-				getWindow()
-						.showNotification(
-								(String) "Keine gültige Email-Adresse",
-								(String) "Bitte geben Sie eine gültige Email-Adresse an.",
-								Notification.TYPE_ERROR_MESSAGE);
+				logger.debug("Die eingegebenen Passwoerter stimmen nicht mit ueberein.");
+				
+				getWindow().showNotification((String) "",
+						(String) "Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre eingabe",
+						Notification.TYPE_ERROR_MESSAGE);
 			}
+		} else if (event.getButton()==passwordForgotBtn){
+			presenter.passwordForgot();
+			logger.debug("Password vergessen außgelöst.");
 		}
 	}
 
@@ -170,85 +186,55 @@ public class LogInScreenViewImpl extends Window implements
 		regDialog.setResizable(false);
 		regDialog.setDraggable(false);
 		regDialog.setCaption("Registrierung eines neuen Benutzers");
-		FormLayout fl = new FormLayout();
+		fl = new FormLayout();
 		fl.setSpacing(true);
 		fl.setMargin(true);
 		regDialog.addComponent(fl);
-		
+
 		textfieldFirstName = new TextField();
 		textfieldFirstName.setCaption("Bitte Vornahmen angeben: ");
 		textfieldFirstName.setRequired(true);
 		textfieldFirstName.setRequiredError("Pflichtfeld");
-		textfieldFirstName.addValidator(new StringLengthValidator(
-                "Der Vornahmen muss zwischen 2 und 20 Zeichen besitzen.", 2, 20, false));
 		fl.addComponent(textfieldFirstName);
-		
+
 		textfieldLastName = new TextField();
 		textfieldLastName.setCaption("Bitte Nachnamen angeben: ");
 		textfieldLastName.setRequired(true);
 		textfieldLastName.setRequiredError("Pflichtfeld");
-		textfieldLastName.addValidator(new StringLengthValidator(
-                "Der Nachname muss zwischen 2 und 20 Zeichen besitzen.", 2, 20, false));
 		fl.addComponent(textfieldLastName);
-		
+
 		textfieldCompany = new TextField();
 		textfieldCompany.setCaption("Bitte Unternehmen angeben: ");
 		textfieldCompany.setRequired(true);
 		textfieldCompany.setRequiredError("Pflichtfeld");
-		textfieldCompany.addValidator(new StringLengthValidator(
-                "Das Unternehmen muss zwischen 2 und 20 Zeichen besitzen.", 2, 20, false));
 		fl.addComponent(textfieldCompany);
-		
+
 		textfieldEmailAdress = new TextField();
 		textfieldEmailAdress.setCaption("Bitte Mailadresse angeben: ");
 		textfieldEmailAdress.setRequired(true);
 		textfieldEmailAdress.setRequiredError("Pflichtfeld");
-		//validtät muss später sichergestellt werden! 
 		fl.addComponent(textfieldEmailAdress);
 
-				
 		passwordFieldPassword = new PasswordField("Bitte Passwort wählen: ");
 		passwordFieldPassword.setRequired(true);
 		passwordFieldPassword.setRequiredError("Pflichtfeld");
-		passwordFieldPassword.addValidator(new StringLengthValidator(
-                "Das Password muss mindestens 8 Zeichen besitzen", 8, 100, false));
 		fl.addComponent(passwordFieldPassword);
 
-		passwordFieldPasswordRep = new PasswordField("Bitte Passwort wiederholen:");
+		passwordFieldPasswordRep = new PasswordField(
+				"Bitte Passwort wiederholen:");
 		passwordFieldPasswordRep.setRequired(true);
 		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");
-		passwordFieldPasswordRep.addValidator(new StringLengthValidator(
-                "Das Password muss mindestens 8 Zeichen besitzen", 8, 100, false));
 		fl.addComponent(passwordFieldPasswordRep);
-		
-		
+
 		VerticalLayout vl = new VerticalLayout();
 		dialogRegBtn = new Button("Registrierung abschließen", this);
 		vl.addComponent(dialogRegBtn);
 		vl.setComponentAlignment(dialogRegBtn, Alignment.MIDDLE_CENTER);
 		regDialog.addComponent(vl);
-		
-		
-		
-		getWindow().addWindow(regDialog);
-		
-		logger.debug("Registrier-Dialog erzeugt");
-	}
 
-	/**
-	 * Kontrollmethode ob es sich um eine mögliche Maiadresse handelt.
-	 * 
-	 * @author Christian Scherer
-	 */
-	public boolean isValidEmailAddress(String email) {
-		boolean result = true;
-		try {
-			InternetAddress emailAddr = new InternetAddress(email);
-			emailAddr.validate();
-		} catch (AddressException ex) {
-			result = false;
-		}
-		return result;
+		getWindow().addWindow(regDialog);
+
+		logger.debug("Registrier-Dialog erzeugt");
 	}
 
 }
