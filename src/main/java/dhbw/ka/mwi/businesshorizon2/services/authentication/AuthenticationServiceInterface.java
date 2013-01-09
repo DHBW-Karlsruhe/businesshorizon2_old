@@ -1,6 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.services.authentication;
 
-import org.apache.catalina.User;
+import dhbw.ka.mwi.businesshorizon2.models.User;
+
+
 
 /**
  * Dieses Interface stellt Methoden zur Authentifizierung einzelner Benutzer zur
