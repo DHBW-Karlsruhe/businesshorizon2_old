@@ -20,39 +20,39 @@ import java.util.TreeSet;
  */
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	protected NavigableSet<Period> periods = new TreeSet<Period>();
+
+	protected NavigableSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
 
 	protected Date lastChanged;
-	
+
 	protected String name;
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
 	 * 
 	 * @author Christian Scherer
-	 * @param Der Name des Projekts
+	 * @param Der
+	 *            Name des Projekts
 	 */
-	public Project(String name){
+	public Project(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Standardkonstruktor des Projekt
 	 * 
 	 * @author Christian Scherer
 	 */
-	public Project(){
+	public Project() {
 	}
-	
-	
+
 	/**
 	 * Gibt die Perioden in einem sortierten NavigableSet zurueck.
 	 * 
 	 * @author Christian Gahlert
 	 * @return Die Perioden
 	 */
-	public NavigableSet<Period> getPeriods() {
+	public NavigableSet<PeriodInterface> getPeriods() {
 		return periods;
 	}
 
@@ -63,7 +63,7 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(NavigableSet<Period> periods) {
+	public void setPeriods(NavigableSet<PeriodInterface> periods) {
 		this.periods = periods;
 	}
 
@@ -86,7 +86,7 @@ public class Project implements Serializable {
 		for (int i = start; i > start - 5; i--) {
 			contains = false;
 
-			for (Period period : periods) {
+			for (PeriodInterface period : periods) {
 				if (period.getYear() == i) {
 					contains = true;
 					break;
