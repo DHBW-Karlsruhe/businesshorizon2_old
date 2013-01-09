@@ -27,6 +27,14 @@ public class User implements Serializable {
 	 * 
 	 * @author Christian Scherer
 	 */
+	public User(){
+		this.firstName = "Max";
+		this.lastName = "Mustermann";
+		this.emailAdress = "Max@Muser.net";
+		this.company = "Mustermann & Söhne";
+		this.setPassword("abc");
+	}
+	
 	public User(String firstName, String lastName, String company,
 			String emailAdress, String password) {
 		this.firstName = firstName;
