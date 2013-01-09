@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
 
 public class AuthenticationServiceTest {
 
@@ -63,6 +65,8 @@ public class AuthenticationServiceTest {
 			fail(e.getMessage());
 		} catch (IllegalAccessException e) {
 			fail(e.getMessage());
+		} catch (WrongPasswordException e) {
+			fail(e.getMessage());
 		}
 
 	}
@@ -96,6 +100,8 @@ public class AuthenticationServiceTest {
 			fail(e.getMessage());
 		} catch (IllegalAccessException e) {
 			fail(e.getMessage());
+		} catch (WrongPasswordException e) {
+			fail(e.getMessage());
 		}
 
 	}
@@ -116,7 +122,8 @@ public class AuthenticationServiceTest {
 			assertEquals(loggedInUser.getFirstName(), "Test");
 			assertEquals(loggedInUser.getLastName(), "User");
 
-			authenticationService.doLogout(new User("test@testuser.com", "Initial1", "Test", "User"));
+			authenticationService
+					.doLogout(new User("Test", "User", "Test Company AG", "test@testuser.com", "Initial1"));
 
 			loggedInUser = loggedInUsers.get("test@testuser.com");
 			assertNull(loggedInUser);
@@ -133,6 +140,8 @@ public class AuthenticationServiceTest {
 			fail(e.getMessage());
 		} catch (UserNotLoggedInException e) {
 			fail(e.getMessage());
+		} catch (WrongPasswordException e) {
+			fail(e.getMessage());
 		}
 
 	}
@@ -146,7 +155,8 @@ public class AuthenticationServiceTest {
 
 			Map<String, User> loggedInUsers = (Map<String, User>) privateLoggedInUsers.get(authenticationService);
 
-			authenticationService.doLogout(new User("test@testuser.com", "Initial1", "Test", "User"));
+			authenticationService
+					.doLogout(new User("Test", "User", "Test Company AG", "test@testuser.com", "Initial1"));
 
 			User loggedInUser = loggedInUsers.get("test@testuser.com");
 			assertNull(loggedInUser);
@@ -168,7 +178,7 @@ public class AuthenticationServiceTest {
 	@Test
 	public void testRegisterNewUser() {
 		try {
-			authenticationService.registerNewUser("james.bond@mi6.com", "Initial123", "James", "Bond");
+			authenticationService.registerNewUser("James", "Bond", "MI6", "james.bond@mi6.com", "Initial1");
 
 			Field privateAllUsers = authenticationService.getClass().getDeclaredField("allUsers");
 			privateAllUsers.setAccessible(true);
@@ -186,6 +196,8 @@ public class AuthenticationServiceTest {
 		} catch (IllegalArgumentException e) {
 			fail(e.getMessage());
 		} catch (IllegalAccessException e) {
+			fail(e.getMessage());
+		} catch (UserAlreadyExistsException e) {
 			fail(e.getMessage());
 		}
 
