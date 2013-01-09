@@ -1,16 +1,19 @@
 package dhbw.ka.mwi.businesshorizon2;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.vaadin.Application;
+import com.vaadin.terminal.ExternalResource;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
@@ -32,6 +35,9 @@ public class BHApplication extends Application {
 	
 	@Autowired
 	private InitialScreenViewImpl initialScreenView;
+	
+	@Autowired
+	private LogInScreenViewImpl logInScreenView;
 
 	@Autowired
 	private EventBus eventBus;
@@ -58,25 +64,46 @@ public class BHApplication extends Application {
 	public void init() {
 		eventBus.addHandler(this);
 		
-		setMainWindow(initialScreenView);
-		eventBus.fireEvent(new ShowInitialScreenViewEvent());
-		
+		setMainWindow(logInScreenView);
+		eventBus.fireEvent(new ShowLogInScreenEvent());
+		logger.debug("ShowLogInScreenEvent gefeuert");
 	}
 
 	/**
-	 * Die Methode triggert die Anzeige der Prozessansicht, sobald an einer Stelle
-	 * des Programmes ein Projekt angezeigt wurde.
+	 * Die Methode triggert die Anzeige der Projektuebersichtsseite, sobald der User
+	 * sich erfolgreich eingeloggt hat.
 	 * 
 	 * @author Julius Hacker
-	 * @param event Der ausgeloeste ShowProjectEvent
+	 * @param event Der ausgeloeste ShowUserEvent
+	 */
+	@EventHandler
+	public void showInitialView(ShowUserEvent event) {
+		initialScreenView.setName("overview");
+		addWindow(initialScreenView);
+		setMainWindow(initialScreenView);
+		logInScreenView.open(new ExternalResource(initialScreenView.getURL()));
+
+		eventBus.fireEvent(new ShowInitialScreenViewEvent(event.getUser()));
+		logger.debug("ShowInitialScreenViewEvent gefeuert");
+	}
+
+	/**
+	 * Die Methode triggert die Anzeige der Prozessansicht, sobald an einer
+	 * Stelle des Programmes ein Projekt angezeigt wurde.
+	 * 
+	 * @author Julius Hacker
+	 * @param event
+	 *            Der ausgeloeste ShowProjectEvent
 	 */
 	@EventHandler
 	public void showProcessView(ShowProjectEvent event) {
+		processView.setName("process");
+		addWindow(processView);
 		setMainWindow(processView);
-		this.removeWindow(initialScreenView);
+		initialScreenView.open(new ExternalResource(processView.getURL()));
+
 		eventBus.fireEvent(new ShowProcessViewEvent());
-		logger.debug("ShowMainViewEvent gefeuert");
+		logger.debug("ShowProzessViewEvent gefeuert");
 	}
-	
 
 }

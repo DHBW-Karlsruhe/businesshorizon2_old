@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
-
 
 /**
  * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
@@ -21,12 +20,10 @@ import com.vaadin.ui.Window;
  * @author Christian Scherer
  * 
  */
-public class InitialScreenViewImpl extends Window implements
-		InitialScreenViewInterface {
+public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
 	private static final long serialVersionUID = 1L;
-	
-	private Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
 
+	private Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
 
 	@Autowired
 	private InitialScreenPresenter presenter;
@@ -35,9 +32,12 @@ public class InitialScreenViewImpl extends Window implements
 
 	private HorizontalSplitPanel horizontalPanel;
 
-	private HorizontalLayout heading;
+	private VerticalLayout heading;
 
 	private Label title;
+
+	private Label userData;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -62,22 +62,19 @@ public class InitialScreenViewImpl extends Window implements
 		setCaption("Business Horizon 2");
 		logger.debug("Überschrift für Browser erstellt");
 
-
 		verticalPanel = new VerticalSplitPanel();
 		verticalPanel.setSizeFull();
 		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
-
-		heading = new HorizontalLayout();
+		heading = new VerticalLayout();
 		title = new Label("<h1>Business Horizon 2</h1>");
-        title.setContentMode(Label.CONTENT_XHTML);
+		title.setContentMode(Label.CONTENT_XHTML);
 		heading.addComponent(title);
-		
+
 		verticalPanel.setFirstComponent(heading);
 		logger.debug("Überschrift hinzugefügt und dem vertikalen Panel übergeben");
 
-		
 		horizontalPanel = new HorizontalSplitPanel();
 		horizontalPanel.setSizeFull();
 		horizontalPanel.setSplitPosition(50, UNITS_PERCENTAGE);
@@ -85,7 +82,6 @@ public class InitialScreenViewImpl extends Window implements
 		verticalPanel.setSecondComponent(horizontalPanel);
 		logger.debug("Horizontales Panel für Projkte und Infos erstellt und an das vertikale Panel übergeben");
 
-		
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
 
@@ -95,8 +91,10 @@ public class InitialScreenViewImpl extends Window implements
 	 * Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
 	 * unter der Überschrift.
 	 * 
-	 * @param leftView:  Die PeriodenListe
-	 * @param rightView: Die Infoanzeige
+	 * @param leftView
+	 *            : Die PeriodenListe
+	 * @param rightView
+	 *            : Die Infoanzeige
 	 * @author Christian Scherer
 	 */
 	@Override
@@ -105,4 +103,15 @@ public class InitialScreenViewImpl extends Window implements
 		horizontalPanel.setSecondComponent((Component) rightView);
 	}
 
+	/**
+	 * Methode zum Darstellen der Userdaten im Header
+	 * 
+	 * @param username
+	 *            Der angezeigte Username
+	 */
+	public void showUserData(String username) {
+		userData = new Label("<h2>" + username + "</h2>");
+		userData.setContentMode(Label.CONTENT_XHTML);
+		heading.addComponent(userData);
+	}
 }
