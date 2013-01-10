@@ -1,5 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
+import java.text.DecimalFormat;
+
 import org.apache.log4j.Logger;
 
 import cern.colt.list.DoubleArrayList;
@@ -26,6 +28,8 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 	private DoubleArrayList DoubleArrayListTimeseries;
 	private DoubleMatrix2D matrixValutaions;
 	private double yuleWalkerVariance;
+	private double mean;
+	private double[] equalizedValues;
 
 	public String getName() {
 		return "Zeitreihenanalyse";
@@ -67,10 +71,9 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		if (lag == 0) {
 			return 1.0;
 		} else {
-			double tmp = Descriptive.autoCorrelation(DoubleArrayListTimeseries,
-					lag, Descriptive.mean(DoubleArrayListTimeseries),
-					this.variance);
-			return tmp;
+			return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
+					this.mean, this.variance);
+
 		}
 	}
 
@@ -139,6 +142,57 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 	}
 
 	/**
+	 * Für die Formel des AR-Model wird eine bestimmte Anzahl an bisherigen
+	 * Perioden betrachtet. Der Term (i-j) gibt an wie viele dieser Perioden aus
+	 * den Beobachtungen gespeißt werden. Ist der Termn (i-j) kleiner als 1
+	 * werden Beobachtungswerte herangezogen. Ansonsten werden bereits
+	 * prognostizierte Werte verwendet Da das Array der Beobachtungswerte den
+	 * ältesten Wert beim Index = 0 hat wird der letzte Werte abzüglich der
+	 * bereits betraachteten Werte benötigt. Die Werte werden
+	 * zwischengespeichert und es wird überprüft, ob eine Berechnung nötig ist.
+	 * 
+	 * @author Kai Westerholz
+	 * 
+	 * @param consideredPeriodsOfPast
+	 *            betrachtete Methoden der Vergangenheit
+	 * @param forecast
+	 *            zu prognostizierende Periode
+	 * @param valuations
+	 *            Gewichtungsparamter
+	 * @param previousValues
+	 *            trendbereinigte Beobachtungswerte;
+	 * @return geglätteter Prognosewert
+	 */
+	private double calculateARModel(int consideredPeriodsOfPast, int forecast,
+			DoubleMatrix2D valuations, double[] previousValues) {
+		if (this.equalizedValues[forecast - 1] == 0) {
+
+			double equalizedValuePerPeriod = 0;
+			for (int past = 1; past <= consideredPeriodsOfPast; past++) {
+				double previousValue;
+				if ((forecast - past) < 1) {
+					int oldIndex = previousValues.length - 1
+							- Math.abs(forecast - past);
+					previousValue = previousValues[oldIndex];
+				} else {
+					previousValue = this.equalizedValues[(forecast - past) - 1];
+				}
+				double add = valuations.get(past - 1, 0) * previousValue;
+				equalizedValuePerPeriod += add;
+
+			}
+
+			this.equalizedValues[forecast - 1] = equalizedValuePerPeriod;
+			logger.debug("Calculated constant forecast Value: "
+					+ new DecimalFormat("0.00").format(equalizedValuePerPeriod));
+			return equalizedValuePerPeriod;
+
+		} else {
+			return this.equalizedValues[forecast - 1];
+		}
+	}
+
+	/**
 	 * Diese Methode berechnet den prognostizierten Wert für die Periode auf
 	 * Basis der beobachteten Zeitreihe
 	 * 
@@ -171,51 +225,33 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		}
 
 		// Start der zur Prognose benötigten Berechnungen
+		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
 		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
 		this.yuleWalkerVariance = this
 				.calculateMatrixVariance(consideredPeriodsOfPast);
 
 		WhiteNoise whiteNoise = new WhiteNoise(this.yuleWalkerVariance);
+		this.equalizedValues = new double[periodsToForecast];
 
 		// Start der Prognose
 		for (int forecast = 1; forecast <= periodsToForecast; forecast++) {
 			double[] forecastsForPeriod = new double[numberOfIterations];
 			double equalizedValuePerPeriod = 0.0;
-			double previousValue = 0.0;
 
 			progress += consideredPeriodsOfPast;
 			Thread.currentThread().isInterrupted();
-			double newTide = tide.getTideValue(forecast
-					+ consideredPeriodsOfPast);
 
 			for (int iterationStep = 0; iterationStep < numberOfIterations; iterationStep++) {
+				equalizedValuePerPeriod = 0;
 
-				for (int past = 1; past <= consideredPeriodsOfPast; past++) {
-
-					/**
-					 * Für die Formel des AR-Model wird eine bestimmte Anzahl an
-					 * bisherigen Perioden betrachtet. Der Term (i-j) gibt an
-					 * wie viele dieser Perioden aus den Beobachtungen gespeißt
-					 * werden. Ist der Termn (i-j) kleiner als 1 werden
-					 * Beobachtungswerte herangezogen. Ansonsten werden bereits
-					 * prognostizierte Werte verwendet Da das Array der
-					 * Beobachtungswerte den ältesten Wert beim Index = 0 hat
-					 * wird der letzte Werte abzüglich der bereits betraachteten
-					 * Werte benötigt.
-					 */
-					if ((forecast - past) < 1) {
-						int oldIndex = previousValues.length - 1
-								- Math.abs(forecast - past);
-						previousValue = previousValues[oldIndex];
-					} else {
-						previousValue = returnValues[forecast - 1][iterationStep];
-					}
-
-					equalizedValuePerPeriod += matrixValutaions
-							.get(past - 1, 0) * previousValue;
-				}
+				// Berechnung des konstanten Teils der Prognose
+				equalizedValuePerPeriod = calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues);
 
 				// Eigentliche Berechnung
+				double newTide = tide.getTideValue(forecast
+						+ previousValues.length - 1);
 				forecastsForPeriod[iterationStep] = (double) (whiteNoise
 						.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
 				// Vergleichswert ohne Weißes Rauschen
@@ -223,15 +259,17 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 
 				if (iterationStep % 200 == 0) {
 					progress += iterationStep;
-					// callback.onProgressChange((float) (progress /
-					// progress_complete));
+					if (callback != null) {
+						callback.onProgressChange((float) (progress / progress_complete));
+					}
 					Thread.currentThread().isInterrupted();
 				}
 			}
+			equalizedValues[forecast - 1] = equalizedValuePerPeriod;
+
 			returnValues[forecast - 1] = forecastsForPeriod;
 			logger.debug("Period " + forecast + "  of " + periodsToForecast
 					+ " predicted.");
-
 		}
 		return returnValues;
 	}
@@ -246,12 +284,40 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		timeseries[3] = 146004000.00;
 		timeseries[4] = 154857000.00;
 		timeseries[5] = 162117000.00;
+		double[] sap = new double[18];
+		sap[0] = 345224278.18;
+		sap[1] = 489152942.74;
+		sap[2] = 684350378.10;
+		sap[3] = 1059917000.00;
+		sap[4] = 1547447000.00;
+		sap[5] = 2031739000.00;
+		sap[6] = 2812767000.00;
+		sap[7] = 2908104000.00;
+		sap[8] = 2965249000.00;
+		sap[9] = 2936590000.00;
+		sap[10] = 2968018000.00;
+		sap[11] = 3371547000.00;
+		sap[12] = 3833082000.00;
+		sap[13] = 4191000000.00;
+		sap[14] = 4894000000.00;
+		sap[15] = 4963000000.00;
+		sap[16] = 5261000000.00;
+		sap[17] = 5884000000.00;
+
 		Callback callback = null;
 		try {
-			result = al.calculate(timeseries, 5, 2, 100000, callback);
-			System.out.println(result[0][0]);
-			System.out.println(result[1][0]);
-			System.out.println("1.6686479843069828E8 - 1.650882630275696E8");
+			DecimalFormat df = new DecimalFormat("0.00");
+			// result = al.calculate(sap, 17, 10, 5000000, callback);
+			result = al.calculate(timeseries, 2, 5, 1000000, callback);
+			System.out.println(df.format(result[0][0]));
+			System.out.println(df.format(result[0][1]));
+			System.out.println(df.format(result[1][1]));
+			System.out.println(df.format(result[2][1]));
+			System.out.println(df.format(result[3][1]));
+			System.out.println(df.format(result[4][1]));
+			System.out.println(df.format(result[4][0]));
+			System.out
+					.println("P5: 1.6686479843069828E8 - 1.650882630275696E8");
 		} catch (InterruptedException e) {
 			System.out.println("Error al.calculate");
 			System.out.println(e.getClass());
