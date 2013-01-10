@@ -14,18 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodInterface;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
 /**
@@ -53,7 +52,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	private List<Project> projects;
 
-	NavigableSet<Period> periodList;
+	NavigableSet<PeriodInterface> periodList;
 
 	private Project project;
 
@@ -94,7 +93,11 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	/**
 	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
+<<<<<<< HEAD
+	 * ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird durch die
+=======
 	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die
+>>>>>>> refs/remotes/origin/master
 	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
 	 * gefÃ¼llt.
 	 * 
@@ -279,7 +282,11 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
 	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
+<<<<<<< HEAD
+	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft
+=======
 	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprueft
+>>>>>>> refs/remotes/origin/master
 	 * ob das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls
 	 * nicht wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann
 	 * die Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
