@@ -8,8 +8,8 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
@@ -84,13 +84,14 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 			String businessTax, boolean isIncludeInCalculation, final int number) {
 		HashMap<String, AbstractComponent> scenarioComponents = new HashMap<String, AbstractComponent>();
 		
-		FieldEvents.TextChangeListener changeListener = new FieldEvents.TextChangeListener() {
+		Property.ValueChangeListener changeListener = new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void textChange(TextChangeEvent event) {
+			public void valueChange(ValueChangeEvent event) {
 				presenter.updateScenario(number);
 				logger.debug("TextChange ausgeloest");
+				logger.debug("ChangeListener " + System.identityHashCode(this));
 			}
 		};
 		
@@ -115,6 +116,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.updateScenario(number);
+				logger.debug("ChangeListener " + System.identityHashCode(this));
 			}
 			
 		});
@@ -194,5 +196,6 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 	
 	public void clear() {
 		vlScenarios.removeAllComponents();
+		scenarios.clear();
 	}
 }
