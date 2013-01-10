@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
@@ -12,7 +11,7 @@ import java.util.TreeSet;
  */
 
 public class StochasticResultContainer {
-	SortedSet<? extends AbstractPeriodContainer> periodContainer = new TreeSet<>();
+	TreeSet<? extends AbstractPeriodContainer> periodContainer = new TreeSet<>();
 
 	/**
 	 * Diese Methode liefert die Referenz auf die Liste der Container zurück.
@@ -21,7 +20,7 @@ public class StochasticResultContainer {
 	 * @author Kai Westerholz
 	 */
 
-	public SortedSet<? extends AbstractPeriodContainer> getPeriodContainers() {
+	public TreeSet<? extends AbstractPeriodContainer> getPeriodContainers() {
 		return this.periodContainer;
 	}
 

@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
@@ -15,7 +14,7 @@ import java.util.TreeSet;
 
 abstract public class AbstractPeriodContainer {
 
-	private SortedSet<? extends PeriodInterface> perioden = new TreeSet<>();
+	private final TreeSet<? extends PeriodInterface> perioden = new TreeSet<>();
 
 	/**
 	 * Diese Methode liefer die Referenz auf das Set der Perioden zurück.
@@ -23,7 +22,7 @@ abstract public class AbstractPeriodContainer {
 	 * @return SortedSet der Perioden
 	 * @author Kai Westerholz
 	 */
-	public SortedSet<? extends PeriodInterface> getPeriods() {
+	public TreeSet<? extends PeriodInterface> getPeriods() {
 		return perioden;
 	}
 

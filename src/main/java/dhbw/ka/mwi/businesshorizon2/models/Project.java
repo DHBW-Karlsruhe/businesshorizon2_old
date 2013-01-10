@@ -21,7 +21,7 @@ import java.util.TreeSet;
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected NavigableSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
+	protected TreeSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
 
 	protected Date lastChanged;
 
@@ -63,7 +63,7 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(NavigableSet<PeriodInterface> periods) {
+	public void setPeriods(TreeSet<PeriodInterface> periods) {
 		this.periods = periods;
 	}
 
