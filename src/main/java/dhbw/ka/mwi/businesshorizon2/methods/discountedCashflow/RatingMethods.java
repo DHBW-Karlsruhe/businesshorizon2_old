@@ -11,5 +11,7 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
  */
 
 public abstract class RatingMethods {
-	abstract double[] calculateCompanyValue(StochasticResultContainer container);
+
+	public abstract CompanyValues calculateCompanyValue(
+			StochasticResultContainer container);
 }

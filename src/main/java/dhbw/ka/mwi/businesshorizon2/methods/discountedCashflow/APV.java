@@ -7,7 +7,8 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 public class APV extends RatingMethods {
 
 	@Override
-	double[] calculateCompanyValue(StochasticResultContainer container) {
+	public CompanyValues calculateCompanyValue(
+			StochasticResultContainer container) {
 
 		for (AbstractPeriodContainer i : container.getPeriodContainers()) {
 			int length = i.getPeriods().size();
