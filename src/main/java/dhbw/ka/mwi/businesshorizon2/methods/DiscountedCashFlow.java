@@ -1,11 +1,11 @@
 package dhbw.ka.mwi.businesshorizon2.methods;
 
-import dhbw.ka.mwi.businesshorizon2.models.PeriodenContainer;
+import dhbw.ka.mwi.businesshorizon2.models.AbstractPeriodContainer;
 
 public class DiscountedCashFlow extends RatingMethods {
 
 	@Override
-	double[] calculateCompanyValue(PeriodenContainer<?> futurePeriods) {
+	double[] calculateCompanyValue(AbstractPeriodContainer futurePeriods) {
 		// TODO Auto-generated method stub
 		return null;
 	}

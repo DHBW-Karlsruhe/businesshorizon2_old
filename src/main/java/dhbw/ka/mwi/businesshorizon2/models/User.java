@@ -22,6 +22,10 @@ public class User implements Serializable {
 
 	protected ArrayList<Project> projects = new ArrayList<Project>();
 
+	public User(){
+		
+	}
+	
 	/**
 	 * Konstruktor des User Objekts
 	 * 
@@ -45,7 +49,7 @@ public class User implements Serializable {
 	public String getFirstName() {
 		return this.firstName;
 	}
-	
+
 	/**
 	 * Setzt den Vornamen des User-Objekts
 	 * 
@@ -66,7 +70,7 @@ public class User implements Serializable {
 	public String getLastName() {
 		return this.lastName;
 	}
-	
+
 	/**
 	 * Setzt den Nachnamen des User-Objekts
 	 * 
@@ -87,7 +91,7 @@ public class User implements Serializable {
 	public String getCompany() {
 		return this.company;
 	}
-	
+
 	/**
 	 * Setzt das Unternehmen des User-Objekts
 	 * 
@@ -108,7 +112,7 @@ public class User implements Serializable {
 	public String getEmailAdress() {
 		return this.emailAdress;
 	}
-	
+
 	/**
 	 * Setzt die Emailadresse des User-Objekts
 	 * 

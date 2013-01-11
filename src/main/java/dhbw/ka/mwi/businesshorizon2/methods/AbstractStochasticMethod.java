@@ -49,7 +49,7 @@ abstract public class AbstractStochasticMethod implements
 	 * Methode ausgefuehrt und sollte daher an dieser Stelle nicht zum Einsatz
 	 * kommen.
 	 * 
-	 * @author Christian Gahlert
+	 * @author Christian Gahlert, Kai Westerholz
 	 * @param periods
 	 *            Die bisher vorhanden Perioden
 	 * @param callback
