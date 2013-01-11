@@ -275,6 +275,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView().getValue(scenarioNumber, "corporateAndSolitaryTax")));
 			logger.debug("Koerperschaftssteuer und Solidaritaetszuschlag Szenario " + scenarioNumber + " auf " + scenario.getCorporateAndSolitaryTax() + " (" + getView().getValue(scenarioNumber, "corporateAndSolitaryTax") + ")");
 		}
+		
+		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(scenarioNumber));
 	}
 	
 }

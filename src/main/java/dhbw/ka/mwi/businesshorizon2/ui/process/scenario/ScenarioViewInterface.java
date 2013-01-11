@@ -54,4 +54,6 @@ public interface ScenarioViewInterface extends ContentView {
 	 * @param identifier Der Eingabewert (Renditeforderungen, Steuern, ...), zu dem das Eingabefeld gehoert.
 	 */
 	public void setValid(int scenarioNumber, String identifier);
+
+	public Boolean getIncludeInCalculation(int scenarioNumber);
 }

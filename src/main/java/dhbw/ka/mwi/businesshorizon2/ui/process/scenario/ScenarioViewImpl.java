@@ -12,6 +12,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
@@ -170,7 +171,11 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 	}
 	
 	public String getValue(int scenarioNumber, String identifier) {
-		return (String) ((TextField) this.scenarios.get(scenarioNumber-1).get(identifier)).getValue();
+		return (String) ((AbstractField) this.scenarios.get(scenarioNumber-1).get(identifier)).getValue();
+	}
+	
+	public Boolean getIncludeInCalculation(int scenarioNumber) {
+		return (Boolean) ((CheckBox) this.scenarios.get(scenarioNumber-1).get("isIncludeInCalculation")).getValue();
 	}
 	
 	
