@@ -1,33 +1,52 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-public class CashFlowPeriod extends Period {
+/**
+ * Diese Klasse bildet eine Periode ab. Das Jahr muss übergeben werden und kann
+ * nicht mehr bewertet werden. Die Perioden enthalten nur CashFlows.
+ * 
+ * @author Kai Westerholz
+ * 
+ */
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class CashFlowPeriod implements PeriodInterface {
+
+	private int year;
+	private double freeCashFlow;
+	private double borrowedCapital;
 
 	public CashFlowPeriod(int year) {
 		this.year = year;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public double getCashflow() {
-		// TODO Auto-generated method stub
-		return this.cashFlow;
+	public double getFreeCashFlow() {
+		return this.freeCashFlow;
 	}
 
-	@Override
-	public double getWert() {
-		// TODO Auto-generated method stub
-		return 0;
+	/**
+	 * 
+	 * @param CF
+	 *            Wert des CashFlows
+	 * @author Kai Westerholz
+	 */
+	public void setFreeCashFlow(double CF) {
+		this.freeCashFlow = CF;
 	}
 
 	@Override
 	public int getYear() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.year;
+	}
+
+	@Override
+	public double getBorrowedCapital() {
+		return this.borrowedCapital;
+	}
+
+	@Override
+	public void setBorrowedCapital(double value) {
+		this.borrowedCapital = value;
+
 	}
 
 }
