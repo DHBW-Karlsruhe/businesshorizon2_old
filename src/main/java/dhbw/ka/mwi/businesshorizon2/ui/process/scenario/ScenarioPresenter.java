@@ -49,6 +49,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		eventBus.addHandler(this);
 	}
 
+	/**
+	 * Diese Methode ueberprueft, ob die im Screen getaetigten Eingaben valide und somit korrekt
+	 * sind. Er nutzt hierbei die Validierungsmethoden zur Ueberpruefung der einzelnen Dateneingabefelder.
+	 * 
+	 * @author Julius Hacker
+	 * @return true: Die Eingabewerte der Maske sind insgesamt korrekt
+	 * false: Die Eingabewerte der Maske sind an mindestens einer Stelle nicht korrekt.
+	 */
 	@Override
 	public boolean isValid() {
 		boolean isValid = true;
@@ -75,6 +83,12 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		return false;
 	}
 	
+	/**
+	 * Diese Methode fuegt dem Projekt ein neues Szenario hinzu und zeigt die dazugehoerigen
+	 * Eingabefelder auf dem Screen an.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void addScenario() {
 		Szenario scenario = new Szenario();
 		this.project.addScenario(scenario);
@@ -82,7 +96,11 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), this.project.getScenarios().size());
 	}
 	
-
+	/**
+	 * Dieser EventHandler reagiert auf die Nachricht, dass der Prozesschritt zur Szenarienanzeige
+	 * angezeigt werden soll. Er legt hierbei, falls noch kein Szenario existiert, zunaechst das im
+	 * Fachkonzept angegebene Standardszenario an und baut den Screen danach komplett neu auf.
+	 */
 	@EventHandler
 	public void showScenarios(ShowScenarioViewEvent event) {
 		List<Szenario> scenarios = this.project.getScenarios();
@@ -99,6 +117,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		}
 	}
 	
+	/**
+	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen Inhalt validieren soll. 
+	 * Er bedient sich dabei der Methode isValid und setzt den Status des Screens entsprechend des Ergebnisses
+	 * auf valide oder invalide.
+	 * 
+	 * @author Julius Hacker
+	 */
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		if(!this.isValid()) {
@@ -111,6 +136,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		}
 	}
 	
+	/**
+	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Renditeforderung Eigenkapital korrekt ist.
+	 * 
+	 * @author Julius Hacker
+	 * @return true: Eingabe ist korrekt und gueltig.
+	 * false: Eingabe ist nicht korrekt.
+	 */
 	public boolean isValidRateReturnEquity(int scenarioNumber) {
 		boolean isValid = true;
 		
@@ -131,6 +163,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		return isValid;
 	}
 	
+	/**
+	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Renditeforderung Fremdkapital korrekt ist.
+	 * 
+	 * @author Julius Hacker
+	 * @return true: Eingabe ist korrekt und gueltig.
+	 * false: Eingabe ist nicht korrekt.
+	 */
 	public boolean isValidRateReturnCapitalStock(int scenarioNumber) {
 		boolean isValid = true;
 		
@@ -151,6 +190,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		return isValid;
 	}
 	
+	/**
+	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Gewerbesteuer korrekt ist.
+	 * 
+	 * @author Julius Hacker
+	 * @return true: Eingabe ist korrekt und gueltig.
+	 * false: Eingabe ist nicht korrekt.
+	 */
 	public boolean isValidBusinessTax(int scenarioNumber) {
 		boolean isValid = true;
 		
@@ -171,6 +217,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		return isValid;
 	}
 	
+	/**
+	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Koerperschaftssteuer
+	 * mit Solidaritaetszuschlag korrekt ist.
+	 * 
+	 * @author Julius Hacker
+	 * @return true: Eingabe ist korrekt und gueltig.
+	 * false: Eingabe ist nicht korrekt.
+	 */
 	public boolean isValidCorporateAndSolitaryTax(int scenarioNumber) {
 		boolean isValid = true;
 		
@@ -191,6 +245,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		return isValid;
 	}
 	
+	/**
+	 * Diese Methode holt sich die in den Eingabefeldern der View eingetragenen Werte und
+	 * speichert sie nach einer Validierung im Szenarien-Model. Die Methode wird insbesondere
+	 * durch die EventHandler der View genutzt, die auf entsprechende Textaenderungen reagieren.
+	 * 
+	 * @author Julius Hacker
+	 * @param scenarioNumber Nummer des Szenarios, dessen Werte geaendert wurden.
+	 */
 	public void updateScenario(int scenarioNumber) {
 		Szenario scenario = this.project.getScenarios().get(scenarioNumber-1);
 		
