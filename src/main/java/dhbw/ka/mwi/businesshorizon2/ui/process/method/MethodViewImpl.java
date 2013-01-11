@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -16,6 +17,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 
 
@@ -31,12 +33,23 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	@Autowired
 	private MethodPresenter presenter;
+	
 	private Panel methodPanel = new Panel();
+
+	
 	private VerticalLayout methodList = new VerticalLayout();
 	private VerticalLayout inputMethod = new VerticalLayout();
+
+	private OptionGroup stochasticInput = new OptionGroup();
+	private OptionGroup deterministicInput = new OptionGroup();
+	
 	private OptionGroup methods = new OptionGroup();
+			
 	private CheckBox stochastic = new CheckBox("Stochastische Berechnung");
 	private CheckBox deterministic = new CheckBox("Deterministische Eingabe");
+	
+	private Panel stoInput = new Panel();
+	private Panel detInput = new Panel();
 	
 	
 	/**
@@ -52,7 +65,8 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		presenter.setView(this);
 		stochastic.setImmediate(true);
 		deterministic.setImmediate(true);
-		methodPanel.setStyleName(Reindeer.PANEL_LIGHT);
+		
+		methodPanel.addStyleName(Reindeer.PANEL_LIGHT);
 		
 		stochastic.addListener(new Button.ClickListener() {
 			
@@ -74,6 +88,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 				
 			}
 		});
+
 		methods.setMultiSelect(true);
 		methods.setImmediate(true);
 		methods.addListener(new Property.ValueChangeListener() {
@@ -87,14 +102,82 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 				if (event.getProperty() instanceof Set<?>){
 				presenter.toggleMethod((Set<String>) event.getProperty());
 				}
-				
-				getWindow().showNotification("Selected method: " + event.getProperty());
+								
+			}
+		});
 
+		stochasticInput.setImmediate(true);
+		stochasticInput.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				InputType selected;
 				
+				switch (event.getProperty().toString()){
+				case "Direkte Eingabe":
+					selected = InputType.DIRECT;
+					break;
+				case "Umsatzkostenverfahren":
+					selected = InputType.REVENUE;
+					break;
+				case "Direktkostenverfahren":
+					selected = InputType.TOTAL;
+					break;
+				default:
+					selected = InputType.DIRECT;
+					break;
+				}
+				
+				presenter.toggleMethodTypeInput(true,selected);	
 			}
 		});
 		
+		deterministicInput.setImmediate(true);
+		deterministicInput.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				InputType selected;
+				
+				switch (event.getProperty().toString()){
+				case "Direkte Eingabe":
+					selected = InputType.DIRECT;
+					break;
+				case "Umsatzkostenverfahren":
+					selected = InputType.REVENUE;
+					break;
+				case "Direktkostenverfahren":
+					selected = InputType.TOTAL;
+					break;
+				default:
+					selected = InputType.DIRECT;
+					break;
+				}
+				presenter.toggleMethodTypeInput(false,selected);				
+			}
+		});
+		
+		initOptionGroups();
 		generateUi();
+	}
+
+	private void initOptionGroups() {
+		
+		Label detCaption = new Label ("Zukünftige Perioden:");
+		detInput.addComponent(detCaption);
+		deterministicInput.addItem("Direkte Eingabe");
+		deterministicInput.addItem("Umsatzkostenverfahren");
+		deterministicInput.addItem("Direktkostenverfahren");
+		detInput.addComponent(deterministicInput);
+		
+		Label stoCaption= new Label ("Vergangene Perioden:");
+		stoInput.addComponent(stoCaption);
+		stochasticInput.addItem("Direkte Eingabe");
+		stochasticInput.addItem("Umsatzkostenverfahren");
+		stochasticInput.addItem("Direktkostenverfahren");
+		stoInput.addComponent(stochasticInput);
 	}
 
 	/**
@@ -108,11 +191,19 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		
 		this.setFirstComponent((Component)methodList);
 		this.setSecondComponent((Component)inputMethod);
-		methodPanel.addComponent(methods);
 		
+		methodPanel.addComponent(methods);
+		Label methodCaption = new Label("Herkunft der Cashflows wählen");
+		methodList.addComponent(methodCaption);
 		methodList.addComponent(stochastic);
 		methodList.addComponent(methodPanel);		
 		methodList.addComponent(deterministic);
+		
+		Label inputCaption = new Label("Eingabemethode der Cashflows wählen:");
+		inputMethod.addComponent(inputCaption);
+		inputMethod.addComponent(stoInput);
+		inputMethod.addComponent(detInput);
+
 		
 	}
 
@@ -143,8 +234,24 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	}
 
 	@Override
-	public void showInputMethodSelection(Boolean statisitc) {
-		// TODO Auto-generated method stub
+	public void showInputMethodSelection(Boolean stochasticBool, Boolean checked) {
+	
+		if (stochasticBool){
+			stoInput.setVisible(checked);
+		}
+		else{
+			detInput.setVisible(checked);
+		}		
+	}
+
+	@Override
+	public void selectInput(Boolean stochastic,String selected) {
+		if (stochastic){
+			stochasticInput.select(selected);
+		}
+		else{
+			deterministicInput.select(selected);
+		}
 		
 	}
 }

@@ -1,39 +1,17 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-/**
- * Diese Klasse enthält die Methoden die für ein Projekt ausgewählt sind.
- * 
- * @author Timo Belz
- * @param Methods enthält die Namen der ausgewählten Methoden
- * @param balanceSheet false steht für direkte Casfloweingabe, true steht für die Eingabe von Bilanzwerten
- * 
- */
-
-public class InputType  {
+public enum InputType {
+	DIRECT("Direkte Eingabe"),REVENUE("Umsatzkostenverfahren"),TOTAL("Gesamtkostenverfahren");
 	
-	/**
-	 * 
-	 */
-	
-	private Boolean stochastic;
-	private Boolean deterministic;
-	private int stochasticInput;
-	private int deterministicInput;
+	private String caption;
 	
 
-	public Boolean getStochastic() {
-		return stochastic;
-	}
-	public void setStochastic(Boolean stochastic) {
-		this.stochastic = stochastic;
-	}
-	public Boolean getDeterministic() {
-		return deterministic;
-	}
-	public void setDeterministic(Boolean deterministic) {
-		this.deterministic = deterministic;
+	private InputType(String caption){
+		this.caption = caption;
 	}
 	
-
+	public String getCaption() {
+		return caption;
+	}
 
 }

@@ -13,8 +13,9 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.CheckMethodTypeEvent;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 
 /**
@@ -36,9 +37,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	private Project project;
 	
 	private SortedSet<AbstractStochasticMethod> methods;
-	private InputType inputType;
+	private ProjectInputType projectInputType;
 	
-	private Logger logger = Logger.getLogger(MethodPresenter.class);
 
 	
 	/**
@@ -51,14 +51,17 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	public void init() {
 		eventBus.addHandler(this);
 		this.methods = project.getMethods();
-		inputType = project.getInputType();
-		logger.debug("Hallo");
+		projectInputType = project.getProjectInputType();
 	}
 
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return true;
+		if (projectInputType.getStochastic())
+			for (AbstractStochasticMethod m: methods){
+				if (m.getSelected())
+					return true;
+			}
+		return false;
 	}
 	
 	
@@ -77,6 +80,16 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		eventBus.fireEvent(new CheckMethodEvent(checkedMethods));
 	}
 	
+	public void toggleMethodTypeInput(Boolean stochastic, InputType newSelected){
+		eventBus.fireEvent(new InputTypeChangedEvent());
+		if (stochastic){
+			projectInputType.setStochasticInput(newSelected);
+		}
+		else{
+			projectInputType.setDeterministicInput(newSelected);
+		}
+	}
+	
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event){		
 	
@@ -85,15 +98,21 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			getView().showMethod(m.getName(),m.getImplemented(),m.getSelected());
 		}
 		
-		Boolean state = inputType.getStochastic();
+		Boolean state = projectInputType.getStochastic();
 		
 		if (state != null){
 			getView().enableMethodSelection(state);
 		}
 		else{
-			inputType.setStochastic(false);
+			projectInputType.setStochastic(false);
 			getView().enableMethodSelection(false);
 		}
+		
+		getView().showInputMethodSelection(true, projectInputType.getStochastic());
+		getView().showInputMethodSelection(false, projectInputType.getDeterministic());
+		getView().selectInput(true, projectInputType.getStochasticInput().getCaption());
+		getView().selectInput(false, projectInputType.getDeterministicInput().getCaption());
+		
 	}
 	
 	@EventHandler
@@ -102,12 +121,14 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		Boolean check = event.getChecked();
 		Boolean stoch = event.getStochastic();
 		
+		getView().showInputMethodSelection(stoch, check);
+		
 		if (stoch){
-			inputType.setStochastic(check);
+			projectInputType.setStochastic(check);
 			getView().enableMethodSelection(check);
 		}
 		else if (!stoch){
-			inputType.setDeterministic(check);
+			projectInputType.setDeterministic(check);
 		}
 		
 	}
