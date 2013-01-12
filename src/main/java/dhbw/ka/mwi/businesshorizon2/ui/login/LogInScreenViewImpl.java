@@ -111,8 +111,15 @@ public class LogInScreenViewImpl extends Window implements
 
 	}
 
+	/**
+	 * Gibt eine Fehlermeldung an den Benutzer aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param message
+	 *            Fehlermeldung die der Methode zur Ausgabe uebergeben wird
+	 */
 	public void showErrorMessage(String message) {
-		getWindow().showNotification((String) "Anmeldung fehlgeschlagen",
+		getWindow().showNotification((String) "",
 				message, Notification.TYPE_ERROR_MESSAGE);
 	}
 
@@ -137,14 +144,15 @@ public class LogInScreenViewImpl extends Window implements
 			logger.debug("Password vergessen außgelöst.");
 		}
 	}
-	
+
 	/**
 	 * Schließt das übergebene (Dialog)Fensters.
 	 * 
 	 * @author Christian Scherer
-	 * @param window Fenster das zu schliessen ist
+	 * @param window
+	 *            Fenster das zu schliessen ist
 	 */
-	public void closeDialog(Window window){
+	public void closeDialog(Window window) {
 		getWindow().removeWindow(window);
 	}
 
@@ -234,7 +242,7 @@ public class LogInScreenViewImpl extends Window implements
 	public String getPassword() {
 		return (String) passwordFieldPassword.getValue();
 	}
-	
+
 	/**
 	 * Getter Methode für das Passwort-Wiederholung des Registrierungsdialogs
 	 * 
@@ -289,7 +297,5 @@ public class LogInScreenViewImpl extends Window implements
 	public Window getRegDialog() {
 		return this.regDialog;
 	}
-
-	
 
 }
