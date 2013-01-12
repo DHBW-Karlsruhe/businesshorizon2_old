@@ -13,7 +13,9 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 
 /**
  * 
@@ -38,7 +40,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private User user;
 
 	@Autowired
-	private Project selectedProject = null;
+	private ProjectProxy projectProxy;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -67,13 +69,10 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 */
 	public void projectSelected(Project project) {
-		selectedProject = project;
+		projectProxy.setSelectedProject(project);
 
-		if (selectedProject != null) {
-			eventBus.fireEvent(new ShowProjectEvent(selectedProject));
-			logger.debug("ShowProjectEvent gefeuert");
-
-		}
+		eventBus.fireEvent(new ShowProjectEvent());
+		logger.debug("ShowProjectEvent gefeuert");
 	}
 
 	/**
