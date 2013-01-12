@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Diese Klasse stellt einen Container für Perioden zu verfügung. Die
@@ -15,9 +15,13 @@ import java.util.SortedSet;
 public class AggregateCostMethodBalanceSheetPeriodContainer extends
 		AbstractPeriodContainer {
 
+	public AggregateCostMethodBalanceSheetPeriodContainer() {
+		super();
+	}
+
 	@Override
-	public SortedSet<AggregateCostMethodPeriod> getPeriods() {
-		return (SortedSet<AggregateCostMethodPeriod>) super.getPeriods();
+	public TreeSet<AggregateCostMethodPeriod> getPeriods() {
+		return (TreeSet<AggregateCostMethodPeriod>) super.getPeriods();
 	}
 
 }

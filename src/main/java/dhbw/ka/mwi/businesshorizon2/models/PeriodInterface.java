@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-public interface PeriodInterface {
+public interface PeriodInterface extends Comparable<PeriodInterface> {
 
 	public double getFreeCashFlow();
 
