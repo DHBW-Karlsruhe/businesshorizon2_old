@@ -26,6 +26,8 @@ public class Project implements Serializable {
 	protected Date lastChanged;
 
 	protected String name;
+	
+	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -133,5 +135,12 @@ public class Project implements Serializable {
 	public String getName() {
 		return name;
 	}
-
+	
+	public List<Szenario> getScenarios() {
+		return this.scenarios;
+	}
+	
+	public void addScenario(Szenario scenario) {
+		this.scenarios.add(scenario);
+	}
 }

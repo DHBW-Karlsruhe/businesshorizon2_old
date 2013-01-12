@@ -3,6 +3,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 import javax.annotation.PostConstruct;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
 
 /**
@@ -38,6 +39,13 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	public boolean isSelectable() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
