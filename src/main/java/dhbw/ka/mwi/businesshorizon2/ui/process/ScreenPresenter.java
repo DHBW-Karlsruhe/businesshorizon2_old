@@ -36,4 +36,6 @@ public abstract class ScreenPresenter <T extends View> extends Presenter<T> {
 	 * @author Julius Hacker
 	 */
 	public abstract boolean isSelectable();
+	
+	public abstract void validate(ValidateContentStateEvent event);
 }
