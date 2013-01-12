@@ -36,7 +36,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 
 	@Override
-	public boolean isSelectable() {
+	public boolean isNextScreenSelectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}

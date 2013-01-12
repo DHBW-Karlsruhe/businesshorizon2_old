@@ -36,7 +36,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 
 	@Override
-	public boolean isSelectable() {
+	public boolean isNextScreenSelectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
