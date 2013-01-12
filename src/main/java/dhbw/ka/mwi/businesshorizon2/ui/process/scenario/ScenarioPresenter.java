@@ -78,7 +78,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	}
 
 	@Override
-	public boolean isSelectable() {
+	public boolean isNextScreenSelectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -124,6 +124,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 * 
 	 * @author Julius Hacker
 	 */
+	@Override
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		if(!this.isValid()) {

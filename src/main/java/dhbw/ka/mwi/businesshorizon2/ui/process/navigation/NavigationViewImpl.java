@@ -60,15 +60,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		
 		this.innerlayout = new HorizontalLayout();
 		
-		//logger.debug(this.getApplication().getClass());
-		
-		//ClassResource resource = new ClassResource(NavigationViewImpl.class, "src/main/resources/img/logo.png", this.getApplication());
-		//Embedded image = new Embedded("Logo", resource);
-		//this.layout.addComponent(image, 0, 0);
-		
 		this.addNavigationButton(NavigationSteps.METHOD);
-		this.addNavigationButton(NavigationSteps.PERIOD);
 		this.addNavigationButton(NavigationSteps.PARAMETER);
+		this.addNavigationButton(NavigationSteps.PERIOD);
 		this.addNavigationButton(NavigationSteps.SCENARIO);
 		this.addNavigationButton(NavigationSteps.OUTPUT);
 		
