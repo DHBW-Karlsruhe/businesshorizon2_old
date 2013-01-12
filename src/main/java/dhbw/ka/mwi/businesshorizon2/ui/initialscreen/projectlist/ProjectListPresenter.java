@@ -52,9 +52,6 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private void init() {
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
-		
-		user = new User("", "", "", "", ""); // TODO Hier sollte der User des
-		// Authetifizierungsprozesses ausgewaehlt werden
 	}
 
 	/**
@@ -91,11 +88,12 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
-
+		
+		this.user = event.getUser();
 		// 2 Dummyprojects die dem User hinzugefÃ¼gt werden
 		addProject("Projekt 1");
 		addProject("Projekt 2");
-		logger.debug("2 Dummy-Projekte Erzeugt fÃ¼r erste Darstellung");
+		logger.debug("2 Dummy-Projekte Erzeugt fuer erste Darstellung");
 
 		List<Project> projects = user.getProjects();
 		logger.debug("Projekte geladen. Anzahl: " + projects.size());
