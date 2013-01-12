@@ -1,10 +1,14 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.navigation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -27,6 +31,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	
 	private HorizontalLayout layout;
 	private HorizontalLayout innerlayout;
+	
+	private Map<NavigationSteps, Button> navigationButtons = new HashMap<NavigationSteps, Button>();
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -81,6 +87,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	@Override
 	public void addNavigationButton(final NavigationSteps navigationStep) {
 		Button navigationButton = new Button(navigationStep.getCaption());
+		this.navigationButtons.put(navigationStep, navigationButton);
 		
 		navigationButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 7411091035775152765L;
@@ -94,6 +101,16 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		this.innerlayout.addComponent(navigationButton);
 		this.innerlayout.setComponentAlignment(navigationButton, Alignment.BOTTOM_CENTER);
 		
+	}
+	
+	public void setButtonToInvalid(NavigationSteps navigationStep, boolean invalid) {
+		logger.debug("Setze Fehlerzustand von Navigationsbutton");
+		if(invalid) {
+			this.navigationButtons.get(navigationStep).setComponentError(new UserError("Ungueltige Daten - Aenderungen noetig!"));
+		}
+		else {
+			this.navigationButtons.get(navigationStep).setComponentError(null);
+		}
 	}
 
 }

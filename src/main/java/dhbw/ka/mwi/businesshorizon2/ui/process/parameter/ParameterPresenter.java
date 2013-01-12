@@ -5,8 +5,11 @@ import java.util.Calendar;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 /**
@@ -20,6 +23,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private static final long serialVersionUID = 1L;
 
 	private Logger logger = Logger.getLogger("ParameterPresenter.class");
+	
+	@Autowired
+	private Project project;
 
 	private int[] numberIterations;
 
@@ -57,9 +63,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		return false;
 	}
 
+
 	@Override
 	public boolean isValid() {
-		// TODO NOTWENDIG?
+		// ALLE VALIDIERUNGSMETHODEN AUFRUFEN TODO
 		return false;
 	}
 
@@ -68,12 +75,12 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Objekte kuemmert
 	 * 
 	 * @author Christian Scherer
-	 * @param iteration
+	 * @param iterations
 	 *            Anzahl der ausgewaehlten Wiederholungen(Iterationen)
 	 */
-	public void iterationChosen(int iteration) {
-		// TODO die Iteration in das Projekt abspeichern
-		logger.debug("Iterationen in Objekten gesetzt: " + iteration);
+	public void iterationChosen(int iterations) {
+		project.setIterations(iterations);
+		logger.debug("Iterationen in Objekten gesetzt: " + project.getName());
 	}
 
 	/**
@@ -233,6 +240,13 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		Calendar now = Calendar.getInstance();
 		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
 
+	}
+
+
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
