@@ -2,17 +2,27 @@ package dhbw.ka.mwi.businesshorizon2.models;
 
 public class Szenario {
 	private double rateReturnEquity;
+	
 	private double rateReturnCapitalStock;
+	
 	private double businessTax;
+	
 	private double corporateAndSolitaryTax;
+	
+	private boolean includeInCalculation;
 
 	public Szenario(double rateReturnEquity, double rateReturnCapitalStock,
-			double businessTax, double corporateAndSolitaryTax) {
+			double businessTax, double corporateAndSolitaryTax, boolean includeInCalculation) {
 		super();
 		this.rateReturnEquity = rateReturnEquity;
 		this.rateReturnCapitalStock = rateReturnCapitalStock;
 		this.businessTax = businessTax;
 		this.corporateAndSolitaryTax = corporateAndSolitaryTax;
+		this.includeInCalculation = includeInCalculation;
+	}
+	
+	public Szenario() {
+		super();
 	}
 
 	public double getRateReturnEquity() {
@@ -45,6 +55,14 @@ public class Szenario {
 
 	public void setCorporateAndSolitaryTax(double corporateAndSolitaryTax) {
 		this.corporateAndSolitaryTax = corporateAndSolitaryTax;
+	}
+
+	public boolean isIncludeInCalculation() {
+		return includeInCalculation;
+	}
+
+	public void setIncludeInCalculation(boolean includeInCalculation) {
+		this.includeInCalculation = includeInCalculation;
 	}
 
 }

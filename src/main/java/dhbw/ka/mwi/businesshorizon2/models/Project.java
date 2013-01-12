@@ -21,7 +21,8 @@ import java.util.TreeSet;
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected NavigableSet<Period> periods = new TreeSet<Period>();
+
+	protected NavigableSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
 
 	protected Date lastChanged;
 
@@ -31,6 +32,9 @@ public class Project implements Serializable {
 	protected int relevantPastPeriods;
 	protected int iterations;
 	protected int basisYear;
+
+	
+	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -57,7 +61,7 @@ public class Project implements Serializable {
 	 * @author Christian Gahlert
 	 * @return Die Perioden
 	 */
-	public NavigableSet<Period> getPeriods() {
+	public NavigableSet<PeriodInterface> getPeriods() {
 		return periods;
 	}
 
@@ -68,7 +72,7 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(NavigableSet<Period> periods) {
+	public void setPeriods(NavigableSet<PeriodInterface> periods) {
 		this.periods = periods;
 	}
 
@@ -91,7 +95,7 @@ public class Project implements Serializable {
 		for (int i = start; i > start - 5; i--) {
 			contains = false;
 
-			for (Period period : periods) {
+			for (PeriodInterface period : periods) {
 				if (period.getYear() == i) {
 					contains = true;
 					break;
@@ -242,4 +246,12 @@ public class Project implements Serializable {
 		return basisYear;
 	}
 
+
+	public List<Szenario> getScenarios() {
+		return this.scenarios;
+	}
+	
+	public void addScenario(Szenario scenario) {
+		this.scenarios.add(scenario);
+	}
 }

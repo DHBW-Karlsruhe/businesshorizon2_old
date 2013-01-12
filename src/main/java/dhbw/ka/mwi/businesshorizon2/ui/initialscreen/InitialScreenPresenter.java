@@ -10,6 +10,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -25,12 +26,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
  * 
  */
 
-public class InitialScreenPresenter extends
-		Presenter<InitialScreenViewInterface> {
+public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
-	
-	private Logger logger = Logger.getLogger("InitialScreenPresenter.class");
 
+	@Autowired
+	private User user;
+
+	private Logger logger = Logger.getLogger("InitialScreenPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -59,18 +61,24 @@ public class InitialScreenPresenter extends
 	}
 
 	/**
-	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Setzen des
-	 * Fensters) abgesetzt. Dabei wird in auf der linken Seite die Projekt-Liste
-	 * und auf der rechten Seite die Anwenderinformationen dargestellt.
+	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Einloggen)
+	 * abgesetzt. Dabei wird in auf der linken Seite die Projekt-Liste und auf
+	 * der rechten Seite die Anwenderinformationen dargestellt. Der Projektlsite
+	 * wird dabei das angemeldete User-Objekt übergeben.
 	 * 
 	 * @author Christian Scherer
 	 * @param event
+	 *            das ShowInitialScreenViewEvent, welches das angemeldete
+	 *            User-Objekt beinhaltet
 	 */
 	@EventHandler
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
+
+		user = event.getUser();
+		getView().showUserData(user.getCompany());
 		getView().showView(projectListView, infosView);
 		logger.debug("Views mit Projekt und Infoview geladen");
-		eventBus.fireEvent(new ShowProjectListEvent());
+		eventBus.fireEvent(new ShowProjectListEvent(user));
 		logger.debug("ShowProjectListEvent gefeuert");
 		eventBus.fireEvent(new ShowInfosEvent());
 		logger.debug("ShowInfosEvent gefeuert");

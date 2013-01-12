@@ -7,7 +7,7 @@ import com.mvplite.view.View;
  * mit denen der Presenter mit der View kommunizieren kann.
  * 
  * @author Christian Scherer
- *
+ * 
  */
 
 public interface InitialScreenViewInterface extends View {
@@ -18,9 +18,20 @@ public interface InitialScreenViewInterface extends View {
 	 * ViewImpl-Instanzen.
 	 * 
 	 * @author Christian Scherer
-	 * @param leftView Die View im Hauptfenster links
-	 * @param rightView Die View im Hauptfenster rechts
+	 * @param leftView
+	 *            Die View im Hauptfenster links
+	 * @param rightView
+	 *            Die View im Hauptfenster rechts
 	 */
 	public void showView(View leftView, View rightView);
+
+	/**
+	 * Diese Methode zeigt im Header zusätzlich die Daten des eingeloggten User
+	 * an
+	 * 
+	 * @param username
+	 *            Der angezeigte Username
+	 */
+	public void showUserData(String username);
 
 }
