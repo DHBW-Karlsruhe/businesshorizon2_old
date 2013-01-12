@@ -20,32 +20,37 @@ import java.util.TreeSet;
  */
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	protected NavigableSet<Period> periods = new TreeSet<Period>();
 
 	protected Date lastChanged;
-	
+
 	protected String name;
+
+	protected int periodsToForecast;
+	protected int relevantPastPeriods;
+	protected int iterations;
+	protected int basisYear;
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
 	 * 
 	 * @author Christian Scherer
-	 * @param Der Name des Projekts
+	 * @param Der
+	 *            Name des Projekts
 	 */
-	public Project(String name){
+	public Project(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Standardkonstruktor des Projekt
 	 * 
 	 * @author Christian Scherer
 	 */
-	public Project(){
+	public Project() {
 	}
-	
-	
+
 	/**
 	 * Gibt die Perioden in einem sortierten NavigableSet zurueck.
 	 * 
@@ -132,6 +137,109 @@ public class Project implements Serializable {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+
+
+	/**
+	 * Setzt den Namen des Projekts.
+	 * 
+	 * @author Christian Scherer
+	 * @param name
+	 *            Name des Projekts
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Gibt die Anzahl vorherzusagender Perioden des Projekts zurück.
+	 * 
+	 * @author Christian Scherer
+	 * @return Anzahl vorherzusagender Perioden
+	 */
+	public int getPeriodsToForecast() {
+		return periodsToForecast;
+	}
+
+	/**
+	 * Setzt die Anzahl vorherzusagender Perioden des Projekts.
+	 * 
+	 * @author Christian Scherer
+	 * @param periodsToForecast
+	 *            Anzahl vorherzusagender Perioden
+	 */
+	public void setPeriodsToForecast(int periodsToForecast) {
+		this.periodsToForecast = periodsToForecast;
+	}
+
+	/**
+	 * Setzt die Anzahl der vergangenen relevanten Perioden des Projekts.
+	 * 
+	 * @author Christian Scherer
+	 * @param relevantPastPeriods
+	 *            Anzahl der vergangenen relevanten Perioden
+	 */
+	public void setRelevantPastPeriods(int relevantPastPeriods) {
+		this.relevantPastPeriods = relevantPastPeriods;
+	}
+
+	/**
+	 * Gibt die Anzahl der vergangenen relevanten Perioden des Projekts zurück.
+	 * 
+	 * @author Christian Scherer
+	 * @return Anzahl der vergangenen relevanten Perioden
+	 */
+	public int getRelevantPastPeriods() {
+		return relevantPastPeriods;
+	}
+
+	/**
+	 * Gibt die Anzahl der Wiederholungen fuer die Zeitreihenanalyse des
+	 * Projekts zurück.
+	 * 
+	 * @author Christian Scherer
+	 * @return Anzahl der Wiederholungen fuer die Zeitreihenanalyse
+	 */
+	public int getIterations() {
+		return iterations;
+	}
+
+	/**
+	 * Setzt die Anzahl der Wiederholungen fuer die Zeitreihenanalyse des
+	 * Projekts.
+	 * 
+	 * @author Christian Scherer
+	 * @param iterations
+	 *            Anzahl der Wiederholungen fuer die Zeitreihenanalyse
+	 */
+	public void setIterations(int iterations) {
+		this.iterations = iterations;
+	}
+
+	/**
+	 * Setzt Basis-Jahr des Projekts auf das die Cashflows abgezinst werden
+	 * muessen.
+	 * 
+	 * @author Christian Scherer
+	 * @param basisYear
+	 *            Basis-Jahr des Projekts auf das die Cashflows abgezinst werden
+	 *            muessen
+	 */
+	public void setBasisYear(int basisYear) {
+		this.basisYear = basisYear;
+	}
+
+	/**
+	 * Gibt Basis-Jahr des Projekts auf das die Cashflows abgezinst werden
+	 * muessen zurück.
+	 * 
+	 * @author Christian Scherer
+	 * @return Basis-Jahr des Projekts auf das die Cashflows abgezinst werden
+	 *         muessen
+	 */
+	public int getBasisYear() {
+		return basisYear;
 	}
 
 }
