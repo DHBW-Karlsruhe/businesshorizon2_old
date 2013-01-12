@@ -103,7 +103,7 @@ public class Project implements Serializable {
 
 	/**
 	 * Liesst das Datum der letzten Bearbeitung aus. Wird benötigt für die
-	 * Anwenderinformation auf dem Auswahl-screen für Projekte.
+	 * Anwenderinformation auf dem Auswahl-screen für Projekte. 
 	 * 
 	 * @author Christian Scherer
 	 * @return Datum der letzten Aenderung
