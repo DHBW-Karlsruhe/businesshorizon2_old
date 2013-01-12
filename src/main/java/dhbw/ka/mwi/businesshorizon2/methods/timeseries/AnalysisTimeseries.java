@@ -116,6 +116,7 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 			logger.debug("Calculation of C-Values failed!");
 
 		}
+		System.out.println(matrixC);
 		return matrixC;
 	}
 
@@ -295,29 +296,29 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		sap[7] = 2908104000.00;
 		sap[8] = 2965249000.00;
 		sap[9] = 2936590000.00;
-		sap[10] = 2968018000.00;
-		sap[11] = 3371547000.00;
-		sap[12] = 3833082000.00;
-		sap[13] = 4191000000.00;
-		sap[14] = 4894000000.00;
-		sap[15] = 4963000000.00;
-		sap[16] = 5261000000.00;
-		sap[17] = 5884000000.00;
+		/**
+		 * sap[10] = 2968018000.00; sap[11] = 3371547000.00; sap[12] =
+		 * 3833082000.00; sap[13] = 4191000000.00; sap[14] = 4894000000.00;
+		 * sap[15] = 4963000000.00; sap[16] = 5261000000.00; sap[17] =
+		 * 5884000000.00;
+		 */
 
 		Callback callback = null;
 		try {
+
 			DecimalFormat df = new DecimalFormat("0.00");
-			// result = al.calculate(sap, 17, 10, 5000000, callback);
+			// result = al.calculate(sap, 5, 8, 500000, callback);
 			result = al.calculate(timeseries, 2, 5, 1000000, callback);
 			System.out.println(df.format(result[0][0]));
-			System.out.println(df.format(result[0][1]));
+
 			System.out.println(df.format(result[1][1]));
 			System.out.println(df.format(result[2][1]));
 			System.out.println(df.format(result[3][1]));
 			System.out.println(df.format(result[4][1]));
-			System.out.println(df.format(result[4][0]));
-			System.out
-					.println("P5: 1.6686479843069828E8 - 1.650882630275696E8");
+			System.out.println(df.format(result[5][0]));
+			System.out.println(df.format(result[6][1]));
+			System.out.println(df.format(result[7][1]));
+
 		} catch (InterruptedException e) {
 			System.out.println("Error al.calculate");
 			System.out.println(e.getClass());
