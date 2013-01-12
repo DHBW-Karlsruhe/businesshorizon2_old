@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -36,7 +36,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	private EventBus eventBus;
 	
 	@Autowired
-	private Project project;
+	private ProjectProxy projectProxy;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -61,7 +61,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	public boolean isValid() {
 		boolean isValid = true;
 		
-		List<Szenario> scenarios = this.project.getScenarios();
+		List<Szenario> scenarios = this.projectProxy.getSelectedProject().getScenarios();
 		
 		int scenarioNumber = 1;
 		for(Szenario scenario : scenarios) {
@@ -91,9 +91,9 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public void addScenario() {
 		Szenario scenario = new Szenario();
-		this.project.addScenario(scenario);
+		this.projectProxy.getSelectedProject().addScenario(scenario);
 		
-		getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), this.project.getScenarios().size());
+		getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), this.projectProxy.getSelectedProject().getScenarios().size());
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	@EventHandler
 	public void showScenarios(ShowScenarioViewEvent event) {
-		List<Szenario> scenarios = this.project.getScenarios();
+		List<Szenario> scenarios = this.projectProxy.getSelectedProject().getScenarios();
 		if(scenarios.size() < 1) {
 			scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
 		}
@@ -254,7 +254,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 * @param scenarioNumber Nummer des Szenarios, dessen Werte geaendert wurden.
 	 */
 	public void updateScenario(int scenarioNumber) {
-		Szenario scenario = this.project.getScenarios().get(scenarioNumber-1);
+		Szenario scenario = this.projectProxy.getSelectedProject().getScenarios().get(scenarioNumber-1);
 		
 		if(isValidRateReturnEquity(scenarioNumber)) {
 			scenario.setRateReturnEquity(Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnEquity")));
