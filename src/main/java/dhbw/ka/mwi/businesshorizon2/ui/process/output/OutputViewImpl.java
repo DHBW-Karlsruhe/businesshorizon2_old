@@ -8,10 +8,11 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
+ * Vaadin.
  * 
  * @author Julius Hacker
- *
+ * 
  */
 public class OutputViewImpl extends VerticalLayout implements OutputViewInterface {
 	private static final long serialVersionUID = 1L;
@@ -20,9 +21,9 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	private OutputPresenter presenter;
 
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
-	 * View-Komponenten.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+	 * und initialisiert die View-Komponenten.
 	 * 
 	 * @author Julius Hacker
 	 */
@@ -41,7 +42,5 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 		Label testlabel = new Label("outputtest");
 		this.addComponent(testlabel);
 	}
-
-
 
 }
