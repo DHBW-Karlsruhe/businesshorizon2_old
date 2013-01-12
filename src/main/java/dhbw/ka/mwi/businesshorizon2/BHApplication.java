@@ -105,5 +105,4 @@ public class BHApplication extends Application {
 		eventBus.fireEvent(new ShowProcessViewEvent());
 		logger.debug("ShowProzessViewEvent gefeuert");
 	}
-
 }

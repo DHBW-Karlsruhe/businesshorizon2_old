@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
@@ -41,6 +42,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	public boolean isSelectable() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

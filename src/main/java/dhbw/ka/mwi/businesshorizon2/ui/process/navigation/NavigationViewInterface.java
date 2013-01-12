@@ -16,4 +16,6 @@ public interface NavigationViewInterface extends View {
 	 * @author Julius Hacker
 	 */
 	public void addNavigationButton(NavigationSteps value);
+
+	public void setButtonToInvalid(NavigationSteps navigationStep, boolean invalid);
 }

@@ -3,6 +3,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 import javax.annotation.PostConstruct;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 /**
@@ -38,5 +39,12 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public boolean isSelectable() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }
