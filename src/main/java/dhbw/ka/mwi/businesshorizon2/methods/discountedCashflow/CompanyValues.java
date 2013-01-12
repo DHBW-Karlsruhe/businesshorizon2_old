@@ -12,7 +12,7 @@ import java.util.TreeMap;
  */
 public class CompanyValues {
 
-	class Couple {
+	public class Couple {
 		private final double companyValue;
 		private int count;
 

@@ -12,7 +12,13 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  */
 
 public abstract class RatingMethods {
+	protected StochasticResultContainer container;
+	protected Szenario szenario;
 
-	public abstract CompanyValues calculateCompanyValue(
-			StochasticResultContainer container, Szenario szenario);
+	public RatingMethods(StochasticResultContainer container, Szenario szenario) {
+		this.container = container;
+		this.szenario = szenario;
+	}
+
+	public abstract CompanyValues calculateCompanyValue();
 }

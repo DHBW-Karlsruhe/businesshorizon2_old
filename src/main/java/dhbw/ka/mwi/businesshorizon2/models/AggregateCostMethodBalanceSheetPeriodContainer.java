@@ -15,6 +15,10 @@ import java.util.TreeSet;
 public class AggregateCostMethodBalanceSheetPeriodContainer extends
 		AbstractPeriodContainer {
 
+	public AggregateCostMethodBalanceSheetPeriodContainer() {
+		super();
+	}
+
 	@Override
 	public TreeSet<AggregateCostMethodPeriod> getPeriods() {
 		return (TreeSet<AggregateCostMethodPeriod>) super.getPeriods();

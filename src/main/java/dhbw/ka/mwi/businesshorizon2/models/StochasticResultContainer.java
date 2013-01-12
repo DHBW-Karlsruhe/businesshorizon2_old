@@ -13,6 +13,11 @@ import java.util.TreeSet;
 public class StochasticResultContainer {
 	TreeSet<? extends AbstractPeriodContainer> periodContainer = new TreeSet<>();
 
+	public StochasticResultContainer(
+			TreeSet<? extends AbstractPeriodContainer> tree) {
+		periodContainer = tree;
+	}
+
 	/**
 	 * Diese Methode liefert die Referenz auf die Liste der Container zurück.
 	 * 

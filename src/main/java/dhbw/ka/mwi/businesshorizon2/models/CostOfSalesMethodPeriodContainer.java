@@ -12,6 +12,10 @@ import java.util.TreeSet;
 
 public class CostOfSalesMethodPeriodContainer extends AbstractPeriodContainer {
 
+	public CostOfSalesMethodPeriodContainer() {
+		super();
+	}
+
 	@Override
 	public TreeSet<CostOfSalesMethodPeriod> getPeriods() {
 		return (TreeSet<CostOfSalesMethodPeriod>) super.getPeriods();
