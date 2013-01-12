@@ -170,6 +170,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		deterministicInput.addItem("Direkte Eingabe");
 		deterministicInput.addItem("Umsatzkostenverfahren");
 		deterministicInput.addItem("Direktkostenverfahren");
+		detInput.addStyleName(Reindeer.PANEL_LIGHT);
 		detInput.addComponent(deterministicInput);
 		
 		Label stoCaption= new Label ("Vergangene Perioden:");
@@ -177,6 +178,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		stochasticInput.addItem("Direkte Eingabe");
 		stochasticInput.addItem("Umsatzkostenverfahren");
 		stochasticInput.addItem("Direktkostenverfahren");
+		stoInput.addStyleName(Reindeer.PANEL_LIGHT);
 		stoInput.addComponent(stochasticInput);
 	}
 

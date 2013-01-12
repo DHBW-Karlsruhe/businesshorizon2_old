@@ -34,7 +34,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 
-	@Autowired
+	//@Autowired
 	private User user;
 
 	@Autowired
@@ -52,6 +52,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private void init() {
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
+		
+		user = new User("", "", "", "", ""); // TODO Hier sollte der User des
+		// Authetifizierungsprozesses ausgewaehlt werden
 	}
 
 	/**

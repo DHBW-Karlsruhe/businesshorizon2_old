@@ -39,6 +39,8 @@ public class Project implements Serializable {
 	
 	@Autowired
 	private SortedSet<AbstractStochasticMethod> methods;	
+	protected List<Szenario> scenarios = new ArrayList<Szenario>();
+
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -150,11 +152,21 @@ public class Project implements Serializable {
 		return name;
 	}
 
+
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
 	
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
+	}
+	
+	public List<Szenario> getScenarios() {
+		return this.scenarios;
+	}
+	
+	public void addScenario(Szenario scenario) {
+		this.scenarios.add(scenario);
+
 	}
 }

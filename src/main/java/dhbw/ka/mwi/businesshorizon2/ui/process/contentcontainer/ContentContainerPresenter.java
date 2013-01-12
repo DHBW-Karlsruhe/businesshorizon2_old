@@ -10,13 +10,18 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.ShowMethodViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.ShowOutputViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ShowParameterViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ShowScenarioViewEvent;
 
 /**
  * Die Klasse ist kuemmert sich als Container darum, dass in der Prozesssicht
@@ -79,15 +84,19 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 			break;
 		case PERIOD:
 			newView = periodView;
+			eventBus.fireEvent(new ShowPeriodViewEvent());
 			break;
 		case PARAMETER:
 			newView = parameterView;
+			eventBus.fireEvent(new ShowParameterViewEvent());
 			break;
 		case SCENARIO:
 			newView = processingView;
+			eventBus.fireEvent(new ShowScenarioViewEvent());
 			break;
 		case OUTPUT:
 			newView = outputView;
+			eventBus.fireEvent(new ShowOutputViewEvent());
 			break;
 		default:
 			newView = null;
@@ -100,7 +109,13 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		
 		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
 		
+		// (De-)Aktiviere je nachdem, ob ein vorheriger bzw. nachfolgender Prozessschritt existiert
+		// die entsprechenden Buttons.
 		this.switchStepButtons();
+		
+		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
+		// User gegebenenfalls einen Fehlerhinweis zu geben
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 	
 	public void showNextStep() {

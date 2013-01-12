@@ -17,6 +17,7 @@ import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Auswahl der Berechnungsmethoden. 
@@ -146,6 +147,12 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 				
 			}
 		}
+		
+	}
+
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
 		
 	}
 }
