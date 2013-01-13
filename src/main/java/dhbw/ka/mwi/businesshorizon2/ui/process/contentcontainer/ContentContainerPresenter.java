@@ -58,9 +58,8 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private int stepNumber;
 
 	
-	private boolean isActualViewValid = true;
+	private boolean isActualViewValid = false;
 	
-
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
@@ -86,6 +85,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
 		// User gegebenenfalls einen Fehlerhinweis zu geben
 		eventBus.fireEvent(new ValidateContentStateEvent());
+
 		
 		ContentView newView = null;
 
@@ -150,7 +150,6 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 
 			logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
 		}
-
 
 	}
 

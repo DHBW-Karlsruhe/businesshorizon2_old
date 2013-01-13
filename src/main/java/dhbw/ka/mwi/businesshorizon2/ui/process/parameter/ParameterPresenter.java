@@ -52,8 +52,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
-	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
-	 * wurde. Zudem werden die validitaeten der Felder zunaechst auf false
+	 * EventHandler. Zudem werden die validitaeten der Felder zunaechst auf false
 	 * gesetzt. Zudem wird der Wert der firstCall Variable auf true gesetzt,
 	 * sodass die erste Pruefung des screens noch keine Fehlermeldung wirft, da
 	 * der Benutzer den Screen auch noch nicht geoeffnet hat
@@ -63,10 +62,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	@PostConstruct
 	public void init() {
 
-		// TODO setzen ob determ
-		// determMethod = project.getInputType().getDeterm...
-		// TODO setzen ob stoch
-		// stochMethod =project.getInputType().getStoch...
+		
 
 		eventBus.addHandler(this);
 
@@ -96,13 +92,23 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@EventHandler
 	public void onShowParameterScreen(ShowParameterViewEvent event) {
+		
+		
 		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
 			initializeBasisYear();
 		}
+		//TODO: Braucht noch konkrete werte von vorigem screen
+		determMethod = this.projectProxy.getSelectedProject()
+				.getProjectInputType().getDeterministic();
+		stochMethod = this.projectProxy.getSelectedProject()
+				.getProjectInputType().getStochastic();
+		
 		greyOut();
 		firstCall = false;
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
 				true));
+		
+		
 
 	}
 
@@ -404,24 +410,27 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	}
 
 	/**
-	 * Eventhandler der zuerst prueft ob sich Vorbedingungen geaendert haben und
-	 * prueft darauf hin ob der Screen an sich immer noch komplett valide ist.
-	 * Falls nicht, wird ein InvalidStateEven gefeuert. Wichtig ist noch, dass
-	 * zunaechst geprueft werden muss ob es sich um den ersten Aufruf handelt,
-	 * also der Anwender noch keine Moeglichkeit hatte die Felder korrekt zu
-	 * befuellen. Ist dem so wird der Screen noch als valide gewertet. Erst nach
-	 * dem ersten Aufrufen des Screens wird dann die pruefung bei falschen
-	 * Eintraegen auch ein Invalid Event feuern
+	 * 
+	 * Eventhandler der zuerst prueft ob sich Vorbedingungen geaendert haben,
+	 * die Auswierkungen auf den ParameterScreen haben. Daraufhin wird geprueft
+	 * ob es sich um den ersten Aufruf handelt, also der Anwender noch keine
+	 * Moeglichkeit hatte die Felder korrekt zu befuellen. Ist dem so wird der
+	 * Screen noch als valide gewertet. Erst nach dem ersten Aufrufen des
+	 * Screens wird dann die Pruefung bei falschen Eintraegen auch ein Invalid
+	 * Event feuern.
 	 * 
 	 * @author Christian Scherer
 	 */
 	@Override
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
-		// TODO setzen ob determ
-		// determMethod = project.getInputType().getDeterm...
-		// TODO setzen ob stoch
-		// stochMethod =project.getInputType().getStoch...
+		
+		//TODO: Braucht noch konkrete werte von vorigem screen
+		determMethod = this.projectProxy.getSelectedProject()
+				.getProjectInputType().getDeterministic();
+		stochMethod = this.projectProxy.getSelectedProject()
+				.getProjectInputType().getStochastic();
+
 		if (!firstCall && !isValid()) {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER));
 			logger.debug("Parameter not valid, InvalidStateEvent fired");
