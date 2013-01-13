@@ -122,6 +122,14 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		this.switchStepButtons();
 	}
 	
+	/**
+	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen. Sie kuemmert sich darum,
+	 * den naechsten Screen zu ermitteln und zu ihm weiterzuleiten. Sie prueft hierbei, ob die Eingaben des
+	 * aktuellen Screens valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum naechsten Screen
+	 * weitergeleitet.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void showNextStep() {
 		if(this.isActualViewValid) {
 			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
@@ -133,6 +141,12 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		
 	}
 	
+	/**
+	 * Diese Methode wird von der View beim Click des Zurueck-Buttons aufgerufen. Sie kuemmert sich darum,
+	 * den vorherigen Screen zu ermitteln und zu ihm weiterzuleiten.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void showPreviousStep() {
 		NavigationSteps previousScreen = NavigationSteps.getByNumber(this.stepNumber - 1);
 		this.eventBus.fireEvent(new ShowNavigationStepEvent(previousScreen));
@@ -142,6 +156,13 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		
 	}
 	
+	/**
+	 * Diese Methode aktualisiert die Aktivierungszustaende der Weiter- und Zurueck-Buttons. Dies ist insofern
+	 * relevant, als das im ersten Screen nicht noch weiter zurueck und im letzten Screen nicht noch weiter gegangen
+	 * werden kann.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void switchStepButtons() {
 		logger.debug(this.stepNumber);
 		logger.debug(NavigationSteps.getStepCount());
@@ -161,13 +182,35 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		}
 	}
 	
+	/**
+	 * Diese Methode hoert auf InvalidStateEvents, die bei der Validierung der Screens erzeugt werden.
+	 * Kommt ein solches InvalidStateEvent fuer den aktuellen Screen an, wird intern vermerkt, dass der
+	 * Screen derzeit invalid ist. Dies ist fuer den Weiter-Button wichtig, der nur zum naechsten Screen
+	 * weiterleiten soll, wenn die aktuelle View valid ist.
+	 * 
+	 * @param event Das gefeuerte InvalidStateEvent
+	 * @author Julius Hacker
+	 */
 	@EventHandler
 	public void handleInvalidState(InvalidStateEvent event) {
-		this.isActualViewValid = false;
+		if(event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
+			this.isActualViewValid = false;
+		}
 	}
 	
+	/**
+	 * Diese Methode hoert auf ValidStateEvents, die bei der Validierung der Screens erzeugt werden.
+	 * Kommt ein solches ValidStateEvent fuer den aktuellen Screen an, wird intern vermerkt, dass der
+	 * Screen derzeit valid ist. Dies ist fuer den Weiter-Button wichtig, der nur zum naechsten Screen
+	 * weiterleiten soll, wenn die aktuelle View valid ist.
+	 * 
+	 * @param event Das gefeuerte ValidStateEvent
+	 * @author Julius Hacker
+	 */
 	@EventHandler
 	public void handleValidState(ValidStateEvent event) {
-		this.isActualViewValid = true;
+		if(event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
+			this.isActualViewValid = true;
+		}
 	}
 }

@@ -77,19 +77,6 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		
 		return isValid;
 	}
-
-	@Override
-	public boolean isNextScreenSelectable() {
-		boolean isValid = true;
-		
-		if(!isValid()) {
-			isValid = false;
-		}
-		
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT, isValid));
-		
-		return false;
-	}
 	
 	/**
 	 * Diese Methode fuegt dem Projekt ein neues Szenario hinzu und zeigt die dazugehoerigen

@@ -12,7 +12,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ShowParameterViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
 
 /**
@@ -45,13 +44,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public boolean isNextScreenSelectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
