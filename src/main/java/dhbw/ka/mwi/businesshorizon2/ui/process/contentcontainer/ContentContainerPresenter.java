@@ -28,7 +28,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ShowScenarioViewEvent;
  * die richtige Maske angezeigt wird.
  * 
  * @author Julius Hacker
- *
+ * 
  */
 public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private static final long serialVersionUID = 1L;
@@ -37,16 +37,16 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private PeriodViewInterface periodView;
-	
+
 	@Autowired
 	private OutputViewInterface outputView;
-	
+
 	@Autowired
 	private ParameterViewInterface parameterView;
-	
+
 	@Autowired
 	private ScenarioViewInterface processingView;
 
@@ -54,10 +54,11 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private MethodViewInterface methodView;
 
 	private int stepNumber;
-	
+
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
 	 * 
 	 * @author Julius Hacker
 	 */
@@ -65,19 +66,25 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	public void init() {
 		eventBus.addHandler(this);
 	}
-	
+
 	/**
-	 * Diese Methode faengt die ShownavigationStepEvents ab und kuemmert sich darum,
-	 * dass die entsprechende Maske angezeigt wird.
+	 * Diese Methode faengt die ShownavigationStepEvents ab und kuemmert sich
+	 * darum, dass die entsprechende Maske angezeigt wird.
 	 * 
-	 * @param event Der ausgeloeste ShowNavigationStepEvent
+	 * @param event
+	 *            Der ausgeloeste ShowNavigationStepEvent
 	 * @autor Julius Hacker
 	 */
 	@EventHandler
 	public void onShowNavigationStep(ShowNavigationStepEvent event) {
 		ContentView newView = null;
-		
-		switch(event.getStep()) {
+
+		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu
+		// validieren und dem
+		// User gegebenenfalls einen Fehlerhinweis zu geben
+		eventBus.fireEvent(new ValidateContentStateEvent());
+
+		switch (event.getStep()) {
 		case METHOD:
 			newView = methodView;
 			eventBus.fireEvent(new ShowMethodViewEvent());
@@ -102,55 +109,54 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 			newView = null;
 			break;
 		}
-		
+
 		this.stepNumber = event.getStep().getNumber();
-		
+
 		getView().showContentView(newView);
-		
-		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
-		
-		// (De-)Aktiviere je nachdem, ob ein vorheriger bzw. nachfolgender Prozessschritt existiert
+
+		logger.debug("Prozesschritt " + event.getStep().getCaption()
+				+ " wird angezeigt");
+
+		// (De-)Aktiviere je nachdem, ob ein vorheriger bzw. nachfolgender
+		// Prozessschritt existiert
 		// die entsprechenden Buttons.
 		this.switchStepButtons();
-		
-		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
-		// User gegebenenfalls einen Fehlerhinweis zu geben
-		eventBus.fireEvent(new ValidateContentStateEvent());
+
 	}
-	
+
 	public void showNextStep() {
-		NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
+		NavigationSteps nextScreen = NavigationSteps
+				.getByNumber(this.stepNumber + 1);
 		this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
-		
-		logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
-	
-		
+
+		logger.debug("Event fuer Anzeige des Prozesschritt "
+				+ nextScreen.getCaption() + " wurde getriggert");
+
 	}
-	
+
 	public void showPreviousStep() {
-		NavigationSteps previousScreen = NavigationSteps.getByNumber(this.stepNumber - 1);
+		NavigationSteps previousScreen = NavigationSteps
+				.getByNumber(this.stepNumber - 1);
 		this.eventBus.fireEvent(new ShowNavigationStepEvent(previousScreen));
-		
-		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + "wurde getriggert");
-	
-		
+
+		logger.debug("Event fuer Anzeige des Prozesschritt "
+				+ previousScreen.getCaption() + "wurde getriggert");
+
 	}
-	
+
 	public void switchStepButtons() {
 		logger.debug(this.stepNumber);
 		logger.debug(NavigationSteps.getStepCount());
-		
-		if(this.stepNumber < 2) {
+
+		if (this.stepNumber < 2) {
 			getView().activateBack(false);
-		}
-		else {
+		} else {
 			getView().activateBack(true);
 		}
-		
-		if(this.stepNumber >= NavigationSteps.getStepCount()) {
+
+		if (this.stepNumber >= NavigationSteps.getStepCount()) {
 			getView().activateNext(false);
-		}
-		else {
+		} else {
 			getView().activateNext(true);
 		}
 	}

@@ -46,13 +46,18 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	private int[] numberIterations;
 
+	private boolean firstCall;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
 	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
-	 * wurde.
+	 * wurde. Zudem werden die validitaeten der Felder zunaechst auf false
+	 * gesetzt. Zudem wird der Wert der firstCall Variable auf true gesetzt,
+	 * sodass die erste Pruefung des screens noch keine Fehlermeldung wirft, da
+	 * der Benutzer den Screen auch noch nicht geoeffnet hat
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Christian SCherer
 	 */
 	@PostConstruct
 	public void init() {
@@ -68,19 +73,33 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		iterationsValid = false;
 		periodsToForecastValid = false;
 		relevantPastPeriodsValid = false;
-		
+
 		setIterations();
+		firstCall = true;
 
 	}
 
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
+	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
+	 * wurde. Desweiteren wird die firstCall Variable auf false gesetzt, sodass
+	 * ab jetzt bei jeder Validierungsanfrage alle Felder geprueft und ggf. als
+	 * unkorrekt mariert werden. Beim ersten Aufruf ist dies noch nicht
+	 * gewuenscht, da der benutzer den Screen noch nicht geoffnet hatte.
+	 * 
+	 * @author Julius Hacker, Christian Scherer
+	 */
 	@EventHandler
-	public void showParameterScreen(ShowParameterViewEvent event) {
-		if(projectProxy.getSelectedProject().getBasisYear() == 0) {
+	public void onShowParameterScreen(ShowParameterViewEvent event) {
+		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
 			initializeBasisYear();
 		}
 		greyOut();
+		firstCall = false;
+
 	}
-	
+
 	/**
 	 * Erzeugt das Integerarray der Iterationen, befuellt es mit Werten und
 	 * setzt diese dann in die View zur anzeige
@@ -116,7 +135,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Aenderungen in anderen Screens diese Eingabe immer noch valide sind.
 	 * Falls der Screen nicht mehr valide ist, muss zudem geprueft werden welche
 	 * Felder nicht mehr gueltig sind und diese mit einem ComponentenError
-	 * (rotem Ausrufezeichen) markiert werden.
+	 * (rotem Ausrufezeichen) markiert werden. Zudem wird der Sonderfall
+	 * behandelt, dass es der erste Aufruf ist, dann wird sofort true
+	 * zurueckgegeben, da der Nutzer noch nicht die moeglichkeit hatte korrekte
+	 * Angaben einzugeben
 	 * 
 	 * @author Christian Scherer
 	 * @return Ob alle Validierungspruefungen der Eingabefelder positiv gelaufen
@@ -124,6 +146,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@Override
 	public boolean isValid() {
+		if (firstCall) {
+			return true;
+		}
+
 		if (determMethod && !stochMethod) {
 			if (basisYearValid) {
 				return true;
@@ -187,6 +213,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void iterationChosen(int iterations) {
 		iterationsValid = true;
 		this.projectProxy.getSelectedProject().setIterations(iterations);
+		getView().setComponentError(false, "iterations", null);
 		logger.debug("Iterationen in Objekten gesetzt: "
 				+ this.projectProxy.getSelectedProject().getName());
 	}
@@ -292,7 +319,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (basisYearInt >= (now.get(Calendar.YEAR) - 1)) {
 				basisYearValid = true;
 				getView().setComponentError(false, "basisYear", "");
-				this.projectProxy.getSelectedProject().setBasisYear(basisYearInt);
+				this.projectProxy.getSelectedProject().setBasisYear(
+						basisYearInt);
 				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -377,14 +405,21 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void initializeBasisYear() {
 		Calendar now = Calendar.getInstance();
 		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
-		logger.debug("Initialjahr "+(now.get(Calendar.YEAR) - 1)+" gesetzt.");
+		basisYearValid = true;
+		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1)
+				+ " gesetzt.");
 
 	}
 
 	/**
 	 * Eventhandler der zuerst prueft ob sich Vorbedingungen geaendert haben und
 	 * prueft darauf hin ob der Screen an sich immer noch komplett valide ist.
-	 * Falls nicht, wird ein InvalidStateEven gefeuert.
+	 * Falls nicht, wird ein InvalidStateEven gefeuert. Wichtig ist noch, dass
+	 * zunaechst geprueft werden muss ob es sich um den ersten Aufruf handelt,
+	 * also der Anwender noch keine Moeglichkeit hatte die Felder korrekt zu
+	 * befuellen. Ist dem so wird der Screen noch als valide gewertet. Erst nach
+	 * dem ersten Aufrufen des Screens wird dann die pruefung bei falschen
+	 * Eintraegen auch ein Invalid Event feuern
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -395,7 +430,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		// determMethod = project.getInputType().getDeterm...
 		// TODO setzen ob stoch
 		// stochMethod =project.getInputType().getStoch...
-		if (!isValid()) {
+		if (!firstCall && !isValid()) {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER));
 			logger.debug("Parameter not valid, InvalidStateEvent fired");
 		} else {
@@ -407,6 +442,5 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public int[] getNumberIterations() {
 		return numberIterations;
 	}
-	
-	
+
 }
