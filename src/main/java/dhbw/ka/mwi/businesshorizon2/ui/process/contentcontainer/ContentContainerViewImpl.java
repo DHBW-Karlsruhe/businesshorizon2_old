@@ -44,7 +44,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 		this.layout = new VerticalLayout();
 		layout.setSizeFull();
 		
-		this.setSizeUndefined();
+		this.setSizeFull();
 		this.setWidth(100, UNITS_PERCENTAGE);
 		
 		this.backButton = new Button("Vorheriger Schritt");

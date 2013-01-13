@@ -12,11 +12,14 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.CheckMethodTypeEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
+import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 
 /**
@@ -57,12 +60,16 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	@Override
 	public boolean isValid() {
+		Boolean valid = false;
 		if (projectInputType.getStochastic())
 			for (AbstractStochasticMethod m: methods){
 				if (m.getSelected())
-					return true;
+					valid = true;
 			}
-		return false;
+		else{
+			valid = true;
+		}
+		return valid;
 	}
 	
 	
@@ -151,8 +158,14 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	}
 
 	@Override
+	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
+		if (!this.isValid()){
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD));
+		}
+		else {
+			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.METHOD));
+		}
 		
 	}
 }

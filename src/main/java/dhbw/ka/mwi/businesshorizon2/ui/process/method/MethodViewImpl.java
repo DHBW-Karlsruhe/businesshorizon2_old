@@ -161,6 +161,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		
 		initOptionGroups();
 		generateUi();
+		inputMethod.setSizeFull();
 	}
 
 	private void initOptionGroups() {
