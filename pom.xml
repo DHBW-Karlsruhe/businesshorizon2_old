@@ -35,6 +35,7 @@
 									<includes>
 
 										<include>MVP-Lite-1.0.jar</include>
+										<include>gwt-visualization.jar</include>
 
 									</includes>
 								</resource>
@@ -54,20 +55,54 @@
 
 			<!-- Compile custom GWT components or widget dependencies with the GWT 
 				compiler -->
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>gwt-maven-plugin</artifactId> 
-				<version>${gwt.plugin.version}</version> <configuration> <webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory> 
-				<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs> <runTarget>businesshorizon2</runTarget> 
-				<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp> 
-				<noServer>true</noServer> <port>8080</port> <compileReport>false</compileReport> 
-				</configuration> <executions> <execution> <goals> <goal>resources</goal> 
-				<goal>compile</goal> </goals> </execution> </executions> <dependencies> <dependency> 
-				<groupId>com.google.gwt</groupId> <artifactId>gwt-dev</artifactId> <version>${gwt.version}</version> 
-				</dependency> <dependency> <groupId>com.google.gwt</groupId> <artifactId>gwt-user</artifactId> 
-				<version>${gwt.version}</version> </dependency> </dependencies> </plugin> 
-				<plugin> <groupId>com.vaadin</groupId> <artifactId>vaadin-maven-plugin</artifactId> 
-				<version>1.0.2</version> <executions> <execution> <configuration> </configuration> 
-				<goals> <goal>update-widgetset</goal> </goals> </execution> </executions> 
-				</plugin> -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.plugin.version}</version>
+				<configuration>
+					<webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<runTarget>businesshorizon2</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<noServer>true</noServer>
+					<port>8080</port>
+					<compileReport>false</compileReport>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>resources</goal>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>1.0.2</version>
+				<executions>
+					<execution>
+						<configuration>
+						</configuration>
+						<goals>
+							<goal>update-widgetset</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- A simple Jetty test server at http://localhost:8080/businesshorizon2 
 				can be launched with the Maven goal jetty:run and stopped with jetty:stop -->
@@ -95,7 +130,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -241,6 +277,13 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
+		<dependency>
+		   <groupId>org.vaadin.addons</groupId>
+		   <artifactId>visualizationsforvaadin</artifactId>
+		   <version>1.1.2</version>
+		</dependency>
+				
+
 
 	</dependencies>
 
