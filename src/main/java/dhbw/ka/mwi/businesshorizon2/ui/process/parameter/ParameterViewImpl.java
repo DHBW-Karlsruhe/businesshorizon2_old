@@ -51,13 +51,11 @@ public class ParameterViewImpl extends VerticalLayout implements
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
-	 * und initialisiert die View-Komponenten.
-	 * 
-	 * 
-	 * Es werden eine Methode des Presenter zur Erzeugung der
-	 * Iterationsschritt-Wahl, Ausgrauen unrelevanter Felder und die generateUi
-	 * Methode angestossen
-	 * 
+	 * und initialisiert die View-Komponenten. Es werden Methoden zur
+	 * Initialisierung des Basisjahrs und der Iteraionsschritte aufgerufen,
+	 * sowie weitere Methoden zur UI generierung und zum Ausgrauen unrelevanter
+	 * Felder.
+	 *  
 	 * @author Julius Hacker, Christian Scherer
 	 */
 	@PostConstruct
@@ -81,11 +79,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private void generateUi() {
 
 		setMargin(true);
-		// setSizeFull();
-		// setSpacing(true);
 
-		gridLayout = new GridLayout(3, 8);
-		// gridLayout.setSizeFull();
+		gridLayout = new GridLayout(2, 8);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
 		addComponent(gridLayout);
@@ -118,6 +113,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 		}
 		comboBoxIterations.setNullSelectionAllowed(false);
 		comboBoxIterations.setImmediate(true);
+		comboBoxIterations
+				.setDescription("Je h\u00F6her die Anzahl der Wiederholungen, desto genauer wird die Vorhersage.");
 		comboBoxIterations.addListener(new Property.ValueChangeListener() {
 
 			/**
@@ -193,11 +190,11 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				presenter.industryRepresentativeListItemChosen((String)event.getProperty().getValue());
+				presenter.industryRepresentativeListItemChosen((String) event
+						.getProperty().getValue());
 				logger.debug("Branche " + event + " gewaehlt");
 			}
 		});
-		
 
 		gridLayout.addComponent(comboBoxRepresentatives, 0, 6);
 
@@ -206,6 +203,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		textfieldBasisYear = new TextField();
 		textfieldBasisYear.setImmediate(true);
+		textfieldBasisYear
+				.setDescription("Das Basisjahr ist das Jahr, auf das die Cashflows abgezinst werden und somit den Unternehmenswert darstellen. Bedenken Sie, dass Sie alle Perioden bis zu diesem Jahr ausf\u00FCllen m\u00FCssen!");
 		textfieldBasisYear.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -246,51 +245,6 @@ public class ParameterViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Diese Methode graut die Checkbox fuer die Branchenstellvertreter aus, da
-	 * diese Funktionalitaet noch nicht gegeben ist.
-	 * 
-	 * @author Christian Scherer
-	 */
-	@Override
-	public void greyOutCheckboxIndustryRepresentative() {
-		this.checkboxIndustryRepresentative.setEnabled(false);
-	}
-
-	/**
-	 * Diese Methode graut die ComboBox (DropDown-Liste) fuer die
-	 * Branchenstellvertreter aus, da diese Funktionalitaet noch nicht gegeben
-	 * ist.
-	 * 
-	 * @author Christian Scherer
-	 */
-	@Override
-	public void greyOutComboBoxRepresentatives() {
-		this.comboBoxRepresentatives.setEnabled(false);
-	}
-
-	/**
-	 * Loescht den gesetzten Wert des Texfelds 'Anzahl zu prognostizierender
-	 * Perioden'
-	 * 
-	 * @author Christian Scherer
-	 */
-	@Override
-	public void clearTextFieldnumPeriodsToForecast() {
-		this.textfieldNumPeriods.setValue("");
-	}
-
-	/**
-	 * Loescht den gesetzten Wert des Texfelds 'Anzahl einbezogener, vergangener
-	 * Perioden'
-	 * 
-	 * @author Christian Scherer
-	 */
-	@Override
-	public void clearTextFieldNumPastPeriods() {
-		this.textfieldNumPastPeriods.setValue("");
-	}
-
-	/**
 	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
 	 * 
 	 * @author Christian Scherer
@@ -301,6 +255,127 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void setTextFieldValueBasisYear(String basisYear) {
 		this.textfieldBasisYear.setValue(basisYear);
+	}
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumPeriods' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activatePeriodsToForecast(boolean enabled) {
+		this.textfieldNumPeriods.setEnabled(enabled);
+
+	}
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumPastPeriods' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateRelevantPastPeriods(boolean enabled) {
+		this.textfieldNumPastPeriods.setEnabled(enabled);
+	}
+
+	/**
+	 * Diese Methode graut die ComboBox 'comboBoxIteraions' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateIterations(boolean enabled) {
+		this.comboBoxIterations.setEnabled(enabled);
+
+	}
+
+	/**
+	 * Diese Methode graut die Checkbox fuer die Branchenstellvertreter aus, da
+	 * diese Funktionalitaet noch nicht gegeben ist.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateCheckboxIndustryRepresentative(boolean enabled) {
+		this.checkboxIndustryRepresentative.setEnabled(enabled);
+	}
+
+	/**
+	 * Diese Methode graut die ComboBox (DropDown-Liste) fuer die
+	 * Branchenstellvertreter aus, da diese Funktionalitaet noch nicht gegeben
+	 * ist.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateComboBoxRepresentatives(boolean enabled) {
+		this.comboBoxRepresentatives.setEnabled(enabled);
+	}
+
+	/**
+	 * Setzt eine Fehleranzeige an das Entsprechende Feld bzw. entfernt diese
+	 * wieder je nach Parametriesierung
+	 * 
+	 * @author Christian Scherer
+	 * @param setError
+	 *            true, wenn eine Fehleranzeige gezeigt werden soll und false,
+	 *            wenn die Fehleranzeige geloescht werden soll
+	 * @param component
+	 *            Identifiziert den Componenten, bei dem die Fehleranzeige
+	 *            angezeigt bzw. entfernt werden soll
+	 * @param message
+	 *            Fehlermeldung die neben dem Componenten gezeigt werden soll
+	 */
+	@Override
+	public void setComponentError(boolean setError, String component,
+			String message) {
+		if (component.equals("periodsToForecast")) {
+			if (setError) {
+				this.textfieldNumPeriods.setComponentError(new UserError(
+						message));
+			} else {
+				this.textfieldNumPeriods.setComponentError(null);
+			}
+		} else if (component.equals("pastPeriods")) {
+			if (setError) {
+				this.textfieldNumPastPeriods.setComponentError(new UserError(
+						message));
+			} else {
+				this.textfieldNumPastPeriods.setComponentError(null);
+			}
+		} else if (component.equals("basisYear")) {
+			if (setError) {
+				this.textfieldBasisYear
+						.setComponentError(new UserError(message));
+			} else {
+				this.textfieldBasisYear.setComponentError(null);
+			}
+
+		} else if (component.equals("iterations")) {
+			if (setError) {
+				this.comboBoxIterations
+						.setComponentError(new UserError(message));
+			} else {
+				this.comboBoxIterations.setComponentError(null);
+			}
+
+		}
+
 	}
 
 }

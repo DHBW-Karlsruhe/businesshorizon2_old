@@ -38,7 +38,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private User user;
 
 	@Autowired
-	private Project selectedProject = null;
+	private Project selectedProject;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -67,7 +67,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 */
 	public void projectSelected(Project project) {
-		selectedProject = project;
+		//selectedProject = project;
+		selectedProject.setName(project.getName());
 
 		if (selectedProject != null) {
 			eventBus.fireEvent(new ShowProjectEvent(selectedProject));

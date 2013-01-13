@@ -24,37 +24,57 @@ public interface ParameterViewInterface extends ContentView {
 	void showErrorMessage(String message);
 
 	/**
-	 * Diese Methode graut die Checkbox fuer die Branchenstellvertreter aus, da
-	 * diese Funktionalitaet noch nicht gegeben ist.
-	 * 
-	 * @author Christian Scherer
-	 */
-	void greyOutCheckboxIndustryRepresentative();
-
-	/**
 	 * Diese Methode graut die ComboBox (DropDown-Liste) fuer die
 	 * Branchenstellvertreter aus, da diese Funktionalitaet noch nicht gegeben
 	 * ist.
 	 * 
 	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
 	 */
-	void greyOutComboBoxRepresentatives();
+	void activateComboBoxRepresentatives(boolean enabled);
 
 	/**
-	 * Loescht den gesetzten Wert des Texfelds 'Anzahl zu prognostizierender
-	 * Perioden'
+	 * Diese Methode graut die Checkbox fuer die Branchenstellvertreter aus, da
+	 * diese Funktionalitaet noch nicht gegeben ist.
 	 * 
 	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
 	 */
-	void clearTextFieldnumPeriodsToForecast();
+	void activateCheckboxIndustryRepresentative(boolean enabled);
 
 	/**
-	 * Loescht den gesetzten Wert des Texfelds 'Anzahl einbezogener, vergangener
-	 * Perioden'
+	 * Diese Methode graut das Textfeld 'textfieldNumPeriods' aus.
 	 * 
 	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
 	 */
-	void clearTextFieldNumPastPeriods();
+	void activatePeriodsToForecast(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumPastPeriods' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateRelevantPastPeriods(boolean enabled);
+
+	/**
+	 * Diese Methode graut die ComboBox 'comboBoxIteraions' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateIterations(boolean enabled);
 
 	/**
 	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
@@ -65,5 +85,22 @@ public interface ParameterViewInterface extends ContentView {
 	 *            werden
 	 */
 	void setTextFieldValueBasisYear(String basisYear);
+
+	/**
+	 * Setzt eine Fehleranzeige an das Entsprechende Feld bzw. entfernt diese
+	 * wieder je nach Parametriesierung
+	 * 
+	 * @author Christian Scherer
+	 * @param setError
+	 *            true, wenn eine Fehleranzeige gezeigt werden soll und false,
+	 *            wenn die Fehleranzeige geloescht werden soll
+	 * @param component
+	 *            Identifiziert den Componenten, bei dem die Fehleranzeige
+	 *            angezeigt bzw. entfernt werden soll
+	 * @param message
+	 *            Fehlermeldung die neben dem Componenten gezeigt werden soll
+	 * 
+	 */
+	void setComponentError(boolean setError, String component, String message);
 
 }

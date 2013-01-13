@@ -7,9 +7,14 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mvplite.event.EventBus;
+import com.mvplite.event.EventHandler;
+
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 /**
@@ -22,10 +27,23 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("ParameterPresenter.class");
-	
+	private Logger logger = Logger.getLogger(ParameterPresenter.class);
+
 	@Autowired
 	private Project project;
+	// TODO @Autowired private ProxyProject proxyProject;
+	// private Project project;
+
+	@Autowired
+	private EventBus eventBus;
+
+	private boolean iterationsValid;
+	private boolean basisYearValid;
+	private boolean periodsToForecastValid;
+	private boolean relevantPastPeriodsValid;
+
+	private boolean determMethod;
+	private boolean stochMethod;
 
 	private int[] numberIterations;
 
@@ -38,6 +56,17 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@PostConstruct
 	public void init() {
+
+		// TODO project = proxyProject.getSelectedProject();
+
+		// TODO setzen ob determ
+		// determMethod = project.getInputType().getDeterm...
+		// TODO setzen ob stoch
+		// stochMethod =project.getInputType().getStoch...
+		basisYearValid = false;
+		iterationsValid = false;
+		periodsToForecastValid = false;
+		relevantPastPeriodsValid = false;
 
 	}
 
@@ -57,28 +86,95 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		getView().setIterations(numberIterations);
 	}
 
+	/**
+	 * In dieser Methode wird geprueft ob der naechste Screen aufgerufen werden
+	 * darf
+	 * 
+	 * @author Christian Scherer
+	 * @return Ob alle Validierungspruefungen der Eingabefelder positiv gelaufen
+	 *         verlaufen ist und der naechste Screen aufgerufen werden darf
+	 */
 	@Override
 	public boolean isSelectable() {
-		// TODO NOTWENDIG?
-		return false;
+		return isValid();
 	}
 
-
+	/**
+	 * In dieser Methode werden alle Eingabefelder auf Validitaet geprueft. Sie
+	 * wird auch von anderen Screens aufzurufen um sicherzustellen, dass bei
+	 * Aenderungen in anderen Screens diese Eingabe immer noch valide sind.
+	 * Falls der Screen nicht mehr valide ist, muss zudem geprueft werden welche
+	 * Felder nicht mehr gueltig sind und diese mit einem ComponentenError
+	 * (rotem Ausrufezeichen) markiert werden.
+	 * 
+	 * @author Christian Scherer
+	 * @return Ob alle Validierungspruefungen der Eingabefelder positiv gelaufen
+	 *         verlaufen ist
+	 */
 	@Override
 	public boolean isValid() {
-		// ALLE VALIDIERUNGSMETHODEN AUFRUFEN TODO
-		return false;
+		if (determMethod && !stochMethod) {
+			if (basisYearValid) {
+				return true;
+			} else {
+				getView()
+						.setComponentError(
+								true,
+								"basisYear",
+								"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+				return false;
+			}
+
+		} else {
+			if (periodsToForecastValid && relevantPastPeriodsValid
+					&& basisYearValid && iterationsValid) {
+				return true;
+			} else {
+				if (!periodsToForecastValid) {
+					getView()
+							.setComponentError(
+									true,
+									"periodsToForecast",
+									"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
+				}
+				if (!relevantPastPeriodsValid) {
+					getView()
+							.setComponentError(
+									true,
+									"pastPeriods",
+									"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
+				}
+				if (!iterationsValid) {
+					getView()
+							.setComponentError(true, "iterations",
+									"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
+				}
+				if (!basisYearValid) {
+					getView()
+							.setComponentError(
+									true,
+									"basisYear",
+									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+				}
+				return false;
+			}
+		}
 	}
 
 	/**
 	 * Methode die sich nach der Auswahl der Iteration um die davon abhaengigen
-	 * Objekte kuemmert
+	 * Objekte kuemmert. Zudem wird das iterionsInitialized-Wert auf true
+	 * gesetzt, damit ist eine valide Befuellung des Felds gewaehrleistet, da
+	 * danach kein Nullwert mehr eingetragen werden kann. Achtung: Dies gilt
+	 * fuer die Implementierung in Vaadin, da hier Null-Werte bei der Eingabe
+	 * ausgeschlossen wurden.
 	 * 
 	 * @author Christian Scherer
 	 * @param iterations
 	 *            Anzahl der ausgewaehlten Wiederholungen(Iterationen)
 	 */
 	public void iterationChosen(int iterations) {
+		iterationsValid = true;
 		project.setIterations(iterations);
 		logger.debug("Iterationen in Objekten gesetzt: " + project.getName());
 	}
@@ -102,13 +198,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		try {
 			periodsToForecastInt = Integer.parseInt(periodsToForecast);
 			if (periodsToForecastInt > 0) {
-				// TODO: in projekt-Objekt abspeichern
+				periodsToForecastValid = true;
+				getView().setComponentError(false, "periodsToForecast", "");
+				project.setPeriodsToForecast(periodsToForecastInt);
 				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException nfe) {
-			getView().clearTextFieldnumPeriodsToForecast();
+			periodsToForecastValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"periodsToForecast",
+							"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
 			getView()
 					.showErrorMessage(
 							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'. <br> Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. <br> Beispiel: 5");
@@ -119,7 +222,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	/**
 	 * Methode die sich nach der Auswahl der zu beachtenenden vergangenen
-	 * Perioden um die davon abhaengigen Objekte kuemmert
+	 * Perioden um die davon abhaengigen Objekte kuemmert. Diese muessen laut
+	 * Fachkonzept mindestens 5 Perioden betragen
 	 * 
 	 * @author Christian Scherer
 	 * @param relevantPastPeriods
@@ -132,17 +236,24 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		int relevantPastPeriodsInt;
 		try {
 			relevantPastPeriodsInt = Integer.parseInt(relevantPastPeriods);
-			if (relevantPastPeriodsInt > 0) {
-				// TODO in projekt-Objekt abspeichern
+			if (relevantPastPeriodsInt >= 5) {
+				relevantPastPeriodsValid = true;
+				getView().setComponentError(false, "pastPeriods", "");
+				project.setRelevantPastPeriods(relevantPastPeriodsInt);
 				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException nfe) {
-			getView().clearTextFieldNumPastPeriods();
+			relevantPastPeriodsValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"pastPeriods",
+							"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
 			getView()
 					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'. <br> Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. <br> Beispiel: 5");
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'. <br> Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. <br> Beispiel: 10");
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
 	}
@@ -165,16 +276,23 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			Calendar now = Calendar.getInstance();
 
 			if (basisYearInt >= (now.get(Calendar.YEAR) - 1)) {
-				// TODO in projekt-Objekt abspeichern
+				basisYearValid = true;
+				getView().setComponentError(false, "basisYear", "");
+				project.setBasisYear(basisYearInt);
 				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException nfe) {
-			getView().setTextFieldValueBasisYear("");
+			basisYearValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"basisYear",
+							"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 			getView()
 					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an. <br> Beispiel: 2012");
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. <br> Beispiel: 2015");
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
 		}
 
@@ -216,17 +334,23 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	/**
 	 * Methode die sich um das Ausgrauen unrelevanter Komponenten. In unserem
 	 * Fall die Branchenstellvertreter, die noch nicht implementiert sind und
-	 * ggf. die zu prognostizierenden Peroden / Anzahl relevanter Alt-Perioden,
-	 * je nach gewaehltem Verfahren
+	 * ggf. die zu prognostizierenden Perioden / Anzahl relevanter Alt-Perioden,
+	 * je nach gewaehltem Verfahren. Falls im Method-Screen NUR die
+	 * Deterministische Methode ausgewaehlt wurde, muessen ebenso alle anderen
+	 * Felder ausser das Basisjahr ausgegraut werden.
 	 * 
 	 * @author Christian Scherer
 	 * 
 	 */
 	public void greyOut() {
-		getView().greyOutCheckboxIndustryRepresentative();
-		getView().greyOutComboBoxRepresentatives();
+		getView().activateCheckboxIndustryRepresentative(false);
+		getView().activateComboBoxRepresentatives(false);
 
-		// TODO: ANDERE AUSGRAUEN!?
+		if (determMethod && !stochMethod) {
+			getView().activatePeriodsToForecast(false);
+			getView().activateRelevantPastPeriods(false);
+			getView().activateIterations(false);
+		}
 
 	}
 
@@ -242,11 +366,23 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	}
 
-
+	/**
+	 * Eventhandler der zuerst prueft ob sich Vorbedingungen geaendert haben und
+	 * prueft darauf hin ob der Screen an sich immer noch komplett valide ist.
+	 * Falls nicht, wird ein InvalidStateEven gefeuert.
+	 * 
+	 * @author Christian Scherer
+	 */
+	@EventHandler
 	@Override
 	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
-		
+		// TODO setzen ob determ
+		// determMethod = project.getInputType().getDeterm...
+		// TODO setzen ob stoch
+		// stochMethod =project.getInputType().getStoch...
+		if (!isValid()) {
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER));
+			logger.debug("Parameter not valid, InvalidStateEvent fired");
+		}
 	}
-
 }
