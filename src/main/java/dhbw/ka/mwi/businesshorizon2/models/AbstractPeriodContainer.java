@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
@@ -13,9 +12,22 @@ import java.util.TreeSet;
  * 
  */
 
-abstract public class AbstractPeriodContainer {
+abstract public class AbstractPeriodContainer implements
+		Comparable<AbstractPeriodContainer> {
 
-	private SortedSet<? extends PeriodInterface> perioden = new TreeSet<>();
+	private final TreeSet<PeriodInterface> perioden;
+	private static int counter = 0;
+	private final int myCount;
+
+	public AbstractPeriodContainer() {
+		this.perioden = new TreeSet<>();
+		this.myCount = counter;
+		counter++;
+	}
+
+	public void addPeriod(PeriodInterface period) {
+		this.perioden.add(period);
+	}
 
 	/**
 	 * Diese Methode liefer die Referenz auf das Set der Perioden zurück.
@@ -23,8 +35,23 @@ abstract public class AbstractPeriodContainer {
 	 * @return SortedSet der Perioden
 	 * @author Kai Westerholz
 	 */
-	public SortedSet<? extends PeriodInterface> getPeriods() {
+	public TreeSet<? extends PeriodInterface> getPeriods() {
 		return perioden;
+	}
+
+	public int getCounter() {
+		return this.myCount;
+	}
+
+	@Override
+	public int compareTo(AbstractPeriodContainer o) {
+		if (this.myCount < o.getCounter()) {
+			return -1;
+		} else if (this.myCount == o.getCounter()) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }
