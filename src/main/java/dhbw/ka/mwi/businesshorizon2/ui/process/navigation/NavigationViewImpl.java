@@ -92,6 +92,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 			}
 		});
 		
+		navigationButton.setEnabled(false);
+		
 		this.innerlayout.addComponent(navigationButton);
 		this.innerlayout.setComponentAlignment(navigationButton, Alignment.BOTTOM_CENTER);
 		
@@ -105,6 +107,10 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		else {
 			this.navigationButtons.get(navigationStep).setComponentError(null);
 		}
+	}
+	
+	public void setButtonActive(NavigationSteps navigationStep, boolean active) {
+			this.navigationButtons.get(navigationStep).setEnabled(active);
 	}
 
 }
