@@ -29,8 +29,7 @@ public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-
-	protected NavigableSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
+	protected TreeSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
 
 	protected Date lastChanged;
 
@@ -39,13 +38,12 @@ public class Project implements Serializable {
 	protected int periodsToForecast;
 	protected int relevantPastPeriods;
 	protected int iterations;
-	protected int basisYear;
-
-	
+	protected int basisYear;	
 	protected ProjectInputType projectInputType;
 	
 	@Autowired
 	private SortedSet<AbstractStochasticMethod> methods;	
+
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
 
@@ -88,7 +86,7 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(NavigableSet<PeriodInterface> periods) {
+	public void setPeriods(TreeSet<PeriodInterface> periods) {
 		this.periods = periods;
 	}
 
@@ -158,6 +156,7 @@ public class Project implements Serializable {
 	public String getName() {
 		return name;
 	}
+
 
 
 	public SortedSet<AbstractStochasticMethod> getMethods() {
@@ -271,11 +270,10 @@ public class Project implements Serializable {
 		return basisYear;
 	}
 
-
 	public List<Szenario> getScenarios() {
 		return this.scenarios;
 	}
-	
+
 	public void addScenario(Szenario scenario) {
 		this.scenarios.add(scenario);
 

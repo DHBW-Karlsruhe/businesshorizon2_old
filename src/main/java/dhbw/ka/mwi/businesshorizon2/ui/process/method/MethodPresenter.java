@@ -11,16 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.CheckMethodTypeEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
+
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
+
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Auswahl der Berechnungsmethoden. 
@@ -32,7 +39,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private static final long serialVersionUID = 1L;
-	
+
+
+	private Logger logger = Logger.getLogger("MethodPresenter.class");
+
 
 	@Autowired
 	private EventBus eventBus;
@@ -54,8 +64,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+
 		this.methods = project.getMethods();
 		projectInputType = project.getProjectInputType();
+
 	}
 
 	@Override
@@ -73,12 +85,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	}
 	
 	
-	
-	@Override
-	public boolean isSelectable() {
-		// TODO Auto-generated method stub
-		return true;
-	}
 	
 	public void toggleMethodType(Boolean stochastic,Boolean checked){
 		eventBus.fireEvent(new CheckMethodTypeEvent(stochastic,checked));
@@ -159,6 +165,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	@Override
 	@EventHandler
+
 	public void validate(ValidateContentStateEvent event) {
 		if (!this.isValid()){
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD));
@@ -167,5 +174,11 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.METHOD));
 		}
 		
+	}
+	
+	@EventHandler
+	public void handleShowView(ShowMethodViewEvent event) {
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD, true));
+		logger.debug("ShowMethodViewEvent handled");
 	}
 }
