@@ -67,6 +67,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 		logger.debug("Ui erstellt");
 		presenter.initializeBasisYear();
 		presenter.greyOut();
+		logger.debug("Init-Methode beendet");
 	}
 
 	/**

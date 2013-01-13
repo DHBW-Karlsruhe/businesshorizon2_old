@@ -39,7 +39,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	}
 
 	@Override
-	public boolean isSelectable() {
+	public boolean isNextScreenSelectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}

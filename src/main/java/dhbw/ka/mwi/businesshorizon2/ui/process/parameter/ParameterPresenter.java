@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
@@ -27,15 +28,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger(ParameterPresenter.class);
-
-	@Autowired
-	private Project project;
-	// TODO @Autowired private ProxyProject proxyProject;
-	// private Project project;
+	private Logger logger = Logger.getLogger("ParameterPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
+
+	@Autowired
+	private ProjectProxy projectProxy;
 
 	private boolean iterationsValid;
 	private boolean basisYearValid;
@@ -49,20 +48,22 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
+	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
+	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
+	 * wurde.
 	 * 
 	 * @author Julius Hacker
 	 */
 	@PostConstruct
 	public void init() {
 
-		// TODO project = proxyProject.getSelectedProject();
-
 		// TODO setzen ob determ
 		// determMethod = project.getInputType().getDeterm...
 		// TODO setzen ob stoch
 		// stochMethod =project.getInputType().getStoch...
+
+		eventBus.addHandler(this);
+
 		basisYearValid = false;
 		iterationsValid = false;
 		periodsToForecastValid = false;
@@ -95,8 +96,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 *         verlaufen ist und der naechste Screen aufgerufen werden darf
 	 */
 	@Override
-	public boolean isSelectable() {
+	public boolean isNextScreenSelectable() {
 		return isValid();
+
 	}
 
 	/**
@@ -175,8 +177,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void iterationChosen(int iterations) {
 		iterationsValid = true;
-		project.setIterations(iterations);
-		logger.debug("Iterationen in Objekten gesetzt: " + project.getName());
+		this.projectProxy.getSelectedProject().setIterations(iterations);
+		logger.debug("Iterationen in Objekten gesetzt: "
+				+ this.projectProxy.getSelectedProject().getName());
 	}
 
 	/**
@@ -200,7 +203,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (periodsToForecastInt > 0) {
 				periodsToForecastValid = true;
 				getView().setComponentError(false, "periodsToForecast", "");
-				project.setPeriodsToForecast(periodsToForecastInt);
+				this.projectProxy.getSelectedProject().setPeriodsToForecast(
+						periodsToForecastInt);
 				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -239,7 +243,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (relevantPastPeriodsInt >= 5) {
 				relevantPastPeriodsValid = true;
 				getView().setComponentError(false, "pastPeriods", "");
-				project.setRelevantPastPeriods(relevantPastPeriodsInt);
+				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
+						relevantPastPeriodsInt);
 				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -278,7 +283,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (basisYearInt >= (now.get(Calendar.YEAR) - 1)) {
 				basisYearValid = true;
 				getView().setComponentError(false, "basisYear", "");
-				project.setBasisYear(basisYearInt);
+				this.projectProxy.getSelectedProject().setBasisYear(basisYearInt);
 				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -363,6 +368,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void initializeBasisYear() {
 		Calendar now = Calendar.getInstance();
 		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
+		logger.debug("Initialjahr "+(now.get(Calendar.YEAR) - 1)+" gesetzt.");
 
 	}
 
@@ -373,8 +379,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * 
 	 * @author Christian Scherer
 	 */
-	@EventHandler
 	@Override
+	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		// TODO setzen ob determ
 		// determMethod = project.getInputType().getDeterm...
@@ -383,6 +389,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		if (!isValid()) {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER));
 			logger.debug("Parameter not valid, InvalidStateEvent fired");
+		} else {
+			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));
+			logger.debug("Parameter valid, ValidStateEvent fired");
 		}
 	}
 }

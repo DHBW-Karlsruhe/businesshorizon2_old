@@ -44,7 +44,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	}
 
 	@Override
-	public boolean isSelectable() {
+	public boolean isNextScreenSelectable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
