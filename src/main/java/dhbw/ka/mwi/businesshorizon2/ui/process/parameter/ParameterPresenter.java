@@ -2,8 +2,16 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.mvplite.event.EventBus;
+import com.mvplite.event.EventHandler;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 /**
@@ -15,6 +23,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = Logger.getLogger(this.getClass());
+
+	@Autowired
+	private EventBus eventBus;
 
 	
 	/**
@@ -25,6 +38,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@PostConstruct
 	public void init() {
+		eventBus.addHandler(this);
 	}
 
 
@@ -46,5 +60,11 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void validate(ValidateContentStateEvent event) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@EventHandler
+	public void handleShowView(ShowParameterViewEvent event) {
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER, true));
+		logger.debug("ShowParameterViewEvent handled");
 	}
 }

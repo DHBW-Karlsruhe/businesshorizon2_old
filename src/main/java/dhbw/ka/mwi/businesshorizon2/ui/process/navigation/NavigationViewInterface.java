@@ -18,4 +18,6 @@ public interface NavigationViewInterface extends View {
 	public void addNavigationButton(NavigationSteps value);
 
 	public void setButtonToInvalid(NavigationSteps navigationStep, boolean invalid);
+	
+	public void setButtonActive(NavigationSteps navigationStep, boolean active);
 }

@@ -15,6 +15,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
@@ -79,7 +80,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 
 	@Override
 	public boolean isNextScreenSelectable() {
-		// TODO Auto-generated method stub
+		boolean isValid = true;
+		
+		if(!isValid()) {
+			isValid = false;
+		}
+		
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT, isValid));
+		
 		return false;
 	}
 	
@@ -102,7 +110,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 * Fachkonzept angegebene Standardszenario an und baut den Screen danach komplett neu auf.
 	 */
 	@EventHandler
-	public void showScenarios(ShowScenarioViewEvent event) {
+	public void handleShowView(ShowScenarioViewEvent event) {
 		List<Szenario> scenarios = this.projectProxy.getSelectedProject().getScenarios();
 		if(scenarios.size() < 1) {
 			scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
@@ -115,6 +123,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), numberOfScenario);
 			numberOfScenario++;
 		}
+		
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO, true));
 	}
 	
 	/**
@@ -278,6 +288,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		}
 		
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(scenarioNumber));
+		
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 	
 }
