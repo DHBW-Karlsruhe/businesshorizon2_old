@@ -68,9 +68,19 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		iterationsValid = false;
 		periodsToForecastValid = false;
 		relevantPastPeriodsValid = false;
+		
+		setIterations();
 
 	}
 
+	@EventHandler
+	public void showParameterScreen(ShowParameterViewEvent event) {
+		if(projectProxy.getSelectedProject().getBasisYear() == 0) {
+			initializeBasisYear();
+		}
+		greyOut();
+	}
+	
 	/**
 	 * Erzeugt das Integerarray der Iterationen, befuellt es mit Werten und
 	 * setzt diese dann in die View zur anzeige
@@ -84,7 +94,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		numberIterations[1] = 10000;
 		numberIterations[2] = 100000;
 		logger.debug("Iterationsarray befuellt");
-		getView().setIterations(numberIterations);
 	}
 
 	/**
@@ -394,4 +403,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			logger.debug("Parameter valid, ValidStateEvent fired");
 		}
 	}
+
+	public int[] getNumberIterations() {
+		return numberIterations;
+	}
+	
+	
 }

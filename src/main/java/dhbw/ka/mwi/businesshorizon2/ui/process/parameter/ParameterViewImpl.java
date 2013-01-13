@@ -62,11 +62,11 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void init() {
 
 		presenter.setView(this);
-		presenter.setIterations();
+		//presenter.setIterations();
 		generateUi();
 		logger.debug("Ui erstellt");
-		presenter.initializeBasisYear();
-		presenter.greyOut();
+		//presenter.initializeBasisYear();
+		//presenter.greyOut();
 		logger.debug("Init-Methode beendet");
 	}
 
@@ -109,6 +109,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(labelIterations, 0, 2);
 
 		comboBoxIterations = new ComboBox();
+		numberIterations = presenter.getNumberIterations();
 		for (int i = 0; i < numberIterations.length; i++) {
 			comboBoxIterations.addItem(numberIterations[i]);
 		}
