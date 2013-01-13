@@ -13,6 +13,7 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
@@ -86,7 +87,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * wurde. Desweiteren wird die firstCall Variable auf false gesetzt, sodass
 	 * ab jetzt bei jeder Validierungsanfrage alle Felder geprueft und ggf. als
 	 * unkorrekt mariert werden. Beim ersten Aufruf ist dies noch nicht
-	 * gewuenscht, da der benutzer den Screen noch nicht geoffnet hatte.
+	 * gewuenscht, da der benutzer den Screen noch nicht geoffnet hatte. Als
+	 * letztes wird ein ScreenSelectable Event gefeuert, sodass gewaehrleistet
+	 * ist, dass der erste Durchgang zwar streng nach Reihenfloge geschieht,
+	 * danach aber jeder Screen frei angewaehlt werden kann.
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
@@ -97,6 +101,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		}
 		greyOut();
 		firstCall = false;
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
+				true));
 
 	}
 
@@ -113,20 +119,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		numberIterations[1] = 10000;
 		numberIterations[2] = 100000;
 		logger.debug("Iterationsarray befuellt");
-	}
-
-	/**
-	 * In dieser Methode wird geprueft ob der naechste Screen aufgerufen werden
-	 * darf
-	 * 
-	 * @author Christian Scherer
-	 * @return Ob alle Validierungspruefungen der Eingabefelder positiv gelaufen
-	 *         verlaufen ist und der naechste Screen aufgerufen werden darf
-	 */
-	@Override
-	public boolean isNextScreenSelectable() {
-		return isValid();
-
 	}
 
 	/**
