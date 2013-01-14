@@ -1,5 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
+import java.text.DecimalFormat;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -11,7 +13,7 @@ import org.apache.log4j.Logger;
 
 public class CalculateTide implements CalculateTideInterface {
 
-	private Logger logger = Logger.getLogger("CalculateTide.class");
+	private Logger logger = Logger.getLogger(CalculateTide.class);
 	private double reduceTideParameterA;
 	private double reduceTideParameterB;
 	private double averageTimeseries;
@@ -38,6 +40,7 @@ public class CalculateTide implements CalculateTideInterface {
 
 		for (int i = 0; i < timeseries.length; i++) {
 			timeseries[i] = (this.getTideValue(i) - timeseries[i]);
+			logger.debug(new DecimalFormat("0.00").format(this.getTideValue(i)));
 		}
 		logger.debug("Timeseries reduced.");
 		return timeseries;

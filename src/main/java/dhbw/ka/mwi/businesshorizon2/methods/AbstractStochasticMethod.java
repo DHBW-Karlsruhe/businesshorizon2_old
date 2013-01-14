@@ -2,6 +2,9 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.io.Serializable;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+
 /**
  * Diese Klasse bezeichnet eine Berechnungsmethode wie die Zeitreihenanalyse
  * oder den Wiener-Prozess und bietet einige Basis-Funktionalitaeten.
@@ -57,10 +60,9 @@ abstract public class AbstractStochasticMethod implements
 	 * @return Das Result-Objekt dieser Berechnung
 	 * @throws InterruptedException
 	 */
-	abstract public double[][] calculate(double[] previousValues,
-			int consideredPeriodsofPast, int periodsToForecast,
-			int numberOfIterations, Callback callback)
-			throws InterruptedException;
+	abstract public StochasticResultContainer calculate(Project project,
+			Callback callback) throws InterruptedException,
+			StochasticMethodException;
 
 	/**
 	 * Diese Methode wird zum Sortieren der Methoden (fuer die Anzeige beim

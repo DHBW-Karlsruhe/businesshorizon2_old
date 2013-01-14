@@ -2,6 +2,9 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.security.InvalidParameterException;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+
 /**
  * Diese Klasse ist zur eigentlichen Ausfuehrung der Berechnungen gedacht. Dabei
  * wird fuer die Berechnung ein eigener Thread verwendet.
@@ -51,9 +54,12 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-			double[][] result = method.calculate(periods, 1, 1, 1, callback);
+			Project test = new Project();
+			StochasticResultContainer result = method.calculate(test, callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {
+			callback.onComplete(null);
+		} catch (StochasticMethodException e) {
 			callback.onComplete(null);
 		}
 	}

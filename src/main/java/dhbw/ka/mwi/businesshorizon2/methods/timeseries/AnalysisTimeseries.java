@@ -9,7 +9,6 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.LUDecomposition;
 import cern.jet.stat.Descriptive;
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 
 /**
@@ -21,23 +20,15 @@ import dhbw.ka.mwi.businesshorizon2.methods.Callback;
  * 
  */
 
-public class AnalysisTimeseries extends AbstractStochasticMethod {
-	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger("AnalysisTimeseries.class");
+public class AnalysisTimeseries {// extends AbstractStochasticMethod {
+
+	private Logger logger = Logger.getLogger(AnalysisTimeseries.class);
 	private double variance;
 	private DoubleArrayList DoubleArrayListTimeseries;
 	private DoubleMatrix2D matrixValutaions;
 	private double yuleWalkerVariance;
 	private double mean;
 	private double[] equalizedValues;
-
-	public String getName() {
-		return "Zeitreihenanalyse";
-	}
-
-	public int getOrderKey() {
-		return 1;
-	}
 
 	public double getVariance() {
 		return variance;
@@ -68,13 +59,9 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 	 * @return double AutoKorrelation
 	 */
 	private double calculateAutoCorrelation(int lag) {
-		if (lag == 0) {
-			return 1.0;
-		} else {
-			return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
-					this.mean, this.variance);
+		return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
+				this.mean, this.variance);
 
-		}
 	}
 
 	/**
@@ -200,21 +187,24 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 	 * @author Kai Westerholz
 	 */
 
-	@Override
+	// @Override
 	public double[][] calculate(double[] previousValues,
 			int consideredPeriodsOfPast, int periodsToForecast,
 			int numberOfIterations, Callback callback)
 			throws InterruptedException {
+
 		// vorbereitene Initialisierung
 		double[][] returnValues = new double[periodsToForecast][numberOfIterations];
 		int progress_complete = periodsToForecast
 				* (consideredPeriodsOfPast + numberOfIterations);
 		int progress = 0;
 
-		// Trendbereinigung der Zeitreihe
+		// Trendbereinigung der Zeitreihe wenn diese nicht stationär ist
 		CalculateTide tide = new CalculateTide();
-		previousValues = tide.reduceTide(previousValues);
-
+		boolean isStationary = StationaryTest.isStationary(previousValues);
+		if (!isStationary) {
+			previousValues = tide.reduceTide(previousValues);
+		}
 		/**
 		 * Übertraugung der Werte der Zeitreihe in eine DoubleArrayList. Diese
 		 * wird von der COLT Bibliothek verwendet zur Lösung der Matrix.
@@ -224,6 +214,7 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		for (int i = 0; i < previousValues.length; i++) {
 			this.DoubleArrayListTimeseries.add(previousValues[i]);
 		}
+		logger.debug(DoubleArrayListTimeseries);
 
 		// Start der zur Prognose benötigten Berechnungen
 		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
@@ -251,12 +242,17 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 						previousValues);
 
 				// Eigentliche Berechnung
-				double newTide = tide.getTideValue(forecast
-						+ previousValues.length - 1);
-				forecastsForPeriod[iterationStep] = (double) (whiteNoise
-						.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
-				// Vergleichswert ohne Weißes Rauschen
-				forecastsForPeriod[iterationStep] = (double) ((newTide - equalizedValuePerPeriod));
+				if (!isStationary) {
+					double newTide = tide.getTideValue(forecast
+							+ previousValues.length - 1);
+					forecastsForPeriod[iterationStep] = (double) (whiteNoise
+							.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
+					// Vergleichswert ohne Weißes Rauschen
+					forecastsForPeriod[iterationStep] = (double) ((newTide - equalizedValuePerPeriod));
+				} else {
+					forecastsForPeriod[iterationStep] = (double) (whiteNoise
+							.getWhiteNoiseValue() + equalizedValuePerPeriod);
+				}
 
 				if (iterationStep % 200 == 0) {
 					progress += iterationStep;
@@ -269,8 +265,8 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 			equalizedValues[forecast - 1] = equalizedValuePerPeriod;
 
 			returnValues[forecast - 1] = forecastsForPeriod;
-			logger.debug("Period " + forecast + "  of " + periodsToForecast
-					+ " predicted.");
+			// logger.debug("Period " + forecast + "  of " + periodsToForecast
+			// + " predicted.");
 		}
 		return returnValues;
 	}
@@ -285,17 +281,20 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		timeseries[3] = 146004000.00;
 		timeseries[4] = 154857000.00;
 		timeseries[5] = 162117000.00;
-		double[] sap = new double[18];
-		sap[0] = 345224278.18;
-		sap[1] = 489152942.74;
-		sap[2] = 684350378.10;
-		sap[3] = 1059917000.00;
-		sap[4] = 1547447000.00;
-		sap[5] = 2031739000.00;
-		sap[6] = 2812767000.00;
-		sap[7] = 2908104000.00;
-		sap[8] = 2965249000.00;
+		double[] sap = new double[11];
+		sap[0] = 345224278.18;// 3452242.18;
+		sap[1] = 489152942.74;// 489152942.74;
+		sap[2] = 684350378.10;// 684350378.10;
+		sap[3] = 1059917000.00;// 1059917000.00;
+		sap[4] = 1547447000.00;// 1547447000.00;
+		sap[5] = 2031739000.00;// 2031739000.00;
+		sap[6] = 2812767000.00;// 2812767000.00;
+		sap[7] = 2908104000.00;// 2908104000.00;
+		sap[8] = 2965249000.00;// 2965249000.00;
 		sap[9] = 2936590000.00;
+		sap[10] = 2968018000.00;// 2936590000.00;
+		// sap[11] = 3371547000.00;
+
 		/**
 		 * sap[10] = 2968018000.00; sap[11] = 3371547000.00; sap[12] =
 		 * 3833082000.00; sap[13] = 4191000000.00; sap[14] = 4894000000.00;
@@ -306,18 +305,19 @@ public class AnalysisTimeseries extends AbstractStochasticMethod {
 		Callback callback = null;
 		try {
 
-			DecimalFormat df = new DecimalFormat("0.00");
-			// result = al.calculate(sap, 5, 8, 500000, callback);
-			result = al.calculate(timeseries, 2, 5, 1000000, callback);
-			System.out.println(df.format(result[0][0]));
+			DecimalFormat df = new DecimalFormat("0.0000");
+			result = al.calculate(sap, 10, 7, 500000, callback);
+			// result = al.calculate(timeseries, 2, 5, 1000000, callback);
+			// result = al.calculate(pat, 4, 5, 10000, callback);
+			System.out.println(df.format(result[0][0]) + " €");
 
-			System.out.println(df.format(result[1][1]));
-			System.out.println(df.format(result[2][1]));
-			System.out.println(df.format(result[3][1]));
-			System.out.println(df.format(result[4][1]));
-			System.out.println(df.format(result[5][0]));
-			System.out.println(df.format(result[6][1]));
-			System.out.println(df.format(result[7][1]));
+			System.out.println(df.format(result[1][1]) + " €");
+			System.out.println(df.format(result[2][1]) + " €");
+			System.out.println(df.format(result[3][1]) + " €");
+			System.out.println(df.format(result[4][1]) + " €");
+			System.out.println(df.format(result[5][0]) + " €");
+			System.out.println(df.format(result[6][1]) + " €");
+			System.out.println(df.format(result[7][1]) + " €");
 
 		} catch (InterruptedException e) {
 			System.out.println("Error al.calculate");
