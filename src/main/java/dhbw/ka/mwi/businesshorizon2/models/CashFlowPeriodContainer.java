@@ -10,6 +10,11 @@ import java.util.TreeSet;
  */
 
 public class CashFlowPeriodContainer extends AbstractPeriodContainer {
+
+	public CashFlowPeriodContainer() {
+		super();
+	}
+
 	@Override
 	public TreeSet<CashFlowPeriod> getPeriods() {
 		// TODO Auto-generated method stub

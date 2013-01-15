@@ -40,7 +40,11 @@
 		scope="session" />
 	<bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
 		scope="session" />
-		
+	
+	<!-- Services -->
+	<bean name="projectProxy" class="dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy"
+		scope="session" />
+	
 	<!-- LogIn -->
 	<bean name="logInPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenPresenter"
 		scope="session" />

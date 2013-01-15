@@ -10,7 +10,7 @@ package dhbw.ka.mwi.businesshorizon2.models;
 
 public class CashFlowPeriod implements PeriodInterface {
 
-	private int year;
+	private final int year;
 	private double freeCashFlow;
 	private double borrowedCapital;
 
@@ -48,6 +48,17 @@ public class CashFlowPeriod implements PeriodInterface {
 	public void setBorrowedCapital(double value) {
 		this.borrowedCapital = value;
 
+	}
+
+	@Override
+	public int compareTo(PeriodInterface o) {
+		if (this.getYear() < o.getYear()) {
+			return -1;
+		} else if (this.getYear() == o.getYear()) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }

@@ -20,7 +20,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	private double writeDowns; // Abschriebungen
 	private double otherBusinessCosts; // Sonstige betriebliche Aufwendungen
 	private double interestAndOtherCosts; // Zinsen und andere Aufwendungen
-	private int year; // Jahr der Periode
+	private final int year; // Jahr der Periode
 
 	/**
 	 * Der Konstruktor erstellt eine Methode für das Jahr year
@@ -110,6 +110,17 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 
 	public void setInterestAndOtherCosts(double interestAndOtherCosts) {
 		this.interestAndOtherCosts = interestAndOtherCosts;
+	}
+
+	@Override
+	public int compareTo(PeriodInterface o) {
+		if (this.getYear() < o.getYear()) {
+			return -1;
+		} else if (this.getYear() == o.getYear()) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }

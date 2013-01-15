@@ -27,15 +27,13 @@ public abstract class ScreenPresenter <T extends View> extends Presenter<T> {
 	public abstract boolean isValid();
 	
 	/**
-	 * Diese Methode gibt zurueck, ob die Maske aufrufbar ist. Hierzu muessen alle
-	 * Vorbedingungen erfuellt sein, die es der Maske ermoeglichen, sich korrekt darzustellen
-	 * und zu verhalten.
+	 * Diese Methode ueberprueft auf Anforderung durch ein Event, ob die Eingaben im
+	 * aktuellen Screen korrekt oder inkorrekt sind. Bei validen Eingaben sollte sie
+	 * ein ValidStateEvent feuern, bei invaliden Eingaben ein InvalidStateEvent.
 	 * 
-	 * @return true: Maske ist aufrufbar, Vorbedingungen sind erfuellt.
-	 * false: Maske ist nicht aufrufbar, Vorbedingungen sind nicht erfuellt.
+	 * 
+	 * @param event Das gefeuerte ValidContentStateEvent
 	 * @author Julius Hacker
 	 */
-	public abstract boolean isSelectable();
-	
 	public abstract void validate(ValidateContentStateEvent event);
 }

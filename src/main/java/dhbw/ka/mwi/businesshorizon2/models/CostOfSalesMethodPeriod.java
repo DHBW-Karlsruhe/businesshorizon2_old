@@ -27,6 +27,11 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 		return 0;
 	}
 
+	public CostOfSalesMethodPeriod(int year) {
+		super();
+		this.year = year;
+	}
+
 	@Override
 	public int getYear() {
 		return this.year;
@@ -63,6 +68,17 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	public void setCostOfSalesAdministrationOthers(
 			double costOfSalesAdministrationOthers) {
 		this.costOfSalesAdministrationOthers = costOfSalesAdministrationOthers;
+	}
+
+	@Override
+	public int compareTo(PeriodInterface o) {
+		if (this.getYear() < o.getYear()) {
+			return -1;
+		} else if (this.getYear() == o.getYear()) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }

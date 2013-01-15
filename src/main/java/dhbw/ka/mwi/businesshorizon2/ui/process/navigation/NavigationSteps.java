@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Julius Hacker
  */
 public enum NavigationSteps {
-	METHOD("Methoden", 1), PERIOD("Perioden", 2), PARAMETER("Parameter", 3), SCENARIO("Szenarien", 4), OUTPUT("Ausgabe", 5);
+	METHOD("Methoden", 1), PARAMETER("Parameter", 2), PERIOD("Perioden", 3), SCENARIO("Szenarien", 4), OUTPUT("Ausgabe", 5);
 	
 	private String caption;
 	private Integer number;
