@@ -16,6 +16,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
@@ -38,6 +39,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	
 	@Autowired
 	private ProjectProxy projectProxy;
+	
+	private boolean showErrors = false;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -115,6 +118,26 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	}
 	
 	/**
+	 * Diese Methode setzt, sobald der Folgeschritt des Prozesses aufgerufen wird,
+	 * den internen Fehlermarker so, dass Fehler ab sofort angezeigt werden. Der erzielte
+	 * Effekt ist der, dass beim ersten Durchlauf des Prozesses noch keine Fehler
+	 * angezeigt werden sollen, da der Screen erst befuellt werden muss. Sobald dieser erste
+	 * Durchlauf einmal gemacht wurde und in den Screens vor und zurueck gegangen wird, 
+	 * sollen Fehlermeldungen angezeigt werden, um dem Nutzer zu verdeutlichen, wo durch
+	 * etwaige Querverbindungen zwischen den Eingaben auf anderen Screens noch Korrekturen
+	 * noetig sind.
+	 * 
+	 * @param event Das gefeuerte ShowOutputViewEvent, das die Anzeige des naechsten Screens ausloest
+	 * @author Julius Hacker
+	 */
+	@EventHandler
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		if(event.getStep() == NavigationSteps.SCENARIO) {
+			this.showErrors = true;
+		}
+	}
+	
+	/**
 	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen Inhalt validieren soll. 
 	 * Er bedient sich dabei der Methode isValid und setzt den Status des Screens entsprechend des Ergebnisses
 	 * auf valide oder invalide.
@@ -125,7 +148,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		if(!this.isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO));
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO, this.showErrors));
 			logger.debug("Scenario not valid, InvalidStateEvent fired");
 		}
 		else {
@@ -154,7 +177,9 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			getView().setValid(scenarioNumber, "rateReturnEquity");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "rateReturnEquity");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "rateReturnEquity");
+			}
 			isValid = false;
 		}
 		
@@ -177,11 +202,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			if(rateReturnCapitalStock < 0) {
 				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
 			}
-			
+
 			getView().setValid(scenarioNumber, "rateReturnCapitalStock");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "rateReturnCapitalStock");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "rateReturnCapitalStock");
+			}
 			isValid = false;
 		}
 		
@@ -205,10 +232,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
 			}
 			
+
 			getView().setValid(scenarioNumber, "businessTax");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "businessTax");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "businessTax");
+			}
 			isValid = false;
 		}
 		
@@ -236,7 +266,9 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
+			}
 			isValid = false;
 		}
 		
@@ -277,6 +309,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(scenarioNumber));
 		
 		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	public boolean isShowErrors() {
+		return showErrors;
 	}
 	
 }
