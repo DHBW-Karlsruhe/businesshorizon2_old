@@ -43,6 +43,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private Logger logger = Logger.getLogger("MethodPresenter.class");
 
+	private Boolean isValid = false;
 
 	@Autowired
 	private EventBus eventBus;
@@ -107,6 +108,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event){		
 	
+		
 
 		for (AbstractStochasticMethod m : methods) {
 			getView().showMethod(m.getName(),m.getImplemented(),m.getSelected());
@@ -126,6 +128,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		getView().showInputMethodSelection(false, projectInputType.getDeterministic());
 		getView().selectInput(true, projectInputType.getStochasticInput().getCaption());
 		getView().selectInput(false, projectInputType.getDeterministicInput().getCaption());
+		
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,true));
 		
 	}
 	
@@ -165,7 +169,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	@Override
 	@EventHandler
-
 	public void validate(ValidateContentStateEvent event) {
 		if (!this.isValid()){
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD));
@@ -175,10 +178,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 		
 	}
-	
+	/*
 	@EventHandler
-	public void handleShowView(ShowMethodViewEvent event) {
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD, true));
-		logger.debug("ShowMethodViewEvent handled");
+	public void handleShowErrors(ShowErrorsOnScreenEvent event){
+		
 	}
+	*/
 }
