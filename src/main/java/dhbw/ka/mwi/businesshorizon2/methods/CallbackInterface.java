@@ -9,8 +9,10 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
  * @author Christian Gahlert
  * 
  */
-public interface Callback {
+public interface CallbackInterface {
 	public void onComplete(StochasticResultContainer result);
 
 	public void onProgressChange(float progress);
+
+	public void onError(Throwable t);
 }

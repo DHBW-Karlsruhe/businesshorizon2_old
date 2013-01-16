@@ -9,7 +9,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.LUDecomposition;
 import cern.jet.stat.Descriptive;
-import dhbw.ka.mwi.businesshorizon2.methods.Callback;
+import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
 /**
@@ -202,7 +202,7 @@ public class AnalysisTimeseries {
 	// @Override
 	public double[][] calculate(double[] previousValues,
 			int consideredPeriodsOfPast, int periodsToForecast,
-			int numberOfIterations, Callback callback)
+			int numberOfIterations, CallbackInterface callback)
 			throws InterruptedException, StochasticMethodException {
 
 		// vorbereitene Initialisierung

@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.methods.Callback;
+import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.models.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.AggregateCostMethodBalanceSheetPeriodContainer;
@@ -50,7 +50,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	 */
 	@Override
 	public StochasticResultContainer calculate(Project project,
-			Callback callback) throws InterruptedException,
+			CallbackInterface callback) throws InterruptedException,
 			ConsideredPeriodsOfPastException, VarianceNegativeException,
 			StochasticMethodException {
 

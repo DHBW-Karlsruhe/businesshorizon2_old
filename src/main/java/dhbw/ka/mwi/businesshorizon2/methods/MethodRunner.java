@@ -15,8 +15,8 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 public class MethodRunner extends Thread {
 
 	private AbstractStochasticMethod method;
-	private double[] periods;
-	private Callback callback;
+	private CallbackInterface callback;
+	private Project project;
 
 	/**
 	 * Der Konstruktor - diesem sollte die zur Berechnung zu verwendende Methode
@@ -31,15 +31,15 @@ public class MethodRunner extends Thread {
 	 * @param callback
 	 *            Das Callback
 	 */
-	public MethodRunner(AbstractStochasticMethod method, double[] periods,
-			Callback callback) {
-		if (method == null || periods == null || callback == null) {
+	public MethodRunner(AbstractStochasticMethod method, Project project,
+			CallbackInterface callback) {
+		if (method == null || project == null || callback == null) {
 			throw new InvalidParameterException(
 					"No null parameters are allowed here");
 		}
 
 		this.method = method;
-		this.periods = periods;
+		this.project = project;
 		this.callback = callback;
 	}
 
@@ -54,8 +54,8 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-			Project test = new Project();
-			StochasticResultContainer result = method.calculate(test, callback);
+			StochasticResultContainer result = method.calculate(project,
+					callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {
 			callback.onComplete(null);

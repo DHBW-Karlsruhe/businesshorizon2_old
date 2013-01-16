@@ -61,7 +61,7 @@ abstract public class AbstractStochasticMethod implements
 	 * @throws InterruptedException
 	 */
 	abstract public StochasticResultContainer calculate(Project project,
-			Callback callback) throws InterruptedException,
+			CallbackInterface callback) throws InterruptedException,
 			StochasticMethodException;
 
 	/**
