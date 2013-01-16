@@ -93,13 +93,10 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	/**
 	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
-<<<<<<< HEAD
-	 * ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird durch die
-=======
-	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die
->>>>>>> refs/remotes/origin/master
-	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
-	 * gefÃ¼llt.
+	 * <<<<<<< HEAD ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird
+	 * durch die ======= ProjectListPanel und Hinzufuegebutton). Erst spaeter
+	 * wird durch die >>>>>>> refs/remotes/origin/master Methode setProjects das
+	 * ProjectListPanel mit konkreten Projekten gefÃ¼llt.
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -185,7 +182,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		VerticalLayout singleProject = new VerticalLayout();
 
 		projectName = new Label(project.getName());
-		periodList = project.getPeriods();
+		periodList = (NavigableSet<PeriodInterface>) project.getPeriods();
 
 		// String fuer saubere Periodenausgebe erstellen. Bsp:
 		// "3 Perioden (2009-2012)"
@@ -282,14 +279,12 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
 	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
-<<<<<<< HEAD
-	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprÃ¼ft
-=======
-	 * Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird noch geprueft
->>>>>>> refs/remotes/origin/master
-	 * ob das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls
-	 * nicht wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann
-	 * die Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
+	 * <<<<<<< HEAD Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird
+	 * noch geprÃ¼ft ======= Dialogfenster ausgeloeten Clickst behandelt
+	 * (Hierbei wird noch geprueft >>>>>>> refs/remotes/origin/master ob das auf
+	 * "required" gesetzte Textfeld auch ausgefuellt wurde - falls nicht wird
+	 * eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
+	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
 	 * zunÃ¤chst durch das Event in der Loesch-Buttonliste der Index
 	 * identifiziert, also welches Projekt zu loeschen ist. Die jeweils folgende
 	 * Logid ist in der je aufgerufen Methode des Presenters zu finden.

@@ -10,6 +10,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.LUDecomposition;
 import cern.jet.stat.Descriptive;
 import dhbw.ka.mwi.businesshorizon2.methods.Callback;
+import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
 /**
  * Diese Klasse stellt die Methoden zur Verfügung, die benötigt werden, um die
@@ -73,7 +74,8 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 	 * @return Matrix der C Werte
 	 * @author Kai Westerholz
 	 */
-	private DoubleMatrix2D calculateValuations(int consideredPeriodsOfPast) {
+	private DoubleMatrix2D calculateValuations(int consideredPeriodsOfPast)
+			throws StochasticMethodException {
 
 		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(
 				consideredPeriodsOfPast, consideredPeriodsOfPast);
@@ -99,8 +101,9 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 			matrixC = lUDecomp.solve(matrixERG);
 			logger.debug("C-Values of Yule-Walker-Equitation calculated.");
 		} catch (IllegalArgumentException exception) {
-			// TODO: Exception Handling
+
 			logger.debug("Calculation of C-Values failed!");
+			throw new StochasticMethodException(exception.getMessage());
 
 		}
 		System.out.println(matrixC);
@@ -117,7 +120,8 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 	 * 
 	 * @author Kai Westerholz
 	 */
-	private double calculateMatrixVariance(int consideredPeriodsOfPast) {
+	private double calculateMatrixVariance(int consideredPeriodsOfPast)
+			throws StochasticMethodException {
 
 		this.matrixValutaions = calculateValuations(consideredPeriodsOfPast);
 		double variance = calculateAutoCorrelation(0);
@@ -125,8 +129,14 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 			variance -= this.matrixValutaions.get(i - 1, 0)
 					* calculateAutoCorrelation(i);
 		}
-		logger.debug("Variance of Yule-Walker-Equitation calculated.");
-		return variance;
+		if (variance < 0) {
+			String errorMessage = "Exception: YuleWalker-Variance is negative!";
+			logger.debug(errorMessage);
+			throw new VarianceNegativeException(errorMessage);
+		} else {
+			logger.debug("Variance of Yule-Walker-Equitation calculated.");
+			return variance;
+		}
 	}
 
 	/**
@@ -191,7 +201,7 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 	public double[][] calculate(double[] previousValues,
 			int consideredPeriodsOfPast, int periodsToForecast,
 			int numberOfIterations, Callback callback)
-			throws InterruptedException {
+			throws InterruptedException, StochasticMethodException {
 
 		// vorbereitene Initialisierung
 		double[][] returnValues = new double[periodsToForecast][numberOfIterations];
@@ -306,8 +316,10 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 		try {
 
 			DecimalFormat df = new DecimalFormat("0.0000");
-			result = al.calculate(sap, 10, 7, 500000, callback);
-			// result = al.calculate(timeseries, 2, 5, 1000000, callback);
+
+			// result = al.calculate(sap, 10, 7, 500000, callback);
+
+			result = al.calculate(timeseries, 2, 5, 1000000, callback);
 			// result = al.calculate(pat, 4, 5, 10000, callback);
 			System.out.println(df.format(result[0][0]) + " €");
 
@@ -324,6 +336,7 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 			System.out.println(e.getClass());
 			System.out.println(e.getStackTrace());
 			System.out.println(e.getMessage());
+		} catch (Exception e) {
 		}
 
 	}

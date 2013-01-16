@@ -4,8 +4,11 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
+import com.ibm.icu.text.DecimalFormat;
+
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.Callback;
+import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.models.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.AggregateCostMethodBalanceSheetPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.AggregateCostMethodPeriod;
@@ -17,7 +20,13 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 
 /**
- * 
+ * Diese Klasse steuert den Aufruf der Zeitreihenanalyse. Es gibt drei Szenarien
+ * die betrachtet werden müssen. Bei CashFlowPerioden wird die Zeitreihenanalyse
+ * einmal für den CashFlow aufgerufen und prognostiziert diesen. Die anderen
+ * beiden Varianten unterscheiden die BilanzPerioden auf Gesamtkostenverfahren
+ * und Umsatzkostenverfahren. Hierbei müssen jeweils alle Bilanzposten einzeln
+ * mit der Zeitreihenanalyse prognostiziert werden. Je nach Anzahld der Posten
+ * weist dies eine schlechtere Performance auf.
  * 
  * @author Kai Westerholz
  * 
@@ -38,32 +47,45 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		return 1;
 	}
 
+	/**
+	 * @author Kai Westerholz
+	 */
 	@Override
 	public StochasticResultContainer calculate(Project project,
 			Callback callback) throws InterruptedException,
-			ConsideredPeriodsOfPastException {
+			ConsideredPeriodsOfPastException, VarianceNegativeException,
+			StochasticMethodException {
 
-		TreeSet<? extends AbstractPeriodContainer> resultPeriods;
-		StochasticResultContainer resultContainer;
-		AbstractPeriodContainer periods = (AbstractPeriodContainer) project
-				.getPeriods();
-		if (project.getRelevantPastPeriods() > periods.getPeriods().size() - 1) {
+		TreeSet<AbstractPeriodContainer> resultPeriods = new TreeSet<AbstractPeriodContainer>();
+		StochasticResultContainer resultContainer = null;
+
+		/**
+		 * Die Zeitreihenanalyse kann nur durchgeführt werden, wenn die Anzahl
+		 * der berücksichtigten Vergangenheitsperioden kleiner ist als die
+		 * Anzahl der eingegebenen Vergangenheitsperioden
+		 */
+		if (project.getRelevantPastPeriods() > project.getPeriods().size() - 1) {
 			logger.debug("Anzahl der betrachteten Perioden der Vergangenheit ist zu groß!");
 			throw new ConsideredPeriodsOfPastException(
 					"Die Anzahl der betrachteten Perioden der Vergangenheit muss kleiner sein als die Azahl der beobachteten Perioden.");
 		}
-		if (periods instanceof CashFlowPeriodContainer) {
-			resultPeriods = new TreeSet<CashFlowPeriodContainer>();
 
-			double[] previousValues = new double[periods.getPeriods().size()];
+		if (project.getPeriods().first() instanceof CashFlowPeriod) {
+			// Nachfolgend wird die Zeitreihenanalyse für CashFlowPerioden
+			// ausgeführt
+			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
+
+			double[] previousValues = new double[project.getPeriods().size()];
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
 			int counter = 0;
-			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) periods
+
+			// Umwandlung der Perioden in ein Double-Arrays
+			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
 					.getPeriods()) {
 				previousValues[counter] = cFPeriod.getFreeCashFlow();
 				counter++;
 			}
-
+			// Durchführung der Zeitreihenanalyse
 			double[][] resultTimeseries = timeseries.calculate(previousValues,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
@@ -76,14 +98,16 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					cfPeriod.setFreeCashFlow(resultTimeseries[periodToForecast][iteration]);
 					cFContainer.getPeriods().add(cfPeriod);
 				}
-				resultPeriods.add(cFContainer);
+				cFResultContainer.add(cFContainer);
 			}
 			resultContainer = new StochasticResultContainer(resultPeriods);
 
-		} else if (periods instanceof AggregateCostMethodBalanceSheetPeriodContainer) {
+		} else if (project.getPeriods().first() instanceof AggregateCostMethodPeriod) {
+			// nachfolgend wird die Zeitreihenanalyse für alle Posten der
+			// GesamtkostenPeriode einzeln durchgeführt
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
-			resultPeriods = new TreeSet<AggregateCostMethodBalanceSheetPeriodContainer>();
-
+			TreeSet<? super AggregateCostMethodBalanceSheetPeriodContainer> aCMPResultContainer = resultPeriods;
+			// Allgemeine Bilanzposten AusgangsArrys
 			double[] immaterialFortune = new double[project
 					.getRelevantPastPeriods()];
 			double[] propertyValue = new double[project
@@ -98,67 +122,61 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			double[] cashAssets = new double[project.getRelevantPastPeriods()];
 			double[] borrowedCapital = new double[project
 					.getRelevantPastPeriods()];
-
+			// Allgemeine Bilanzposten Ergebnis-Arrays
 			double[][] immaterialFortuneResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] propertyValueResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] financialValueResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-			double[][] equityResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] equityResult = new double[project.getPeriodsToForecast()][project
+					.getIterations()];
 			double[][] provisionsResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] supliesResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-			double[][] claimsResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-			double[][] stocksResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] claimsResult = new double[project.getPeriodsToForecast()][project
+					.getIterations()];
+			double[][] stocksResult = new double[project.getPeriodsToForecast()][project
+					.getIterations()];
 			double[][] cashAssetsResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] borrowedCapitalResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-
-			double[] salesRevenue = new double[periods.getPeriods().size()]; // Umsatzerlöse
-			double[] otherBusinessRevenue = new double[periods.getPeriods()
-					.size()]; // Sonstige betriebliche Erträge
-			double[] internallyProducedAndCapitalizedAssets = new double[periods
-					.getPeriods().size()]; // Andere aktivierte
-			// Eigenleistungen
-			double[] materialCosts = new double[periods.getPeriods().size()]; // Materialaufwand
-			double[] humanCapitalCosts = new double[periods.getPeriods().size()]; // Personalaufwand
-			double[] writeDowns = new double[periods.getPeriods().size()]; // Abschriebungen
-			double[] otherBusinessCosts = new double[periods.getPeriods()
-					.size()]; // Sonstige betriebliche Aufwendungen
-			double[] interestAndOtherCosts = new double[periods.getPeriods()
+					.getPeriodsToForecast()][project.getIterations()];
+			// spezielle Ausgangsarrays
+			double[] salesRevenue = new double[project.getPeriods().size()];
+			double[] otherBusinessRevenue = new double[project.getPeriods()
 					.size()];
+			double[] internallyProducedAndCapitalizedAssets = new double[project
+					.getPeriods().size()];
+			double[] materialCosts = new double[project.getPeriods().size()];
+			double[] humanCapitalCosts = new double[project.getPeriods().size()];
+			double[] writeDowns = new double[project.getPeriods().size()];
+			double[] otherBusinessCosts = new double[project.getPeriods()
+					.size()];
+			double[] interestAndOtherCosts = new double[project.getPeriods()
+					.size()];
+			// spezielle Ergebnisarrays
+			double[][] salesRevenueResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] otherBusinessRevenueResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] internallyProducedAndCapitalizedAssetsResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] materialCostsResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] humanCapitalCostsResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] writeDownsResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] otherBusinessCostsResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] interestAndOtherCostsResult = new double[project
+					.getPeriodsToForecast()][project.getIterations()];
 
-			double[][] salesRevenueResult = new double[periods.getPeriods()
-					.size()][project.getIterations()]; // Umsatzerlöse
-			double[][] otherBusinessRevenueResult = new double[periods
-					.getPeriods().size()][project.getIterations()]; // Sonstige
-																	// betriebliche
-																	// Erträge
-			double[][] internallyProducedAndCapitalizedAssetsResult = new double[periods
-					.getPeriods().size()][project.getIterations()]; // Andere
-																	// aktivierte
-			// Eigenleistungen
-			double[][] materialCostsResult = new double[periods.getPeriods()
-					.size()][project.getIterations()]; // Materialaufwand
-			double[][] humanCapitalCostsResult = new double[periods
-					.getPeriods().size()][project.getIterations()]; // Personalaufwand
-			double[][] writeDownsResult = new double[periods.getPeriods()
-					.size()][project.getIterations()]; // Abschriebungen
-			double[][] otherBusinessCostsResult = new double[periods
-					.getPeriods().size()][project.getIterations()]; // Sonstige
-																	// betriebliche
-																	// Aufwendungen
-			double[][] interestAndOtherCostsResult = new double[periods
-					.getPeriods().size()][project.getIterations()];
-
+			// Erstellung der einzelnen Eingabe Arrays
 			int counter = 0;
-			for (AggregateCostMethodPeriod aCMPeriod : (TreeSet<AggregateCostMethodPeriod>) periods
+			for (AggregateCostMethodPeriod aCMPeriod : (TreeSet<AggregateCostMethodPeriod>) project
 					.getPeriods()) {
 				salesRevenue[counter] = aCMPeriod.getSalesRevenue();
 				otherBusinessRevenue[counter] = aCMPeriod
@@ -183,7 +201,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				immaterialFortune[counter] = aCMPeriod.getImmaterialFortune();
 				counter++;
 			}
-
+			// Durchführung der Zeitriehenanalyse für jeden einzelnen
+			// Bilanzposten
 			salesRevenueResult = timeseries.calculate(salesRevenue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
@@ -257,10 +276,11 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
-
+			// Erstellung der Ausgabecontainer und Integration in den
+			// StochasticResultContainer
 			for (int iteration = 0; iteration < project.getIterations(); iteration++) {
 				AggregateCostMethodBalanceSheetPeriodContainer aCMContainer = new AggregateCostMethodBalanceSheetPeriodContainer();
-				for (int forecast = 0; forecast < periods.getPeriods().size(); forecast++) {
+				for (int forecast = 0; forecast < project.getPeriods().size(); forecast++) {
 					AggregateCostMethodPeriod aCMPeriod = new AggregateCostMethodPeriod(
 							project.getBasisYear() + (forecast + 1));
 					aCMPeriod
@@ -297,14 +317,16 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 							.setHumanCapitalCosts(humanCapitalCostsResult[forecast][iteration]);
 					aCMContainer.getPeriods().add(aCMPeriod);
 				}
-				resultPeriods.add(aCMContainer);
+				aCMPResultContainer.add(aCMContainer);
 			}
 			resultContainer = new StochasticResultContainer(resultPeriods);
-		} else if (periods instanceof CostOfSalesMethodPeriodContainer) {
 
+		} else if (project.getPeriods().first() instanceof CostOfSalesMethodPeriod) {
+			// nachfolgend wird die Zeitreihenanalyse für alle Posten der
+			// UmsatzkostenPeriode einzeln durchgeführt
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
-			resultPeriods = new TreeSet<CostOfSalesMethodPeriodContainer>();
-
+			TreeSet<? super CostOfSalesMethodPeriodContainer> cOSResultContainer = resultPeriods;
+			// Arrays der Ausgangswerte
 			double[] salesRevenue = new double[project.getRelevantPastPeriods()];
 			double[] otherBusinessRevenue = new double[project
 					.getRelevantPastPeriods()];
@@ -335,30 +357,31 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			double[] cashAssets = new double[project.getRelevantPastPeriods()];
 			double[] borrowedCapital = new double[project
 					.getRelevantPastPeriods()];
-
+			// Arrays für die Rückgabe
 			double[][] immaterialFortuneResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] propertyValueResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] financialValueResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-			double[][] equityResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] equityResult = new double[project.getPeriodsToForecast()][project
+					.getIterations()];
 			double[][] provisionsResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] supliesResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-			double[][] claimsResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
-			double[][] stocksResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
+			double[][] claimsResult = new double[project.getPeriodsToForecast()][project
+					.getIterations()];
+			double[][] stocksResult = new double[project.getPeriodsToForecast()][project
+					.getIterations()];
 			double[][] cashAssetsResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 			double[][] borrowedCapitalResult = new double[project
-					.getRelevantPastPeriods()][project.getIterations()];
+					.getPeriodsToForecast()][project.getIterations()];
 
+			// Befüllung der Ausgangsarrays
 			int counter = 0;
-			for (CostOfSalesMethodPeriod cOSPeriod : (TreeSet<CostOfSalesMethodPeriod>) periods
+			for (CostOfSalesMethodPeriod cOSPeriod : (TreeSet<CostOfSalesMethodPeriod>) project
 					.getPeriods()) {
 				borrowedCapital[counter] = cOSPeriod.getBorrowedCapital();
 				cashAssets[counter] = cOSPeriod.getCashAssets();
@@ -372,7 +395,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				immaterialFortune[counter] = cOSPeriod.getImmaterialFortune();
 				counter++;
 			}
-
+			// Aufruf der Zeitreihenanalyse für die Einzelnen Bilanzposten
 			borrowedCapitalResult = timeseries.calculate(borrowedCapital,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
@@ -431,9 +454,11 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
 
+			// Erstellung des Rückgabecontainers aus den einzelnen
+			// Ergebnisarrays
 			for (int iteration = 0; iteration < project.getIterations(); iteration++) {
 				CostOfSalesMethodPeriodContainer cOSContainer = new CostOfSalesMethodPeriodContainer();
-				for (int forecast = 0; forecast < periods.getPeriods().size(); forecast++) {
+				for (int forecast = 0; forecast < project.getPeriods().size(); forecast++) {
 					CostOfSalesMethodPeriod cOSPeriod = new CostOfSalesMethodPeriod(
 							project.getBasisYear() + (forecast + 1));
 
@@ -464,12 +489,54 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 
 					cOSContainer.getPeriods().add(cOSPeriod);
 				}
-				resultPeriods.add(cOSContainer);
+				cOSResultContainer.add(cOSContainer);
 			}
 			resultContainer = new StochasticResultContainer(resultPeriods);
 
 		}
 
 		return resultContainer;
+	}
+
+	public static void main(String[] args) {
+
+		TimeseriesCalculator tc = new TimeseriesCalculator();
+		Callback callback = null;
+		StochasticResultContainer src;
+		TreeSet<CashFlowPeriod> periods = new TreeSet<CashFlowPeriod>();
+		CashFlowPeriod period1 = new CashFlowPeriod(2005);
+		period1.setFreeCashFlow(130594000.00);
+		periods.add(period1);
+		CashFlowPeriod period2 = new CashFlowPeriod(2006);
+		period2.setFreeCashFlow(147552000.00);
+		periods.add(period2);
+		CashFlowPeriod period3 = new CashFlowPeriod(2007);
+		period3.setFreeCashFlow(144040000.00);
+		periods.add(period3);
+		CashFlowPeriod period4 = new CashFlowPeriod(2008);
+		period4.setFreeCashFlow(146004000.00);
+		periods.add(period4);
+		CashFlowPeriod period5 = new CashFlowPeriod(2009);
+		period5.setFreeCashFlow(154857000.00);
+		periods.add(period5);
+		CashFlowPeriod period6 = new CashFlowPeriod(2010);
+		period6.setFreeCashFlow(162117000.00);
+		periods.add(period6);
+		Project project = new Project("Test Zeitreihenanalyse");
+		project.setBasisYear(2010);
+		project.setIterations(10000);
+		project.setRelevantPastPeriods(2);
+		project.setPeriodsToForecast(5);
+		project.setPeriods(periods);
+
+		try {
+			src = tc.calculate(project, callback);
+			System.out.println(new DecimalFormat("0.00").format(src
+					.getPeriodContainers().first().getPeriods().first()
+					.getFreeCashFlow()));
+		} catch (StochasticMethodException | InterruptedException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
