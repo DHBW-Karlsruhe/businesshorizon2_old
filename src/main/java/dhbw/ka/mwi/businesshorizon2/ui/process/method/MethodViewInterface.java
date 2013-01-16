@@ -21,6 +21,10 @@ public interface MethodViewInterface extends ContentView {
 	public void showInputMethodSelection(Boolean stochastic, Boolean checked);
 	
 	public void selectInput(Boolean stochastic,String selected);
+	
+	public void showErrorNoMethodSelected(Boolean state);
+	
+	public void showErrorNothingSelected(Boolean state);
 
 
 }

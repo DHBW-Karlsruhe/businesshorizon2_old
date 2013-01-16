@@ -255,4 +255,16 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		}
 		
 	}
+
+	@Override
+	public void showErrorNoMethodSelected(Boolean state) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showErrorNothingSelected(Boolean state) {
+		// TODO Auto-generated method stub
+		
+	}
 }
