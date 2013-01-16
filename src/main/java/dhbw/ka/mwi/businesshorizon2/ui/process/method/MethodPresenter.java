@@ -82,7 +82,9 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 					valid = true;
 			}
 		else{
-			valid = true;
+			if (projectInputType.getDeterministic()){
+			valid = true;	
+			}
 		}
 		return valid;
 	}
@@ -146,6 +148,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		if (stoch){
 			projectInputType.setStochastic(check);
 			getView().enableMethodSelection(check);
+			this.validate(new ValidateContentStateEvent());
 		}
 		else if (!stoch){
 			projectInputType.setDeterministic(check);
