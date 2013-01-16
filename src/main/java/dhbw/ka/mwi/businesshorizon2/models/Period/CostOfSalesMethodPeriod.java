@@ -1,4 +1,5 @@
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.models.Period;
+
 
 /**
  * Diese Klasse bildet eine Periode nach dem Umsatzkosten Verfahren ab.

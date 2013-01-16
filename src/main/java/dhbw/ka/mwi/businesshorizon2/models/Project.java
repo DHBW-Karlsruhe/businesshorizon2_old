@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
+import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt

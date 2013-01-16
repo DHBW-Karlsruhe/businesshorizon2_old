@@ -24,8 +24,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.models.PeriodInterface;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 
 /**
  * Dies ist die Vaadin-Implementierung der PeriodListView. Die Rahmendarstellung
