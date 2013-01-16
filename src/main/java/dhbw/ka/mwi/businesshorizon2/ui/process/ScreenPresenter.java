@@ -36,4 +36,15 @@ public abstract class ScreenPresenter <T extends View> extends Presenter<T> {
 	 * @author Julius Hacker
 	 */
 	public abstract void validate(ValidateContentStateEvent event);
+	
+	/**
+	 * Diese Methode kuemmert sich um das ShowErrorsOnScreenEvent. Dieses sagt insbesondere
+	 * aus, dass ab sofort in dem Screen, der im Event angegeben ist, Fehlermeldungen
+	 * angezeigt werden sollen. Die Methode sollte ueberpruefen, ob das Event fuer ihren
+	 * Screen relevant ist (per event.getStep()) und gegebenenfalls das Verhalten des Screens
+	 * entsprechend umstellen, sodass Fehlermeldungen angezeigt werden.
+	 * 
+	 * @param event
+	 */
+	public abstract void handleShowErrors(ShowErrorsOnScreenEvent event);
 }

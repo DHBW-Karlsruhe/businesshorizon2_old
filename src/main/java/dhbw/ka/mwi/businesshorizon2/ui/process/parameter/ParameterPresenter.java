@@ -10,6 +10,7 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
@@ -58,5 +59,12 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void handleShowView(ShowParameterViewEvent event) {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER, true));
 		logger.debug("ShowParameterViewEvent handled");
+	}
+
+
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }
