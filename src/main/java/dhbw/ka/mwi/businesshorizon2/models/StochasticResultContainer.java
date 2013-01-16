@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 /**
  * Diese Klasse stellt ein Ergebnis einer Stochastischen Methode zur Verfügung.
- * Dies bedeutet, dass sie eine Liste von PeriodenContainer enthält.
+ * Dies bedeutet, dass sie eine Liste von PeriodenContainer enthaelt.
  * 
  * @author Kai Westerholz
  * 
@@ -19,10 +19,10 @@ public class StochasticResultContainer {
 	}
 
 	/**
-	 * Diese Methode liefert die Referenz auf die Liste der Container zurück.
+	 * Diese Methode liefert die Referenz auf die Liste der Container zurueck.
 	 * 
 	 * @return Referenz auf Liste der Container
-	 * @author Kai Westerholz hbhb
+	 * @author Kai Westerholz
 	 */
 
 	public TreeSet<? extends AbstractPeriodContainer> getPeriodContainers() {

@@ -13,15 +13,15 @@ import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
 /**
- * Diese Klasse stellt die Methoden zur Verfügung, die benötigt werden, um die
- * Zeitreihenanalyse durch zu führen. Sie baut auf der YuleWalkerGleichung und
+ * Diese Klasse stellt die Methoden zur Verfuegung, die benoetigt werden, um die
+ * Zeitreihenanalyse durch zu fuehren. Sie baut auf der YuleWalkerGleichung und
  * implementiert das AR-Modell.
  * 
  * @author Kai Westerholz
  * 
  */
 
-public class AnalysisTimeseries {// extends AbstractStochasticMethod {
+public class AnalysisTimeseries {
 
 	private Logger logger = Logger.getLogger(AnalysisTimeseries.class);
 	private double variance;
@@ -67,8 +67,8 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 
 	/**
 	 * Diese Methode stellt das Lineare Gleichungssystem auf, das benötigt wird,
-	 * um die Schätzwerte ci der Zeitreihenanalyse zu erhalten und löst dieses.
-	 * Die berechneten Werte
+	 * um die Schaetzwerte ci der Zeitreihenanalyse zu erhalten und loest
+	 * dieses. Die berechneten Werte
 	 * 
 	 * @param consideredPeriodsOfPast
 	 * @return Matrix der C Werte
@@ -106,13 +106,12 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 			throw new StochasticMethodException(exception.getMessage());
 
 		}
-		System.out.println(matrixC);
 		return matrixC;
 	}
 
 	/**
 	 * Diese Methode berechnet die Varianz auf Basis der YuleWalkerGleichung.
-	 * Die Varianz wird für die Berechnung des weißen Rauschens benötigt.
+	 * Die Varianz wird für die Berechnung des weißen Rauschens benoetigt.
 	 * 
 	 * @param matrix
 	 *            Matrix aus der die Varianz berechnet werden soll
@@ -134,20 +133,22 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 			logger.debug(errorMessage);
 			throw new VarianceNegativeException(errorMessage);
 		} else {
-			logger.debug("Variance of Yule-Walker-Equitation calculated.");
+			logger.debug("Variance of Yule-Walker-Equitation calculated: "
+					+ variance + ".");
 			return variance;
 		}
 	}
 
 	/**
 	 * Für die Formel des AR-Model wird eine bestimmte Anzahl an bisherigen
-	 * Perioden betrachtet. Der Term (i-j) gibt an wie viele dieser Perioden aus
-	 * den Beobachtungen gespeißt werden. Ist der Termn (i-j) kleiner als 1
-	 * werden Beobachtungswerte herangezogen. Ansonsten werden bereits
-	 * prognostizierte Werte verwendet Da das Array der Beobachtungswerte den
-	 * ältesten Wert beim Index = 0 hat wird der letzte Werte abzüglich der
-	 * bereits betraachteten Werte benötigt. Die Werte werden
-	 * zwischengespeichert und es wird überprüft, ob eine Berechnung nötig ist.
+	 * Perioden betrachtet. Der Term (forecast - past) gibt an wie viele dieser
+	 * Perioden aus den Beobachtungen gespeißt werden. Ist der Termn (forecast -
+	 * past) kleiner als 1 werden Beobachtungswerte herangezogen. Ansonsten
+	 * werden bereits prognostizierte Werte verwendet Da das Array der
+	 * Beobachtungswerte den aeltesten Wert beim Index = 0 hat wird der letzte
+	 * Werte abzüglich der bereits betrachteten Werte benoetigt. Die Werte
+	 * werden zwischengespeichert und es wird ueberprueft, ob eine Berechnung
+	 * noetig ist.
 	 * 
 	 * @author Kai Westerholz
 	 * 
@@ -156,7 +157,7 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 	 * @param forecast
 	 *            zu prognostizierende Periode
 	 * @param valuations
-	 *            Gewichtungsparamter
+	 *            Gewichtungsparameter
 	 * @param previousValues
 	 *            trendbereinigte Beobachtungswerte;
 	 * @return geglätteter Prognosewert
@@ -209,7 +210,7 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 				* (consideredPeriodsOfPast + numberOfIterations);
 		int progress = 0;
 
-		// Trendbereinigung der Zeitreihe wenn diese nicht stationär ist
+		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		CalculateTide tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(previousValues);
 		if (!isStationary) {
@@ -224,9 +225,8 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 		for (int i = 0; i < previousValues.length; i++) {
 			this.DoubleArrayListTimeseries.add(previousValues[i]);
 		}
-		logger.debug(DoubleArrayListTimeseries);
 
-		// Start der zur Prognose benötigten Berechnungen
+		// Start der zur Prognose benoetigten Berechnungen
 		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
 		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
 		this.yuleWalkerVariance = this
@@ -257,8 +257,6 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 							+ previousValues.length - 1);
 					forecastsForPeriod[iterationStep] = (double) (whiteNoise
 							.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
-					// Vergleichswert ohne Weißes Rauschen
-					forecastsForPeriod[iterationStep] = (double) ((newTide - equalizedValuePerPeriod));
 				} else {
 					forecastsForPeriod[iterationStep] = (double) (whiteNoise
 							.getWhiteNoiseValue() + equalizedValuePerPeriod);
@@ -275,8 +273,6 @@ public class AnalysisTimeseries {// extends AbstractStochasticMethod {
 			equalizedValues[forecast - 1] = equalizedValuePerPeriod;
 
 			returnValues[forecast - 1] = forecastsForPeriod;
-			// logger.debug("Period " + forecast + "  of " + periodsToForecast
-			// + " predicted.");
 		}
 		return returnValues;
 	}

@@ -1,11 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
-import java.text.DecimalFormat;
-
 import org.apache.log4j.Logger;
 
 /**
- * Diese Klasse stellt die Methoden für die Trendbereinigung zur Verfügung.
+ * Diese Klasse stellt die Methoden fuer die Trendbereinigung zur Verfuegung.
  * 
  * @author Kai Westerholz
  * 
@@ -22,7 +20,7 @@ public class CalculateTide implements CalculateTideInterface {
 
 	/**
 	 * Diese Methode bereinigt die Zeitreihe um die Trendgerade und berechnet
-	 * diese wenn nötig. Die Formel der Bereinigung lautet: Y*(t) = T(t) - Y(t)
+	 * diese wenn noetig. Die Formel der Bereinigung lautet: Y*(t) = T(t) - Y(t)
 	 * 
 	 * @author Kai Westerholz
 	 * 
@@ -40,7 +38,6 @@ public class CalculateTide implements CalculateTideInterface {
 
 		for (int i = 0; i < timeseries.length; i++) {
 			timeseries[i] = (this.getTideValue(i) - timeseries[i]);
-			logger.debug(new DecimalFormat("0.00").format(this.getTideValue(i)));
 		}
 		logger.debug("Timeseries reduced.");
 		return timeseries;
@@ -48,7 +45,7 @@ public class CalculateTide implements CalculateTideInterface {
 
 	/**
 	 * Diese Methode liefert den Wert der Trendgerade zum Zeitpunkt der
-	 * übergebenen Periode zurück. Formel: (t) = a + b *t
+	 * uebergebenen Periode zurueck. Formel: (t) = a + b *t
 	 * 
 	 * @author Kai Westerholz
 	 * 
@@ -100,7 +97,7 @@ public class CalculateTide implements CalculateTideInterface {
 	/**
 	 * Diese Methode berechnet den Paramater b der Trendgerade T(t) = a + b *t.
 	 * b = Summe((Periode - Mittel der Perioden) * (Wert zur Periode - Mittel
-	 * der Werte )) / Summe((periode - Mittel der Perioden)²)
+	 * der Werte )) / Summe((periode - Mittel der Perioden)^2)
 	 * 
 	 * @author Kai Westerholz
 	 * @return double ParameterB
@@ -122,7 +119,7 @@ public class CalculateTide implements CalculateTideInterface {
 
 	/**
 	 * Diese Methode berechnet den Paramater a der Trendgerade T(t) = a + b *t.
-	 * Für die Berechnung wird der Paramter B benötigt. Die Berechnung basiert
+	 * Fuer die Berechnung wird der Paramter B benoetigt. Die Berechnung basiert
 	 * auf folgender Formel: a = Durchschnitt(y) - b * Durchschnitt(t);
 	 * 
 	 * @author Kai Westerholz

@@ -79,7 +79,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
 	 * und initialisiert die View-Komponenten. Danach wird die durch die
 	 * generateUi Methode die festen Bestandteile der Projektliste erzeugt
-	 * (Ueberschrift, leeres ProjectListPanel und HinzufÃ¼gebutton)
+	 * (Ueberschrift, leeres ProjectListPanel und Hinzufuegebutton)
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -92,11 +92,10 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Konkrete Ausprogrammierung der festen UI Elemente(Ãberschrift, leeres
-	 * <<<<<<< HEAD ProjectListPanel und HinzufÃ¼gebutton). Erst spÃ¤ter wird
-	 * durch die ======= ProjectListPanel und Hinzufuegebutton). Erst spaeter
-	 * wird durch die >>>>>>> refs/remotes/origin/master Methode setProjects das
-	 * ProjectListPanel mit konkreten Projekten gefÃ¼llt.
+	 * Konkrete Ausprogrammierung der festen UI Elemente (Ueberschrift, leeres
+	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die
+	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
+	 * gefuellt.
 	 * 
 	 * @author Christian Scherer
 	 */
@@ -163,11 +162,11 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * wird sowohl bei der ersten Erstellung des UIs fuer jedes Projekt
 	 * ausgefuehrt. Die Loeschbuttons werden einer Liste an Loeschbuttons
 	 * hinzufgefuegt umd spaeter eine identifikation der Buttons in der Methode
-	 * buttonClick zu gewÃ¤hrleisten. Zum Schluss wird dem Layout noch ein
+	 * buttonClick zu gewaehrleisten. Zum Schluss wird dem Layout noch ein
 	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
 	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
 	 * Projekts wechselt und das VerticalLayout dem projectListPanel
-	 * hinzgefÃ¼gt.
+	 * hinzgefuegt.
 	 * 
 	 * @author Christian Scherer
 	 * @param project
@@ -279,12 +278,10 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * reagiert, wie auch auf jene die Projekte loeschen. In der ersten
 	 * If-Abfrage werden die vom Hauptfenster ausgeloeten Clicks zum Hinzufuegen
 	 * eines neuen Objektes behandelt, in der zweiten If-Abfrage wird die im
-	 * <<<<<<< HEAD Dialogfenster ausgeloeten Clickst behandelt (Hierbei wird
-	 * noch geprÃ¼ft ======= Dialogfenster ausgeloeten Clickst behandelt
-	 * (Hierbei wird noch geprueft >>>>>>> refs/remotes/origin/master ob das auf
-	 * "required" gesetzte Textfeld auch ausgefuellt wurde - falls nicht wird
-	 * eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann die
-	 * Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
+	 * Dialogfenster ausgeloesten Clickst behandelt (Hierbei wird noch geprueft
+	 * ob das auf "required" gesetzte Textfeld auch ausgefuellt wurde - falls
+	 * nicht wird eine Fehlermeldung angezeigt) und in der Else-Verzweigung dann
+	 * die Loesch-Clicks fuer das jeweilige Projekt behandelt. Hierbei wird
 	 * zunÃ¤chst durch das Event in der Loesch-Buttonliste der Index
 	 * identifiziert, also welches Projekt zu loeschen ist. Die jeweils folgende
 	 * Logid ist in der je aufgerufen Methode des Presenters zu finden.
