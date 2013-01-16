@@ -47,6 +47,7 @@ public class Project implements Serializable {
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
 
+
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
 	 * 
@@ -66,6 +67,7 @@ public class Project implements Serializable {
 	
 	public Project(){
 		this.projectInputType = new ProjectInputType();
+
 
 	}
 
@@ -159,6 +161,7 @@ public class Project implements Serializable {
 
 
 
+
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
@@ -167,7 +170,6 @@ public class Project implements Serializable {
 		return projectInputType;
 	}
 	
-
 
 	/**
 	 * Setzt den Namen des Projekts.

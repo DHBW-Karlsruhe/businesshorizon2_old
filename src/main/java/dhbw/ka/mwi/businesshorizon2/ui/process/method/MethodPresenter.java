@@ -26,6 +26,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
@@ -43,7 +45,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private Logger logger = Logger.getLogger("MethodPresenter.class");
 
-	private Boolean isValid = false;
+	private Boolean showError = false;
 
 	@Autowired
 	private EventBus eventBus;
@@ -150,6 +152,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 		
 	}
+
 	
 	@EventHandler
 	public void onCheckMethod(CheckMethodEvent event){
@@ -171,17 +174,20 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		if (!this.isValid()){
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD));
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD,showError));
 		}
 		else {
 			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.METHOD));
 		}
 		
 	}
-	/*
+
+
 	@EventHandler
-	public void handleShowErrors(ShowErrorsOnScreenEvent event){
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
 		
 	}
-	*/
+
 }
