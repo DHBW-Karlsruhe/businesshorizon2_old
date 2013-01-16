@@ -27,6 +27,11 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 		return 0;
 	}
 
+	public CostOfSalesMethodPeriod(int year) {
+		super();
+		this.year = year;
+	}
+
 	@Override
 	public int getYear() {
 		return this.year;

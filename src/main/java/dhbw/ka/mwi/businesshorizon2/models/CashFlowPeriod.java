@@ -36,6 +36,7 @@ public class CashFlowPeriod implements PeriodInterface {
 	@Override
 	public int getYear() {
 		return this.year;
+
 	}
 
 	@Override
