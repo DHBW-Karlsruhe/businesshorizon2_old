@@ -48,21 +48,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private int[] numberIterations;
 
 	private boolean firstCall;
+	private boolean showError;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
-	 * EventHandler. Zudem werden die validitaeten der Felder zunaechst auf false
-	 * gesetzt. Zudem wird der Wert der firstCall Variable auf true gesetzt,
-	 * sodass die erste Pruefung des screens noch keine Fehlermeldung wirft, da
-	 * der Benutzer den Screen auch noch nicht geoeffnet hat
+	 * EventHandler. Zudem werden die validitaeten der Felder zunaechst auf
+	 * false gesetzt. Zudem wird der Wert der firstCall Variable auf true
+	 * gesetzt, sodass die erste Pruefung des screens noch keine Fehlermeldung
+	 * wirft, da der Benutzer den Screen auch noch nicht geoeffnet hat
 	 * 
 	 * @author Julius Hacker, Christian SCherer
 	 */
 	@PostConstruct
 	public void init() {
-
-		
 
 		eventBus.addHandler(this);
 
@@ -73,6 +72,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 		setIterations();
 		firstCall = true;
+		showError = false;
 
 	}
 
@@ -92,23 +92,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@EventHandler
 	public void onShowParameterScreen(ShowParameterViewEvent event) {
-		
-		
+
 		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
 			initializeBasisYear();
 		}
-		//TODO: Braucht noch konkrete werte von vorigem screen
+
 		determMethod = this.projectProxy.getSelectedProject()
 				.getProjectInputType().getDeterministic();
 		stochMethod = this.projectProxy.getSelectedProject()
 				.getProjectInputType().getStochastic();
-		
+
 		greyOut();
 		firstCall = false;
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
 				true));
-		
-		
 
 	}
 
@@ -152,11 +149,13 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (basisYearValid) {
 				return true;
 			} else {
+				if(showError){
 				getView()
 						.setComponentError(
 								true,
 								"basisYear",
 								"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+				}
 				return false;
 			}
 
@@ -166,30 +165,38 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				return true;
 			} else {
 				if (!periodsToForecastValid) {
+					if(showError){
 					getView()
 							.setComponentError(
 									true,
 									"periodsToForecast",
 									"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
+					}
 				}
 				if (!relevantPastPeriodsValid) {
+					if(showError){
 					getView()
 							.setComponentError(
 									true,
 									"pastPeriods",
 									"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
+					}
 				}
 				if (!iterationsValid) {
+					if(showError){
 					getView()
 							.setComponentError(true, "iterations",
 									"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
+					}
 				}
 				if (!basisYearValid) {
+					if(showError){
 					getView()
 							.setComponentError(
 									true,
 									"basisYear",
 									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+					}
 				}
 				return false;
 			}
@@ -424,8 +431,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	@Override
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
-		
-		//TODO: Braucht noch konkrete werte von vorigem screen
+
 		determMethod = this.projectProxy.getSelectedProject()
 				.getProjectInputType().getDeterministic();
 		stochMethod = this.projectProxy.getSelectedProject()
@@ -439,6 +445,22 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			logger.debug("Parameter valid, ValidStateEvent fired");
 		}
 	}
+
+//	/**
+//	 * 
+//	 * Eventhandler der zuerst prueft ob dieser Screen her angesprochen wird.
+//	 * Falls ja soll die showError auf true gesetzt werden, die ermoeglicht,
+//	 * dass die Fehlermeldungen in der isValid-Methode angezeigt werden.
+//	 * 
+//	 * @author Christian Scherer
+//	 */
+//	@Override
+//	@EventHandler
+//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+//		if (event.getStep() == NavigationSteps.PARAMETER) {
+//			showError = true;
+//		}
+//	}
 
 	public int[] getNumberIterations() {
 		return numberIterations;
