@@ -22,7 +22,7 @@ public class StochasticChartArea extends GridLayout {
 
 	public StochasticChartArea() {
 
-		super(2, 2);
+		super(3, 2);
 
 		Label headline = new Label("<h2>Stochastisches Verfahren</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
@@ -61,10 +61,29 @@ public class StochasticChartArea extends GridLayout {
 
 		chart2.addValues(values2);
 
+		Map<String, String> tColumns = new LinkedHashMap<String, String>();
+		tColumns.put("", "string");
+		tColumns.put("t=0", "number");
+		tColumns.put("t=1", "number");
+		tColumns.put("t=2", "number");
+		tColumns.put("t=3", "number");
+		tColumns.put("t=4", "number");
+		tColumns.put("t=5", "number");
+		tColumns.put("t=6", "number");
+
+		BasicTable table = new BasicTable(tColumns);
+
+		List<String[]> tValues = new ArrayList<String[]>();
+		tValues.add(new String[] { "Gesamtkapital", "2000", "2000", "2000", "2000", "2000", "2000", "2000" });
+		tValues.add(new String[] { "- Fremdkapital", "1000", "1000", "1000", "1000", "1000", "1000", "1000" });
+		tValues.add(new String[] { "Unternehmenswert", "1000", "1000", "1000", "1000", "1000", "1000", "1000" });
+
+		table.addValues(tValues);
+
 		this.addComponent(headline, 0, 0);
 		this.addComponent(chart, 0, 1);
-		this.addComponent(chart2, 1, 1);
+		this.addComponent(table, 1, 1);
 		this.setHeight("600px");
-		this.setWidth("1200px");
+		this.setWidth("2000px");
 	}
 }
