@@ -1,4 +1,5 @@
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.models.Period;
+
 
 /**
  * Diese Klasse bildet eine Periode ab. Das Jahr muss übergeben werden und kann
@@ -36,7 +37,6 @@ public class CashFlowPeriod implements PeriodInterface {
 	@Override
 	public int getYear() {
 		return this.year;
-
 	}
 
 	@Override

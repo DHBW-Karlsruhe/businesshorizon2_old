@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.models.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 
 /**
  * Die StochasticChartArea komponiert die Ausgabe der Ergebnisse des
