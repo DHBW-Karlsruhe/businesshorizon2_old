@@ -150,9 +150,4 @@ public class APVTest {
 
 	}
 
-	@Test
-	public void testAPV() {
-		fail("Not yet implemented");
-	}
-
 }
