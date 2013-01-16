@@ -164,9 +164,12 @@ public class AnalysisTimeseries {
 	 * @return geglaetteter Prognosewert
 	 */
 	private double calculateARModel(int consideredPeriodsOfPast, int forecast,
-			DoubleMatrix2D valuations, double[] previousValues) {
+			DoubleMatrix2D valuations, double[] previousValues)
+			throws StochasticMethodException {
 		if (this.equalizedValues[forecast - 1] == 0) {
-
+			if (valuations == null) {
+				valuations = calculateValuations(consideredPeriodsOfPast);
+			}
 			double equalizedValuePerPeriod = 0;
 			for (int past = 1; past <= consideredPeriodsOfPast; past++) {
 				double previousValue;
@@ -278,4 +281,27 @@ public class AnalysisTimeseries {
 		return returnValues;
 	}
 
+	public double[] getExpectedValues(double[] previousValues,
+			int consideredPeriodsOfPast, int periodsToForecast)
+			throws StochasticMethodException {
+		double[] expectedValues = new double[periodsToForecast];
+		boolean isStationary = StationaryTest.isStationary(previousValues);
+		for (int forecast = 0; forecast < expectedValues.length; forecast++) {
+			if (!isStationary) {
+				CalculateTide tide = new CalculateTide();
+				tide.reduceTide(previousValues);
+
+				double newTide = tide.getTideValue(forecast
+						+ previousValues.length - 1);
+				expectedValues[forecast] = (double) ((newTide - calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues)));
+			} else {
+				expectedValues[forecast] = (double) (calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues));
+			}
+		}
+		return expectedValues;
+	}
 }
