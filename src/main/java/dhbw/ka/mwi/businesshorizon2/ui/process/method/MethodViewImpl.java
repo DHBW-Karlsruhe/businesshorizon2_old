@@ -17,6 +17,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 
@@ -98,11 +100,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				
-				if (event.getProperty() instanceof Set<?>){
-				presenter.toggleMethod((Set<String>) event.getProperty());
-				}
-								
+				presenter.toggleMethod((Set<AbstractStochasticMethod>) methods.getValue());
 			}
 		});
 
@@ -192,8 +190,8 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	
 	private void generateUi() {
 		
-		this.setFirstComponent((Component)methodList);
-		this.setSecondComponent((Component)inputMethod);
+		this.setFirstComponent(methodList);
+		this.setSecondComponent(inputMethod);
 		
 		methodPanel.addComponent(methods);
 		Label methodCaption = new Label("Herkunft der Cashflows wählen");
@@ -211,13 +209,13 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	}
 
 	@Override
-	public void showMethod(String methodName,Boolean implemented, Boolean selected) {
+	public void showMethod(AbstractStochasticMethod method) {
 		
-		methods.addItem(methodName);
-		methods.setItemEnabled(methodName, implemented);
+		methods.addItem(method);
+		methods.setItemEnabled(method, method.getImplemented());
 		
-		if (selected){
-			methods.select(methodName);
+		if (method.getSelected()){
+			methods.select(method);
 		}
 		
 

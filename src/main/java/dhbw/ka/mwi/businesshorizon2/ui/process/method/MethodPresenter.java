@@ -43,7 +43,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 
-	private Logger logger = Logger.getLogger("MethodPresenter.class");
+	private Logger logger = Logger.getLogger(MethodPresenter.class);
 
 	private Boolean showError = false;
 
@@ -70,33 +70,58 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 		this.methods = project.getMethods();
 		projectInputType = project.getProjectInputType();
+		logger.debug("test");
 
 	}
 
 	@Override
 	public boolean isValid() {
-		Boolean valid = false;
-		if (projectInputType.getStochastic())
+		boolean valid = false;
+		if (projectInputType.getStochastic()) {
+			
 			for (AbstractStochasticMethod m: methods){
-				if (m.getSelected())
+				if (m.getSelected()) {
 					valid = true;
+				}
 			}
-		else{
-			if (projectInputType.getDeterministic()){
+		} else if (projectInputType.getDeterministic()){
 			valid = true;	
-			}
 		}
+		
 		return valid;
 	}
 	
-	
-	
 	public void toggleMethodType(Boolean stochastic,Boolean checked){
 		eventBus.fireEvent(new CheckMethodTypeEvent(stochastic,checked));
+
+		
+		
+		getView().showInputMethodSelection(stochastic, checked);
+		
+		if (stochastic){
+			projectInputType.setStochastic(checked);
+			getView().enableMethodSelection(checked);
+			
+		}
+		else if (!stochastic){
+			projectInputType.setDeterministic(checked);
+		}
+		
+		this.validate(new ValidateContentStateEvent());
 	}
 	
-	public void toggleMethod(Set<String> checkedMethods){
+	public void toggleMethod(Set<AbstractStochasticMethod> checkedMethods){
 		eventBus.fireEvent(new CheckMethodEvent(checkedMethods));
+		
+		for (AbstractStochasticMethod m : methods){
+			m.setSelected(false);
+			if (checkedMethods.contains(m)){
+				m.setSelected(true);
+			}
+				
+		}
+		this.validate(new ValidateContentStateEvent());
+
 	}
 	
 	public void toggleMethodTypeInput(Boolean stochastic, InputType newSelected){
@@ -112,10 +137,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event){		
 	
-		
-
 		for (AbstractStochasticMethod m : methods) {
-			getView().showMethod(m.getName(),m.getImplemented(),m.getSelected());
+			getView().showMethod(m);
 		}
 		
 		Boolean state = projectInputType.getStochastic();
@@ -137,41 +160,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		
 	}
 	
-	@EventHandler
-	public void onCheckMethodType(CheckMethodTypeEvent event){
-		
-		Boolean check = event.getChecked();
-		Boolean stoch = event.getStochastic();
-		
-		getView().showInputMethodSelection(stoch, check);
-		
-		if (stoch){
-			projectInputType.setStochastic(check);
-			getView().enableMethodSelection(check);
-			this.validate(new ValidateContentStateEvent());
-		}
-		else if (!stoch){
-			projectInputType.setDeterministic(check);
-		}
-		
-	}
 
 	
-	@EventHandler
-	public void onCheckMethod(CheckMethodEvent event){
-		Set<String> checkedUIMethods = event.getCheckedMethods();
-		
-		for (AbstractStochasticMethod m : methods){
-			m.setSelected(false);
-			for (String n : checkedUIMethods){				
-				if (m.getName().equals(n)){
-					m.setSelected(true);
-				}
-				
-			}
-		}
-		
-	}
 
 	@Override
 	@EventHandler

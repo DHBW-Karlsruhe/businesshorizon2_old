@@ -4,17 +4,19 @@ import java.util.Set;
 
 import com.mvplite.event.Event;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+
 public class CheckMethodEvent extends Event {
 
 	private static final long serialVersionUID = 1L;	
-	private Set<String> checkedMethods;
+	private Set<AbstractStochasticMethod> checkedMethods;
 	
-	public CheckMethodEvent(Set<String> checkedMethods) {
+	public CheckMethodEvent(Set<AbstractStochasticMethod> checkedMethods) {
 		super();
 		this.checkedMethods=checkedMethods;
 	}
 
-	public Set<String> getCheckedMethods() {
+	public Set<AbstractStochasticMethod> getCheckedMethods() {
 		return checkedMethods;
 	}
 

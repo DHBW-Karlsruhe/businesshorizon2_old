@@ -83,5 +83,10 @@ abstract public class AbstractStochasticMethod implements
 	public int compareTo(AbstractStochasticMethod o) {
 		return this.getOrderKey() - o.getOrderKey();
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 }
