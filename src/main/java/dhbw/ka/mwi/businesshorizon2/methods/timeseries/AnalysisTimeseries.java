@@ -14,8 +14,8 @@ import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
 /**
  * Diese Klasse stellt die Methoden zur Verfuegung, die benoetigt werden, um die
- * Zeitreihenanalyse durch zu fuehren. Sie baut auf der YuleWalkerGleichung und
- * implementiert das AR-Modell.
+ * Zeitreihenanalyse durch zu fuehren. Sie baut auf der YuleWalkerGleichung auf
+ * und implementiert das AR-Modell.
  * 
  * @author Kai Westerholz
  * 
@@ -66,9 +66,10 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Diese Methode stellt das Lineare Gleichungssystem auf, das benötigt wird,
-	 * um die Schaetzwerte ci der Zeitreihenanalyse zu erhalten und loest
-	 * dieses. Die berechneten Werte
+	 * Diese Methode stellt das Lineare Gleichungssystem auf, das benoetigt
+	 * wird, um die Schaetzwerte ci der Zeitreihenanalyse zu erhalten und loest
+	 * dieses. Die berechneten Werte werden benötigt um die Vergangenheitswerte
+	 * zu gewichten.
 	 * 
 	 * @param consideredPeriodsOfPast
 	 * @return Matrix der C Werte
@@ -111,7 +112,7 @@ public class AnalysisTimeseries {
 
 	/**
 	 * Diese Methode berechnet die Varianz auf Basis der YuleWalkerGleichung.
-	 * Die Varianz wird für die Berechnung des weißen Rauschens benoetigt.
+	 * Die Varianz wird fuer die Berechnung des weissen Rauschens benoetigt.
 	 * 
 	 * @param matrix
 	 *            Matrix aus der die Varianz berechnet werden soll
@@ -140,13 +141,13 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Für die Formel des AR-Model wird eine bestimmte Anzahl an bisherigen
+	 * Fuer die Formel des AR-Model wird eine bestimmte Anzahl an bisherigen
 	 * Perioden betrachtet. Der Term (forecast - past) gibt an wie viele dieser
-	 * Perioden aus den Beobachtungen gespeißt werden. Ist der Termn (forecast -
-	 * past) kleiner als 1 werden Beobachtungswerte herangezogen. Ansonsten
+	 * Perioden aus den Beobachtungen gespeisst werden. Ist der Termn (forecast
+	 * - past) kleiner als 1 werden Beobachtungswerte herangezogen. Ansonsten
 	 * werden bereits prognostizierte Werte verwendet Da das Array der
 	 * Beobachtungswerte den aeltesten Wert beim Index = 0 hat wird der letzte
-	 * Werte abzüglich der bereits betrachteten Werte benoetigt. Die Werte
+	 * Werte abzueglich der bereits betrachteten Werte benoetigt. Die Werte
 	 * werden zwischengespeichert und es wird ueberprueft, ob eine Berechnung
 	 * noetig ist.
 	 * 
@@ -160,7 +161,7 @@ public class AnalysisTimeseries {
 	 *            Gewichtungsparameter
 	 * @param previousValues
 	 *            trendbereinigte Beobachtungswerte;
-	 * @return geglätteter Prognosewert
+	 * @return geglaetteter Prognosewert
 	 */
 	private double calculateARModel(int consideredPeriodsOfPast, int forecast,
 			DoubleMatrix2D valuations, double[] previousValues) {
@@ -192,7 +193,7 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Diese Methode berechnet den prognostizierten Wert für die Periode auf
+	 * Diese Methode berechnet den prognostizierten Wert fuer die Periode auf
 	 * Basis der beobachteten Zeitreihe
 	 * 
 	 * @author Kai Westerholz
@@ -217,8 +218,8 @@ public class AnalysisTimeseries {
 			previousValues = tide.reduceTide(previousValues);
 		}
 		/**
-		 * Übertraugung der Werte der Zeitreihe in eine DoubleArrayList. Diese
-		 * wird von der COLT Bibliothek verwendet zur Lösung der Matrix.
+		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
+		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
 		 */
 
 		this.DoubleArrayListTimeseries = new DoubleArrayList();
