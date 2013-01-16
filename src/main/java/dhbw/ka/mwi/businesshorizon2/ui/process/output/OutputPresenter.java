@@ -10,6 +10,7 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
@@ -55,6 +56,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	public void handleShowView(ShowOutputViewEvent event) {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT, true));
 		logger.debug("ShowOutputViewEvent handled");
+	}
+
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
