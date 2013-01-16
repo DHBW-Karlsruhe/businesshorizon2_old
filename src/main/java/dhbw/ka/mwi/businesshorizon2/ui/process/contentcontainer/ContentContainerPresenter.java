@@ -10,6 +10,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
@@ -57,7 +58,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 
 	private int stepNumber;
 	
-	private boolean isActualViewValid = false;
+	private boolean isActualViewValid = true;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -79,10 +80,6 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	 */
 	@EventHandler
 	public void onShowNavigationStep(ShowNavigationStepEvent event) {
-		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
-		// User gegebenenfalls einen Fehlerhinweis zu geben
-		eventBus.fireEvent(new ValidateContentStateEvent());
-		
 		ContentView newView = null;
 		
 		switch(event.getStep()) {
@@ -113,6 +110,10 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		
 		this.stepNumber = event.getStep().getNumber();
 		
+		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
+		// User gegebenenfalls einen Fehlerhinweis zu geben
+		eventBus.fireEvent(new ValidateContentStateEvent());
+		
 		getView().showContentView(newView);
 		
 		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
@@ -132,9 +133,11 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	 */
 	public void showNextStep() {
 		if(this.isActualViewValid) {
+			NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
 			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
 			this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
-		
+			this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
+			
 			logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
 		}
 	
@@ -148,8 +151,10 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	 * @author Julius Hacker
 	 */
 	public void showPreviousStep() {
+		NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
 		NavigationSteps previousScreen = NavigationSteps.getByNumber(this.stepNumber - 1);
 		this.eventBus.fireEvent(new ShowNavigationStepEvent(previousScreen));
+		this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
 		
 		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + " wurde getriggert");
 	
@@ -209,6 +214,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	 */
 	@EventHandler
 	public void handleValidState(ValidStateEvent event) {
+		logger.debug("ValidStateEvent fuer Screen " + event.getNavigationStep() + " empfangen. Aktueller Screen: " + this.stepNumber);
 		if(event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
 			this.isActualViewValid = true;
 		}
