@@ -186,7 +186,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@EventHandler
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
+
+		if (event.getStep()==NavigationSteps.METHOD){
+			showError = true;
+		}
 		
 	}
 
