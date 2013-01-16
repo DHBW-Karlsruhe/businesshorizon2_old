@@ -5,15 +5,18 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
+import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Julius Hacker
- *
+ * @author Florian Stier
+ * 
  */
 
 public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
@@ -21,15 +24,32 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Florian Stier
 	 */
 	@PostConstruct
 	public void init() {
+		eventBus.addHandler(this);
+	}
+
+	@EventHandler
+	public void onShowOutputView(ShowOutputViewEvent event) {
+
+		// ausgewählte Berechnungsverfahren holen
+		// Für jedes Berechnungsverfahren die Berechnung triggern
+		// Für jedes Berechnungsverfahren ein Chart generieren
+
+		StochasticChartArea stochasticChart = new StochasticChartArea();
+		DeterministicChartArea deterministicChart = new DeterministicChartArea();
+
+		getView().addStochasticChartArea(stochasticChart);
+		getView().addDeterministicChartArea(deterministicChart);
+
 	}
 
 	@Override
@@ -47,7 +67,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	@Override
 	public void validate(ValidateContentStateEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
