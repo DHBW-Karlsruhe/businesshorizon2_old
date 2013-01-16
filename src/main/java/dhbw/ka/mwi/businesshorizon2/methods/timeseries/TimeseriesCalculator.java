@@ -4,8 +4,6 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
-import com.ibm.icu.text.DecimalFormat;
-
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.Callback;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
@@ -498,45 +496,4 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		return resultContainer;
 	}
 
-	public static void main(String[] args) {
-
-		TimeseriesCalculator tc = new TimeseriesCalculator();
-		Callback callback = null;
-		StochasticResultContainer src;
-		TreeSet<CashFlowPeriod> periods = new TreeSet<CashFlowPeriod>();
-		CashFlowPeriod period1 = new CashFlowPeriod(2005);
-		period1.setFreeCashFlow(130594000.00);
-		periods.add(period1);
-		CashFlowPeriod period2 = new CashFlowPeriod(2006);
-		period2.setFreeCashFlow(147552000.00);
-		periods.add(period2);
-		CashFlowPeriod period3 = new CashFlowPeriod(2007);
-		period3.setFreeCashFlow(144040000.00);
-		periods.add(period3);
-		CashFlowPeriod period4 = new CashFlowPeriod(2008);
-		period4.setFreeCashFlow(146004000.00);
-		periods.add(period4);
-		CashFlowPeriod period5 = new CashFlowPeriod(2009);
-		period5.setFreeCashFlow(154857000.00);
-		periods.add(period5);
-		CashFlowPeriod period6 = new CashFlowPeriod(2010);
-		period6.setFreeCashFlow(162117000.00);
-		periods.add(period6);
-		Project project = new Project("Test Zeitreihenanalyse");
-		project.setBasisYear(2010);
-		project.setIterations(10000);
-		project.setRelevantPastPeriods(2);
-		project.setPeriodsToForecast(5);
-		project.setPeriods(periods);
-
-		try {
-			src = tc.calculate(project, callback);
-			System.out.println(new DecimalFormat("0.00").format(src
-					.getPeriodContainers().first().getPeriods().first()
-					.getFreeCashFlow()));
-		} catch (StochasticMethodException | InterruptedException e) {
-			e.printStackTrace();
-		}
-
-	}
 }
