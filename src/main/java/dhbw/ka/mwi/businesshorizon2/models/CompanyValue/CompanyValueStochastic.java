@@ -1,6 +1,5 @@
-package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
+package dhbw.ka.mwi.businesshorizon2.models.CompanyValue;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -10,7 +9,7 @@ import java.util.TreeMap;
  * @author kathie
  * 
  */
-public class CompanyValues {
+public class CompanyValueStochastic extends CompanyValue {
 
 	public class Couple {
 		private final double companyValue;
@@ -36,11 +35,15 @@ public class CompanyValues {
 
 	private final TreeMap<Double, Couple> map;
 
-	public CompanyValues() {
+	public CompanyValueStochastic() {
+		super();
 		map = new TreeMap<>();
 	}
 
 	public void addCompanyValue(double companyValue) {
+
+		companyValue = roundTo4DecimalPlaces(companyValue);
+
 		if (map.containsKey(companyValue)) {
 			map.get(companyValue).increaseCount();
 		} else {
@@ -65,12 +68,6 @@ public class CompanyValues {
 	 *         Unternehmenswerten sortiert ist.
 	 */
 	public TreeMap<Double, Couple> getCompanyValues() {
-
-		for (Map.Entry<Double, Couple> entry : map.entrySet()) {
-			entry.getValue().getCompanyValue();
-			entry.getValue().getCount();
-		}
-
 		return map;
 	}
 }

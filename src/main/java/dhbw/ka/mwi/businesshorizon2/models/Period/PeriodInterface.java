@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 public interface PeriodInterface extends Comparable<PeriodInterface> {
 
