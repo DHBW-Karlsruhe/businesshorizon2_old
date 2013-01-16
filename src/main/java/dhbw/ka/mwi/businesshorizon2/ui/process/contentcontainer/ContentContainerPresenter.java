@@ -9,7 +9,10 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.ShowMethodViewEvent;
@@ -54,6 +57,8 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private MethodViewInterface methodView;
 
 	private int stepNumber;
+	
+	private boolean isActualViewValid = true;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -105,6 +110,10 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		
 		this.stepNumber = event.getStep().getNumber();
 		
+		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
+		// User gegebenenfalls einen Fehlerhinweis zu geben
+		eventBus.fireEvent(new ValidateContentStateEvent());
+		
 		getView().showContentView(newView);
 		
 		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
@@ -112,30 +121,53 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		// (De-)Aktiviere je nachdem, ob ein vorheriger bzw. nachfolgender Prozessschritt existiert
 		// die entsprechenden Buttons.
 		this.switchStepButtons();
-		
-		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu validieren und dem
-		// User gegebenenfalls einen Fehlerhinweis zu geben
-		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 	
+	/**
+	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen. Sie kuemmert sich darum,
+	 * den naechsten Screen zu ermitteln und zu ihm weiterzuleiten. Sie prueft hierbei, ob die Eingaben des
+	 * aktuellen Screens valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum naechsten Screen
+	 * weitergeleitet.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void showNextStep() {
-		NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
-		this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
-		
-		logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
+		if(this.isActualViewValid) {
+			NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
+			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
+			this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
+			this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
+			
+			logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
+		}
 	
 		
 	}
 	
+	/**
+	 * Diese Methode wird von der View beim Click des Zurueck-Buttons aufgerufen. Sie kuemmert sich darum,
+	 * den vorherigen Screen zu ermitteln und zu ihm weiterzuleiten.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void showPreviousStep() {
+		NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
 		NavigationSteps previousScreen = NavigationSteps.getByNumber(this.stepNumber - 1);
 		this.eventBus.fireEvent(new ShowNavigationStepEvent(previousScreen));
+		this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
 		
-		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + "wurde getriggert");
+		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + " wurde getriggert");
 	
 		
 	}
 	
+	/**
+	 * Diese Methode aktualisiert die Aktivierungszustaende der Weiter- und Zurueck-Buttons. Dies ist insofern
+	 * relevant, als das im ersten Screen nicht noch weiter zurueck und im letzten Screen nicht noch weiter gegangen
+	 * werden kann.
+	 * 
+	 * @author Julius Hacker
+	 */
 	public void switchStepButtons() {
 		logger.debug(this.stepNumber);
 		logger.debug(NavigationSteps.getStepCount());
@@ -152,6 +184,39 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		}
 		else {
 			getView().activateNext(true);
+		}
+	}
+	
+	/**
+	 * Diese Methode hoert auf InvalidStateEvents, die bei der Validierung der Screens erzeugt werden.
+	 * Kommt ein solches InvalidStateEvent fuer den aktuellen Screen an, wird intern vermerkt, dass der
+	 * Screen derzeit invalid ist. Dies ist fuer den Weiter-Button wichtig, der nur zum naechsten Screen
+	 * weiterleiten soll, wenn die aktuelle View valid ist.
+	 * 
+	 * @param event Das gefeuerte InvalidStateEvent
+	 * @author Julius Hacker
+	 */
+	@EventHandler
+	public void handleInvalidState(InvalidStateEvent event) {
+		if(event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
+			this.isActualViewValid = false;
+		}
+	}
+	
+	/**
+	 * Diese Methode hoert auf ValidStateEvents, die bei der Validierung der Screens erzeugt werden.
+	 * Kommt ein solches ValidStateEvent fuer den aktuellen Screen an, wird intern vermerkt, dass der
+	 * Screen derzeit valid ist. Dies ist fuer den Weiter-Button wichtig, der nur zum naechsten Screen
+	 * weiterleiten soll, wenn die aktuelle View valid ist.
+	 * 
+	 * @param event Das gefeuerte ValidStateEvent
+	 * @author Julius Hacker
+	 */
+	@EventHandler
+	public void handleValidState(ValidStateEvent event) {
+		logger.debug("ValidStateEvent fuer Screen " + event.getNavigationStep() + " empfangen. Aktueller Screen: " + this.stepNumber);
+		if(event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
+			this.isActualViewValid = true;
 		}
 	}
 }

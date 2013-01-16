@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
-import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Diese Klasse stellt einen Zeitreihe von CashFlow Perioden dar.
@@ -10,10 +10,15 @@ import java.util.SortedSet;
  */
 
 public class CashFlowPeriodContainer extends AbstractPeriodContainer {
+
+	public CashFlowPeriodContainer() {
+		super();
+	}
+
 	@Override
-	public SortedSet<CashFlowPeriod> getPeriods() {
+	public TreeSet<CashFlowPeriod> getPeriods() {
 		// TODO Auto-generated method stub
-		return (SortedSet<CashFlowPeriod>) super.getPeriods();
+		return (TreeSet<CashFlowPeriod>) super.getPeriods();
 	}
 
 }

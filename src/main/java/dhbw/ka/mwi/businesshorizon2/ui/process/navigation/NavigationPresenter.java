@@ -9,6 +9,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 
@@ -35,6 +36,11 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 		eventBus.addHandler(this);
 	}
 	
+	@EventHandler
+	public void showNavigation(ShowNavigationEvent event) {
+		//getView().setButtonActive(NavigationSteps.METHOD, true);
+	}
+	
 	/**
 	 * Diese Methode wird von der View nach der Auswahl einer neuen Prozessmaske aufgerufen.
 	 * Sie feuert hierzu ein ShowNavigationStepEvent mit dem entsprechenden Prozessschritt.
@@ -47,11 +53,18 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	
 	@EventHandler
 	public void handleInvalidState(InvalidStateEvent event) {
-		getView().setButtonToInvalid(event.getNavigationStep(), true);
+		if(event.isShowErrors()) {
+			getView().setButtonToInvalid(event.getNavigationStep(), true);
+		}
 	}
 	
 	@EventHandler
 	public void handleValidState(ValidStateEvent event) {
 		getView().setButtonToInvalid(event.getNavigationStep(), false);
+	}
+	
+	@EventHandler
+	public void handleScreenSelectable(ScreenSelectableEvent event) {
+		getView().setButtonActive(event.getNavigationStep(), event.isSelectable());
 	}
 }
