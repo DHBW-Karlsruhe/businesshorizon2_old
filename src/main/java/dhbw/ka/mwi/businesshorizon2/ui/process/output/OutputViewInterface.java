@@ -6,8 +6,22 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
 
 public interface OutputViewInterface extends ContentView {
 
+	/**
+	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des stochastischen
+	 * Verfahrens hinzu
+	 * 
+	 * @param chartArea
+	 *            Eine ChartArea mit stochastischen Ergebnissen
+	 */
 	void addStochasticChartArea(StochasticChartArea chartArea);
 
+	/**
+	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des
+	 * deterministischen Verfahrens hinzu
+	 * 
+	 * @param chartArea
+	 *            Eine ChartArea mit deterministischen Ergebnissen
+	 */
 	void addDeterministicChartArea(DeterministicChartArea chartArea);
 
 }

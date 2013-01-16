@@ -5,6 +5,13 @@ import java.util.Map;
 
 import org.vaadin.vaadinvisualizations.ColumnChart;
 
+/**
+ * Balkendiagramm zur Anzeige des Unternehmenswertes im deterministischen
+ * Verfahren
+ * 
+ * @author Florian Stier
+ * 
+ */
 public class StackedColumnChart extends ColumnChart {
 
 	/**

@@ -5,11 +5,15 @@ import java.util.Map;
 
 import org.vaadin.vaadinvisualizations.ColumnChart;
 
+/**
+ * Balkendiagramm zur Anzeige der Häufigkeitsverteilung der Unternehmenswerte im
+ * stochastischen Verfahren
+ * 
+ * @author Florian Stier
+ * 
+ */
 public class BasicColumnChart extends ColumnChart {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public BasicColumnChart(String xAxisLabel, List<String> columns) {

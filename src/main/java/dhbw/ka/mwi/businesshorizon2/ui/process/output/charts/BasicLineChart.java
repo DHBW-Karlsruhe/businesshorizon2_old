@@ -5,11 +5,15 @@ import java.util.Map;
 
 import org.vaadin.vaadinvisualizations.LineChart;
 
+/**
+ * Liniendiagramm zur Anzeige des Verlaufs der vergangenen bzw. vorhergesagten
+ * Cashflows
+ * 
+ * @author Florian Stier
+ * 
+ */
 public class BasicLineChart extends LineChart {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public BasicLineChart(String xAxisLabel, List<String> lines) {

@@ -8,11 +8,16 @@ import java.util.Map;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 
+/**
+ * Die StochasticChartArea komponiert die Ausgabe der Ergebnisse des
+ * stochastischen Verfahrens. Es können mehrere Diagramme sowie Labels
+ * hinzugefügt und im Gridlayout angeordnet werden.
+ * 
+ * @author Florian Stier
+ * 
+ */
 public class StochasticChartArea extends GridLayout {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public StochasticChartArea() {
