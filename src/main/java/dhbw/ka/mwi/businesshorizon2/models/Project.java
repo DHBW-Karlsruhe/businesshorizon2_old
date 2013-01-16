@@ -12,7 +12,6 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -26,10 +25,9 @@ import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
  */
 public class Project implements Serializable {
 
-
 	private static final long serialVersionUID = 1L;
 
-	protected TreeSet<PeriodInterface> periods = new TreeSet<PeriodInterface>();
+	protected TreeSet<? extends PeriodInterface> periods = new TreeSet<>();
 
 	protected Date lastChanged;
 
@@ -38,14 +36,13 @@ public class Project implements Serializable {
 	protected int periodsToForecast;
 	protected int relevantPastPeriods;
 	protected int iterations;
-	protected int basisYear;	
+	protected int basisYear;
 	protected ProjectInputType projectInputType;
-	
+
 	@Autowired
-	private SortedSet<AbstractStochasticMethod> methods;	
+	private SortedSet<AbstractStochasticMethod> methods;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
-
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -63,8 +60,8 @@ public class Project implements Serializable {
 	 * 
 	 * @author Christian Scherer
 	 */
-	
-	public Project(){
+
+	public Project() {
 		this.projectInputType = new ProjectInputType();
 
 	}
@@ -75,7 +72,7 @@ public class Project implements Serializable {
 	 * @author Christian Gahlert
 	 * @return Die Perioden
 	 */
-	public NavigableSet<PeriodInterface> getPeriods() {
+	public NavigableSet<? extends PeriodInterface> getPeriods() {
 		return periods;
 	}
 
@@ -86,7 +83,7 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(TreeSet<PeriodInterface> periods) {
+	public void setPeriods(TreeSet<? extends PeriodInterface> periods) {
 		this.periods = periods;
 	}
 
@@ -157,17 +154,13 @@ public class Project implements Serializable {
 		return name;
 	}
 
-
-
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
-	
+
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
 	}
-	
-
 
 	/**
 	 * Setzt den Namen des Projekts.
