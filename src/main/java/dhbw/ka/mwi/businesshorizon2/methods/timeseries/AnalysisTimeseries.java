@@ -284,13 +284,34 @@ public class AnalysisTimeseries {
 	public double[] getExpectedValues(double[] previousValues,
 			int consideredPeriodsOfPast, int periodsToForecast)
 			throws StochasticMethodException {
+
 		double[] expectedValues = new double[periodsToForecast];
+		CalculateTide tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(previousValues);
+		if (!isStationary) {
+			previousValues = tide.reduceTide(previousValues);
+		}
+		/**
+		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
+		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
+		 */
+
+		this.DoubleArrayListTimeseries = new DoubleArrayList();
+		for (int i = 0; i < previousValues.length; i++) {
+			this.DoubleArrayListTimeseries.add(previousValues[i]);
+		}
+
+		// Start der zur Prognose benoetigten Berechnungen
+		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
+		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
+
+		this.yuleWalkerVariance = this
+				.calculateMatrixVariance(consideredPeriodsOfPast);
+
+		this.equalizedValues = new double[periodsToForecast];
+
 		for (int forecast = 0; forecast < expectedValues.length; forecast++) {
 			if (!isStationary) {
-				CalculateTide tide = new CalculateTide();
-				tide.reduceTide(previousValues);
-
 				double newTide = tide.getTideValue(forecast
 						+ previousValues.length - 1);
 				expectedValues[forecast] = (double) ((newTide - calculateARModel(
