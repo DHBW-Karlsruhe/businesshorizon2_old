@@ -25,6 +25,9 @@ public interface ScenarioViewInterface extends ContentView {
 	public void addScenario(String rateReturnEquity,
 			String rateReturnCapitalStock, String corporateAndSolitaryTax,
 			String businessTax, boolean isIncludeInCalculation, int numberOfScenario);
+	public void removeScenario(int number);
+	
+	public void updateLabels();
 	
 	public boolean getIncludedInCalculation(int scenarioNumber);
 	public String getValue(int scenarioNumber, String identifier);

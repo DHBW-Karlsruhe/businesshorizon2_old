@@ -12,6 +12,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
@@ -52,9 +53,9 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	}
 
 	@Override
+	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
-		
+		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.METHOD));
 	}
 	
 	@EventHandler
