@@ -2,6 +2,9 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.security.InvalidParameterException;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+
 /**
  * Diese Klasse ist zur eigentlichen Ausfuehrung der Berechnungen gedacht. Dabei
  * wird fuer die Berechnung ein eigener Thread verwendet.
@@ -14,9 +17,9 @@ public class MethodRunner extends Thread {
 
 	private AbstractStochasticMethod method;
 
-	private double[] periods;
+	private CallbackInterface callback;
+	private Project project;
 
-	private Callback callback;
 
 	/**
 	 * Der Konstruktor - diesem sollte die zur Berechnung zu verwendende Methode
@@ -32,16 +35,17 @@ public class MethodRunner extends Thread {
 	 *            Das Callback
 	 */
 
-	public MethodRunner(AbstractStochasticMethod method, double[] periods,
-			Callback callback) {
-		if (method == null || periods == null || callback == null) {
+	public MethodRunner(AbstractStochasticMethod method, Project project,
+			CallbackInterface callback) {
+		if (method == null || project == null || callback == null) {
+
 			throw new InvalidParameterException(
 					"No null parameters are allowed here");
 
 		}
 
 		this.method = method;
-		this.periods = periods;
+		this.project = project;
 		this.callback = callback;
 	}
 
@@ -56,9 +60,12 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-			double[] result = method.calculate(periods, 1, 1, 1, callback);
+			StochasticResultContainer result = method.calculate(project,
+					callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {
+			callback.onComplete(null);
+		} catch (StochasticMethodException e) {
 			callback.onComplete(null);
 		}
 	}

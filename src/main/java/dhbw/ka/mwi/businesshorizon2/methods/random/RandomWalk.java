@@ -1,7 +1,11 @@
 package dhbw.ka.mwi.businesshorizon2.methods.random;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.methods.Callback;
+import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
+import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+
 
 public class RandomWalk extends AbstractStochasticMethod {
 
@@ -23,16 +27,16 @@ public class RandomWalk extends AbstractStochasticMethod {
 	}
 
 	@Override
-	public double[] calculate(double[] previousValues,
-			int consideredPeriodsofPast, int periodsToForecast,
-			int numberOfIterations, Callback callback)
-			throws InterruptedException {
-		return null;
+	public Boolean getImplemented() {
+		return false;
 	}
 
 	@Override
-	public Boolean getImplemented() {
-		return false;
+	public StochasticResultContainer calculate(Project project,
+			CallbackInterface callback) throws InterruptedException,
+			StochasticMethodException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
