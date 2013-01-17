@@ -44,7 +44,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 		this.layout = new VerticalLayout();
 		layout.setSizeFull();
 		
-		this.setSizeUndefined();
+		this.setSizeFull();
 		this.setWidth(100, UNITS_PERCENTAGE);
 		
 		this.backButton = new Button("Vorheriger Schritt");
@@ -83,11 +83,13 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	 * 
 	 * @author Julius Hacker
 	 */
+
 	public void showContentView(ContentView contentView) {
 		this.layout.removeAllComponents();
 		this.layout.addComponent((Component) contentView);
 		this.layout.addComponent(this.buttons);
 		this.layout.setComponentAlignment(this.buttons, Alignment.TOP_RIGHT);
+		this.layout.setSizeFull();
 	}
 	
 	public void activateBack(boolean activate) {
@@ -96,5 +98,6 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	
 	public void activateNext(boolean activate) {
 		this.nextButton.setEnabled(activate);
+
 	}
 }
