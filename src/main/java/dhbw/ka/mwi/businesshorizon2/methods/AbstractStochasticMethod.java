@@ -15,7 +15,17 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 abstract public class AbstractStochasticMethod implements
 		Comparable<AbstractStochasticMethod>, Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	protected Boolean selected = false;
+	
+	public Boolean getSelected() {
+		return selected;
+	}
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+	
+	abstract public Boolean getImplemented(); 
 	/**
 	 * Diese Methode gibt den Namen der jeweiligen Methode zurueck, der dann
 	 * auch fuer den Nutzer lesbar angezeigt wird.
@@ -74,6 +84,11 @@ abstract public class AbstractStochasticMethod implements
 	@Override
 	public int compareTo(AbstractStochasticMethod o) {
 		return this.getOrderKey() - o.getOrderKey();
+	}
+	
+	@Override
+	public String toString() {
+		return getName();
 	}
 
 }
