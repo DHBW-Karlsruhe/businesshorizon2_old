@@ -32,24 +32,6 @@
     <bean name="random" class="dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk"
 		scope="session" />
 
-
-
-	<!-- Models -->
-	<bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project"
-		scope="session" />
-	<bean name="user" class="dhbw.ka.mwi.businesshorizon2.models.User"
-		scope="session" />
-	
-	<!-- Services -->
-	<bean name="projectProxy" class="dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy"
-		scope="session" />
-	
-	<!-- LogIn -->
-	<bean name="logInPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenPresenter"
-		scope="session" />
-	<bean name="logInScreenView" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl"
-		scope="session" />
-
     <!-- Models -->
     <bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project"
         scope="session" />
@@ -65,8 +47,6 @@
         scope="session" />
     <bean name="logInScreenView" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl"
         scope="session" />
-
-
 
     <!-- Initial-Screen -->
     <bean name="initialScreenPresenter"
@@ -99,23 +79,6 @@
     <bean name="contentContainerPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerPresenter" scope="session" />
     <bean name="contentContainerView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerViewImpl"  scope="session"/>
     
-    
-
-    <!-- Methodenmaske -->
-    <bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter" scope="session" />
-    <bean name="methodView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewImpl"  scope="session" />
-    
-    
-    
-    <!-- Periodenmaske -->
-    <bean name="periodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodPresenter" scope="session" />
-    <bean name="periodView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewImpl"  scope="session" />
-    
-    
-    <!-- Parameter-Maske -->
-    <bean name="parameterPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter" scope="session" />
-    <bean name="parameterView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImpl"  scope="session" />
-
 
 	<!-- Methodenmaske -->
 	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter" scope="session" />
