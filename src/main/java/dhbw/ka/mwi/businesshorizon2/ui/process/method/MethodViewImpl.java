@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
@@ -194,7 +195,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		this.setSecondComponent(inputMethod);
 		
 		methodPanel.addComponent(methods);
-		Label methodCaption = new Label("Herkunft der Cashflows wählen");
+		Label methodCaption = new Label("Herkunft der Cashflows wählen:");
 		methodList.addComponent(methodCaption);
 		methodList.addComponent(stochastic);
 		methodList.addComponent(methodPanel);		
@@ -258,13 +259,23 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	@Override
 	public void showErrorNoMethodSelected(Boolean state) {
-		// TODO Auto-generated method stub
-		
+		if (!state){
+		this.methods.setComponentError(new UserError("Wenn sie stochastisch gewählt haben, müssen sie mindestens eine Methode auswählen"));
+		}
+		else {
+			this.methods.setComponentError(null);
+		}
 	}
 
 	@Override
 	public void showErrorNothingSelected(Boolean state) {
-		// TODO Auto-generated method stub
+		
+		if (!state) {
+			this.stochastic.setComponentError(new UserError("Sie müssen mindestens eine Cashflowherkunft auswählen"));
+		}
+		else {
+			this.stochastic.setComponentError(null);
+		}
 		
 	}
 }

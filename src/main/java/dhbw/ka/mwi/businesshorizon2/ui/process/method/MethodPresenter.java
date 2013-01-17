@@ -83,9 +83,20 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 				if (m.getSelected()) {
 					valid = true;
 				}
+				
 			}
+			
+			if (showError){
+				getView().showErrorNoMethodSelected(valid);
+			}
+		
 		} else if (projectInputType.getDeterministic()){
+			
 			valid = true;	
+			
+			if (showError){
+				getView().showErrorNothingSelected(valid);
+			}
 		}
 		
 		return valid;
