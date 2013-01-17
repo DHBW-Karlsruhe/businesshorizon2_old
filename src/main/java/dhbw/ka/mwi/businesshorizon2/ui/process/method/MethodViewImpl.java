@@ -10,7 +10,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Button;
@@ -195,13 +194,13 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		this.setSecondComponent(inputMethod);
 		
 		methodPanel.addComponent(methods);
-		Label methodCaption = new Label("Herkunft der Cashflows wählen:");
+		Label methodCaption = new Label("Herkunft der Cashflows w\u00E4hlen:");
 		methodList.addComponent(methodCaption);
 		methodList.addComponent(stochastic);
 		methodList.addComponent(methodPanel);		
 		methodList.addComponent(deterministic);
 		
-		Label inputCaption = new Label("Eingabemethode der Cashflows wählen:");
+		Label inputCaption = new Label("Eingabemethode der Cashflows w\u00E4hlen:");
 		inputMethod.addComponent(inputCaption);
 		inputMethod.addComponent(stoInput);
 		inputMethod.addComponent(detInput);
@@ -260,7 +259,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@Override
 	public void showErrorNoMethodSelected(Boolean state) {
 		if (!state){
-		this.methods.setComponentError(new UserError("Wenn sie stochastisch gewählt haben, müssen sie mindestens eine Methode auswählen"));
+		this.methods.setComponentError(new UserError("Wenn stochastisch gew\u00E4hlt wurde, muss mindestens eine Methode ausw\u00E4hlt werden"));
 		}
 		else {
 			this.methods.setComponentError(null);
@@ -271,7 +270,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	public void showErrorNothingSelected(Boolean state) {
 		
 		if (!state) {
-			this.stochastic.setComponentError(new UserError("Sie müssen mindestens eine Cashflowherkunft auswählen"));
+			this.stochastic.setComponentError(new UserError("Es muss mindestens eine Cashflowherkunft ausgew\u00E4hlt werden"));
 		}
 		else {
 			this.stochastic.setComponentError(null);

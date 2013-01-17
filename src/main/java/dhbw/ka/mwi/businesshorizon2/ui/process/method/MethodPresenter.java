@@ -29,7 +29,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Auswahl der Berechnungsmethoden. 
