@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
 
 /**
  * Diese Klasse stellt die Oberklasse für Bewertungsmethoden der errechnet
@@ -20,5 +21,5 @@ public abstract class RatingMethods {
 		this.szenario = szenario;
 	}
 
-	public abstract CompanyValues calculateCompanyValue();
+	public abstract CompanyValue calculateCompanyValue();
 }

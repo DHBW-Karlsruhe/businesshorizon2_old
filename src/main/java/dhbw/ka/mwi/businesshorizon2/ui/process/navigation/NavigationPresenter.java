@@ -53,7 +53,9 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	
 	@EventHandler
 	public void handleInvalidState(InvalidStateEvent event) {
-		getView().setButtonToInvalid(event.getNavigationStep(), true);
+		if(event.isShowErrors()) {
+			getView().setButtonToInvalid(event.getNavigationStep(), true);
+		}
 	}
 	
 	@EventHandler

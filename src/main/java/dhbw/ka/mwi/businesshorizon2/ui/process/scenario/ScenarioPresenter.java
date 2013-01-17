@@ -16,6 +16,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
@@ -35,10 +36,12 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private ProjectProxy projectProxy;
-	
+
+	private boolean showErrors = false;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
@@ -61,9 +64,9 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	@Override
 	public boolean isValid() {
 		boolean isValid = true;
-		
+
 		List<Szenario> scenarios = this.projectProxy.getSelectedProject().getScenarios();
-		
+
 		int scenarioNumber = 1;
 		for(Szenario scenario : scenarios) {
 			if(scenario.isIncludeInCalculation()) {
@@ -71,13 +74,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 					isValid = false;
 				}
 			}
-			
+
 			scenarioNumber++;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode fuegt dem Projekt ein neues Szenario hinzu und zeigt die dazugehoerigen
 	 * Eingabefelder auf dem Screen an.
@@ -87,10 +90,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	public void addScenario() {
 		Szenario scenario = new Szenario();
 		this.projectProxy.getSelectedProject().addScenario(scenario);
-		
+
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), this.projectProxy.getSelectedProject().getScenarios().size());
 	}
-	
+
 	/**
 	 * Dieser EventHandler reagiert auf die Nachricht, dass der Prozesschritt zur Szenarienanzeige
 	 * angezeigt werden soll. Er legt hierbei, falls noch kein Szenario existiert, zunaechst das im
@@ -102,18 +105,38 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		if(scenarios.size() < 1) {
 			scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
 		}
-		
+
 		getView().clear();
-		
+
 		int numberOfScenario = 1;
 		for(Szenario scenario : scenarios) {
 			getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), numberOfScenario);
 			numberOfScenario++;
 		}
-		
+
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO, true));
 	}
-	
+
+	/**
+	 * Diese Methode setzt, sobald der Folgeschritt des Prozesses aufgerufen wird,
+	 * den internen Fehlermarker so, dass Fehler ab sofort angezeigt werden. Der erzielte
+	 * Effekt ist der, dass beim ersten Durchlauf des Prozesses noch keine Fehler
+	 * angezeigt werden sollen, da der Screen erst befuellt werden muss. Sobald dieser erste
+	 * Durchlauf einmal gemacht wurde und in den Screens vor und zurueck gegangen wird, 
+	 * sollen Fehlermeldungen angezeigt werden, um dem Nutzer zu verdeutlichen, wo durch
+	 * etwaige Querverbindungen zwischen den Eingaben auf anderen Screens noch Korrekturen
+	 * noetig sind.
+	 * 
+	 * @param event Das gefeuerte ShowOutputViewEvent, das die Anzeige des naechsten Screens ausloest
+	 * @author Julius Hacker
+	 */
+	@EventHandler
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		if(event.getStep() == NavigationSteps.SCENARIO) {
+			this.showErrors = true;
+		}
+	}
+
 	/**
 	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen Inhalt validieren soll. 
 	 * Er bedient sich dabei der Methode isValid und setzt den Status des Screens entsprechend des Ergebnisses
@@ -125,7 +148,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		if(!this.isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO));
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO, this.showErrors));
 			logger.debug("Scenario not valid, InvalidStateEvent fired");
 		}
 		else {
@@ -133,7 +156,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			logger.debug("Scenario valid, ValidStateEvent fired");
 		}
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Renditeforderung Eigenkapital korrekt ist.
 	 * 
@@ -143,24 +166,26 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidRateReturnEquity(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double rateReturnEquity = Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnEquity"));
-			
+
 			if(rateReturnEquity < 0) {
 				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
 			}
-			
+
 			getView().setValid(scenarioNumber, "rateReturnEquity");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "rateReturnEquity");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "rateReturnEquity");
+			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Renditeforderung Fremdkapital korrekt ist.
 	 * 
@@ -170,24 +195,26 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidRateReturnCapitalStock(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double rateReturnCapitalStock = Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnCapitalStock"));
-			
+
 			if(rateReturnCapitalStock < 0) {
 				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
 			}
-			
+
 			getView().setValid(scenarioNumber, "rateReturnCapitalStock");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "rateReturnCapitalStock");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "rateReturnCapitalStock");
+			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Gewerbesteuer korrekt ist.
 	 * 
@@ -197,24 +224,27 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidBusinessTax(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double businessTax = Double.parseDouble(getView().getValue(scenarioNumber, "businessTax"));
-			
+
 			if(businessTax < 0) {
 				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
 			}
-			
+
+
 			getView().setValid(scenarioNumber, "businessTax");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "businessTax");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "businessTax");
+			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Koerperschaftssteuer
 	 * mit Solidaritaetszuschlag korrekt ist.
@@ -225,24 +255,26 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidCorporateAndSolitaryTax(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double corporateAndSolitaryTax = Double.parseDouble(getView().getValue(scenarioNumber, "corporateAndSolitaryTax"));
-			
+
 			if(corporateAndSolitaryTax < 0) {
 				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
 			}
-			
+
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
 		}
 		catch(Exception exception) {
-			getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
+			if(showErrors) {
+				getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
+			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode holt sich die in den Eingabefeldern der View eingetragenen Werte und
 	 * speichert sie nach einer Validierung im Szenarien-Model. Die Methode wird insbesondere
@@ -253,30 +285,34 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public void updateScenario(int scenarioNumber) {
 		Szenario scenario = this.projectProxy.getSelectedProject().getScenarios().get(scenarioNumber-1);
-		
+
 		if(isValidRateReturnEquity(scenarioNumber)) {
 			scenario.setRateReturnEquity(Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnEquity")));
 			logger.debug("Renditeforderung Eigenkapital Szenario " + scenarioNumber + " auf " + scenario.getRateReturnEquity() + " (" + getView().getValue(scenarioNumber, "rateReturnEquity") + ")");
 		}
-		
+
 		if(isValidRateReturnCapitalStock(scenarioNumber)) {
 			scenario.setRateReturnCapitalStock(Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnCapitalStock")));
 			logger.debug("Renditeforderung Fremdkapital Szenario " + scenarioNumber + " auf " + scenario.getRateReturnCapitalStock() + " (" + getView().getValue(scenarioNumber, "rateReturnCapitalStock") + ")");
 		}
-		
+
 		if(isValidBusinessTax(scenarioNumber)) {
 			scenario.setBusinessTax(Double.parseDouble(getView().getValue(scenarioNumber, "businessTax")));
 			logger.debug("Gewerbesteuer Szenario " + scenarioNumber + " auf " + scenario.getBusinessTax() + " (" + getView().getValue(scenarioNumber, "businessTax") + ")");
 		}
-		
+
 		if(isValidCorporateAndSolitaryTax(scenarioNumber)) {
 			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView().getValue(scenarioNumber, "corporateAndSolitaryTax")));
 			logger.debug("Koerperschaftssteuer und Solidaritaetszuschlag Szenario " + scenarioNumber + " auf " + scenario.getCorporateAndSolitaryTax() + " (" + getView().getValue(scenarioNumber, "corporateAndSolitaryTax") + ")");
 		}
-		
+
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(scenarioNumber));
-		
+
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
-	
+
+	public boolean isShowErrors() {
+		return showErrors;
+	}
+
 }

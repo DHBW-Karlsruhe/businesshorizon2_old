@@ -14,6 +14,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
@@ -97,12 +98,17 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			initializeBasisYear();
 		}
 
-		determMethod = this.projectProxy.getSelectedProject()
-				.getProjectInputType().getDeterministic();
-		stochMethod = this.projectProxy.getSelectedProject()
-				.getProjectInputType().getStochastic();
+		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+			determMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+			stochMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getStochastic();
+		} else {
+			determMethod = false;
+			stochMethod = false;
+		}
 
-		greyOut();
+		this.greyOut();
 		firstCall = false;
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
 				true));
@@ -149,12 +155,12 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (basisYearValid) {
 				return true;
 			} else {
-				if(showError){
-				getView()
-						.setComponentError(
-								true,
-								"basisYear",
-								"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"basisYear",
+									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 				}
 				return false;
 			}
@@ -165,37 +171,37 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				return true;
 			} else {
 				if (!periodsToForecastValid) {
-					if(showError){
-					getView()
-							.setComponentError(
-									true,
-									"periodsToForecast",
-									"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"periodsToForecast",
+										"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
 					}
 				}
 				if (!relevantPastPeriodsValid) {
-					if(showError){
-					getView()
-							.setComponentError(
-									true,
-									"pastPeriods",
-									"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"pastPeriods",
+										"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
 					}
 				}
 				if (!iterationsValid) {
-					if(showError){
-					getView()
-							.setComponentError(true, "iterations",
-									"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
+					if (showError) {
+						getView()
+								.setComponentError(true, "iterations",
+										"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
 					}
 				}
 				if (!basisYearValid) {
-					if(showError){
-					getView()
-							.setComponentError(
-									true,
-									"basisYear",
-									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"basisYear",
+										"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 					}
 				}
 				return false;
@@ -432,13 +438,16 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 
-		determMethod = this.projectProxy.getSelectedProject()
-				.getProjectInputType().getDeterministic();
-		stochMethod = this.projectProxy.getSelectedProject()
-				.getProjectInputType().getStochastic();
+		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+			determMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+			stochMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getStochastic();
+		}
 
 		if (!firstCall && !isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER));
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,
+					showError));
 			logger.debug("Parameter not valid, InvalidStateEvent fired");
 		} else {
 			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));
@@ -446,21 +455,21 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		}
 	}
 
-//	/**
-//	 * 
-//	 * Eventhandler der zuerst prueft ob dieser Screen her angesprochen wird.
-//	 * Falls ja soll die showError auf true gesetzt werden, die ermoeglicht,
-//	 * dass die Fehlermeldungen in der isValid-Methode angezeigt werden.
-//	 * 
-//	 * @author Christian Scherer
-//	 */
-//	@Override
-//	@EventHandler
-//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-//		if (event.getStep() == NavigationSteps.PARAMETER) {
-//			showError = true;
-//		}
-//	}
+	/**
+	 * 
+	 * Eventhandler der zuerst prueft ob dieser Screen her angesprochen wird.
+	 * Falls ja soll die showError auf true gesetzt werden, die ermoeglicht,
+	 * dass die Fehlermeldungen in der isValid-Methode angezeigt werden.
+	 * 
+	 * @author Christian Scherer
+	 */
+	@Override
+	@EventHandler
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		if (event.getStep() == NavigationSteps.PARAMETER) {
+			showError = true;
+		}
+	}
 
 	public int[] getNumberIterations() {
 		return numberIterations;

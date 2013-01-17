@@ -2,6 +2,9 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.io.Serializable;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+
 /**
  * Diese Klasse bezeichnet eine Berechnungsmethode wie die Zeitreihenanalyse
  * oder den Wiener-Prozess und bietet einige Basis-Funktionalitaeten.
@@ -12,7 +15,17 @@ import java.io.Serializable;
 abstract public class AbstractStochasticMethod implements
 		Comparable<AbstractStochasticMethod>, Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	protected Boolean selected = false;
+	
+	public Boolean getSelected() {
+		return selected;
+	}
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+	
+	abstract public Boolean getImplemented(); 
 	/**
 	 * Diese Methode gibt den Namen der jeweiligen Methode zurueck, der dann
 	 * auch fuer den Nutzer lesbar angezeigt wird.
@@ -57,10 +70,9 @@ abstract public class AbstractStochasticMethod implements
 	 * @return Das Result-Objekt dieser Berechnung
 	 * @throws InterruptedException
 	 */
-	abstract public double[] calculate(double[] previousValues,
-			int consideredPeriodsofPast, int periodsToForecast,
-			int numberOfIterations, Callback callback)
-			throws InterruptedException;
+	abstract public StochasticResultContainer calculate(Project project,
+			CallbackInterface callback) throws InterruptedException,
+			StochasticMethodException;
 
 	/**
 	 * Diese Methode wird zum Sortieren der Methoden (fuer die Anzeige beim
@@ -72,6 +84,11 @@ abstract public class AbstractStochasticMethod implements
 	@Override
 	public int compareTo(AbstractStochasticMethod o) {
 		return this.getOrderKey() - o.getOrderKey();
+	}
+	
+	@Override
+	public String toString() {
+		return getName();
 	}
 
 }

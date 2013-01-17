@@ -33,7 +33,7 @@ import com.vaadin.ui.Button.ClickEvent;
 public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private ScenarioPresenter presenter;
@@ -41,7 +41,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 	private VerticalLayout vlScenarios;
 	
 	private List<HashMap<String, AbstractComponent>> scenarios = new ArrayList<HashMap<String, AbstractComponent>>();
-
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 

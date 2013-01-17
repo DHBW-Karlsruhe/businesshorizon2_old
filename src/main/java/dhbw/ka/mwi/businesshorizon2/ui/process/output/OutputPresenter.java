@@ -10,6 +10,7 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
@@ -22,12 +23,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
@@ -48,13 +49,19 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	@Override
 	public void validate(ValidateContentStateEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@EventHandler
 	public void handleShowView(ShowOutputViewEvent event) {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT, true));
 		logger.debug("ShowOutputViewEvent handled");
 	}
-	
+
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
