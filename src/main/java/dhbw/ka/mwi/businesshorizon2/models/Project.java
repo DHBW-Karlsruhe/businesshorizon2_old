@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -33,6 +34,23 @@ public class Project implements Serializable {
 	protected Date lastChanged;
 
 	protected String name;
+	
+	protected AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
+	public AbstractPeriodContainer getStochasticPeriods() {
+		return stochasticPeriods;
+	}
+
+	public void setStochasticPeriods(AbstractPeriodContainer stochasticPeriods) {
+		this.stochasticPeriods = stochasticPeriods;
+	}
+
+	public AbstractPeriodContainer getDeterministicPeriods() {
+		return deterministicPeriods;
+	}
+
+	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
+		this.deterministicPeriods = deterministicPeriods;
+	}
 
 	protected int periodsToForecast;
 	protected int relevantPastPeriods;
@@ -55,6 +73,7 @@ public class Project implements Serializable {
 	 */
 	public Project(String name) {
 		this.name = name;
+		this.projectInputType = new ProjectInputType();
 	}
 
 	/**
@@ -80,7 +99,8 @@ public class Project implements Serializable {
 		return periods;
 	}
 
-	/**
+	/**@deprecated
+	 * Bitte getter für die stochastiPeriods und DeterministicPeriods verwenden
 	 * Ueberschreibt die bisher verwendeten Methoden. Die Perioden muessen in
 	 * Form eines sortierten NavigableSet vorliegen.
 	 * 

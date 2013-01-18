@@ -27,11 +27,10 @@ public class TimelineViewImpl extends VerticalLayout implements
 	@Autowired
 	private TimelinePresenter presenter;
 
+	GridLayout layout = new GridLayout(2, 1);
 
-	GridLayout layout = new GridLayout(2,1);
-	
 	NativeButton delPast, delFuture;
-	
+
 	Button past, future;
 
 	/**
@@ -58,22 +57,20 @@ public class TimelineViewImpl extends VerticalLayout implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 				layout.getComponent(0, 0);
-				presenter.removeLastPastPeriod((PeriodInterface)layout.getComponent(0, 0));
+				presenter.removeLastPastPeriod(((PeriodButton) layout
+						.getComponent(0, 0)).getPeriod());
 			}
 		});
 		delFuture = new NativeButton("X", new Button.ClickListener() {
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.removeLastFuturePeriod((PeriodInterface)layout.getComponent(layout.getRows(), 0));
+				presenter.removeLastFuturePeriod(((PeriodButton) layout
+						.getComponent(layout.getRows(), 0)).getPeriod());
 			}
 		});
-		
-		
-		
-		
 
-		 past = new Button("+", new Button.ClickListener() {
+		past = new Button("+", new Button.ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -82,31 +79,34 @@ public class TimelineViewImpl extends VerticalLayout implements
 		});
 		this.addComponent(past);
 		this.addComponent(layout);
-		 future = new Button("+", new Button.ClickListener() {
+		future = new Button("+", new Button.ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.addFuturePeriod();
 			}
 		});
-		
+
 		this.addComponent(future);
 	}
 
-
-
 	@Override
 	public void removeFuturePeriod() {
-		layout.removeRow(layout.getRows()-1);
-		layout.addComponent(delFuture, 1, layout.getRows()-1);
+		layout.removeRow(layout.getRows() - 1);
+		if (layout.getComponent(1, layout.getRows() - 1).getCaption()
+				.startsWith("Basis")) {
+
+		} else
+			layout.addComponent(delFuture, 1, layout.getRows() - 1);
 	}
-
-
 
 	@Override
 	public void removePastPeriod() {
 		layout.removeRow(0);
-		layout.addComponent(delPast, 1, 0);
+		if (layout.getComponent(1, 0).getCaption().startsWith("Basis")) {
+
+		} else
+			layout.addComponent(delPast, 1, 0);
 	}
 
 	@Override
@@ -128,62 +128,64 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	@Override
 	public void addBasePeriod(PeriodInterface period) {
-		PeriodButton pB = new PeriodButton("Basisjahr: "+period.getYear(), new Button.ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				presenter.periodClicked(((PeriodButton)event.getButton()).getPeriod());
-				
-			}
-		});
+		PeriodButton pB = new PeriodButton("Basisjahr: " + period.getYear(),
+				new Button.ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+						presenter.periodClicked(((PeriodButton) event
+								.getButton()).getPeriod());
+
+					}
+				});
 		pB.setPeriod(period);
-		
+
 		layout.addComponent(pB);
-		
+
 	}
-
-
 
 	@Override
 	public void addFuturePeriod(PeriodInterface period) {
-		PeriodButton pB = new PeriodButton(""+period.getYear(), new Button.ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				presenter.periodClicked(((PeriodButton)event.getButton()).getPeriod());
-				
-			}
-		});
+		PeriodButton pB = new PeriodButton("" + period.getYear(),
+				new Button.ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+						presenter.periodClicked(((PeriodButton) event
+								.getButton()).getPeriod());
+
+					}
+				});
 		pB.setPeriod(period);
-		
+
 		layout.newLine();
 		layout.addComponent(pB);
 		layout.removeComponent(delFuture);
 		layout.addComponent(delFuture);
-		
-		
-		
+
 	}
 
 	@Override
 	public void addPastPeriod(PeriodInterface period) {
 		// TODO Auto-generated method stub
-		PeriodButton pB = new PeriodButton(""+period.getYear(), new Button.ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				presenter.periodClicked(((PeriodButton)event.getButton()).getPeriod());
-				
-			}
-		});
+		PeriodButton pB = new PeriodButton("" + period.getYear(),
+				new Button.ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+						presenter.periodClicked(((PeriodButton) event
+								.getButton()).getPeriod());
+
+					}
+				});
 		pB.setPeriod(period);
 		layout.insertRow(0);
 		layout.addComponent(pB, 0, 0);
 		layout.removeComponent(delPast);
-		layout.addComponent(delPast,1,0);
-		
+		layout.addComponent(delPast, 1, 0);
+
 	}
 }
