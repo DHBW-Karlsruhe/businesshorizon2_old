@@ -183,14 +183,10 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 			}
 			
 		});
+		formLeft.addComponent(removeProject);
 		
 		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		formRight.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		
-		FormLayout formRemove = new FormLayout();
-		formRemove.addComponent(removeProject);
-		hlScenario.addComponent(formRemove);
-		formRemove.setComponentAlignment(removeProject, Alignment.BOTTOM_LEFT);
 		
 		scenarioComponents.put("scenario", hlScenario);
 		
