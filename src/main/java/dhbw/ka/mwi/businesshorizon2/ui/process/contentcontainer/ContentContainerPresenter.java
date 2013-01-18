@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mvplite.event.Event;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
@@ -84,40 +85,45 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	public void onShowNavigationStep(ShowNavigationStepEvent event) {
 		ContentView newView = null;
 
+		Event newViewEvent = null;
+
 		switch (event.getStep()) {
 		case METHOD:
 			newView = methodView;
-			eventBus.fireEvent(new ShowMethodViewEvent());
+			newViewEvent = new ShowMethodViewEvent();
 			break;
 		case PERIOD:
 			newView = periodView;
-			eventBus.fireEvent(new ShowPeriodViewEvent());
+			newViewEvent = new ShowPeriodViewEvent();
 			break;
 		case PARAMETER:
 			newView = parameterView;
-			eventBus.fireEvent(new ShowParameterViewEvent());
+			newViewEvent = new ShowParameterViewEvent();
 			break;
 		case SCENARIO:
 			newView = processingView;
-			eventBus.fireEvent(new ShowScenarioViewEvent());
+			newViewEvent = new ShowScenarioViewEvent();
 			break;
 		case OUTPUT:
 			newView = outputView;
-			eventBus.fireEvent(new ShowOutputViewEvent());
+			newViewEvent = new ShowOutputViewEvent();
 			break;
 		default:
 			newView = null;
+			newViewEvent = null;
 			break;
 		}
 
 		this.stepNumber = event.getStep().getNumber();
 
+		getView().showContentView(newView);
+
+		eventBus.fireEvent(newViewEvent);
+
 		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu
 		// validieren und dem
 		// User gegebenenfalls einen Fehlerhinweis zu geben
 		eventBus.fireEvent(new ValidateContentStateEvent());
-
-		getView().showContentView(newView);
 
 		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
 
@@ -137,6 +143,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	 * @author Julius Hacker
 	 */
 	public void showNextStep() {
+
 		if (this.isActualViewValid) {
 			NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
 			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
@@ -145,7 +152,6 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 
 			logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
 		}
-
 	}
 
 	/**

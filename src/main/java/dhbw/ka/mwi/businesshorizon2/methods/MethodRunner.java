@@ -56,7 +56,6 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-
 			StochasticResultContainer result = method.calculate(project, callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {

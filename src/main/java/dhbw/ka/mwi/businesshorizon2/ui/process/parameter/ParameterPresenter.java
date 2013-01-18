@@ -25,10 +25,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger(this.getClass());
-
 	@Autowired
 	private EventBus eventBus;
+
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der

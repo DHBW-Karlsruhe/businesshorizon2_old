@@ -197,7 +197,6 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 
 			getView().setValid(scenarioNumber, "rateReturnEquity");
-
 		} catch (Exception exception) {
 			if (showErrors) {
 				getView().setInvalid(scenarioNumber, "rateReturnEquity");
@@ -220,7 +219,6 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		boolean isValid = true;
 
 		try {
-
 			Double rateReturnCapitalStock = Double.parseDouble(getView().getValue(scenarioNumber,
 					"rateReturnCapitalStock"));
 
@@ -253,7 +251,6 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 
 		try {
 			Double businessTax = Double.parseDouble(getView().getValue(scenarioNumber, "businessTax"));
-
 			if (businessTax < 0 || businessTax > 100) {
 				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}

@@ -87,9 +87,9 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 						method.calculate(project, this);
 					}
 				} catch (StochasticMethodException e) {
-					// getView().showErrorMessge(e.getMessage());
+					getView().showErrorMessge(e.getMessage());
 				} catch (InterruptedException e) {
-					// getView().showErrorMessge(e.getMessage());
+					getView().showErrorMessge(e.getMessage());
 				}
 			}
 

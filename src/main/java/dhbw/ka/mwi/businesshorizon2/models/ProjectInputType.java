@@ -54,4 +54,5 @@ public class ProjectInputType {
 	public void setDeterministicInput(InputType deterministicInput) {
 		this.deterministicInput = deterministicInput;
 	}
+
 }
