@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.methods.random;
 
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
@@ -64,32 +63,38 @@ public class RandomWalk extends AbstractStochasticMethod {
 			StochasticMethodException {
 
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
-		CashFlowPeriodContainer cFPContainer = new CashFlowPeriodContainer();
-		prognose.add(cFPContainer);
-		Iterator<CashFlowPeriod> it = cFPContainer.getPeriods().iterator();
-		for (int forecast = 1; forecast <= project.getPeriodsToForecast(); forecast++) {
-			double previousValueCF;
-			double previousValueBC;
-			CashFlowPeriod period = new CashFlowPeriod(project.getBasisYear()
-					+ forecast);
-			if (forecast == 1) {
-				previousValueCF = project.getPeriods().last().getFreeCashFlow();
-				previousValueBC = project.getPeriods().last()
-						.getBorrowedCapital();
-			} else {
-				CashFlowPeriod lastPeriod = it.next();
-				previousValueCF = lastPeriod.getFreeCashFlow();
-				previousValueBC = lastPeriod.getBorrowedCapital();
-			}
-			period.setFreeCashFlow(berechneZufallszahl(project
-					.getCashFlowProbabilityOfRise())
-					* project.getCashFlowStepRange() + previousValueCF);
-			period.setBorrowedCapital(berechneZufallszahl(project
-					.getBorrowedCapitalProbabilityOfRise())
-					* project.getBorrowedCapitalStepRange() + previousValueBC);
-			cFPContainer.addPeriod(period);
-		}
+		for (int iteration = 0; iteration < project.getIterations(); iteration++) {
+			CashFlowPeriodContainer cFPContainer = new CashFlowPeriodContainer();
 
+			CashFlowPeriod lastPeriod = null;
+			;
+			for (int forecast = 1; forecast <= project.getPeriodsToForecast(); forecast++) {
+				double previousValueCF;
+				double previousValueBC;
+				CashFlowPeriod period = new CashFlowPeriod(
+						project.getBasisYear() + forecast);
+				if (forecast == 1) {
+					previousValueCF = project.getPeriods().last()
+							.getFreeCashFlow();
+					previousValueBC = project.getPeriods().last()
+							.getBorrowedCapital();
+				} else {
+					previousValueCF = lastPeriod.getFreeCashFlow();
+					previousValueBC = lastPeriod.getBorrowedCapital();
+				}
+				period.setFreeCashFlow(berechneZufallszahl(project
+						.getCashFlowProbabilityOfRise())
+						* project.getCashFlowStepRange() + previousValueCF);
+				period.setBorrowedCapital(berechneZufallszahl(project
+						.getBorrowedCapitalProbabilityOfRise())
+						* project.getBorrowedCapitalStepRange()
+						+ previousValueBC);
+				lastPeriod = period;
+				cFPContainer.addPeriod(period);
+			}
+			prognose.add(cFPContainer);
+		}
 		return new StochasticResultContainer(prognose);
 	}
+
 }
