@@ -9,8 +9,6 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 
@@ -28,23 +26,26 @@ public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	protected TreeSet<? extends PeriodInterface> periods = new TreeSet<>();
+	private TreeSet<? extends PeriodInterface> periods = new TreeSet<>();
 
-	protected Date lastChanged;
+	private Date lastChanged;
 
-	protected String name;
+	private String name;
 
-	protected int periodsToForecast;
-	protected int relevantPastPeriods;
-	protected int iterations;
-	protected int basisYear;
-	protected ProjectInputType projectInputType;
+	private double CashFlowProbabilityOfRise;
+	private double CashFlowStepRange;
+	private double BorrowedCapitalProbabilityOfRise;
+	private double BorrowedCapitalStepRange;
 
-	@Autowired
-	private SortedSet<AbstractStochasticMethod> methods;	
+	private int periodsToForecast;
+	private int relevantPastPeriods;
+	private int iterations;
+	private int basisYear;
+	private ProjectInputType projectInputType;
+
+	private SortedSet<AbstractStochasticMethod> methods;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
-
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -63,11 +64,93 @@ public class Project implements Serializable {
 	 * @author Christian Scherer
 	 */
 
-
 	public Project() {
 		this.projectInputType = new ProjectInputType();
 
+	}
 
+	/**
+	 * Gibt die Erhöhungswahrscheinlichkeit des CashFlows zurueck.
+	 * 
+	 * @author Kai Westerholz
+	 * @return
+	 */
+	public double getCashFlowProbabilityOfRise() {
+		return CashFlowProbabilityOfRise;
+	}
+
+	/**
+	 * Setzt die Erhöhungswahrscheinlichkeit des CashFlows.
+	 * 
+	 * @author Kai Westerholz
+	 * @param cashFlowProbabilityOfRise
+	 */
+	public void setCashFlowProbabilityOfRise(double cashFlowProbabilityOfRise) {
+		CashFlowProbabilityOfRise = cashFlowProbabilityOfRise;
+	}
+
+	/**
+	 * Gibt die Schrittweise des CashFlows zurueck.
+	 * 
+	 * @author Kai Westerholz
+	 * @return
+	 */
+	public double getCashFlowStepRange() {
+		return CashFlowStepRange;
+	}
+
+	/**
+	 * Setzt die Schrittweise vom CashFlow.
+	 * 
+	 * @author Kai Westerholz
+	 * @param cashFlowStepRange
+	 */
+	public void setCashFlowStepRange(double cashFlowStepRange) {
+		CashFlowStepRange = cashFlowStepRange;
+	}
+
+	/**
+	 * Gibt die Erhöhungswahrscheinlichkeit des CashFlows zurueck.
+	 * 
+	 * @author Kai Westerholz
+	 * @return Erhöhungswahrscheinlichkeit CashFlow
+	 */
+
+	public double getBorrowedCapitalProbabilityOfRise() {
+		return BorrowedCapitalProbabilityOfRise;
+	}
+
+	/**
+	 * Setzt die Wahrscheinlichkeit der Erhoehung des Fremdkapitals.
+	 * 
+	 * @author Kai Westerholz
+	 * 
+	 * @param borrowedCapitalProbabilityOfRise
+	 */
+	public void setBorrowedCapitalProbabilityOfRise(
+			double borrowedCapitalProbabilityOfRise) {
+		BorrowedCapitalProbabilityOfRise = borrowedCapitalProbabilityOfRise;
+	}
+
+	/**
+	 * Gibt die Schrittweite des Fremdkapitals an.
+	 * 
+	 * @author Kai Westerholz
+	 * 
+	 * @return Schrittweite
+	 */
+	public double getBorrowedCapitalStepRange() {
+		return BorrowedCapitalStepRange;
+	}
+
+	/**
+	 * Setzt die Schrittweite des Fremdkapitals.
+	 * 
+	 * @author Kai Westerholz
+	 * @param borrowedCapitalStepRange
+	 */
+	public void setBorrowedCapitalStepRange(double borrowedCapitalStepRange) {
+		BorrowedCapitalStepRange = borrowedCapitalStepRange;
 	}
 
 	/**
@@ -158,6 +241,10 @@ public class Project implements Serializable {
 		return name;
 	}
 
+	public void setMethods(SortedSet<AbstractStochasticMethod> methods) {
+		this.methods = methods;
+	}
+
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
@@ -166,6 +253,9 @@ public class Project implements Serializable {
 		return projectInputType;
 	}
 
+	public void setProjectInputType(ProjectInputType projectInputType) {
+		this.projectInputType = projectInputType;
+	}
 
 	/**
 	 * Setzt den Namen des Projekts.

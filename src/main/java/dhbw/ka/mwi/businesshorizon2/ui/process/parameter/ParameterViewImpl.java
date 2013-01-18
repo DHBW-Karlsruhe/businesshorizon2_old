@@ -36,9 +36,20 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private Label labelIterations;
 	private Label labelNumPastPeriods;
 	private Label labelBasisYear;
+	private Label labelRandomWalkMethod;
+	private Label labelCashFlowStepRange;
+	private Label labelCashFlowProbabilityOfRise;
+	private Label labelBorrowedCapitalProbabilityOfRise;
+	private Label labelBorrowedCapitalStepRange;
+
 	private TextField textfieldNumPeriods;
 	private TextField textfieldNumPastPeriods;
 	private TextField textfieldBasisYear;
+	private TextField textfieldCashFlowStepRange;
+	private TextField textfieldCashFlowProbabilityOfRise;
+	private TextField textfieldBorrowedCapitalProbabilityOfRise;
+	private TextField textfieldBorrowedCapitalStepRange;
+
 	private ComboBox comboBoxIterations;
 	private ComboBox comboBoxRepresentatives;
 	private CheckBox checkboxIndustryRepresentative;
@@ -62,12 +73,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void init() {
 
 		presenter.setView(this);
-		//presenter.setIterations();
 		generateUi();
 		logger.debug("Ui erstellt");
-		//presenter.initializeBasisYear();
-		//presenter.greyOut();
-		logger.debug("Init-Methode beendet");
 	}
 
 	/**
@@ -81,7 +88,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		setMargin(true);
 
-		gridLayout = new GridLayout(2, 8);
+		gridLayout = new GridLayout(2, 13);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
 		addComponent(gridLayout);
@@ -216,6 +223,77 @@ public class ParameterViewImpl extends VerticalLayout implements
 			}
 		});
 		gridLayout.addComponent(textfieldBasisYear, 1, 7);
+		
+		labelRandomWalkMethod = new Label("Eingaben Random-Walk");
+		gridLayout.addComponent(labelRandomWalkMethod,0,8);
+		
+		labelCashFlowStepRange = new Label("Schrittweite Cashflows");
+		gridLayout.addComponent(labelCashFlowStepRange, 0, 9);
+		
+		textfieldCashFlowStepRange = new TextField();
+		textfieldCashFlowStepRange.setImmediate(true);
+		textfieldCashFlowStepRange
+				.setDescription("");
+		textfieldCashFlowStepRange.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				presenter.cashFlowStepRangeChosen((String) textfieldCashFlowStepRange
+						.getValue());
+			}
+		});
+		gridLayout.addComponent(textfieldCashFlowStepRange, 1, 9);
+		
+		labelCashFlowProbabilityOfRise = new Label("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+		gridLayout.addComponent(labelCashFlowProbabilityOfRise, 0, 10);
+		
+		textfieldCashFlowProbabilityOfRise = new TextField();
+		textfieldCashFlowProbabilityOfRise.setImmediate(true);
+		textfieldCashFlowProbabilityOfRise
+				.setDescription("");
+		textfieldCashFlowProbabilityOfRise.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				presenter.cashFlowProbabilityOfRiseChosen((String) textfieldCashFlowProbabilityOfRise
+						.getValue());
+			}
+		});
+		gridLayout.addComponent(textfieldCashFlowProbabilityOfRise, 1, 10);
+		
+		labelBorrowedCapitalStepRange = new Label("Schrittweite Fremdkapital");
+		gridLayout.addComponent(labelBorrowedCapitalStepRange, 0, 11);
+		
+		textfieldBorrowedCapitalStepRange = new TextField();
+		textfieldBorrowedCapitalStepRange.setImmediate(true);
+		textfieldBorrowedCapitalStepRange
+				.setDescription("");
+		textfieldBorrowedCapitalStepRange.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				presenter.borrowedCapitalStepRangeChosen((String) textfieldBorrowedCapitalStepRange
+						.getValue());
+			}
+		});
+		gridLayout.addComponent(textfieldBorrowedCapitalStepRange, 1, 11);
+		
+		labelBorrowedCapitalProbabilityOfRise = new Label("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+		gridLayout.addComponent(labelBorrowedCapitalProbabilityOfRise, 0, 12);
+		
+		textfieldBorrowedCapitalProbabilityOfRise = new TextField();
+		textfieldBorrowedCapitalProbabilityOfRise.setImmediate(true);
+		textfieldBorrowedCapitalProbabilityOfRise
+				.setDescription("");
+		textfieldBorrowedCapitalProbabilityOfRise.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				presenter.borrowedCapitalProbabilityOfRiseChosen((String) textfieldBorrowedCapitalProbabilityOfRise
+						.getValue());
+			}
+		});
+		gridLayout.addComponent(textfieldBorrowedCapitalProbabilityOfRise, 1, 12);
 
 	}
 
@@ -374,6 +452,38 @@ public class ParameterViewImpl extends VerticalLayout implements
 						.setComponentError(new UserError(message));
 			} else {
 				this.comboBoxIterations.setComponentError(null);
+			}
+
+		} else if (component.equals("CashFlowStepRange")) {
+			if (setError) {
+				this.textfieldCashFlowStepRange
+						.setComponentError(new UserError(message));
+			} else {
+				this.textfieldCashFlowStepRange.setComponentError(null);
+			}
+
+		} else if (component.equals("CashFlowProbabilityOfRise")) {
+			if (setError) {
+				this.textfieldCashFlowProbabilityOfRise
+						.setComponentError(new UserError(message));
+			} else {
+				this.textfieldCashFlowProbabilityOfRise.setComponentError(null);
+			}
+
+		} else if (component.equals("borrowedCapitalStepRange")) {
+			if (setError) {
+				this.textfieldBorrowedCapitalStepRange
+						.setComponentError(new UserError(message));
+			} else {
+				this.textfieldBorrowedCapitalStepRange.setComponentError(null);
+			}
+
+		} else if (component.equals("borrowedCapitalProbabilityOfRise")) {
+			if (setError) {
+				this.textfieldBorrowedCapitalProbabilityOfRise
+						.setComponentError(new UserError(message));
+			} else {
+				this.textfieldBorrowedCapitalProbabilityOfRise.setComponentError(null);
 			}
 
 		}

@@ -48,16 +48,29 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	private int[] numberIterations;
 
+	private double cashFlowProbabilityOfRise;
+	private double cashFlowStepRange;
+	private double borrowedCapitalProbabilityOfRise;
+	private double borrowedCapitalStepRange;
+
 	private boolean firstCall;
 	private boolean showError;
+
+	private boolean cashFlowStepRangeValid;
+	private boolean cashFlowProbabilityOfRiseValid;
+	private boolean borrowedCapitalProbabilityOfRiseValid;
+	private boolean borrowedCapitalStepRangeValid;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
-	 * EventHandler. Zudem werden die validitaeten der Felder zunaechst auf
-	 * false gesetzt. Zudem wird der Wert der firstCall Variable auf true
+	 * EventHandler. Zudem werden die Validitaeten der Felder zunaechst auf
+	 * false gesetzt. Desweiteren wird der Wert der firstCall Variable auf true
 	 * gesetzt, sodass die erste Pruefung des screens noch keine Fehlermeldung
-	 * wirft, da der Benutzer den Screen auch noch nicht geoeffnet hat
+	 * wirft, da der Benutzer den Screen auch noch nicht geoeffnet hat und die
+	 * showError Methode auf false. Letzere soll verhindern, dass schon bei
+	 * erstem Betreten des Screens der Benutzer von Fehlermeldungen 'erschlagen'
+	 * wird.
 	 * 
 	 * @author Julius Hacker, Christian SCherer
 	 */
@@ -70,6 +83,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		iterationsValid = false;
 		periodsToForecastValid = false;
 		relevantPastPeriodsValid = false;
+		cashFlowStepRangeValid = false;
+		cashFlowProbabilityOfRiseValid = false;
+		borrowedCapitalStepRangeValid = false;
+		borrowedCapitalProbabilityOfRiseValid = false;
 
 		setIterations();
 		firstCall = true;
@@ -167,7 +184,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 		} else {
 			if (periodsToForecastValid && relevantPastPeriodsValid
-					&& basisYearValid && iterationsValid) {
+					&& basisYearValid && iterationsValid
+					&& cashFlowStepRangeValid && cashFlowProbabilityOfRiseValid
+					&& borrowedCapitalStepRangeValid
+					&& borrowedCapitalProbabilityOfRiseValid) {
 				return true;
 			} else {
 				if (!periodsToForecastValid) {
@@ -204,6 +224,42 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 										"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 					}
 				}
+				if (!cashFlowStepRangeValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"cashFlowStepRange",
+										"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+					}
+				}
+				if (!cashFlowProbabilityOfRiseValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"cashFlowProbabilityOfRise",
+										"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+					}
+				}
+				if (borrowedCapitalStepRangeValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"borrowedCapitalStepRange",
+										"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+					}
+				}
+				if (!borrowedCapitalProbabilityOfRiseValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"borrowedCapitalProbabilityOfRise",
+										"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+					}
+				}
 				return false;
 			}
 		}
@@ -227,7 +283,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		getView().setComponentError(false, "iterations", null);
 		logger.debug("Iterationen in Objekten gesetzt: "
 				+ this.projectProxy.getSelectedProject().getName());
-		
 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
@@ -272,7 +327,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
 		}
 
-
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
@@ -313,7 +367,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'. <br> Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. <br> Beispiel: 10");
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
-		
 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
@@ -356,7 +409,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. <br> Beispiel: 2015");
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
 		}
-		
 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
@@ -380,7 +432,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} else {
 			// Liste deaktivieren
 		}
-		
 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
@@ -395,6 +446,186 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 *            String mit Namen des gewaehlten Branchenvertreters
 	 */
 	public void industryRepresentativeListItemChosen(String selected) {
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Schrittgroesse fuer die Cashflows
+	 * kuemmert. Konkret wird aus dem String des Eingabefelds der Double-Wert
+	 * gezogen und geprueft ob dieser groesser 0 ist. Falls nicht wird eine
+	 * ClassCastException geworfen, die eine Fehlermeldung auf der
+	 * Benutzeroberflaecher angezeigt und ein ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowStepRangeString
+	 *            Schrittgröße der Cashflows fuer die RandomWalk Methode
+	 */
+	public void cashFlowStepRangeChosen(String cashFlowStepRangeString) {
+		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
+
+		try {
+			cashFlowStepRange = Double.parseDouble(cashFlowStepRangeString);
+			if (cashFlowStepRange >= 0) {
+				cashFlowStepRangeValid = true;
+				getView().setComponentError(false, "cashFlowStepRange", "");
+				this.projectProxy.getSelectedProject().setCashFlowStepRange(
+						this.cashFlowStepRange);
+				logger.debug("Schrittweite des Cashflows in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			cashFlowStepRangeValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"cashFlowStepRange",
+							"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Schrittweite Cashflows'. <br> Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Cashflows'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
+	 * positive Cashflows-Entwicklung kuemmert. Konkret wird aus dem String des
+	 * Eingabefelds der Double-Wert gezogen und geprueft ob der Wert zwischen 0
+	 * und 100 leigt. Falls nicht wird eine ClassCastException geworfen, die
+	 * eine Fehlermeldung auf der Benutzeroberflaecher angezeigt und ein
+	 * ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowProbabilityOfRiseString
+	 *            Wahrscheinlichkeit fuer eine positive Cashflows-Entwicklung
+	 *            fuer die RandomWalk Methode
+	 */
+	public void cashFlowProbabilityOfRiseChosen(
+			String cashFlowProbabilityOfRiseString) {
+		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+
+		try {
+			cashFlowProbabilityOfRise = Double
+					.parseDouble(cashFlowProbabilityOfRiseString);
+			if (cashFlowProbabilityOfRise >= 0
+					&& cashFlowProbabilityOfRise <= 100) {
+				cashFlowProbabilityOfRiseValid = true;
+				getView().setComponentError(false, "cashFlowProbabilityOfRise",
+						"");
+				this.projectProxy.getSelectedProject().setCashFlowProbabilityOfRise(
+						this.cashFlowProbabilityOfRise);
+				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			cashFlowProbabilityOfRiseValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"cashFlowProbabilityOfRise",
+							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung'. <br> Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Schrittgroesse fuer das
+	 * Fremdkapital kuemmert. Konkret wird aus dem String des Eingabefelds der
+	 * Double-Wert gezogen und ueberprueft ob dieser groesser oder gleich 0 ist.
+	 * Falls nicht wird eine ClassCastException geworfen, die eine Fehlermeldung
+	 * auf der Benutzeroberflaecher angezeigt und ein ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowStepRangeString
+	 *            Schrittgröße das Fremdkapital fuer die RandomWalk Methode
+	 */
+	public void borrowedCapitalStepRangeChosen(
+			String borrowedCapitalStepRangeString) {
+		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
+
+		try {
+			borrowedCapitalStepRange = Double
+					.parseDouble(borrowedCapitalStepRangeString);
+			if (borrowedCapitalStepRange >= 0) {
+				borrowedCapitalStepRangeValid = true;
+				getView().setComponentError(false, "borrowedCapitalStepRange",
+						"");
+				this.projectProxy.getSelectedProject()
+						.setBorrowedCapitalStepRange(
+								this.borrowedCapitalStepRange);
+				logger.debug("Schrittweite des Fremdkapital in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			borrowedCapitalStepRangeValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"borrowedCapitalStepRange",
+							"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Schrittweite Fremdkapital'. <br> Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Fremdkapital'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
+	 * positive Fremdkapitalentwicklung kuemmert. Konkret wird aus dem String
+	 * des Eingabefelds der Double-Wert gezogen und geprueft ob der Wert
+	 * zwischen 0 und 100 leigt. Falls nicht wird eine ClassCastException
+	 * geworfen, die eine Fehlermeldung auf der Benutzeroberflaecher angezeigt
+	 * und ein ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param borrowedCapitalProbabilityOfRiseString
+	 *            Wahrscheinlichkeit fuer eine positive Fremdkapitalentwicklung
+	 *            fuer die RandomWalk Methode
+	 */
+	public void borrowedCapitalProbabilityOfRiseChosen(
+			String borrowedCapitalProbabilityOfRiseString) {
+		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+
+		try {
+			borrowedCapitalProbabilityOfRise = Double
+					.parseDouble(borrowedCapitalProbabilityOfRiseString);
+			if (borrowedCapitalProbabilityOfRise >= 0
+					&& borrowedCapitalProbabilityOfRise <= 100) {
+				borrowedCapitalProbabilityOfRiseValid = true;
+				getView().setComponentError(false,
+						"borrowedCapitalProbabilityOfRise", "");
+				this.projectProxy.getSelectedProject().setBorrowedCapitalProbabilityOfRise(
+						this.borrowedCapitalProbabilityOfRise);
+				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			borrowedCapitalProbabilityOfRiseValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"borrowedCapitalProbabilityOfRise",
+							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung'. <br> Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+		}
+
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
@@ -417,6 +648,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().activatePeriodsToForecast(false);
 			getView().activateRelevantPastPeriods(false);
 			getView().activateIterations(false);
+		} else {
+			getView().activatePeriodsToForecast(true);
+			getView().activateRelevantPastPeriods(true);
+			getView().activateIterations(true);
 		}
 
 	}
