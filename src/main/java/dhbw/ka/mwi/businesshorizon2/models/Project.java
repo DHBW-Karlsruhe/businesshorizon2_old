@@ -40,7 +40,6 @@ public class Project implements Serializable {
 	protected int basisYear;
 	protected ProjectInputType projectInputType;
 
-	@Autowired
 	private SortedSet<AbstractStochasticMethod> methods;	
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
@@ -157,6 +156,10 @@ public class Project implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	public void setMethods(SortedSet<AbstractStochasticMethod> methods){
+		this.methods = methods;
+	}
 
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
@@ -164,6 +167,10 @@ public class Project implements Serializable {
 
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
+	}
+	
+	public void setProjectInputType(ProjectInputType projectInputType){
+		this.projectInputType = projectInputType;
 	}
 
 
