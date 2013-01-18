@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 
@@ -18,9 +19,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.method.CheckMethodTypeEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
+import dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
@@ -46,9 +51,12 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	private EventBus eventBus;
 
 	@Autowired
-	private Project project;
+	private ProjectProxy projectProxy;
 	
+	private Project project;
+		
 	private SortedSet<AbstractStochasticMethod> methods;
+
 	private ProjectInputType projectInputType;
 	
 
@@ -62,10 +70,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-
-		this.methods = project.getMethods();
-		projectInputType = project.getProjectInputType();
 		logger.debug("test");
+		methods = new TreeSet<AbstractStochasticMethod>();
 
 	}
 
@@ -142,7 +148,29 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event){		
-	
+		
+		project = projectProxy.getSelectedProject();
+		
+		if (project.getMethods() == null) {
+			
+			methods.add(new RandomWalk());
+			methods.add(new TimeseriesCalculator());
+			methods.add(new Wiener());
+			
+			project.setMethods(methods);			
+		}
+		else{
+			methods = project.getMethods();
+		}
+		
+		if (project.getProjectInputType() == null){
+			projectInputType = new ProjectInputType();
+			project.setProjectInputType(projectInputType);
+		}
+		else{
+			projectInputType = project.getProjectInputType();
+		}
+		
 		for (AbstractStochasticMethod m : methods) {
 			getView().showMethod(m);
 		}
