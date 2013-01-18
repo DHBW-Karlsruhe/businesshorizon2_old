@@ -50,7 +50,6 @@ public class Project implements Serializable {
 	 *            Name des Projekts
 	 */
 	public Project(String name) {
-		this.projectInputType = new ProjectInputType();
 		this.name = name;
 	}
 
@@ -162,7 +161,6 @@ public class Project implements Serializable {
 	}
 
 	public ProjectInputType getProjectInputType() {
-
 		return projectInputType;
 	}
 
@@ -277,5 +275,6 @@ public class Project implements Serializable {
 
 	public void addScenario(Szenario scenario) {
 		this.scenarios.add(scenario);
+
 	}
 }

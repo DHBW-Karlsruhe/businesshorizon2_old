@@ -197,6 +197,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 
 			getView().setValid(scenarioNumber, "rateReturnEquity");
+
 		} catch (Exception exception) {
 			if (showErrors) {
 				getView().setInvalid(scenarioNumber, "rateReturnEquity");
@@ -219,6 +220,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		boolean isValid = true;
 
 		try {
+
 			Double rateReturnCapitalStock = Double.parseDouble(getView().getValue(scenarioNumber,
 					"rateReturnCapitalStock"));
 
@@ -227,6 +229,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 
 			getView().setValid(scenarioNumber, "rateReturnCapitalStock");
+
 		} catch (Exception exception) {
 			if (showErrors) {
 				getView().setInvalid(scenarioNumber, "rateReturnCapitalStock");
@@ -256,6 +259,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 
 			getView().setValid(scenarioNumber, "businessTax");
+
 		} catch (Exception exception) {
 			if (showErrors) {
 				getView().setInvalid(scenarioNumber, "businessTax");
@@ -286,6 +290,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
+
 		} catch (Exception exception) {
 			if (showErrors) {
 				getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
@@ -307,6 +312,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 *            Nummer des Szenarios, dessen Werte geaendert wurden.
 	 */
 	public void updateScenario(int scenarioNumber) {
+
 		Szenario scenario = this.projectProxy.getSelectedProject().getScenarios().get(scenarioNumber - 1);
 
 		if (isValidRateReturnEquity(scenarioNumber)) {

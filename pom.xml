@@ -316,7 +316,7 @@
 		   <artifactId>visualizationsforvaadin</artifactId>
 		   <version>1.1.2</version>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
