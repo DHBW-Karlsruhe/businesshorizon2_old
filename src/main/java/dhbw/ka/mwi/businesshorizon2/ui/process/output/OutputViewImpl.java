@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
@@ -57,6 +58,18 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	@Override
 	public void addDeterministicChartArea(DeterministicChartArea chartArea) {
 		outputArea.addComponent(chartArea);
+	}
+
+	@Override
+	public void showErrorMessge(String message) {
+		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
+
+	}
+
+	@Override
+	public void changeProgress(float progress) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

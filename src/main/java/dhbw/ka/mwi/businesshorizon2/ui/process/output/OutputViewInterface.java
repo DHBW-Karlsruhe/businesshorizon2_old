@@ -24,4 +24,8 @@ public interface OutputViewInterface extends ContentView {
 	 */
 	void addDeterministicChartArea(DeterministicChartArea chartArea);
 
+	void showErrorMessge(String message);
+
+	void changeProgress(float progress);
+
 }
