@@ -64,7 +64,9 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 		if (project.getProjectInputType().getStochastic()) {
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				try {
-					method.calculate(project, this);
+					if (method.getSelected()) {
+						method.calculate(project, this);
+					}
 				} catch (StochasticMethodException e) {
 					getView().showErrorMessge(e.getMessage());
 				} catch (InterruptedException e) {
@@ -89,6 +91,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	@Override
 	public void validate(ValidateContentStateEvent event) {
 		// TODO Auto-generated method stub
+
 	}
 
 	@EventHandler

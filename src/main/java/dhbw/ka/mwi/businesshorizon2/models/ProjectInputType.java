@@ -18,12 +18,12 @@ public class ProjectInputType {
 	 * 
 	 */
 
-	private boolean stochastic = false;
-	private boolean deterministic = false;
+	private Boolean stochastic = false;
+	private Boolean deterministic = false;
 	private InputType stochasticInput = InputType.DIRECT;
 	private InputType deterministicInput = InputType.DIRECT;
 
-	public boolean getStochastic() {
+	public Boolean getStochastic() {
 		return stochastic;
 	}
 
@@ -54,5 +54,4 @@ public class ProjectInputType {
 	public void setDeterministicInput(InputType deterministicInput) {
 		this.deterministicInput = deterministicInput;
 	}
-
 }

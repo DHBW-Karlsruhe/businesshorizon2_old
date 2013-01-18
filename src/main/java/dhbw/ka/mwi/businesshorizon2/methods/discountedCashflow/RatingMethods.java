@@ -22,5 +22,4 @@ public abstract class RatingMethods {
 	}
 
 	public abstract CompanyValue calculateCompanyValue();
-
 }

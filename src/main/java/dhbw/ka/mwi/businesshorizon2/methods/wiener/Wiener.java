@@ -40,5 +40,4 @@ public class Wiener extends AbstractStochasticMethod {
 		return false;
 
 	}
-
 }

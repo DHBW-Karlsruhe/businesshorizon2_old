@@ -43,6 +43,7 @@ public class AnalysisTimeseries {
 	 * @return double Varianz der Zeitreihe
 	 */
 	private double calculateVariance(DoubleArrayList DoubleArrayListTimeseries) {
+
 		double variance = Descriptive.variance(DoubleArrayListTimeseries.size(),
 				Descriptive.sum(DoubleArrayListTimeseries), Descriptive.sumOfSquares(DoubleArrayListTimeseries));
 		logger.debug("Variance of Timeseries calculated.");
@@ -210,6 +211,7 @@ public class AnalysisTimeseries {
 		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
 		this.matrixValutaions = calculateValuations(consideredPeriodsOfPast);
 		this.yuleWalkerVariance = this.calculateMatrixVariance(previousValues);
+
 		WhiteNoise whiteNoise = new WhiteNoise(this.yuleWalkerVariance);
 		this.equalizedValues = new double[periodsToForecast];
 
@@ -250,4 +252,5 @@ public class AnalysisTimeseries {
 		}
 		return returnValues;
 	}
+
 }

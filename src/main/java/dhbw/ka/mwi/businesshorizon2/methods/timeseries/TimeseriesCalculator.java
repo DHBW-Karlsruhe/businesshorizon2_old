@@ -361,4 +361,5 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	public Boolean getImplemented() {
 		return true;
 	}
+
 }
