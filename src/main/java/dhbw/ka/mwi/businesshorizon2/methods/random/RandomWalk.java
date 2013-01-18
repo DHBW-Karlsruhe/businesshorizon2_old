@@ -83,7 +83,7 @@ public class RandomWalk extends AbstractStochasticMethod {
 			}
 			period.setFreeCashFlow(berechneZufallszahl(project
 					.getCashFlowProbabilityOfRise())
-					* getCashFlowProbabilityStepRange() + previousValueCF);
+					* project.getCashFlowStepRange() + previousValueCF);
 			period.setBorrowedCapital(berechneZufallszahl(project
 					.getBorrowedCapitalProbabilityOfRise())
 					* project.getBorrowedCapitalStepRange() + previousValueBC);
