@@ -45,16 +45,16 @@ public class RandomWalk extends AbstractStochasticMethod {
 	 * @param Entwicklungswahrscheinlichkeit
 	 * @return Entwicklungsindikator
 	 */
-	private int berechneZufallszahl(double p) {
-		int zufallszahl;
+	private int calculateRandomNumber(double p) {
+		int randomNumber;
 
 		if ((Math.random() * (1 - 0) + 0) < p) {
-			zufallszahl = 1;
+			randomNumber = 1;
 		} else {
-			zufallszahl = -1;
+			randomNumber = -1;
 		}
 
-		return zufallszahl;
+		return randomNumber;
 	}
 
 	@Override
@@ -82,10 +82,10 @@ public class RandomWalk extends AbstractStochasticMethod {
 					previousValueCF = lastPeriod.getFreeCashFlow();
 					previousValueBC = lastPeriod.getBorrowedCapital();
 				}
-				period.setFreeCashFlow(berechneZufallszahl(project
+				period.setFreeCashFlow(calculateRandomNumber(project
 						.getCashFlowProbabilityOfRise())
 						* project.getCashFlowStepRange() + previousValueCF);
-				period.setBorrowedCapital(berechneZufallszahl(project
+				period.setBorrowedCapital(calculateRandomNumber(project
 						.getBorrowedCapitalProbabilityOfRise())
 						* project.getBorrowedCapitalStepRange()
 						+ previousValueBC);
@@ -93,8 +93,20 @@ public class RandomWalk extends AbstractStochasticMethod {
 				cFPContainer.addPeriod(period);
 			}
 			prognose.add(cFPContainer);
+			if (callback != null && iteration % 200 == 0) {
+				// Alle 200 Iterationen ein Update für das Callback
+				callback.onProgressChange((iteration * project
+						.getPeriodsToForecast())
+						/ (project.getIterations() * project
+								.getPeriodsToForecast()));
+				Thread.interrupted();
+			}
 		}
-		return new StochasticResultContainer(prognose);
+		StochasticResultContainer src = new StochasticResultContainer(prognose);
+		if (callback != null) {
+			callback.onComplete(src);
+		}
+		return src;
 	}
 
 }
