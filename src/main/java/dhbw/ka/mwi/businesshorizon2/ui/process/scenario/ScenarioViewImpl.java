@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
@@ -116,7 +117,9 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		
 		final Label scenarioName = new Label("<strong>Szenario " + number + "</strong>");
 		scenarioName.setContentMode(Label.CONTENT_XHTML);
+		scenarioComponents.put("label", scenarioName);
 		formLeft.addComponent(scenarioName);
+		scenarioName.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		
 		final CheckBox cbBerechnungEinbezug = new CheckBox("In Berechnung einbeziehen");
 		cbBerechnungEinbezug.setValue(isIncludeInCalculation);
@@ -135,35 +138,75 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		formRight.addComponent(cbBerechnungEinbezug);
 		
 		final TextField tfEigenkapital = new TextField("Renditeforderung Eigenkapital: ");
-		tfEigenkapital.setValue(rateReturnEquity);
+		if(!"0.0".equals(rateReturnEquity)) {
+			tfEigenkapital.setValue(rateReturnEquity);
+		}
 		tfEigenkapital.setImmediate(true);
 		tfEigenkapital.addListener(changeListener);
 		scenarioComponents.put("rateReturnEquity", tfEigenkapital);
 		formLeft.addComponent(tfEigenkapital);
 		
 		final TextField tfFremdkapital = new TextField("Renditeforderung Fremdkapital: ");
-		tfFremdkapital.setValue(rateReturnCapitalStock);
+		if(!"0.0".equals(rateReturnCapitalStock)) {
+			tfFremdkapital.setValue(rateReturnCapitalStock);
+		}
 		tfFremdkapital.setImmediate(true);
 		tfFremdkapital.addListener(changeListener);
 		scenarioComponents.put("rateReturnCapitalStock", tfFremdkapital);
 		formLeft.addComponent(tfFremdkapital);
 		
 		final TextField tfGewerbesteuer = new TextField("Gewerbesteuer: ");
-		tfGewerbesteuer.setValue(businessTax);
+		if(!"0.0".equals(businessTax)) {
+			tfGewerbesteuer.setValue(businessTax);
+		}
 		tfGewerbesteuer.setImmediate(true);
 		tfGewerbesteuer.addListener(changeListener);
 		scenarioComponents.put("businessTax", tfGewerbesteuer);
 		formRight.addComponent(tfGewerbesteuer);
 		
 		final TextField tfKoerperschaftssteuer = new TextField("K\u00F6rperschaftssteuer mit Solidarit\u00E4tszuschlag: ");
-		tfKoerperschaftssteuer.setValue(corporateAndSolitaryTax);
+		if(!"0.0".equals(corporateAndSolitaryTax)) {
+			tfKoerperschaftssteuer.setValue(corporateAndSolitaryTax);
+		}
 		tfKoerperschaftssteuer.setImmediate(true);
 		tfKoerperschaftssteuer.addListener(changeListener);
 		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
 		formRight.addComponent(tfKoerperschaftssteuer);
 		
+		final Button removeProject = new Button("Projekt entfernen");
+		removeProject.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.removeScenario(number);
+			}
+			
+		});
+		formLeft.addComponent(removeProject);
+		
+		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		formRight.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		
+		scenarioComponents.put("scenario", hlScenario);
+		
 		this.scenarios.add(scenarioComponents);
 		this.vlScenarios.addComponent(hlScenario);
+	}
+	
+	public void updateLabels() {
+		int number = 1;
+		
+		for(HashMap<String, AbstractComponent> scenarioComponents : this.scenarios) {
+			((Label) scenarioComponents.get("label")).setValue("<strong>Szenario " + number + "</strong>");
+			number++;
+		}
+	}
+	
+	public void removeScenario(final int number) {
+		logger.debug("Removing scenario from view");
+		this.vlScenarios.removeComponent(this.scenarios.get(number).get("scenario"));
+		this.scenarios.remove(number);
 	}
 	
 	public boolean getIncludedInCalculation(int scenarioNumber) {
