@@ -85,7 +85,6 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	@Override
 	public void validate(ValidateContentStateEvent event) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@EventHandler

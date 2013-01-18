@@ -12,8 +12,8 @@ public class DiscountedCashFlow extends RatingMethods {
 
 	@Override
 	public CompanyValueStochastic calculateCompanyValue() {
-
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

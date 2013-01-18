@@ -34,7 +34,6 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	private static final long serialVersionUID = 1L;
 
 	private final Logger logger = Logger.getLogger(TimeseriesCalculator.class);
-
 	public AbstractPeriodContainer periodsBSI;
 
 	@Override
@@ -358,4 +357,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		return resultContainer;
 	}
 
+	@Override
+	public Boolean getImplemented() {
+		return true;
+	}
 }

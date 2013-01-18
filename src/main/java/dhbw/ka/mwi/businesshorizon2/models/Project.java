@@ -64,7 +64,6 @@ public class Project implements Serializable {
 
 	public Project() {
 		this.projectInputType = new ProjectInputType();
-
 	}
 
 	/**
@@ -160,6 +159,7 @@ public class Project implements Serializable {
 	}
 
 	public ProjectInputType getProjectInputType() {
+
 		return projectInputType;
 	}
 

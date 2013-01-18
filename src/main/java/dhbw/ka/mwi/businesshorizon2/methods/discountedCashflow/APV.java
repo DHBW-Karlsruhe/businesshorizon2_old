@@ -172,5 +172,4 @@ public class APV extends RatingMethods {
 	private double calculateTaxBenefitst(double s, double rateReturnCapitalStock, double capitalStock, double taxBenefit) {
 		return ((s * rateReturnCapitalStock * capitalStock + taxBenefit) / (1 + rateReturnCapitalStock));
 	}
-
 }

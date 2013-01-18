@@ -1,5 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
 /**
@@ -10,5 +11,20 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
  *
  */
 public interface MethodViewInterface extends ContentView {
+	
+	public void showMethod(AbstractStochasticMethod method);
+	
+	public void enableOptions();
+	
+	public void enableMethodSelection(Boolean state);
+	
+	public void showInputMethodSelection(Boolean stochastic, Boolean checked);
+	
+	public void selectInput(Boolean stochastic,String selected);
+	
+	public void showErrorNoMethodSelected(Boolean state);
+	
+	public void showErrorNothingSelected(Boolean state);
+
 
 }
