@@ -16,7 +16,7 @@ public interface TimelineViewInterface extends ContentView {
 	
 	public void removePastPeriod();
 	
-	public void setPeriodValid(int year, boolean isValid);
+	//public void setPeriodValid(int year, boolean isValid);
 	
 	public void setPastButtonAccess(boolean usable);
 	

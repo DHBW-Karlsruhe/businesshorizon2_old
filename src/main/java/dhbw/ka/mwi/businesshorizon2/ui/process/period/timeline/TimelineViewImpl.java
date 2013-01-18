@@ -2,6 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Button;
@@ -31,6 +32,8 @@ public class TimelineViewImpl extends VerticalLayout implements
 	NativeButton delPast, delFuture;
 
 	Button past, future;
+	
+	Logger logger = Logger.getLogger(TimelineViewImpl.class);
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -65,7 +68,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.removeLastFuturePeriod(((PeriodButton) layout
-						.getComponent(layout.getRows(), 0)).getPeriod());
+						.getComponent(0, layout.getRows()-1)).getPeriod());
 			}
 		});
 
@@ -91,8 +94,10 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	@Override
 	public void removeFuturePeriod() {
+		logger.debug(""+layout.getRows());
 		layout.removeRow(layout.getRows() - 1);
-		if (layout.getComponent(1, layout.getRows() - 1).getCaption()
+		logger.debug(""+layout.getRows());
+		if (((PeriodButton)layout.getComponent(0, layout.getRows() - 1)).getCaption()
 				.startsWith("Basis")) {
 
 		} else
@@ -102,18 +107,18 @@ public class TimelineViewImpl extends VerticalLayout implements
 	@Override
 	public void removePastPeriod() {
 		layout.removeRow(0);
-		if (layout.getComponent(1, 0).getCaption().startsWith("Basis")) {
+		if (layout.getComponent(0, 0).getCaption().startsWith("Basis")) {
 
 		} else
 			layout.addComponent(delPast, 1, 0);
 	}
-
+/*
 	@Override
 	public void setPeriodValid(int year, boolean isValid) {
 		// TODO Auto-generated method stub
 
 	}
-
+*/
 	@Override
 	public void setPastButtonAccess(boolean usable) {
 		past.setEnabled(usable);
@@ -158,11 +163,10 @@ public class TimelineViewImpl extends VerticalLayout implements
 					}
 				});
 		pB.setPeriod(period);
-
-		layout.newLine();
-		layout.addComponent(pB);
+		layout.setRows(layout.getRows()+1);
+		layout.addComponent(pB,0,layout.getRows()-1);
 		layout.removeComponent(delFuture);
-		layout.addComponent(delFuture);
+		layout.addComponent(delFuture,1,layout.getRows()-1);
 
 	}
 

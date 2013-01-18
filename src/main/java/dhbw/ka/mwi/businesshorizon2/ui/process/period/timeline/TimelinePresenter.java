@@ -226,10 +226,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			}
 
 		}
-		if(!stochastic)
-			getView().setPastButtonAccess(false);
-		if(!deterministic)
-			getView().setFutureButtonAccess(false);
+			getView().setPastButtonAccess(stochastic);
+			getView().setFutureButtonAccess(deterministic);
 
 	}
 
@@ -238,10 +236,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		switch(inputType){
 		case TOTAL:
 			container = new AggregateCostMethodBalanceSheetPeriodContainer();
+			break;
 		case REVENUE:
 			container = new CostOfSalesMethodPeriodContainer();
+			break;
 		case DIRECT:
 			container = new CashFlowPeriodContainer();
+			break;
 		}
 	}
 
@@ -333,11 +334,36 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		logger.debug("Container created!");
 		createContainer(pastPeriods, projectProxy.getSelectedProject().getProjectInputType().getStochasticInput());
 		createContainer(futurePeriods, projectProxy.getSelectedProject().getProjectInputType().getDeterministicInput());
-		getView().addBasePeriod(new CashFlowPeriod(baseYear));
 		deterministic =projectProxy.getSelectedProject().getProjectInputType()
 				.getDeterministic();
 		stochastic =projectProxy.getSelectedProject().getProjectInputType()
 				.getStochastic();
+		if(stochastic){
+			switch(projectProxy.getSelectedProject().getProjectInputType().getStochasticInput()){
+			case REVENUE:
+				getView().addBasePeriod(new CostOfSalesMethodPeriod(baseYear));
+				break;
+			case TOTAL:
+				getView().addBasePeriod(new AggregateCostMethodPeriod(baseYear));
+				break;
+			case DIRECT:
+				getView().addBasePeriod(new CashFlowPeriod(baseYear));
+				break;
+			}
+		}else{
+			switch(projectProxy.getSelectedProject().getProjectInputType().getDeterministicInput()){
+			case REVENUE:
+				getView().addBasePeriod(new CostOfSalesMethodPeriod(baseYear));
+				break;
+			case TOTAL:
+				getView().addBasePeriod(new AggregateCostMethodPeriod(baseYear));
+				break;
+			case DIRECT:
+				getView().addBasePeriod(new CashFlowPeriod(baseYear));
+				break;
+			}
+			
+		}
 
 	}
 
@@ -361,6 +387,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void addPastPeriod() {
 		addPastPeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getStochasticInput());
+		
 
 	}
 
@@ -385,12 +412,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void removeLastFuturePeriod(PeriodInterface period) {
 		getView().removeFuturePeriod();
 		futurePeriods.removePeriod(period);
+		sumFuturePeriods--;
 	}
 
 	public void removeLastPastPeriod(PeriodInterface periodInterface) {
 		getView().removePastPeriod();
 		pastPeriods.removePeriod(periodInterface);
-
+		sumPastPeriods--;
 	}
 
 }
