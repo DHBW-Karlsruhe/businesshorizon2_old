@@ -36,7 +36,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ShowScenarioViewEvent;
 public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("ContentContainerPresenter.class");
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private EventBus eventBus;
@@ -58,7 +58,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 
 	private int stepNumber;
 	
-	private boolean isActualViewValid = true;
+	private boolean isActualViewValid = false;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 

@@ -88,10 +88,16 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 * @author Julius Hacker
 	 */
 	public void addScenario() {
-		Szenario scenario = new Szenario();
+		Szenario scenario = new Szenario(0.0, 0.0, 0.0, 0.0, true);
 		this.projectProxy.getSelectedProject().addScenario(scenario);
 		
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), this.projectProxy.getSelectedProject().getScenarios().size());
+	}
+	
+	public void removeScenario(int number) {
+		this.projectProxy.getSelectedProject().getScenarios().remove(number-1);
+		getView().removeScenario(number-1);
+		getView().updateLabels();
 	}
 	
 	/**
@@ -147,6 +153,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	@Override
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
+		logger.debug(this.isValid());
 		if(!this.isValid()) {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO, this.showErrors));
 			logger.debug("Scenario not valid, InvalidStateEvent fired");
@@ -170,8 +177,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		try {
 			Double rateReturnEquity = Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnEquity"));
 			
-			if(rateReturnEquity < 0) {
-				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
+			if(rateReturnEquity < 0 || rateReturnEquity > 100) {
+				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
 			
 			getView().setValid(scenarioNumber, "rateReturnEquity");
@@ -199,8 +206,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		try {
 			Double rateReturnCapitalStock = Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnCapitalStock"));
 			
-			if(rateReturnCapitalStock < 0) {
-				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
+			if(rateReturnCapitalStock < 0 || rateReturnCapitalStock > 100) {
+				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
 
 			getView().setValid(scenarioNumber, "rateReturnCapitalStock");
@@ -228,8 +235,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		try {
 			Double businessTax = Double.parseDouble(getView().getValue(scenarioNumber, "businessTax"));
 			
-			if(businessTax < 0) {
-				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
+			if(businessTax < 0 || businessTax > 100) {
+				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
 			
 
@@ -259,8 +266,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		try {
 			Double corporateAndSolitaryTax = Double.parseDouble(getView().getValue(scenarioNumber, "corporateAndSolitaryTax"));
 			
-			if(corporateAndSolitaryTax < 0) {
-				throw new IllegalValueException("corporateAndSolitaryTax kleiner 0");
+			if(corporateAndSolitaryTax < 0 || corporateAndSolitaryTax > 100) {
+				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
 			
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
@@ -311,6 +318,8 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
+	
+	
 	public boolean isShowErrors() {
 		return showErrors;
 	}
