@@ -19,9 +19,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUmsatzViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInterface;
 
 /**
@@ -51,6 +55,18 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	
 	@Autowired
 	private GesamtViewInterface gesamtView;
+	
+	@Autowired
+	private TimelinePresenter timelinePresenter;
+	
+	@Autowired
+	private UmsatzPresenter umsatzPresenter;
+	
+	@Autowired
+	private DirektPresenter direktPresenter;
+	
+	@Autowired
+	private GesamtPresenter gesamtPresenter;
 	
 	@Autowired
 	private EventBus eventBus;
@@ -99,8 +115,8 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return true;
 	}
 
 

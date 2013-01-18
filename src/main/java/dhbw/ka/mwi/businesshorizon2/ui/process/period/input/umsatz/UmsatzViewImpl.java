@@ -7,10 +7,16 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Form;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
@@ -30,9 +36,9 @@ public class UmsatzViewImpl extends VerticalLayout implements UmsatzViewInterfac
 	private UmsatzPresenter presenter;
 	
 
-	private VerticalLayout panel = new VerticalLayout();
+private GridLayout panel = new GridLayout(2,1);
 	
-	private Logger logger = Logger.getLogger(DirektViewImpl.class);
+	private Logger logger = Logger.getLogger(UmsatzViewImpl.class);
 	
 
 	/**
@@ -40,59 +46,50 @@ public class UmsatzViewImpl extends VerticalLayout implements UmsatzViewInterfac
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
 	 * View-Komponenten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Perioden"
+	 * Erstelle das GUI zum zur Eingabe
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
-	private void generateUi() {
 	
+
+	@Override
+	public void addInputField(String pd, double initialContent) {
+		TextField tf = new TextField(pd,""+initialContent);
+		tf.setWriteThrough(true);
+		
+		tf.addListener(new Property.ValueChangeListener() {
+			
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				// TODO Auto-generated method stub
+				TextField tf = (TextField)event.getProperty();
+				presenter.validateChange((String) tf.getValue(), panel.getComponentArea(tf).getColumn1(),panel.getComponentArea(tf).getRow1(), tf.getCaption());
+			}
+		});
+		panel.addComponent(tf);
+		tf.setTextChangeEventMode(TextChangeEventMode.EAGER);
 	}
-	public void setForm(CostOfSalesMethodPeriod period) {
+
+	@Override
+	public void setWrong(int textFieldColumn,int Row, boolean b) {
+		if(b)
+		((TextField)panel.getComponent(textFieldColumn, Row)).setComponentError(new UserError("Die Eingabe muss eine Zahl sein!"));
+	}
+
+	@Override
+	public void initForm() {
 		this.removeAllComponents();
 		panel.removeAllComponents();
 		this.addComponent(panel);
-		
-		BeanItem<CostOfSalesMethodPeriod> periodItem = new BeanItem<CostOfSalesMethodPeriod>(period);
-		final Form periodForm = new Form();
-		periodForm.setCaption("Umsatzkostenverfahren");
-		
-		periodForm.setInvalidCommitted(false);
-		periodForm.setWriteThrough(true);
-		
-		periodForm.setFormFieldFactory(new periodFormFactory());
-		periodForm.setItemDataSource(periodItem);
-		
-		for(Object i :periodItem.getItemPropertyIds())
-			logger.debug(i.toString());
-		
-		periodForm.setVisibleItemProperties(Arrays.asList(new String[] {
-				"cashAssets","borrowedCapital", "claims","euqity","financialValue","immaterialFortune","propertyValue","provisions","stocks","suplies",
-				"costOfProduction","costOfSalesAdministrationOthers","otherBusinessRevenue","salesRevenue"
-		}));
-		panel.addComponent(periodForm);
-		logger.debug("Form hinzugefügt");
-		
-		 Button apply = new Button("Übernehmen", new Button.ClickListener() {
-	            public void buttonClick(ClickEvent event) {
-	                try {
-	                	periodForm.commit();
-	                } catch (Exception e) {
-	                    // Ignored, we'll let the Form handle the errors
-	                }
-	            }
-	        });
-		 
-		 periodForm.getFooter().addComponent(apply);
-		 logger.debug("Button erstellt und hinzugefügt");
-		
+		panel.setSpacing(true);
+		panel.setMargin(true);
 	}
 }

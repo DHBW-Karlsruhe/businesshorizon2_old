@@ -12,6 +12,8 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 
+
+	
 	private double salesRevenue; // Umsatzerlöse
 	private double otherBusinessRevenue; // Sonstige betriebliche Erträge
 	private double internallyProducedAndCapitalizedAssets; // Andere aktivierte

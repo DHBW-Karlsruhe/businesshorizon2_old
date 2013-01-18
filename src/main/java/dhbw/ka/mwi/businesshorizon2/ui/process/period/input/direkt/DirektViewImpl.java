@@ -7,10 +7,18 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Form;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
@@ -28,7 +36,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	@Autowired
 	private DirektPresenter presenter;
 	
-	private VerticalLayout panel = new VerticalLayout();
+	private GridLayout panel = new GridLayout(2,1);
 	
 	private Logger logger = Logger.getLogger(DirektViewImpl.class);
 	
@@ -43,7 +51,6 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
 	}
 
 	/**
@@ -51,47 +58,38 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	 * 
 	 * @author Daniel Dengler
 	 */
-	private void generateUi() {
+	
+
+	@Override
+	public void addInputField(String pd, double initialContent) {
+		TextField tf = new TextField(pd,""+initialContent);
+		tf.setWriteThrough(true);
 		
+		tf.addListener(new Property.ValueChangeListener() {
+			
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				// TODO Auto-generated method stub
+				TextField tf = (TextField)event.getProperty();
+				presenter.validateChange((String) tf.getValue(), panel.getComponentArea(tf).getColumn1(),panel.getComponentArea(tf).getRow1(), tf.getCaption());
+			}
+		});
+		panel.addComponent(tf);
+		tf.setTextChangeEventMode(TextChangeEventMode.EAGER);
 	}
 
 	@Override
-	public void setForm(CashFlowPeriod period) {
+	public void setWrong(int textFieldColumn,int Row, boolean b) {
+		if(b)
+		((TextField)panel.getComponent(textFieldColumn, Row)).setComponentError(new UserError("Die Eingabe muss eine Zahl sein!"));
+	}
+
+	@Override
+	public void initForm() {
 		this.removeAllComponents();
 		panel.removeAllComponents();
 		this.addComponent(panel);
-		
-		BeanItem<CashFlowPeriod> periodItem = new BeanItem<CashFlowPeriod>(period);
-		final Form periodForm = new Form();
-		periodForm.setCaption("Direkte Eingabe");
-		
-		periodForm.setInvalidCommitted(false);
-		periodForm.setWriteThrough(true);
-		
-		periodForm.setFormFieldFactory(new periodFormFactory());
-		periodForm.setItemDataSource(periodItem);
-		
-		for(Object i :periodItem.getItemPropertyIds())
-			logger.debug(i.toString());
-		
-		periodForm.setVisibleItemProperties(Arrays.asList(new String[] {
-				"freeCashFlow","borrowedCapital"
-		}));
-		panel.addComponent(periodForm);
-		logger.debug("Form hinzugefügt");
-		
-		 Button apply = new Button("Übernehmen", new Button.ClickListener() {
-	            public void buttonClick(ClickEvent event) {
-	                try {
-	                	periodForm.commit();
-	                } catch (Exception e) {
-	                    // Ignored, we'll let the Form handle the errors
-	                }
-	            }
-	        });
-		 
-		 periodForm.getFooter().addComponent(apply);
-		 logger.debug("Button erstellt und hinzugefügt");
-		
+		panel.setSpacing(true);
+		panel.setMargin(true);
 	}
 }
