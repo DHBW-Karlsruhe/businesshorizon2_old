@@ -132,6 +132,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	 * @author Julius Hacker
 	 */
 	public void showNextStep() {
+		logger.debug("Aktuelle View: " + this.stepNumber + ", valid: " + this.isActualViewValid);
 		if(this.isActualViewValid) {
 			NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
 			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);

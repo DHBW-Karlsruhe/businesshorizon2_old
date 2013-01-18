@@ -227,6 +227,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		getView().setComponentError(false, "iterations", null);
 		logger.debug("Iterationen in Objekten gesetzt: "
 				+ this.projectProxy.getSelectedProject().getName());
+		
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -269,6 +272,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
 		}
 
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -308,6 +313,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'. <br> Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. <br> Beispiel: 10");
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
+		
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -348,7 +356,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. <br> Beispiel: 2015");
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
 		}
+		
 
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -370,6 +380,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} else {
 			// Liste deaktivieren
 		}
+		
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -382,6 +395,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 *            String mit Namen des gewaehlten Branchenvertreters
 	 */
 	public void industryRepresentativeListItemChosen(String selected) {
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
