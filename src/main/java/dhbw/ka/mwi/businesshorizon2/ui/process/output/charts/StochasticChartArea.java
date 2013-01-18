@@ -47,20 +47,22 @@ public class StochasticChartArea extends GridLayout {
 		this.addComponent(cvChart, 0, 0);
 
 		// Chart zur Anzeige des Cashflow Verlaufs
-		List<String> cfChartLines = new ArrayList<String>();
-		cfChartLines.add("Erwartete Cashflows");
+		if (periods != null) {
+			List<String> cfChartLines = new ArrayList<String>();
+			cfChartLines.add("Erwartete Cashflows");
 
-		Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
+			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
-		BasicLineChart cfChart = new BasicLineChart(cfChartLines);
+			BasicLineChart cfChart = new BasicLineChart(cfChartLines);
 
-		for (CashFlowPeriod period : periods) {
-			cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
+			for (CashFlowPeriod period : periods) {
+				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
 
+			}
+
+			cfChart.addValues(cfChartValues);
+			this.addComponent(cfChart, 0, 1);
 		}
-
-		cfChart.addValues(cfChartValues);
-		this.addComponent(cfChart, 0, 1);
 
 		this.setHeight("600px");
 		this.setWidth("2000px");

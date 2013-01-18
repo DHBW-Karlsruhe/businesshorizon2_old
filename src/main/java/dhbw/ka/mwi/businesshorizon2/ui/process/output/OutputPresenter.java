@@ -1,5 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
+import java.util.TreeSet;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -12,10 +14,12 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
@@ -44,6 +48,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 
 	private Project project;
 
+	private TreeSet<CashFlowPeriod> expectedCashFlows;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
@@ -56,6 +62,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 		eventBus.addHandler(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onShowOutputView(ShowOutputViewEvent event) {
 
@@ -65,6 +72,18 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				try {
 					if (method.getSelected()) {
+
+						// Bei Verwendung der Zeitreihenanalyse sollen
+						// zusätzlich
+						// die Erwartungswerte der Cashflows berechnet werden
+						if (method.getName() == "Zeitreihenanalyse") {
+							TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
+							StochasticResultContainer src = timeseriesCalculator.calculateExpectedValues(project);
+
+							expectedCashFlows = (TreeSet<CashFlowPeriod>) src.getPeriodContainers().first()
+									.getPeriods();
+						}
+
 						method.calculate(project, this);
 					}
 				} catch (StochasticMethodException e) {
@@ -116,7 +135,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 		for (Szenario scenario : project.getScenarios()) {
 			APV apv = new APV(result, scenario);
 			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv.calculateCompanyValue();
-			StochasticChartArea stochasticChartArea = new StochasticChartArea(null, companyValue.getCompanyValues());
+			StochasticChartArea stochasticChartArea = new StochasticChartArea(expectedCashFlows,
+					companyValue.getCompanyValues());
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
 
