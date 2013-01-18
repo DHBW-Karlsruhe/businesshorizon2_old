@@ -32,15 +32,30 @@ public class StochasticChartArea extends GridLayout {
 		// Chart zur Anzeige der Unternehmenswerte
 		List<String> cvChartColumns = new ArrayList<String>();
 		cvChartColumns.add("Häufigkeit des Unternehmenswert");
+		cvChartColumns.add("Erwartungswert");
 
 		Map<String, double[]> cvChartValues = new LinkedHashMap<String, double[]>();
 
 		BasicColumnChart cvChart = new BasicColumnChart("Unternehmenswert", cvChartColumns);
 
+		String expectedCompanyValue = "";
+		double expectedCompanyValueFreq = 0;
+
 		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
+
 			cvChartValues.put(Double.toString(companyValue.getKey()),
 					new double[] { companyValue.getValue().getCount() });
+
+			// Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
+			// Häufigkeit)
+			if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
+				expectedCompanyValue = Double.toString(companyValue.getKey());
+				expectedCompanyValueFreq = companyValue.getValue().getCount();
+			}
+
 		}
+
+		cvChartValues.put(expectedCompanyValue, new double[] { 0, expectedCompanyValueFreq });
 
 		cvChart.addValues(cvChartValues);
 
