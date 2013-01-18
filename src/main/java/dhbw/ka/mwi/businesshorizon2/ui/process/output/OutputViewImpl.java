@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
@@ -25,6 +26,8 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 
 	private VerticalLayout outputArea;
 
+	private ProgressIndicator progressIndicator;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -45,7 +48,13 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	 */
 	private void generateUi() {
 
+		progressIndicator = new ProgressIndicator();
+		progressIndicator.setIndeterminate(true);
+		progressIndicator.setEnabled(true);
+
 		outputArea = new VerticalLayout();
+
+		addComponent(progressIndicator);
 		addComponent(outputArea);
 
 	}
@@ -68,7 +77,11 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 
 	@Override
 	public void changeProgress(float progress) {
-		// TODO Auto-generated method stub
+		if (progress == 1) {
+			progressIndicator.setEnabled(false);
+		} else {
+			progressIndicator.setEnabled(true);
+		}
 
 	}
 

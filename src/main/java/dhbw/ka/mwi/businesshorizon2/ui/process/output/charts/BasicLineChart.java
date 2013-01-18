@@ -16,9 +16,7 @@ public class BasicLineChart extends LineChart {
 
 	private static final long serialVersionUID = 1L;
 
-	public BasicLineChart(String xAxisLabel, List<String> lines) {
-
-		addXAxisLabel(xAxisLabel);
+	public BasicLineChart(List<String> lines) {
 
 		for (String line : lines) {
 			addLine(line);

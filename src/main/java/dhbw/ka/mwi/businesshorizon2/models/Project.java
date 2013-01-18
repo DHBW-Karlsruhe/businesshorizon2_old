@@ -53,6 +53,7 @@ public class Project implements Serializable {
 	 *            Name des Projekts
 	 */
 	public Project(String name) {
+		this.projectInputType = new ProjectInputType();
 		this.name = name;
 	}
 

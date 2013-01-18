@@ -15,13 +15,14 @@ import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
@@ -60,7 +61,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 
 		project = projectProxy.getSelectedProject();
 
-		if (project.getMethods() != null) {
+		if (project.getProjectInputType().getStochastic()) {
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				try {
 					method.calculate(project, this);
@@ -72,7 +73,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 			}
 
 		}
-		// if deterministische Vorhersage
+
+		if (project.getProjectInputType().getDeterministic()) {
+
+		}
 
 	}
 
@@ -99,13 +103,19 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 
 	}
 
+	/**
+	 * Wenn die Berechnung der stochastisch vorhergesagten Perioden erfolgreich
+	 * durchlaufen wurde, dann kann der Unternehmenswert berechnet werden
+	 * 
+	 */
 	@Override
 	public void onComplete(StochasticResultContainer result) {
 		for (Szenario scenario : project.getScenarios()) {
 			APV apv = new APV(result, scenario);
-			CompanyValue companyValue = apv.calculateCompanyValue();
-
+			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv.calculateCompanyValue();
+			StochasticChartArea stochasticChartArea = new StochasticChartArea(null, companyValue.getCompanyValues());
 			getView().changeProgress(1);
+			getView().addStochasticChartArea(stochasticChartArea);
 
 		}
 
