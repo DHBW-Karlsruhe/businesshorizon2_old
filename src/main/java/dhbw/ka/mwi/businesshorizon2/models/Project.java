@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -40,9 +41,10 @@ public class Project implements Serializable {
 	protected ProjectInputType projectInputType;
 
 	@Autowired
-	private SortedSet<AbstractStochasticMethod> methods;
+	private SortedSet<AbstractStochasticMethod> methods;	
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
+
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
@@ -61,8 +63,10 @@ public class Project implements Serializable {
 	 * @author Christian Scherer
 	 */
 
+
 	public Project() {
 		this.projectInputType = new ProjectInputType();
+
 
 	}
 
@@ -161,6 +165,7 @@ public class Project implements Serializable {
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
 	}
+
 
 	/**
 	 * Setzt den Namen des Projekts.

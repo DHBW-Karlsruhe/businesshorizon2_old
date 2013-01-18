@@ -111,33 +111,22 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Diese Methode berechnet die Varianz auf Basis der YuleWalkerGleichung.
-	 * Die Varianz wird fuer die Berechnung des weissen Rauschens benoetigt.
+	 * Diese Methode berechnet die Varianz, die relevant ist für das weiße
+	 * Rauschen. Die übergebene Zeitreihe muss stationaer sein.
 	 * 
-	 * @param matrix
-	 *            Matrix aus der die Varianz berechnet werden soll
-	 * @return double Varianz aus YuleWalkerGleichung
+	 * @param double[] timeseries trendbereinigte Vergangenheitswerte
+	 * @return double Varianz für das weiße Rauschen
 	 * 
 	 * @author Kai Westerholz
 	 */
-	private double calculateMatrixVariance(int consideredPeriodsOfPast)
-			throws StochasticMethodException {
+	private double calculateMatrixVariance(double[] timeseries) {
 
-		this.matrixValutaions = calculateValuations(consideredPeriodsOfPast);
-		double variance = calculateAutoCorrelation(0);
-		for (int i = 1; i <= consideredPeriodsOfPast; i++) {
-			variance -= this.matrixValutaions.get(i - 1, 0)
-					* calculateAutoCorrelation(i);
+		double sum = 0;
+		for (int i = 0; i < timeseries.length; i++) {
+			sum += Math.pow(timeseries[i] - this.mean, 2) / timeseries.length;
 		}
-		if (variance < 0) {
-			String errorMessage = "Exception: YuleWalker-Variance is negative!";
-			logger.debug(errorMessage);
-			throw new VarianceNegativeException(errorMessage);
-		} else {
-			logger.debug("Variance of Yule-Walker-Equitation calculated: "
-					+ variance + ".");
-			return variance;
-		}
+		logger.debug("" + Math.sqrt(sum));
+		return Math.sqrt(sum);
 	}
 
 	/**
@@ -197,7 +186,7 @@ public class AnalysisTimeseries {
 
 	/**
 	 * Diese Methode berechnet den prognostizierten Wert fuer die Periode auf
-	 * Basis der beobachteten Zeitreihe
+	 * Basis der beobachteten Zeitreihe.
 	 * 
 	 * @author Kai Westerholz
 	 */
@@ -233,8 +222,8 @@ public class AnalysisTimeseries {
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
 		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
-		this.yuleWalkerVariance = this
-				.calculateMatrixVariance(consideredPeriodsOfPast);
+		this.matrixValutaions = calculateValuations(consideredPeriodsOfPast);
+		this.yuleWalkerVariance = this.calculateMatrixVariance(previousValues);
 
 		WhiteNoise whiteNoise = new WhiteNoise(this.yuleWalkerVariance);
 		this.equalizedValues = new double[periodsToForecast];
@@ -305,8 +294,7 @@ public class AnalysisTimeseries {
 		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
 		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
 
-		this.yuleWalkerVariance = this
-				.calculateMatrixVariance(consideredPeriodsOfPast);
+		this.yuleWalkerVariance = this.calculateMatrixVariance(previousValues);
 
 		this.equalizedValues = new double[periodsToForecast];
 

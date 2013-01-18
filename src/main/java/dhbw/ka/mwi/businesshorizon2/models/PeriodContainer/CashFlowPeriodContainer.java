@@ -1,6 +1,8 @@
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
 import java.util.TreeSet;
+
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 
 /**
  * Diese Klasse stellt einen Zeitreihe von CashFlow Perioden dar.

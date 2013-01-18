@@ -7,15 +7,15 @@ import org.apache.log4j.Logger;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
-import dhbw.ka.mwi.businesshorizon2.models.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.AggregateCostMethodBalanceSheetPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.AggregateCostMethodPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.CostOfSalesMethodPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.CostOfSalesMethodPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+import dhbw.ka.mwi.businesshorizon2.models.Period.AggregateCostMethodPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AggregateCostMethodBalanceSheetPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CostOfSalesMethodPeriodContainer;
 
 /**
  * Diese Klasse steuert den Aufruf der Zeitreihenanalyse. Es gibt drei Szenarien
@@ -32,7 +32,7 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 
 public class TimeseriesCalculator extends AbstractStochasticMethod {
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(TimeseriesCalculator.class);
+	private final Logger logger = Logger.getLogger(TimeseriesCalculator.class);
 	public AbstractPeriodContainer periodsBSI;
 
 	@Override
@@ -545,6 +545,11 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		}
 
 		return resultContainer;
+	}
+
+	@Override
+	public Boolean getImplemented() {
+		return true;
 	}
 
 }

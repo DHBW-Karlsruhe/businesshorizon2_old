@@ -1,4 +1,4 @@
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 /**
  * Diese Klasse bildet eine Periode nach dem Umsatzkosten Verfahren ab.
@@ -8,7 +8,7 @@ package dhbw.ka.mwi.businesshorizon2.models;
  */
 
 public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
-	private int year;
+	private final int year;
 
 	private double salesRevenue; // Umsatzerlöse
 	private double otherBusinessRevenue; // sonstige betriebliche Erträge
@@ -18,6 +18,10 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 													// sonstige betriebliche
 													// Aufwendung
 
+	public CostOfSalesMethodPeriod(int year) {
+		this.year = year;
+	}
+
 	/**
 	 * Diese Methode soll aus den Bilanzwerten den FreeCashFlow berechnen.
 	 */
@@ -25,11 +29,6 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	public double getFreeCashFlow() {
 		// TODO calculate FreeCashFlow aus Bilanz
 		return 0;
-	}
-
-	public CostOfSalesMethodPeriod(int year) {
-		super();
-		this.year = year;
 	}
 
 	@Override

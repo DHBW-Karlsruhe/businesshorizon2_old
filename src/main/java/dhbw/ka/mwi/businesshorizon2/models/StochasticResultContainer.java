@@ -2,6 +2,8 @@ package dhbw.ka.mwi.businesshorizon2.models;
 
 import java.util.TreeSet;
 
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
+
 /**
  * Diese Klasse stellt ein Ergebnis einer Stochastischen Methode zur Verfügung.
  * Dies bedeutet, dass sie eine Liste von PeriodenContainer enthaelt.
