@@ -64,7 +64,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

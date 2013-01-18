@@ -38,6 +38,5 @@ public class Wiener extends AbstractStochasticMethod {
 	@Override
 	public Boolean getImplemented() {
 		return false;
-
 	}
 }
