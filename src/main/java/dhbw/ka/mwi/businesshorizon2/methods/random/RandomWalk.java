@@ -74,9 +74,9 @@ public class RandomWalk extends AbstractStochasticMethod {
 				CashFlowPeriod period = new CashFlowPeriod(
 						project.getBasisYear() + forecast);
 				if (forecast == 1) {
-					previousValueCF = project.getPeriods().last()
+					previousValueCF = project.getStochasticPeriods().getPeriods().last()
 							.getFreeCashFlow();
-					previousValueBC = project.getPeriods().last()
+					previousValueBC = project.getStochasticPeriods().getPeriods().last()
 							.getBorrowedCapital();
 				} else {
 					previousValueCF = lastPeriod.getFreeCashFlow();
