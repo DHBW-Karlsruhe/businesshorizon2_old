@@ -41,6 +41,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private ProjectProxy projectProxy;
 
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
@@ -68,7 +69,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 */
 	public void projectSelected(Project project) {
+
 		projectProxy.setSelectedProject(project);
+
 
 		eventBus.fireEvent(new ShowProjectEvent());
 		logger.debug("ShowProjectEvent gefeuert");
