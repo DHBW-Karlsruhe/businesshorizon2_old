@@ -1,5 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.SortedSet;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -8,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
@@ -19,52 +26,749 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
  * 
- * @author Julius Hacker
- *
+ * @author Julius Hacker, Christian Scherer
+ * 
  */
 
 public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
 	private static final long serialVersionUID = 1L;
-	
-	private Logger logger = Logger.getLogger(this.getClass());
+
+	private Logger logger = Logger.getLogger("ParameterPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
 
-	
+	@Autowired
+	private ProjectProxy projectProxy;
+
+	private boolean iterationsValid;
+	private boolean basisYearValid;
+	private boolean periodsToForecastValid;
+	private boolean relevantPastPeriodsValid;
+
+	private boolean determMethod;
+	private boolean stochMethod;
+	private boolean randomWalk;
+
+	private int[] numberIterations;
+
+	private double cashFlowProbabilityOfRise;
+	private double cashFlowStepRange;
+	private double borrowedCapitalProbabilityOfRise;
+	private double borrowedCapitalStepRange;
+
+	private boolean firstCall;
+	private boolean showError;
+
+	private boolean cashFlowStepRangeValid;
+	private boolean cashFlowProbabilityOfRiseValid;
+	private boolean borrowedCapitalProbabilityOfRiseValid;
+	private boolean borrowedCapitalStepRangeValid;
+
+	private SortedSet<AbstractStochasticMethod> methods;
+
+	private Iterator<AbstractStochasticMethod> methodIterator;
+
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
+	 * EventHandler. Zudem werden die Validitaeten der Felder zunaechst auf
+	 * false gesetzt. Desweiteren wird der Wert der firstCall Variable auf true
+	 * gesetzt, sodass die erste Pruefung des screens noch keine Fehlermeldung
+	 * wirft, da der Benutzer den Screen auch noch nicht geoeffnet hat und die
+	 * showError Methode auf false. Letzere soll verhindern, dass schon bei
+	 * erstem Betreten des Screens der Benutzer von Fehlermeldungen 'erschlagen'
+	 * wird.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Christian SCherer
 	 */
 	@PostConstruct
 	public void init() {
+
 		eventBus.addHandler(this);
+
+		basisYearValid = false;
+		iterationsValid = false;
+		periodsToForecastValid = false;
+		relevantPastPeriodsValid = false;
+		cashFlowStepRangeValid = false;
+		cashFlowProbabilityOfRiseValid = false;
+		borrowedCapitalStepRangeValid = false;
+		borrowedCapitalProbabilityOfRiseValid = false;
+
+		setIterations();
+		firstCall = true;
+		showError = false;
+
 	}
 
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
+	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
+	 * wurde. Desweiteren wird die firstCall Variable auf false gesetzt, sodass
+	 * ab jetzt bei jeder Validierungsanfrage alle Felder geprueft und ggf. als
+	 * unkorrekt mariert werden. Beim ersten Aufruf ist dies noch nicht
+	 * gewuenscht, da der benutzer den Screen noch nicht geoffnet hatte. Als
+	 * letztes wird ein ScreenSelectable Event gefeuert, sodass gewaehrleistet
+	 * ist, dass der erste Durchgang zwar streng nach Reihenfloge geschieht,
+	 * danach aber jeder Screen frei angewaehlt werden kann.
+	 * 
+	 * @author Julius Hacker, Christian Scherer
+	 */
+	@EventHandler
+	public void onShowParameterScreen(ShowParameterViewEvent event) {
 
+		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
+			initializeBasisYear();
+		}
+
+		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+			determMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+			stochMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getStochastic();
+		} else {
+			determMethod = false;
+			stochMethod = false;
+		}
+
+		randomWalk = false;
+		methods = this.projectProxy.getSelectedProject().getMethods();
+		methodIterator = methods.iterator();
+		while (methodIterator.hasNext()) {
+			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
+					.next();
+			if (m.getName().equals("Random Walk") && m.getSelected()) {
+				randomWalk = true;
+			}
+		}
+
+		this.greyOut();
+		firstCall = false;
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
+				true));
+
+	}
+
+	/**
+	 * Erzeugt das Integerarray der Iterationen, befuellt es mit Werten und
+	 * setzt diese dann in die View zur anzeige
+	 * 
+	 * @author Christian Scherer
+	 */
+	public void setIterations() {
+
+		numberIterations = new int[3];
+		numberIterations[0] = 1000;
+		numberIterations[1] = 10000;
+		numberIterations[2] = 100000;
+		logger.debug("Iterationsarray befuellt");
+	}
+
+	/**
+	 * In dieser Methode werden alle Eingabefelder auf Validitaet geprueft. Sie
+	 * wird auch von anderen Screens aufzurufen um sicherzustellen, dass bei
+	 * Aenderungen in anderen Screens diese Eingabe immer noch valide sind.
+	 * Falls der Screen nicht mehr valide ist, muss zudem geprueft werden welche
+	 * Felder nicht mehr gueltig sind und diese mit einem ComponentenError
+	 * (rotem Ausrufezeichen) markiert werden. Zudem wird der Sonderfall
+	 * behandelt, dass es der erste Aufruf ist, dann wird sofort true
+	 * zurueckgegeben, da der Nutzer noch nicht die moeglichkeit hatte korrekte
+	 * Angaben einzugeben
+	 * 
+	 * @author Christian Scherer
+	 * @return Ob alle Validierungspruefungen der Eingabefelder positiv gelaufen
+	 *         verlaufen ist
+	 */
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
+		if (firstCall) {
+			return true;
+		}
+
+		if (determMethod && !stochMethod) {
+			if (basisYearValid) {
+				return true;
+			} else {
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"basisYear",
+									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+				}
+				return false;
+			}
+
+		} else {
+			if (periodsToForecastValid && relevantPastPeriodsValid
+					&& basisYearValid && iterationsValid) {
+				if (!randomWalk) {
+					return true;
+				} else {
+					if (cashFlowProbabilityOfRiseValid
+							&& cashFlowStepRangeValid
+							&& borrowedCapitalProbabilityOfRiseValid
+							&& borrowedCapitalStepRangeValid) {
+						return true;
+					} else {
+						if (!cashFlowStepRangeValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"cashFlowStepRange",
+												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							}
+						}
+						if (!cashFlowProbabilityOfRiseValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"cashFlowProbabilityOfRise",
+												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							}
+						}
+						if (!borrowedCapitalStepRangeValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"borrowedCapitalStepRange",
+												"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							}
+						}
+						if (!borrowedCapitalProbabilityOfRiseValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"borrowedCapitalProbabilityOfRise",
+												"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+							}
+						}
+						return false;
+					}
+
+				}
+			} else {
+				if (!periodsToForecastValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"periodsToForecast",
+										"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
+					}
+				}
+				if (!relevantPastPeriodsValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"pastPeriods",
+										"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
+					}
+				}
+				if (!iterationsValid) {
+					if (showError) {
+						getView()
+								.setComponentError(true, "iterations",
+										"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
+					}
+				}
+				if (!basisYearValid) {
+					if (showError) {
+						getView()
+								.setComponentError(
+										true,
+										"basisYear",
+										"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+					}
+				}
+
+				return false;
+			}
+		}
 	}
 
-	@Override
-	public void validate(ValidateContentStateEvent event) {
-		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));
+	/**
+	 * Methode die sich nach der Auswahl der Iteration um die davon abhaengigen
+	 * Objekte kuemmert. Zudem wird das iterionsInitialized-Wert auf true
+	 * gesetzt, damit ist eine valide Befuellung des Felds gewaehrleistet, da
+	 * danach kein Nullwert mehr eingetragen werden kann. Achtung: Dies gilt
+	 * fuer die Implementierung in Vaadin, da hier Null-Werte bei der Eingabe
+	 * ausgeschlossen wurden.
+	 * 
+	 * @author Christian Scherer
+	 * @param iterations
+	 *            Anzahl der ausgewaehlten Wiederholungen(Iterationen)
+	 */
+	public void iterationChosen(int iterations) {
+		iterationsValid = true;
+		this.projectProxy.getSelectedProject().setIterations(iterations);
+		getView().setComponentError(false, "iterations", null);
+		logger.debug("Iterationen in Objekten gesetzt: "
+				+ this.projectProxy.getSelectedProject().getName());
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
-	
+
+	/**
+	 * Methode die sich nach der Auswahl der zu Vorherzusagenden Perioden um die
+	 * davon abhaengigen Objekte kuemmert. Konkret wird aus dem String des
+	 * Eingabefelds der Integer-Wert gezogen und geprueft ob der eingegebene
+	 * Wert groesser 0 ist. Ist einer der beiden Kriterien nicht erfuellt wird
+	 * eine ClassCastException geworfen, die zu einer Fehlermeldung auf der
+	 * Benutzeroberflaecher fuehrt.
+	 * 
+	 * @author Christian Scherer
+	 * @param numberPeriodsToForecast
+	 *            Anzahl der Perioden die in die Vorhergesagt werden sollen
+	 */
+	public void numberPeriodsToForecastChosen(String periodsToForecast) {
+		logger.debug("Anwender-Eingabe zu Perioden die vorherzusagen sind");
+
+		int periodsToForecastInt;
+		try {
+			periodsToForecastInt = Integer.parseInt(periodsToForecast);
+			if (periodsToForecastInt > 0) {
+				periodsToForecastValid = true;
+				getView().setComponentError(false, "periodsToForecast", "");
+				this.projectProxy.getSelectedProject().setPeriodsToForecast(
+						periodsToForecastInt);
+				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			periodsToForecastValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"periodsToForecast",
+							"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'. <br> Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. <br> Beispiel: 5");
+			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der zu beachtenenden vergangenen
+	 * Perioden um die davon abhaengigen Objekte kuemmert. Diese muessen laut
+	 * Fachkonzept mindestens 5 Perioden betragen
+	 * 
+	 * @author Christian Scherer
+	 * @param relevantPastPeriods
+	 *            die Anzahl der Perioden der Vergangenheit die einbezogen
+	 *            werden sollen
+	 */
+	public void relevantPastPeriodsChosen(String relevantPastPeriods) {
+		logger.debug("Anwender-Eingabe zu relevanter Perioden der Vergangenheit ");
+
+		int relevantPastPeriodsInt;
+		try {
+			relevantPastPeriodsInt = Integer.parseInt(relevantPastPeriods);
+			if (relevantPastPeriodsInt >= 5) {
+				relevantPastPeriodsValid = true;
+				getView().setComponentError(false, "pastPeriods", "");
+				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
+						relevantPastPeriodsInt);
+				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			relevantPastPeriodsValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"pastPeriods",
+							"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'. <br> Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. <br> Beispiel: 10");
+			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl des Basisjahrs um die davon abhaengigen
+	 * Objekte kuemmert. Wenn ein int Wert vorliegt wird geprueft ob es sich bei
+	 * der Eingegebenen Zahl um ein Jahr groesser dem aktuellen Jahr-1 handelt
+	 * 
+	 * @author Christian Scherer
+	 * @param basisYear
+	 *            das Basis-Jahr, auf das die Cashflows abgezinst werden
+	 */
+	public void basisYearChosen(String basisYear) {
+		logger.debug("Anwender-Eingabe zu relevanter Perioden der Vergangenheit ");
+
+		int basisYearInt;
+		try {
+			basisYearInt = Integer.parseInt(basisYear);
+			Calendar now = Calendar.getInstance();
+
+			if (basisYearInt >= (now.get(Calendar.YEAR) - 1)) {
+				basisYearValid = true;
+				getView().setComponentError(false, "basisYear", "");
+				this.projectProxy.getSelectedProject().setBasisYear(
+						basisYearInt);
+				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			basisYearValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"basisYear",
+							"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. <br> Beispiel: 2015");
+			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Aenderung des Wertes der Checkbox fuer die
+	 * Branchenstellvertreter um die weiter Logik kuemmert. Hier muesste nun die
+	 * Liste der Branchenvertreter aktiviert werden, die standardmaessig
+	 * ausgegrautist. Derzeit werden die Branchenvertreter jedoch nicht genutzt
+	 * und somit hier auch nicht weiter behandelt. Eine spaetere
+	 * ausimplementierung kann hier folgen
+	 * 
+	 * @author Christian Scherer
+	 * @param selected
+	 *            "true" wenn der Haken ausgewaehlt wurde, "false" wenn der
+	 *            Haken entfernt wurde
+	 */
+	public void industryRepresentativeCheckBoxSelected(boolean selected) {
+		if (selected) {
+			// Liste aktivieren
+		} else {
+			// Liste deaktivieren
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl in der Liste der Branchenvertreter um
+	 * die weiter Logik kuemmert. Derzeit nicht genutzt - kann jedoch spaeter
+	 * hier ausprogrammiert werden.
+	 * 
+	 * @author Christian Scherer
+	 * @param selected
+	 *            String mit Namen des gewaehlten Branchenvertreters
+	 */
+	public void industryRepresentativeListItemChosen(String selected) {
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Schrittgroesse fuer die Cashflows
+	 * kuemmert. Konkret wird aus dem String des Eingabefelds der Double-Wert
+	 * gezogen und geprueft ob dieser groesser 0 ist. Falls nicht wird eine
+	 * ClassCastException geworfen, die eine Fehlermeldung auf der
+	 * Benutzeroberflaecher angezeigt und ein ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowStepRangeString
+	 *            Schrittgröße der Cashflows fuer die RandomWalk Methode
+	 */
+	public void cashFlowStepRangeChosen(String cashFlowStepRangeString) {
+		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
+
+		try {
+			cashFlowStepRange = Double.parseDouble(cashFlowStepRangeString);
+			if (cashFlowStepRange >= 0) {
+				cashFlowStepRangeValid = true;
+				getView().setComponentError(false, "cashFlowStepRange", "");
+				this.projectProxy.getSelectedProject().setCashFlowStepRange(
+						this.cashFlowStepRange);
+				logger.debug("Schrittweite des Cashflows in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			cashFlowStepRangeValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"cashFlowStepRange",
+							"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Schrittweite Cashflows'. <br> Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Cashflows'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
+	 * positive Cashflows-Entwicklung kuemmert. Konkret wird aus dem String des
+	 * Eingabefelds der Double-Wert gezogen und geprueft ob der Wert zwischen 0
+	 * und 100 leigt. Falls nicht wird eine ClassCastException geworfen, die
+	 * eine Fehlermeldung auf der Benutzeroberflaecher angezeigt und ein
+	 * ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowProbabilityOfRiseString
+	 *            Wahrscheinlichkeit fuer eine positive Cashflows-Entwicklung
+	 *            fuer die RandomWalk Methode
+	 */
+	public void cashFlowProbabilityOfRiseChosen(
+			String cashFlowProbabilityOfRiseString) {
+		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+
+		try {
+			cashFlowProbabilityOfRise = Double
+					.parseDouble(cashFlowProbabilityOfRiseString);
+			if (cashFlowProbabilityOfRise >= 0
+					&& cashFlowProbabilityOfRise <= 100) {
+				cashFlowProbabilityOfRiseValid = true;
+				getView().setComponentError(false, "cashFlowProbabilityOfRise",
+						"");
+				this.projectProxy.getSelectedProject()
+						.setCashFlowProbabilityOfRise(
+								this.cashFlowProbabilityOfRise);
+				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			cashFlowProbabilityOfRiseValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"cashFlowProbabilityOfRise",
+							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung'. <br> Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Schrittgroesse fuer das
+	 * Fremdkapital kuemmert. Konkret wird aus dem String des Eingabefelds der
+	 * Double-Wert gezogen und ueberprueft ob dieser groesser oder gleich 0 ist.
+	 * Falls nicht wird eine ClassCastException geworfen, die eine Fehlermeldung
+	 * auf der Benutzeroberflaecher angezeigt und ein ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowStepRangeString
+	 *            Schrittgröße das Fremdkapital fuer die RandomWalk Methode
+	 */
+	public void borrowedCapitalStepRangeChosen(
+			String borrowedCapitalStepRangeString) {
+		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
+
+		try {
+			borrowedCapitalStepRange = Double
+					.parseDouble(borrowedCapitalStepRangeString);
+			if (borrowedCapitalStepRange >= 0) {
+				borrowedCapitalStepRangeValid = true;
+				getView().setComponentError(false, "borrowedCapitalStepRange",
+						"");
+				this.projectProxy.getSelectedProject()
+						.setBorrowedCapitalStepRange(
+								this.borrowedCapitalStepRange);
+				logger.debug("Schrittweite des Fremdkapital in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			borrowedCapitalStepRangeValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"borrowedCapitalStepRange",
+							"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Schrittweite Fremdkapital'. <br> Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Fremdkapital'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
+	 * positive Fremdkapitalentwicklung kuemmert. Konkret wird aus dem String
+	 * des Eingabefelds der Double-Wert gezogen und geprueft ob der Wert
+	 * zwischen 0 und 100 leigt. Falls nicht wird eine ClassCastException
+	 * geworfen, die eine Fehlermeldung auf der Benutzeroberflaecher angezeigt
+	 * und ein ComponentError generiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param borrowedCapitalProbabilityOfRiseString
+	 *            Wahrscheinlichkeit fuer eine positive Fremdkapitalentwicklung
+	 *            fuer die RandomWalk Methode
+	 */
+	public void borrowedCapitalProbabilityOfRiseChosen(
+			String borrowedCapitalProbabilityOfRiseString) {
+		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+
+		try {
+			borrowedCapitalProbabilityOfRise = Double
+					.parseDouble(borrowedCapitalProbabilityOfRiseString);
+			if (borrowedCapitalProbabilityOfRise >= 0
+					&& borrowedCapitalProbabilityOfRise <= 100) {
+				borrowedCapitalProbabilityOfRiseValid = true;
+				getView().setComponentError(false,
+						"borrowedCapitalProbabilityOfRise", "");
+				this.projectProxy.getSelectedProject()
+						.setBorrowedCapitalProbabilityOfRise(
+								this.borrowedCapitalProbabilityOfRise);
+				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			borrowedCapitalProbabilityOfRiseValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"borrowedCapitalProbabilityOfRise",
+							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			getView()
+					.showErrorMessage(
+							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung'. <br> Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * Methode die sich um das Ausgrauen unrelevanter Komponenten. In unserem
+	 * Fall die Branchenstellvertreter, die noch nicht implementiert sind und
+	 * ggf. die zu prognostizierenden Perioden / Anzahl relevanter Alt-Perioden,
+	 * je nach gewaehltem Verfahren. Falls im Method-Screen NUR die
+	 * Deterministische Methode ausgewaehlt wurde, muessen ebenso alle anderen
+	 * Felder ausser das Basisjahr ausgegraut werden.
+	 * 
+	 * @author Christian Scherer
+	 * 
+	 */
+	public void greyOut() {
+		getView().activateCheckboxIndustryRepresentative(false);
+		getView().activateComboBoxRepresentatives(false);
+
+		if (determMethod && !stochMethod) {
+			getView().activatePeriodsToForecast(false);
+			getView().activateRelevantPastPeriods(false);
+			getView().activateIterations(false);
+			getView().activateCashFlowStepRang(false);
+			getView().activateCashFlowProbabilityOfRise(false);
+			getView().activateBorrowedCapitalProbabilityOfRise(false);
+			getView().activateBorrowedCapitalStepRange(false);
+		} else {
+			getView().activatePeriodsToForecast(true);
+			getView().activateRelevantPastPeriods(true);
+			getView().activateIterations(true);
+			if (randomWalk) {
+				getView().activateCashFlowStepRang(true);
+				getView().activateCashFlowProbabilityOfRise(true);
+				getView().activateBorrowedCapitalProbabilityOfRise(true);
+				getView().activateBorrowedCapitalStepRange(true);
+			} else {
+				getView().activateCashFlowStepRang(false);
+				getView().activateCashFlowProbabilityOfRise(false);
+				getView().activateBorrowedCapitalProbabilityOfRise(false);
+				getView().activateBorrowedCapitalStepRange(false);
+			}
+
+		}
+
+	}
+
+	/**
+	 * Initialisiert das Basisjahr mit dem aktuellem Jahr-1
+	 * 
+	 * @author Christian Scherer
+	 * 
+	 */
+	public void initializeBasisYear() {
+		Calendar now = Calendar.getInstance();
+		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
+		basisYearValid = true;
+		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1)
+				+ " gesetzt.");
+
+	}
+
+	/**
+	 * 
+	 * Eventhandler der zuerst prueft ob sich Vorbedingungen geaendert haben,
+	 * die Auswierkungen auf den ParameterScreen haben. Daraufhin wird geprueft
+	 * ob es sich um den ersten Aufruf handelt, also der Anwender noch keine
+	 * Moeglichkeit hatte die Felder korrekt zu befuellen. Ist dem so wird der
+	 * Screen noch als valide gewertet. Erst nach dem ersten Aufrufen des
+	 * Screens wird dann die Pruefung bei falschen Eintraegen auch ein Invalid
+	 * Event feuern.
+	 * 
+	 * @author Christian Scherer
+	 */
+	@Override
 	@EventHandler
-	public void handleShowView(ShowParameterViewEvent event) {
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER, true));
-		logger.debug("ShowParameterViewEvent handled");
+	public void validate(ValidateContentStateEvent event) {
+
+		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+			determMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+			stochMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getStochastic();
+		}
+
+		if (!firstCall && !isValid()) {
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,
+					showError));
+			logger.debug("Parameter not valid, InvalidStateEvent fired");
+		} else {
+			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));
+			logger.debug("Parameter valid, ValidStateEvent fired");
+		}
 	}
 
-
+	/**
+	 * 
+	 * Eventhandler der zuerst prueft ob dieser Screen her angesprochen wird.
+	 * Falls ja soll die showError auf true gesetzt werden, die ermoeglicht,
+	 * dass die Fehlermeldungen in der isValid-Methode angezeigt werden.
+	 * 
+	 * @author Christian Scherer
+	 */
 	@Override
+	@EventHandler
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
-		
+		if (event.getStep() == NavigationSteps.PARAMETER) {
+			showError = true;
+		}
 	}
+
+	public int[] getNumberIterations() {
+		return numberIterations;
+	}
+
 }

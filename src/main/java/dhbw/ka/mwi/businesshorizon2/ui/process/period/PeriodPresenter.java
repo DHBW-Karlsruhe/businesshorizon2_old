@@ -38,11 +38,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInter
 public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	
-
-
-	
 	private View currentInput = null;
+
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private TimelineViewInterface timelineView;
@@ -73,8 +71,8 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	
 	@Autowired
 	private Project project;
-	
-	private Logger logger = Logger.getLogger(PeriodPresenter.class);
+
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
@@ -126,7 +124,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
 		logger.debug("Presenter valid, ValidStateEvent fired");
 	}
-	
+
 	@EventHandler
 	public void handleShowView(ShowPeriodViewEvent event) {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
@@ -137,7 +135,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
