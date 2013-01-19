@@ -4,7 +4,9 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.ui.Label;
+import com.mvplite.view.View;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -18,6 +20,8 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 
 	@Autowired
 	private PeriodPresenter presenter;
+	
+	HorizontalSplitPanel horizontalPanel;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -38,7 +42,17 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
-		Label testlabel = new Label("periodentest");
-		this.addComponent(testlabel);
+		this.setSizeFull();
+		horizontalPanel = new HorizontalSplitPanel();
+		horizontalPanel.setSplitPosition(25);
+		this.addComponent(horizontalPanel);
+	}
+
+	@Override
+	public void showView(View leftView, View rightView) {
+
+		horizontalPanel.setFirstComponent((Component) leftView);
+		horizontalPanel.setSecondComponent((Component) rightView);
+		
 	}
 }

@@ -90,6 +90,24 @@
 	<bean name="periodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodPresenter" scope="session" />
 	<bean name="periodView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewImpl"  scope="session" />
 	
+	<!-- Periode-Timeline -->
+	<bean name="timelinePresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter" scope="session"/>
+	<bean name="timelineView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewImpl" scope="session"/>
+	
+	<!-- Periode-DirektEingabe -->
+	<bean name="direktPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektPresenter" scope="session"/>
+	<bean name="direktView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewImpl" scope="session"/>
+	
+	
+	<!-- Periode-GesamtEingabe -->
+	<bean name="gesamtPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtPresenter" scope="session"/>
+	<bean name="gesamtView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtViewImpl" scope="session"/>
+	
+	
+	
+	<!-- Periode-UmsatzEingabe -->
+	<bean name="umsatzPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzPresenter" scope="session"/>
+	<bean name="umsatzView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewImpl" scope="session"/>
 	
 	
 	<!-- Parameter-Maske -->
