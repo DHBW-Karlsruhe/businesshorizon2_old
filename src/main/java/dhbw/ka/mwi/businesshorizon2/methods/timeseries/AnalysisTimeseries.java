@@ -43,8 +43,10 @@ public class AnalysisTimeseries {
 	 * @return double Varianz der Zeitreihe
 	 */
 	private double calculateVariance(DoubleArrayList DoubleArrayListTimeseries) {
-		double variance = Descriptive.variance(DoubleArrayListTimeseries.size(),
-				Descriptive.sum(DoubleArrayListTimeseries), Descriptive.sumOfSquares(DoubleArrayListTimeseries));
+		double variance = Descriptive.variance(
+				DoubleArrayListTimeseries.size(),
+				Descriptive.sum(DoubleArrayListTimeseries),
+				Descriptive.sumOfSquares(DoubleArrayListTimeseries));
 		logger.debug("Variance of Timeseries calculated.");
 		return variance;
 	}
@@ -58,7 +60,8 @@ public class AnalysisTimeseries {
 	 * @return double AutoKorrelation
 	 */
 	private double calculateAutoCorrelation(int lag) {
-		return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag, this.mean, this.variance);
+		return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
+				this.mean, this.variance);
 
 	}
 
@@ -72,19 +75,23 @@ public class AnalysisTimeseries {
 	 * @return Matrix der C Werte
 	 * @author Kai Westerholz
 	 */
-	private DoubleMatrix2D calculateValuations(int consideredPeriodsOfPast) throws StochasticMethodException {
+	private DoubleMatrix2D calculateValuations(int consideredPeriodsOfPast)
+			throws StochasticMethodException {
 
-		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(consideredPeriodsOfPast, consideredPeriodsOfPast);
+		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(
+				consideredPeriodsOfPast, consideredPeriodsOfPast);
 		for (int i = 0; i < consideredPeriodsOfPast; i++) { // Aktuelle
 															// Zeile
 			for (int j = 0; j < consideredPeriodsOfPast; j++) {// Aktuelle
 																// Spalte
 
-				matrixValuations.set(i, j, calculateAutoCorrelation(Math.abs((int) (i - j))));
+				matrixValuations.set(i, j,
+						calculateAutoCorrelation(Math.abs((int) (i - j))));
 
 			}
 		}
-		DoubleMatrix2D matrixERG = DoubleFactory2D.dense.make((int) (consideredPeriodsOfPast), 1);
+		DoubleMatrix2D matrixERG = DoubleFactory2D.dense.make(
+				(int) (consideredPeriodsOfPast), 1);
 		for (int i = 1; i <= consideredPeriodsOfPast; i++) {
 			matrixERG.set(i - 1, 0, calculateAutoCorrelation(i));
 		}
@@ -145,8 +152,9 @@ public class AnalysisTimeseries {
 	 *            trendbereinigte Beobachtungswerte;
 	 * @return geglaetteter Prognosewert
 	 */
-	private double calculateARModel(int consideredPeriodsOfPast, int forecast, DoubleMatrix2D valuations,
-			double[] previousValues) throws StochasticMethodException {
+	private double calculateARModel(int consideredPeriodsOfPast, int forecast,
+			DoubleMatrix2D valuations, double[] previousValues)
+			throws StochasticMethodException {
 		if (this.equalizedValues[forecast - 1] == 0) {
 			if (valuations == null) {
 				valuations = calculateValuations(consideredPeriodsOfPast);
@@ -155,7 +163,8 @@ public class AnalysisTimeseries {
 			for (int past = 1; past <= consideredPeriodsOfPast; past++) {
 				double previousValue;
 				if ((forecast - past) < 1) {
-					int oldIndex = previousValues.length - 1 - Math.abs(forecast - past);
+					int oldIndex = previousValues.length - 1
+							- Math.abs(forecast - past);
 					previousValue = previousValues[oldIndex];
 				} else {
 					previousValue = this.equalizedValues[(forecast - past) - 1];
@@ -183,12 +192,15 @@ public class AnalysisTimeseries {
 	 */
 
 	// @Override
-	public double[][] calculate(double[] previousValues, int consideredPeriodsOfPast, int periodsToForecast,
-			int numberOfIterations, CallbackInterface callback) throws InterruptedException, StochasticMethodException {
+	public double[][] calculate(double[] previousValues,
+			int consideredPeriodsOfPast, int periodsToForecast,
+			int numberOfIterations, CallbackInterface callback)
+			throws InterruptedException, StochasticMethodException {
 
 		// vorbereitene Initialisierung
 		double[][] returnValues = new double[periodsToForecast][numberOfIterations];
-		int progress_complete = periodsToForecast * (consideredPeriodsOfPast + numberOfIterations);
+		int progress_complete = periodsToForecast
+				* (consideredPeriodsOfPast + numberOfIterations);
 		int progress = 0;
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
@@ -228,15 +240,19 @@ public class AnalysisTimeseries {
 				equalizedValuePerPeriod = 0;
 
 				// Berechnung des konstanten Teils der Prognose
-				equalizedValuePerPeriod = calculateARModel(consideredPeriodsOfPast, forecast, matrixValutaions,
+				equalizedValuePerPeriod = calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
 						previousValues);
 
 				// Eigentliche Berechnung
 				if (!isStationary) {
-					double newTide = tide.getTideValue(forecast + previousValues.length - 1);
-					forecastsForPeriod[iterationStep] = (double) (whiteNoise.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
+					double newTide = tide.getTideValue(forecast
+							+ previousValues.length - 1);
+					forecastsForPeriod[iterationStep] = (double) (whiteNoise
+							.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
 				} else {
-					forecastsForPeriod[iterationStep] = (double) (whiteNoise.getWhiteNoiseValue() + equalizedValuePerPeriod);
+					forecastsForPeriod[iterationStep] = (double) (whiteNoise
+							.getWhiteNoiseValue() + equalizedValuePerPeriod);
 				}
 
 				if (iterationStep % 200 == 0) {
@@ -254,7 +270,8 @@ public class AnalysisTimeseries {
 		return returnValues;
 	}
 
-	public double[] getExpectedValues(double[] previousValues, int consideredPeriodsOfPast, int periodsToForecast)
+	public double[] getExpectedValues(double[] previousValues,
+			int consideredPeriodsOfPast, int periodsToForecast)
 			throws StochasticMethodException {
 
 		double[] expectedValues = new double[periodsToForecast];
@@ -281,14 +298,17 @@ public class AnalysisTimeseries {
 
 		this.equalizedValues = new double[periodsToForecast];
 
-		for (int forecast = 0; forecast < expectedValues.length; forecast++) {
+		for (int forecast = 1; forecast <= expectedValues.length; forecast++) {
 			if (!isStationary) {
-				double newTide = tide.getTideValue(forecast + previousValues.length - 1);
-				expectedValues[forecast] = (double) ((newTide - calculateARModel(consideredPeriodsOfPast, forecast,
-						matrixValutaions, previousValues)));
+				double newTide = tide.getTideValue(forecast
+						+ previousValues.length - 1);
+				expectedValues[forecast - 1] = (double) ((newTide - calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues)));
 			} else {
-				expectedValues[forecast] = (double) (calculateARModel(consideredPeriodsOfPast, forecast,
-						matrixValutaions, previousValues));
+				expectedValues[forecast - 1] = (double) (calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues));
 			}
 		}
 		return expectedValues;
