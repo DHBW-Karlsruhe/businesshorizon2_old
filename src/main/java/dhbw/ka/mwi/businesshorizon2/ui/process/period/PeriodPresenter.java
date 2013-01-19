@@ -53,6 +53,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	public void validate(ValidateContentStateEvent event) {
 		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
 		logger.debug("Presenter valid, ValidStateEvent fired");
+
 	}
 
 	@EventHandler
@@ -66,4 +67,5 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		// TODO Auto-generated method stub
 
 	}
+
 }

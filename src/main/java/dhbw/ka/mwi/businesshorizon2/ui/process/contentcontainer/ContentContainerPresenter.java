@@ -84,7 +84,6 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	@EventHandler
 	public void onShowNavigationStep(ShowNavigationStepEvent event) {
 		ContentView newView = null;
-
 		Event newViewEvent = null;
 
 		switch (event.getStep()) {
@@ -134,16 +133,20 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	}
 
 	/**
-	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen.
-	 * Sie kuemmert sich darum, den naechsten Screen zu ermitteln und zu ihm
+	 * <<<<<<< HEAD Diese Methode wird von der View beim Click des
+	 * Weiter-Buttons aufgerufen. Sie kuemmert sich darum, den naechsten Screen
+	 * zu ermitteln und zu ihm weiterzuleiten. Sie prueft hierbei, ob die
+	 * Eingaben des aktuellen Screens valide sind. Sollte dies nicht der Fall
+	 * sein, wird auch nicht zum naechsten Screen weitergeleitet. ======= Diese
+	 * Methode wird von der View beim Click des Weiter-Buttons aufgerufen. Sie
+	 * kuemmert sich darum, den naechsten Screen zu ermitteln und zu ihm
 	 * weiterzuleiten. Sie prueft hierbei, ob die Eingaben des aktuellen Screens
 	 * valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum
-	 * naechsten Screen weitergeleitet.
+	 * naechsten Screen weitergeleitet. >>>>>>> refs/remotes/origin/master
 	 * 
 	 * @author Julius Hacker
 	 */
 	public void showNextStep() {
-
 		if (this.isActualViewValid) {
 			NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
 			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
@@ -155,9 +158,12 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	}
 
 	/**
-	 * Diese Methode wird von der View beim Click des Zurueck-Buttons
-	 * aufgerufen. Sie kuemmert sich darum, den vorherigen Screen zu ermitteln
-	 * und zu ihm weiterzuleiten.
+	 * <<<<<<< HEAD Diese Methode wird von der View beim Click des
+	 * Zurueck-Buttons aufgerufen. Sie kuemmert sich darum, den vorherigen
+	 * Screen zu ermitteln und zu ihm weiterzuleiten. ======= Diese Methode wird
+	 * von der View beim Click des Zurueck-Buttons aufgerufen. Sie kuemmert sich
+	 * darum, den vorherigen Screen zu ermitteln und zu ihm weiterzuleiten.
+	 * >>>>>>> refs/remotes/origin/master
 	 * 
 	 * @author Julius Hacker
 	 */
@@ -172,10 +178,14 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	}
 
 	/**
-	 * Diese Methode aktualisiert die Aktivierungszustaende der Weiter- und
-	 * Zurueck-Buttons. Dies ist insofern relevant, als das im ersten Screen
-	 * nicht noch weiter zurueck und im letzten Screen nicht noch weiter
-	 * gegangen werden kann.
+	 * <<<<<<< HEAD Diese Methode aktualisiert die Aktivierungszustaende der
+	 * Weiter- und Zurueck-Buttons. Dies ist insofern relevant, als das im
+	 * ersten Screen nicht noch weiter zurueck und im letzten Screen nicht noch
+	 * weiter gegangen werden kann. ======= Diese Methode aktualisiert die
+	 * Aktivierungszustaende der Weiter- und Zurueck-Buttons. Dies ist insofern
+	 * relevant, als das im ersten Screen nicht noch weiter zurueck und im
+	 * letzten Screen nicht noch weiter gegangen werden kann. >>>>>>>
+	 * refs/remotes/origin/master
 	 * 
 	 * @author Julius Hacker
 	 */

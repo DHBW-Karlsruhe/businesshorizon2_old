@@ -98,5 +98,6 @@ public class RandomWalk extends AbstractStochasticMethod {
 			callback.onComplete(src);
 		}
 		return src;
+
 	}
 }

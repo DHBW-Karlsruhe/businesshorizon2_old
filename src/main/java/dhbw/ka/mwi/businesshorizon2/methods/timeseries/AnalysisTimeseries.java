@@ -293,5 +293,4 @@ public class AnalysisTimeseries {
 		}
 		return expectedValues;
 	}
-
 }

@@ -35,7 +35,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 
-	//@Autowired
+	// @Autowired
 	private User user;
 
 	@Autowired
@@ -68,6 +68,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 */
 	public void projectSelected(Project project) {
+
 		projectProxy.setSelectedProject(project);
 
 		eventBus.fireEvent(new ShowProjectEvent());
@@ -86,7 +87,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
-		
+
 		this.user = event.getUser();
 		// 2 Dummyprojects die dem User hinzugefÃ¼gt werden
 		addProject("Projekt 1");

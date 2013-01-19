@@ -32,7 +32,6 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CostOfSalesMethodPeri
 
 public class TimeseriesCalculator extends AbstractStochasticMethod {
 	private static final long serialVersionUID = 1L;
-
 	private final Logger logger = Logger.getLogger(TimeseriesCalculator.class);
 	public AbstractPeriodContainer periodsBSI;
 
@@ -400,7 +399,9 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			resultContainer = new StochasticResultContainer(resultPeriods);
 
 		}
-
+		if (callback != null) {
+			callback.onComplete(resultContainer);
+		}
 		return resultContainer;
 	}
 
