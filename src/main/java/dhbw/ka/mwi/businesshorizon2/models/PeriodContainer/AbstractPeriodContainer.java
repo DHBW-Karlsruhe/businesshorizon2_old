@@ -14,8 +14,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
  * 
  */
 
-abstract public class AbstractPeriodContainer implements
-		Comparable<AbstractPeriodContainer> {
+abstract public class AbstractPeriodContainer implements Comparable<AbstractPeriodContainer> {
 
 	private final TreeSet<PeriodInterface> perioden;
 	private static int counter = 0;
@@ -54,6 +53,10 @@ abstract public class AbstractPeriodContainer implements
 		} else {
 			return 1;
 		}
+	}
+
+	public void removePeriod(PeriodInterface period) {
+		this.perioden.remove(period);
 	}
 
 }

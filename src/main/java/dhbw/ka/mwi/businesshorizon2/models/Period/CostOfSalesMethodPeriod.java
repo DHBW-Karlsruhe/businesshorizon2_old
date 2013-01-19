@@ -9,7 +9,6 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	private final int year;
-
 	private double salesRevenue; // Umsatzerlöse
 	private double otherBusinessRevenue; // sonstige betriebliche Erträge
 	private double costOfPoduction; // Herstellkosten
@@ -64,8 +63,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 		return costOfSalesAdministrationOthers;
 	}
 
-	public void setCostOfSalesAdministrationOthers(
-			double costOfSalesAdministrationOthers) {
+	public void setCostOfSalesAdministrationOthers(double costOfSalesAdministrationOthers) {
 		this.costOfSalesAdministrationOthers = costOfSalesAdministrationOthers;
 	}
 

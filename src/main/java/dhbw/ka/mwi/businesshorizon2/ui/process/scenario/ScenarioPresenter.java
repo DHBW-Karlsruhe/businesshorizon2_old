@@ -94,7 +94,6 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	public void addScenario() {
 		Szenario scenario = new Szenario(0.0, 0.0, 0.0, 0.0, true);
 		this.projectProxy.getSelectedProject().addScenario(scenario);
-
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()),
 				Double.toString(scenario.getRateReturnCapitalStock()),
 				Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()),
@@ -256,6 +255,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 
 			getView().setValid(scenarioNumber, "businessTax");
+
 		} catch (Exception exception) {
 			if (showErrors) {
 				getView().setInvalid(scenarioNumber, "businessTax");
@@ -329,7 +329,6 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			logger.debug("Gewerbesteuer Szenario " + scenarioNumber + " auf " + scenario.getBusinessTax() + " ("
 					+ getView().getValue(scenarioNumber, "businessTax") + ")");
 		}
-
 		if (isValidCorporateAndSolitaryTax(scenarioNumber)) {
 			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView().getValue(scenarioNumber,
 					"corporateAndSolitaryTax")));

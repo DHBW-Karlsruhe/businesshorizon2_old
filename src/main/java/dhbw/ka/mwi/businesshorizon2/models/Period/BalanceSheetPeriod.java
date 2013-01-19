@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
-
 /**
  * Diese Klasse bietet die Oberklasse der Bilanzperioden und beinhaltet die vom
  * Bewertungsverfahren unabhängigen Attribute

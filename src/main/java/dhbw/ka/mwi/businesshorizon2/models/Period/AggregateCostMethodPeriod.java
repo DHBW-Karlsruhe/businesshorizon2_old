@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
-
 /**
  * Diese Klasse bildet eine Periode ab. Die Inhalte sind nach dem
  * Umsatzkostenverfahren bewertet und enthalten nur diese Werte. Das Jahr der
@@ -68,8 +67,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 		return internallyProducedAndCapitalizedAssets;
 	}
 
-	public void setInternallyProducedAndCapitalizedAssets(
-			double internallyProducedAndCapitalizedAssets) {
+	public void setInternallyProducedAndCapitalizedAssets(double internallyProducedAndCapitalizedAssets) {
 		this.internallyProducedAndCapitalizedAssets = internallyProducedAndCapitalizedAssets;
 	}
 
