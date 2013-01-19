@@ -45,6 +45,57 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		return 1;
 	}
 
+	public StochasticResultContainer calculateExpectedValues(Project project)
+			throws StochasticMethodException {
+
+		TreeSet<AbstractPeriodContainer> resultPeriods = new TreeSet<AbstractPeriodContainer>();
+		StochasticResultContainer resultContainer = null;
+
+		/**
+		 * Die Zeitreihenanalyse kann nur durchgefuehrt werden, wenn die Anzahl
+		 * der beruecksichtigten Vergangenheitsperioden kleiner ist als die
+		 * Anzahl der eingegebenen Vergangenheitsperioden
+		 */
+		if (project.getRelevantPastPeriods() > project.getPeriods().size() - 1) {
+			logger.debug("Anzahl der betrachteten Perioden der Vergangenheit ist zu groß!");
+			throw new ConsideredPeriodsOfPastException(
+					"Die Anzahl der betrachteten Perioden der Vergangenheit muss kleiner sein als die Azahl der beobachteten Perioden.");
+		}
+
+		if (project.getPeriods().first() instanceof CashFlowPeriod) {
+			// Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
+			// ausgefuehrt
+			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
+
+			double[] previousValues = new double[project.getPeriods().size()];
+			AnalysisTimeseries timeseries = new AnalysisTimeseries();
+			int counter = 0;
+
+			// Umwandlung der Perioden in ein Double-Arrays
+			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
+					.getPeriods()) {
+				previousValues[counter] = cFPeriod.getFreeCashFlow();
+				counter++;
+			}
+
+			double[] expectedValues = timeseries.getExpectedValues(
+					previousValues, project.getRelevantPastPeriods(),
+					project.getPeriodsToForecast());
+			CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
+			for (int i = 0; i < expectedValues.length; i++) {
+				CashFlowPeriod cfPeriod = new CashFlowPeriod(
+						project.getBasisYear() + (i + 1));
+				cfPeriod.setFreeCashFlow(expectedValues[i]);
+				cFContainer.getPeriods().add(cfPeriod);
+			}
+			TreeSet<CashFlowPeriodContainer> periodContainer = new TreeSet<CashFlowPeriodContainer>();
+			periodContainer.add(cFContainer);
+			resultContainer = new StochasticResultContainer(periodContainer);
+		}
+		return resultContainer;
+
+	}
+
 	/**
 	 * @author Kai Westerholz
 	 */
@@ -492,7 +543,9 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			resultContainer = new StochasticResultContainer(resultPeriods);
 
 		}
-
+		if (callback != null) {
+			callback.onComplete(resultContainer);
+		}
 		return resultContainer;
 	}
 

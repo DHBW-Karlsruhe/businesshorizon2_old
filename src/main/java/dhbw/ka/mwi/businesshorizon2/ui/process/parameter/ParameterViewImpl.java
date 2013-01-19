@@ -454,7 +454,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 				this.comboBoxIterations.setComponentError(null);
 			}
 
-		} else if (component.equals("CashFlowStepRange")) {
+		} else if (component.equals("cashFlowStepRange")) {
 			if (setError) {
 				this.textfieldCashFlowStepRange
 						.setComponentError(new UserError(message));
@@ -462,7 +462,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 				this.textfieldCashFlowStepRange.setComponentError(null);
 			}
 
-		} else if (component.equals("CashFlowProbabilityOfRise")) {
+		} else if (component.equals("cashFlowProbabilityOfRise")) {
 			if (setError) {
 				this.textfieldCashFlowProbabilityOfRise
 						.setComponentError(new UserError(message));
@@ -488,6 +488,63 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		}
 
+	}
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldCashFlowStepRange' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateCashFlowStepRang(boolean enabled) {
+		this.textfieldCashFlowStepRange.setEnabled(enabled);
+		
+	}
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldCashFlowProbabilityOfRise' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateCashFlowProbabilityOfRise(boolean enabled) {
+		this.textfieldCashFlowProbabilityOfRise.setEnabled(enabled);
+		
+	}
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalProbabilityOfRise' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateBorrowedCapitalProbabilityOfRise(boolean enabled) {
+		this.textfieldBorrowedCapitalProbabilityOfRise.setEnabled(enabled);
+		
+	}
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalStepRange' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activateBorrowedCapitalStepRange(boolean enabled) {
+		this.textfieldBorrowedCapitalStepRange.setEnabled(enabled);
+
+		
 	}
 
 }

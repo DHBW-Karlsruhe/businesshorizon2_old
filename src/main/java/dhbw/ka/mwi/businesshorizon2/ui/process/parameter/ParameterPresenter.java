@@ -1,6 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.SortedSet;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -45,6 +48,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	private boolean determMethod;
 	private boolean stochMethod;
+	private boolean randomWalk;
 
 	private int[] numberIterations;
 
@@ -60,6 +64,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private boolean cashFlowProbabilityOfRiseValid;
 	private boolean borrowedCapitalProbabilityOfRiseValid;
 	private boolean borrowedCapitalStepRangeValid;
+
+	private SortedSet<AbstractStochasticMethod> methods;
+
+	private Iterator<AbstractStochasticMethod> methodIterator;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -125,6 +133,17 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			stochMethod = false;
 		}
 
+		randomWalk = false;
+		methods = this.projectProxy.getSelectedProject().getMethods();
+		methodIterator = methods.iterator();
+		while (methodIterator.hasNext()) {
+			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
+					.next();
+			if (m.getName().equals("Random Walk") && m.getSelected()) {
+				randomWalk = true;
+			}
+		}
+
 		this.greyOut();
 		firstCall = false;
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
@@ -184,11 +203,56 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 		} else {
 			if (periodsToForecastValid && relevantPastPeriodsValid
-					&& basisYearValid && iterationsValid
-					&& cashFlowStepRangeValid && cashFlowProbabilityOfRiseValid
-					&& borrowedCapitalStepRangeValid
-					&& borrowedCapitalProbabilityOfRiseValid) {
-				return true;
+					&& basisYearValid && iterationsValid) {
+				if (!randomWalk) {
+					return true;
+				} else {
+					if (cashFlowProbabilityOfRiseValid
+							&& cashFlowStepRangeValid
+							&& borrowedCapitalProbabilityOfRiseValid
+							&& borrowedCapitalStepRangeValid) {
+						return true;
+					} else {
+						if (!cashFlowStepRangeValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"cashFlowStepRange",
+												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							}
+						}
+						if (!cashFlowProbabilityOfRiseValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"cashFlowProbabilityOfRise",
+												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							}
+						}
+						if (!borrowedCapitalStepRangeValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"borrowedCapitalStepRange",
+												"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							}
+						}
+						if (!borrowedCapitalProbabilityOfRiseValid) {
+							if (showError) {
+								getView()
+										.setComponentError(
+												true,
+												"borrowedCapitalProbabilityOfRise",
+												"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+							}
+						}
+						return false;
+					}
+
+				}
 			} else {
 				if (!periodsToForecastValid) {
 					if (showError) {
@@ -224,42 +288,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 										"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 					}
 				}
-				if (!cashFlowStepRangeValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"cashFlowStepRange",
-										"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
-					}
-				}
-				if (!cashFlowProbabilityOfRiseValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"cashFlowProbabilityOfRise",
-										"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
-					}
-				}
-				if (borrowedCapitalStepRangeValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"borrowedCapitalStepRange",
-										"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
-					}
-				}
-				if (!borrowedCapitalProbabilityOfRiseValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"borrowedCapitalProbabilityOfRise",
-										"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
-					}
-				}
+
 				return false;
 			}
 		}
@@ -515,8 +544,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				cashFlowProbabilityOfRiseValid = true;
 				getView().setComponentError(false, "cashFlowProbabilityOfRise",
 						"");
-				this.projectProxy.getSelectedProject().setCashFlowProbabilityOfRise(
-						this.cashFlowProbabilityOfRise);
+				this.projectProxy.getSelectedProject()
+						.setCashFlowProbabilityOfRise(
+								this.cashFlowProbabilityOfRise);
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -607,8 +637,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				borrowedCapitalProbabilityOfRiseValid = true;
 				getView().setComponentError(false,
 						"borrowedCapitalProbabilityOfRise", "");
-				this.projectProxy.getSelectedProject().setBorrowedCapitalProbabilityOfRise(
-						this.borrowedCapitalProbabilityOfRise);
+				this.projectProxy.getSelectedProject()
+						.setBorrowedCapitalProbabilityOfRise(
+								this.borrowedCapitalProbabilityOfRise);
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -648,10 +679,26 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().activatePeriodsToForecast(false);
 			getView().activateRelevantPastPeriods(false);
 			getView().activateIterations(false);
+			getView().activateCashFlowStepRang(false);
+			getView().activateCashFlowProbabilityOfRise(false);
+			getView().activateBorrowedCapitalProbabilityOfRise(false);
+			getView().activateBorrowedCapitalStepRange(false);
 		} else {
 			getView().activatePeriodsToForecast(true);
 			getView().activateRelevantPastPeriods(true);
 			getView().activateIterations(true);
+			if (randomWalk) {
+				getView().activateCashFlowStepRang(true);
+				getView().activateCashFlowProbabilityOfRise(true);
+				getView().activateBorrowedCapitalProbabilityOfRise(true);
+				getView().activateBorrowedCapitalStepRange(true);
+			} else {
+				getView().activateCashFlowStepRang(false);
+				getView().activateCashFlowProbabilityOfRise(false);
+				getView().activateBorrowedCapitalProbabilityOfRise(false);
+				getView().activateBorrowedCapitalStepRange(false);
+			}
+
 		}
 
 	}

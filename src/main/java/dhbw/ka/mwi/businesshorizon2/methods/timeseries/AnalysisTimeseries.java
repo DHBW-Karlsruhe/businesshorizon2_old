@@ -153,9 +153,12 @@ public class AnalysisTimeseries {
 	 * @return geglaetteter Prognosewert
 	 */
 	private double calculateARModel(int consideredPeriodsOfPast, int forecast,
-			DoubleMatrix2D valuations, double[] previousValues) {
+			DoubleMatrix2D valuations, double[] previousValues)
+			throws StochasticMethodException {
 		if (this.equalizedValues[forecast - 1] == 0) {
-
+			if (valuations == null) {
+				valuations = calculateValuations(consideredPeriodsOfPast);
+			}
 			double equalizedValuePerPeriod = 0;
 			for (int past = 1; past <= consideredPeriodsOfPast; past++) {
 				double previousValue;
@@ -267,4 +270,47 @@ public class AnalysisTimeseries {
 		return returnValues;
 	}
 
+	public double[] getExpectedValues(double[] previousValues,
+			int consideredPeriodsOfPast, int periodsToForecast)
+			throws StochasticMethodException {
+
+		double[] expectedValues = new double[periodsToForecast];
+		CalculateTide tide = new CalculateTide();
+		boolean isStationary = StationaryTest.isStationary(previousValues);
+		if (!isStationary) {
+			previousValues = tide.reduceTide(previousValues);
+		}
+		/**
+		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
+		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
+		 */
+
+		this.DoubleArrayListTimeseries = new DoubleArrayList();
+		for (int i = 0; i < previousValues.length; i++) {
+			this.DoubleArrayListTimeseries.add(previousValues[i]);
+		}
+
+		// Start der zur Prognose benoetigten Berechnungen
+		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
+		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
+
+		this.yuleWalkerVariance = this.calculateMatrixVariance(previousValues);
+
+		this.equalizedValues = new double[periodsToForecast];
+
+		for (int forecast = 0; forecast < expectedValues.length; forecast++) {
+			if (!isStationary) {
+				double newTide = tide.getTideValue(forecast
+						+ previousValues.length - 1);
+				expectedValues[forecast] = (double) ((newTide - calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues)));
+			} else {
+				expectedValues[forecast] = (double) (calculateARModel(
+						consideredPeriodsOfPast, forecast, matrixValutaions,
+						previousValues));
+			}
+		}
+		return expectedValues;
+	}
 }

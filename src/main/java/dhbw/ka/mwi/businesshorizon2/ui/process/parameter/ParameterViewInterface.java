@@ -103,4 +103,44 @@ public interface ParameterViewInterface extends ContentView {
 	 */
 	void setComponentError(boolean setError, String component, String message);
 
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldCashFlowStepRange' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateCashFlowStepRang(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldCashFlowProbabilityOfRise' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateCashFlowProbabilityOfRise(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalProbabilityOfRise' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateBorrowedCapitalProbabilityOfRise(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalStepRange' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateBorrowedCapitalStepRange(boolean enabled);
+
 }
