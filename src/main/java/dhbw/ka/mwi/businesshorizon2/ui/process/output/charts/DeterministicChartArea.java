@@ -20,25 +20,35 @@ public class DeterministicChartArea extends GridLayout {
 
 	private static final long serialVersionUID = 1L;
 
-	public DeterministicChartArea() {
+	public DeterministicChartArea(double debitFreeCompanyValue, double taxBenefits, double companyValue,
+			double capitalStock) {
 
 		super(2, 2);
 
 		Label headline = new Label("<h2>Deterministisches Verfahren</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
-
-		List<String> columns = new ArrayList<String>();
-		columns.add("Unverschuldetes Unternehmen");
-		columns.add("Steuervorteil");
-
-		Map<String, double[]> values = new LinkedHashMap<String, double[]>();
-		values.put("Unverschuldetes Unternehmen und Steuervorteil", new double[] { 100, 200 });
-
-		StackedColumnChart chart = new StackedColumnChart("Chart", columns);
-		chart.addValues(values);
-
 		this.addComponent(headline, 0, 0);
-		this.addComponent(chart, 0, 1);
+
+		// Chart zur Aufschlüsselung des Unternehmenswert
+
+		List<String> cvKeyColumns = new ArrayList<String>();
+		cvKeyColumns.add("Unverschuldetes Unternehmen");
+		cvKeyColumns.add("Steuervorteil");
+		cvKeyColumns.add("Unternehmenswert");
+		cvKeyColumns.add("Fremdkapital");
+
+		Map<String, double[]> cvKeyValues = new LinkedHashMap<String, double[]>();
+		cvKeyValues.put("Unverschuldetes Unternehmen und Steuervorteil", new double[] { debitFreeCompanyValue,
+				taxBenefits, 0, 0 });
+		cvKeyValues.put("Unternehmenswert und Fremdkapital", new double[] { 0, 0, companyValue, capitalStock });
+
+		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart", cvKeyColumns);
+		cvKeyChart.addValues(cvKeyValues);
+
+		this.addComponent(cvKeyChart, 0, 1);
+
+		// Chart zur Kapitalstruktur
+
 		this.setHeight("600px");
 		this.setWidth("1000px");
 
