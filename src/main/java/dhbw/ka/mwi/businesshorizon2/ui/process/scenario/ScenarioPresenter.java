@@ -36,12 +36,12 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private ProjectProxy projectProxy;
-	
+
 	private boolean showErrors = false;
-	
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
@@ -64,9 +64,9 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	@Override
 	public boolean isValid() {
 		boolean isValid = true;
-		
+
 		List<Szenario> scenarios = this.projectProxy.getSelectedProject().getScenarios();
-		
+
 		int scenarioNumber = 1;
 		for(Szenario scenario : scenarios) {
 			if(scenario.isIncludeInCalculation()) {
@@ -74,13 +74,13 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 					isValid = false;
 				}
 			}
-			
+
 			scenarioNumber++;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode fuegt dem Projekt ein neues Szenario hinzu und zeigt die dazugehoerigen
 	 * Eingabefelder auf dem Screen an.
@@ -90,16 +90,16 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	public void addScenario() {
 		Szenario scenario = new Szenario(0.0, 0.0, 0.0, 0.0, true);
 		this.projectProxy.getSelectedProject().addScenario(scenario);
-		
+
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), this.projectProxy.getSelectedProject().getScenarios().size());
 	}
-	
+
 	public void removeScenario(int number) {
 		this.projectProxy.getSelectedProject().getScenarios().remove(number-1);
 		getView().removeScenario(number-1);
 		getView().updateLabels();
 	}
-	
+
 	/**
 	 * Dieser EventHandler reagiert auf die Nachricht, dass der Prozesschritt zur Szenarienanzeige
 	 * angezeigt werden soll. Er legt hierbei, falls noch kein Szenario existiert, zunaechst das im
@@ -111,18 +111,18 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 		if(scenarios.size() < 1) {
 			scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
 		}
-		
+
 		getView().clear();
-		
+
 		int numberOfScenario = 1;
 		for(Szenario scenario : scenarios) {
 			getView().addScenario(Double.toString(scenario.getRateReturnEquity()), Double.toString(scenario.getRateReturnCapitalStock()), Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()), scenario.isIncludeInCalculation(), numberOfScenario);
 			numberOfScenario++;
 		}
-		
+
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO, true));
 	}
-	
+
 	/**
 	 * Diese Methode setzt, sobald der Folgeschritt des Prozesses aufgerufen wird,
 	 * den internen Fehlermarker so, dass Fehler ab sofort angezeigt werden. Der erzielte
@@ -142,7 +142,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			this.showErrors = true;
 		}
 	}
-	
+
 	/**
 	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen Inhalt validieren soll. 
 	 * Er bedient sich dabei der Methode isValid und setzt den Status des Screens entsprechend des Ergebnisses
@@ -163,7 +163,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			logger.debug("Scenario valid, ValidStateEvent fired");
 		}
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Renditeforderung Eigenkapital korrekt ist.
 	 * 
@@ -173,14 +173,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidRateReturnEquity(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double rateReturnEquity = Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnEquity"));
-			
+
 			if(rateReturnEquity < 0 || rateReturnEquity > 100) {
 				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
-			
+
 			getView().setValid(scenarioNumber, "rateReturnEquity");
 		}
 		catch(Exception exception) {
@@ -189,10 +189,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Renditeforderung Fremdkapital korrekt ist.
 	 * 
@@ -202,10 +202,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidRateReturnCapitalStock(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double rateReturnCapitalStock = Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnCapitalStock"));
-			
+
 			if(rateReturnCapitalStock < 0 || rateReturnCapitalStock > 100) {
 				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
@@ -218,10 +218,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Gewerbesteuer korrekt ist.
 	 * 
@@ -231,14 +231,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidBusinessTax(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double businessTax = Double.parseDouble(getView().getValue(scenarioNumber, "businessTax"));
-			
+
 			if(businessTax < 0 || businessTax > 100) {
 				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
-			
+
 
 			getView().setValid(scenarioNumber, "businessTax");
 		}
@@ -248,10 +248,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur Koerperschaftssteuer
 	 * mit Solidaritaetszuschlag korrekt ist.
@@ -262,14 +262,14 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public boolean isValidCorporateAndSolitaryTax(int scenarioNumber) {
 		boolean isValid = true;
-		
+
 		try {
 			Double corporateAndSolitaryTax = Double.parseDouble(getView().getValue(scenarioNumber, "corporateAndSolitaryTax"));
-			
+
 			if(corporateAndSolitaryTax < 0 || corporateAndSolitaryTax > 100) {
 				throw new IllegalValueException("corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
-			
+
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
 		}
 		catch(Exception exception) {
@@ -278,10 +278,10 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			}
 			isValid = false;
 		}
-		
+
 		return isValid;
 	}
-	
+
 	/**
 	 * Diese Methode holt sich die in den Eingabefeldern der View eingetragenen Werte und
 	 * speichert sie nach einer Validierung im Szenarien-Model. Die Methode wird insbesondere
@@ -292,36 +292,36 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 */
 	public void updateScenario(int scenarioNumber) {
 		Szenario scenario = this.projectProxy.getSelectedProject().getScenarios().get(scenarioNumber-1);
-		
+
 		if(isValidRateReturnEquity(scenarioNumber)) {
 			scenario.setRateReturnEquity(Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnEquity")));
 			logger.debug("Renditeforderung Eigenkapital Szenario " + scenarioNumber + " auf " + scenario.getRateReturnEquity() + " (" + getView().getValue(scenarioNumber, "rateReturnEquity") + ")");
 		}
-		
+
 		if(isValidRateReturnCapitalStock(scenarioNumber)) {
 			scenario.setRateReturnCapitalStock(Double.parseDouble(getView().getValue(scenarioNumber, "rateReturnCapitalStock")));
 			logger.debug("Renditeforderung Fremdkapital Szenario " + scenarioNumber + " auf " + scenario.getRateReturnCapitalStock() + " (" + getView().getValue(scenarioNumber, "rateReturnCapitalStock") + ")");
 		}
-		
+
 		if(isValidBusinessTax(scenarioNumber)) {
 			scenario.setBusinessTax(Double.parseDouble(getView().getValue(scenarioNumber, "businessTax")));
 			logger.debug("Gewerbesteuer Szenario " + scenarioNumber + " auf " + scenario.getBusinessTax() + " (" + getView().getValue(scenarioNumber, "businessTax") + ")");
 		}
-		
+
 		if(isValidCorporateAndSolitaryTax(scenarioNumber)) {
 			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView().getValue(scenarioNumber, "corporateAndSolitaryTax")));
 			logger.debug("Koerperschaftssteuer und Solidaritaetszuschlag Szenario " + scenarioNumber + " auf " + scenario.getCorporateAndSolitaryTax() + " (" + getView().getValue(scenarioNumber, "corporateAndSolitaryTax") + ")");
 		}
-		
+
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(scenarioNumber));
-		
+
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
-	
-	
+
+
 	public boolean isShowErrors() {
 		return showErrors;
 	}
-	
+
 }
