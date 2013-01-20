@@ -9,7 +9,6 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
  */
 
 abstract class BalanceSheetPeriod implements PeriodInterface {
-
 	private double immaterialFortune; // Immaterielle Vermögensgegenstände
 	private double propertyValue; // Sachanlagen
 	private double financialValue; // Finanzlagen

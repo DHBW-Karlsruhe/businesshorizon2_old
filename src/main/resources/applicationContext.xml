@@ -18,7 +18,7 @@
         scope="session">
         <constructor-arg ref="eventBus" />
     </bean>
-    
+
     <!-- Services -->
     <bean name="authenticationService" class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" scope="singleton"/>
     

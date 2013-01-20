@@ -33,7 +33,7 @@ public class Project implements Serializable {
 
 	private String name;
 
-	protected AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
+	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
 
 	public AbstractPeriodContainer getStochasticPeriods() {
 		return stochasticPeriods;
@@ -73,7 +73,7 @@ public class Project implements Serializable {
 	 * @param Der
 	 *            Name des Projekts
 	 */
-	public Project(String name) {
+	public Project(String name) { 
 		this.name = name;
 		this.projectInputType = new ProjectInputType();
 	}

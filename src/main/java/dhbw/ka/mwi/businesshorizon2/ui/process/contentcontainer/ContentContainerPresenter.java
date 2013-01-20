@@ -120,24 +120,29 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		eventBus.fireEvent(newViewEvent);
 
 		// Feuere event, um die ScreenPresenter anzuweisen, ihren Zustand zu
-		// validieren und dem
-		// User gegebenenfalls einen Fehlerhinweis zu geben
+		// validieren und dem User gegebenenfalls einen Fehlerhinweis zu geben
 		eventBus.fireEvent(new ValidateContentStateEvent());
 
 		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
 
 		// (De-)Aktiviere je nachdem, ob ein vorheriger bzw. nachfolgender
-		// Prozessschritt existiert
-		// die entsprechenden Buttons.
+		// Prozessschritt existiert die entsprechenden Buttons.
 		this.switchStepButtons();
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen.
 	 * Sie kuemmert sich darum, den naechsten Screen zu ermitteln und zu ihm
 	 * weiterzuleiten. Sie prueft hierbei, ob die Eingaben des aktuellen Screens
 	 * valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum
 	 * naechsten Screen weitergeleitet.
+=======
+	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen. Sie kuemmert sich darum,
+	 * den naechsten Screen zu ermitteln und zu ihm weiterzuleiten. Sie prueft hierbei, ob die Eingaben des
+	 * aktuellen Screens valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum naechsten Screen
+	 * weitergeleitet.
+>>>>>>> refs/remotes/origin/master
 	 * 
 	 * @author Julius Hacker
 	 */
@@ -167,7 +172,6 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 		this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
 
 		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + " wurde getriggert");
-
 	}
 
 	/**

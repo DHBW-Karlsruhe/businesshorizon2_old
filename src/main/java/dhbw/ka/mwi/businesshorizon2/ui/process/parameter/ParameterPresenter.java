@@ -22,6 +22,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
+import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
+
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
  * 
@@ -123,8 +125,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		}
 
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			determMethod = this.projectProxy.getSelectedProject().getProjectInputType().getDeterministic();
-			stochMethod = this.projectProxy.getSelectedProject().getProjectInputType().getStochastic();
+			determMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+			stochMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getStochastic();
 		} else {
 			determMethod = false;
 			stochMethod = false;
@@ -134,7 +138,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		methods = this.projectProxy.getSelectedProject().getMethods();
 		methodIterator = methods.iterator();
 		while (methodIterator.hasNext()) {
-			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator.next();
+			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
+					.next();
 			if (m.getName().equals("Random Walk") && m.getSelected()) {
 				randomWalk = true;
 			}
@@ -142,7 +147,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 		this.greyOut();
 		firstCall = false;
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER, true));
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
+				true));
 
 	}
 
@@ -188,46 +194,59 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			} else {
 				if (showError) {
 					getView()
-							.setComponentError(true, "basisYear",
+							.setComponentError(
+									true,
+									"basisYear",
 									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 				}
 				return false;
 			}
 
 		} else {
-			if (periodsToForecastValid && relevantPastPeriodsValid && basisYearValid && iterationsValid) {
+			if (periodsToForecastValid && relevantPastPeriodsValid
+					&& basisYearValid && iterationsValid) {
 				if (!randomWalk) {
 					return true;
 				} else {
-					if (cashFlowProbabilityOfRiseValid && cashFlowStepRangeValid
-							&& borrowedCapitalProbabilityOfRiseValid && borrowedCapitalStepRangeValid) {
+					if (cashFlowProbabilityOfRiseValid
+							&& cashFlowStepRangeValid
+							&& borrowedCapitalProbabilityOfRiseValid
+							&& borrowedCapitalStepRangeValid) {
 						return true;
 					} else {
 						if (!cashFlowStepRangeValid) {
 							if (showError) {
 								getView()
-										.setComponentError(true, "cashFlowStepRange",
+										.setComponentError(
+												true,
+												"cashFlowStepRange",
 												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
 							}
 						}
 						if (!cashFlowProbabilityOfRiseValid) {
 							if (showError) {
 								getView()
-										.setComponentError(true, "cashFlowProbabilityOfRise",
+										.setComponentError(
+												true,
+												"cashFlowProbabilityOfRise",
 												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
 							}
 						}
 						if (!borrowedCapitalStepRangeValid) {
 							if (showError) {
 								getView()
-										.setComponentError(true, "borrowedCapitalStepRange",
+										.setComponentError(
+												true,
+												"borrowedCapitalStepRange",
 												"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
 							}
 						}
 						if (!borrowedCapitalProbabilityOfRiseValid) {
 							if (showError) {
 								getView()
-										.setComponentError(true, "borrowedCapitalProbabilityOfRise",
+										.setComponentError(
+												true,
+												"borrowedCapitalProbabilityOfRise",
 												"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
 							}
 						}
@@ -239,7 +258,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				if (!periodsToForecastValid) {
 					if (showError) {
 						getView()
-								.setComponentError(true, "periodsToForecast",
+								.setComponentError(
+										true,
+										"periodsToForecast",
 										"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
 					}
 				}
@@ -254,14 +275,17 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				}
 				if (!iterationsValid) {
 					if (showError) {
-						getView().setComponentError(true, "iterations",
-								"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
+						getView()
+								.setComponentError(true, "iterations",
+										"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
 					}
 				}
 				if (!basisYearValid) {
 					if (showError) {
 						getView()
-								.setComponentError(true, "basisYear",
+								.setComponentError(
+										true,
+										"basisYear",
 										"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 					}
 				}
@@ -287,7 +311,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		iterationsValid = true;
 		this.projectProxy.getSelectedProject().setIterations(iterations);
 		getView().setComponentError(false, "iterations", null);
-		logger.debug("Iterationen in Objekten gesetzt: " + this.projectProxy.getSelectedProject().getName());
+		logger.debug("Iterationen in Objekten gesetzt: "
+				+ this.projectProxy.getSelectedProject().getName());
 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
@@ -313,7 +338,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (periodsToForecastInt > 0) {
 				periodsToForecastValid = true;
 				getView().setComponentError(false, "periodsToForecast", "");
-				this.projectProxy.getSelectedProject().setPeriodsToForecast(periodsToForecastInt);
+				this.projectProxy.getSelectedProject().setPeriodsToForecast(
+						periodsToForecastInt);
 				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -321,7 +347,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} catch (NumberFormatException nfe) {
 			periodsToForecastValid = false;
 			getView()
-					.setComponentError(true, "periodsToForecast",
+					.setComponentError(
+							true,
+							"periodsToForecast",
 							"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
 			getView()
 					.showErrorMessage(
@@ -351,7 +379,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (relevantPastPeriodsInt >= 5) {
 				relevantPastPeriodsValid = true;
 				getView().setComponentError(false, "pastPeriods", "");
-				this.projectProxy.getSelectedProject().setRelevantPastPeriods(relevantPastPeriodsInt);
+				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
+						relevantPastPeriodsInt);
 				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -392,15 +421,19 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (basisYearInt >= (now.get(Calendar.YEAR) - 1)) {
 				basisYearValid = true;
 				getView().setComponentError(false, "basisYear", "");
-				this.projectProxy.getSelectedProject().setBasisYear(basisYearInt);
+				this.projectProxy.getSelectedProject().setBasisYear(
+						basisYearInt);
 				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException nfe) {
 			basisYearValid = false;
-			getView().setComponentError(true, "basisYear",
-					"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+			getView()
+					.setComponentError(
+							true,
+							"basisYear",
+							"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
 			getView()
 					.showErrorMessage(
 							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. <br> Beispiel: 2015");
@@ -465,7 +498,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (cashFlowStepRange >= 0) {
 				cashFlowStepRangeValid = true;
 				getView().setComponentError(false, "cashFlowStepRange", "");
-				this.projectProxy.getSelectedProject().setCashFlowStepRange(this.cashFlowStepRange);
+				this.projectProxy.getSelectedProject().setCashFlowStepRange(
+						this.cashFlowStepRange);
 				logger.debug("Schrittweite des Cashflows in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -473,7 +507,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} catch (NumberFormatException nfe) {
 			cashFlowStepRangeValid = false;
 			getView()
-					.setComponentError(true, "cashFlowStepRange",
+					.setComponentError(
+							true,
+							"cashFlowStepRange",
 							"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
 			getView()
 					.showErrorMessage(
@@ -497,15 +533,21 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 *            Wahrscheinlichkeit fuer eine positive Cashflows-Entwicklung
 	 *            fuer die RandomWalk Methode
 	 */
-	public void cashFlowProbabilityOfRiseChosen(String cashFlowProbabilityOfRiseString) {
+	public void cashFlowProbabilityOfRiseChosen(
+			String cashFlowProbabilityOfRiseString) {
 		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
 
 		try {
-			cashFlowProbabilityOfRise = Double.parseDouble(cashFlowProbabilityOfRiseString);
-			if (cashFlowProbabilityOfRise >= 0 && cashFlowProbabilityOfRise <= 100) {
+			cashFlowProbabilityOfRise = Double
+					.parseDouble(cashFlowProbabilityOfRiseString);
+			if (cashFlowProbabilityOfRise >= 0
+					&& cashFlowProbabilityOfRise <= 100) {
 				cashFlowProbabilityOfRiseValid = true;
-				getView().setComponentError(false, "cashFlowProbabilityOfRise", "");
-				this.projectProxy.getSelectedProject().setCashFlowProbabilityOfRise(this.cashFlowProbabilityOfRise);
+				getView().setComponentError(false, "cashFlowProbabilityOfRise",
+						"");
+				this.projectProxy.getSelectedProject()
+						.setCashFlowProbabilityOfRise(
+								this.cashFlowProbabilityOfRise);
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -513,7 +555,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} catch (NumberFormatException nfe) {
 			cashFlowProbabilityOfRiseValid = false;
 			getView()
-					.setComponentError(true, "cashFlowProbabilityOfRise",
+					.setComponentError(
+							true,
+							"cashFlowProbabilityOfRise",
 							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
 			getView()
 					.showErrorMessage(
@@ -535,15 +579,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * @param cashFlowStepRangeString
 	 *            Schrittgröße das Fremdkapital fuer die RandomWalk Methode
 	 */
-	public void borrowedCapitalStepRangeChosen(String borrowedCapitalStepRangeString) {
+	public void borrowedCapitalStepRangeChosen(
+			String borrowedCapitalStepRangeString) {
 		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
 
 		try {
-			borrowedCapitalStepRange = Double.parseDouble(borrowedCapitalStepRangeString);
+			borrowedCapitalStepRange = Double
+					.parseDouble(borrowedCapitalStepRangeString);
 			if (borrowedCapitalStepRange >= 0) {
 				borrowedCapitalStepRangeValid = true;
-				getView().setComponentError(false, "borrowedCapitalStepRange", "");
-				this.projectProxy.getSelectedProject().setBorrowedCapitalStepRange(this.borrowedCapitalStepRange);
+				getView().setComponentError(false, "borrowedCapitalStepRange",
+						"");
+				this.projectProxy.getSelectedProject()
+						.setBorrowedCapitalStepRange(
+								this.borrowedCapitalStepRange);
 				logger.debug("Schrittweite des Fremdkapital in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -551,7 +600,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} catch (NumberFormatException nfe) {
 			borrowedCapitalStepRangeValid = false;
 			getView()
-					.setComponentError(true, "borrowedCapitalStepRange",
+					.setComponentError(
+							true,
+							"borrowedCapitalStepRange",
 							"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
 			getView()
 					.showErrorMessage(
@@ -575,16 +626,21 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 *            Wahrscheinlichkeit fuer eine positive Fremdkapitalentwicklung
 	 *            fuer die RandomWalk Methode
 	 */
-	public void borrowedCapitalProbabilityOfRiseChosen(String borrowedCapitalProbabilityOfRiseString) {
+	public void borrowedCapitalProbabilityOfRiseChosen(
+			String borrowedCapitalProbabilityOfRiseString) {
 		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
 
 		try {
-			borrowedCapitalProbabilityOfRise = Double.parseDouble(borrowedCapitalProbabilityOfRiseString);
-			if (borrowedCapitalProbabilityOfRise >= 0 && borrowedCapitalProbabilityOfRise <= 100) {
+			borrowedCapitalProbabilityOfRise = Double
+					.parseDouble(borrowedCapitalProbabilityOfRiseString);
+			if (borrowedCapitalProbabilityOfRise >= 0
+					&& borrowedCapitalProbabilityOfRise <= 100) {
 				borrowedCapitalProbabilityOfRiseValid = true;
-				getView().setComponentError(false, "borrowedCapitalProbabilityOfRise", "");
-				this.projectProxy.getSelectedProject().setBorrowedCapitalProbabilityOfRise(
-						this.borrowedCapitalProbabilityOfRise);
+				getView().setComponentError(false,
+						"borrowedCapitalProbabilityOfRise", "");
+				this.projectProxy.getSelectedProject()
+						.setBorrowedCapitalProbabilityOfRise(
+								this.borrowedCapitalProbabilityOfRise);
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -592,7 +648,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		} catch (NumberFormatException nfe) {
 			borrowedCapitalProbabilityOfRiseValid = false;
 			getView()
-					.setComponentError(true, "borrowedCapitalProbabilityOfRise",
+					.setComponentError(
+							true,
+							"borrowedCapitalProbabilityOfRise",
 							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
 			getView()
 					.showErrorMessage(
@@ -656,7 +714,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		Calendar now = Calendar.getInstance();
 		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
 		basisYearValid = true;
-		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1) + " gesetzt.");
+		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1)
+				+ " gesetzt.");
 
 	}
 
@@ -677,12 +736,15 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void validate(ValidateContentStateEvent event) {
 
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			determMethod = this.projectProxy.getSelectedProject().getProjectInputType().getDeterministic();
-			stochMethod = this.projectProxy.getSelectedProject().getProjectInputType().getStochastic();
+			determMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+			stochMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getStochastic();
 		}
 
 		if (!firstCall && !isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER, showError));
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,
+					showError));
 			logger.debug("Parameter not valid, InvalidStateEvent fired");
 		} else {
 			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));

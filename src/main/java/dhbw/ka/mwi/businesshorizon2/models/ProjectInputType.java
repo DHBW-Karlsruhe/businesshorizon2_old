@@ -13,11 +13,6 @@ package dhbw.ka.mwi.businesshorizon2.models;
  */
 
 public class ProjectInputType {
-
-	/**
-	 * 
-	 */
-
 	private Boolean stochastic = false;
 	private Boolean deterministic = false;
 	private InputType stochasticInput = InputType.DIRECT;

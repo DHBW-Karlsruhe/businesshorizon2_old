@@ -149,6 +149,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 *            naechsten Screens ausloest
 	 * @author Julius Hacker
 	 */
+	@Override
 	@EventHandler
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
 		if (event.getStep() == NavigationSteps.SCENARIO) {
@@ -329,6 +330,7 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 			logger.debug("Gewerbesteuer Szenario " + scenarioNumber + " auf " + scenario.getBusinessTax() + " ("
 					+ getView().getValue(scenarioNumber, "businessTax") + ")");
 		}
+
 		if (isValidCorporateAndSolitaryTax(scenarioNumber)) {
 			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView().getValue(scenarioNumber,
 					"corporateAndSolitaryTax")));

@@ -66,7 +66,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		logger.debug("test");
 		methods = new TreeSet<AbstractStochasticMethod>();
 
 	}
@@ -203,5 +202,5 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 	}
-
+	
 }

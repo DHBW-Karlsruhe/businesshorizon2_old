@@ -14,6 +14,7 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
  */
 public class MethodRunner extends Thread {
 
+
 	private AbstractStochasticMethod method;
 
 	private CallbackInterface callback;
@@ -35,9 +36,7 @@ public class MethodRunner extends Thread {
 
 	public MethodRunner(AbstractStochasticMethod method, Project project, CallbackInterface callback) {
 		if (method == null || project == null || callback == null) {
-
 			throw new InvalidParameterException("No null parameters are allowed here");
-
 		}
 
 		this.method = method;
