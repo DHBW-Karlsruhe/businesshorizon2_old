@@ -1,5 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
+import java.util.Map.Entry;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -18,14 +19,19 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
@@ -96,7 +102,24 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 		}
 
 		if (project.getProjectInputType().getDeterministic()) {
+			for (Szenario scenario : project.getScenarios()) {
+				CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
 
+				TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<>();
+				periodContainer.add(cfPeriodContainer);
+				StochasticResultContainer srContainer = new StochasticResultContainer(periodContainer);
+
+				APV apv = new APV(srContainer, scenario);
+				CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
+						.calculateCompanyValue();
+				for (Entry<Integer, Couple> companyValue : companyValueDeterministic.getCompanyValues().entrySet()) {
+					DeterministicChartArea deterministicChartArea = new DeterministicChartArea(companyValue.getValue()
+							.getDebitFreeCompany(), companyValue.getValue().getTaxBenefits(), companyValue.getValue()
+							.getCompanyValue(), companyValue.getValue().getCapitalStock());
+					getView().addDeterministicChartArea(deterministicChartArea);
+				}
+
+			}
 		}
 
 	}

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
@@ -21,13 +21,11 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
  * @author Florian Stier
  * 
  */
-public class StochasticChartArea extends GridLayout {
+public class StochasticChartArea extends HorizontalLayout {
 
 	private static final long serialVersionUID = 1L;
 
 	public StochasticChartArea(TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
-
-		super(3, 2);
 
 		// Chart zur Anzeige der Unternehmenswerte
 		List<String> cvChartColumns = new ArrayList<String>();
@@ -59,7 +57,7 @@ public class StochasticChartArea extends GridLayout {
 
 		cvChart.addValues(cvChartValues);
 
-		this.addComponent(cvChart, 0, 0);
+		this.addComponent(cvChart);
 
 		// Chart zur Anzeige des Cashflow Verlaufs
 		if (periods != null) {
@@ -68,7 +66,7 @@ public class StochasticChartArea extends GridLayout {
 
 			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
-			BasicLineChart cfChart = new BasicLineChart(cfChartLines);
+			BasicLineChart cfChart = new BasicLineChart("Cashflows", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
 				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
@@ -76,7 +74,7 @@ public class StochasticChartArea extends GridLayout {
 			}
 
 			cfChart.addValues(cfChartValues);
-			this.addComponent(cfChart, 0, 1);
+			this.addComponent(cfChart);
 		}
 
 		this.setHeight("600px");
