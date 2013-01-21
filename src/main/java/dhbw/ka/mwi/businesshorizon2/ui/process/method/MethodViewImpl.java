@@ -141,7 +141,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		detInput.addStyleName(Reindeer.PANEL_LIGHT);
 		detInput.addComponent(deterministicInput);
 		
-		Label stoCaption= new Label ("Vergangene Perioden (stochastisch:");
+		Label stoCaption= new Label ("Vergangene Perioden (stochastisch):");
 		stoInput.addComponent(stoCaption);
 		stochasticInput.addItem(InputType.DIRECT);
 		stochasticInput.addItem(InputType.REVENUE);
