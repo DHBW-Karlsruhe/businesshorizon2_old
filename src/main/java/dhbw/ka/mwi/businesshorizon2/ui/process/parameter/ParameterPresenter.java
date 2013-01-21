@@ -326,7 +326,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		int iterations;
 		try {
 			iterations = Integer.parseInt(iterationsString);
-			if (iterations > 1900) {
+			if (iterations >= 1000 && iterations <= 100000) {
 				iterationsValid = true;
 				getView().setComponentError(false, "iterations", "");
 				this.projectProxy.getSelectedProject().setIterations(iterations);
@@ -825,7 +825,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	/**
 	 * Methode die sich nach der Auswahl der Schritte pro Periode
-	 * um die davon abhaengigen Objekte kuemmert. 
+	 * um die davon abhaengigen Objekte kuemmert. Derzeit nicht in 
+	 * Benutzung
 	 * 
 	 * @author Christian Scherer
 	 * @param relevantPastPeriods
@@ -834,7 +835,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void stepsPerPeriodChosen(String stepsPerPeriodString) {
 
-		//TODO: WAS MIT DEM WERT MACHEN???
 //		int stepsPerPeriod;
 //		try {
 //			stepsPerPeriod = Integer.parseInt(stepsPerPeriodString);
