@@ -11,4 +11,6 @@ public interface UmsatzViewInterface extends ContentView {
 
 
 	public void initForm();
+
+	public void addHeader(int year);
 }

@@ -48,7 +48,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	Logger logger = Logger.getLogger(TimelinePresenter.class);
 
 	private int fixedPastPeriods;
-	private int fixedFuturePeriods;
+	//private int fixedFuturePeriods; gibbets nibbets
 
 	private int sumPastPeriods;
 	private int sumFuturePeriods;
@@ -103,7 +103,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		try {
 			if (projectProxy.getSelectedProject().getBasisYear() == baseYear
-					&& projectProxy.getSelectedProject().getPeriodsToForecast() == fixedFuturePeriods
 					&& projectProxy.getSelectedProject()
 							.getRelevantPastPeriods() == fixedPastPeriods
 					&& projectProxy.getSelectedProject().getProjectInputType()
@@ -161,28 +160,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 						.getRelevantPastPeriods();
 			}
 
-			// Gleiches Vorgehen wie direkt darüber
-			if (projectProxy.getSelectedProject().getPeriodsToForecast() != fixedFuturePeriods) {
-				if (projectProxy.getSelectedProject().getPeriodsToForecast() > sumFuturePeriods) {
-					if (deterministicInput != projectProxy.getSelectedProject()
-							.getProjectInputType().getDeterministicInput()) {
-						removeAllFuturePeriods();
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getPeriodsToForecast(), projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getDeterministicInput());
-						deterministicInput = projectProxy.getSelectedProject()
-								.getProjectInputType().getDeterministicInput();
-						createContainer(futurePeriods, deterministicInput);
-					} else {
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getPeriodsToForecast() - sumFuturePeriods,
-								deterministicInput);
-					}
-				}
-				fixedFuturePeriods = projectProxy.getSelectedProject()
-						.getPeriodsToForecast();
-			}
+			
 
 			// Hat sich nur der Inputtyp geändert, müssen wir alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
@@ -190,16 +168,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					.getDeterministic() != deterministic) {
 
 				removeAllFuturePeriods();
-				fixedFuturePeriods = projectProxy.getSelectedProject()
-						.getPeriodsToForecast();
 				if ((projectProxy.getSelectedProject().getProjectInputType()
 						.getDeterministic())) {
 					deterministicInput = projectProxy.getSelectedProject()
 							.getProjectInputType().getDeterministicInput();
 					createContainer(futurePeriods, deterministicInput);
-					addFuturePeriods(fixedFuturePeriods, projectProxy
-							.getSelectedProject().getProjectInputType()
-							.getDeterministicInput());
 
 				}
 
