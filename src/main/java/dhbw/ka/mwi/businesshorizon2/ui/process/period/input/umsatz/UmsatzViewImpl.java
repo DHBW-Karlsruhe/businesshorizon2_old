@@ -1,7 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz;
 
-import java.util.Arrays;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -9,19 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.terminal.UserError;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Form;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-
-import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.periodFormFactory;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewImpl;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
