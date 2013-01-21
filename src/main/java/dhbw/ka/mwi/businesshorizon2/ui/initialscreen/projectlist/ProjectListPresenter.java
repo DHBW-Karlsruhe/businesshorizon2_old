@@ -91,10 +91,6 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void onShowProjectList(ShowProjectListEvent event) {
 		
 		this.user = event.getUser();
-		// 2 Dummyprojects die dem User hinzugefÃ¼gt werden
-		addProject("Projekt 1");
-		addProject("Projekt 2");
-		logger.debug("2 Dummy-Projekte Erzeugt fuer erste Darstellung");
 
 		List<Project> projects = user.getProjects();
 		logger.debug("Projekte geladen. Anzahl: " + projects.size());
@@ -149,6 +145,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 		eventBus.fireEvent(new ProjectAddEvent(project));
 		logger.debug("ShowAddEvent gefeuert");
+		
+		this.projectSelected(project);
 
 	}
 
