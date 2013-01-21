@@ -68,6 +68,7 @@ public class UmsatzPresenter extends ScreenPresenter<UmsatzViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
+		getView().addHeader(period.getYear()); 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(
 					period.getClass(), Object.class).getPropertyDescriptors()) {

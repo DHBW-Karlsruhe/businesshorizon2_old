@@ -63,6 +63,7 @@ public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
+		getView().addHeader(period.getYear()); 
 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(

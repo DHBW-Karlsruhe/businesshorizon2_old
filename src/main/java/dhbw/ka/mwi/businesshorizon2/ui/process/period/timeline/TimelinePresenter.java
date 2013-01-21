@@ -44,16 +44,16 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	@Autowired
 	EventBus eventBus;
-	
+
 	Logger logger = Logger.getLogger(TimelinePresenter.class);
 
 	private int fixedPastPeriods;
-	private int fixedFuturePeriods;
+	//private int fixedFuturePeriods; gibbets nibbets
 
 	private int sumPastPeriods;
 	private int sumFuturePeriods;
 
-	private int baseYear=-9999999;
+	private int baseYear = -9999999;
 
 	private boolean showErrors;
 
@@ -67,6 +67,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	private InputType deterministicInput;
 
 	private InputType stochasticInput;
+
+	private PeriodInterface basePeriod;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -82,50 +84,50 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	@Override
 	public boolean isValid() {
-		try{
+		try {
 			projectProxy.getSelectedProject();
-		}catch(Exception e){
+		} catch (Exception e) {
 			logger.debug("crash at getSelectedProject()");
 		}
-		try{
+		try {
 			projectProxy.getSelectedProject().getProjectInputType();
-		}catch(Exception e){
+		} catch (Exception e) {
 			logger.debug("crash at getProjectInputType");
 		}
-		try{
+		try {
 			projectProxy.getSelectedProject().getProjectInputType()
-			.getDeterministic();
-		}catch(Exception e){
-			logger.debug("crash at getDeterministic()"+projectProxy.getSelectedProject().getProjectInputType()
-					);
+					.getDeterministic();
+		} catch (Exception e) {
+			logger.debug("crash at getDeterministic()"
+					+ projectProxy.getSelectedProject().getProjectInputType());
 		}
-		try{
-		if (projectProxy.getSelectedProject().getBasisYear() == baseYear
-				&& projectProxy.getSelectedProject().getPeriodsToForecast() == fixedFuturePeriods
-				&& projectProxy.getSelectedProject().getRelevantPastPeriods() == fixedPastPeriods
-				&& projectProxy.getSelectedProject().getProjectInputType()
-						.getDeterministic() == deterministic
-				&& projectProxy.getSelectedProject().getProjectInputType()
-						.getStochastic() == stochastic
-				&& projectProxy.getSelectedProject().getProjectInputType()
-						.getDeterministicInput() == deterministicInput
-				&& projectProxy.getSelectedProject().getProjectInputType()
-						.getStochasticInput() == stochasticInput)
-			return true;
-		else
-			return false;
-		}catch(Exception e){
+		try {
+			if (projectProxy.getSelectedProject().getBasisYear() == baseYear
+					&& projectProxy.getSelectedProject()
+							.getRelevantPastPeriods() == fixedPastPeriods
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getDeterministic() == deterministic
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getStochastic() == stochastic
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getDeterministicInput() == deterministicInput
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getStochasticInput() == stochasticInput)
+				return true;
+			else
+				return false;
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
 	@EventHandler
-	public void onShowPeriodEvent(ShowPeriodViewEvent event) throws NullPointerException {
+	public void onShowPeriodEvent(ShowPeriodViewEvent event)
+			throws NullPointerException {
 		// Wenn alles gleich geblieben ist müssen wir nichts tun
 		if (isValid()) {
 			return;
 		} else {
-			
 
 			// Wenn sich unser Bezugsjahr ändert werden alle Perioden ungültig
 			if (projectProxy.getSelectedProject().getBasisYear() != baseYear) {
@@ -145,10 +147,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 								.getRelevantPastPeriods(), projectProxy
 								.getSelectedProject().getProjectInputType()
 								.getStochasticInput());
-						stochasticInput = projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getStochasticInput();
-						createContainer(pastPeriods,stochasticInput);
+						stochasticInput = projectProxy.getSelectedProject()
+								.getProjectInputType().getStochasticInput();
+						createContainer(pastPeriods, stochasticInput);
 					} else {
 						addPastPeriods(projectProxy.getSelectedProject()
 								.getRelevantPastPeriods() - sumPastPeriods,
@@ -159,47 +160,19 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 						.getRelevantPastPeriods();
 			}
 
-			// Gleiches Vorgehen wie direkt darüber
-			if (projectProxy.getSelectedProject().getPeriodsToForecast() != fixedFuturePeriods) {
-				if (projectProxy.getSelectedProject().getPeriodsToForecast() > sumFuturePeriods) {
-					if (deterministicInput != projectProxy.getSelectedProject()
-							.getProjectInputType().getDeterministicInput()) {
-						removeAllFuturePeriods();
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getPeriodsToForecast(), projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getDeterministicInput());
-						deterministicInput = projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getDeterministicInput();
-						createContainer(futurePeriods,deterministicInput);
-					} else {
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getPeriodsToForecast() - sumFuturePeriods,
-								deterministicInput);
-					}
-				}
-				fixedFuturePeriods = projectProxy.getSelectedProject()
-						.getPeriodsToForecast();
-			}
+			
 
 			// Hat sich nur der Inputtyp geändert, müssen wir alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
 			if (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministic() != deterministic) {
-				
+
 				removeAllFuturePeriods();
-				fixedFuturePeriods = projectProxy.getSelectedProject()
-						.getPeriodsToForecast();
 				if ((projectProxy.getSelectedProject().getProjectInputType()
 						.getDeterministic())) {
-					deterministicInput = projectProxy
-							.getSelectedProject().getProjectInputType()
-							.getDeterministicInput();
-					createContainer(futurePeriods,deterministicInput);
-					addFuturePeriods(fixedFuturePeriods, projectProxy
-							.getSelectedProject().getProjectInputType()
-							.getDeterministicInput());
+					deterministicInput = projectProxy.getSelectedProject()
+							.getProjectInputType().getDeterministicInput();
+					createContainer(futurePeriods, deterministicInput);
 
 				}
 
@@ -216,24 +189,23 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					addPastPeriods(fixedPastPeriods, projectProxy
 							.getSelectedProject().getProjectInputType()
 							.getStochasticInput());
-					stochasticInput = projectProxy
-							.getSelectedProject().getProjectInputType()
-							.getStochasticInput();
-					createContainer(pastPeriods,stochasticInput);
+					stochasticInput = projectProxy.getSelectedProject()
+							.getProjectInputType().getStochasticInput();
+					createContainer(pastPeriods, stochasticInput);
 
 				}
 
 			}
 
 		}
-			getView().setPastButtonAccess(stochastic);
-			getView().setFutureButtonAccess(deterministic);
+		getView().setPastButtonAccess(stochastic);
+		getView().setFutureButtonAccess(deterministic);
 
 	}
 
 	private void createContainer(AbstractPeriodContainer container,
 			InputType inputType) {
-		switch(inputType){
+		switch (inputType) {
 		case TOTAL:
 			container = new AggregateCostMethodBalanceSheetPeriodContainer();
 			break;
@@ -250,11 +222,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			InputType deterministicInput2) {
 		for (int i = 0; i < periodsToForecast; i++) {
 			sumFuturePeriods++;
-			PeriodInterface period = buildNewPeriod(deterministicInput2, baseYear
-					+ sumFuturePeriods);
+			PeriodInterface period = buildNewPeriod(deterministicInput2,
+					baseYear + sumFuturePeriods);
 			futurePeriods.addPeriod(period);
 			getView().addFuturePeriod(period);
-			projectProxy.getSelectedProject().setDeterministicPeriods(futurePeriods);
+			projectProxy.getSelectedProject().setDeterministicPeriods(
+					futurePeriods);
 		}
 	}
 
@@ -263,8 +236,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().removeFuturePeriod();
 		}
 		sumFuturePeriods = 0;
-		
-		deterministic =projectProxy.getSelectedProject().getProjectInputType()
+
+		deterministic = projectProxy.getSelectedProject().getProjectInputType()
 				.getDeterministic();
 
 	}
@@ -310,7 +283,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().removePastPeriod();
 		}
 		sumPastPeriods = 0;
-		stochastic =projectProxy.getSelectedProject().getProjectInputType()
+		stochastic = projectProxy.getSelectedProject().getProjectInputType()
 				.getStochastic();
 
 	}
@@ -325,44 +298,59 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().removeFuturePeriod();
 		}
 		sumFuturePeriods = 0;
-		stochasticInput = projectProxy
-				.getSelectedProject().getProjectInputType()
-				.getStochasticInput();
-		deterministicInput = projectProxy
-				.getSelectedProject().getProjectInputType()
-				.getDeterministicInput();
+		stochasticInput = projectProxy.getSelectedProject()
+				.getProjectInputType().getStochasticInput();
+		deterministicInput = projectProxy.getSelectedProject()
+				.getProjectInputType().getDeterministicInput();
 		logger.debug("Container created!");
-		createContainer(pastPeriods, projectProxy.getSelectedProject().getProjectInputType().getStochasticInput());
-		createContainer(futurePeriods, projectProxy.getSelectedProject().getProjectInputType().getDeterministicInput());
-		deterministic =projectProxy.getSelectedProject().getProjectInputType()
+		createContainer(pastPeriods, projectProxy.getSelectedProject()
+				.getProjectInputType().getStochasticInput());
+		createContainer(futurePeriods, projectProxy.getSelectedProject()
+				.getProjectInputType().getDeterministicInput());
+		deterministic = projectProxy.getSelectedProject().getProjectInputType()
 				.getDeterministic();
-		stochastic =projectProxy.getSelectedProject().getProjectInputType()
+		stochastic = projectProxy.getSelectedProject().getProjectInputType()
 				.getStochastic();
-		if(stochastic){
-			switch(projectProxy.getSelectedProject().getProjectInputType().getStochasticInput()){
+		if (stochastic) {
+			switch (projectProxy.getSelectedProject().getProjectInputType()
+					.getStochasticInput()) {
+
 			case REVENUE:
-				getView().addBasePeriod(new CostOfSalesMethodPeriod(baseYear));
+				basePeriod = new CostOfSalesMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				pastPeriods.addPeriod(basePeriod);
 				break;
 			case TOTAL:
-				getView().addBasePeriod(new AggregateCostMethodPeriod(baseYear));
+				basePeriod = new AggregateCostMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				pastPeriods.addPeriod(basePeriod);
 				break;
 			case DIRECT:
-				getView().addBasePeriod(new CashFlowPeriod(baseYear));
+				basePeriod = new CashFlowPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				pastPeriods.addPeriod(basePeriod);
 				break;
 			}
-		}else{
-			switch(projectProxy.getSelectedProject().getProjectInputType().getDeterministicInput()){
+		} else {
+			switch (projectProxy.getSelectedProject().getProjectInputType()
+					.getDeterministicInput()) {
 			case REVENUE:
-				getView().addBasePeriod(new CostOfSalesMethodPeriod(baseYear));
+				basePeriod = new CostOfSalesMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				futurePeriods.addPeriod(basePeriod);
 				break;
 			case TOTAL:
-				getView().addBasePeriod(new AggregateCostMethodPeriod(baseYear));
+				basePeriod = new AggregateCostMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				futurePeriods.addPeriod(basePeriod);
 				break;
 			case DIRECT:
-				getView().addBasePeriod(new CashFlowPeriod(baseYear));
+				basePeriod = new CashFlowPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				futurePeriods.addPeriod(basePeriod);
 				break;
 			}
-			
+
 		}
 
 	}
@@ -387,7 +375,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void addPastPeriod() {
 		addPastPeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getStochasticInput());
-		
 
 	}
 
@@ -398,14 +385,16 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	public void periodClicked(PeriodInterface period) {
-		if(period instanceof CashFlowPeriod){
+		if (period instanceof CashFlowPeriod) {
 			eventBus.fireEvent(new ShowDirektViewEvent((CashFlowPeriod) period));
 		}
-		if(period instanceof AggregateCostMethodPeriod){
-			eventBus.fireEvent(new ShowGesamtViewEvent((AggregateCostMethodPeriod) period));
+		if (period instanceof AggregateCostMethodPeriod) {
+			eventBus.fireEvent(new ShowGesamtViewEvent(
+					(AggregateCostMethodPeriod) period));
 		}
-		if(period instanceof CostOfSalesMethodPeriod){
-			eventBus.fireEvent(new ShowUmsatzViewEvent((CostOfSalesMethodPeriod) period));
+		if (period instanceof CostOfSalesMethodPeriod) {
+			eventBus.fireEvent(new ShowUmsatzViewEvent(
+					(CostOfSalesMethodPeriod) period));
 		}
 	}
 
