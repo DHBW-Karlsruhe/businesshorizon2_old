@@ -13,5 +13,11 @@ public enum InputType {
 	public String getCaption() {
 		return caption;
 	}
+	
+	@Override
+	public String toString(){
+		
+		return this.getCaption();
+	}
 
 }

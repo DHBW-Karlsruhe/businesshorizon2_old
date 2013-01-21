@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -69,6 +68,7 @@ public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
+		getView().addHeader(period.getYear()); 
 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(

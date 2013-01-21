@@ -15,6 +15,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -99,8 +100,16 @@ public class UmsatzViewImpl extends VerticalLayout implements
 	public void initForm() {
 		this.removeAllComponents();
 		panel.removeAllComponents();
-		this.addComponent(panel);
 		panel.setSpacing(true);
 		panel.setMargin(true);
+	}
+
+	@Override
+	public void addHeader(int year) {
+		Label l = new Label("<h2>Jahr: "+year+"</h2>");
+		l.setContentMode(Label.CONTENT_XHTML);
+		this.addComponent(l);
+		this.addComponent(panel);
+		
 	}
 }

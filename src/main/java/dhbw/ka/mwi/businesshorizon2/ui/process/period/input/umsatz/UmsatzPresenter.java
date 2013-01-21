@@ -11,7 +11,6 @@ import java.util.Arrays;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -72,6 +71,7 @@ public class UmsatzPresenter extends ScreenPresenter<UmsatzViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
+		getView().addHeader(period.getYear()); 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(
 					period.getClass(), Object.class).getPropertyDescriptors()) {
