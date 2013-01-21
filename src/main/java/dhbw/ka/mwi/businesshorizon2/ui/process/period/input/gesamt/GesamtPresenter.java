@@ -9,7 +9,6 @@ import java.util.Arrays;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -19,7 +18,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.AggregateCostMethodPeriod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 
 /**
