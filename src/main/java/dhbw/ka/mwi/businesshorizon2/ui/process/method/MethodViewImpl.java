@@ -110,23 +110,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				InputType selected;
-				
-				switch (event.getProperty().toString()){
-				case "Direkte Eingabe":
-					selected = InputType.DIRECT;
-					break;
-				case "Umsatzkostenverfahren":
-					selected = InputType.REVENUE;
-					break;
-				case "Direktkostenverfahren":
-					selected = InputType.TOTAL;
-					break;
-				default:
-					selected = InputType.DIRECT;
-					break;
-				}
-				
+				InputType selected = (InputType) event.getProperty().getValue();
 				presenter.toggleMethodTypeInput(true,selected);	
 			}
 		});
@@ -137,22 +121,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				InputType selected;
-				
-				switch (event.getProperty().toString()){
-				case "Direkte Eingabe":
-					selected = InputType.DIRECT;
-					break;
-				case "Umsatzkostenverfahren":
-					selected = InputType.REVENUE;
-					break;
-				case "Direktkostenverfahren":
-					selected = InputType.TOTAL;
-					break;
-				default:
-					selected = InputType.DIRECT;
-					break;
-				}
+				InputType selected = (InputType) event.getProperty().getValue();
 				presenter.toggleMethodTypeInput(false,selected);				
 			}
 		});
@@ -164,19 +133,19 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	private void initOptionGroups() {
 		
-		Label detCaption = new Label ("Zukünftige Perioden:");
+		Label detCaption = new Label ("Zukünftige Perioden (deterministisch):");
 		detInput.addComponent(detCaption);
-		deterministicInput.addItem("Direkte Eingabe");
-		deterministicInput.addItem("Umsatzkostenverfahren");
-		deterministicInput.addItem("Direktkostenverfahren");
+		deterministicInput.addItem(InputType.DIRECT);
+		deterministicInput.addItem(InputType.REVENUE);
+		deterministicInput.addItem(InputType.TOTAL);
 		detInput.addStyleName(Reindeer.PANEL_LIGHT);
 		detInput.addComponent(deterministicInput);
 		
-		Label stoCaption= new Label ("Vergangene Perioden:");
+		Label stoCaption= new Label ("Vergangene Perioden (stochastisch):");
 		stoInput.addComponent(stoCaption);
-		stochasticInput.addItem("Direkte Eingabe");
-		stochasticInput.addItem("Umsatzkostenverfahren");
-		stochasticInput.addItem("Direktkostenverfahren");
+		stochasticInput.addItem(InputType.DIRECT);
+		stochasticInput.addItem(InputType.REVENUE);
+		stochasticInput.addItem(InputType.TOTAL);
 		stoInput.addStyleName(Reindeer.PANEL_LIGHT);
 		stoInput.addComponent(stochasticInput);
 	}
@@ -246,7 +215,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	}
 
 	@Override
-	public void selectInput(Boolean stochastic,String selected) {
+	public void selectInput(Boolean stochastic,InputType selected) {
 		if (stochastic){
 			stochasticInput.select(selected);
 		}
