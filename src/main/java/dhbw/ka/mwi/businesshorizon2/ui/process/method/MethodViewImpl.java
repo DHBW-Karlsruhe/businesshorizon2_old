@@ -133,7 +133,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	private void initOptionGroups() {
 		
-		Label detCaption = new Label ("Zukünftige Perioden:");
+		Label detCaption = new Label ("Zukünftige Perioden (deterministisch):");
 		detInput.addComponent(detCaption);
 		deterministicInput.addItem(InputType.DIRECT);
 		deterministicInput.addItem(InputType.REVENUE);
@@ -141,7 +141,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		detInput.addStyleName(Reindeer.PANEL_LIGHT);
 		detInput.addComponent(deterministicInput);
 		
-		Label stoCaption= new Label ("Vergangene Perioden:");
+		Label stoCaption= new Label ("Vergangene Perioden (stochastisch:");
 		stoInput.addComponent(stoCaption);
 		stochasticInput.addItem(InputType.DIRECT);
 		stochasticInput.addItem(InputType.REVENUE);
