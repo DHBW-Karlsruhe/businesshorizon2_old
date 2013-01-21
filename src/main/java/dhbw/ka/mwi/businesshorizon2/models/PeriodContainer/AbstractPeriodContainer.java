@@ -56,4 +56,8 @@ abstract public class AbstractPeriodContainer implements
 		}
 	}
 
+	public void removePeriod(Period period) {
+		this.perioden.remove(period);
+	}
+
 }

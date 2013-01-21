@@ -7,7 +7,6 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
  * @author Kai Westerholz
  * 
  */
-
 abstract class BalanceSheetPeriod extends Period {
 
 	private static final long serialVersionUID = 1L;

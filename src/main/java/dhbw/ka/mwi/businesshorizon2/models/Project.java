@@ -9,10 +9,9 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -30,17 +29,40 @@ public class Project implements Serializable {
 
 	protected TreeSet<? extends Period> periods = new TreeSet<>();
 
-	protected Date lastChanged;
+	private Date lastChanged;
 
-	protected String name;
+	private String name;
 
-	protected int periodsToForecast;
-	protected int relevantPastPeriods;
-	protected int iterations;
-	protected int basisYear;
-	protected ProjectInputType projectInputType;
+	protected AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
 
-	@Autowired
+	public AbstractPeriodContainer getStochasticPeriods() {
+		return stochasticPeriods;
+	}
+
+	public void setStochasticPeriods(AbstractPeriodContainer stochasticPeriods) {
+		this.stochasticPeriods = stochasticPeriods;
+	}
+
+	public AbstractPeriodContainer getDeterministicPeriods() {
+		return deterministicPeriods;
+	}
+
+	public void setDeterministicPeriods(
+			AbstractPeriodContainer deterministicPeriods) {
+		this.deterministicPeriods = deterministicPeriods;
+	}
+
+	private double CashFlowProbabilityOfRise;
+	private double CashFlowStepRange;
+	private double BorrowedCapitalProbabilityOfRise;
+	private double BorrowedCapitalStepRange;
+
+	private int periodsToForecast;
+	private int relevantPastPeriods;
+	private int iterations;
+	private int basisYear;
+	private ProjectInputType projectInputType;
+
 	private SortedSet<AbstractStochasticMethod> methods;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
@@ -54,6 +76,7 @@ public class Project implements Serializable {
 	 */
 	public Project(String name) {
 		this.name = name;
+		this.projectInputType = new ProjectInputType();
 	}
 
 	/**
@@ -68,6 +91,90 @@ public class Project implements Serializable {
 	}
 
 	/**
+	 * Gibt die Erhöhungswahrscheinlichkeit des CashFlows zurueck.
+	 * 
+	 * @author Kai Westerholz
+	 * @return
+	 */
+	public double getCashFlowProbabilityOfRise() {
+		return CashFlowProbabilityOfRise;
+	}
+
+	/**
+	 * Setzt die Erhöhungswahrscheinlichkeit des CashFlows.
+	 * 
+	 * @author Kai Westerholz
+	 * @param cashFlowProbabilityOfRise
+	 */
+	public void setCashFlowProbabilityOfRise(double cashFlowProbabilityOfRise) {
+		CashFlowProbabilityOfRise = cashFlowProbabilityOfRise;
+	}
+
+	/**
+	 * Gibt die Schrittweise des CashFlows zurueck.
+	 * 
+	 * @author Kai Westerholz
+	 * @return
+	 */
+	public double getCashFlowStepRange() {
+		return CashFlowStepRange;
+	}
+
+	/**
+	 * Setzt die Schrittweise vom CashFlow.
+	 * 
+	 * @author Kai Westerholz
+	 * @param cashFlowStepRange
+	 */
+	public void setCashFlowStepRange(double cashFlowStepRange) {
+		CashFlowStepRange = cashFlowStepRange;
+	}
+
+	/**
+	 * Gibt die Erhöhungswahrscheinlichkeit des CashFlows zurueck.
+	 * 
+	 * @author Kai Westerholz
+	 * @return Erhöhungswahrscheinlichkeit CashFlow
+	 */
+
+	public double getBorrowedCapitalProbabilityOfRise() {
+		return BorrowedCapitalProbabilityOfRise;
+	}
+
+	/**
+	 * Setzt die Wahrscheinlichkeit der Erhoehung des Fremdkapitals.
+	 * 
+	 * @author Kai Westerholz
+	 * 
+	 * @param borrowedCapitalProbabilityOfRise
+	 */
+	public void setBorrowedCapitalProbabilityOfRise(
+			double borrowedCapitalProbabilityOfRise) {
+		BorrowedCapitalProbabilityOfRise = borrowedCapitalProbabilityOfRise;
+	}
+
+	/**
+	 * Gibt die Schrittweite des Fremdkapitals an.
+	 * 
+	 * @author Kai Westerholz
+	 * 
+	 * @return Schrittweite
+	 */
+	public double getBorrowedCapitalStepRange() {
+		return BorrowedCapitalStepRange;
+	}
+
+	/**
+	 * Setzt die Schrittweite des Fremdkapitals.
+	 * 
+	 * @author Kai Westerholz
+	 * @param borrowedCapitalStepRange
+	 */
+	public void setBorrowedCapitalStepRange(double borrowedCapitalStepRange) {
+		BorrowedCapitalStepRange = borrowedCapitalStepRange;
+	}
+
+	/**
 	 * Gibt die Perioden in einem sortierten NavigableSet zurueck.
 	 * 
 	 * @author Christian Gahlert
@@ -78,12 +185,15 @@ public class Project implements Serializable {
 	}
 
 	/**
-	 * Ueberschreibt die bisher verwendeten Methoden. Die Perioden muessen in
-	 * Form eines sortierten NavigableSet vorliegen.
+	 * @deprecated Bitte getter für die stochastiPeriods und DeterministicPeriods
+	 *             verwenden Ueberschreibt die bisher verwendeten Methoden. Die
+	 *             Perioden muessen in Form eines sortierten NavigableSet
+	 *             vorliegen.
 	 * 
 	 * @param periods
 	 *            Die Perioden
 	 */
+	@Deprecated
 	public void setPeriods(TreeSet<? extends Period> periods) {
 		this.periods = periods;
 	}
@@ -155,12 +265,20 @@ public class Project implements Serializable {
 		return name;
 	}
 
+	public void setMethods(SortedSet<AbstractStochasticMethod> methods) {
+		this.methods = methods;
+	}
+
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
 
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
+	}
+
+	public void setProjectInputType(ProjectInputType projectInputType) {
+		this.projectInputType = projectInputType;
 	}
 
 	/**
