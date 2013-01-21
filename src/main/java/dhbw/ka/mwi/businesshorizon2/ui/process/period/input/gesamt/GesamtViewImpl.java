@@ -14,10 +14,11 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer die Eingabemethode "HGB-Gesamtkostenverfahren" im
+ * Prozessschritt Perioden.
  * 
- * @author Julius Hacker
- *
+ * @author Daniel Dengler
+ * 
  */
 public class GesamtViewImpl extends VerticalLayout implements GesamtViewInterface {
 	private static final long serialVersionUID = 1L;
@@ -44,9 +45,12 @@ private GridLayout panel = new GridLayout(2,1);
 	}
 
 	/**
-	 * Erstelle das GUI zum zur Eingabe
+	 * Fügt ein Eingabefeld hinzu.
 	 * 
-	 * @author Daniel Dengler
+	 * @param pd
+	 *            Titel des Eingabefeldes
+	 * @param initialContent
+	 *            Wert der standartmäßig in dem Eingabefeld stehen soll
 	 */
 	
 

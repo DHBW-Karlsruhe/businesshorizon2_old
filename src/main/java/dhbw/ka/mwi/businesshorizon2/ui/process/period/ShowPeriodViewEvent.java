@@ -3,10 +3,10 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 import com.mvplite.event.Event;
 
 /**
- * Der Event, der zum Anzeigen des Haupt-Fensters z.B. in der BHApplication-Klasse
+ * Der Event, der zum Anzeigen des Periodenprozesschritts
  * abgesetzt wird.
  * 
- * @author Christian Gahlert
+ * @author Daniel Dengler
  *
  */
 public class ShowPeriodViewEvent extends Event {

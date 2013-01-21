@@ -77,7 +77,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	
 	

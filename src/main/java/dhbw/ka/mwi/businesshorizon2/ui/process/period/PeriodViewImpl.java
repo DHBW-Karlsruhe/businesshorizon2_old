@@ -10,9 +10,9 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Perioden" in Vaadin.
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  *
  */
 public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterface {
@@ -28,7 +28,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
 	 * View-Komponenten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
@@ -39,7 +39,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
 		this.setSizeFull();

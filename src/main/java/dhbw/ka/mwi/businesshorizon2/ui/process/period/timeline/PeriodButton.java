@@ -4,6 +4,11 @@ import com.vaadin.ui.Button;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 
+/**
+ * 
+ * Erweiterung eines Buttons um sich die Periode die zum Button gehört zu merken
+ * @author daniel dengler
+ */
 public class PeriodButton extends Button {
 	
 	PeriodInterface period;

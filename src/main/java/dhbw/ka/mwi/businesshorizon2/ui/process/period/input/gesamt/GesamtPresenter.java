@@ -23,7 +23,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 
@@ -48,7 +48,7 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 
 	@PostConstruct
@@ -62,6 +62,20 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 		return false;
 	}
 
+	/**
+	 * Fängt das ShowEvent ab und sorgt dafür das die View die benötigten
+	 * Eingabefelder erstellt und mit den bisherigen Daten befüllt.
+	 * <p>
+	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
+	 * vorhandenen Gettern&Settern geprüft. Die gefundenen Propertys werden als
+	 * Eingabefelder zur verfügung gestellt.
+	 * <p>
+	 * Wichtig ist das Stringarray "shownProperties". Dieses enthält die Namen
+	 * der anzuzeigenden Felder.
+	 * 
+	 * @param event
+	 */
+	
 	@EventHandler
 	public void onShowEvent(ShowGesamtViewEvent event) {
 		logger.debug("ShowDirektViewEvent erhalten");
@@ -100,7 +114,23 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	/**
+	 * Sorgt dafür, dass Änderungen in das Periodenobjekt geschrieben werden.
+	 * Überprüft die Benutzereingabe auf ihre Konvertierbarkeit in eine
+	 * Doublevariable und gibt im Fehlerfall eine Fehlermeldung an den User
+	 * zurück.
+	 * 
+	 * @param newContent
+	 *            Inhalt des Textfeldes das in das Periodenobjekt geschrieben
+	 *            werden soll
+	 * @param textFieldColumn
+	 *            Spalte des GridLayouts wo das Textfeld liegt
+	 * @param textFieldRow
+	 *            Reihe des GridLayouts wo das Textfeld liegt
+	 * @param destination
+	 *            Name der Property in welche newContent geschrieben werden soll
+	 */
 	public void validateChange(String newContent, int textFieldColumn,
 			int textFieldRow, String destination) {
 		logger.debug("" + newContent);
