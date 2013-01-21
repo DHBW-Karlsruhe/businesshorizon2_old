@@ -14,10 +14,10 @@ import com.vaadin.ui.VerticalLayout;
 import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
- * Vaadin.
+ * Diese Klasse implementiert die GUI fuer den PeriodenZeitstrahl in dem
+ * Prozessschritt "Perioden"
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 public class TimelineViewImpl extends VerticalLayout implements
@@ -32,7 +32,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 	NativeButton delPast, delFuture;
 
 	Button past, future;
-	
+
 	Logger logger = Logger.getLogger(TimelineViewImpl.class);
 
 	/**
@@ -40,7 +40,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
 	 * und initialisiert die View-Komponenten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
@@ -49,9 +49,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Perioden"
+	 * Erstelle das GUI
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
 		delPast = new NativeButton("X", new Button.ClickListener() {
@@ -68,7 +68,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.removeLastFuturePeriod(((PeriodButton) layout
-						.getComponent(0, layout.getRows()-1)).getPeriod());
+						.getComponent(0, layout.getRows() - 1)).getPeriod());
 			}
 		});
 
@@ -92,17 +92,24 @@ public class TimelineViewImpl extends VerticalLayout implements
 		this.addComponent(future);
 	}
 
+	/**
+	 * Entfernt die letzte zukünftige Periode und verschiebt den entferne Knopf
+	 */
 	@Override
 	public void removeFuturePeriod() {
-		logger.debug(""+layout.getRows());
+		logger.debug("" + layout.getRows());
 		layout.removeRow(layout.getRows() - 1);
-		logger.debug(""+layout.getRows());
-		if (((PeriodButton)layout.getComponent(0, layout.getRows() - 1)).getCaption()
-				.startsWith("Basis")) {
+		logger.debug("" + layout.getRows());
+		if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
+				.getCaption().startsWith("Basis")) {
 
 		} else
 			layout.addComponent(delFuture, 1, layout.getRows() - 1);
 	}
+
+	/**
+	 * Entfernt die letzte vergangene Periode und verschiebt den entferne Knopf
+	 */
 
 	@Override
 	public void removePastPeriod() {
@@ -112,13 +119,17 @@ public class TimelineViewImpl extends VerticalLayout implements
 		} else
 			layout.addComponent(delPast, 1, 0);
 	}
-/*
-	@Override
-	public void setPeriodValid(int year, boolean isValid) {
-		// TODO Auto-generated method stub
 
-	}
-*/
+	/*
+	 * @Override public void setPeriodValid(int year, boolean isValid) { 
+	 * // TODO
+	 * Eventuell sollte diese Methode benutzt werden um im Zeitstrahl anzuzeigen
+	 * falls eine Periode ungültig ist
+	 * 
+	 * }
+	 */
+	
+
 	@Override
 	public void setPastButtonAccess(boolean usable) {
 		past.setEnabled(usable);
@@ -163,10 +174,10 @@ public class TimelineViewImpl extends VerticalLayout implements
 					}
 				});
 		pB.setPeriod(period);
-		layout.setRows(layout.getRows()+1);
-		layout.addComponent(pB,0,layout.getRows()-1);
+		layout.setRows(layout.getRows() + 1);
+		layout.addComponent(pB, 0, layout.getRows() - 1);
 		layout.removeComponent(delFuture);
-		layout.addComponent(delFuture,1,layout.getRows()-1);
+		layout.addComponent(delFuture, 1, layout.getRows() - 1);
 
 	}
 
