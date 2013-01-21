@@ -25,7 +25,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * Dies ist die Vaadin-Implementierung der PeriodListView. Die Rahmendarstellung
@@ -45,14 +45,14 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("ProjectListViewImpl.class");
+	private final Logger logger = Logger.getLogger("ProjectListViewImpl.class");
 
 	@Autowired
 	private ProjectListPresenter presenter;
 
 	private List<Project> projects;
 
-	NavigableSet<PeriodInterface> periodList;
+	NavigableSet<Period> periodList;
 
 	private Project project;
 
@@ -133,6 +133,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * 
 	 * @author Christian Scherer
 	 */
+	@Override
 	public void setProjects(List<Project> projects) {
 
 		this.projects = projects;
@@ -144,12 +145,10 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		removeProjectBtn = new ArrayList<Button>();
 
 		for (int i = 0; i < projects.size(); i++) {
-			project = (Project) projects.get(i);
+			project = projects.get(i);
 
 			singleProjectPanel.add(generateSingleProjectUi(project, i));
-			projectListPanel
-					.addComponent((com.vaadin.ui.Component) singleProjectPanel
-							.get(i));
+			projectListPanel.addComponent(singleProjectPanel.get(i));
 
 		}
 
@@ -181,7 +180,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		VerticalLayout singleProject = new VerticalLayout();
 
 		projectName = new Label(project.getName());
-		periodList = (NavigableSet<PeriodInterface>) project.getPeriods();
+		periodList = (NavigableSet<Period>) project.getPeriods();
 
 		// String fuer saubere Periodenausgebe erstellen. Bsp:
 		// "3 Perioden (2009-2012)"
@@ -218,8 +217,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		singleProject.addComponent(projectName);
 		singleProject.addComponent(periods);
 		singleProject.addComponent(lastChanged);
-		singleProject.addComponent((com.vaadin.ui.Component) removeProjectBtn
-				.get(i));
+		singleProject.addComponent(removeProjectBtn.get(i));
 
 		singleProject.addListener(this);
 
@@ -238,6 +236,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * 
 	 * @author Christian Scherer
 	 */
+	@Override
 	public void showAddProjectDialog() {
 		addDialog = new Window("Projekt hinzufügen");
 		addDialog.setModal(true);
@@ -306,8 +305,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 			} else {
 				getWindow()
 						.showNotification(
-								(String) "",
-								(String) "Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
+								"",
+								"Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
 								Notification.TYPE_ERROR_MESSAGE);
 			}
 
@@ -318,7 +317,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 			logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "
 					+ (index + 1));
 
-			presenter.removeProject((Project) projects.get(index));
+			presenter.removeProject(projects.get(index));
 
 		}
 
@@ -340,7 +339,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 		int index = singleProjectPanel.indexOf(event.getComponent());
 		logger.debug("Projekt ausgewaehlt. Projektnummer: " + (index + 1));
-		presenter.projectSelected((Project) projects.get(index));
+		presenter.projectSelected(projects.get(index));
 
 	}
 

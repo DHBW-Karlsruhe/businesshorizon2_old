@@ -48,22 +48,22 @@ public class APVTest {
 		period6 = new CashFlowPeriod(2018);
 
 		period1.setFreeCashFlow(100);
-		period1.setBorrowedCapital(200);
+		period1.setCapitalStock(200);
 
 		period2.setFreeCashFlow(200);
-		period2.setBorrowedCapital(300);
+		period2.setCapitalStock(300);
 
 		period3.setFreeCashFlow(300);
-		period3.setBorrowedCapital(400);
+		period3.setCapitalStock(400);
 
 		period4.setFreeCashFlow(400);
-		period4.setBorrowedCapital(500);
+		period4.setCapitalStock(500);
 
 		period5.setFreeCashFlow(500);
-		period5.setBorrowedCapital(600);
+		period5.setCapitalStock(600);
 
 		period6.setFreeCashFlow(600);
-		period6.setBorrowedCapital(700);
+		period6.setCapitalStock(700);
 
 		container = new CashFlowPeriodContainer();
 

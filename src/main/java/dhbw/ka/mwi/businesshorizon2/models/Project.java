@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -28,7 +28,7 @@ public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	protected TreeSet<? extends PeriodInterface> periods = new TreeSet<>();
+	protected TreeSet<? extends Period> periods = new TreeSet<>();
 
 	protected Date lastChanged;
 
@@ -73,7 +73,7 @@ public class Project implements Serializable {
 	 * @author Christian Gahlert
 	 * @return Die Perioden
 	 */
-	public NavigableSet<? extends PeriodInterface> getPeriods() {
+	public NavigableSet<? extends Period> getPeriods() {
 		return periods;
 	}
 
@@ -84,7 +84,7 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(TreeSet<? extends PeriodInterface> periods) {
+	public void setPeriods(TreeSet<? extends Period> periods) {
 		this.periods = periods;
 	}
 
@@ -107,7 +107,7 @@ public class Project implements Serializable {
 		for (int i = start; i > start - 5; i--) {
 			contains = false;
 
-			for (PeriodInterface period : periods) {
+			for (Period period : periods) {
 				if (period.getYear() == i) {
 					contains = true;
 					break;
