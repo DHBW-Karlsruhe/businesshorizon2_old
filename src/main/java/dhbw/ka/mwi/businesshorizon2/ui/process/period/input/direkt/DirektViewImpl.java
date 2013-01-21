@@ -25,26 +25,27 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.periodFormFactory;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer die Eingabemethode "Direkt" im
+ * Prozessschritt Perioden.
  * 
- * @author Julius Hacker
- *
+ * @author Daniel Dengler
+ * 
  */
-public class DirektViewImpl extends VerticalLayout implements DirektViewInterface {
+public class DirektViewImpl extends VerticalLayout implements
+		DirektViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private DirektPresenter presenter;
-	
-	private GridLayout panel = new GridLayout(2,1);
-	
+
+	private GridLayout panel = new GridLayout(2, 1);
+
 	private Logger logger = Logger.getLogger(DirektViewImpl.class);
-	
 
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
-	 * View-Komponenten.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+	 * und initialisiert die View-Komponenten.
 	 * 
 	 * @author Daniel Dengler
 	 */
@@ -54,24 +55,27 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	}
 
 	/**
-	 * Erstelle das GUI zum zur Eingabe
+	 * Fügt ein Eingabefeld hinzu.
 	 * 
-	 * @author Daniel Dengler
+	 * @param pd
+	 *            Titel des Eingabefeldes
+	 * @param initialContent
+	 *            Wert der standartmäßig in dem Eingabefeld stehen soll
 	 */
-	
-
 	@Override
 	public void addInputField(String pd, double initialContent) {
-		TextField tf = new TextField(pd,""+initialContent);
+		TextField tf = new TextField(pd, "" + initialContent);
 		tf.setWriteThrough(true);
-		
+
 		tf.addListener(new Property.ValueChangeListener() {
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				// TODO Auto-generated method stub
-				TextField tf = (TextField)event.getProperty();
-				presenter.validateChange((String) tf.getValue(), panel.getComponentArea(tf).getColumn1(),panel.getComponentArea(tf).getRow1(), tf.getCaption());
+				TextField tf = (TextField) event.getProperty();
+				presenter.validateChange((String) tf.getValue(), panel
+						.getComponentArea(tf).getColumn1(), panel
+						.getComponentArea(tf).getRow1(), tf.getCaption());
 			}
 		});
 		panel.addComponent(tf);
@@ -79,9 +83,11 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	}
 
 	@Override
-	public void setWrong(int textFieldColumn,int Row, boolean b) {
-		if(b)
-		((TextField)panel.getComponent(textFieldColumn, Row)).setComponentError(new UserError("Die Eingabe muss eine Zahl sein!"));
+	public void setWrong(int textFieldColumn, int Row, boolean b) {
+		if (b)
+			((TextField) panel.getComponent(textFieldColumn, Row))
+					.setComponentError(new UserError(
+							"Die Eingabe muss eine Zahl sein!"));
 	}
 
 	@Override
