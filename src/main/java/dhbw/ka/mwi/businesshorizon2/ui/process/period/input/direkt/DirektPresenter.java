@@ -4,6 +4,8 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +36,9 @@ public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
 
 	private CashFlowPeriod period;
 	private Logger logger = Logger.getLogger(DirektPresenter.class);
+	
+	
+	private DecimalFormat df = new DecimalFormat(",##0.00");
 
 	String[] shownProperties = { "freeCashFlow", "borrowedCapital" };
 
@@ -101,10 +106,11 @@ public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
 	public void validateChange(String newContent, int textFieldColumn,
 			int textFieldRow, String destination) {
 		logger.debug("" + newContent);
-		try {
-			Double.parseDouble(newContent);
+		try {df.parse(newContent).doubleValue();
+			df.parse(newContent).doubleValue();
 		} catch (Exception e) {
 			getView().setWrong(textFieldColumn, textFieldRow, true);
+			return;
 		}
 		getView().setWrong(textFieldColumn, textFieldRow, false);
 
@@ -115,16 +121,14 @@ public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
 					try {
 						pd.getWriteMethod();
 						period.toString();
-						Double.parseDouble(newContent);
 
 						pd.getWriteMethod()
 								.invoke(period,
-										new Object[] { Double
-												.parseDouble(newContent) });
+										new Object[] { df.parse(newContent).doubleValue() });
 						logger.debug("Content should be written: "
 								+ (double) pd.getReadMethod().invoke(period));
 					} catch (IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
+							| InvocationTargetException | ParseException e) {
 						e.printStackTrace();
 					}
 				}

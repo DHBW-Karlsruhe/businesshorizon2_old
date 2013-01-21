@@ -88,7 +88,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 		this.layout.removeAllComponents();
 		this.layout.addComponent((Component) contentView);
 		this.layout.addComponent(this.buttons);
-		this.layout.setComponentAlignment(this.buttons, Alignment.TOP_RIGHT);
+		this.layout.setComponentAlignment(this.buttons, Alignment.BOTTOM_RIGHT);
 		this.layout.setSizeFull();
 	}
 	
