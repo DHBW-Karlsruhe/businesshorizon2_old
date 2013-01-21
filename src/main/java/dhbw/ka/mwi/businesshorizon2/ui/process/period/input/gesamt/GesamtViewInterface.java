@@ -11,6 +11,8 @@ public interface GesamtViewInterface extends ContentView {
 
 
 	public void initForm();
+
+	void addHeader(int year);
 	
 
 }

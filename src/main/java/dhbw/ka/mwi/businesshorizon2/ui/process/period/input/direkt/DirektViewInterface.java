@@ -12,4 +12,6 @@ public interface DirektViewInterface extends ContentView {
 
 	public void initForm();
 
+	void addHeader(int year);
+
 }
