@@ -85,7 +85,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 * geändert haben.
 	 * 
 	 * @return true falls alles gleich ist, false wenn sich etwas geändert hat
-	 * @author Daniel Denlger
+	 * @author Daniel Dengler
 	 */
 
 	@Override
