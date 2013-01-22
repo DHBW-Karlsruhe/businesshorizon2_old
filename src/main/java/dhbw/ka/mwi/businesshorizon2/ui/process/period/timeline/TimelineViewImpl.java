@@ -33,6 +33,8 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	Button past, future;
 
+	PeriodButton pB;
+
 	Logger logger = Logger.getLogger(TimelineViewImpl.class);
 
 	/**
@@ -132,7 +134,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	@Override
 	public void addBasePeriod(Period period) {
-		PeriodButton pB = new PeriodButton("Basisjahr: " + period.getYear(),
+
+		layout.removeComponent(pB);
+		pB = new PeriodButton("Basisjahr: " + period.getYear(),
 				new Button.ClickListener() {
 
 					@Override

@@ -4,6 +4,8 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +34,7 @@ public class UmsatzPresenter extends ScreenPresenter<UmsatzViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	Logger logger = Logger.getLogger(GesamtPresenter.class);
+	private DecimalFormat df = new DecimalFormat(",##0.00");
 
 	CostOfSalesMethodPeriod period;
 
@@ -68,6 +71,7 @@ public class UmsatzPresenter extends ScreenPresenter<UmsatzViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
+		getView().addHeader(period.getYear()); 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(
 					period.getClass(), Object.class).getPropertyDescriptors()) {
@@ -106,9 +110,10 @@ public class UmsatzPresenter extends ScreenPresenter<UmsatzViewInterface> {
 			int textFieldRow, String destination) {
 		logger.debug("" + newContent);
 		try {
-			Double.parseDouble(newContent);
+			df.parse(newContent).doubleValue();
 		} catch (Exception e) {
 			getView().setWrong(textFieldColumn, textFieldRow, true);
+			return;
 		}
 		getView().setWrong(textFieldColumn, textFieldRow, false);
 
@@ -120,16 +125,14 @@ public class UmsatzPresenter extends ScreenPresenter<UmsatzViewInterface> {
 						try {
 							pd.getWriteMethod();
 							period.toString();
-							Double.parseDouble(newContent);
 
 							pd.getWriteMethod()
 									.invoke(period,
-											new Object[] { Double
-													.parseDouble(newContent) });
+											new Object[] { df.parse(newContent).doubleValue() });
 							logger.debug("Content should be written: "
 									+ (double) pd.getReadMethod().invoke(period));
 						} catch (IllegalAccessException | IllegalArgumentException
-								| InvocationTargetException e) {
+								| InvocationTargetException | ParseException e) {
 							e.printStackTrace();
 						}
 					}

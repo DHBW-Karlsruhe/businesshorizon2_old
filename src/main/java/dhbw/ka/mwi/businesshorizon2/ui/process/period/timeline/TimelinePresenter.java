@@ -48,7 +48,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	Logger logger = Logger.getLogger(TimelinePresenter.class);
 
 	private int fixedPastPeriods;
-	private int fixedFuturePeriods;
+	// private int fixedFuturePeriods; gibbets nibbets
 
 	private int sumPastPeriods;
 	private int sumFuturePeriods;
@@ -67,6 +67,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	private InputType deterministicInput;
 
 	private InputType stochasticInput;
+
+	private Period basePeriod;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -101,7 +103,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		try {
 			if (projectProxy.getSelectedProject().getBasisYear() == baseYear
-					&& projectProxy.getSelectedProject().getPeriodsToForecast() == fixedFuturePeriods
 					&& projectProxy.getSelectedProject()
 							.getRelevantPastPeriods() == fixedPastPeriods
 					&& projectProxy.getSelectedProject().getProjectInputType()
@@ -159,46 +160,17 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 						.getRelevantPastPeriods();
 			}
 
-			// Gleiches Vorgehen wie direkt darüber
-			if (projectProxy.getSelectedProject().getPeriodsToForecast() != fixedFuturePeriods) {
-				if (projectProxy.getSelectedProject().getPeriodsToForecast() > sumFuturePeriods) {
-					if (deterministicInput != projectProxy.getSelectedProject()
-							.getProjectInputType().getDeterministicInput()) {
-						removeAllFuturePeriods();
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getPeriodsToForecast(), projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getDeterministicInput());
-						deterministicInput = projectProxy.getSelectedProject()
-								.getProjectInputType().getDeterministicInput();
-						createContainer(futurePeriods, deterministicInput);
-					} else {
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getPeriodsToForecast() - sumFuturePeriods,
-								deterministicInput);
-					}
-				}
-				fixedFuturePeriods = projectProxy.getSelectedProject()
-						.getPeriodsToForecast();
-			}
-
 			// Hat sich nur der Inputtyp geändert, müssen wir alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
 			if (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministic() != deterministic) {
 
 				removeAllFuturePeriods();
-				fixedFuturePeriods = projectProxy.getSelectedProject()
-						.getPeriodsToForecast();
 				if ((projectProxy.getSelectedProject().getProjectInputType()
 						.getDeterministic())) {
 					deterministicInput = projectProxy.getSelectedProject()
 							.getProjectInputType().getDeterministicInput();
 					createContainer(futurePeriods, deterministicInput);
-					addFuturePeriods(fixedFuturePeriods, projectProxy
-							.getSelectedProject().getProjectInputType()
-							.getDeterministicInput());
-
 				}
 
 			}
@@ -340,28 +312,38 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getStochasticInput()) {
 			case REVENUE:
-				getView().addBasePeriod(new CostOfSalesMethodPeriod(baseYear));
+				basePeriod = new CostOfSalesMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				pastPeriods.addPeriod(basePeriod);
 				break;
 			case TOTAL:
-				getView()
-						.addBasePeriod(new AggregateCostMethodPeriod(baseYear));
+				basePeriod = new AggregateCostMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				pastPeriods.addPeriod(basePeriod);
 				break;
 			case DIRECT:
-				getView().addBasePeriod(new CashFlowPeriod(baseYear));
+				basePeriod = new CashFlowPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				pastPeriods.addPeriod(basePeriod);
 				break;
 			}
 		} else {
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministicInput()) {
 			case REVENUE:
-				getView().addBasePeriod(new CostOfSalesMethodPeriod(baseYear));
+				basePeriod = new CostOfSalesMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				futurePeriods.addPeriod(basePeriod);
 				break;
 			case TOTAL:
-				getView()
-						.addBasePeriod(new AggregateCostMethodPeriod(baseYear));
+				basePeriod = new AggregateCostMethodPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				futurePeriods.addPeriod(basePeriod);
 				break;
 			case DIRECT:
-				getView().addBasePeriod(new CashFlowPeriod(baseYear));
+				basePeriod = new CashFlowPeriod(baseYear);
+				getView().addBasePeriod(basePeriod);
+				futurePeriods.addPeriod(basePeriod);
 				break;
 			}
 
