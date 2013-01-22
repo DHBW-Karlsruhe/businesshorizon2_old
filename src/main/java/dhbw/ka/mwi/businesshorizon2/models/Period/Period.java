@@ -1,11 +1,10 @@
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public abstract class Period implements Comparable<Period>, Serializable {
 
