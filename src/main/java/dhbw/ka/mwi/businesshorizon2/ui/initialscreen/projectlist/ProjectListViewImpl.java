@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -313,12 +314,24 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 		} else {
 
-			int index = removeProjectBtn.indexOf(event.getButton());
+			final int index = removeProjectBtn.indexOf(event.getButton());
 
 			logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "
 					+ (index + 1));
+			
+			ConfirmDialog.show(getWindow(),projects.get(index).getName()+" löschen?","Wollen sie das Projekt wirklich löschen?","Ja","Nein",
+			        new ConfirmDialog.Listener() {
 
-			presenter.removeProject((Project) projects.get(index));
+			            public void onClose(ConfirmDialog dialog) {
+			                if (dialog.isConfirmed()) {
+								presenter.removeProject((Project) projects.get(index));
+			                } else {
+
+			                }
+			            }
+			        });
+			
+			
 
 		}
 

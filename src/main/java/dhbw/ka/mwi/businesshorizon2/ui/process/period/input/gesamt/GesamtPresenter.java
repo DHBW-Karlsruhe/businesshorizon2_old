@@ -4,12 +4,13 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -19,7 +20,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.AggregateCostMethodPeriod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 
 /**
@@ -32,6 +32,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 	private static final long serialVersionUID = 1L;
 	Logger logger = Logger.getLogger(GesamtPresenter.class);
+
+	private DecimalFormat df = new DecimalFormat(",##0.00");
 
 	AggregateCostMethodPeriod period;
 
@@ -69,6 +71,7 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
+		getView().addHeader(period.getYear()); 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(
 					period.getClass(), Object.class).getPropertyDescriptors()) {
@@ -107,9 +110,10 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 			int textFieldRow, String destination) {
 		logger.debug("" + newContent);
 		try {
-			Double.parseDouble(newContent);
+			df.parse(newContent).doubleValue();
 		} catch (Exception e) {
 			getView().setWrong(textFieldColumn, textFieldRow, true);
+			return;
 		}
 		getView().setWrong(textFieldColumn, textFieldRow, false);
 
@@ -121,18 +125,16 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 						try {
 							pd.getWriteMethod();
 							period.toString();
-							Double.parseDouble(newContent);
 
 							pd.getWriteMethod().invoke(
 									period,
-									new Object[] { Double
-											.parseDouble(newContent) });
+									new Object[] { df.parse(newContent).doubleValue() });
 							logger.debug("Content should be written: "
 									+ (double) pd.getReadMethod()
 											.invoke(period));
 						} catch (IllegalAccessException
 								| IllegalArgumentException
-								| InvocationTargetException e) {
+								| InvocationTargetException | ParseException e) {
 							e.printStackTrace();
 						}
 					}

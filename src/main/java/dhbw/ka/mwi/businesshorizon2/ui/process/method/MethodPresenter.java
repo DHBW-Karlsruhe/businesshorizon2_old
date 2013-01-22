@@ -173,12 +173,17 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			getView().enableMethodSelection(false);
 		}
 
-		getView().showInputMethodSelection(true, projectInputType.getStochastic());
-		getView().showInputMethodSelection(false, projectInputType.getDeterministic());
-		getView().selectInput(true, projectInputType.getStochasticInput().getCaption());
-		getView().selectInput(false, projectInputType.getDeterministicInput().getCaption());
+		getView().showInputMethodSelection(true,
+				projectInputType.getStochastic());
+		getView().showInputMethodSelection(false,
+				projectInputType.getDeterministic());
+		getView().selectInput(true,
+				projectInputType.getStochasticInput());
+		getView().selectInput(false,
+				projectInputType.getDeterministicInput());
 
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD, true));
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,
+				true));
 
 	}
 
