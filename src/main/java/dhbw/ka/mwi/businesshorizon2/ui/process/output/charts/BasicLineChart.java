@@ -16,14 +16,16 @@ public class BasicLineChart extends LineChart {
 
 	private static final long serialVersionUID = 1L;
 
-	public BasicLineChart(List<String> lines) {
+	public BasicLineChart(String xAxisLabel, List<String> lines) {
+
+		addXAxisLabel(xAxisLabel);
 
 		for (String line : lines) {
 			addLine(line);
 		}
 
 		setOption("width", 500);
-		// setOption("height", 200);
+		setOption("height", 200);
 		setOption("legend", "bottom");
 
 		setOption("lineSize", 3);
