@@ -115,6 +115,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 
 			return p;
 		} catch (Exception e) {
+			// TODO Stacktrace sollte noch geloggt werden.
 			e.printStackTrace();
 			return null;
 		}
