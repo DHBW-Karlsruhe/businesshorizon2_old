@@ -2,21 +2,21 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
 
 import com.vaadin.ui.Button;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 public class PeriodButton extends Button {
-	
-	PeriodInterface period;
+
+	Period period;
 
 	public PeriodButton(String string, ClickListener clickListener) {
 		super(string, clickListener);
 	}
 
-	public PeriodInterface getPeriod() {
+	public Period getPeriod() {
 		return period;
 	}
 
-	public void setPeriod(PeriodInterface period) {
+	public void setPeriod(Period period) {
 		this.period = period;
 	}
 
