@@ -8,7 +8,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
 /**
@@ -86,15 +86,13 @@ public class APV extends RatingMethods {
 	 * }
 	 */
 
-	private void calculateCompanyValue(
-			CompanyValue companyValueObject) {
+	private void calculateCompanyValue(CompanyValue companyValueObject) {
 
 		for (AbstractPeriodContainer i : container.getPeriodContainers()) {
 
-			TreeSet<? extends PeriodInterface> periods = i.getPeriods();
+			TreeSet<? extends Period> periods = i.getPeriods();
 
-			Iterator<? extends PeriodInterface> iter = periods
-					.descendingIterator();
+			Iterator<? extends Period> iter = periods.descendingIterator();
 
 			boolean T = true;
 
@@ -106,7 +104,7 @@ public class APV extends RatingMethods {
 			double taxBenefits = 0;
 			double taxBenefitsT = 0;
 			while (iter.hasNext()) {
-				PeriodInterface period = iter.next();
+				Period period = iter.next();
 
 				if (T) {
 
@@ -117,7 +115,7 @@ public class APV extends RatingMethods {
 							szenario.getRateReturnEquity());
 					taxBenefits = calculateTaxBenefitsT(s,
 							szenario.getRateReturnCapitalStock(),
-							period.getBorrowedCapital());
+							period.getCapitalStock());
 
 					T = false;
 
@@ -130,17 +128,17 @@ public class APV extends RatingMethods {
 							szenario.getRateReturnEquity());
 					taxBenefits = calculateTaxBenefitst(s,
 							szenario.getRateReturnCapitalStock(),
-							period.getBorrowedCapital(), taxBenefits);
+							period.getCapitalStock(), taxBenefits);
 
 				}
 
 				companyValue = calculate(debitFreeCompany, taxBenefits,
-						period.getBorrowedCapital());
+						period.getCapitalStock());
 
 				if (companyValueObject instanceof CompanyValueDeterministic) {
 					((CompanyValueDeterministic) companyValueObject).addPeriod(
 							period.getYear(), companyValue,
-							period.getBorrowedCapital(),
+							period.getCapitalStock(),
 							period.getFreeCashFlow(), freeCashFlowT,
 							debitFreeCompanyT, taxBenefitsT, this.s, szenario);
 				}
