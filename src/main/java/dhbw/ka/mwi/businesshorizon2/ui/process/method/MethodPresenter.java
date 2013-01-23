@@ -66,8 +66,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-
-		logger.debug("test");
 		methods = new TreeSet<AbstractStochasticMethod>();
 
 	}
@@ -193,8 +191,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 		if (!this.isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD,
-					showError));
+			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.METHOD, showError));
 		} else {
 			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.METHOD));
 		}
@@ -210,5 +207,5 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 	}
-
+	
 }

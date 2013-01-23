@@ -109,5 +109,4 @@ public class RandomWalk extends AbstractStochasticMethod {
 		return src;
 
 	}
-
 }

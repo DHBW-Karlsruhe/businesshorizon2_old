@@ -127,13 +127,13 @@ public class CompanyValueDeterministic extends CompanyValue {
 			// TODO Exception werfen
 		} else {
 
-			companyValue = roundTo4DecimalPlaces(companyValue);
-			capitalStock = roundTo4DecimalPlaces(capitalStock);
-			freeCashFlow = roundTo4DecimalPlaces(freeCashFlow);
-			freeCashFlowT = roundTo4DecimalPlaces(freeCashFlowT);
-			debitFreeCompany = roundTo4DecimalPlaces(debitFreeCompany);
-			taxBenefits = roundTo4DecimalPlaces(taxBenefits);
-			s = roundTo4DecimalPlaces(s);
+			companyValue = roundToDecimalPlaces(companyValue,4,false);
+			capitalStock = roundToDecimalPlaces(capitalStock,4,false);
+			freeCashFlow = roundToDecimalPlaces(freeCashFlow,4,false);
+			freeCashFlowT = roundToDecimalPlaces(freeCashFlowT,4,false);
+			debitFreeCompany = roundToDecimalPlaces(debitFreeCompany,4,false);
+			taxBenefits = roundToDecimalPlaces(taxBenefits,4,false);
+			s = roundToDecimalPlaces(s,4,false);
 
 			Couple couple = new Couple(year, companyValue, capitalStock,
 					freeCashFlow, freeCashFlowT, debitFreeCompany, taxBenefits,

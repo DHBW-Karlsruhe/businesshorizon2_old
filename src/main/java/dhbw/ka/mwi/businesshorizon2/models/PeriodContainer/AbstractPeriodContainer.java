@@ -13,9 +13,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
  * @author Kai Westerholz
  * 
  */
-
-abstract public class AbstractPeriodContainer implements
-		Comparable<AbstractPeriodContainer> {
+abstract public class AbstractPeriodContainer implements Comparable<AbstractPeriodContainer> {
 
 	private final TreeSet<Period> perioden;
 	private static int counter = 0;

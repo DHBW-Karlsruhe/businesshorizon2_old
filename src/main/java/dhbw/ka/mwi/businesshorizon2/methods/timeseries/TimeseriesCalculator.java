@@ -56,41 +56,52 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		 * der beruecksichtigten Vergangenheitsperioden kleiner ist als die
 		 * Anzahl der eingegebenen Vergangenheitsperioden
 		 */
-		if (project.getRelevantPastPeriods() > project.getPeriods().size() - 1) {
+		if (project.getRelevantPastPeriods() > project.getStochasticPeriods()
+				.getPeriods().size() - 1) {
 			logger.debug("Anzahl der betrachteten Perioden der Vergangenheit ist zu groß!");
 			throw new ConsideredPeriodsOfPastException(
 					"Die Anzahl der betrachteten Perioden der Vergangenheit muss kleiner sein als die Azahl der beobachteten Perioden.");
 		}
 
-		if (project.getPeriods().first() instanceof CashFlowPeriod) {
+		if (project.getStochasticPeriods().getPeriods().first() instanceof CashFlowPeriod) {
 			// Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
 			// ausgefuehrt
 			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
 
-			double[] previousValues = new double[project.getPeriods().size()];
+			double[] previousValues = new double[project.getStochasticPeriods()
+					.getPeriods().size()];
+			double[] previousBorrowedCapital = new double[project
+					.getStochasticPeriods().getPeriods().size()];
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
 			int counter = 0;
 
 			// Umwandlung der Perioden in ein Double-Arrays
 			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
-					.getPeriods()) {
+					.getStochasticPeriods().getPeriods()) {
 				previousValues[counter] = cFPeriod.getFreeCashFlow();
+				previousBorrowedCapital[counter] = cFPeriod
+						.getCapitalStock();
 				counter++;
 			}
 
-			double[] expectedValues = timeseries.getExpectedValues(
-					previousValues, project.getRelevantPastPeriods(),
+			double[] expectedCF = timeseries.getExpectedValues(previousValues,
+					project.getRelevantPastPeriods(),
+					project.getPeriodsToForecast());
+			double[] expectedBC = timeseries.getExpectedValues(
+					previousBorrowedCapital, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast());
 			CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
-			for (int i = 0; i < expectedValues.length; i++) {
+			for (int i = 0; i < expectedCF.length; i++) {
 				CashFlowPeriod cfPeriod = new CashFlowPeriod(
-						project.getBasisYear() + (i + 1));
-				cfPeriod.setFreeCashFlow(expectedValues[i]);
+						project.getBasisYear() + (i));
+				cfPeriod.setFreeCashFlow(expectedCF[i]);
+				cfPeriod.setCapitalStock(expectedBC[i]);
 				cFContainer.getPeriods().add(cfPeriod);
 			}
 			TreeSet<CashFlowPeriodContainer> periodContainer = new TreeSet<CashFlowPeriodContainer>();
 			periodContainer.add(cFContainer);
 			resultContainer = new StochasticResultContainer(periodContainer);
+
 		}
 		return resultContainer;
 
@@ -113,25 +124,30 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		 * der beruecksichtigten Vergangenheitsperioden kleiner ist als die
 		 * Anzahl der eingegebenen Vergangenheitsperioden
 		 */
-		if (project.getRelevantPastPeriods() > project.getPeriods().size() - 1) {
+		if (project.getRelevantPastPeriods() > project.getStochasticPeriods()
+				.getPeriods().size() - 1) {
 			logger.debug("Anzahl der betrachteten Perioden der Vergangenheit ist zu groß!");
 			throw new ConsideredPeriodsOfPastException(
 					"Die Anzahl der betrachteten Perioden der Vergangenheit muss kleiner sein als die Azahl der beobachteten Perioden.");
 		}
 
-		if (project.getPeriods().first() instanceof CashFlowPeriod) {
+		if (project.getStochasticPeriods().getPeriods().first() instanceof CashFlowPeriod) {
 			// Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
 			// ausgefuehrt
 			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
 
-			double[] previousValues = new double[project.getPeriods().size()];
+			double[] previousValues = new double[project.getStochasticPeriods()
+					.getPeriods().size()];
+			double[] previousBC = new double[project.getStochasticPeriods()
+					.getPeriods().size()];
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
 			int counter = 0;
 
 			// Umwandlung der Perioden in ein Double-Arrays
 			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
-					.getPeriods()) {
+					.getStochasticPeriods().getPeriods()) {
 				previousValues[counter] = cFPeriod.getFreeCashFlow();
+				previousBC[counter] = cFPeriod.getCapitalStock();
 				counter++;
 			}
 			// Durchfuehrung der Zeitreihenanalyse
@@ -139,19 +155,31 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
+			double[][] resultTimeseriesBorrowedCapital = timeseries.calculate(
+					previousBC, project.getRelevantPastPeriods(),
+					project.getPeriodsToForecast(), project.getIterations(),
+					callback);
+
 			for (int iteration = 0; iteration < project.getIterations(); iteration++) {
 				CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
 				for (int periodToForecast = 0; periodToForecast < resultTimeseries.length; periodToForecast++) {
 					CashFlowPeriod cfPeriod = new CashFlowPeriod(
 							project.getBasisYear() + (periodToForecast + 1));
 					cfPeriod.setFreeCashFlow(resultTimeseries[periodToForecast][iteration]);
+					cfPeriod.setCapitalStock(resultTimeseriesBorrowedCapital[periodToForecast][iteration]);
 					cFContainer.getPeriods().add(cfPeriod);
 				}
 				cFResultContainer.add(cFContainer);
 			}
-			resultContainer = new StochasticResultContainer(resultPeriods);
+			StochasticResultContainer src = new StochasticResultContainer(
+					resultPeriods);
 
-		} else if (project.getPeriods().first() instanceof AggregateCostMethodPeriod) {
+			if (callback != null) {
+				callback.onComplete(src);
+			}
+			return src;
+
+		} else if (project.getStochasticPeriods().getPeriods().first() instanceof AggregateCostMethodPeriod) {
 			// nachfolgend wird die Zeitreihenanalyse fuer alle Posten der
 			// GesamtkostenPeriode einzeln durchgefuehrt
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
@@ -193,18 +221,22 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			double[][] borrowedCapitalResult = new double[project
 					.getPeriodsToForecast()][project.getIterations()];
 			// spezielle Ausgangsarrays
-			double[] salesRevenue = new double[project.getPeriods().size()];
-			double[] otherBusinessRevenue = new double[project.getPeriods()
-					.size()];
+			double[] salesRevenue = new double[project.getStochasticPeriods()
+					.getPeriods().size()];
+			double[] otherBusinessRevenue = new double[project
+					.getStochasticPeriods().getPeriods().size()];
 			double[] internallyProducedAndCapitalizedAssets = new double[project
 					.getPeriods().size()];
-			double[] materialCosts = new double[project.getPeriods().size()];
-			double[] humanCapitalCosts = new double[project.getPeriods().size()];
-			double[] writeDowns = new double[project.getPeriods().size()];
-			double[] otherBusinessCosts = new double[project.getPeriods()
-					.size()];
-			double[] interestAndOtherCosts = new double[project.getPeriods()
-					.size()];
+			double[] materialCosts = new double[project.getStochasticPeriods()
+					.getPeriods().size()];
+			double[] humanCapitalCosts = new double[project
+					.getStochasticPeriods().getPeriods().size()];
+			double[] writeDowns = new double[project.getStochasticPeriods()
+					.getPeriods().size()];
+			double[] otherBusinessCosts = new double[project
+					.getStochasticPeriods().getPeriods().size()];
+			double[] interestAndOtherCosts = new double[project
+					.getStochasticPeriods().getPeriods().size()];
 			// spezielle Ergebnisarrays
 			double[][] salesRevenueResult = new double[project
 					.getPeriodsToForecast()][project.getIterations()];
@@ -226,7 +258,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			// Erstellung der einzelnen Eingabe Arrays
 			int counter = 0;
 			for (AggregateCostMethodPeriod aCMPeriod : (TreeSet<AggregateCostMethodPeriod>) project
-					.getPeriods()) {
+					.getStochasticPeriods().getPeriods()) {
 				salesRevenue[counter] = aCMPeriod.getSalesRevenue();
 				otherBusinessRevenue[counter] = aCMPeriod
 						.getOtherBusinessRevenue();
@@ -329,7 +361,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			// StochasticResultContainer
 			for (int iteration = 0; iteration < project.getIterations(); iteration++) {
 				AggregateCostMethodBalanceSheetPeriodContainer aCMContainer = new AggregateCostMethodBalanceSheetPeriodContainer();
-				for (int forecast = 0; forecast < project.getPeriods().size(); forecast++) {
+				for (int forecast = 0; forecast < project
+						.getStochasticPeriods().getPeriods().size(); forecast++) {
 					AggregateCostMethodPeriod aCMPeriod = new AggregateCostMethodPeriod(
 							project.getBasisYear() + (forecast + 1));
 					aCMPeriod
@@ -368,9 +401,14 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				}
 				aCMPResultContainer.add(aCMContainer);
 			}
-			resultContainer = new StochasticResultContainer(resultPeriods);
+			StochasticResultContainer src = new StochasticResultContainer(
+					resultPeriods);
+			if (callback != null) {
+				callback.onComplete(src);
+			}
+			resultContainer = src;
 
-		} else if (project.getPeriods().first() instanceof CostOfSalesMethodPeriod) {
+		} else if (project.getStochasticPeriods().getPeriods().first() instanceof CostOfSalesMethodPeriod) {
 			// nachfolgend wird die Zeitreihenanalyse fuer alle Posten der
 			// UmsatzkostenPeriode einzeln durchgefuehrt
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
@@ -431,7 +469,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			// Befuellung der Ausgangsarrays
 			int counter = 0;
 			for (CostOfSalesMethodPeriod cOSPeriod : (TreeSet<CostOfSalesMethodPeriod>) project
-					.getPeriods()) {
+					.getStochasticPeriods().getPeriods()) {
+
 				borrowedCapital[counter] = cOSPeriod.getCapitalStock();
 				cashAssets[counter] = cOSPeriod.getCashAssets();
 				stocks[counter] = cOSPeriod.getStocks();
@@ -507,7 +546,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			// Ergebnisarrays
 			for (int iteration = 0; iteration < project.getIterations(); iteration++) {
 				CostOfSalesMethodPeriodContainer cOSContainer = new CostOfSalesMethodPeriodContainer();
-				for (int forecast = 0; forecast < project.getPeriods().size(); forecast++) {
+				for (int forecast = 0; forecast < project
+						.getStochasticPeriods().getPeriods().size(); forecast++) {
 					CostOfSalesMethodPeriod cOSPeriod = new CostOfSalesMethodPeriod(
 							project.getBasisYear() + (forecast + 1));
 

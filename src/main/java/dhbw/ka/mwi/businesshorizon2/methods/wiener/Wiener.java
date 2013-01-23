@@ -30,8 +30,7 @@ public class Wiener extends AbstractStochasticMethod {
 	}
 
 	@Override
-	public StochasticResultContainer calculate(Project project,
-			CallbackInterface callback) throws InterruptedException {
+	public StochasticResultContainer calculate(Project project, CallbackInterface callback) throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
