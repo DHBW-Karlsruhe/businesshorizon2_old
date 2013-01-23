@@ -79,18 +79,11 @@ public class LogInScreenViewImpl extends Window implements
 		login.setUsernameCaption("Benutzername");
 		login.setPasswordCaption("Passwort");
 		login.setWidth("100%");
-		// login.setHeight("300px");
 		login.addListener(new LoginForm.LoginListener() {
 			private static final long serialVersionUID = 1L;
 
-			// TODO : GGF BESSER mit EXCEPTIONS ZU ARBEITEN!
 			@Override
 			public void onLogin(LoginEvent event) {
-				getWindow().showNotification(
-						"New Login",
-						"Username: " + event.getLoginParameter("username")
-								+ ", password: "
-								+ event.getLoginParameter("password"));
 				presenter.doLogin(event.getLoginParameter("username"),
 						event.getLoginParameter("password"));
 

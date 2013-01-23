@@ -10,7 +10,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
 /**
@@ -27,9 +27,10 @@ public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private TreeSet<? extends PeriodInterface> periods = new TreeSet<>();
+	protected TreeSet<? extends Period> periods = new TreeSet<>();
 
 	private Date lastChanged;
+
 
 	private String name;
 
@@ -47,7 +48,8 @@ public class Project implements Serializable {
 		return deterministicPeriods;
 	}
 
-	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
+	public void setDeterministicPeriods(
+			AbstractPeriodContainer deterministicPeriods) {
 		this.deterministicPeriods = deterministicPeriods;
 	}
 
@@ -73,7 +75,7 @@ public class Project implements Serializable {
 	 * @param Der
 	 *            Name des Projekts
 	 */
-	public Project(String name) { 
+	public Project(String name) {
 		this.name = name;
 		this.projectInputType = new ProjectInputType();
 	}
@@ -178,9 +180,10 @@ public class Project implements Serializable {
 	 * @author Christian Gahlert
 	 * @return Die Perioden
 	 */
-	public NavigableSet<? extends PeriodInterface> getPeriods() {
+	public NavigableSet<? extends Period> getPeriods() {
 		return periods;
 	}
+
 
 	/**
 	 * @deprecated Bitte getter für die stochastiPeriods und DeterministicPeriods
@@ -191,7 +194,8 @@ public class Project implements Serializable {
 	 * @param periods
 	 *            Die Perioden
 	 */
-	public void setPeriods(TreeSet<? extends PeriodInterface> periods) {
+	@Deprecated
+	public void setPeriods(TreeSet<? extends Period> periods) {
 		this.periods = periods;
 	}
 
@@ -214,7 +218,7 @@ public class Project implements Serializable {
 		for (int i = start; i > start - 5; i--) {
 			contains = false;
 
-			for (PeriodInterface period : periods) {
+			for (Period period : periods) {
 				if (period.getYear() == i) {
 					contains = true;
 					break;
