@@ -78,6 +78,8 @@ public class BHApplication extends Application {
 	 */
 	@EventHandler
 	public void showInitialView(ShowUserEvent event) {
+		this.removeWindow(initialScreenView);
+		this.removeWindow(processView);
 		initialScreenView.setName("overview");
 		addWindow(initialScreenView);
 		setMainWindow(initialScreenView);

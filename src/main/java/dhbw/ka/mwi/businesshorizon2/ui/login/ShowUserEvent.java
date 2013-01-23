@@ -26,8 +26,7 @@ public class ShowUserEvent extends Event {
 	 *            Das Objekt des erfolgreich angemeldeten User
 	 * 
 	 */
-	public ShowUserEvent(User user) {
-		this.user = user;
+	public ShowUserEvent() {
 	}
 
 	/**

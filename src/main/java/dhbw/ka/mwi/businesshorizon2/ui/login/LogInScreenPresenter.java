@@ -15,6 +15,7 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServic
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 
 /**
  * 
@@ -35,6 +36,9 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	@Autowired
 	private User user;
+	
+	@Autowired
+	private UserProxy userProxy;
 
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
@@ -89,7 +93,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 */
 	public void doLogin(String username, String password) {
 		try {
-			user = authenticationService.doLogin(username, password);
+			userProxy.setSelectedUser(authenticationService.doLogin(username, password));
 		} catch (UserNotFoundException e) {
 			getView().showErrorMessage(e.getMessage());
 			return;
@@ -98,9 +102,9 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			return;
 		}
 
-		if (user != null) {
+		if (userProxy.getSelectedUser() != null) {
 			logger.debug("LogIn erfolgreich");
-			eventBus.fireEvent(new ShowUserEvent(user));
+			eventBus.fireEvent(new ShowUserEvent());
 			logger.debug("ShowUserEvent gefeuert");
 		}
 
