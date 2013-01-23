@@ -311,6 +311,7 @@ public class AnalysisTimeseries {
 						previousValues));
 			}
 		}
+
 		return expectedValues;
 	}
 }
