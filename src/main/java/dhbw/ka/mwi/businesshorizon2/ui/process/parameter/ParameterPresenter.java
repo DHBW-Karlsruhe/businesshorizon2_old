@@ -118,6 +118,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@EventHandler
 	public void onShowParameterScreen(ShowParameterViewEvent event) {
+		
+		getView().showParameterView();
 
 		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
 			initializeBasisYear();

@@ -143,4 +143,6 @@ public interface ParameterViewInterface extends ContentView {
 	 */
 	void activateBorrowedCapitalStepRange(boolean enabled);
 
+	void showParameterView();
+
 }
