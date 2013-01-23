@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
@@ -8,6 +9,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
@@ -32,17 +34,43 @@ public class APV extends RatingMethods {
 
 		if (container.getPeriodContainers() == null || container.getPeriodContainers().size() == 0) {
 			companyValueObject = null;
+			return companyValueObject;
 
 		} else if (container.getPeriodContainers().size() == 1) {
 			companyValueObject = new CompanyValueDeterministic();
 			calculateCompanyValue(companyValueObject);
-
+			return (CompanyValue)companyValueObject;
 		} else {
 			companyValueObject = new CompanyValueStochastic();
 			calculateCompanyValue(companyValueObject);
+			
+			Map.Entry<Double, Couple> first =((CompanyValueStochastic)companyValueObject).getCompanyValues().firstEntry();
+			Map.Entry<Double, Couple> last = ((CompanyValueStochastic)companyValueObject).getCompanyValues().lastEntry();
+			
+			double delta = last.getValue().getCompanyValue() - first.getValue().getCompanyValue();
+			delta = delta / 25;
+			
+			double limit = first.getValue().getCompanyValue() + delta;
+			
+			double average = 0;
+			
+			int count = 0;
+			
+			CompanyValueStochastic result = new CompanyValueStochastic();
+			
+			for (Map.Entry<Double, Couple> entry : ((CompanyValueStochastic)companyValueObject).getCompanyValues().entrySet()){
+				if (entry.getValue().getCompanyValue() <= limit){
+					average = average + entry.getValue().getCompanyValue() * entry.getValue().getCount();
+					count = count  + entry.getValue().getCount();
+				}else{
+					result.addCompanyBalue(average/count, count);
+					limit = entry.getValue().getCompanyValue() + delta;
+					average = 0;
+					count = 0;
+				}
+			}
+			return (CompanyValue)result;
 		}
-
-		return companyValueObject;
 	}
 
 	/*

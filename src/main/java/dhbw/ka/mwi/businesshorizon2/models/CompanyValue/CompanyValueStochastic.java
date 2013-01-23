@@ -20,6 +20,11 @@ public class CompanyValueStochastic extends CompanyValue {
 			count = 1;
 		}
 
+		public Couple(double companyValue, int count) {
+			this.companyValue = companyValue;
+			this.count = count;
+		}
+
 		public double getCompanyValue() {
 			return companyValue;
 		}
@@ -30,6 +35,10 @@ public class CompanyValueStochastic extends CompanyValue {
 
 		private void increaseCount() {
 			count++;
+		}
+
+		private void increaseCount(int count) {
+			this.count = this.count + count;
 		}
 	}
 
@@ -42,12 +51,23 @@ public class CompanyValueStochastic extends CompanyValue {
 
 	public void addCompanyValue(double companyValue) {
 
-		companyValue = roundTo4DecimalPlaces(companyValue);
+		companyValue = this.roundToDecimalPlaces(companyValue, 0, false);
 
 		if (map.containsKey(companyValue)) {
 			map.get(companyValue).increaseCount();
 		} else {
 			map.put(companyValue, new Couple(companyValue));
+		}
+	}
+
+	public void addCompanyBalue(double companyValue, int count) {
+
+		companyValue = this.roundToDecimalPlaces(companyValue, 0, false);
+
+		if (map.containsKey(companyValue)) {
+			map.get(companyValue).increaseCount(count);
+		} else {
+			map.put(companyValue, new Couple(companyValue, count));
 		}
 	}
 

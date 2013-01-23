@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
 import java.util.Map.Entry;
+import java.util.Map;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -162,6 +163,11 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 					companyValue.getCompanyValues());
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
+			
+			//TODO Testausgabe wieder entfernen
+			for (Map.Entry<Double,CompanyValueStochastic.Couple> entry: companyValue.getCompanyValues().entrySet()){
+				System.out.println("Key: " + entry.getKey() + " CompanyValue: " + entry.getValue().getCompanyValue() + " Count: " + entry.getValue().getCount());
+			}
 
 		}
 
