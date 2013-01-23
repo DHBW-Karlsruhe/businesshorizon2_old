@@ -48,7 +48,6 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 		this.panel.setSizeFull();
 		this.panel.setScrollable(true);
         this.panel.setStyleName(Reindeer.PANEL_LIGHT);
-
 		
 		this.layout = new VerticalLayout();
 		this.layout.setSizeFull();
