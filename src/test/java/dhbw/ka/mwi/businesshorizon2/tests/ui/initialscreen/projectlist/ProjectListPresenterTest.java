@@ -23,7 +23,6 @@ public class ProjectListPresenterTest extends AbstractPresenterTestCase {
 	@Autowired
 	private ProjectListPresenter presenter;
 	
-	@Autowired
 	private ProjectListViewMock view;
 	
 	@Override
@@ -31,16 +30,14 @@ public class ProjectListPresenterTest extends AbstractPresenterTestCase {
 		presenter.setView(view);
 	}
 	
-//	@Test
-//	public void testProjectSelected(){
-//		Project project = new Project("testProject");
-//		presenter.projectSelected(project);
-//		
-//		assertEventFired(ShowProjectEvent.class);
-//		assertEquals(project, getBean(ProjectProxy.class).getSelectedProject());
-//// TODO Löschen		getEvent(ShowProjectEvent.class).get
-////		assertTrue(getEvent(eventClass).getProject().getName().equals
-//	}
+	@Test
+	public void testProjectSelected(){
+		Project project = new Project("testProject");
+		presenter.projectSelected(project);
+		
+		assertEventFired(ShowProjectEvent.class);
+		assertEquals(project, getBean(ProjectProxy.class).getSelectedProject());
+	}
 	
 //	@Test
 //	public void testOnShowProjectList(){
