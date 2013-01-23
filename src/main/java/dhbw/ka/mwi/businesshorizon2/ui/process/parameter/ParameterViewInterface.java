@@ -5,16 +5,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 public interface ParameterViewInterface extends ContentView {
 
 	/**
-	 * Diese Methode setzt das Array der Iteraionsschritte, welches spaeter fuer
-	 * die Benutzerangebe noetig ist
-	 * 
-	 * @author Christian Scherer
-	 * @param numberIterations
-	 *            Das Iteraionsarray mit Werte 1.000 10.000 und 1000.000
-	 */
-	void setIterations(int[] numberIterations);
-
-	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.
 	 * 
 	 * @author Christian Scherer
@@ -142,5 +132,56 @@ public interface ParameterViewInterface extends ContentView {
 	 *            den Komponenten
 	 */
 	void activateBorrowedCapitalStepRange(boolean enabled);
+	
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldRiseOfPeriods' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	public void activateRiseOfPeriods(boolean enabled);
+	
+	/**
+	 * Diese Methode graut die Checkbox 'checkboxRiseOfPeriods' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	public void activateRiseOfPeriodsCheckbox(boolean enabled);
+	
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldDeviaton' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	public void activateDeviation(boolean enabled);
+	
+
+	/**
+	 * Diese Methode graut die Checkbox 'checkboxDeviationOfPeriods' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	public void activateDeviationCheckbox(boolean enabled);
+	
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldStepsPerPeriod' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateStepsPerPeriod(boolean enabled);
 
 }

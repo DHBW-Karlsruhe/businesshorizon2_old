@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
 import java.util.TreeSet;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * Diese Klasse stellt die Oberklasse aller PeriodenContainer da und stellt die
@@ -17,7 +17,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
 abstract public class AbstractPeriodContainer implements
 		Comparable<AbstractPeriodContainer> {
 
-	private final TreeSet<PeriodInterface> perioden;
+	private final TreeSet<Period> perioden;
 	private static int counter = 0;
 	private final int myCount;
 
@@ -27,7 +27,7 @@ abstract public class AbstractPeriodContainer implements
 		counter++;
 	}
 
-	public void addPeriod(PeriodInterface period) {
+	public void addPeriod(Period period) {
 		this.perioden.add(period);
 	}
 
@@ -37,7 +37,7 @@ abstract public class AbstractPeriodContainer implements
 	 * @return SortedSet der Perioden
 	 * @author Kai Westerholz
 	 */
-	public TreeSet<? extends PeriodInterface> getPeriods() {
+	public TreeSet<? extends Period> getPeriods() {
 		return perioden;
 	}
 
@@ -56,7 +56,7 @@ abstract public class AbstractPeriodContainer implements
 		}
 	}
 
-	public void removePeriod(PeriodInterface period) {
+	public void removePeriod(Period period) {
 		this.perioden.remove(period);
 	}
 

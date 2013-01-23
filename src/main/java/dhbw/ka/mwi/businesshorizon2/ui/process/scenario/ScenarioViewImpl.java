@@ -173,8 +173,8 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
 		formRight.addComponent(tfKoerperschaftssteuer);
 		
-		final Button removeProject = new Button("Projekt entfernen");
-		removeProject.addListener(new ClickListener() {
+		final Button removeScenario = new Button("Szenario entfernen");
+		removeScenario.addListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -183,7 +183,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 			}
 			
 		});
-		formLeft.addComponent(removeProject);
+		formLeft.addComponent(removeScenario);
 		
 		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		formRight.setWidth(Sizeable.SIZE_UNDEFINED, 0);

@@ -45,6 +45,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 		this.setSizeFull();
 		horizontalPanel = new HorizontalSplitPanel();
 		horizontalPanel.setSplitPosition(25);
+		horizontalPanel.setSizeFull();
 		this.addComponent(horizontalPanel);
 	}
 

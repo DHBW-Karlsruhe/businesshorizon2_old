@@ -10,7 +10,9 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
@@ -27,6 +29,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	private ContentContainerPresenter presenter;
 	
 	private VerticalLayout layout;
+	private Panel panel;
 	private HorizontalLayout buttons;
 	private Button backButton, nextButton;
 	
@@ -41,8 +44,13 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	public void init() {
 		presenter.setView(this);
 		
+		this.panel = new Panel();
+		this.panel.setSizeFull();
+		this.panel.setScrollable(true);
+        this.panel.setStyleName(Reindeer.PANEL_LIGHT);
+		
 		this.layout = new VerticalLayout();
-		layout.setSizeFull();
+		this.layout.setSizeFull();
 		
 		this.setSizeFull();
 		this.setWidth(100, UNITS_PERCENTAGE);
@@ -74,7 +82,8 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 			
 		});
 		
-		this.addComponent(layout);
+		panel.addComponent(layout);
+		this.addComponent(panel);
 	}
 	
 	/**
@@ -88,7 +97,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 		this.layout.removeAllComponents();
 		this.layout.addComponent((Component) contentView);
 		this.layout.addComponent(this.buttons);
-		this.layout.setComponentAlignment(this.buttons, Alignment.TOP_RIGHT);
+		this.layout.setComponentAlignment(this.buttons, Alignment.BOTTOM_RIGHT);
 		this.layout.setSizeFull();
 	}
 	
