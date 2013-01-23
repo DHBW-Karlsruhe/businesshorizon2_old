@@ -114,6 +114,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 		this.validate(new ValidateContentStateEvent());
+
 	}
 
 	public void toggleMethod(Set<AbstractStochasticMethod> checkedMethods) {

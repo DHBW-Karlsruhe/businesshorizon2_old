@@ -15,13 +15,12 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker
  *
  */
-public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterface {
+public class PeriodViewImpl extends HorizontalSplitPanel implements PeriodViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private PeriodPresenter presenter;
-	
-	HorizontalSplitPanel horizontalPanel;
+
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -43,17 +42,15 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	 */
 	private void generateUi() {
 		this.setSizeFull();
-		horizontalPanel = new HorizontalSplitPanel();
-		horizontalPanel.setSplitPosition(25);
-		horizontalPanel.setSizeFull();
-		this.addComponent(horizontalPanel);
+		this.setSplitPosition(25);
+		this.setSizeFull();
 	}
 
 	@Override
 	public void showView(View leftView, View rightView) {
 
-		horizontalPanel.setFirstComponent((Component) leftView);
-		horizontalPanel.setSecondComponent((Component) rightView);
+		this.setFirstComponent((Component) leftView);
+		this.setSecondComponent((Component) rightView);
 		
 	}
 }

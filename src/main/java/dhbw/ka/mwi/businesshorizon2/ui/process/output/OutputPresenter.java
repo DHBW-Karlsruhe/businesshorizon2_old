@@ -55,6 +55,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> {
 	@EventHandler
 	public void handleShowView(ShowOutputViewEvent event) {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT, true));
+		getView().showOutputView();
 		logger.debug("ShowOutputViewEvent handled");
 	}
 

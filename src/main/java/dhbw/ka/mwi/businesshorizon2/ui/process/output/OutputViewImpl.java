@@ -29,7 +29,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
+
 	}
 
 	/**
@@ -40,6 +40,12 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	private void generateUi() {
 		Label testlabel = new Label("outputtest");
 		this.addComponent(testlabel);
+	}
+
+	@Override
+	public void showOutputView() {
+		generateUi();
+		
 	}
 
 
