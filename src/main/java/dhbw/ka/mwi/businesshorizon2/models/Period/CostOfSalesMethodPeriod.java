@@ -8,78 +8,121 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
  */
 
 public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
-	private final int year;
 
-	
-	
-	private double salesRevenue; // Umsatzerlöse
-	private double otherBusinessRevenue; // sonstige betriebliche Erträge
-	private double costOfPoduction; // Herstellkosten
-	private double costOfSalesAdministrationOthers; // Vertriebskosten, allg
-													// Verwaltungskosten und
-													// sonstige betriebliche
-													// Aufwendung
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Umsatzerlöse
+	 */
+	private double salesRevenue;
+
+	/**
+	 * Sonstige betriebliche Erträge
+	 */
+	private double otherBusinessRevenue;
+
+	/**
+	 * Herstellkosten
+	 */
+	private double costOfPoduction;
+
+	/**
+	 * Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige betriebliche
+	 * Aufwendungen
+	 */
+	private double costOfSalesAdministrationOthers;
 
 	public CostOfSalesMethodPeriod(int year) {
-		this.year = year;
+		super(year);
 	}
 
 	/**
-	 * Diese Methode soll aus den Bilanzwerten den FreeCashFlow berechnen.
+	 * Gebe die 'Umsatzerlöse' aus der Gewinn- und Verlustrechnung nach dem
+	 * Umsatzkostenverfahren zurück.
+	 * 
+	 * @return Umsatzerlöse
 	 */
-	@Override
-	public double getFreeCashFlow() {
-		// TODO calculate FreeCashFlow aus Bilanz
-		return 0;
-	}
-
-	@Override
-	public int getYear() {
-		return this.year;
-	}
-
 	public double getSalesRevenue() {
 		return salesRevenue;
 	}
 
+	/**
+	 * Setze die 'Umsatzerlöse' in der Gewinn- und Verlustrechnung nach dem
+	 * Umsatzkostenverfahren.
+	 * 
+	 * @param salesRevenue
+	 *            Umsatzerlöse
+	 */
 	public void setSalesRevenue(double salesRevenue) {
 		this.salesRevenue = salesRevenue;
 	}
 
+	/**
+	 * Gebe die 'Sonstigen betrieblichen Erträge' aus der Gewinn- und
+	 * Verlustrechnung nach dem Umsatzkostenverfahren zurück.
+	 * 
+	 * @return Sonstige betriebliche Erträge
+	 */
 	public double getOtherBusinessRevenue() {
 		return otherBusinessRevenue;
 	}
 
+	/**
+	 * Setze die 'Sonstigen betrieblichen Erträge' in der Gewinn- und
+	 * Verlustrechnung nach dem Umsatzkostenverfahren.
+	 * 
+	 * @param otherBusinessRevenue
+	 *            Sonstige betriebliche Erträge
+	 */
 	public void setOtherBusinessRevenue(double otherBusinessRevenue) {
 		this.otherBusinessRevenue = otherBusinessRevenue;
 	}
 
+	/**
+	 * Gebe die 'Herstellkosten' aus der Gewinn- und Verlustrechnung nach dem
+	 * Umsatzkostenverfahren zurück.
+	 * 
+	 * @return Herstellkosten
+	 */
 	public double getCostOfPoduction() {
 		return costOfPoduction;
 	}
 
+	/**
+	 * Setze die 'Herstellkosten' in der Gewinn- und Verlustrechnung nach dem
+	 * Umsatzkostenverfahren.
+	 * 
+	 * @param costOfPoduction
+	 *            Herstellkosten
+	 */
 	public void setCostOfPoduction(double costOfPoduction) {
 		this.costOfPoduction = costOfPoduction;
 	}
 
+	/**
+	 * Gebe die 'Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige
+	 * betriebliche Aufwendungen ' aus der Gewinn- und Verlustrechnung nach dem
+	 * Umsatzkostenverfahren zurück.
+	 * 
+	 * @return Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige
+	 *         betriebliche Aufwendungen
+	 */
 	public double getCostOfSalesAdministrationOthers() {
 		return costOfSalesAdministrationOthers;
 	}
 
+	/**
+	 * Setze die 'Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige
+	 * betriebliche Aufwendungen' in der Gewinn- und Verlustrechnung nach dem
+	 * Umsatzkostenverfahren.
+	 * 
+	 * @param costOfSalesAdministrationOthers
+	 *            Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige
+	 *            betriebliche Aufwendungen
+	 */
 	public void setCostOfSalesAdministrationOthers(
 			double costOfSalesAdministrationOthers) {
 		this.costOfSalesAdministrationOthers = costOfSalesAdministrationOthers;
-	}
-
-	@Override
-	public int compareTo(PeriodInterface o) {
-		if (this.getYear() < o.getYear()) {
-			return -1;
-		} else if (this.getYear() == o.getYear()) {
-			return 0;
-		} else {
-			return 1;
-		}
 	}
 
 }
