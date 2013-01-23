@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Panel;
@@ -60,7 +61,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 	 */
 	private void generateUi() {
 		p.setScrollable(true);
+		p.setStyleName(Reindeer.PANEL_LIGHT);
 		delPast = new NativeButton("X", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {

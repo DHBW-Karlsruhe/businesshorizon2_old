@@ -381,7 +381,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		eventBus.fireEvent(new ShowPeriodViewEvent());
 
 	}
-
 	public void periodClicked(Period period) {
 		if (period instanceof CashFlowPeriod) {
 			eventBus.fireEvent(new ShowDirektViewEvent((CashFlowPeriod) period));
