@@ -78,6 +78,7 @@ public class Project implements Serializable {
 	public Project(String name) {
 		this.name = name;
 		this.projectInputType = new ProjectInputType();
+		this.iterations = 10000;
 	}
 
 	/**
