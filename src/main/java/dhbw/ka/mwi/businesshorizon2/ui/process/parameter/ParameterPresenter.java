@@ -21,6 +21,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 /**
@@ -46,11 +47,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private boolean periodsToForecastValid;
 	private boolean relevantPastPeriodsValid;
 
-	private boolean determMethod;
 	private boolean stochMethod;
 	private boolean randomWalk;
-
-	private int[] numberIterations;
+	private boolean wienerProcess;
+	private boolean timeSeries;
 
 	private double cashFlowProbabilityOfRise;
 	private double cashFlowStepRange;
@@ -64,6 +64,15 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private boolean cashFlowProbabilityOfRiseValid;
 	private boolean borrowedCapitalProbabilityOfRiseValid;
 	private boolean borrowedCapitalStepRangeValid;
+	
+	private String errorMessageBasisYear;
+	private String errorMessageCashFlowStepRange;
+	private String errorMessageCashFlowProbabilityOfRise;
+	private String errorMessageBorrowedCapitalStepRange;
+	private String errorMessageBorrowedCapitalProbabilityOfRise;
+	private String errorMessagePeriodsToForecast;
+	private String errorMessagePastPeriods;
+	private String errorMessageIterations;
 
 	private SortedSet<AbstractStochasticMethod> methods;
 
@@ -86,20 +95,52 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void init() {
 
 		eventBus.addHandler(this);
+		
+		initializeErrorStrings();
+		initializeVariableBooleans();
+		
 
+		firstCall = true;
+		showError = false;
+
+	}
+
+	/**
+	 * Diese Methode initialisiert die Validitaetsvariablen der Eingabefelder.
+	 * Standardmaesig sind diese auf False gesetzt, damit leere Eingaben ebenso
+	 * zu einer Fehlermeldung fuehren. Ausnahmen sind jene Eingabefelder die 
+	 * einen Default Wert besitzen. Diese werden hier schon auf true gesetzt.
+	 * 
+	 * @author Christian Scherer
+	 */
+	private void initializeVariableBooleans() {
 		basisYearValid = false;
-		iterationsValid = false;
 		periodsToForecastValid = false;
-		relevantPastPeriodsValid = false;
 		cashFlowStepRangeValid = false;
 		cashFlowProbabilityOfRiseValid = false;
 		borrowedCapitalStepRangeValid = false;
 		borrowedCapitalProbabilityOfRiseValid = false;
+		
+		iterationsValid = true;
+		relevantPastPeriodsValid = true;
 
-		setIterations();
-		firstCall = true;
-		showError = false;
+	}
 
+	/**
+	 * Diese Methode initialisiert die Fehlermeldungen, die bei Falscheingabe
+	 * oder leer lassen der Felder angezeigt wird.
+	 * 
+	 * @author Christian Scherer
+	 */
+	private void initializeErrorStrings() {
+		errorMessageBasisYear = "Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch gr\u00f6ßer als 1900. Beispiel: 2013";
+		errorMessageCashFlowStepRange = "Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000";
+		errorMessageCashFlowProbabilityOfRise = "Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50";
+		errorMessageBorrowedCapitalStepRange = "Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000";
+		errorMessageBorrowedCapitalProbabilityOfRise = "Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50";
+		errorMessagePeriodsToForecast = "Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
+		errorMessagePastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 an. Beispiel: 5";
+		errorMessageIterations = "Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen als Ganzzahl zwischen 1000 und 100000 an. Beispiel: 10000";
 	}
 
 	/**
@@ -113,6 +154,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * letztes wird ein ScreenSelectable Event gefeuert, sodass gewaehrleistet
 	 * ist, dass der erste Durchgang zwar streng nach Reihenfloge geschieht,
 	 * danach aber jeder Screen frei angewaehlt werden kann.
+	 * Um zu pruefen welche Verfahren ausgewaehlt wurden, wird zum einen der Haken
+	 * am Deterministischen Pfad ueberprueft und zum anderen die Haken an Zeitreihe,
+	 * Wiener Prozess und Random Walk
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
@@ -125,17 +169,15 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			initializeBasisYear();
 		}
 
+		stochMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			determMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getDeterministic();
 			stochMethod = this.projectProxy.getSelectedProject()
 					.getProjectInputType().getStochastic();
-		} else {
-			determMethod = false;
-			stochMethod = false;
-		}
+		} 
 
 		randomWalk = false;
+		wienerProcess = false;
+		timeSeries = false;
 		methods = this.projectProxy.getSelectedProject().getMethods();
 		methodIterator = methods.iterator();
 		while (methodIterator.hasNext()) {
@@ -143,6 +185,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 					.next();
 			if (m.getName().equals("Random Walk") && m.getSelected()) {
 				randomWalk = true;
+			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
+				wienerProcess = true;
+			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
+				timeSeries = true;
 			}
 		}
 
@@ -151,21 +197,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
 				true));
 
-	}
-
-	/**
-	 * Erzeugt das Integerarray der Iterationen, befuellt es mit Werten und
-	 * setzt diese dann in die View zur anzeige
-	 * 
-	 * @author Christian Scherer
-	 */
-	public void setIterations() {
-
-		numberIterations = new int[3];
-		numberIterations[0] = 1000;
-		numberIterations[1] = 10000;
-		numberIterations[2] = 100000;
-		logger.debug("Iterationsarray befuellt");
 	}
 
 	/**
@@ -185,135 +216,139 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@Override
 	public boolean isValid() {
+		
+		
+		boolean valid = true;
+		
 		if (firstCall) {
 			return true;
 		}
-
-		if (determMethod && !stochMethod) {
-			if (basisYearValid) {
-				return true;
-			} else {
+		
+		if (!basisYearValid) {
+			if (showError) {
+				getView()
+						.setComponentError(
+								true,
+								"basisYear",
+								errorMessageBasisYear);
+			}
+			valid = false;
+		}
+			
+		//falls mindestens eine stochastische Methode aktiv
+		if(stochMethod&&(timeSeries||randomWalk||wienerProcess)){
+			if(!periodsToForecastValid){
 				if (showError) {
 					getView()
 							.setComponentError(
 									true,
-									"basisYear",
-									"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+									"periodsToForecast", errorMessagePeriodsToForecast);
 				}
-				return false;
-			}
-
-		} else {
-			if (periodsToForecastValid && relevantPastPeriodsValid
-					&& basisYearValid && iterationsValid) {
-				if (!randomWalk) {
-					return true;
-				} else {
-					if (cashFlowProbabilityOfRiseValid
-							&& cashFlowStepRangeValid
-							&& borrowedCapitalProbabilityOfRiseValid
-							&& borrowedCapitalStepRangeValid) {
-						return true;
-					} else {
-						if (!cashFlowStepRangeValid) {
-							if (showError) {
-								getView()
-										.setComponentError(
-												true,
-												"cashFlowStepRange",
-												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
-							}
-						}
-						if (!cashFlowProbabilityOfRiseValid) {
-							if (showError) {
-								getView()
-										.setComponentError(
-												true,
-												"cashFlowProbabilityOfRise",
-												"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
-							}
-						}
-						if (!borrowedCapitalStepRangeValid) {
-							if (showError) {
-								getView()
-										.setComponentError(
-												true,
-												"borrowedCapitalStepRange",
-												"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
-							}
-						}
-						if (!borrowedCapitalProbabilityOfRiseValid) {
-							if (showError) {
-								getView()
-										.setComponentError(
-												true,
-												"borrowedCapitalProbabilityOfRise",
-												"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
-							}
-						}
-						return false;
-					}
-
+				valid = false;
+			} 
+			if (!iterationsValid){
+				if (showError) {
+					getView()
+							.setComponentError(true, "iterations", errorMessageIterations);
 				}
-			} else {
-				if (!periodsToForecastValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"periodsToForecast",
-										"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
-					}
+				valid = false;
+			} 
+		}
+		
+		//falls Zeitreihe aktiv
+		if(timeSeries&&stochMethod){
+			if(!relevantPastPeriodsValid){
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"pastPeriods", errorMessagePastPeriods);
 				}
-				if (!relevantPastPeriodsValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"pastPeriods",
-										"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
-					}
-				}
-				if (!iterationsValid) {
-					if (showError) {
-						getView()
-								.setComponentError(true, "iterations",
-										"Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen. Beispiel: 10.000");
-					}
-				}
-				if (!basisYearValid) {
-					if (showError) {
-						getView()
-								.setComponentError(
-										true,
-										"basisYear",
-										"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
-					}
-				}
-
-				return false;
+				valid = false;
 			}
 		}
+		
+		//falls RandomWalk aktiv
+		if(randomWalk&&stochMethod){
+			if (!cashFlowStepRangeValid) {
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"cashFlowStepRange", errorMessageCashFlowStepRange);
+				}
+				valid = false;
+			}
+			if (!cashFlowProbabilityOfRiseValid) {
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"cashFlowProbabilityOfRise", errorMessageCashFlowProbabilityOfRise);
+				}
+				valid = false;
+			}
+			if (!borrowedCapitalStepRangeValid) {
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"borrowedCapitalStepRange", errorMessageCashFlowStepRange);
+				}
+				valid = false;
+			}
+			if (!borrowedCapitalProbabilityOfRiseValid) {
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"borrowedCapitalProbabilityOfRise", errorMessageCashFlowProbabilityOfRise);							
+				}
+				valid = false;	
+			}
+		}
+		
+		return valid;
 	}
 
 	/**
 	 * Methode die sich nach der Auswahl der Iteration um die davon abhaengigen
-	 * Objekte kuemmert. Zudem wird das iterionsInitialized-Wert auf true
-	 * gesetzt, damit ist eine valide Befuellung des Felds gewaehrleistet, da
-	 * danach kein Nullwert mehr eingetragen werden kann. Achtung: Dies gilt
-	 * fuer die Implementierung in Vaadin, da hier Null-Werte bei der Eingabe
-	 * ausgeschlossen wurden.
+	 * Objekte kuemmert.  Konkret wird aus dem String des
+	 * Eingabefelds der Integer-Wert gezogen und geprueft ob der eingegebene
+	 * Wert groesser 1990 ist. Ist einer der beiden Kriterien nicht erfuellt wird
+	 * eine ClassCastException geworfen, die zu einer Fehlermeldung auf der
+	 * Benutzeroberflaecher fuehrt.
+	 * 
 	 * 
 	 * @author Christian Scherer
 	 * @param iterations
 	 *            Anzahl der ausgewaehlten Wiederholungen(Iterationen)
 	 */
-	public void iterationChosen(int iterations) {
-		iterationsValid = true;
-		this.projectProxy.getSelectedProject().setIterations(iterations);
-		getView().setComponentError(false, "iterations", null);
-		logger.debug("Iterationen in Objekten gesetzt: "
-				+ this.projectProxy.getSelectedProject().getName());
+	public void iterationChosen(String iterationsString) {
+	
+		int iterations;
+		try {
+			iterations = Integer.parseInt(iterationsString);
+			if (iterations >= 1000 && iterations <= 100000) {
+				iterationsValid = true;
+				getView().setComponentError(false, "iterations", "");
+				this.projectProxy.getSelectedProject().setIterations(iterations);
+				logger.debug("Iterationen in Objekten gesetzt: "
+						+ this.projectProxy.getSelectedProject().getName());
+
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			iterationsValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"iterations", errorMessageIterations);
+			getView()
+					.showErrorMessage(errorMessageIterations);
+			logger.debug("Keine gueltige Eingabe in Feld 'Wiederholungen'");
+		}
 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
@@ -351,10 +386,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 					.setComponentError(
 							true,
 							"periodsToForecast",
-							"Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5");
+							errorMessagePeriodsToForecast);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'. <br> Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. <br> Beispiel: 5");
+					.showErrorMessage(errorMessagePeriodsToForecast);
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
 		}
 
@@ -364,7 +398,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	/**
 	 * Methode die sich nach der Auswahl der zu beachtenenden vergangenen
 	 * Perioden um die davon abhaengigen Objekte kuemmert. Diese muessen laut
-	 * Fachkonzept mindestens 5 Perioden betragen
+	 * Fachkonzept groesser 2 Perioden betragen
 	 * 
 	 * @author Christian Scherer
 	 * @param relevantPastPeriods
@@ -377,7 +411,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		int relevantPastPeriodsInt;
 		try {
 			relevantPastPeriodsInt = Integer.parseInt(relevantPastPeriods);
-			if (relevantPastPeriodsInt >= 5) {
+			if (relevantPastPeriodsInt > 2) {
 				relevantPastPeriodsValid = true;
 				getView().setComponentError(false, "pastPeriods", "");
 				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
@@ -391,11 +425,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView()
 					.setComponentError(
 							true,
-							"pastPeriods",
-							"Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. Beispiel: 10");
+							"pastPeriods", errorMessagePastPeriods);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'. <br> Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer oder gleich 5 an. <br> Beispiel: 10");
+					.showErrorMessage(errorMessagePastPeriods);
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
 
@@ -417,9 +449,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		int basisYearInt;
 		try {
 			basisYearInt = Integer.parseInt(basisYear);
-			Calendar now = Calendar.getInstance();
 
-			if (basisYearInt >= (now.get(Calendar.YEAR) - 1)) {
+			if (basisYearInt > 1900) {
 				basisYearValid = true;
 				getView().setComponentError(false, "basisYear", "");
 				this.projectProxy.getSelectedProject().setBasisYear(
@@ -433,11 +464,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView()
 					.setComponentError(
 							true,
-							"basisYear",
-							"Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. Beispiel: 2015");
+							"basisYear", errorMessageBasisYear);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahl des Basisjahr'. <br> Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als letztes Jahr. <br> Beispiel: 2015");
+					.showErrorMessage(errorMessageBasisYear);
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
 		}
 
@@ -510,11 +539,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView()
 					.setComponentError(
 							true,
-							"cashFlowStepRange",
-							"Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							"cashFlowStepRange", errorMessageCashFlowStepRange);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Schrittweite Cashflows'. <br> Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+					.showErrorMessage(errorMessageCashFlowStepRange);
 			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Cashflows'");
 		}
 
@@ -558,11 +585,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView()
 					.setComponentError(
 							true,
-							"cashFlowProbabilityOfRise",
-							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
+							"cashFlowProbabilityOfRise", errorMessageCashFlowProbabilityOfRise);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung'. <br> Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50");
+					.showErrorMessage(errorMessageCashFlowProbabilityOfRise);
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
 		}
 
@@ -604,10 +629,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 					.setComponentError(
 							true,
 							"borrowedCapitalStepRange",
-							"Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+							 errorMessageBorrowedCapitalStepRange);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Schrittweite Fremdkapital'. <br> Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000");
+					.showErrorMessage(errorMessageBorrowedCapitalStepRange);
 			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Fremdkapital'");
 		}
 
@@ -651,11 +675,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView()
 					.setComponentError(
 							true,
-							"borrowedCapitalProbabilityOfRise",
-							"Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+							"borrowedCapitalProbabilityOfRise",errorMessageBorrowedCapitalProbabilityOfRise);
 			getView()
-					.showErrorMessage(
-							"Keine Zul\u00E4ssige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung'. <br> Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50");
+					.showErrorMessage(errorMessageBorrowedCapitalProbabilityOfRise);
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
 		}
 
@@ -664,43 +686,62 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	/**
 	 * Methode die sich um das Ausgrauen unrelevanter Komponenten. In unserem
-	 * Fall die Branchenstellvertreter, die noch nicht implementiert sind und
-	 * ggf. die zu prognostizierenden Perioden / Anzahl relevanter Alt-Perioden,
-	 * je nach gewaehltem Verfahren. Falls im Method-Screen NUR die
-	 * Deterministische Methode ausgewaehlt wurde, muessen ebenso alle anderen
-	 * Felder ausser das Basisjahr ausgegraut werden.
+	 * Fall die Branchenstellvertreter und Wiener Prozess, die noch nicht implementiert 
+	 * sind. Zusaetzlich muessen je nach Eingabe die nicht ausgewaehlten Bereiche 
+	 * ausgegraut werden. Beim ausgrauen sind ggf. gesetzete ComponentErrors aufzuheben
 	 * 
 	 * @author Christian Scherer
 	 * 
 	 */
 	public void greyOut() {
+		//Branchenvertreter ausgrauen
 		getView().activateCheckboxIndustryRepresentative(false);
 		getView().activateComboBoxRepresentatives(false);
+		//Wienerprozess ausgrauen
+		getView().activateRiseOfPeriods(false);
+		getView().activateRiseOfPeriodsCheckbox(false);
+		getView().activateDeviation(false);
+		getView().activateDeviationCheckbox(false);
+		//Bisher nicht verwendetes Feld
+		getView().activateStepsPerPeriod(false);
 
-		if (determMethod && !stochMethod) {
+		
+		//Keine Stochastische Methode aktiv / mindestens eine aktiv
+		if(!stochMethod){
 			getView().activatePeriodsToForecast(false);
-			getView().activateRelevantPastPeriods(false);
 			getView().activateIterations(false);
+			getView().setComponentError(false, "iterations", null);
+			getView().setComponentError(false, "periodsToForecast", null);
+		}else {
+			getView().activatePeriodsToForecast(true);
+			getView().activateIterations(true);
+		}
+		
+		//Zeitreihe nicht aktiv / aktiv
+		if(!stochMethod||!timeSeries){
+			getView().activateRelevantPastPeriods(false);
+			getView().setComponentError(false, "pastPeriods", null);		
+		}else {
+			getView().activateRelevantPastPeriods(true);
+		}
+		
+		//RandomWalk nicht aktiv / aktiv
+		if(!stochMethod||!randomWalk){
 			getView().activateCashFlowStepRang(false);
 			getView().activateCashFlowProbabilityOfRise(false);
 			getView().activateBorrowedCapitalProbabilityOfRise(false);
 			getView().activateBorrowedCapitalStepRange(false);
-		} else {
-			getView().activatePeriodsToForecast(true);
-			getView().activateRelevantPastPeriods(true);
-			getView().activateIterations(true);
-			if (randomWalk) {
-				getView().activateCashFlowStepRang(true);
-				getView().activateCashFlowProbabilityOfRise(true);
-				getView().activateBorrowedCapitalProbabilityOfRise(true);
-				getView().activateBorrowedCapitalStepRange(true);
-			} else {
-				getView().activateCashFlowStepRang(false);
-				getView().activateCashFlowProbabilityOfRise(false);
-				getView().activateBorrowedCapitalProbabilityOfRise(false);
-				getView().activateBorrowedCapitalStepRange(false);
-			}
+			getView().setComponentError(false, "borrowedCapitalProbabilityOfRise", null);
+			getView().setComponentError(false, "borrowedCapitalStepRange", null);
+			getView().setComponentError(false, "cashFlowStepRange", null);
+			getView().setComponentError(false, "cashFlowProbabilityOfRise", null);
 
+			
+		}else {
+			getView().activateCashFlowStepRang(true);
+			getView().activateCashFlowProbabilityOfRise(true);
+			getView().activateBorrowedCapitalProbabilityOfRise(true);
+			getView().activateBorrowedCapitalStepRange(true);
 		}
 
 	}
@@ -736,13 +777,29 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
 
+		stochMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			determMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getDeterministic();
 			stochMethod = this.projectProxy.getSelectedProject()
 					.getProjectInputType().getStochastic();
-		}
+		} 
 
+		randomWalk = false;
+		wienerProcess = false;
+		timeSeries = false;
+		methods = this.projectProxy.getSelectedProject().getMethods();
+		methodIterator = methods.iterator();
+		while (methodIterator.hasNext()) {
+			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
+					.next();
+			if (m.getName().equals("Random Walk") && m.getSelected()) {
+				randomWalk = true;
+			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
+				wienerProcess = true;
+			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
+				timeSeries = true;
+			}
+		}
+		
 		if (!firstCall && !isValid()) {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,
 					showError));
@@ -769,8 +826,83 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		}
 	}
 
-	public int[] getNumberIterations() {
-		return numberIterations;
+	/**
+	 * Methode die sich nach der Auswahl der Schritte pro Periode
+	 * um die davon abhaengigen Objekte kuemmert. Derzeit nicht in 
+	 * Benutzung
+	 * 
+	 * @author Christian Scherer
+	 * @param relevantPastPeriods
+	 *            die Anzahl der Perioden der Vergangenheit die einbezogen
+	 *            werden sollen
+	 */
+	public void stepsPerPeriodChosen(String stepsPerPeriodString) {
+
+//		int stepsPerPeriod;
+//		try {
+//			stepsPerPeriod = Integer.parseInt(stepsPerPeriodString);
+//
+//			if (stepsPerPeriod > 0) {
+//				stepsPerPeriodValid = true;
+//				getView().setComponentError(false, "stepsPerPeriod", "");
+//				this.projectProxy.getSelectedProject().setStepsPerPeriod(
+//						stepsPerPeriod);
+//				logger.debug("Schritte pro Periode in das Projekt-Objekten gesetzt");
+//			} else {
+//				throw new NumberFormatException();
+//			}
+//		} catch (NumberFormatException nfe) {
+//			stepsPerPeriodValid = false;
+//			getView()
+//					.setComponentError(
+//							true,
+//							"stepsPerPeriod", errorMessageStepsPerPeriod);
+//			getView()
+//					.showErrorMessage(errorMessageStepsPerPeriod);
+//			logger.debug("Keine gueltige Eingabe in Feld 'Schritte pro Periode'");
+//		}
+//
+//		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 */
+	public void riseOfPeriodsCheckBoxSelected(boolean booleanValue) {
+		
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 */
+	public void riseOfPeriodsChosen(String value) {
+		
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 */
+	public void deviationOfPeriodsCheckBoxSelected(boolean booleanValue) {
+		
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 */
+	public void deviationChosen(String value) {
+		
 	}
 
 }

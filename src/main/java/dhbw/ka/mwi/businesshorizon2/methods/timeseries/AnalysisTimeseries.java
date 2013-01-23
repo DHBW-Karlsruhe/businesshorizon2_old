@@ -298,19 +298,20 @@ public class AnalysisTimeseries {
 
 		this.equalizedValues = new double[periodsToForecast];
 
-		for (int forecast = 0; forecast < expectedValues.length; forecast++) {
+		for (int forecast = 1; forecast <= expectedValues.length; forecast++) {
 			if (!isStationary) {
 				double newTide = tide.getTideValue(forecast
 						+ previousValues.length - 1);
-				expectedValues[forecast] = (double) ((newTide - calculateARModel(
+				expectedValues[forecast - 1] = (double) ((newTide - calculateARModel(
 						consideredPeriodsOfPast, forecast, matrixValutaions,
 						previousValues)));
 			} else {
-				expectedValues[forecast] = (double) (calculateARModel(
+				expectedValues[forecast - 1] = (double) (calculateARModel(
 						consideredPeriodsOfPast, forecast, matrixValutaions,
 						previousValues));
 			}
 		}
+
 		return expectedValues;
 	}
 }

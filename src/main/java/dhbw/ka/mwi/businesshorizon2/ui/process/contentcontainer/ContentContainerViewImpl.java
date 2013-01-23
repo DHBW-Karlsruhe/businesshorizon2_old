@@ -12,6 +12,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
@@ -46,6 +47,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 		this.panel = new Panel();
 		this.panel.setSizeFull();
 		this.panel.setScrollable(true);
+        this.panel.setStyleName(Reindeer.PANEL_LIGHT);
 		
 		this.layout = new VerticalLayout();
 		this.layout.setSizeFull();

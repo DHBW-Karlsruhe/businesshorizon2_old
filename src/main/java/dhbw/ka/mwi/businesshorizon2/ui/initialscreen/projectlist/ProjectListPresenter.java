@@ -35,12 +35,11 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 
-	//@Autowired
+	// @Autowired
 	private User user;
 
 	@Autowired
 	private ProjectProxy projectProxy;
-
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -69,8 +68,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 */
 	public void projectSelected(Project project) {
-
 		projectProxy.setSelectedProject(project);
+		
 		eventBus.fireEvent(new ShowProjectEvent());
 		logger.debug("ShowProjectEvent gefeuert");
 	}
@@ -87,7 +86,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
-		
+
 		this.user = event.getUser();
 
 		List<Project> projects = user.getProjects();

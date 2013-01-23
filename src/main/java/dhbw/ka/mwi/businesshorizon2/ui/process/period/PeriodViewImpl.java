@@ -49,8 +49,10 @@ public class PeriodViewImpl extends HorizontalSplitPanel implements PeriodViewIn
 	@Override
 	public void showView(View leftView, View rightView) {
 
+
 		this.setFirstComponent((Component) leftView);
 		this.setSecondComponent((Component) rightView);
 		
+
 	}
 }

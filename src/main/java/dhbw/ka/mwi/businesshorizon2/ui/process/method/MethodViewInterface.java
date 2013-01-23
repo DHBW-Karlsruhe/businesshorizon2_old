@@ -31,5 +31,7 @@ public interface MethodViewInterface extends ContentView {
 	
 	public void showErrorNothingSelected(Boolean state);
 
+
 	public void showMethodView();
+
 }

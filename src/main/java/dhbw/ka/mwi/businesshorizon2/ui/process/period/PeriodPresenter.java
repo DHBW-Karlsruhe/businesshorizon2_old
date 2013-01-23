@@ -32,7 +32,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInter
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
  * @author Daniel Dengler
+<<<<<<< HEAD
+ * 
+=======
  *
+>>>>>>> refs/remotes/origin/master
  */
 
 public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
@@ -44,78 +48,75 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	@Autowired
 	private TimelineViewInterface timelineView;
-	
+
 	@Autowired
 	private UmsatzViewInterface umsatzView;
-	
+
 	@Autowired
 	private DirektViewInterface direktView;
-	
+
 	@Autowired
 	private GesamtViewInterface gesamtView;
-	
+
 	@Autowired
 	private TimelinePresenter timelinePresenter;
-	
+
 	@Autowired
 	private UmsatzPresenter umsatzPresenter;
-	
+
 	@Autowired
 	private DirektPresenter direktPresenter;
-	
+
 	@Autowired
 	private GesamtPresenter gesamtPresenter;
-	
+
 	@Autowired
 	private EventBus eventBus;
 
 
-
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
 	 * 
 	 * @author Julius Hacker
 	 */
-	
-	
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
 	}
-	
+
 	@EventHandler
-	public void onShowEvent(ShowPeriodViewEvent event){
-		logger.debug("DirektViewEvent gefeuert");
+
+	public void onShowEvent(ShowPeriodViewEvent event) {
+		logger.debug("DirektVieEvent gefeuert");
 		getView().showView(timelineView, currentInput);
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
 	}
-	
+
 	@EventHandler
-	public void onShowEvent(ShowGesamtViewEvent event){
+	public void onShowEvent(ShowGesamtViewEvent event) {
 		currentInput = gesamtView;
 		getView().showView(timelineView, currentInput);
 	}
-	
+
 	@EventHandler
-	public void onShowEvent(ShowDirektViewEvent event){
+	public void onShowEvent(ShowDirektViewEvent event) {
 		logger.debug("ShowDirektViewEvent erhalten");
 		currentInput = direktView;
-		getView().showView(timelineView,currentInput);
+		getView().showView(timelineView, currentInput);
 	}
-	
+
 	@EventHandler
-	public void onShowEvent(ShowUmsatzViewEvent event){
+	public void onShowEvent(ShowUmsatzViewEvent event) {
 		currentInput = umsatzView;
 		getView().showView(timelineView, currentInput);
 	}
 
 	@Override
 	public boolean isValid() {
-		
 		return true;
 	}
-
 
 	@Override
 	@EventHandler
@@ -123,7 +124,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
 		logger.debug("Presenter valid, ValidStateEvent fired");
 	}
-
 
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {

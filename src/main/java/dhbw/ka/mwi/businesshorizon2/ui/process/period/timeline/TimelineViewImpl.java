@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.NativeButton;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
@@ -32,6 +34,8 @@ public class TimelineViewImpl extends VerticalLayout implements
 	NativeButton delPast, delFuture;
 
 	Button past, future;
+	
+	Panel p = new Panel();
 
 	PeriodButton pB;
 
@@ -56,7 +60,10 @@ public class TimelineViewImpl extends VerticalLayout implements
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
+		p.setScrollable(true);
+		p.setStyleName(Reindeer.PANEL_LIGHT);
 		delPast = new NativeButton("X", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -81,8 +88,8 @@ public class TimelineViewImpl extends VerticalLayout implements
 				presenter.addPastPeriod();
 			}
 		});
-		this.addComponent(past);
-		this.addComponent(layout);
+		this.p.addComponent(past);
+		this.p.addComponent(layout);
 		future = new Button("+", new Button.ClickListener() {
 
 			@Override
@@ -91,7 +98,8 @@ public class TimelineViewImpl extends VerticalLayout implements
 			}
 		});
 
-		this.addComponent(future);
+		this.p.addComponent(future);
+		this.addComponent(p);
 	}
 
 	@Override

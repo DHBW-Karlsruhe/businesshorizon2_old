@@ -31,9 +31,10 @@ public class Project implements Serializable {
 
 	private Date lastChanged;
 
+
 	private String name;
 
-	protected AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
+	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
 
 	public AbstractPeriodContainer getStochasticPeriods() {
 		return stochasticPeriods;
@@ -148,8 +149,7 @@ public class Project implements Serializable {
 	 * 
 	 * @param borrowedCapitalProbabilityOfRise
 	 */
-	public void setBorrowedCapitalProbabilityOfRise(
-			double borrowedCapitalProbabilityOfRise) {
+	public void setBorrowedCapitalProbabilityOfRise(double borrowedCapitalProbabilityOfRise) {
 		BorrowedCapitalProbabilityOfRise = borrowedCapitalProbabilityOfRise;
 	}
 
@@ -183,6 +183,7 @@ public class Project implements Serializable {
 	public NavigableSet<? extends Period> getPeriods() {
 		return periods;
 	}
+
 
 	/**
 	 * @deprecated Bitte getter für die stochastiPeriods und DeterministicPeriods
