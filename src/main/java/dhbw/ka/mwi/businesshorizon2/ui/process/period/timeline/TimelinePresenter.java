@@ -12,7 +12,7 @@ import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Period.AggregateCostMethodPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AggregateCostMethodBalanceSheetPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
@@ -48,7 +48,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	Logger logger = Logger.getLogger(TimelinePresenter.class);
 
 	private int fixedPastPeriods;
-	//private int fixedFuturePeriods; gibbets nibbets
+	// private int fixedFuturePeriods; gibbets nibbets
 
 	private int sumPastPeriods;
 	private int sumFuturePeriods;
@@ -57,8 +57,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	private boolean showErrors;
 
-	private AbstractPeriodContainer pastPeriods = new CashFlowPeriodContainer();
-	private AbstractPeriodContainer futurePeriods = new CashFlowPeriodContainer();
+	private final AbstractPeriodContainer pastPeriods = new CashFlowPeriodContainer();
+	private final AbstractPeriodContainer futurePeriods = new CashFlowPeriodContainer();
 
 	private Boolean deterministic = false;
 
@@ -68,7 +68,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	private InputType stochasticInput;
 
-	private PeriodInterface basePeriod;
+	private Period basePeriod;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -160,8 +160,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 						.getRelevantPastPeriods();
 			}
 
-			
-
 			// Hat sich nur der Inputtyp geändert, müssen wir alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
 			if (projectProxy.getSelectedProject().getProjectInputType()
@@ -173,7 +171,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					deterministicInput = projectProxy.getSelectedProject()
 							.getProjectInputType().getDeterministicInput();
 					createContainer(futurePeriods, deterministicInput);
-
 				}
 
 			}
@@ -222,8 +219,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			InputType deterministicInput2) {
 		for (int i = 0; i < periodsToForecast; i++) {
 			sumFuturePeriods++;
-			PeriodInterface period = buildNewPeriod(deterministicInput2,
-					baseYear + sumFuturePeriods);
+			Period period = buildNewPeriod(deterministicInput2, baseYear
+					+ sumFuturePeriods);
 			futurePeriods.addPeriod(period);
 			getView().addFuturePeriod(period);
 			projectProxy.getSelectedProject().setDeterministicPeriods(
@@ -247,7 +244,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < relevantPastPeriods; i++) {
 			sumPastPeriods++;
-			PeriodInterface period = buildNewPeriod(stochasticInput2, baseYear
+			Period period = buildNewPeriod(stochasticInput2, baseYear
 					- sumPastPeriods);
 			pastPeriods.addPeriod(period);
 			getView().addPastPeriod(period);
@@ -256,8 +253,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	}
 
-	private PeriodInterface buildNewPeriod(InputType stochasticInput2, int year) {
-		PeriodInterface p;
+	private Period buildNewPeriod(InputType stochasticInput2, int year) {
+		Period p;
 		switch (stochasticInput2) {
 		case REVENUE:
 			p = new CostOfSalesMethodPeriod(year);
@@ -314,7 +311,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (stochastic) {
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getStochasticInput()) {
-
 			case REVENUE:
 				basePeriod = new CostOfSalesMethodPeriod(baseYear);
 				getView().addBasePeriod(basePeriod);
@@ -384,7 +380,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	}
 
-	public void periodClicked(PeriodInterface period) {
+	public void periodClicked(Period period) {
 		if (period instanceof CashFlowPeriod) {
 			eventBus.fireEvent(new ShowDirektViewEvent((CashFlowPeriod) period));
 		}
@@ -398,13 +394,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 	}
 
-	public void removeLastFuturePeriod(PeriodInterface period) {
+	public void removeLastFuturePeriod(Period period) {
 		getView().removeFuturePeriod();
 		futurePeriods.removePeriod(period);
 		sumFuturePeriods--;
 	}
 
-	public void removeLastPastPeriod(PeriodInterface periodInterface) {
+	public void removeLastPastPeriod(Period periodInterface) {
 		getView().removePastPeriod();
 		pastPeriods.removePeriod(periodInterface);
 		sumPastPeriods--;

@@ -80,7 +80,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					.getStochasticPeriods().getPeriods()) {
 				previousValues[counter] = cFPeriod.getFreeCashFlow();
 				previousBorrowedCapital[counter] = cFPeriod
-						.getBorrowedCapital();
+						.getCapitalStock();
 				counter++;
 			}
 
@@ -95,7 +95,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				CashFlowPeriod cfPeriod = new CashFlowPeriod(
 						project.getBasisYear() + (i));
 				cfPeriod.setFreeCashFlow(expectedCF[i]);
-				cfPeriod.setBorrowedCapital(expectedBC[i]);
+				cfPeriod.setCapitalStock(expectedBC[i]);
 				cFContainer.getPeriods().add(cfPeriod);
 			}
 			TreeSet<CashFlowPeriodContainer> periodContainer = new TreeSet<CashFlowPeriodContainer>();
@@ -147,7 +147,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
 					.getStochasticPeriods().getPeriods()) {
 				previousValues[counter] = cFPeriod.getFreeCashFlow();
-				previousBC[counter] = cFPeriod.getBorrowedCapital();
+				previousBC[counter] = cFPeriod.getCapitalStock();
 				counter++;
 			}
 			// Durchfuehrung der Zeitreihenanalyse
@@ -166,7 +166,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					CashFlowPeriod cfPeriod = new CashFlowPeriod(
 							project.getBasisYear() + (periodToForecast + 1));
 					cfPeriod.setFreeCashFlow(resultTimeseries[periodToForecast][iteration]);
-					cfPeriod.setBorrowedCapital(resultTimeseriesBorrowedCapital[periodToForecast][iteration]);
+					cfPeriod.setCapitalStock(resultTimeseriesBorrowedCapital[periodToForecast][iteration]);
 					cFContainer.getPeriods().add(cfPeriod);
 				}
 				cFResultContainer.add(cFContainer);
@@ -270,7 +270,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				otherBusinessCosts[counter] = aCMPeriod.getOtherBusinessCosts();
 				interestAndOtherCosts[counter] = aCMPeriod
 						.getInterestAndOtherCosts();
-				borrowedCapital[counter] = aCMPeriod.getBorrowedCapital();
+				borrowedCapital[counter] = aCMPeriod.getCapitalStock();
 				cashAssets[counter] = aCMPeriod.getCashAssets();
 				stocks[counter] = aCMPeriod.getStocks();
 				claims[counter] = aCMPeriod.getClaims();
@@ -372,7 +372,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					aCMPeriod
 							.setFinancialValue(financialValueResult[forecast][iteration]);
 					aCMPeriod
-							.setBorrowedCapital(borrowedCapitalResult[forecast][iteration]);
+							.setCapitalStock(borrowedCapitalResult[forecast][iteration]);
 					aCMPeriod
 							.setProvisions(provisionsResult[forecast][iteration]);
 					aCMPeriod.setSuplies(supliesResult[forecast][iteration]);
@@ -470,7 +470,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			int counter = 0;
 			for (CostOfSalesMethodPeriod cOSPeriod : (TreeSet<CostOfSalesMethodPeriod>) project
 					.getStochasticPeriods().getPeriods()) {
-				borrowedCapital[counter] = cOSPeriod.getBorrowedCapital();
+
+				borrowedCapital[counter] = cOSPeriod.getCapitalStock();
 				cashAssets[counter] = cOSPeriod.getCashAssets();
 				stocks[counter] = cOSPeriod.getStocks();
 				claims[counter] = cOSPeriod.getClaims();
@@ -557,7 +558,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					cOSPeriod
 							.setFinancialValue(financialValueResult[forecast][iteration]);
 					cOSPeriod
-							.setBorrowedCapital(borrowedCapitalResult[forecast][iteration]);
+							.setCapitalStock(borrowedCapitalResult[forecast][iteration]);
 					cOSPeriod
 							.setProvisions(provisionsResult[forecast][iteration]);
 					cOSPeriod.setSuplies(supliesResult[forecast][iteration]);
