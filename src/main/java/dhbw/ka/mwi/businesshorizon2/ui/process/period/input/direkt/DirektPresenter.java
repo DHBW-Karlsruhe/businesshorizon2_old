@@ -39,7 +39,7 @@ public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
 	
 	private DecimalFormat df = new DecimalFormat(",##0.00");
 
-	String[] shownProperties = { "freeCashFlow", "borrowedCapital" };
+	String[] shownProperties = { "freeCashFlow", "capitalStock" };
 
 	@Autowired
 	EventBus eventBus;
