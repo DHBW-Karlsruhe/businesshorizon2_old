@@ -132,7 +132,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * @author Christian Scherer
 	 */
 	private void initializeErrorStrings() {
-		errorMessageBasisYear = "Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch nicht kleiner als 1900. Beispiel: 2013";
+		errorMessageBasisYear = "Bitte geben Sie ein g\u00FCltiges Jahr an, jedoch gr\u00f6ßer als 1900. Beispiel: 2013";
 		errorMessageCashFlowStepRange = "Bitte geben Sie die Schrittweite der Cashflows g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000";
 		errorMessageCashFlowProbabilityOfRise = "Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung zwischen 0 und 100 an. Beispiel: 50";
 		errorMessageBorrowedCapitalStepRange = "Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000";

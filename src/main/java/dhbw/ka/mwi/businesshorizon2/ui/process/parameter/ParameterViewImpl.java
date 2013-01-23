@@ -11,6 +11,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -149,11 +150,13 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private void generateUi() {
 
 		setMargin(true);
-
+		
 		gridLayout = new GridLayout(3, 23);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
-		addComponent(gridLayout);
+				 
+
+		 addComponent(gridLayout);
 		
 		
 		// Heading 1
