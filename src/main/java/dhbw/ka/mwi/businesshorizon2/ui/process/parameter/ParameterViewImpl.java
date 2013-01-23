@@ -211,12 +211,13 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		textfieldIterations = new TextField();
 		textfieldIterations.setImmediate(true);
-		textfieldIterations.setValue(10000);
+		//textfieldIterations.setValue(10000);
 		textfieldIterations.setDescription(toolTipIterations);
 		textfieldIterations.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
+				logger.debug(textfieldIterations.getValue());
 				presenter
 						.iterationChosen((String) textfieldIterations
 								.getValue());
