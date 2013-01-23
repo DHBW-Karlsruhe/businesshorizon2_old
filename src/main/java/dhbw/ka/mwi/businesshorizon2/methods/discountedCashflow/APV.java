@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
@@ -8,6 +9,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
@@ -30,20 +32,45 @@ public class APV extends RatingMethods {
 
 		CompanyValue companyValueObject;
 
-		if (container.getPeriodContainers() == null
-				|| container.getPeriodContainers().size() == 0) {
+		if (container.getPeriodContainers() == null || container.getPeriodContainers().size() == 0) {
 			companyValueObject = null;
+			return companyValueObject;
 
 		} else if (container.getPeriodContainers().size() == 1) {
 			companyValueObject = new CompanyValueDeterministic();
 			calculateCompanyValue(companyValueObject);
-
+			return (CompanyValue)companyValueObject;
 		} else {
 			companyValueObject = new CompanyValueStochastic();
 			calculateCompanyValue(companyValueObject);
+			
+			Map.Entry<Double, Couple> first =((CompanyValueStochastic)companyValueObject).getCompanyValues().firstEntry();
+			Map.Entry<Double, Couple> last = ((CompanyValueStochastic)companyValueObject).getCompanyValues().lastEntry();
+			
+			double delta = last.getValue().getCompanyValue() - first.getValue().getCompanyValue();
+			delta = delta / 25;
+			
+			double limit = first.getValue().getCompanyValue() + delta;
+			
+			double average = 0;
+			
+			int count = 0;
+			
+			CompanyValueStochastic result = new CompanyValueStochastic();
+			
+			for (Map.Entry<Double, Couple> entry : ((CompanyValueStochastic)companyValueObject).getCompanyValues().entrySet()){
+				if (entry.getValue().getCompanyValue() <= limit){
+					average = average + entry.getValue().getCompanyValue() * entry.getValue().getCount();
+					count = count  + entry.getValue().getCount();
+				}else{
+					result.addCompanyBalue(average/count, count);
+					limit = entry.getValue().getCompanyValue() + delta;
+					average = 0;
+					count = 0;
+				}
+			}
+			return (CompanyValue)result;
 		}
-
-		return companyValueObject;
 	}
 
 	/*
@@ -110,12 +137,11 @@ public class APV extends RatingMethods {
 
 					freeCashFlow = period.getFreeCashFlow();
 
-					debitFreeCompany = calculateDebitFreeCompanyT(
-							period.getFreeCashFlow(),
+					debitFreeCompany = calculateDebitFreeCompanyT(period.getFreeCashFlow(),
 							szenario.getRateReturnEquity());
+
 					taxBenefits = calculateTaxBenefitsT(s,
-							szenario.getRateReturnCapitalStock(),
-							period.getCapitalStock());
+							szenario.getRateReturnCapitalStock(),period.getCapitalStock());
 
 					T = false;
 
@@ -123,9 +149,9 @@ public class APV extends RatingMethods {
 
 					freeCashFlow = period.getFreeCashFlow();
 
-					debitFreeCompany = calculateDebitFreeCompanyt(
-							freeCashFlowT, debitFreeCompany,
+					debitFreeCompany = calculateDebitFreeCompanyt(freeCashFlowT, debitFreeCompany,
 							szenario.getRateReturnEquity());
+
 					taxBenefits = calculateTaxBenefitst(s,
 							szenario.getRateReturnCapitalStock(),
 							period.getCapitalStock(), taxBenefits);
@@ -136,6 +162,7 @@ public class APV extends RatingMethods {
 						period.getCapitalStock());
 
 				if (companyValueObject instanceof CompanyValueDeterministic) {
+
 					((CompanyValueDeterministic) companyValueObject).addPeriod(
 							period.getYear(), companyValue,
 							period.getCapitalStock(),
@@ -149,8 +176,7 @@ public class APV extends RatingMethods {
 			}
 
 			if (companyValueObject instanceof CompanyValueStochastic) {
-				((CompanyValueStochastic) companyValueObject)
-						.addCompanyValue(companyValue);
+				((CompanyValueStochastic) companyValueObject).addCompanyValue(companyValue);
 			}
 
 		}
@@ -158,35 +184,27 @@ public class APV extends RatingMethods {
 	}
 
 	private double calculateS() {
-		return ((0.5 * szenario.getBusinessTax() * (1 - szenario
-				.getCorporateAndSolitaryTax())) + szenario
+		return ((0.5 * szenario.getBusinessTax() * (1 - szenario.getCorporateAndSolitaryTax())) + szenario
 				.getCorporateAndSolitaryTax());
 	}
 
-	private double calculate(double debitFreeCompany, double taxBenefits,
-			double capitalStock) {
+	private double calculate(double debitFreeCompany, double taxBenefits, double capitalStock) {
 		return debitFreeCompany + taxBenefits - capitalStock;
 	}
 
-	private double calculateDebitFreeCompanyT(double freeCashFlow,
-			double rateReturnEquity) {
+	private double calculateDebitFreeCompanyT(double freeCashFlow, double rateReturnEquity) {
 		return (freeCashFlow / rateReturnEquity);
 	}
 
-	private double calculateTaxBenefitsT(double s,
-			double rateReturnCapitalStock, double capitalStock) {
+	private double calculateTaxBenefitsT(double s, double rateReturnCapitalStock, double capitalStock) {
 		return ((s * rateReturnCapitalStock * capitalStock) / rateReturnCapitalStock);
 	}
 
-	private double calculateDebitFreeCompanyt(double freeCashFlow,
-			double debitFreeCompnay, double rateReturnEquity) {
+	private double calculateDebitFreeCompanyt(double freeCashFlow, double debitFreeCompnay, double rateReturnEquity) {
 		return (freeCashFlow + debitFreeCompnay) / (1 + rateReturnEquity);
 	}
 
-	private double calculateTaxBenefitst(double s,
-			double rateReturnCapitalStock, double capitalStock,
-			double taxBenefit) {
+	private double calculateTaxBenefitst(double s, double rateReturnCapitalStock, double capitalStock, double taxBenefit) {
 		return ((s * rateReturnCapitalStock * capitalStock + taxBenefit) / (1 + rateReturnCapitalStock));
 	}
-
 }

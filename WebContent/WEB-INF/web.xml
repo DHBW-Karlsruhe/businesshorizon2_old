@@ -36,6 +36,11 @@
 			<!-- Named defined by annotation in VaadinApp class -->
 			<param-value>vaadinApp</param-value>
 		</init-param>
+		<init-param>
+		    <description>Application widgetset</description>
+		    <param-name>widgetset</param-name>
+		    <param-value>dhbw.ka.mwi.businesshorizon2.widgetset.Businesshorizon2Widgetset</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Business Horizon 2</servlet-name>

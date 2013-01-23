@@ -9,6 +9,7 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -110,6 +111,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	public double getCostOfSalesAdministrationOthers() {
 		return costOfSalesAdministrationOthers;
 	}
+
 
 	/**
 	 * Setze die 'Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige

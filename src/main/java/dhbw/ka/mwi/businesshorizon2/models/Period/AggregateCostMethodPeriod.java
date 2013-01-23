@@ -11,6 +11,7 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -117,6 +118,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	public double getInternallyProducedAndCapitalizedAssets() {
 		return internallyProducedAndCapitalizedAssets;
 	}
+
 
 	/**
 	 * Setze die 'Anderen aktivierten Eigenleistungen' in der Gewinn- und

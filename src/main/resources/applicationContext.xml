@@ -19,7 +19,6 @@
         <constructor-arg ref="eventBus" />
     </bean>
 
-
     <!-- Services -->
     <bean name="authenticationService" class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" scope="singleton"/>
     
@@ -67,8 +66,6 @@
     <!-- Process -->
     <bean name="processPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessPresenter" scope="session" />
     <bean name="processView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl"  scope="session" />
-
-
 
 	<!-- Process-Navigation -->
 	<bean name="navigationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationPresenter" scope="session" />

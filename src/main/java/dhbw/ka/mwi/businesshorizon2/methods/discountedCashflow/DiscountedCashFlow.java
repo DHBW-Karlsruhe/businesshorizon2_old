@@ -6,8 +6,7 @@ import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 
 public class DiscountedCashFlow extends RatingMethods {
 
-	public DiscountedCashFlow(StochasticResultContainer container,
-			Szenario szenario) {
+	public DiscountedCashFlow(StochasticResultContainer container, Szenario szenario) {
 		super(container, szenario);
 	}
 

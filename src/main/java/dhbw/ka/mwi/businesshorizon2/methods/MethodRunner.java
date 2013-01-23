@@ -20,7 +20,6 @@ public class MethodRunner extends Thread {
 	private CallbackInterface callback;
 	private Project project;
 
-
 	/**
 	 * Der Konstruktor - diesem sollte die zur Berechnung zu verwendende Methode
 	 * sowie die Perioden uebergeben werden. Zuletzt sollte noch das
@@ -35,13 +34,9 @@ public class MethodRunner extends Thread {
 	 *            Das Callback
 	 */
 
-	public MethodRunner(AbstractStochasticMethod method, Project project,
-			CallbackInterface callback) {
+	public MethodRunner(AbstractStochasticMethod method, Project project, CallbackInterface callback) {
 		if (method == null || project == null || callback == null) {
-
-			throw new InvalidParameterException(
-					"No null parameters are allowed here");
-
+			throw new InvalidParameterException("No null parameters are allowed here");
 		}
 
 		this.method = method;
@@ -60,8 +55,7 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run() {
 		try {
-			StochasticResultContainer result = method.calculate(project,
-					callback);
+			StochasticResultContainer result = method.calculate(project, callback);
 			callback.onComplete(result);
 		} catch (InterruptedException e) {
 			callback.onComplete(null);
