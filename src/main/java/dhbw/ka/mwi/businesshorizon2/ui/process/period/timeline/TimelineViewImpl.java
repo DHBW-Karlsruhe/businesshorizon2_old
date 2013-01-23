@@ -11,7 +11,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.PeriodInterface;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
@@ -32,7 +32,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 	NativeButton delPast, delFuture;
 
 	Button past, future;
-	
+
+	PeriodButton pB;
+
 	Logger logger = Logger.getLogger(TimelineViewImpl.class);
 
 	/**
@@ -68,7 +70,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.removeLastFuturePeriod(((PeriodButton) layout
-						.getComponent(0, layout.getRows()-1)).getPeriod());
+						.getComponent(0, layout.getRows() - 1)).getPeriod());
 			}
 		});
 
@@ -94,11 +96,11 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	@Override
 	public void removeFuturePeriod() {
-		logger.debug(""+layout.getRows());
+		logger.debug("" + layout.getRows());
 		layout.removeRow(layout.getRows() - 1);
-		logger.debug(""+layout.getRows());
-		if (((PeriodButton)layout.getComponent(0, layout.getRows() - 1)).getCaption()
-				.startsWith("Basis")) {
+		logger.debug("" + layout.getRows());
+		if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
+				.getCaption().startsWith("Basis")) {
 
 		} else
 			layout.addComponent(delFuture, 1, layout.getRows() - 1);
@@ -112,13 +114,13 @@ public class TimelineViewImpl extends VerticalLayout implements
 		} else
 			layout.addComponent(delPast, 1, 0);
 	}
-/*
-	@Override
-	public void setPeriodValid(int year, boolean isValid) {
-		// TODO Auto-generated method stub
 
-	}
-*/
+	/*
+	 * @Override public void setPeriodValid(int year, boolean isValid) { // TODO
+	 * Auto-generated method stub
+	 * 
+	 * }
+	 */
 	@Override
 	public void setPastButtonAccess(boolean usable) {
 		past.setEnabled(usable);
@@ -131,8 +133,10 @@ public class TimelineViewImpl extends VerticalLayout implements
 	}
 
 	@Override
-	public void addBasePeriod(PeriodInterface period) {
-		PeriodButton pB = new PeriodButton("Basisjahr: " + period.getYear(),
+	public void addBasePeriod(Period period) {
+
+		layout.removeComponent(pB);
+		pB = new PeriodButton("Basisjahr: " + period.getYear(),
 				new Button.ClickListener() {
 
 					@Override
@@ -150,7 +154,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 	}
 
 	@Override
-	public void addFuturePeriod(PeriodInterface period) {
+	public void addFuturePeriod(Period period) {
 		PeriodButton pB = new PeriodButton("" + period.getYear(),
 				new Button.ClickListener() {
 
@@ -163,15 +167,15 @@ public class TimelineViewImpl extends VerticalLayout implements
 					}
 				});
 		pB.setPeriod(period);
-		layout.setRows(layout.getRows()+1);
-		layout.addComponent(pB,0,layout.getRows()-1);
+		layout.setRows(layout.getRows() + 1);
+		layout.addComponent(pB, 0, layout.getRows() - 1);
 		layout.removeComponent(delFuture);
-		layout.addComponent(delFuture,1,layout.getRows()-1);
+		layout.addComponent(delFuture, 1, layout.getRows() - 1);
 
 	}
 
 	@Override
-	public void addPastPeriod(PeriodInterface period) {
+	public void addPastPeriod(Period period) {
 		// TODO Auto-generated method stub
 		PeriodButton pB = new PeriodButton("" + period.getYear(),
 				new Button.ClickListener() {
