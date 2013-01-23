@@ -54,6 +54,8 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 
 		horizontalPanel.setFirstComponent((Component) leftView);
 		horizontalPanel.setSecondComponent((Component) rightView);
-		
+		this.setSizeFull();
+		horizontalPanel.setSizeFull();
+		this.setSizeFull();
 	}
 }
