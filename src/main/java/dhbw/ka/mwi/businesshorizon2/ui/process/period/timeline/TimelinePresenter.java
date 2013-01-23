@@ -371,12 +371,14 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void addPastPeriod() {
 		addPastPeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getStochasticInput());
+		eventBus.fireEvent(new ShowPeriodViewEvent());
 
 	}
 
 	public void addFuturePeriod() {
 		addFuturePeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getDeterministicInput());
+		eventBus.fireEvent(new ShowPeriodViewEvent());
 
 	}
 
