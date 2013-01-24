@@ -11,7 +11,6 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -505,19 +504,6 @@ public class ParameterViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
-	 * 
-	 * @author Christian Scherer
-	 * @param basisYear
-	 *            Das Jahr, das Basis-Jahr, auf das die Cashflows abgezinst
-	 *            werden
-	 */
-	@Override
-	public void setTextFieldValueBasisYear(String basisYear) {
-		this.textfieldBasisYear.setValue(basisYear);
-	}
-
-	/**
 	 * Diese Methode graut das Textfeld 'textfieldNumPeriods' aus.
 	 * 
 	 * @author Christian Scherer
@@ -798,6 +784,104 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void activateStepsPerPeriod(boolean enabled) {
 		this.textfieldStepsPerPeriod.setEnabled(false);
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Basisjahr'
+	 * 
+	 * @author Christian Scherer
+	 * @param basisYear
+	 *            Das Jahr, das Basis-Jahr, auf das die Cashflows abgezinst
+	 *            werden
+	 */
+	@Override
+	public void setValueBasisYear(String basisYear) {
+		this.textfieldBasisYear.setValue(basisYear);
+	}
+	
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden'
+	 * 
+	 * @author Christian Scherer
+	 * @param periodsToForecast
+	 *            Anzahl zu prognostizierender Perioden
+	 */
+	@Override
+	public void setPeriodsToForecast(String periodsToForecast) {
+		this.textfieldNumPeriodsToForecast.setValue(periodsToForecast);	
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl Wiederholungen'
+	 * 
+	 * @author Christian Scherer
+	 * @param iterations
+	 *            Anzahl Wiederholungen
+	 */
+	@Override
+	public void setIterations(String iterations) {
+		this.textfieldIterations.setValue(iterations);
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl einbezogener, vergangener Perioden'
+	 * 
+	 * @author Christian Scherer
+	 * @param relevantPastPeriods
+	 *            Anzahl einbezogener, vergangener Perioden
+	 */
+	@Override
+	public void setRelevantPastPeriods(String relevantPastPeriods) {
+		this.textfieldNumPastPeriods.setValue(relevantPastPeriods);
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Schrittweite Cashflows'
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowStepRange
+	 *            Schrittweite der Cashflows
+	 */
+	@Override
+	public void setCashFlowStepRange(String cashFlowStepRange) {
+		this.textfieldCashFlowStepRange.setValue(cashFlowStepRange);		
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Fremdkaptialentwicklung'
+	 * 
+	 * @author Christian Scherer
+	 * @param borrowedCapitalProbabilityOfRise
+	 *            Wahrscheinlichkeit für steigende Fremdkaptialentwicklung
+	 */
+	@Override
+	public void setBorrowedCapitalProbabilityOfRise(String borrowedCapitalProbabilityOfRise) {
+		this.textfieldBorrowedCapitalProbabilityOfRise.setValue(borrowedCapitalProbabilityOfRise);
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Schrittweite Fremdkapital'
+	 * 
+	 * @author Christian Scherer
+	 * @param borrowedCapitalStepRange
+	 *            Schrittweite Fremdkapital
+	 */
+	@Override
+	public void setBorrowedCapitalStepRange(String borrowedCapitalStepRange) {
+		this.textfieldBorrowedCapitalStepRange.setValue(borrowedCapitalStepRange);	
+	}
+
+	/**
+	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Cashflowentwicklung'
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowProbabilityOfRise
+	 *            Wahrscheinlichkeit für steigende Cashflowentwicklung
+	 */
+	@Override
+	public void setCashFlowProbabilityOfRise(
+			String cashFlowProbabilityOfRise) {
+		this.textfieldCashFlowProbabilityOfRise.setValue(cashFlowProbabilityOfRise);		
 	}
 
 }

@@ -146,17 +146,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
-	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
-	 * wurde. Desweiteren wird die firstCall Variable auf false gesetzt, sodass
+	 * EventHandler. Um zu pruefen welche Verfahren ausgewaehlt wurden, wird zum einen der Haken
+	 * am stochastischen Pfad ueberprueft und zum anderen die Haken an Zeitreihe,
+	 * Wiener Prozess und Random Walk. Je nach Vorbedingungen hier werden die 
+	 * Entsprechenden Felder durch die greyOut() Methode ausgegraut. Vor dem 
+	 * Ausgrauen werden jedoch noch die im Projekt-Objekt gespeicherten Werte 
+	 * gelesen und in die Felder gesetzt.
+	 * Desweiteren wird die firstCall Variable auf false gesetzt, sodass
 	 * ab jetzt bei jeder Validierungsanfrage alle Felder geprueft und ggf. als
 	 * unkorrekt mariert werden. Beim ersten Aufruf ist dies noch nicht
-	 * gewuenscht, da der benutzer den Screen noch nicht geoffnet hatte. Als
+	 * gewuenscht, da der Benutzer den Screen noch nicht geoffnet hatte. Als
 	 * letztes wird ein ScreenSelectable Event gefeuert, sodass gewaehrleistet
 	 * ist, dass der erste Durchgang zwar streng nach Reihenfloge geschieht,
 	 * danach aber jeder Screen frei angewaehlt werden kann.
-	 * Um zu pruefen welche Verfahren ausgewaehlt wurden, wird zum einen der Haken
-	 * am Deterministischen Pfad ueberprueft und zum anderen die Haken an Zeitreihe,
-	 * Wiener Prozess und Random Walk
+	 * 
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
@@ -189,12 +192,48 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				timeSeries = true;
 			}
 		}
-
+		
+		this.setValues();
 		this.greyOut();
 		firstCall = false;
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
 				true));
 
+	}
+
+	/**
+	 * In dieser Methode werden die Werte des Objekts (falls nicht null)
+	 * gelesen und in die Eingabefelder gesetzt.
+	 * 
+	 * @author Christian Scherer
+	 */
+	private void setValues() {
+		
+		if(this.projectProxy.getSelectedProject().getBasisYear()!=0){
+			getView().setValueBasisYear(""+this.projectProxy.getSelectedProject().getBasisYear());
+		}
+		if(this.projectProxy.getSelectedProject().getPeriodsToForecast()!=0){
+			getView().setPeriodsToForecast(""+this.projectProxy.getSelectedProject().getPeriodsToForecast());
+		}
+		if(this.projectProxy.getSelectedProject().getIterations()!=0){
+			getView().setIterations(""+this.projectProxy.getSelectedProject().getIterations());
+		}
+		if(this.projectProxy.getSelectedProject().getRelevantPastPeriods()!=0){
+			getView().setRelevantPastPeriods(""+this.projectProxy.getSelectedProject().getRelevantPastPeriods());
+		}
+		if(this.projectProxy.getSelectedProject().getCashFlowStepRange()!=0){
+			getView().setCashFlowStepRange(""+this.projectProxy.getSelectedProject().getCashFlowStepRange());
+		}
+		if(this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise()!=0){
+			getView().setCashFlowProbabilityOfRise(""+this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise());
+		}
+		if(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange()!=0){
+			getView().setBorrowedCapitalStepRange(""+this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange());
+		}
+		if(this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise()!=0){
+			getView().setBorrowedCapitalProbabilityOfRise(""+this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise());
+		}
+		
 	}
 
 	/**
@@ -752,7 +791,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void initializeBasisYear() {
 		Calendar now = Calendar.getInstance();
-		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
+		getView().setValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
 		basisYearValid = true;
 		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1)
 				+ " gesetzt.");
