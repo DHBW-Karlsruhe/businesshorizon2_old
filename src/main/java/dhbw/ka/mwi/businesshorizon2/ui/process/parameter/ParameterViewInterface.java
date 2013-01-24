@@ -173,6 +173,36 @@ public interface ParameterViewInterface extends ContentView {
 	 *            den Komponenten
 	 */
 	void activateStepsPerPeriod(boolean enabled);
+	
+	/**
+	 * Diese Methode graut das Textfeld 'Schrittweite' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateStepRange(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'Wahrscheinlichkeit' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateProbability(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'Steigung aus angegebenen Perioden ermitteln' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateCalculateStepRange(boolean enabled);
 
 	/**
 	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
@@ -246,5 +276,6 @@ public interface ParameterViewInterface extends ContentView {
 	 *            Wahrscheinlichkeit für steigende Fremdkaptialentwicklung
 	 */
 	void setBorrowedCapitalProbabilityOfRise(String borrowedCapitalProbabilityOfRise);
+
 
 }

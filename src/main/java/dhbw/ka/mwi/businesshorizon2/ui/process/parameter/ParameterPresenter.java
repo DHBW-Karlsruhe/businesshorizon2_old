@@ -222,16 +222,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().setRelevantPastPeriods(""+this.projectProxy.getSelectedProject().getRelevantPastPeriods());
 		}
 		if(this.projectProxy.getSelectedProject().getCashFlowStepRange()!=0){
-			getView().setCashFlowStepRange(""+this.projectProxy.getSelectedProject().getCashFlowStepRange());
+			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setCashFlowStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getCashFlowStepRange())))/10000));
 		}
 		if(this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise()!=0){
-			getView().setCashFlowProbabilityOfRise(""+this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise());
+			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setCashFlowProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise())))/10000));
 		}
 		if(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange()!=0){
-			getView().setBorrowedCapitalStepRange(""+this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange());
+			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setBorrowedCapitalStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange())))/10000));
 		}
 		if(this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise()!=0){
-			getView().setBorrowedCapitalProbabilityOfRise(""+this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise());
+			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setBorrowedCapitalProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise())))/10000));
 		}
 		
 	}
@@ -589,9 +593,11 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
 	 * positive Cashflows-Entwicklung kuemmert. Konkret wird aus dem String des
 	 * Eingabefelds der Double-Wert gezogen und geprueft ob der Wert zwischen 0
-	 * und 100 leigt. Falls nicht wird eine ClassCastException geworfen, die
-	 * eine Fehlermeldung auf der Benutzeroberflaecher angezeigt und ein
-	 * ComponentError generiert.
+	 * und 100 liegt. Vor der Uebergabe wird der uebergebene an das Project-Objekt
+	 * wird der Wert noch durch 100 geteilt, da die Rechenlogig mit einem 
+	 * Wert zwischen 0 und 1 arbeitet. Falls nicht wird eine ClassCastException 
+	 * geworfen, die eine Fehlermeldung auf der Benutzeroberflaecher angezeigt und ein
+	 * ComponentError generiert. 
 	 * 
 	 * @author Christian Scherer
 	 * @param cashFlowProbabilityOfRiseString
@@ -612,7 +618,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 						"");
 				this.projectProxy.getSelectedProject()
 						.setCashFlowProbabilityOfRise(
-								this.cashFlowProbabilityOfRise);
+								(this.cashFlowProbabilityOfRise/100));
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -679,7 +685,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
 	 * positive Fremdkapitalentwicklung kuemmert. Konkret wird aus dem String
 	 * des Eingabefelds der Double-Wert gezogen und geprueft ob der Wert
-	 * zwischen 0 und 100 leigt. Falls nicht wird eine ClassCastException
+	 * zwischen 0 und 100 liegt. Vor der Uebergabe wird der uebergebene an das 
+	 * Project-Objekt wird der Wert noch durch 100 geteilt, da die Rechenlogig 
+	 * mit einem Wert zwischen 0 und 1 arbeitet. Falls nicht wird eine ClassCastException
 	 * geworfen, die eine Fehlermeldung auf der Benutzeroberflaecher angezeigt
 	 * und ein ComponentError generiert.
 	 * 
@@ -702,7 +710,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 						"borrowedCapitalProbabilityOfRise", "");
 				this.projectProxy.getSelectedProject()
 						.setBorrowedCapitalProbabilityOfRise(
-								this.borrowedCapitalProbabilityOfRise);
+								(this.borrowedCapitalProbabilityOfRise/100));
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -741,6 +749,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		getView().activateDeviationCheckbox(false);
 		//Bisher nicht verwendetes Feld
 		getView().activateStepsPerPeriod(false);
+		getView().activateStepRange(false);
+		getView().activateProbability(false);
+		getView().activateCalculateStepRange(false);
 
 		
 		//Keine Stochastische Methode aktiv / mindestens eine aktiv
@@ -940,6 +951,43 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void deviationChosen(String value) {
 		
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param calculateStepRange
+	 * 				Ob das Errechnen der Schrittweise automatisch (=true) oder 
+	 *  			nicht (false) geschehen soll
+	 */
+	public void calculateStepRangeCheckBoxSelected(boolean calculateStepRange) {
+	
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param probabiltiyString
+	 * 				Eingegebene Wahrscheinlichkeit
+	 */
+	public void probablityChosen(Object probabiltiyString) {
+	
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param steRangeString
+	 * 				Eingegebene Schrittweite
+	 */
+	public void StepRangeChosen(String stepRangeString) {
+	
 	}
 
 }
