@@ -42,6 +42,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	@Autowired
 	private ProjectProxy projectProxy;
 
+	
 	private boolean iterationsValid;
 	private boolean basisYearValid;
 	private boolean periodsToForecastValid;
