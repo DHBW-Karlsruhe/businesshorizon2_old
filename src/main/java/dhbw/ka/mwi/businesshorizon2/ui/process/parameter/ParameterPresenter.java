@@ -42,6 +42,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	@Autowired
 	private ProjectProxy projectProxy;
 
+	
 	private boolean iterationsValid;
 	private boolean basisYearValid;
 	private boolean periodsToForecastValid;
@@ -146,17 +147,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
-	 * EventHandler, prueft ob welche Eingabemthode im Screen zuvor gewaehlt
-	 * wurde. Desweiteren wird die firstCall Variable auf false gesetzt, sodass
+	 * EventHandler. Um zu pruefen welche Verfahren ausgewaehlt wurden, wird zum einen der Haken
+	 * am stochastischen Pfad ueberprueft und zum anderen die Haken an Zeitreihe,
+	 * Wiener Prozess und Random Walk. Je nach Vorbedingungen hier werden die 
+	 * Entsprechenden Felder durch die greyOut() Methode ausgegraut. Vor dem 
+	 * Ausgrauen werden jedoch noch die im Projekt-Objekt gespeicherten Werte 
+	 * gelesen und in die Felder gesetzt.
+	 * Desweiteren wird die firstCall Variable auf false gesetzt, sodass
 	 * ab jetzt bei jeder Validierungsanfrage alle Felder geprueft und ggf. als
 	 * unkorrekt mariert werden. Beim ersten Aufruf ist dies noch nicht
-	 * gewuenscht, da der benutzer den Screen noch nicht geoffnet hatte. Als
+	 * gewuenscht, da der Benutzer den Screen noch nicht geoffnet hatte. Als
 	 * letztes wird ein ScreenSelectable Event gefeuert, sodass gewaehrleistet
 	 * ist, dass der erste Durchgang zwar streng nach Reihenfloge geschieht,
 	 * danach aber jeder Screen frei angewaehlt werden kann.
-	 * Um zu pruefen welche Verfahren ausgewaehlt wurden, wird zum einen der Haken
-	 * am Deterministischen Pfad ueberprueft und zum anderen die Haken an Zeitreihe,
-	 * Wiener Prozess und Random Walk
+	 * 
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
@@ -189,12 +193,52 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				timeSeries = true;
 			}
 		}
-
+		
+		this.setValues();
 		this.greyOut();
 		firstCall = false;
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
 				true));
 
+	}
+
+	/**
+	 * In dieser Methode werden die Werte des Objekts (falls nicht null)
+	 * gelesen und in die Eingabefelder gesetzt.
+	 * 
+	 * @author Christian Scherer
+	 */
+	private void setValues() {
+		
+		if(this.projectProxy.getSelectedProject().getBasisYear()!=0){
+			getView().setValueBasisYear(""+this.projectProxy.getSelectedProject().getBasisYear());
+		}
+		if(this.projectProxy.getSelectedProject().getPeriodsToForecast()!=0){
+			getView().setPeriodsToForecast(""+this.projectProxy.getSelectedProject().getPeriodsToForecast());
+		}
+		if(this.projectProxy.getSelectedProject().getIterations()!=0){
+			getView().setIterations(""+this.projectProxy.getSelectedProject().getIterations());
+		}
+		if(this.projectProxy.getSelectedProject().getRelevantPastPeriods()!=0){
+			getView().setRelevantPastPeriods(""+this.projectProxy.getSelectedProject().getRelevantPastPeriods());
+		}
+		if(this.projectProxy.getSelectedProject().getCashFlowStepRange()!=0){
+			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setCashFlowStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getCashFlowStepRange())))/10000));
+		}
+		if(this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise()!=0){
+			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setCashFlowProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise())))/10000));
+		}
+		if(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange()!=0){
+			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setBorrowedCapitalStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange())))/10000));
+		}
+		if(this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise()!=0){
+			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+			getView().setBorrowedCapitalProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise())))/10000));
+		}
+		
 	}
 
 	/**
@@ -550,9 +594,11 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
 	 * positive Cashflows-Entwicklung kuemmert. Konkret wird aus dem String des
 	 * Eingabefelds der Double-Wert gezogen und geprueft ob der Wert zwischen 0
-	 * und 100 leigt. Falls nicht wird eine ClassCastException geworfen, die
-	 * eine Fehlermeldung auf der Benutzeroberflaecher angezeigt und ein
-	 * ComponentError generiert.
+	 * und 100 liegt. Vor der Uebergabe wird der uebergebene an das Project-Objekt
+	 * wird der Wert noch durch 100 geteilt, da die Rechenlogig mit einem 
+	 * Wert zwischen 0 und 1 arbeitet. Falls nicht wird eine ClassCastException 
+	 * geworfen, die eine Fehlermeldung auf der Benutzeroberflaecher angezeigt und ein
+	 * ComponentError generiert. 
 	 * 
 	 * @author Christian Scherer
 	 * @param cashFlowProbabilityOfRiseString
@@ -573,7 +619,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 						"");
 				this.projectProxy.getSelectedProject()
 						.setCashFlowProbabilityOfRise(
-								this.cashFlowProbabilityOfRise);
+								(this.cashFlowProbabilityOfRise/100));
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -640,7 +686,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Methode die sich nach der Auswahl der Wahrscheinlichkeit fuer eine
 	 * positive Fremdkapitalentwicklung kuemmert. Konkret wird aus dem String
 	 * des Eingabefelds der Double-Wert gezogen und geprueft ob der Wert
-	 * zwischen 0 und 100 leigt. Falls nicht wird eine ClassCastException
+	 * zwischen 0 und 100 liegt. Vor der Uebergabe wird der uebergebene an das 
+	 * Project-Objekt wird der Wert noch durch 100 geteilt, da die Rechenlogig 
+	 * mit einem Wert zwischen 0 und 1 arbeitet. Falls nicht wird eine ClassCastException
 	 * geworfen, die eine Fehlermeldung auf der Benutzeroberflaecher angezeigt
 	 * und ein ComponentError generiert.
 	 * 
@@ -663,7 +711,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 						"borrowedCapitalProbabilityOfRise", "");
 				this.projectProxy.getSelectedProject()
 						.setBorrowedCapitalProbabilityOfRise(
-								this.borrowedCapitalProbabilityOfRise);
+								(this.borrowedCapitalProbabilityOfRise/100));
 				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -702,6 +750,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		getView().activateDeviationCheckbox(false);
 		//Bisher nicht verwendetes Feld
 		getView().activateStepsPerPeriod(false);
+		getView().activateStepRange(false);
+		getView().activateProbability(false);
+		getView().activateCalculateStepRange(false);
 
 		
 		//Keine Stochastische Methode aktiv / mindestens eine aktiv
@@ -752,7 +803,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void initializeBasisYear() {
 		Calendar now = Calendar.getInstance();
-		getView().setTextFieldValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
+		getView().setValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
 		basisYearValid = true;
 		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1)
 				+ " gesetzt.");
@@ -901,6 +952,43 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void deviationChosen(String value) {
 		
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param calculateStepRange
+	 * 				Ob das Errechnen der Schrittweise automatisch (=true) oder 
+	 *  			nicht (false) geschehen soll
+	 */
+	public void calculateStepRangeCheckBoxSelected(boolean calculateStepRange) {
+	
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param probabiltiyString
+	 * 				Eingegebene Wahrscheinlichkeit
+	 */
+	public void probablityChosen(Object probabiltiyString) {
+	
+	}
+
+	/**
+	 * 
+	 * Derzeit noch nicht im Einsatz und daher auch nicht ausprogrammiert.
+	 * 
+	 * @author Christian Scherer
+	 * @param steRangeString
+	 * 				Eingegebene Schrittweite
+	 */
+	public void StepRangeChosen(String stepRangeString) {
+	
 	}
 
 }
