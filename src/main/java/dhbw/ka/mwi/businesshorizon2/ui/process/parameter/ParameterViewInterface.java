@@ -278,4 +278,6 @@ public interface ParameterViewInterface extends ContentView {
 	void setBorrowedCapitalProbabilityOfRise(String borrowedCapitalProbabilityOfRise);
 
 
+	void showParameterView();
+
 }

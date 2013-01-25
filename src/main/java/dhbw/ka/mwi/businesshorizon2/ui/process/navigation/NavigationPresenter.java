@@ -8,6 +8,10 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
@@ -25,6 +29,9 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 	
+	@Autowired
+	private ProjectProxy projectProxy;
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert lediglich sich selbst als einen EventHandler.
@@ -39,6 +46,7 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	@EventHandler
 	public void showNavigation(ShowNavigationEvent event) {
 		//getView().setButtonActive(NavigationSteps.METHOD, true);
+		getView().showNavigation();
 	}
 	
 	/**
@@ -66,5 +74,13 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	@EventHandler
 	public void handleScreenSelectable(ScreenSelectableEvent event) {
 		getView().setButtonActive(event.getNavigationStep(), event.isSelectable());
+	}
+
+	public void showProjectList() {
+		eventBus.fireEvent(new ShowUserEvent());
+	}
+
+	public String getProjectName() {
+		return this.projectProxy.getSelectedProject().getName();
 	}
 }

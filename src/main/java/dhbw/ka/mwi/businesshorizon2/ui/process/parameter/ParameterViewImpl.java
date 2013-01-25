@@ -118,8 +118,10 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void init() {
 
 		presenter.setView(this);
+
 		setTooltips();
 		generateUi();
+
 		logger.debug("Ui erstellt");
 	}
 
@@ -157,6 +159,14 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
+	
+	@Override
+	public void showParameterView() {
+		this.removeAllComponents();
+		generateUi();
+		
+	}
+	
 	private void generateUi() {
 
 		setMargin(true);
@@ -992,6 +1002,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 			String cashFlowProbabilityOfRise) {
 		this.textfieldCashFlowProbabilityOfRise.setValue(cashFlowProbabilityOfRise);		
 	}
+
+
 
 
 

@@ -6,6 +6,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
 
 public interface OutputViewInterface extends ContentView {
 
+
+	void showOutputView();
+
 	/**
 	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des stochastischen
 	 * Verfahrens hinzu
@@ -27,5 +30,6 @@ public interface OutputViewInterface extends ContentView {
 	void showErrorMessge(String message);
 
 	void changeProgress(float progress);
+
 
 }

@@ -36,22 +36,22 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@Autowired
 	private MethodPresenter presenter;
 	
-	private Panel methodPanel = new Panel();
+	private Panel methodPanel;
 
 	
-	private VerticalLayout methodList = new VerticalLayout();
-	private VerticalLayout inputMethod = new VerticalLayout();
+	private VerticalLayout methodList;
+	private VerticalLayout inputMethod;
 
-	private OptionGroup stochasticInput = new OptionGroup();
-	private OptionGroup deterministicInput = new OptionGroup();
+	private OptionGroup stochasticInput;
+	private OptionGroup deterministicInput;
 	
-	private OptionGroup methods = new OptionGroup();
+	private OptionGroup methods;
 			
-	private CheckBox stochastic = new CheckBox("Stochastische Berechnung");
-	private CheckBox deterministic = new CheckBox("Deterministische Eingabe");
+	private CheckBox stochastic; //= new CheckBox("Stochastische Berechnung");
+	private CheckBox deterministic; //= new CheckBox("Deterministische Eingabe");
 	
-	private Panel stoInput = new Panel();
-	private Panel detInput = new Panel();
+	private Panel stoInput;
+	private Panel detInput;
 	
 	
 	/**
@@ -65,9 +65,18 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+	}
+	
+	public void showMethodView() {
+		this.removeAllComponents();
+		
+		stochastic = new CheckBox("Stochastische Berechnung");
+		deterministic = new CheckBox("Deterministische Eingabe");
+		
 		stochastic.setImmediate(true);
 		deterministic.setImmediate(true);
 		
+		methodPanel = new Panel();
 		methodPanel.addStyleName(Reindeer.PANEL_LIGHT);
 		
 		stochastic.addListener(new Button.ClickListener() {
@@ -91,6 +100,8 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 			}
 		});
 
+		methods = new OptionGroup();
+		
 		methods.setMultiSelect(true);
 		methods.setImmediate(true);
 		methods.addListener(new Property.ValueChangeListener() {
@@ -104,6 +115,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 			}
 		});
 
+		stochasticInput = new OptionGroup();
 		stochasticInput.setImmediate(true);
 		stochasticInput.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
@@ -115,6 +127,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 			}
 		});
 		
+		deterministicInput = new OptionGroup();
 		deterministicInput.setImmediate(true);
 		deterministicInput.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
@@ -132,7 +145,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	}
 
 	private void initOptionGroups() {
-		
+		detInput = new Panel();
 		Label detCaption = new Label ("Zukünftige Perioden (deterministisch):");
 		detInput.addComponent(detCaption);
 		deterministicInput.addItem(InputType.DIRECT);
@@ -141,6 +154,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		detInput.addStyleName(Reindeer.PANEL_LIGHT);
 		detInput.addComponent(deterministicInput);
 		
+		stoInput = new Panel();
 		Label stoCaption= new Label ("Vergangene Perioden (stochastisch):");
 		stoInput.addComponent(stoCaption);
 		stochasticInput.addItem(InputType.DIRECT);
@@ -158,6 +172,12 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	
 	
 	private void generateUi() {
+		methodList = new VerticalLayout();
+		inputMethod = new VerticalLayout();
+		methodList.setSizeFull();
+		inputMethod.setSizeFull();
+		
+		this.setSizeFull();
 		
 		this.setFirstComponent(methodList);
 		this.setSecondComponent(inputMethod);
@@ -214,6 +234,14 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		}		
 	}
 
+	public void setStochastic(Boolean checked) {
+		this.stochastic.setValue(checked);
+	}
+	
+	public void setDeterministic(Boolean checked) {
+		this.deterministic.setValue(checked);
+	}
+	
 	@Override
 	public void selectInput(Boolean stochastic,InputType selected) {
 		if (stochastic){

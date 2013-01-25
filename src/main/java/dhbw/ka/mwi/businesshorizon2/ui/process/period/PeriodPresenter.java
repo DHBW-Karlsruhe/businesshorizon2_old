@@ -73,8 +73,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 
-	@Autowired
-	private Project project;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -89,9 +87,11 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	}
 
 	@EventHandler
+
 	public void onShowEvent(ShowPeriodViewEvent event) {
 		logger.debug("DirektVieEvent gefeuert");
 		getView().showView(timelineView, currentInput);
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
 	}
 
 	@EventHandler
@@ -123,12 +123,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	public void validate(ValidateContentStateEvent event) {
 		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
 		logger.debug("Presenter valid, ValidStateEvent fired");
-	}
-
-	@EventHandler
-	public void handleShowView(ShowPeriodViewEvent event) {
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
-		logger.debug("ShowPeriodViewEvent handled");
 	}
 
 	@Override

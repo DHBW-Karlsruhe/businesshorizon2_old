@@ -38,7 +38,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
+
 	}
 
 	/**
@@ -60,9 +60,18 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	}
 
 	@Override
+
+	public void showOutputView() {
+		this.removeAllComponents();
+		generateUi();
+		
+	}
+
+
 	public void addStochasticChartArea(StochasticChartArea chartArea) {
 		outputArea.addComponent(chartArea);
 	}
+
 
 	@Override
 	public void addDeterministicChartArea(DeterministicChartArea chartArea) {

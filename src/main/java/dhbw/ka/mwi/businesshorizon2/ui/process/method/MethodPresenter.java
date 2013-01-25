@@ -66,8 +66,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		methods = new TreeSet<AbstractStochasticMethod>();
-
 	}
 
 	@Override
@@ -112,6 +110,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 		this.validate(new ValidateContentStateEvent());
+
 	}
 
 	public void toggleMethod(Set<AbstractStochasticMethod> checkedMethods) {
@@ -139,8 +138,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event) {
+		getView().showMethodView();
 
 		project = projectProxy.getSelectedProject();
+		methods = new TreeSet<AbstractStochasticMethod>();
 
 		if (project.getMethods() == null) {
 
@@ -163,6 +164,9 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		for (AbstractStochasticMethod m : methods) {
 			getView().showMethod(m);
 		}
+		
+		getView().setStochastic(projectInputType.getStochastic());
+		getView().setDeterministic(projectInputType.getDeterministic());
 
 		Boolean state = projectInputType.getStochastic();
 
