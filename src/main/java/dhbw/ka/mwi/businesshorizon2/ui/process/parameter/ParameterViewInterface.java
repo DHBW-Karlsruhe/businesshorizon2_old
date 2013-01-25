@@ -67,16 +67,6 @@ public interface ParameterViewInterface extends ContentView {
 	void activateIterations(boolean enabled);
 
 	/**
-	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
-	 * 
-	 * @author Christian Scherer
-	 * @param basisYear
-	 *            Das Jahr, das Basis-Jahr, auf das die Cashflows abgezinst
-	 *            werden
-	 */
-	void setTextFieldValueBasisYear(String basisYear);
-
-	/**
 	 * Setzt eine Fehleranzeige an das Entsprechende Feld bzw. entfernt diese
 	 * wieder je nach Parametriesierung
 	 * 
@@ -183,6 +173,110 @@ public interface ParameterViewInterface extends ContentView {
 	 *            den Komponenten
 	 */
 	void activateStepsPerPeriod(boolean enabled);
+	
+	/**
+	 * Diese Methode graut das Textfeld 'Schrittweite' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateStepRange(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'Wahrscheinlichkeit' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateProbability(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'Steigung aus angegebenen Perioden ermitteln' aus.
+	 * 
+	 * @author Christian Scherer
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activateCalculateStepRange(boolean enabled);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
+	 * 
+	 * @author Christian Scherer
+	 * @param basisYear
+	 *            Das Jahr, das Basis-Jahr, auf das die Cashflows abgezinst
+	 *            werden
+	 */
+	void setValueBasisYear(String basisYear);
+	
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden'
+	 * 
+	 * @author Christian Scherer
+	 * @param periodsToForecast
+	 *            Anzahl zu prognostizierender Perioden
+	 */
+	void setPeriodsToForecast(String periodsToForecast);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl Wiederholungen'
+	 * 
+	 * @author Christian Scherer
+	 * @param iterations
+	 *            Anzahl Wiederholungen
+	 */
+	void setIterations(String iterations);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl einbezogener, vergangener Perioden'
+	 * 
+	 * @author Christian Scherer
+	 * @param relevantPastPeriods
+	 *            Anzahl einbezogener, vergangener Perioden
+	 */
+	void setRelevantPastPeriods(String relevantPastPeriods);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Schrittweite Cashflows'
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowStepRange
+	 *            Schrittweite der Cashflows
+	 */
+	void setCashFlowStepRange(String cashFlowStepRange);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Cashflowentwicklung'
+	 * 
+	 * @author Christian Scherer
+	 * @param cashFlowProbabilityOfRise
+	 *            Wahrscheinlichkeit für steigende Cashflowentwicklung
+	 */
+	void setCashFlowProbabilityOfRise(String cashFlowProbabilityOfRise);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Schrittweite Fremdkapital'
+	 * 
+	 * @author Christian Scherer
+	 * @param borrowedCapitalStepRange
+	 *            Schrittweite Fremdkapital
+	 */
+	void setBorrowedCapitalStepRange(String borrowedCapitalStepRange);
+
+	/**
+	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Fremdkaptialentwicklung'
+	 * 
+	 * @author Christian Scherer
+	 * @param borrowedCapitalProbabilityOfRise
+	 *            Wahrscheinlichkeit für steigende Fremdkaptialentwicklung
+	 */
+	void setBorrowedCapitalProbabilityOfRise(String borrowedCapitalProbabilityOfRise);
+
 
 	void showParameterView();
 
