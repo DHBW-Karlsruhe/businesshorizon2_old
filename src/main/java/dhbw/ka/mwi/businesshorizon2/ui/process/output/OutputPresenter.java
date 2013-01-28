@@ -1,7 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
 import java.util.Map.Entry;
-import java.util.Map;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +13,7 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
+import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
@@ -53,6 +53,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	@Autowired
 	private ProjectProxy projectProxy;
 
+	private MethodRunner methodRunner;
+
 	private Project project;
 
 	private TreeSet<CashFlowPeriod> expectedCashFlows;
@@ -91,11 +93,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 									.getPeriods();
 						}
 
-						method.calculate(project, this);
+						methodRunner = new MethodRunner(method, project, this);
+						methodRunner.start();
 					}
 				} catch (StochasticMethodException e) {
-					getView().showErrorMessge(e.getMessage());
-				} catch (InterruptedException e) {
 					getView().showErrorMessge(e.getMessage());
 				}
 			}
@@ -155,19 +156,14 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	 * 
 	 */
 	@Override
-	public void onComplete(StochasticResultContainer result) {
+	public void onComplete(StochasticResultContainer result, String methodName) {
 		for (Szenario scenario : project.getScenarios()) {
 			APV apv = new APV(result, scenario);
 			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv.calculateCompanyValue();
-			StochasticChartArea stochasticChartArea = new StochasticChartArea(expectedCashFlows,
+			StochasticChartArea stochasticChartArea = new StochasticChartArea(methodName, expectedCashFlows,
 					companyValue.getCompanyValues());
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
-			
-			//TODO Testausgabe wieder entfernen
-			for (Map.Entry<Double,CompanyValueStochastic.Couple> entry: companyValue.getCompanyValues().entrySet()){
-				System.out.println("Key: " + entry.getKey() + " CompanyValue: " + entry.getValue().getCompanyValue() + " Count: " + entry.getValue().getCount());
-			}
 
 		}
 

@@ -14,7 +14,6 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
  */
 public class MethodRunner extends Thread {
 
-
 	private AbstractStochasticMethod method;
 
 	private CallbackInterface callback;
@@ -56,11 +55,11 @@ public class MethodRunner extends Thread {
 	public void run() {
 		try {
 			StochasticResultContainer result = method.calculate(project, callback);
-			callback.onComplete(result);
+			callback.onComplete(result, method.getName());
 		} catch (InterruptedException e) {
-			callback.onComplete(null);
+			callback.onComplete(null, method.getName());
 		} catch (StochasticMethodException e) {
-			callback.onComplete(null);
+			callback.onComplete(null, method.getName());
 		}
 	}
 }

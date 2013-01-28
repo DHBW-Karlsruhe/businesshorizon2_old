@@ -18,7 +18,7 @@ public class BasicTable extends Table {
 
 	public BasicTable(Map<String, String> columns) {
 		setOption("allowHTML", true);
-		setOption("width", 500);
+		// setOption("width", 500);
 
 		for (Map.Entry<String, String> column : columns.entrySet()) {
 			addTableColumn(column.getKey(), column.getValue());

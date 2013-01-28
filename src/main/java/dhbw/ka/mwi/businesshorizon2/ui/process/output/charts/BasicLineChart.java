@@ -24,8 +24,8 @@ public class BasicLineChart extends LineChart {
 			addLine(line);
 		}
 
-		setOption("width", 500);
-		setOption("height", 200);
+		// setOption("width", 500);
+		// setOption("height", 200);
 		setOption("legend", "bottom");
 
 		setOption("lineSize", 3);
