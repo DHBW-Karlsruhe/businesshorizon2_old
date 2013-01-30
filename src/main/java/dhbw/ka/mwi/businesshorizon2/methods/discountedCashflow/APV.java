@@ -159,10 +159,10 @@ public class APV extends RatingMethods {
 					freeCashFlow = period.getFreeCashFlow();
 
 					debitFreeCompany = calculateDebitFreeCompanyT(period.getFreeCashFlow(),
-							szenario.getRateReturnEquity());
+							this.getRateReturnEquity());
 
 					taxBenefits = calculateTaxBenefitsT(s,
-							szenario.getRateReturnCapitalStock(),period.getCapitalStock());
+							this.getRateReturnCapitalStock(),period.getCapitalStock());
 
 					T = false;
 
@@ -171,10 +171,10 @@ public class APV extends RatingMethods {
 					freeCashFlow = period.getFreeCashFlow();
 
 					debitFreeCompany = calculateDebitFreeCompanyt(freeCashFlowT, debitFreeCompany,
-							szenario.getRateReturnEquity());
+							this.getRateReturnEquity());
 
 					taxBenefits = calculateTaxBenefitst(s,
-							szenario.getRateReturnCapitalStock(),
+							this.getRateReturnCapitalStock(),
 							period.getCapitalStock(), taxBenefits);
 
 				}
@@ -205,7 +205,7 @@ public class APV extends RatingMethods {
 	}
 
 	private double calculateS() {
-		return ((0.5 * szenario.getBusinessTax() * (1 - szenario.getCorporateAndSolitaryTax())) + szenario
+		return ((0.5 * this.getBusinessTax() * (1 - this.getCorporateAndSolitaryTax())) + this
 				.getCorporateAndSolitaryTax());
 	}
 
