@@ -56,31 +56,6 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
-//		setSizeFull();
-//		
-//		this.layout = new HorizontalLayout();
-//		this.layout.setSizeFull();
-//		
-//		this.innerlayout = new HorizontalLayout();
-//		
-//		this.addOverviewButton();
-//		
-//		this.addProjectName();
-//		
-//		this.addNavigationButton(NavigationSteps.METHOD);
-//		this.addNavigationButton(NavigationSteps.PARAMETER);
-//		this.addNavigationButton(NavigationSteps.PERIOD);
-//		this.addNavigationButton(NavigationSteps.SCENARIO);
-//		this.addNavigationButton(NavigationSteps.OUTPUT);
-//		
-//		layout.addComponent(innerlayout);
-//		layout.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
-//		this.addComponent(layout);
-	}
-	
-	public void showNavigation() {
-		this.removeAllComponents();
-		
 		setSizeFull();
 		
 		this.layout = new HorizontalLayout();
@@ -88,8 +63,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		
 		this.innerlayout = new HorizontalLayout();
 		
-		this.addProjectName();
 		this.addOverviewButton();
+		
+		this.addProjectName();
 		
 		this.addNavigationButton(NavigationSteps.METHOD);
 		this.addNavigationButton(NavigationSteps.PARAMETER);
@@ -100,6 +76,12 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		layout.addComponent(innerlayout);
 		layout.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
 		this.addComponent(layout);
+	}
+	
+	public void showNavigation() {
+		this.removeAllComponents();
+		generateUi();
+
 	}
 
 	private void addProjectName() {

@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gwt.dev.jjs.impl.RemoveEmptySuperCalls;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
