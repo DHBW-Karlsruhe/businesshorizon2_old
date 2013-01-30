@@ -99,7 +99,7 @@ public class APVTest {
 		temp.add(container);
 
 		result = new StochasticResultContainer(temp);
-		szenario = new Szenario(0.14, 0.1, 0.035, 0.15, true);
+		szenario = new Szenario(14, 10, 3.5, 15, true);
 
 		compare = new CompanyValueDeterministic();
 
