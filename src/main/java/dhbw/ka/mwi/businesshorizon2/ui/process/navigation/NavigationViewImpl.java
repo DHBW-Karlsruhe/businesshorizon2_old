@@ -47,7 +47,6 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
 	}
 
 	/**
