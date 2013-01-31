@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * BusinessHorizon2
+ * 
+ *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
+ *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ * 
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
+
 package dhbw.ka.mwi.businesshorizon2.tests.methods.discountedCashflow;
 
 import static org.junit.Assert.assertEquals;
@@ -78,7 +99,7 @@ public class APVTest {
 		temp.add(container);
 
 		result = new StochasticResultContainer(temp);
-		szenario = new Szenario(0.14, 0.1, 0.035, 0.15, true);
+		szenario = new Szenario(14, 10, 3.5, 15, true);
 
 		compare = new CompanyValueDeterministic();
 
