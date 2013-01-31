@@ -25,7 +25,7 @@ import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
 
-public class ShowUmsatzViewEvent extends Event {
+public class ShowUmsatzViewEvent extends Event implements ShowInputViewEventInterface{
 
 	
 	

@@ -53,11 +53,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInter
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
  * @author Daniel Dengler
-<<<<<<< HEAD
- * 
-=======
- *
->>>>>>> refs/remotes/origin/master
+
  */
 
 public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {

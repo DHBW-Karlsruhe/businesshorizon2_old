@@ -42,6 +42,8 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 
 /**
@@ -51,110 +53,30 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
  * 
  */
 
-public class DirektPresenter extends ScreenPresenter<DirektViewInterface> {
+public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private CashFlowPeriod period;
-	private Logger logger = Logger.getLogger(DirektPresenter.class);
 	
 	
-	private DecimalFormat df = new DecimalFormat(",##0.00");
 
-	String[] shownProperties = { "freeCashFlow", "capitalStock" };
 
 	@Autowired
 	EventBus eventBus;
-
-	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
-	 * 
-	 * @author Julius Hacker
-	 */
-
+	
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		logger = Logger.getLogger(DirektPresenter.class);
+		shownProperties = new String[] { "freeCashFlow", "capitalStock" };
 	}
-
-	@Override
-	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	@EventHandler
 	public void onShowEvent(ShowDirektViewEvent event) {
-		logger.debug("ShowDirektViewEvent erhalten");
-		period = event.getPeriod();
-		getView().initForm();
-		getView().addHeader(period.getYear()); 
-
-		try {
-			for (PropertyDescriptor pd : Introspector.getBeanInfo(
-					period.getClass(), Object.class).getPropertyDescriptors()) {
-				if (Arrays.asList(shownProperties).contains(pd.getDisplayName())) {
-
-					try {
-						getView().addInputField(pd.getDisplayName(),
-								(double) pd.getReadMethod().invoke(period));
-					} catch (IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		} catch (IntrospectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		processEvent(event);
 	}
-
-	@Override
-	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
-
 	}
+	
 
-	@Override
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
+	
 
-	}
 
-	public void validateChange(String newContent, int textFieldColumn,
-			int textFieldRow, String destination) {
-		logger.debug("" + newContent);
-		try {df.parse(newContent).doubleValue();
-			df.parse(newContent).doubleValue();
-		} catch (Exception e) {
-			getView().setWrong(textFieldColumn, textFieldRow, true);
-			return;
-		}
-		getView().setWrong(textFieldColumn, textFieldRow, false);
-
-		for (PropertyDescriptor pd : BeanUtils.getPropertyDescriptors(period
-				.getClass())) {
-			if (Arrays.asList(shownProperties).contains(destination)) {
-				if (pd.getDisplayName().equals(destination)) {
-					try {
-						pd.getWriteMethod();
-						period.toString();
-
-						pd.getWriteMethod()
-								.invoke(period,
-										new Object[] { df.parse(newContent).doubleValue() });
-						logger.debug("Content should be written: "
-								+ (double) pd.getReadMethod().invoke(period));
-					} catch (IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException | ParseException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-	}
-
-}
