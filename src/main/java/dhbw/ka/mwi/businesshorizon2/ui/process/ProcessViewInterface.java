@@ -27,7 +27,7 @@ import com.mvplite.view.View;
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
  * mit denen der Presenter mit der View kommunizieren kann.
  * 
- * @author Christian Gahlert
+ * @author Julius Hacker
  *
  */
 public interface ProcessViewInterface extends View {
