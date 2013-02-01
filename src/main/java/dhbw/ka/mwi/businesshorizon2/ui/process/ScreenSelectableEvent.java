@@ -25,6 +25,22 @@ import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
+/**
+ * Der Event wird von den einzelnen Prozess-Screens gefeuert, um zu siganlisieren,
+ * dass sie ab sofort aufrufbar sind. Initial wird hierbei angenommen, dass der Screen
+ * nicht aufrufbar ist.
+ * 
+ * Dies ist insbesondere fuer die Navigation wichtig, da dort die Buttons entsprechend
+ * aktiviert bzw. deaktiviert werden muessen. Hierzu wird dort dieses Event abgefangen
+ * und der zum Prozesschritt gehoerige Button aktiviert. Hierrueber wird es ermoeglicht,
+ * dass zu Beginn die Navigationsbuttons deaktiviert sind und so schrittweise aktiviert
+ * werden, dass einerseits ein gefuehrter Prozess entsteht, der Nutzer aber nach dem
+ * Ausfuellen der Masken wieder wahlweise zurueckspringen kann, um Korrekturen
+ * vorzunehmen.
+ * 
+ * 
+ * @author Julius Hacker
+ */
 public class ScreenSelectableEvent extends Event {
 	private static final long serialVersionUID = 1L;
 

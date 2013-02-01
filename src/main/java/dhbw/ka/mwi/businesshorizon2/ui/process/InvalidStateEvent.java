@@ -30,7 +30,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
  * ungueltigem Zustand befinden.
  * 
  * @author Julius Hacker
- * 
  */
 public class InvalidStateEvent extends Event {
 	private static final long serialVersionUID = 1L;

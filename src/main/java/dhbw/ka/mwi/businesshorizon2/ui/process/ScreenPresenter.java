@@ -42,8 +42,8 @@ public abstract class ScreenPresenter<T extends View> extends Presenter<T> {
 	 * gueltig sind oder ob auf der Maske Korrekturen vorgenommen werden
 	 * muessen, um den Wizard abschliessen zu koennen.
 	 * 
-	 * @return true: Eingabewerte der Maske sind gueltig false: Eingabewerte der
-	 *         Maske sind ungueltig und benoetigen Korrektur
+	 * @return true: Eingabewerte der Maske sind gueltig
+	 * false: Eingabewerte der Maske sind ungueltig und benoetigen Korrektur
 	 * @author Julius Hacker
 	 */
 	public abstract boolean isValid();

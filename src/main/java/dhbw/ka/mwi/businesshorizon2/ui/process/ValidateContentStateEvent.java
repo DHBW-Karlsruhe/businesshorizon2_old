@@ -23,6 +23,14 @@ package dhbw.ka.mwi.businesshorizon2.ui.process;
 
 import com.mvplite.event.Event;
 
+/**
+ * Der Event wird gefeuert, um den Prozess-Screens zu signalisieren, dass sie ihren
+ * Zustand validieren sollen und mit Valid- bzw. InvalidStateEvents ihren
+ * Gueltigkeitszustand signalisieren sollen. Dies erfolgt in der Regel beim Wechsel
+ * der Prozessschritte.
+ * 
+ * @author Julius Hacker
+ */
 public class ValidateContentStateEvent extends Event {
 	private static final long serialVersionUID = 1L;
 

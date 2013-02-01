@@ -26,8 +26,8 @@ import com.mvplite.event.Event;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 /**
- * Der Event, der gefeuert wird, um die Ausgabe von Fehlermeldungen auf einem Prozess-Screen
- * zu aktivieren.
+ * Der Event, der gefeuert wird, um die Ausgabe von Fehlermeldungen auf einem
+ * Prozess-Screen zu aktivieren.
  * 
  * @author Julius Hacker
  *
