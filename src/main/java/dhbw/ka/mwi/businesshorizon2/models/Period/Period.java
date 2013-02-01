@@ -30,6 +30,7 @@ import java.io.Serializable;
 public abstract class Period implements Comparable<Period>, Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 
 	/**
 	 * Jahr
@@ -39,11 +40,13 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	/**
 	 * Free Cashflow
 	 */
+	boolean freeCashFlowSet;
 	private double freeCashFlow;
 
 	/**
 	 * Fremdkapital
 	 */
+	boolean capitalStockSet;
 	private double capitalStock;
 
 	/**
@@ -64,6 +67,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	 */
 	public void setFreeCashFlow(double freeCashFlow) {
 		this.freeCashFlow = freeCashFlow;
+		freeCashFlowSet=true;
 	}
 
 	/**
@@ -92,6 +96,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	 */
 	public void setCapitalStock(double capitalStock) {
 		this.capitalStock = capitalStock;
+		capitalStockSet=true;
 	}
 
 	/**
@@ -140,6 +145,34 @@ public abstract class Period implements Comparable<Period>, Serializable {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * @return the freeCashFlowSet
+	 */
+	public boolean isFreeCashFlowSet() {
+		return freeCashFlowSet;
+	}
+
+	/**
+	 * @param freeCashFlowSet the freeCashFlowSet to set
+	 */
+	public void setFreeCashFlowSet(boolean freeCashFlowSet) {
+		this.freeCashFlowSet = freeCashFlowSet;
+	}
+
+	/**
+	 * @return the capitalStockSet
+	 */
+	public boolean isCapitalStockSet() {
+		return capitalStockSet;
+	}
+
+	/**
+	 * @param capitalStockSet the capitalStockSet to set
+	 */
+	public void setCapitalStockSet(boolean capitalStockSet) {
+		this.capitalStockSet = capitalStockSet;
 	}
 
 }

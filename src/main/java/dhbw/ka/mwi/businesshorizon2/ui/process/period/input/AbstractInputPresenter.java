@@ -22,14 +22,14 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 
-public abstract class AbstractInputPresenter<T extends InputViewInterface> extends ScreenPresenter<T> {
+public abstract class AbstractInputPresenter<T extends InputViewInterface>
+		extends ScreenPresenter<T> {
 	private static final long serialVersionUID = 1L;
 
-	 Period period;
-	 protected Logger logger;
-	
-	
-	 DecimalFormat df = new DecimalFormat(",##0.00");
+	Period period;
+	protected Logger logger;
+
+	DecimalFormat df = new DecimalFormat(",##0.00");
 
 	protected String[] shownProperties;
 
@@ -46,7 +46,6 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface> exten
 
 	@PostConstruct
 	public void init() {
-		eventBus.addHandler(this);
 	}
 
 	@Override
@@ -59,16 +58,35 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface> exten
 		logger.debug("ShowDirektViewEvent erhalten");
 		period = event.getPeriod();
 		getView().initForm();
-		getView().addHeader(period.getYear()); 
+		getView().addHeader(period.getYear());
 
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(
 					period.getClass(), Object.class).getPropertyDescriptors()) {
-				if (Arrays.asList(shownProperties).contains(pd.getDisplayName())) {
-
+				if (Arrays.asList(shownProperties)
+						.contains(pd.getDisplayName())) {
 					try {
-						getView().addInputField(pd.getDisplayName(),
-								(double) pd.getReadMethod().invoke(period));
+						boolean skipInitialContent = true;
+						for (PropertyDescriptor pdr : Introspector.getBeanInfo(
+								period.getClass(), Object.class)
+								.getPropertyDescriptors()) {
+							if ((pd.getDisplayName() + "Set").equals(pdr
+									.getDisplayName())) {
+								
+								skipInitialContent = !(boolean) pdr
+										.getReadMethod().invoke(period);
+								logger.debug("method found and skipInitialContent set to "+ skipInitialContent);
+							}
+						}
+						if (skipInitialContent){
+							getView().addInputField(pd.getDisplayName());
+							logger.debug("initialContent skipped");
+
+						}else{
+							getView().addInputField(pd.getDisplayName(),
+									(double) pd.getReadMethod().invoke(period));
+							logger.debug("initialContent written");
+						}
 					} catch (IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
 						e.printStackTrace();
@@ -97,7 +115,8 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface> exten
 	public void validateChange(String newContent, int textFieldColumn,
 			int textFieldRow, String destination) {
 		logger.debug("" + newContent);
-		try {df.parse(newContent).doubleValue();
+		try {
+			df.parse(newContent).doubleValue();
 			df.parse(newContent).doubleValue();
 		} catch (Exception e) {
 			getView().setWrong(textFieldColumn, textFieldRow, true);
@@ -113,9 +132,10 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface> exten
 						pd.getWriteMethod();
 						period.toString();
 
-						pd.getWriteMethod()
-								.invoke(period,
-										new Object[] { df.parse(newContent).doubleValue() });
+						pd.getWriteMethod().invoke(
+								period,
+								new Object[] { df.parse(newContent)
+										.doubleValue() });
 						logger.debug("Content should be written: "
 								+ (double) pd.getReadMethod().invoke(period));
 					} catch (IllegalAccessException | IllegalArgumentException
@@ -126,7 +146,5 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface> exten
 			}
 		}
 	}
-
-
 
 }

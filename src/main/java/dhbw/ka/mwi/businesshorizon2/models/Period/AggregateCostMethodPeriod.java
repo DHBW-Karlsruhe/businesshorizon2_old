@@ -39,41 +39,49 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 * Umsatzerlöse
 	 */
 	private double salesRevenue;
+	 boolean salesRevenueSet;
 
 	/**
 	 * Sonstige betriebliche Erträge
 	 */
 	private double otherBusinessRevenue;
+	boolean otherBusinessRevenueSet;
 
 	/**
 	 * Andere aktivierte Eigenleistungen
 	 */
 	private double internallyProducedAndCapitalizedAssets;
+	boolean internallyProducedAndCapitalizedAssetsSet;
 
 	/**
 	 * Materialaufwand
 	 */
 	private double materialCosts;
+	boolean materialCostsSet;
 
 	/**
 	 * Personalaufwand
 	 */
 	private double humanCapitalCosts;
+	boolean humanCapitalCostsSet;
 
 	/**
 	 * Abschreibungen
 	 */
 	private double writeDowns;
+	boolean writeDownsSet;
 
 	/**
 	 * Sonstige betriebliche Aufwendungen
 	 */
 	private double otherBusinessCosts;
+	boolean otherBusinessCostsSet;
 
 	/**
 	 * Zinsen und andere Aufwendungen
 	 */
 	private double interestAndOtherCosts;
+	boolean interestAndOtherCostsSet;
 
 	/**
 	 * Der Konstruktor erstellt eine Methode für das Jahr year
@@ -107,6 +115,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setSalesRevenue(double salesRevenue) {
 		this.salesRevenue = salesRevenue;
+		salesRevenueSet=true;
 	}
 
 	/**
@@ -128,6 +137,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setOtherBusinessRevenue(double otherBusinessRevenue) {
 		this.otherBusinessRevenue = otherBusinessRevenue;
+		otherBusinessRevenueSet=true;
 	}
 
 	/**
@@ -151,6 +161,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	public void setInternallyProducedAndCapitalizedAssets(
 			double internallyProducedAndCapitalizedAssets) {
 		this.internallyProducedAndCapitalizedAssets = internallyProducedAndCapitalizedAssets;
+		internallyProducedAndCapitalizedAssetsSet=true;
 	}
 
 	/**
@@ -172,6 +183,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setMaterialCosts(double materialCosts) {
 		this.materialCosts = materialCosts;
+		materialCostsSet = true;
 	}
 
 	/**
@@ -193,6 +205,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setHumanCapitalCosts(double humanCapitalCosts) {
 		this.humanCapitalCosts = humanCapitalCosts;
+		humanCapitalCostsSet=true;
 	}
 
 	/**
@@ -214,6 +227,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setWriteDowns(double writeDowns) {
 		this.writeDowns = writeDowns;
+		writeDownsSet=true;
 	}
 
 	/**
@@ -235,6 +249,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setOtherBusinessCosts(double otherBusinessCosts) {
 		this.otherBusinessCosts = otherBusinessCosts;
+		otherBusinessCostsSet=true;
 	}
 
 	/**
@@ -256,6 +271,120 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setInterestAndOtherCosts(double interestAndOtherCosts) {
 		this.interestAndOtherCosts = interestAndOtherCosts;
+		interestAndOtherCostsSet=true;
+	}
+
+	/**
+	 * @return the salesRevenueSet
+	 */
+	public boolean isSalesRevenueSet() {
+		return salesRevenueSet;
+	}
+
+	/**
+	 * @param salesRevenueSet the salesRevenueSet to set
+	 */
+	public void setSalesRevenueSet(boolean salesRevenueSet) {
+		this.salesRevenueSet = salesRevenueSet;
+	}
+
+	/**
+	 * @return the otherBusinessRevenueSet
+	 */
+	public boolean isOtherBusinessRevenueSet() {
+		return otherBusinessRevenueSet;
+	}
+
+	/**
+	 * @param otherBusinessRevenueSet the otherBusinessRevenueSet to set
+	 */
+	public void setOtherBusinessRevenueSet(boolean otherBusinessRevenueSet) {
+		this.otherBusinessRevenueSet = otherBusinessRevenueSet;
+	}
+
+	/**
+	 * @return the internallyProducedAndCapitalizedAssetsSet
+	 */
+	public boolean isInternallyProducedAndCapitalizedAssetsSet() {
+		return internallyProducedAndCapitalizedAssetsSet;
+	}
+
+	/**
+	 * @param internallyProducedAndCapitalizedAssetsSet the internallyProducedAndCapitalizedAssetsSet to set
+	 */
+	public void setInternallyProducedAndCapitalizedAssetsSet(
+			boolean internallyProducedAndCapitalizedAssetsSet) {
+		this.internallyProducedAndCapitalizedAssetsSet = internallyProducedAndCapitalizedAssetsSet;
+	}
+
+	/**
+	 * @return the materialCostsSet
+	 */
+	public boolean isMaterialCostsSet() {
+		return materialCostsSet;
+	}
+
+	/**
+	 * @param materialCostsSet the materialCostsSet to set
+	 */
+	public void setMaterialCostsSet(boolean materialCostsSet) {
+		this.materialCostsSet = materialCostsSet;
+	}
+
+	/**
+	 * @return the humanCapitalCostsSet
+	 */
+	public boolean isHumanCapitalCostsSet() {
+		return humanCapitalCostsSet;
+	}
+
+	/**
+	 * @param humanCapitalCostsSet the humanCapitalCostsSet to set
+	 */
+	public void setHumanCapitalCostsSet(boolean humanCapitalCostsSet) {
+		this.humanCapitalCostsSet = humanCapitalCostsSet;
+	}
+
+	/**
+	 * @return the writeDownsSet
+	 */
+	public boolean isWriteDownsSet() {
+		return writeDownsSet;
+	}
+
+	/**
+	 * @param writeDownsSet the writeDownsSet to set
+	 */
+	public void setWriteDownsSet(boolean writeDownsSet) {
+		this.writeDownsSet = writeDownsSet;
+	}
+
+	/**
+	 * @return the otherBusinessCostsSet
+	 */
+	public boolean isOtherBusinessCostsSet() {
+		return otherBusinessCostsSet;
+	}
+
+	/**
+	 * @param otherBusinessCostsSet the otherBusinessCostsSet to set
+	 */
+	public void setOtherBusinessCostsSet(boolean otherBusinessCostsSet) {
+		this.otherBusinessCostsSet = otherBusinessCostsSet;
+	}
+
+	/**
+	 * @return the interestAndOtherCostsSet
+	 */
+	public boolean isInterestAndOtherCostsSet() {
+		return interestAndOtherCostsSet;
+	}
+
+	/**
+	 * @param interestAndOtherCostsSet the interestAndOtherCostsSet to set
+	 */
+	public void setInterestAndOtherCostsSet(boolean interestAndOtherCostsSet) {
+		this.interestAndOtherCostsSet = interestAndOtherCostsSet;
 	}
 
 }

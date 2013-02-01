@@ -36,23 +36,27 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * Umsatzerlöse
 	 */
+	boolean salesRevenueSet;
 	private double salesRevenue;
 
 	/**
 	 * Sonstige betriebliche Erträge
 	 */
 	private double otherBusinessRevenue;
+	boolean otherBusinessRevenueSet;
 
 	/**
 	 * Herstellkosten
 	 */
 	private double costOfPoduction;
+	boolean costOfProductionSet;
 
 	/**
 	 * Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige betriebliche
 	 * Aufwendungen
 	 */
 	private double costOfSalesAdministrationOthers;
+	boolean costOfSalesAdministrationOthersSet;
 
 	public CostOfSalesMethodPeriod(int year) {
 		super(year);
@@ -77,6 +81,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setSalesRevenue(double salesRevenue) {
 		this.salesRevenue = salesRevenue;
+		salesRevenueSet=true;
 	}
 
 	/**
@@ -98,6 +103,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setOtherBusinessRevenue(double otherBusinessRevenue) {
 		this.otherBusinessRevenue = otherBusinessRevenue;
+		otherBusinessRevenueSet=true;
 	}
 
 	/**
@@ -119,6 +125,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	 */
 	public void setCostOfPoduction(double costOfPoduction) {
 		this.costOfPoduction = costOfPoduction;
+		costOfProductionSet=true;
 	}
 
 	/**
@@ -146,6 +153,64 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	public void setCostOfSalesAdministrationOthers(
 			double costOfSalesAdministrationOthers) {
 		this.costOfSalesAdministrationOthers = costOfSalesAdministrationOthers;
+	costOfSalesAdministrationOthersSet=true;
+	}
+
+	/**
+	 * @return the salesRevenueSet
+	 */
+	public boolean isSalesRevenueSet() {
+		return salesRevenueSet;
+	}
+
+	/**
+	 * @param salesRevenueSet the salesRevenueSet to set
+	 */
+	public void setSalesRevenueSet(boolean salesRevenueSet) {
+		this.salesRevenueSet = salesRevenueSet;
+	}
+
+	/**
+	 * @return the otherBusinessRevenueSet
+	 */
+	public boolean isOtherBusinessRevenueSet() {
+		return otherBusinessRevenueSet;
+	}
+
+	/**
+	 * @param otherBusinessRevenueSet the otherBusinessRevenueSet to set
+	 */
+	public void setOtherBusinessRevenueSet(boolean otherBusinessRevenueSet) {
+		this.otherBusinessRevenueSet = otherBusinessRevenueSet;
+	}
+
+	/**
+	 * @return the costOfProductionSet
+	 */
+	public boolean isCostOfProductionSet() {
+		return costOfProductionSet;
+	}
+
+	/**
+	 * @param costOfProductionSet the costOfProductionSet to set
+	 */
+	public void setCostOfProductionSet(boolean costOfProductionSet) {
+		this.costOfProductionSet = costOfProductionSet;
+	}
+
+	/**
+	 * @return the costOfSalesAdministrationOthersSet
+	 */
+	public boolean isCostOfSalesAdministrationOthersSet() {
+		return costOfSalesAdministrationOthersSet;
+	}
+
+	/**
+	 * @param costOfSalesAdministrationOthersSet the costOfSalesAdministrationOthersSet to set
+	 */
+	public void setCostOfSalesAdministrationOthersSet(
+			boolean costOfSalesAdministrationOthersSet) {
+		this.costOfSalesAdministrationOthersSet = costOfSalesAdministrationOthersSet;
 	}
 
 }
