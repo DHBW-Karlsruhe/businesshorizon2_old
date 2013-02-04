@@ -28,10 +28,14 @@ import com.mvplite.view.View;
  * mit denen der Presenter mit der View kommunizieren kann.
  * 
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @author Christian Gahlert
 =======
  * @author Julius Hacker
 >>>>>>> refs/heads/master
+=======
+ * @author Julius Hacker
+>>>>>>> branch 'master' of local repository
  *
  */
 public interface ProcessViewInterface extends View {

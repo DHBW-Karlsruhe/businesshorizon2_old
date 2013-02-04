@@ -17,7 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
 import java.util.List;
@@ -44,8 +43,8 @@ public class BasicLineChart extends LineChart {
 			addLine(line);
 		}
 
-		// setOption("width", 500);
-		// setOption("height", 200);
+		setOption("width", 500);
+		setOption("height", 200);
 		setOption("legend", "bottom");
 
 		setOption("lineSize", 3);

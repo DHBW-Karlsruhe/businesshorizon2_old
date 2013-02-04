@@ -28,7 +28,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 
 /**
- * Die Deterministic ChartArea komponiert die Ausgabe der Ergebnisse des
+ * Die DeterministicChartArea komponiert die Ausgabe der Ergebnisse des
  * deterministischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 

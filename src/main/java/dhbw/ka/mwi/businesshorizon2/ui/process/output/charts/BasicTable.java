@@ -17,7 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public class BasicTable extends Table {
 
 	public BasicTable(Map<String, String> columns) {
 		setOption("allowHTML", true);
-		// setOption("width", 500);
+		setOption("width", 500);
 
 		for (Map.Entry<String, String> column : columns.entrySet()) {
 			addTableColumn(column.getKey(), column.getValue());

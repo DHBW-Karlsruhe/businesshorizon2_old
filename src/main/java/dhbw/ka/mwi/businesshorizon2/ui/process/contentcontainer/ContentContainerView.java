@@ -17,7 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer;
 
 import com.mvplite.view.View;
@@ -62,7 +61,8 @@ public interface ContentContainerView extends View {
 	 * 
 	 * @param activate
 	 *            true: Zurueck-Button soll aktiviert werden. false:
-	 *            Zurueck-Button soll deaktiviert werden.
+	 *            Zurueck-Button soll deaktiviert werden. >>>>>>> branch
+	 *            'master' of local repository
 	 * @author Julius Hacker
 	 */
 	public void activateBack(boolean activate);

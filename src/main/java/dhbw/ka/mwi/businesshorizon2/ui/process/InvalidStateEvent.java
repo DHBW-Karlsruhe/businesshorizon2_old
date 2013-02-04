@@ -31,9 +31,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
  * 
  * @author Julius Hacker
 <<<<<<< HEAD
+<<<<<<< HEAD
  * 
 =======
 >>>>>>> refs/heads/master
+=======
+>>>>>>> branch 'master' of local repository
  */
 public class InvalidStateEvent extends Event {
 	private static final long serialVersionUID = 1L;
