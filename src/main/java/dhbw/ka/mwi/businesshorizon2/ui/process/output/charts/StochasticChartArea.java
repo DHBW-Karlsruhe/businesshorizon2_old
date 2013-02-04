@@ -48,8 +48,9 @@ public class StochasticChartArea extends VerticalLayout {
 	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
 
 		// Überschrift anzeigen
-		Label title = new Label("<h1>Stochastic Calculation - " + methodName + "</h1>");
+		Label title = new Label("<h3>Stochastic Calculation - " + methodName + "<h3>");
 		title.setContentMode(Label.CONTENT_XHTML);
+		title.setHeight("50px");
 
 		this.addComponent(title);
 

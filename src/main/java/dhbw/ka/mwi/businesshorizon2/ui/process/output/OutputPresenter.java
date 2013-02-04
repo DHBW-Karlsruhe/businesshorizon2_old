@@ -18,7 +18,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
 import java.util.Map.Entry;
@@ -178,14 +177,20 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	 */
 	@Override
 	public void onComplete(StochasticResultContainer result, String methodName) {
+
+		StochasticChartArea stochasticChartArea;
+
 		for (Szenario scenario : project.getScenarios()) {
 			APV apv = new APV(result, scenario);
 			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv.calculateCompanyValue();
-			StochasticChartArea stochasticChartArea = new StochasticChartArea(methodName, expectedCashFlows,
-					companyValue.getCompanyValues());
+			if (methodName.equalsIgnoreCase("zeitreihenanalyse")) {
+				stochasticChartArea = new StochasticChartArea(methodName, expectedCashFlows,
+						companyValue.getCompanyValues());
+			} else {
+				stochasticChartArea = new StochasticChartArea(methodName, null, companyValue.getCompanyValues());
+			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
-
 		}
 
 	}
