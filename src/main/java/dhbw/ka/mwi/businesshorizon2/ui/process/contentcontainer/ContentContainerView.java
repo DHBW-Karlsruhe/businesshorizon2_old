@@ -18,30 +18,52 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer;
 
 import com.mvplite.view.View;
-
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
 /**
  * Dieses Interface zeigt die von bezueglich des Maskenfensters zur Verfuegung
  * stehenden Methoden, mit denen der Presenter mit der View kommunizieren kann.
  * 
  * @author Julius Hacker
- *
+ * 
  */
 public interface ContentContainerView extends View {
-	
+
 	/**
 	 * Diese Methode kuemmert sich um die Anzeige der ihr vom Presenter
 	 * uebergebene Maske in Form einer ContentView.
 	 * 
-	 * @param newView Die anzuzeigende Maske in Form einer ContentView.
+	 * @param newView
+	 *            Die anzuzeigende Maske in Form einer ContentView.
 	 * @author Julius Hacker
 	 */
 	public void showContentView(ContentView newView);
+
+	/**
+	 * Diese Methode kuemmert sich darum, den Weiter-Button unter der
+	 * ContentView zu aktivieren bzw. deaktivieren. Dies hat den Grund, dass am
+	 * Ende des Prozesses nichtmehr weitergegangen werden kann und der Button
+	 * somit nichtmehr funktionsfaehig sein darf.
+	 * 
+	 * @param activate
+	 *            true: Weiter-Button soll aktiviert werden. false:
+	 *            Weiter-Button soll deaktiviert werden.
+	 * @author Julius Hacker
+	 */
 	public void activateNext(boolean activate);
+
+	/**
+	 * Diese Methode kuemmert sich darum, den Weiter-Button unter der
+	 * ContentView zu aktivieren bzw. deaktivieren. Dies hat den Grund, dass am
+	 * Anfang des Prozesses nicht noch weiter vorgegangen werden kann und der
+	 * Button in dieser Situation nicht funktionsfaehig sein darf.
+	 * 
+	 * @param activate
+	 *            true: Zurueck-Button soll aktiviert werden. false:
+	 *            Zurueck-Button soll deaktiviert werden.
+	 * @author Julius Hacker
+	 */
 	public void activateBack(boolean activate);
 }

@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * BusinessHorizon2
+ * 
+ *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
+ *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ * 
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 import java.util.TreeSet;
@@ -155,9 +175,9 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			}
 			StochasticResultContainer src = new StochasticResultContainer(resultPeriods);
 
-			if (callback != null) {
-				callback.onComplete(src, "Time Series Analysis");
-			}
+			// if (callback != null) {
+			// callback.onComplete(src);
+			// }
 			return src;
 
 		} else if (project.getStochasticPeriods().getPeriods().first() instanceof AggregateCostMethodPeriod) {
@@ -301,9 +321,9 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				aCMPResultContainer.add(aCMContainer);
 			}
 			StochasticResultContainer src = new StochasticResultContainer(resultPeriods);
-			if (callback != null) {
-				callback.onComplete(src, "Time Series Analysis");
-			}
+			// if (callback != null) {
+			// callback.onComplete(src);
+			// }
 			resultContainer = src;
 
 		} else if (project.getStochasticPeriods().getPeriods().first() instanceof CostOfSalesMethodPeriod) {
@@ -424,9 +444,9 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			resultContainer = new StochasticResultContainer(resultPeriods);
 
 		}
-		if (callback != null) {
-			callback.onComplete(resultContainer, "Time Series Analysis");
-		}
+		// if (callback != null) {
+		// callback.onComplete(resultContainer);
+		// }
 		return resultContainer;
 	}
 

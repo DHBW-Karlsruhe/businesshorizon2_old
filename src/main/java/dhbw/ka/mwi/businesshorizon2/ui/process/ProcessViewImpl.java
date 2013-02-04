@@ -62,7 +62,11 @@ public class ProcessViewImpl extends Window implements ProcessViewInterface {
 	
 	/**
 	 * Diese Methode setzt den Titel (im Browser-Fenster) zu "Business Horizon 2" und
+<<<<<<< HEAD
 	 * erstellt das zugehoerige Vertikale Splitpanel, in dem oben die Navigation und
+=======
+	 * erstellt das zugehoerige vertikale Splitpanel, in dem oben die Navigation und
+>>>>>>> refs/heads/master
 	 * unten die anzuzeigende Maske eingefuegt werden koennen.
 	 * 
 	 * @author Julius Hacker
