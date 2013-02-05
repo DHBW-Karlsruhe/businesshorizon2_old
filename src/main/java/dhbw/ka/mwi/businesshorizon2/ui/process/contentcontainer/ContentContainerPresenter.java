@@ -152,10 +152,11 @@ public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	}
 
 	/**
-	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen. Sie kuemmert sich darum,
-	 * den naechsten Screen zu ermitteln und zu ihm weiterzuleiten. Sie prueft hierbei, ob die Eingaben des
-	 * aktuellen Screens valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum naechsten Screen
-	 * weitergeleitet.
+	 * Diese Methode wird von der View beim Click des Weiter-Buttons aufgerufen.
+	 * Sie kuemmert sich darum, den naechsten Screen zu ermitteln und zu ihm
+	 * weiterzuleiten. Sie prueft hierbei, ob die Eingaben des aktuellen Screens
+	 * valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum
+	 * naechsten Screen weitergeleitet.
 	 * 
 	 * @author Julius Hacker
 	 */
