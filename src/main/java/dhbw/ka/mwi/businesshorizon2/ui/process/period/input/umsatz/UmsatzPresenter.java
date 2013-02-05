@@ -63,7 +63,7 @@ public class UmsatzPresenter extends AbstractInputPresenter<UmsatzViewInterface>
 				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
 				"otherBusinessRevenue", "costOfProduction",
 				"costOfSalesAdministrationOthers" };
-		shownProperties = new String[] { "Immaterielle Vermögensgegenstände", "Sachanlagen",
+		germanNamesProperties = new String[] { "Immaterielle Vermögensgegenstände", "Sachanlagen",
 				"Finanzanlagen", "Eigenkapital", "Rückstellungen", "Vorräte", "Forderungen und sonstige Vermögensgegenstände",
 				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerlöse",
 				"Sonstige betriebliche Erträge", "Herstellkosten",
