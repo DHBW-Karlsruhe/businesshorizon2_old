@@ -11,8 +11,10 @@ import com.vaadin.data.Property.ReadOnlyException;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -24,6 +26,8 @@ InputViewInterface  {
 	 protected AbstractInputPresenter presenter;
 
 	 DecimalFormat df = new DecimalFormat(",##0.00");
+	 
+	 Panel all = new Panel();
 
 	 GridLayout panel = new GridLayout(2, 1);
 
@@ -111,6 +115,8 @@ InputViewInterface  {
 
 	public void initForm() {
 		this.removeAllComponents();
+		all.setStyleName(Reindeer.PANEL_LIGHT);
+		all.removeAllComponents();
 		panel.removeAllComponents();
 		panel.setSpacing(true);
 		panel.setMargin(true);
@@ -118,8 +124,9 @@ InputViewInterface  {
 	public void addHeader(int year) {
 		Label l = new Label("<h2>       Jahr: "+year+"</h2>");
 		l.setContentMode(Label.CONTENT_XHTML);
-		this.addComponent(l);
-		this.addComponent(panel);
+		this.all.addComponent(l);
+		this.all.addComponent(panel);
+		this.addComponent(all);
 		
 	}
 

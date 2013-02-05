@@ -61,6 +61,12 @@ public class GesamtPresenter extends AbstractInputPresenter<GesamtViewInterface>
 				"otherBusinessRevenue", "internallyProducedAndCapializedAssets",
 				"materialCosts", "humanCapitalCosts", "writeDowns",
 				"otherBusinessCosts", "interestAndOtherCosts" };
+		germanNamesProperties = new String[] { "Immaterielle Vermögensgegenstände", "Sachanlagen",
+				"Finanzanlagen", "Eigenkapital", "Rückstellungen", "Vorräte", "Forderungen und sonstige Vermögensgegenstände",
+				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerlöse",
+				"Sonstige betriebliche Erträge", "Andere aktivierte Eigenleistungen",
+				"Materialaufwand", "Personalaufwand", "Abschreibungen",
+				"Sonstige betriebliche Aufwendungen", "Zinsen und andere Aufwendungen" };
 	}	
 	
 	@EventHandler

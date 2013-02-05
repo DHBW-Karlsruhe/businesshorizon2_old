@@ -49,6 +49,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUmsatzViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.WrongFieldsEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
@@ -426,6 +427,15 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		getView().removePastPeriod();
 		pastPeriods.removePeriod(periodInterface);
 		sumPastPeriods--;
+	}
+	
+	@EventHandler
+	public void onWrongFieldEvent(WrongFieldsEvent e){
+		setButtonWrong(Integer.parseInt(e.getWrongFields().get(0)),true);
+	}
+	
+	public void setButtonWrong(int year, boolean isWrong){
+		getView().setButtonWrong( year,isWrong);
 	}
 
 }

@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		extends ScreenPresenter<T> {
@@ -32,6 +34,7 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 	DecimalFormat df = new DecimalFormat(",##0.00");
 
 	protected String[] shownProperties;
+	protected String[] germanNamesProperties;
 
 	@Autowired
 	EventBus eventBus;
@@ -50,8 +53,43 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
+		if (period != null) {
+
+			try {
+				ArrayList<String> wrongFields = new ArrayList<String>();
+				boolean anyFalse = false;
+				wrongFields.add(period.getYear()+"");
+				for (PropertyDescriptor pdr : Introspector.getBeanInfo(
+						period.getClass(), Object.class)
+						.getPropertyDescriptors()) {
+					if (Arrays.asList(shownProperties).contains(
+							pdr.getDisplayName().substring(0, pdr.getDisplayName().length()-3))) {
+						if (!(boolean) pdr.getReadMethod().invoke(period)){
+							wrongFields.add(pdr.getDisplayName().substring(0, pdr.getDisplayName().length()-3));
+							anyFalse=true;
+						}
+					}
+				}
+				if(anyFalse){
+					eventBus.fireEvent(new WrongFieldsEvent(wrongFields));
+					return false;
+				}
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IntrospectionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		} else
+			return false;
 	}
 
 	public void processEvent(ShowInputViewEventInterface event) {
@@ -66,24 +104,27 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 				if (Arrays.asList(shownProperties)
 						.contains(pd.getDisplayName())) {
 					try {
+						String germanName;
+						germanName= germanNamesProperties[Arrays.asList(shownProperties).indexOf(pd.getDisplayName())];
 						boolean skipInitialContent = true;
 						for (PropertyDescriptor pdr : Introspector.getBeanInfo(
 								period.getClass(), Object.class)
 								.getPropertyDescriptors()) {
 							if ((pd.getDisplayName() + "Set").equals(pdr
 									.getDisplayName())) {
-								
+
 								skipInitialContent = !(boolean) pdr
 										.getReadMethod().invoke(period);
-								logger.debug("method found and skipInitialContent set to "+ skipInitialContent);
+								logger.debug("method found and skipInitialContent set to "
+										+ skipInitialContent);
 							}
 						}
-						if (skipInitialContent){
-							getView().addInputField(pd.getDisplayName());
+						if (skipInitialContent) {
+							getView().addInputField(germanName);
 							logger.debug("initialContent skipped");
 
-						}else{
-							getView().addInputField(pd.getDisplayName(),
+						} else {
+							getView().addInputField(germanName,
 									(double) pd.getReadMethod().invoke(period));
 							logger.debug("initialContent written");
 						}
@@ -102,18 +143,18 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 
 	@Override
 	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
-
+		isValid();
 	}
 
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
+		// not used here look at PeriodPresenter
 
 	}
 
 	public void validateChange(String newContent, int textFieldColumn,
 			int textFieldRow, String destination) {
+		destination = shownProperties[Arrays.asList(germanNamesProperties).indexOf(destination)];
 		logger.debug("" + newContent);
 		try {
 			df.parse(newContent).doubleValue();

@@ -21,14 +21,18 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
 
+import java.util.Iterator;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Panel;
@@ -49,7 +53,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	@Autowired
 	private TimelinePresenter presenter;
-
+	
 	GridLayout layout = new GridLayout(2, 1);
 
 	NativeButton delPast, delFuture;
@@ -223,5 +227,22 @@ public class TimelineViewImpl extends VerticalLayout implements
 		layout.removeComponent(delPast);
 		layout.addComponent(delPast, 1, 0);
 
+	}
+
+	@Override
+	public void setButtonWrong(int year, boolean isWrong) {
+		Iterator<Component> it = layout.getComponentIterator();
+		while(it.hasNext()){
+			Component c = it.next();
+			if(c instanceof PeriodButton){
+				PeriodButton pb = (PeriodButton) c;
+				if(pb.getPeriod().getYear() == year){
+					if(isWrong)
+					pb.setComponentError(new UserError("Weitere Eingaben erwartet"));
+					else
+						pb.setComponentError(null);
+				}
+			}
+		}
 	}
 }

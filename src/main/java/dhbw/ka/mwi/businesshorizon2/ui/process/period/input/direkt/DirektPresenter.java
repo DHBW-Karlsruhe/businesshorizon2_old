@@ -21,29 +21,15 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.Arrays;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 
 /**
@@ -68,6 +54,7 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
 		eventBus.addHandler(this);
 		logger = Logger.getLogger(DirektPresenter.class);
 		shownProperties = new String[] { "freeCashFlow", "capitalStock" };
+		germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
 	}
 	
 	@EventHandler
