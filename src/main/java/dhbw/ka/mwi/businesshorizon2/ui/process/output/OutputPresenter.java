@@ -97,7 +97,9 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 		project = projectProxy.getSelectedProject();
 
 		if (project.getProjectInputType().getDeterministic()) {
+
 			for (Szenario scenario : project.getScenarios()) {
+				onProgressChange((float) 0.5);
 				CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
 
 				TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<>();
@@ -113,7 +115,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 							.getCompanyValue(), companyValue.getValue().getCapitalStock());
 					getView().addDeterministicChartArea(deterministicChartArea);
 				}
-
+				onProgressChange((float) 1);
 			}
 		}
 
