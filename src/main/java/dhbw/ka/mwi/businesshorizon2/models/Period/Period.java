@@ -150,7 +150,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	/**
 	 * @return the freeCashFlowSet
 	 */
-	public boolean isFreeCashFlowSet() {
+	public boolean getFreeCashFlowSet() {
 		return freeCashFlowSet;
 	}
 
@@ -164,7 +164,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	/**
 	 * @return the capitalStockSet
 	 */
-	public boolean isCapitalStockSet() {
+	public boolean getCapitalStockSet() {
 		return capitalStockSet;
 	}
 

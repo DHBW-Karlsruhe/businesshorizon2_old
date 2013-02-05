@@ -101,6 +101,7 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		try {
 			for (PropertyDescriptor pd : Introspector.getBeanInfo(
 					period.getClass(), Object.class).getPropertyDescriptors()) {
+				logger.debug("Processing: "+pd.getName());
 				if (Arrays.asList(shownProperties)
 						.contains(pd.getDisplayName())) {
 					try {
