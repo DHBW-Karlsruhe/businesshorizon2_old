@@ -35,7 +35,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 
@@ -48,7 +48,16 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
 
 	@Autowired
 	EventBus eventBus;
-	
+
+
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 * 
+	 * @author Daniel Dengler
+	 */
+
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
@@ -56,10 +65,25 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
 		shownProperties = new String[] { "freeCashFlow", "capitalStock" };
 		germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
 	}
-	
+
+
+	/**
+	 * F/u00e4ngt das ShowEvent ab und sorgt daf/u00fcr das die View die ben/u00f6tigten
+	 * Eingabefelder erstellt und mit den bisherigen Daten bef/u00fcllt.
+	 * <p>
+	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
+	 * vorhandenen Gettern&Settern gepr/u00fcft. Die gefundenen Propertys werden als
+	 * Eingabefelder zur verf/u00fcgung gestellt.
+	 * <p>
+	 * Wichtig ist das Stringarray "shownProperties". Dieses enth/u00e4lt die Namen
+	 * der anzuzeigenden Felder.
+	 * 
+	 * @param event
+	 */
 	@EventHandler
 	public void onShowEvent(ShowDirektViewEvent event) {
 		processEvent(event);
+
 	}
 	}
 	

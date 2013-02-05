@@ -56,7 +56,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
 	 * View-Komponenten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
@@ -67,7 +67,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
 		this.setSizeFull();
@@ -101,3 +101,4 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 		
 	}
 }
+

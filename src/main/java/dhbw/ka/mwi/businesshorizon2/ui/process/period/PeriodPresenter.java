@@ -97,7 +97,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {

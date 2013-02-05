@@ -41,10 +41,10 @@ import com.vaadin.ui.VerticalLayout;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
- * Vaadin.
+ * Diese Klasse implementiert die GUI fuer den PeriodenZeitstrahl in dem
+ * Prozessschritt "Perioden"
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 public class TimelineViewImpl extends VerticalLayout implements
@@ -71,7 +71,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
 	 * und initialisiert die View-Komponenten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
@@ -80,9 +80,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Perioden"
+	 * Erstelle das GUI
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
 		p.setScrollable(true);
@@ -127,6 +127,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 		this.addComponent(p);
 	}
 
+	/**
+	 * Entfernt die letzte zuk/u00fcnftige Periode und verschiebt den entferne Knopf
+	 */
 	@Override
 	public void removeFuturePeriod() {
 		logger.debug("" + layout.getRows());
@@ -139,6 +142,9 @@ public class TimelineViewImpl extends VerticalLayout implements
 			layout.addComponent(delFuture, 1, layout.getRows() - 1);
 	}
 
+	/**
+	 * Entfernt die letzte vergangene Periode und verschiebt den entferne Knopf
+	 */
 	@Override
 	public void removePastPeriod() {
 		layout.removeRow(0);
@@ -246,3 +252,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 		}
 	}
 }
+
+
+
+	

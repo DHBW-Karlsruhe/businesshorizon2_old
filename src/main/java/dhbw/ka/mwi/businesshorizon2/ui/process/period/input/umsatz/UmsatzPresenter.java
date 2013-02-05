@@ -35,7 +35,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUmsatzViewEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 
@@ -51,7 +51,7 @@ public class UmsatzPresenter extends AbstractInputPresenter<UmsatzViewInterface>
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 
 	@PostConstruct
@@ -63,13 +63,29 @@ public class UmsatzPresenter extends AbstractInputPresenter<UmsatzViewInterface>
 				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
 				"otherBusinessRevenue", "costOfProduction",
 				"costOfSalesAdministrationOthers" };
-		germanNamesProperties = new String[] { "Immaterielle Vermögensgegenstände", "Sachanlagen",
-				"Finanzanlagen", "Eigenkapital", "Rückstellungen", "Vorräte", "Forderungen und sonstige Vermögensgegenstände",
-				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerlöse",
-				"Sonstige betriebliche Erträge", "Herstellkosten",
+		germanNamesProperties = new String[] { "Immaterielle Verm/u00f6gensgegenst/u00e4nde", "Sachanlagen",
+				"Finanzanlagen", "Eigenkapital", "R/u00fcckstellungen", "Vorr/u00e4te", "Forderungen und sonstige Verm/u00f6gensgegenst/u00e4nde",
+				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerl/u00f6se",
+				"Sonstige betriebliche Ertr/u00e4ge", "Herstellkosten",
 		"Vertriebskosten" };
 	}	
 	
+
+
+	
+	/**
+	 * F/u00e4ngt das ShowEvent ab und sorgt daf/u00fcr das die View die ben/u00f6tigten
+	 * Eingabefelder erstellt und mit den bisherigen Daten bef/u00fcllt.
+	 * <p>
+	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
+	 * vorhandenen Gettern&Settern gepr/u00fcft. Die gefundenen Propertys werden als
+	 * Eingabefelder zur verf/u00fcgung gestellt.
+	 * <p>
+	 * Wichtig ist das Stringarray "shownProperties". Dieses enth/u00e4lt die Namen
+	 * der anzuzeigenden Felder.
+	 * 
+	 * @param event
+	 */
 	@EventHandler
 	public void onShowEvent(ShowUmsatzViewEvent event) {
 		processEvent(event);

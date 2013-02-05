@@ -152,6 +152,23 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		// not used here look at PeriodPresenter
 
 	}
+	
+	/**
+	 * Sorgt daf/u00fcr, dass /u00e4nderungen in das Periodenobjekt geschrieben werden.
+	 * /u00fcberpr/u00fcft die Benutzereingabe auf ihre Konvertierbarkeit in eine
+	 * Doublevariable und gibt im Fehlerfall eine Fehlermeldung an den User
+	 * zur/u00fcck.
+	 * 
+	 * @param newContent
+	 *            Inhalt des Textfeldes das in das Periodenobjekt geschrieben
+	 *            werden soll
+	 * @param textFieldColumn
+	 *            Spalte des GridLayouts wo das Textfeld liegt
+	 * @param textFieldRow
+	 *            Reihe des GridLayouts wo das Textfeld liegt
+	 * @param destination
+	 *            Name der Property in welche newContent geschrieben werden soll
+	 */
 
 	public void validateChange(String newContent, int textFieldColumn,
 			int textFieldRow, String destination) {

@@ -34,7 +34,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewInt
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
  * Vaadin.
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 public class DirektViewImpl extends AbstractInputView implements DirektViewInterface {
@@ -52,3 +52,4 @@ public class DirektViewImpl extends AbstractInputView implements DirektViewInter
 		presenter.setView(this);
 	}
 }
+
