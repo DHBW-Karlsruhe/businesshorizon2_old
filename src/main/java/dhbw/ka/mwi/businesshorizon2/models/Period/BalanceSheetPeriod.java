@@ -277,7 +277,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the immaterialFortuneSet
 	 */
-	public boolean isImmaterialFortuneSet() {
+	public boolean getImmaterialFortuneSet() {
 		return immaterialFortuneSet;
 	}
 
@@ -291,7 +291,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the propertyValueSet
 	 */
-	public boolean isPropertyValueSet() {
+	public boolean getPropertyValueSet() {
 		return propertyValueSet;
 	}
 
@@ -305,7 +305,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the financialValueSet
 	 */
-	public boolean isFinancialValueSet() {
+	public boolean getFinancialValueSet() {
 		return financialValueSet;
 	}
 
@@ -319,7 +319,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the equitySet
 	 */
-	public boolean isEquitySet() {
+	public boolean getEquitySet() {
 		return equitySet;
 	}
 
@@ -333,7 +333,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the provisionsSet
 	 */
-	public boolean isProvisionsSet() {
+	public boolean getProvisionsSet() {
 		return provisionsSet;
 	}
 
@@ -347,7 +347,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the supliesSet
 	 */
-	public boolean isSupliesSet() {
+	public boolean getSupliesSet() {
 		return supliesSet;
 	}
 
@@ -361,7 +361,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the claimsSet
 	 */
-	public boolean isClaimsSet() {
+	public boolean getClaimsSet() {
 		return claimsSet;
 	}
 
@@ -375,7 +375,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the stocksSet
 	 */
-	public boolean isStocksSet() {
+	public boolean getStocksSet() {
 		return stocksSet;
 	}
 
@@ -389,7 +389,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @return the cashAssetsSet
 	 */
-	public boolean isCashAssetsSet() {
+	public boolean getCashAssetsSet() {
 		return cashAssetsSet;
 	}
 

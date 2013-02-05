@@ -277,7 +277,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the salesRevenueSet
 	 */
-	public boolean isSalesRevenueSet() {
+	public boolean getSalesRevenueSet() {
 		return salesRevenueSet;
 	}
 
@@ -291,7 +291,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the otherBusinessRevenueSet
 	 */
-	public boolean isOtherBusinessRevenueSet() {
+	public boolean getOtherBusinessRevenueSet() {
 		return otherBusinessRevenueSet;
 	}
 
@@ -305,7 +305,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the internallyProducedAndCapitalizedAssetsSet
 	 */
-	public boolean isInternallyProducedAndCapitalizedAssetsSet() {
+	public boolean getInternallyProducedAndCapitalizedAssetsSet() {
 		return internallyProducedAndCapitalizedAssetsSet;
 	}
 
@@ -320,7 +320,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the materialCostsSet
 	 */
-	public boolean isMaterialCostsSet() {
+	public boolean getMaterialCostsSet() {
 		return materialCostsSet;
 	}
 
@@ -334,7 +334,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the humanCapitalCostsSet
 	 */
-	public boolean isHumanCapitalCostsSet() {
+	public boolean getHumanCapitalCostsSet() {
 		return humanCapitalCostsSet;
 	}
 
@@ -348,7 +348,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the writeDownsSet
 	 */
-	public boolean isWriteDownsSet() {
+	public boolean getWriteDownsSet() {
 		return writeDownsSet;
 	}
 
@@ -362,7 +362,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the otherBusinessCostsSet
 	 */
-	public boolean isOtherBusinessCostsSet() {
+	public boolean getOtherBusinessCostsSet() {
 		return otherBusinessCostsSet;
 	}
 
@@ -376,7 +376,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the interestAndOtherCostsSet
 	 */
-	public boolean isInterestAndOtherCostsSet() {
+	public boolean getInterestAndOtherCostsSet() {
 		return interestAndOtherCostsSet;
 	}
 

@@ -159,7 +159,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the salesRevenueSet
 	 */
-	public boolean isSalesRevenueSet() {
+	public boolean getSalesRevenueSet() {
 		return salesRevenueSet;
 	}
 
@@ -173,7 +173,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the otherBusinessRevenueSet
 	 */
-	public boolean isOtherBusinessRevenueSet() {
+	public boolean getOtherBusinessRevenueSet() {
 		return otherBusinessRevenueSet;
 	}
 
@@ -187,7 +187,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the costOfProductionSet
 	 */
-	public boolean isCostOfProductionSet() {
+	public boolean getCostOfProductionSet() {
 		return costOfProductionSet;
 	}
 
@@ -201,7 +201,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @return the costOfSalesAdministrationOthersSet
 	 */
-	public boolean isCostOfSalesAdministrationOthersSet() {
+	public boolean getCostOfSalesAdministrationOthersSet() {
 		return costOfSalesAdministrationOthersSet;
 	}
 
