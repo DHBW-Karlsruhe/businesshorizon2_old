@@ -83,6 +83,7 @@ public class StochasticChartArea extends VerticalLayout {
 		cvChartValues.put(expectedCompanyValue, new double[] { 0, expectedCompanyValueFreq });
 
 		cvChart.addValues(cvChartValues);
+		cvChart.setHeight("200px");
 
 		this.addComponent(cvChart);
 
@@ -101,9 +102,10 @@ public class StochasticChartArea extends VerticalLayout {
 			}
 
 			cfChart.addValues(cfChartValues);
+			cfChart.setHeight("200px");
 			this.addComponent(cfChart);
 		}
-		this.setHeight("1000px");
+		this.setHeight("590px");
 		this.setWidth("1024px");
 
 	}
