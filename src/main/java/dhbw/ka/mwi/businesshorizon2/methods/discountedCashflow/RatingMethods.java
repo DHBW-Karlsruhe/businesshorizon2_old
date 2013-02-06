@@ -44,6 +44,22 @@ public abstract class RatingMethods {
 
 		CashFlowCalculator.calculateCashflows(container, szenario);
 	}
+	
+	protected double getRateReturnEquity(){
+		return szenario.getRateReturnEquity() / 100;
+	}
+	
+	protected double getRateReturnCapitalStock(){
+		return szenario.getRateReturnCapitalStock() / 100;
+	}
+	
+	protected double getBusinessTax(){
+		return szenario.getBusinessTax() / 100;
+	}
+	
+	protected double getCorporateAndSolitaryTax(){
+		return szenario.getCorporateAndSolitaryTax() / 100;
+	}
 
 	public abstract CompanyValue calculateCompanyValue();
 }

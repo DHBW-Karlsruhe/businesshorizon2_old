@@ -29,9 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.vaadin.ui.Window;
 
-import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
@@ -54,9 +52,6 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	@Autowired
 	private EventBus eventBus;
-
-	@Autowired
-	private User user;
 	
 	@Autowired
 	private UserProxy userProxy;
@@ -236,4 +231,3 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	}
 
 }
-

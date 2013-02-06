@@ -17,12 +17,10 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
+
 import java.util.Map.Entry;
-import java.util.Map;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +33,7 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
+import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
@@ -74,6 +73,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	@Autowired
 	private ProjectProxy projectProxy;
 
+	private MethodRunner methodRunner;
+
 	private Project project;
 
 	private TreeSet<CashFlowPeriod> expectedCashFlows;
@@ -98,6 +99,29 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 		
 		project = projectProxy.getSelectedProject();
 
+		if (project.getProjectInputType().getDeterministic()) {
+
+			for (Szenario scenario : project.getScenarios()) {
+				onProgressChange((float) 0.5);
+				CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
+
+				TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<>();
+				periodContainer.add(cfPeriodContainer);
+				StochasticResultContainer srContainer = new StochasticResultContainer(periodContainer);
+
+				APV apv = new APV(srContainer, scenario);
+				CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
+						.calculateCompanyValue();
+				for (Entry<Integer, Couple> companyValue : companyValueDeterministic.getCompanyValues().entrySet()) {
+					DeterministicChartArea deterministicChartArea = new DeterministicChartArea(companyValue.getValue()
+							.getDebitFreeCompany(), companyValue.getValue().getTaxBenefits(), companyValue.getValue()
+							.getCompanyValue(), companyValue.getValue().getCapitalStock());
+					getView().addDeterministicChartArea(deterministicChartArea);
+				}
+				onProgressChange((float) 1);
+			}
+		}
+
 		if (project.getProjectInputType().getStochastic()) {
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				try {
@@ -114,36 +138,14 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 									.getPeriods();
 						}
 
-						method.calculate(project, this);
+						methodRunner = new MethodRunner(method, project, this);
+						methodRunner.start();
 					}
 				} catch (StochasticMethodException e) {
 					getView().showErrorMessge(e.getMessage());
-				} catch (InterruptedException e) {
-					getView().showErrorMessge(e.getMessage());
 				}
 			}
 
-		}
-
-		if (project.getProjectInputType().getDeterministic()) {
-			for (Szenario scenario : project.getScenarios()) {
-				CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
-
-				TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<>();
-				periodContainer.add(cfPeriodContainer);
-				StochasticResultContainer srContainer = new StochasticResultContainer(periodContainer);
-
-				APV apv = new APV(srContainer, scenario);
-				CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
-						.calculateCompanyValue();
-				for (Entry<Integer, Couple> companyValue : companyValueDeterministic.getCompanyValues().entrySet()) {
-					DeterministicChartArea deterministicChartArea = new DeterministicChartArea(companyValue.getValue()
-							.getDebitFreeCompany(), companyValue.getValue().getTaxBenefits(), companyValue.getValue()
-							.getCompanyValue(), companyValue.getValue().getCapitalStock());
-					getView().addDeterministicChartArea(deterministicChartArea);
-				}
-
-			}
 		}
 
 	}
@@ -178,20 +180,21 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	 * 
 	 */
 	@Override
-	public void onComplete(StochasticResultContainer result) {
+	public void onComplete(StochasticResultContainer result, String methodName) {
+
+		StochasticChartArea stochasticChartArea;
+
 		for (Szenario scenario : project.getScenarios()) {
 			APV apv = new APV(result, scenario);
 			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv.calculateCompanyValue();
-			StochasticChartArea stochasticChartArea = new StochasticChartArea(expectedCashFlows,
-					companyValue.getCompanyValues());
+			if (methodName.equalsIgnoreCase("zeitreihenanalyse")) {
+				stochasticChartArea = new StochasticChartArea(methodName, expectedCashFlows,
+						companyValue.getCompanyValues());
+			} else {
+				stochasticChartArea = new StochasticChartArea(methodName, null, companyValue.getCompanyValues());
+			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
-			
-			//TODO Testausgabe wieder entfernen
-			for (Map.Entry<Double,CompanyValueStochastic.Couple> entry: companyValue.getCompanyValues().entrySet()){
-				System.out.println("Key: " + entry.getKey() + " CompanyValue: " + entry.getValue().getCompanyValue() + " Count: " + entry.getValue().getCount());
-			}
-
 		}
 
 	}

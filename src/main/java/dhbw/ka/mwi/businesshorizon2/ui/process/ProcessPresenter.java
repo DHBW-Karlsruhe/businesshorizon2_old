@@ -29,11 +29,11 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerView;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.ShowNavigationEvent;
-import dhbw.ka.mwi.businesshorizon2.models.Project;
 
 /**
  * Dieser Presenter ist das Kernstueck der Prozesssicht. Er ist dafuer verantwortlich,

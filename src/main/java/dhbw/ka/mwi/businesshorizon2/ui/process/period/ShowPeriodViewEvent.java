@@ -27,7 +27,7 @@ import com.mvplite.event.Event;
  * Der Event, der zum Anzeigen des Haupt-Fensters z.B. in der BHApplication-Klasse
  * abgesetzt wird.
  * 
- * @author Christian Gahlert
+ * @author Daniel Dengler
  *
  */
 public class ShowPeriodViewEvent extends Event {

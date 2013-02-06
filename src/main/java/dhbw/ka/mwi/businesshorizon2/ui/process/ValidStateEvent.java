@@ -25,6 +25,12 @@ import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
+/**
+ * Der Event, der von den Prozess-Screens gefeuert wird, wenn sie sich in einem
+ * ungueltigem Zustand befinden.
+ * 
+ * @author Julius Hacker
+ */
 public class ValidStateEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	

@@ -18,16 +18,21 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+
+
 package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
@@ -35,44 +40,66 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker
  *
  */
-public class PeriodViewImpl extends HorizontalSplitPanel implements PeriodViewInterface {
+public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private PeriodPresenter presenter;
-
+	
+	Panel all = new Panel();
+	
+	HorizontalSplitPanel horizontalPanel;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
 	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
 	 * View-Komponenten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-
 	}
-
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
 		this.setSizeFull();
-		this.setSplitPosition(25);
-		this.setSizeFull();
+		horizontalPanel = new HorizontalSplitPanel();
+		horizontalPanel.setSplitPosition(25);
+		horizontalPanel.setSizeFull();
+		this.all.addComponent(horizontalPanel);
+		all.setStyleName(Reindeer.PANEL_LIGHT);
+		this.addComponent(all);
 	}
 
 	@Override
 	public void showView(View leftView, View rightView) {
 		removeAllComponents();
 		generateUi();
-		this.setFirstComponent((Component) leftView);
-		this.setSecondComponent((Component) rightView);
-		
+		horizontalPanel.setFirstComponent((Component) leftView);
+		horizontalPanel.setSecondComponent((Component) rightView);
+		this.setSizeFull();
+		((Component) leftView).setSizeFull();
+		if(rightView != null)
+		((Component) rightView).setSizeFull();
+		horizontalPanel.setSizeFull();
+		this.all.setSizeFull();
+		this.setSizeFull();
+	}
 
+	@Override
+	public void setSize(float max, int heightUnits) {
+		logger.debug("Setting size to "+(max)+" "+ heightUnits);
+		this.setHeight(max, heightUnits);
+		
+		
 	}
 }
+
+
