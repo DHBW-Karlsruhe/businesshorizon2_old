@@ -6,14 +6,14 @@ import com.mvplite.event.Event;
 
 public class WrongFieldsEvent extends Event {
 	ArrayList<String> wrongFields;
-	public WrongFieldsEvent(ArrayList<String> wrongFields) {
-		this.wrongFields = wrongFields;
-	}
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public WrongFieldsEvent(ArrayList<String> wrongFields) {
+		this.wrongFields = wrongFields;
+	}
 	/**
 	 * @return the wrongFields
 	 */

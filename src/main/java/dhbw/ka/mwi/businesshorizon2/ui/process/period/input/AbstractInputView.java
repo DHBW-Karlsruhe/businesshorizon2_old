@@ -25,15 +25,54 @@ InputViewInterface  {
 	
 	 protected AbstractInputPresenter presenter;
 
-	 DecimalFormat df = new DecimalFormat(",##0.00");
+	 private DecimalFormat df = new DecimalFormat(",##0.00");
 	 
-	 Panel all = new Panel();
+	 private Panel all = new Panel();
 
-	 GridLayout panel = new GridLayout(2, 1);
+	 private GridLayout panel = new GridLayout(2, 1);
 
 	 protected Logger logger;
 
 
+
+	public void addHeader(int year) {
+		Label l = new Label("<h2>       Jahr: "+year+"</h2>");
+		l.setContentMode(Label.CONTENT_XHTML);
+		this.all.addComponent(l);
+		this.all.addComponent(panel);
+		this.addComponent(all);
+		
+	}
+	public void addInputField(String pd) {
+		TextField tf = new TextField(pd);
+		tf.setImmediate(true);
+		
+		tf.addListener(new Property.ValueChangeListener() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				// TODO Auto-generated method stub
+				TextField tf = (TextField) event.getProperty();
+				presenter.validateChange((String) tf.getValue(), panel
+						.getComponentArea(tf).getColumn1(), panel
+						.getComponentArea(tf).getRow1(), tf.getCaption());
+				try {
+					tf.setValue(df.format(df.parse((String) tf.getValue()).doubleValue()));
+				} catch (ReadOnlyException | ConversionException
+						| ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		panel.addComponent(tf);
+		tf.setTextChangeEventMode(TextChangeEventMode.EAGER);
+	}
 
 	/**
 	 * Erstelle das GUI zum zur Eingabe
@@ -72,46 +111,6 @@ InputViewInterface  {
 		panel.addComponent(tf);
 		tf.setTextChangeEventMode(TextChangeEventMode.EAGER);
 	}
-	public void addInputField(String pd) {
-		TextField tf = new TextField(pd);
-		tf.setImmediate(true);
-		
-		tf.addListener(new Property.ValueChangeListener() {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				// TODO Auto-generated method stub
-				TextField tf = (TextField) event.getProperty();
-				presenter.validateChange((String) tf.getValue(), panel
-						.getComponentArea(tf).getColumn1(), panel
-						.getComponentArea(tf).getRow1(), tf.getCaption());
-				try {
-					tf.setValue(df.format(df.parse((String) tf.getValue()).doubleValue()));
-				} catch (ReadOnlyException | ConversionException
-						| ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-		panel.addComponent(tf);
-		tf.setTextChangeEventMode(TextChangeEventMode.EAGER);
-	}
-
-	public void setWrong(int textFieldColumn, int Row, boolean b) {
-		if (b)
-			((TextField) panel.getComponent(textFieldColumn, Row))
-					.setComponentError(new UserError(
-							"Die Eingabe muss eine Zahl sein!"));
-		else
-			((TextField) panel.getComponent(textFieldColumn, Row))
-					.setComponentError(null);
-	}
 
 	public void initForm() {
 		this.removeAllComponents();
@@ -121,13 +120,14 @@ InputViewInterface  {
 		panel.setSpacing(true);
 		panel.setMargin(true);
 	}
-	public void addHeader(int year) {
-		Label l = new Label("<h2>       Jahr: "+year+"</h2>");
-		l.setContentMode(Label.CONTENT_XHTML);
-		this.all.addComponent(l);
-		this.all.addComponent(panel);
-		this.addComponent(all);
-		
+	public void setWrong(int textFieldColumn, int Row, boolean b) {
+		if (b)
+			((TextField) panel.getComponent(textFieldColumn, Row))
+					.setComponentError(new UserError(
+							"Die Eingabe muss eine Zahl sein!"));
+		else
+			((TextField) panel.getComponent(textFieldColumn, Row))
+					.setComponentError(null);
 	}
 
 

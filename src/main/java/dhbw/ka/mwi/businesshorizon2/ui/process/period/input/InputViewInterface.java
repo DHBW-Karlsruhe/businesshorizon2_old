@@ -4,14 +4,14 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
 public interface InputViewInterface extends ContentView {
 
-	public void addInputField(String string, double initialContent);
+	void addHeader(int year);
 	public void addInputField(String string);
 
-	public void setWrong(int column,int row, boolean b);
+	public void addInputField(String string, double initialContent);
 
 
 	public void initForm();
 
-	void addHeader(int year);
+	public void setWrong(int column,int row, boolean b);
 
 }

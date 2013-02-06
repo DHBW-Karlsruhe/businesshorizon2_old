@@ -26,16 +26,22 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		extends ScreenPresenter<T> {
 	private static final long serialVersionUID = 1L;
 
-	Period period;
+	private Period period;
 	protected Logger logger;
 
-	DecimalFormat df = new DecimalFormat(",##0.00");
+	private DecimalFormat df = new DecimalFormat(",##0.00");
 
 	protected String[] shownProperties;
 	protected String[] germanNamesProperties;
 
 	@Autowired
 	EventBus eventBus;
+
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// not used here look at PeriodPresenter
+
+	}
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -143,12 +149,6 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 	@Override
 	public void validate(ValidateContentStateEvent event) {
 		isValid();
-	}
-
-	@Override
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// not used here look at PeriodPresenter
-
 	}
 	
 	/**
