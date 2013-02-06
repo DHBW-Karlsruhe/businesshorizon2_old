@@ -17,8 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.methods;
 
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
@@ -31,7 +29,7 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
  * 
  */
 public interface CallbackInterface {
-	public void onComplete(StochasticResultContainer result);
+	public void onComplete(StochasticResultContainer result, String methodName);
 
 	public void onProgressChange(float progress);
 

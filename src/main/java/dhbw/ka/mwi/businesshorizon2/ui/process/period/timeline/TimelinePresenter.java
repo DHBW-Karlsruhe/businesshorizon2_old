@@ -523,7 +523,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 *            Periode die entfernt werden soll
 	 */
 	public void removeLastPastPeriod(Period periodInterface) {
-
+		logger.debug("Fixed Periods: " + fixedPastPeriods+" Sum Periods: "+sumPastPeriods);
 		getView().removePastPeriod();
 		pastPeriods.removePeriod(periodInterface);
 		sumPastPeriods--;
@@ -533,6 +533,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void onWrongFieldEvent(WrongFieldsEvent e){
 		setButtonWrong(Integer.parseInt(e.getWrongFields().get(0)),true);
 	}
+	
+
 	
 	public void setButtonWrong(int year, boolean isWrong){
 		getView().setButtonWrong( year,isWrong);

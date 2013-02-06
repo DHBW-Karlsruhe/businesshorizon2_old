@@ -17,8 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
 import java.util.ArrayList;
@@ -30,9 +28,9 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 
 /**
- * Die Deterministic komponiert die Ausgabe der Ergebnisse des deterministischen
- * Verfahrens. Es können mehrere Diagramme sowie Labels hinzugefügt und im
- * Gridlayout angeordnet werden.
+ * Die DeterministicChartArea komponiert die Ausgabe der Ergebnisse des
+ * deterministischen Verfahrens. Es können mehrere Diagramme sowie Labels
+ * hinzugefügt und im Gridlayout angeordnet werden.
  * 
  * @author Florian Stier
  * 
