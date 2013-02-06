@@ -21,19 +21,10 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-public interface GesamtViewInterface extends ContentView {
+public interface GesamtViewInterface extends InputViewInterface {
 
-
-	public void addInputField(String string, double initialContent);
-
-	public void setWrong(int column,int row, boolean b);
-
-
-	public void initForm();
-
-	void addHeader(int year);
 	
 
 }

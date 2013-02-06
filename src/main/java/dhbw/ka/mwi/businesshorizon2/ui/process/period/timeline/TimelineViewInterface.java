@@ -42,4 +42,6 @@ public interface TimelineViewInterface extends ContentView {
 
 	void addBasePeriod(Period period);
 
+	public void setButtonWrong(int year, boolean isWrong);
+
 }

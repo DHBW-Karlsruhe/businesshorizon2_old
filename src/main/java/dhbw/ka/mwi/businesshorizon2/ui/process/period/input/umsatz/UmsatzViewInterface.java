@@ -21,17 +21,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-public interface UmsatzViewInterface extends ContentView {
-	
+public interface UmsatzViewInterface extends InputViewInterface {
 
-	public void addInputField(String string, double initialContent);
-
-	public void setWrong(int column,int row, boolean b);
-
-
-	public void initForm();
-
-	public void addHeader(int year);
 }

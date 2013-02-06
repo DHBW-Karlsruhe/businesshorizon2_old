@@ -35,8 +35,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
-
 /**
  * Dies ist die Vaadin-Implementierung der MainView (dem Haupt-Fenster).
  * 
