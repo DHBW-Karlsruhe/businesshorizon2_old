@@ -68,14 +68,14 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
 
 
 	/**
-	 * F/u00e4ngt das ShowEvent ab und sorgt daf/u00fcr das die View die ben/u00f6tigten
-	 * Eingabefelder erstellt und mit den bisherigen Daten bef/u00fcllt.
+	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
+	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
 	 * <p>
 	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
-	 * vorhandenen Gettern&Settern gepr/u00fcft. Die gefundenen Propertys werden als
-	 * Eingabefelder zur verf/u00fcgung gestellt.
+	 * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
+	 * Eingabefelder zur verfuegung gestellt.
 	 * <p>
-	 * Wichtig ist das Stringarray "shownProperties". Dieses enth/u00e4lt die Namen
+	 * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
 	 * der anzuzeigenden Felder.
 	 * 
 	 * @param event

@@ -152,10 +152,10 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 	}
 	
 	/**
-	 * Sorgt daf/u00fcr, dass /u00e4nderungen in das Periodenobjekt geschrieben werden.
-	 * /u00fcberpr/u00fcft die Benutzereingabe auf ihre Konvertierbarkeit in eine
+	 * Sorgt dafuer, dass aenderungen in das Periodenobjekt geschrieben werden.
+	 * ueberprueft die Benutzereingabe auf ihre Konvertierbarkeit in eine
 	 * Doublevariable und gibt im Fehlerfall eine Fehlermeldung an den User
-	 * zur/u00fcck.
+	 * zurueck.
 	 * 
 	 * @param newContent
 	 *            Inhalt des Textfeldes das in das Periodenobjekt geschrieben

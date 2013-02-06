@@ -27,7 +27,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * 
- * Erweiterung eines Buttons um sich die Periode die zum Button geh/u00f6rt zu merken
+ * Erweiterung eines Buttons um sich die Periode die zum Button gehoert zu merken
  * @author daniel dengler
  */
 public class PeriodButton extends Button {

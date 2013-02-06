@@ -128,7 +128,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Entfernt die letzte zuk/u00fcnftige Periode und verschiebt den entferne Knopf
+	 * Entfernt die letzte zukuenftige Periode und verschiebt den entferne Knopf
 	 */
 	@Override
 	public void removeFuturePeriod() {

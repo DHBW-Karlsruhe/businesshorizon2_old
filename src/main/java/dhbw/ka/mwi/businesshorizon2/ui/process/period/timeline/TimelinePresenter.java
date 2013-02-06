@@ -52,7 +52,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUmsatzViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.WrongFieldsEvent;
 
 /**
- * Presenter f/u00fcr die Anzeige des PeriodenZeitstrahls in der Periodenmaske
+ * Presenter fuer die Anzeige des PeriodenZeitstrahls in der Periodenmaske
  * 
  * @author Daniel Dengler
  * 
@@ -105,10 +105,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
-	 * /u00fcberpr/u00fcft ob sich die f/u00fcr die Maske relevanten Daten im ProjektObjekt
-	 * ge/u00e4ndert haben.
+	 * Ueberprueft ob sich die fuer die Maske relevanten Daten im ProjektObjekt
+	 * geaendert haben.
 	 * 
-	 * @return true falls alles gleich ist, false wenn sich etwas ge/u00e4ndert hat
+	 * @return true falls alles gleich ist, false wenn sich etwas geaendert hat
 	 * @author Daniel Dengler
 	 */
 
@@ -153,9 +153,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	/**
 	 * Diese Methode reagiert auf den Aufruf der View die auch diesen Zeitstrahl
-	 * enth/u00e4lt. Sollte sich etwas in den Daten des ProjektObjekts ge/u00e4ndert haben
-	 * oder wurde noch nicht initialisiert, dann k/u00fcmmert sich die Methode um die
-	 * Bef/u00fcllung internen Variablen
+	 * enthaelt. Sollte sich etwas in den Daten des ProjektObjekts geaendert haben
+	 * oder wurde noch nicht initialisiert, dann kuemmert sich die Methode um die
+	 * Befuellung internen Variablen
 	 * 
 	 * @param event
 	 *            ShowPeriodViewEvent, wird derzeit von der Navigationsleiste
@@ -166,21 +166,21 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	@EventHandler
 	public void onShowPeriodEvent(ShowPeriodViewEvent event)
 			throws NullPointerException {
-		// Wenn alles gleich geblieben ist m/u00fcssen wir nichts tun
+		// Wenn alles gleich geblieben ist muessen wir nichts tun
 		if (isValid()) {
 			return;
 		} else {
 
-			// Wenn sich unser Bezugsjahr /u00e4ndert werden alle Perioden ung/u00fcltig
+			// Wenn sich unser Bezugsjahr aendert werden alle Perioden ungueltig
 			if (projectProxy.getSelectedProject().getBasisYear() != baseYear) {
 				removeEverything();
 			}
 
-			// Wenn sich die relevanten Perioden /u00e4ndern muss man nur auff/u00fcllen
+			// Wenn sich die relevanten Perioden aendern muss man nur auffuellen
 			// sollten es mehr sein als vorhanden
 			if (projectProxy.getSelectedProject().getRelevantPastPeriods() != fixedPastPeriods) {
 				if (projectProxy.getSelectedProject().getRelevantPastPeriods() > sumPastPeriods) {
-					// Hat sich zus/u00e4tzlich die Eingabe ge/u00e4ndert m/u00fcssen alle
+					// Hat sich zusaetzlich die Eingabe geaendert muessen alle
 					// verworfen werden
 					if (stochasticInput != projectProxy.getSelectedProject()
 							.getProjectInputType().getStochasticInput()) {
@@ -203,7 +203,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			}
 
 
-			// Hat sich nur der Inputtyp ge/u00e4ndert, m/u00fcssen wir alle betroffenen
+			// Hat sich nur der Inputtyp geaendert, muessen wir alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
 			if (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministic() != deterministic) {
@@ -218,7 +218,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 			}
 
-			// Siehe eins dr/u00fcber
+			// Siehe eins drueber
 			if (projectProxy.getSelectedProject().getProjectInputType()
 					.getStochastic() != stochastic) {
 				removeAllPastPeriods();
@@ -249,7 +249,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 * @param container
 	 *            Referenz auf einen der AbstactPeriodContainern dieser Klasse
 	 * @param inputType
-	 *            Definiert die Art des Containers anhand des gew/u00e4hlten
+	 *            Definiert die Art des Containers anhand des gewaehlten
 	 *            InputTypes
 	 */
 	private void createContainer(AbstractPeriodContainer container,
@@ -268,13 +268,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
-	 * F/u00fcgt eine beliebige Anzahl von zuk/u00fcnftigen Perioden zum Periodencontainer
+	 * Fuegt eine beliebige Anzahl von zukuenftigen Perioden zum Periodencontainer
 	 * und der View
 	 * 
 	 * @param howMany
-	 *            Anzahl der hinzuzuf/u00fcgenden Perioden
+	 *            Anzahl der hinzuzufuegenden Perioden
 	 * @param inputType
-	 *            Art der hinzuzuf/u00fcgenden Perioden
+	 *            Art der hinzuzufuegenden Perioden
 	 */
 
 	private void addFuturePeriods(int howMany, InputType inputType) {
@@ -301,13 +301,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
-	 * F/u00fcgt eine beliebige Anzahl von vergangenen Perioden zum Periodencontainer
+	 * Fuegt eine beliebige Anzahl von vergangenen Perioden zum Periodencontainer
 	 * und der View hinzu
 	 * 
 	 * @param howMany
-	 *            Anzahl der hinzuzuf/u00fcgenden Perioden
+	 *            Anzahl der hinzuzufuegenden Perioden
 	 * @param inputType
-	 *            Art der hinzuzuf/u00fcgenden Perioden
+	 *            Art der hinzuzufuegenden Perioden
 	 */
 
 	private void addPastPeriods(int howMany, InputType inputType) {
@@ -369,8 +369,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
-	 * Entfernt alle Perioden aus View und Containern und k/u00fcmmert sich darum
-	 * eine richtige Basisperiode zur Verf/u00fcgung zu stellen
+	 * Entfernt alle Perioden aus View und Containern und kuemmert sich darum
+	 * eine richtige Basisperiode zur Verfuegung zu stellen
 	 */
 	private void removeEverything() {
 		baseYear = projectProxy.getSelectedProject().getBasisYear();
@@ -453,7 +453,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// Wird nicht gebraucht... k/u00f6nnen keine Fehler in der View selber
+		// Wird nicht gebraucht... koennen keine Fehler in der View selber
 		// durch Benutzereingaben entstehen
 
 	}
@@ -479,11 +479,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 	/**
 	 * Wird von der View bei einer Benutzereingabe aufgerufen und feuert,
-	 * entsprechend der ausgew/u00e4hlten Periode, das richtige ViewEvent f/u00fcr die
+	 * entsprechend der ausgewaehlten Periode, das richtige ViewEvent fuer die
 	 * EingabeViews
 	 * 
 	 * @param period
-	 *            Die Periode die zum gedr/u00fcckten PeriodenKnopf geh/u00f6rt
+	 *            Die Periode die zum gedrueckten PeriodenKnopf gehoert
 	 */
 	public void periodClicked(Period period) {
 
@@ -503,7 +503,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 /**
- * Methode wird aus der View aufgerufen um die letzte zuk/u00fcnftige Periode zu
+ * Methode wird aus der View aufgerufen um die letzte zukuenftige Periode zu
  * entfernen
  * 
  * @param period
