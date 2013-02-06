@@ -41,7 +41,13 @@ public class UmsatzViewImpl extends AbstractInputView implements UmsatzViewInter
 	@Autowired
 	private UmsatzPresenter presenterTemp;
 
-
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 * 
+	 * @author Daniel Dengler
+	 */
 
 	@PostConstruct
 	public void init() {

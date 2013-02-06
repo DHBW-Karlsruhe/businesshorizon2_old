@@ -41,7 +41,13 @@ public class GesamtViewImpl extends AbstractInputView implements GesamtViewInter
 	@Autowired
 	private GesamtPresenter presenterTemp;
 
-
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 * 
+	 * @author Daniel Dengler
+	 */
 
 	@PostConstruct
 	public void init() {
