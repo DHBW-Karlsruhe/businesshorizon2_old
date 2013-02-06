@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -17,8 +18,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2;
 
 import org.apache.log4j.Logger;
@@ -99,6 +98,8 @@ public class BHApplication extends Application {
 	 */
 	@EventHandler
 	public void showInitialView(ShowUserEvent event) {
+		this.removeWindow(initialScreenView);
+		this.removeWindow(processView);
 		initialScreenView.setName("overview");
 		addWindow(initialScreenView);
 		setMainWindow(initialScreenView);
@@ -125,5 +126,6 @@ public class BHApplication extends Application {
 
 		eventBus.fireEvent(new ShowProcessViewEvent());
 		logger.debug("ShowProzessViewEvent gefeuert");
+		
 	}
 }

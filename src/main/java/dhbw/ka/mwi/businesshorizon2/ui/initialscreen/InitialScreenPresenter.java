@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -18,7 +19,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +32,7 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -50,8 +51,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
 public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
 	private User user;
+	
+	@Autowired
+	private UserProxy userProxy;
 
 	private Logger logger = Logger.getLogger("InitialScreenPresenter.class");
 
@@ -94,8 +97,8 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 */
 	@EventHandler
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
-
-		user = event.getUser();
+		logger.debug("ShowInitialScreenViewEvent empfangen");
+		user = userProxy.getSelectedUser();
 		getView().showUserData(user.getCompany());
 		getView().showView(projectListView, infosView);
 		logger.debug("Views mit Projekt und Infoview geladen");
@@ -107,3 +110,5 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	}
 
 }
+
+

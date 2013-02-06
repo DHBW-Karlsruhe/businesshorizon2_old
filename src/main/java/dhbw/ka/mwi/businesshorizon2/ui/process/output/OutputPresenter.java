@@ -94,7 +94,9 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onShowOutputView(ShowOutputViewEvent event) {
-
+		
+		getView().showOutputView();
+		
 		project = projectProxy.getSelectedProject();
 
 		if (project.getProjectInputType().getDeterministic()) {
@@ -210,3 +212,4 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 	}
 
 }
+

@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -61,9 +62,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
 	}
-
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
@@ -81,7 +80,8 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 
 	@Override
 	public void showView(View leftView, View rightView) {
-
+		removeAllComponents();
+		generateUi();
 		horizontalPanel.setFirstComponent((Component) leftView);
 		horizontalPanel.setSecondComponent((Component) rightView);
 		this.setSizeFull();
@@ -101,4 +101,5 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 		
 	}
 }
+
 

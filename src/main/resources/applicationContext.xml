@@ -50,6 +50,7 @@
     <bean name="random" class="dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk"
 		scope="session" />
 
+
     <!-- Models -->
     <bean name="project" class="dhbw.ka.mwi.businesshorizon2.models.Project"
         scope="session" />
@@ -59,7 +60,11 @@
     <!-- Services -->
     <bean name="projectProxy" class="dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy"
         scope="session" />
+
+    <bean name="userProxy" class="dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy"
+        scope="session" />
     
+
     <!-- LogIn -->
     <bean name="logInPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenPresenter"
         scope="session" />

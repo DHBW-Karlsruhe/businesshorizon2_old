@@ -29,11 +29,14 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mvplite.event.EventBus;
+import com.mvplite.event.EventHandler;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 
 /**
  * Diese View stellt die Vaadin-Implementierung der Navigation zur Prozessansicht dar.
@@ -65,7 +68,6 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
 	}
 
 	/**
@@ -81,6 +83,10 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		
 		this.innerlayout = new HorizontalLayout();
 		
+		this.addOverviewButton();
+		
+		this.addProjectName();
+		
 		this.addNavigationButton(NavigationSteps.METHOD);
 		this.addNavigationButton(NavigationSteps.PARAMETER);
 		this.addNavigationButton(NavigationSteps.PERIOD);
@@ -90,6 +96,34 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		layout.addComponent(innerlayout);
 		layout.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
 		this.addComponent(layout);
+	}
+	
+	public void showNavigation() {
+		this.removeAllComponents();
+		generateUi();
+
+	}
+
+	private void addProjectName() {
+		Label projectName = new Label(presenter.getProjectName());
+		
+		this.innerlayout.addComponent(projectName);
+		
+	}
+
+	private void addOverviewButton() {
+		Button overviewButton = new Button("Zur Projektliste");
+		overviewButton.addListener(new Button.ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.showProjectList();				
+			}
+		});
+		
+		this.innerlayout.addComponent(overviewButton);
 	}
 
 	/**
