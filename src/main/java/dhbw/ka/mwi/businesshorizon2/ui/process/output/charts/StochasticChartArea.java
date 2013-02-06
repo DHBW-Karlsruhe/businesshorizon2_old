@@ -17,8 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
 import java.util.ArrayList;
@@ -29,7 +27,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
@@ -42,11 +41,18 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
  * @author Florian Stier
  * 
  */
-public class StochasticChartArea extends HorizontalLayout {
+public class StochasticChartArea extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
 
-	public StochasticChartArea(TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
+	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
+
+		// Überschrift anzeigen
+		Label title = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
+		title.setContentMode(Label.CONTENT_XHTML);
+		title.setHeight("50px");
+
+		this.addComponent(title);
 
 		// Chart zur Anzeige der Unternehmenswerte
 		List<String> cvChartColumns = new ArrayList<String>();
@@ -97,8 +103,8 @@ public class StochasticChartArea extends HorizontalLayout {
 			cfChart.addValues(cfChartValues);
 			this.addComponent(cfChart);
 		}
+		this.setHeight("1000px");
+		this.setWidth("1024px");
 
-		this.setHeight("600px");
-		this.setWidth("2000px");
 	}
 }

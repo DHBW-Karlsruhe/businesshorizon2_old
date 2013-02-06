@@ -17,8 +17,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.methods.random;
 
 import java.util.TreeSet;
@@ -79,9 +77,8 @@ public class RandomWalk extends AbstractStochasticMethod {
 	}
 
 	@Override
-	public StochasticResultContainer calculate(Project project,
-			CallbackInterface callback) throws InterruptedException,
-			StochasticMethodException {
+	public StochasticResultContainer calculate(Project project, CallbackInterface callback)
+			throws InterruptedException, StochasticMethodException {
 
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 		for (int iteration = 0; iteration < project.getIterations(); iteration++) {
@@ -92,41 +89,30 @@ public class RandomWalk extends AbstractStochasticMethod {
 			for (int forecast = 1; forecast <= project.getPeriodsToForecast(); forecast++) {
 				double previousValueCF;
 				double previousValueBC;
-				CashFlowPeriod period = new CashFlowPeriod(
-						project.getBasisYear() + forecast);
+				CashFlowPeriod period = new CashFlowPeriod(project.getBasisYear() + forecast);
 				if (forecast == 1) {
-					previousValueCF = project.getStochasticPeriods()
-							.getPeriods().last().getFreeCashFlow();
-					previousValueBC = project.getStochasticPeriods()
-							.getPeriods().last().getCapitalStock();
+					previousValueCF = project.getStochasticPeriods().getPeriods().last().getFreeCashFlow();
+					previousValueBC = project.getStochasticPeriods().getPeriods().last().getCapitalStock();
 				} else {
 					previousValueCF = lastPeriod.getFreeCashFlow();
 					previousValueBC = lastPeriod.getCapitalStock();
 				}
-				period.setFreeCashFlow(calculateRandomNumber(project
-						.getCashFlowProbabilityOfRise())
+				period.setFreeCashFlow(calculateRandomNumber(project.getCashFlowProbabilityOfRise())
 						* project.getCashFlowStepRange() + previousValueCF);
-				period.setCapitalStock(calculateRandomNumber(project
-						.getBorrowedCapitalProbabilityOfRise())
-						* project.getBorrowedCapitalStepRange()
-						+ previousValueBC);
+				period.setCapitalStock(calculateRandomNumber(project.getBorrowedCapitalProbabilityOfRise())
+						* project.getBorrowedCapitalStepRange() + previousValueBC);
 				lastPeriod = period;
 				cFPContainer.addPeriod(period);
 			}
 			prognose.add(cFPContainer);
 			if (callback != null && iteration % 200 == 0) {
 				// Alle 200 Iterationen ein Update für das Callback
-				callback.onProgressChange((iteration * project
-						.getPeriodsToForecast())
-						/ (project.getIterations() * project
-								.getPeriodsToForecast()));
+				callback.onProgressChange((iteration * project.getPeriodsToForecast())
+						/ (project.getIterations() * project.getPeriodsToForecast()));
 				Thread.interrupted();
 			}
 		}
 		StochasticResultContainer src = new StochasticResultContainer(prognose);
-		if (callback != null) {
-			callback.onComplete(src);
-		}
 		return src;
 
 	}
