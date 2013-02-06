@@ -24,6 +24,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.scenario;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -37,6 +38,7 @@ import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.FormLayout;
@@ -44,7 +46,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.

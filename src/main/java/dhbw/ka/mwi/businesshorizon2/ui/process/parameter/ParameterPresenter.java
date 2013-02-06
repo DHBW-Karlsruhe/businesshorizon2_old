@@ -43,8 +43,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
-
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
  * 

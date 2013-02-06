@@ -21,49 +21,25 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.Arrays;
-
-import javax.annotation.PostConstruct;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.AggregateCostMethodPeriod;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Julius Hacker
+ * @author Daniel Dengler
  * 
  */
 
-public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
+public class GesamtPresenter extends AbstractInputPresenter<GesamtViewInterface> {
 	private static final long serialVersionUID = 1L;
-	Logger logger = Logger.getLogger(GesamtPresenter.class);
 
-	private DecimalFormat df = new DecimalFormat(",##0.00");
-
-	AggregateCostMethodPeriod period;
-
-	String[] shownProperties = { "immaterialFortune", "propertyValue",
-			"financialValue", "equity", "provisions", "suplies", "claims",
-			"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
-			"otherBusinessRevenue", "internallyProducedAndCapializedAssets",
-			"materialCosts", "humanCapitalCosts", "writeDowns",
-			"otherBusinessCosts", "interestAndOtherCosts" };
 
 	@Autowired
 	EventBus eventBus;
@@ -73,98 +49,43 @@ public class GesamtPresenter extends ScreenPresenter<GesamtViewInterface> {
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 
-	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-	}
+		logger = Logger.getLogger(GesamtPresenter.class);
+		shownProperties = new String[] { "immaterialFortune", "propertyValue",
+				"financialValue", "equity", "provisions", "suplies", "claims",
+				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
+				"otherBusinessRevenue", "internallyProducedAndCapializedAssets",
+				"materialCosts", "humanCapitalCosts", "writeDowns",
+				"otherBusinessCosts", "interestAndOtherCosts" };
+		germanNamesProperties = new String[] { "Immaterielle Verm\u00f6gensgegenst\u00e4nde", "Sachanlagen",
+				"Finanzanlagen", "Eigenkapital", "R\u00fcckstellungen", "Vorr\u00e4te", "Forderungen und sonstige Verm\u00f6gensgegenst\u00e4nde",
+				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerl\u00f6se",
+				"Sonstige betriebliche Ertr\u00e4ge", "Andere aktivierte Eigenleistungen",
+				"Materialaufwand", "Personalaufwand", "Abschreibungen",
+				"Sonstige betriebliche Aufwendungen", "Zinsen und andere Aufwendungen" };
+	}	
 
-	@Override
-	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
+	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
+	 * <p>
+	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
+	 * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
+	 * Eingabefelder zur verfuegung gestellt.
+	 * <p>
+	 * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
+	 * der anzuzeigenden Felder.
+	 * 
+	 * @param event
+	 */
+	
 	@EventHandler
 	public void onShowEvent(ShowGesamtViewEvent event) {
-		logger.debug("ShowDirektViewEvent erhalten");
-		period = event.getPeriod();
-		getView().initForm();
-		getView().addHeader(period.getYear()); 
-		try {
-			for (PropertyDescriptor pd : Introspector.getBeanInfo(
-					period.getClass(), Object.class).getPropertyDescriptors()) {
-				if (Arrays.asList(shownProperties)
-						.contains(pd.getDisplayName())) {
-
-					try {
-						getView().addInputField(pd.getDisplayName(),
-								(double) pd.getReadMethod().invoke(period));
-					} catch (IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		} catch (IntrospectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		processEvent(event);
 	}
-
-	@Override
-	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void validateChange(String newContent, int textFieldColumn,
-			int textFieldRow, String destination) {
-		logger.debug("" + newContent);
-		try {
-			df.parse(newContent).doubleValue();
-		} catch (Exception e) {
-			getView().setWrong(textFieldColumn, textFieldRow, true);
-			return;
-		}
-		getView().setWrong(textFieldColumn, textFieldRow, false);
-
-		try {
-			for (PropertyDescriptor pd : Introspector.getBeanInfo(
-					period.getClass(), Object.class).getPropertyDescriptors()) {
-				if (Arrays.asList(shownProperties).contains(destination)) {
-					if (pd.getDisplayName().equals(destination)) {
-						try {
-							pd.getWriteMethod();
-							period.toString();
-
-							pd.getWriteMethod().invoke(
-									period,
-									new Object[] { df.parse(newContent).doubleValue() });
-							logger.debug("Content should be written: "
-									+ (double) pd.getReadMethod()
-											.invoke(period));
-						} catch (IllegalAccessException
-								| IllegalArgumentException
-								| InvocationTargetException | ParseException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		} catch (IntrospectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
+	
 }

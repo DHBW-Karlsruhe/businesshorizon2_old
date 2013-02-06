@@ -18,7 +18,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 
 import javax.annotation.PostConstruct;
@@ -53,11 +52,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInter
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
  * @author Daniel Dengler
-<<<<<<< HEAD
- * 
-=======
- *
->>>>>>> refs/remotes/origin/master
  */
 
 public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
@@ -102,7 +96,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Julius Hacker
+	 * @author Daniel Dengler
 	 */
 	@PostConstruct
 	public void init() {
@@ -119,6 +113,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	public void onShowEvent(ShowGesamtViewEvent event) {
 		currentInput = gesamtView;
 		getView().showView(timelineView, currentInput);
+
 	}
 
 	@EventHandler
@@ -126,6 +121,8 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		logger.debug("ShowDirektViewEvent erhalten");
 		currentInput = direktView;
 		getView().showView(timelineView, currentInput);
+
+		
 	}
 
 	@EventHandler
@@ -148,7 +145,8 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	@EventHandler
 	public void handleShowView(ShowPeriodViewEvent event) {
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD,
+				true));
 		logger.debug("ShowPeriodViewEvent handled");
 	}
 

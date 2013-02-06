@@ -29,4 +29,6 @@ public interface PeriodViewInterface extends ContentView {
 	
 	public void showView(View leftView, View rightView);
 
+	public void setSize(float max, int heightUnits);
+
 }
