@@ -36,27 +36,27 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * Umsatzerlöse
 	 */
-	boolean salesRevenueSet;
+	private boolean salesRevenueSet;
 	private double salesRevenue;
 
 	/**
 	 * Sonstige betriebliche Erträge
 	 */
 	private double otherBusinessRevenue;
-	boolean otherBusinessRevenueSet;
+	private boolean otherBusinessRevenueSet;
 
 	/**
 	 * Herstellkosten
 	 */
 	private double costOfPoduction;
-	boolean costOfProductionSet;
+	private boolean costOfProductionSet;
 
 	/**
 	 * Vertriebskosten, Allgemeine Verwaltungskosten und Sonstige betriebliche
 	 * Aufwendungen
 	 */
 	private double costOfSalesAdministrationOthers;
-	boolean costOfSalesAdministrationOthersSet;
+	private boolean costOfSalesAdministrationOthersSet;
 
 	public CostOfSalesMethodPeriod(int year) {
 		super(year);
@@ -166,7 +166,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param salesRevenueSet the salesRevenueSet to set
 	 */
-	public void setSalesRevenueSet(boolean salesRevenueSet) {
+	public void setSalesRevenueSet( boolean salesRevenueSet) {
 		this.salesRevenueSet = salesRevenueSet;
 	}
 
@@ -180,7 +180,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param otherBusinessRevenueSet the otherBusinessRevenueSet to set
 	 */
-	public void setOtherBusinessRevenueSet(boolean otherBusinessRevenueSet) {
+	public void setOtherBusinessRevenueSet( boolean otherBusinessRevenueSet) {
 		this.otherBusinessRevenueSet = otherBusinessRevenueSet;
 	}
 
@@ -194,7 +194,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param costOfProductionSet the costOfProductionSet to set
 	 */
-	public void setCostOfProductionSet(boolean costOfProductionSet) {
+	public void setCostOfProductionSet( boolean costOfProductionSet) {
 		this.costOfProductionSet = costOfProductionSet;
 	}
 
@@ -209,7 +209,7 @@ public class CostOfSalesMethodPeriod extends BalanceSheetPeriod {
 	 * @param costOfSalesAdministrationOthersSet the costOfSalesAdministrationOthersSet to set
 	 */
 	public void setCostOfSalesAdministrationOthersSet(
-			boolean costOfSalesAdministrationOthersSet) {
+			 boolean costOfSalesAdministrationOthersSet) {
 		this.costOfSalesAdministrationOthersSet = costOfSalesAdministrationOthersSet;
 	}
 

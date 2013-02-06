@@ -40,13 +40,13 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	/**
 	 * Free Cashflow
 	 */
-	boolean freeCashFlowSet;
+	private boolean freeCashFlowSet;
 	private double freeCashFlow;
 
 	/**
 	 * Fremdkapital
 	 */
-	boolean capitalStockSet;
+	private boolean capitalStockSet;
 	private double capitalStock;
 
 	/**
@@ -157,7 +157,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	/**
 	 * @param freeCashFlowSet the freeCashFlowSet to set
 	 */
-	public void setFreeCashFlowSet(boolean freeCashFlowSet) {
+	public void setFreeCashFlowSet( boolean freeCashFlowSet) {
 		this.freeCashFlowSet = freeCashFlowSet;
 	}
 
@@ -171,7 +171,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	/**
 	 * @param capitalStockSet the capitalStockSet to set
 	 */
-	public void setCapitalStockSet(boolean capitalStockSet) {
+	public void setCapitalStockSet( boolean capitalStockSet) {
 		this.capitalStockSet = capitalStockSet;
 	}
 

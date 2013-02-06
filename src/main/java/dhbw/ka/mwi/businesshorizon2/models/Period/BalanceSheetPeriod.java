@@ -36,55 +36,55 @@ abstract class BalanceSheetPeriod extends Period {
 	 * Immaterielle Vermögensgegenstände
 	 */
 	private double immaterialFortune;
-	boolean immaterialFortuneSet;
+	private boolean immaterialFortuneSet;
 
 	/**
 	 * Sachanlagen
 	 */
 	private double propertyValue;
-	boolean propertyValueSet;
+	private boolean propertyValueSet;
 
 	/**
 	 * Finanzanlagen
 	 */
 	private double financialValue;
-	boolean financialValueSet;
+	private boolean financialValueSet;
 
 	/**
 	 * Eigenkapital
 	 */
 	private double equity;
-	boolean equitySet;
+	private boolean equitySet;
 
 	/**
 	 * Rückstellungen
 	 */
 	private double provisions;
-	boolean provisionsSet;
+	private boolean provisionsSet;
 
 	/**
 	 * Vorräte
 	 */
 	private double suplies;
-	boolean supliesSet;
+	private boolean supliesSet;
 
 	/**
 	 * Forderungen und sonstige Vermögensgegenstände
 	 */
 	private double claims;
-	boolean claimsSet;
+	private boolean claimsSet;
 
 	/**
 	 * Wertpapiere
 	 */
 	private double stocks;
-	boolean stocksSet;
+	private boolean stocksSet;
 
 	/**
 	 * Kassenbestand, Bundesbankguthaben, Guthaben bei Kreditinstituten
 	 */
 	private double cashAssets;
-	boolean cashAssetsSet;
+	private boolean cashAssetsSet;
 
 	public BalanceSheetPeriod(int year) {
 		super(year);
@@ -284,7 +284,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param immaterialFortuneSet the immaterialFortuneSet to set
 	 */
-	public void setImmaterialFortuneSet(boolean immaterialFortuneSet) {
+	public void setImmaterialFortuneSet( boolean immaterialFortuneSet) {
 		this.immaterialFortuneSet = immaterialFortuneSet;
 	}
 
@@ -298,7 +298,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param propertyValueSet the propertyValueSet to set
 	 */
-	public void setPropertyValueSet(boolean propertyValueSet) {
+	public void setPropertyValueSet( boolean propertyValueSet) {
 		this.propertyValueSet = propertyValueSet;
 	}
 
@@ -312,7 +312,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param financialValueSet the financialValueSet to set
 	 */
-	public void setFinancialValueSet(boolean financialValueSet) {
+	public void setFinancialValueSet( boolean financialValueSet) {
 		this.financialValueSet = financialValueSet;
 	}
 
@@ -326,7 +326,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param equitySet the equitySet to set
 	 */
-	public void setEquitySet(boolean equitySet) {
+	public void setEquitySet( boolean equitySet) {
 		this.equitySet = equitySet;
 	}
 
@@ -340,7 +340,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param provisionsSet the provisionsSet to set
 	 */
-	public void setProvisionsSet(boolean provisionsSet) {
+	public void setProvisionsSet( boolean provisionsSet) {
 		this.provisionsSet = provisionsSet;
 	}
 
@@ -354,7 +354,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param supliesSet the supliesSet to set
 	 */
-	public void setSupliesSet(boolean supliesSet) {
+	public void setSupliesSet( boolean supliesSet) {
 		this.supliesSet = supliesSet;
 	}
 
@@ -368,7 +368,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param claimsSet the claimsSet to set
 	 */
-	public void setClaimsSet(boolean claimsSet) {
+	public void setClaimsSet( boolean claimsSet) {
 		this.claimsSet = claimsSet;
 	}
 
@@ -382,7 +382,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param stocksSet the stocksSet to set
 	 */
-	public void setStocksSet(boolean stocksSet) {
+	public void setStocksSet( boolean stocksSet) {
 		this.stocksSet = stocksSet;
 	}
 
@@ -396,7 +396,7 @@ abstract class BalanceSheetPeriod extends Period {
 	/**
 	 * @param cashAssetsSet the cashAssetsSet to set
 	 */
-	public void setCashAssetsSet(boolean cashAssetsSet) {
+	public void setCashAssetsSet( boolean cashAssetsSet) {
 		this.cashAssetsSet = cashAssetsSet;
 	}
 

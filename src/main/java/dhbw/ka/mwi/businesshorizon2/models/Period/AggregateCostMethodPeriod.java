@@ -39,49 +39,49 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 * Umsatzerlöse
 	 */
 	private double salesRevenue;
-	 boolean salesRevenueSet;
+	 private boolean salesRevenueSet;
 
 	/**
 	 * Sonstige betriebliche Erträge
 	 */
 	private double otherBusinessRevenue;
-	boolean otherBusinessRevenueSet;
+	private boolean otherBusinessRevenueSet;
 
 	/**
 	 * Andere aktivierte Eigenleistungen
 	 */
 	private double internallyProducedAndCapitalizedAssets;
-	boolean internallyProducedAndCapitalizedAssetsSet;
+	private boolean internallyProducedAndCapitalizedAssetsSet;
 
 	/**
 	 * Materialaufwand
 	 */
 	private double materialCosts;
-	boolean materialCostsSet;
+	private boolean materialCostsSet;
 
 	/**
 	 * Personalaufwand
 	 */
 	private double humanCapitalCosts;
-	boolean humanCapitalCostsSet;
+	private boolean humanCapitalCostsSet;
 
 	/**
 	 * Abschreibungen
 	 */
 	private double writeDowns;
-	boolean writeDownsSet;
+	private boolean writeDownsSet;
 
 	/**
 	 * Sonstige betriebliche Aufwendungen
 	 */
 	private double otherBusinessCosts;
-	boolean otherBusinessCostsSet;
+	private boolean otherBusinessCostsSet;
 
 	/**
 	 * Zinsen und andere Aufwendungen
 	 */
 	private double interestAndOtherCosts;
-	boolean interestAndOtherCostsSet;
+	private boolean interestAndOtherCostsSet;
 
 	/**
 	 * Der Konstruktor erstellt eine Methode für das Jahr year
@@ -284,7 +284,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param salesRevenueSet the salesRevenueSet to set
 	 */
-	public void setSalesRevenueSet(boolean salesRevenueSet) {
+	public void setSalesRevenueSet( boolean salesRevenueSet) {
 		this.salesRevenueSet = salesRevenueSet;
 	}
 
@@ -298,7 +298,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param otherBusinessRevenueSet the otherBusinessRevenueSet to set
 	 */
-	public void setOtherBusinessRevenueSet(boolean otherBusinessRevenueSet) {
+	public void setOtherBusinessRevenueSet( boolean otherBusinessRevenueSet) {
 		this.otherBusinessRevenueSet = otherBusinessRevenueSet;
 	}
 
@@ -313,7 +313,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	 * @param internallyProducedAndCapitalizedAssetsSet the internallyProducedAndCapitalizedAssetsSet to set
 	 */
 	public void setInternallyProducedAndCapitalizedAssetsSet(
-			boolean internallyProducedAndCapitalizedAssetsSet) {
+			 boolean internallyProducedAndCapitalizedAssetsSet) {
 		this.internallyProducedAndCapitalizedAssetsSet = internallyProducedAndCapitalizedAssetsSet;
 	}
 
@@ -327,7 +327,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param materialCostsSet the materialCostsSet to set
 	 */
-	public void setMaterialCostsSet(boolean materialCostsSet) {
+	public void setMaterialCostsSet( boolean materialCostsSet) {
 		this.materialCostsSet = materialCostsSet;
 	}
 
@@ -341,7 +341,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param humanCapitalCostsSet the humanCapitalCostsSet to set
 	 */
-	public void setHumanCapitalCostsSet(boolean humanCapitalCostsSet) {
+	public void setHumanCapitalCostsSet( boolean humanCapitalCostsSet) {
 		this.humanCapitalCostsSet = humanCapitalCostsSet;
 	}
 
@@ -355,7 +355,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param writeDownsSet the writeDownsSet to set
 	 */
-	public void setWriteDownsSet(boolean writeDownsSet) {
+	public void setWriteDownsSet( boolean writeDownsSet) {
 		this.writeDownsSet = writeDownsSet;
 	}
 
@@ -369,7 +369,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param otherBusinessCostsSet the otherBusinessCostsSet to set
 	 */
-	public void setOtherBusinessCostsSet(boolean otherBusinessCostsSet) {
+	public void setOtherBusinessCostsSet( boolean otherBusinessCostsSet) {
 		this.otherBusinessCostsSet = otherBusinessCostsSet;
 	}
 
@@ -383,7 +383,7 @@ public class AggregateCostMethodPeriod extends BalanceSheetPeriod {
 	/**
 	 * @param interestAndOtherCostsSet the interestAndOtherCostsSet to set
 	 */
-	public void setInterestAndOtherCostsSet(boolean interestAndOtherCostsSet) {
+	public void setInterestAndOtherCostsSet( boolean interestAndOtherCostsSet) {
 		this.interestAndOtherCostsSet = interestAndOtherCostsSet;
 	}
 
