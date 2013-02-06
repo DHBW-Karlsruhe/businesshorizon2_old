@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -17,8 +18,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
 import java.util.Calendar;
@@ -42,6 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
@@ -185,6 +185,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	@EventHandler
 	public void onShowParameterScreen(ShowParameterViewEvent event) {
+		
+		getView().showParameterView();
 
 		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
 			initializeBasisYear();
@@ -1009,5 +1011,4 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	public void StepRangeChosen(String stepRangeString) {
 	
 	}
-
 }

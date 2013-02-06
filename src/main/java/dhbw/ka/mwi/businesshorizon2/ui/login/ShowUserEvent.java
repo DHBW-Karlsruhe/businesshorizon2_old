@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -17,7 +18,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
@@ -47,8 +47,7 @@ public class ShowUserEvent extends Event {
 	 *            Das Objekt des erfolgreich angemeldeten User
 	 * 
 	 */
-	public ShowUserEvent(User user) {
-		this.user = user;
+	public ShowUserEvent() {
 	}
 
 	/**

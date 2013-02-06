@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -17,19 +18,14 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
 import javax.annotation.PostConstruct;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
@@ -37,6 +33,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
 /**
@@ -141,8 +138,10 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void init() {
 
 		presenter.setView(this);
+
 		setTooltips();
 		generateUi();
+
 		logger.debug("Ui erstellt");
 	}
 
@@ -180,6 +179,14 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
+	
+	@Override
+	public void showParameterView() {
+		this.removeAllComponents();
+		generateUi();
+		
+	}
+	
 	private void generateUi() {
 
 		setMargin(true);
@@ -1015,7 +1022,5 @@ public class ParameterViewImpl extends VerticalLayout implements
 			String cashFlowProbabilityOfRise) {
 		this.textfieldCashFlowProbabilityOfRise.setValue(cashFlowProbabilityOfRise);		
 	}
-
-
 
 }

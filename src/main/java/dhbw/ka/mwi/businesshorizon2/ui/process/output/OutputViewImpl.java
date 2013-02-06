@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -17,6 +18,7 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
 import javax.annotation.PostConstruct;
@@ -57,7 +59,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
+
 	}
 
 	/**
@@ -79,16 +81,22 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	}
 
 	@Override
+
+	public void showOutputView() {
+		this.removeAllComponents();
+		generateUi();
+		
+	}
+
+
 	public void addStochasticChartArea(StochasticChartArea chartArea) {
 		outputArea.addComponent(chartArea);
-		requestRepaint();
 	}
+
 
 	@Override
 	public void addDeterministicChartArea(DeterministicChartArea chartArea) {
 		outputArea.addComponent(chartArea);
-		requestRepaint();
-
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -17,8 +18,6 @@
  *     You should have received a copy of the GNU Affero General Public License
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
 import java.util.Set;
@@ -87,8 +86,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		methods = new TreeSet<AbstractStochasticMethod>();
-
 	}
 
 	@Override
@@ -133,6 +130,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 		this.validate(new ValidateContentStateEvent());
+
 	}
 
 	public void toggleMethod(Set<AbstractStochasticMethod> checkedMethods) {
@@ -160,8 +158,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event) {
+		getView().showMethodView();
 
 		project = projectProxy.getSelectedProject();
+		methods = new TreeSet<AbstractStochasticMethod>();
 
 		if (project.getMethods() == null) {
 
@@ -184,6 +184,9 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		for (AbstractStochasticMethod m : methods) {
 			getView().showMethod(m);
 		}
+		
+		getView().setStochastic(projectInputType.getStochastic());
+		getView().setDeterministic(projectInputType.getDeterministic());
 
 		Boolean state = projectInputType.getStochastic();
 
@@ -203,8 +206,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		getView().selectInput(false,
 				projectInputType.getDeterministicInput());
 
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,
-				true));
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,true));
 
 	}
 
