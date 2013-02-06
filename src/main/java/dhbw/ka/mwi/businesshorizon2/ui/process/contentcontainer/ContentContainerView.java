@@ -23,8 +23,6 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer;
 
 import com.mvplite.view.View;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
-
 /**
  * Dieses Interface zeigt die von bezueglich des Maskenfensters zur Verfuegung
  * stehenden Methoden, mit denen der Presenter mit der View kommunizieren kann.

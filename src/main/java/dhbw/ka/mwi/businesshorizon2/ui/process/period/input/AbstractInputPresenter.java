@@ -16,13 +16,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
-import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		extends ScreenPresenter<T> {

@@ -31,12 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 

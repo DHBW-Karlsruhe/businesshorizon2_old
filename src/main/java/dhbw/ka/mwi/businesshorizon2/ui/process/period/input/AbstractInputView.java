@@ -11,12 +11,12 @@ import com.vaadin.data.Property.ReadOnlyException;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 public abstract class AbstractInputView extends VerticalLayout implements
 InputViewInterface  {

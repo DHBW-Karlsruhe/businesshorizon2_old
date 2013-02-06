@@ -27,8 +27,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewImpl;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewInterface;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in

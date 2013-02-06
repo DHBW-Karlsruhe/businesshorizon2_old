@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.view.View;
-import com.vaadin.ui.Component;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
