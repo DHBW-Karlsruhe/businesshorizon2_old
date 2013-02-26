@@ -131,6 +131,15 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 *            Der angezeigte Username
 	 */
 	public void showUserData(String username) {
+		/*
+		 *  Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
+		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
+		 *  und Prozesssicht gesprungen wird. 
+		 */
+		if(userData != null) {
+			heading.removeComponent(userData);
+		}
+		
 		userData = new Label("<h2>" + username + "</h2>");
 		userData.setContentMode(Label.CONTENT_XHTML);
 		heading.addComponent(userData);
