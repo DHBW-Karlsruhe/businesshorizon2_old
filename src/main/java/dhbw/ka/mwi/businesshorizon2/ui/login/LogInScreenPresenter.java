@@ -31,9 +31,9 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.FirstnameTooLongException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidFirstNameException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidMailAdressException;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.LastnameTooLongException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidLastNameException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.TrivialPasswordException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
@@ -137,8 +137,8 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * zurückgegeben. Bei Misserfolg werden die entsprechenden Fehler geworfen.
 	 * 
 	 * Weitere Implementierte Prüfungen der Anmeldedaten: 
-	 * - Vorname maximal 20 Zeichen
-	 * - Nachname maximal 20 Zeichen
+	 * - Vorname gültig (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.)
+	 * - Nachname gültig (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.)
 	 * - Regex (regulärer Ausdruck) zum überprüfen der Mail-Adresse
 	 * - Passwort zwischen 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen
 	 * 
@@ -170,12 +170,12 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			logger.debug("Der Benutzer Existiert bereits.");
 			return;
 		}
-		catch (FirstnameTooLongException e) {
+		catch (InvalidFirstNameException e) {
 			getView().showErrorMessage(e.getMessage());
 			logger.debug("Der Vorname ist zu lange( >20 Zeichen).");
 			return;
 		}
-		catch (LastnameTooLongException e) {
+		catch (InvalidLastNameException e) {
 			getView().showErrorMessage(e.getMessage());
 			logger.debug("Der Nachname ist zu lange( >20 Zeichen).");
 			return;

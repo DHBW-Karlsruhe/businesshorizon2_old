@@ -31,7 +31,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * implementierende(n) Klasse(n) auszutauschen und die Kommunikation zwischen
  * Applikation und Nutzerdatenbank anzupassen.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Marcel Rosenberger
  * 
  */
 public interface AuthenticationServiceInterface extends Serializable {
@@ -74,11 +74,11 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * @throws UserAlreadyExistsException
 	 * @throws InvalidMailAdressException 
 	 * @throws LastnameTooLongException 
-	 * @throws FirstnameTooLongException 
 	 * @throws TrivialPasswordException 
+	 * @throws InvalidFirstNameException 
 	 */
 	public void registerNewUser(String emailAdress, String password, String firstName, String lastName, String company)
-			throws UserAlreadyExistsException, InvalidMailAdressException, LastnameTooLongException, FirstnameTooLongException, TrivialPasswordException;
+			throws UserAlreadyExistsException, InvalidMailAdressException, InvalidLastNameException, InvalidFirstNameException, TrivialPasswordException, InvalidFirstNameException;
 
 	/**
 	 * Methode zum Löschen des als Parameter übergebenen Users.

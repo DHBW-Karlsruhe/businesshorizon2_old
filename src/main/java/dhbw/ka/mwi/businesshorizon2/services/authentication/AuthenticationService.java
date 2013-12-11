@@ -45,7 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * Datei durchführt. Die Klasse ist als Singleton implementiert, damit sie nur
  * einmal in der gesamten Applikation existiert.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Marcel Rosenberger
  */
 
 public class AuthenticationService implements AuthenticationServiceInterface {
@@ -171,19 +171,19 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	 * 
 	 * Zur Validierung der Anmeldedaten werden folgende Prüfungen durchgeführt:
 	 * - Mailadresse noch nicht verwendet
-	 * - Vorname maximal 20 Zeichen
-	 * - Nachname maximal 20 Zeichen
+	 * - Vorname gültig (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.)
+	 * - Nachname gültig (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.)
 	 * - Regex (regulärer Ausdruck) zum überprüfen der Mail-Adresse
 	 * - Passwort zwischen 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen
 	 * 
 	 * @throws UserAlreadyExistsException
 	 * @throws InvalidMailAdressException 
-	 * @throws LastnameTooLongException 
-	 * @throws FirstnameTooLongException 
+	 * @throws InvalidLastNameException 
+	 * @throws InvalidFirstNameException 
 	 * @throws TrivialPasswordException 
 	 */
 	public synchronized void registerNewUser(String emailAdress, String password, String firstName, String lastName,
-			String company) throws UserAlreadyExistsException, InvalidMailAdressException, LastnameTooLongException, FirstnameTooLongException, TrivialPasswordException {
+			String company) throws UserAlreadyExistsException, InvalidMailAdressException, InvalidLastNameException, InvalidFirstNameException, TrivialPasswordException {
 		User user = new User(firstName, lastName, company, emailAdress, password);
 
 		if (allUsers == null) {
@@ -198,14 +198,14 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 			}
 		}
 		
-		//Prüfung ob der Vorname zu lange ist.
-		if(firstName.length() > 20){
-			throw new FirstnameTooLongException("Der Vorname ist zu lang. Bitte maximal 20 Zeichen eingeben.");
+		//Prüfung ob der Vorname gültig ist. Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.
+		if(false == Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", firstName)){
+			throw new InvalidFirstNameException("Ungültiger Vorname. Maximal 20 Buchstaben, erster Buchstabe muss großgeschrieben sein.");
 		}
 		
-		//Prüfung ob der Nachname zu lange ist.
-		if(lastName.length() > 20){
-			throw new LastnameTooLongException("Der Nachname ist zu lang. Bitte maximal 20 Zeichen eingeben.");
+		////Prüfung ob der Vorname gültig ist. Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.
+		if(false == Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", lastName)){
+			throw new InvalidLastNameException("Ungültiger Nachname. Maximal 20 Buchstaben, erster Buchstabe muss großgeschrieben sein.");
 		}
 		
 		//Prüfung ob es sich um eine Mailadresse handelt.
