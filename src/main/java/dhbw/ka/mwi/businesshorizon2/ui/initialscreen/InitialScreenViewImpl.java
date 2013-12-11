@@ -89,7 +89,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
 		heading = new VerticalLayout();
-		title = new Label("<h1>Business Horizon 2</h1>");
+		title = new Label("<h1>#YOLO Business Horizon 2</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
 		heading.addComponent(title);
 
