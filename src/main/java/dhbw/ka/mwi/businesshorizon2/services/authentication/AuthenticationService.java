@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -168,25 +169,57 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	 * existierender User hinzugefügt und des Weiteren die Datei mit den
 	 * Userinformationen neu geschrieben.
 	 * 
+	 * Zur Validierung der Anmeldedaten werden folgende Prüfungen durchgeführt:
+	 * - Mailadresse noch nicht verwendet
+	 * - Vorname maximal 20 Zeichen
+	 * - Nachname maximal 20 Zeichen
+	 * - Regex (regulärer Ausdruck) zum überprüfen der Mail-Adresse
+	 * - Passwort zwischen 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen
+	 * 
 	 * @throws UserAlreadyExistsException
+	 * @throws InvalidMailAdressException 
+	 * @throws LastnameTooLongException 
+	 * @throws FirstnameTooLongException 
+	 * @throws TrivialPasswordException 
 	 */
 	public synchronized void registerNewUser(String emailAdress, String password, String firstName, String lastName,
-			String company) throws UserAlreadyExistsException {
+			String company) throws UserAlreadyExistsException, InvalidMailAdressException, LastnameTooLongException, FirstnameTooLongException, TrivialPasswordException {
 		User user = new User(firstName, lastName, company, emailAdress, password);
 
 		if (allUsers == null) {
 			allUsers = new ArrayList<User>();
 			loggedInUsers = new LinkedHashMap<String, User>();
 		}
-
+		
+		//Prüfung ob Mailadresse bereits registriert wurde.
 		for (User existingUser : allUsers) {
 			if (emailAdress.equals(existingUser.getEmailAdress())) {
-				throw new UserAlreadyExistsException("An User with email adress " + emailAdress + " already exists");
+				throw new UserAlreadyExistsException("Ein Benutzer mit der Mail-Adresse " + emailAdress + " existiert bereits.");
 			}
 		}
-
+		
+		//Prüfung ob der Vorname zu lange ist.
+		if(firstName.length() > 20){
+			throw new FirstnameTooLongException("Der Vorname ist zu lang. Bitte maximal 20 Zeichen eingeben.");
+		}
+		
+		//Prüfung ob der Nachname zu lange ist.
+		if(lastName.length() > 20){
+			throw new LastnameTooLongException("Der Nachname ist zu lang. Bitte maximal 20 Zeichen eingeben.");
+		}
+		
+		//Prüfung ob es sich um eine Mailadresse handelt.
+		if(false == Pattern.matches("^([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})$", emailAdress)){
+			throw new InvalidMailAdressException("Ungültige Mailadresse eingegeben.");
+		}
+		
+		//Prüfungen ob Passwort den Sicherheits-Bedingungen genügt.
+		if(false == Pattern.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%\\.\\!\\?§\\&\\_\\-]).{6,20})", password)){
+			throw new TrivialPasswordException("Passwort muss folgende Bedingungen erfüllen: 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen");
+		}
 		allUsers.add(user);
 
+		
 		try {
 
 			FileOutputStream fileOutput = new FileOutputStream(file);

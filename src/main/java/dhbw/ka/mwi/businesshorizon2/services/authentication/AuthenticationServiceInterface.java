@@ -72,9 +72,13 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * @param lastName
 	 *            Nachname des Anwenders
 	 * @throws UserAlreadyExistsException
+	 * @throws InvalidMailAdressException 
+	 * @throws LastnameTooLongException 
+	 * @throws FirstnameTooLongException 
+	 * @throws TrivialPasswordException 
 	 */
 	public void registerNewUser(String emailAdress, String password, String firstName, String lastName, String company)
-			throws UserAlreadyExistsException;
+			throws UserAlreadyExistsException, InvalidMailAdressException, LastnameTooLongException, FirstnameTooLongException, TrivialPasswordException;
 
 	/**
 	 * Methode zum Löschen des als Parameter übergebenen Users.

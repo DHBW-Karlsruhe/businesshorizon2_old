@@ -31,6 +31,10 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.FirstnameTooLongException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidMailAdressException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.LastnameTooLongException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.TrivialPasswordException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
@@ -130,9 +134,16 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * Diese Methode wird von der LogIn Impl gerufen um zu prüfen ob es
 	 * Null-Werte gibt und ob die Passwoerter gleich sind. Bei Erfolg wird der
 	 * Aufruf an den Authentisierungsmechanismus weitergeleitet und das Ergebnis
-	 * zurückgegeben. Bei Misserfolg werden die entsprechenden Fehler geworfen
+	 * zurückgegeben. Bei Misserfolg werden die entsprechenden Fehler geworfen.
 	 * 
-	 * @author Christian Scherer
+	 * Weitere Implementierte Prüfungen der Anmeldedaten: 
+	 * - Vorname maximal 20 Zeichen
+	 * - Nachname maximal 20 Zeichen
+	 * - Regex (regulärer Ausdruck) zum überprüfen der Mail-Adresse
+	 * - Passwort zwischen 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen
+	 * 
+	 * 
+	 * @author Christian Scherer, Marcel Rosenberger, Annika Weis
 	 * 
 	 * 
 	 */
@@ -156,9 +167,30 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 		} catch (UserAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Der Benutzer Existiert bereizts.");
+			logger.debug("Der Benutzer Existiert bereits.");
 			return;
 		}
+		catch (FirstnameTooLongException e) {
+			getView().showErrorMessage(e.getMessage());
+			logger.debug("Der Vorname ist zu lange( >20 Zeichen).");
+			return;
+		}
+		catch (LastnameTooLongException e) {
+			getView().showErrorMessage(e.getMessage());
+			logger.debug("Der Nachname ist zu lange( >20 Zeichen).");
+			return;
+		}
+		catch (InvalidMailAdressException e) {
+			getView().showErrorMessage(e.getMessage());
+			logger.debug("Ungültige Mailadresse.");
+			return;
+		}
+		catch (TrivialPasswordException e) {
+			getView().showErrorMessage(e.getMessage());
+			logger.debug("Ungültiges Passwort. Passwort muss folgende Bedingungen erfüllen: 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen");
+			return;
+		}
+
 
 	}
 
@@ -203,7 +235,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			passwordValid = false;
 			getView()
 					.showErrorMessage(
-							"Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre eingabe");
+							"Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre Eingabe");
 		}
 		return passwordValid;
 

@@ -26,14 +26,16 @@ package dhbw.ka.mwi.businesshorizon2;
  * selbst erstellten Exceptions sollen von dieser Klasse erben. Den Messages
  * wird jeweils 'Business Horizon Application Error' voran gestellt.
  * 
- * @author Florian Stier
+ * EDIT 11.12.2013: Den Messages wird NICHT MEHR 'Business Horizon Apllication Error' voran gestellt (Usability-Aspekt).
+ * 
+ * @author Florian Stier, Marcel Rosenberger
  * 
  */
 public class BusinessHorizonException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public BusinessHorizonException(String s) {
-		super("Business Horizon Application Error: " + s);
+		super(s);
 	}
 
 }

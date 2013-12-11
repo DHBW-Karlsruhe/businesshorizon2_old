@@ -97,7 +97,8 @@ public class LogInScreenViewImpl extends Window implements
 		logger.debug("Überschrift für Browser erstellt");
 
 		LoginForm login = new LoginForm();
-		login.setUsernameCaption("Benutzername");
+		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
+		login.setUsernameCaption("Mailadresse");
 		login.setPasswordCaption("Passwort");
 		login.setWidth("100%");
 		login.addListener(new LoginForm.LoginListener() {
@@ -151,7 +152,7 @@ public class LogInScreenViewImpl extends Window implements
 			presenter.registerUserDialog();
 		} else if (event.getButton() == dialogRegBtn) {
 
-			presenter.registerUser();
+			presenter.registerUser() ;
 
 		} else if (event.getButton() == passwordForgotBtn) {
 			presenter.passwordForgot();
@@ -174,7 +175,7 @@ public class LogInScreenViewImpl extends Window implements
 	 * Konkrete Erzeugung des Dialogfensters zur Registrierung eines neuen
 	 * Users.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Marcel Rosenberger, Annika Weis
 	 */
 	public void showRegisterUserDialog() {
 
@@ -190,7 +191,7 @@ public class LogInScreenViewImpl extends Window implements
 		regDialog.addComponent(fl);
 
 		textfieldFirstName = new TextField();
-		textfieldFirstName.setCaption("Bitte Vornahmen angeben: ");
+		textfieldFirstName.setCaption("Bitte Vornamen angeben: ");
 		textfieldFirstName.setRequired(true);
 		textfieldFirstName.setRequiredError("Pflichtfeld");
 		fl.addComponent(textfieldFirstName);
@@ -222,6 +223,7 @@ public class LogInScreenViewImpl extends Window implements
 				"Bitte Passwort wiederholen:");
 		passwordFieldPasswordRep.setRequired(true);
 		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");
+		
 		fl.addComponent(passwordFieldPasswordRep);
 
 		VerticalLayout vl = new VerticalLayout();

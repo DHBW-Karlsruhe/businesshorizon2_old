@@ -25,6 +25,7 @@ import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
 
 public class UserAlreadyExistsException extends BusinessHorizonException {
 
+
 	public UserAlreadyExistsException(String s) {
 		super(s);
 	}
