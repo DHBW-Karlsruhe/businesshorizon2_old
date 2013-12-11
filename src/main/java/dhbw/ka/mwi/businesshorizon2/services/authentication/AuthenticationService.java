@@ -45,7 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * Datei durchführt. Die Klasse ist als Singleton implementiert, damit sie nur
  * einmal in der gesamten Applikation existiert.
  * 
- * @author Florian Stier, Marcel Rosenberger
+ * @author Florian Stier, Marcel Rosenberger, Annika Weis
  */
 
 public class AuthenticationService implements AuthenticationServiceInterface {
