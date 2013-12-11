@@ -80,7 +80,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 * @author Christian Scherer
 	 */
 	private void generateUi() {
-		setCaption("Business Horizon 2");
+		setCaption("Business Horizon 2.1");
 		logger.debug("Überschrift für Browser erstellt");
 
 		verticalPanel = new VerticalSplitPanel();
