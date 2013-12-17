@@ -38,6 +38,10 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
+import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+
 /**
  * Diese View stellt die Vaadin-Implementierung der Navigation zur Prozessansicht dar.
  * Sie nutzt hierzu insbesondere Vaadings Buttons.
@@ -52,9 +56,13 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	
 	@Autowired
 	private NavigationPresenter presenter;
+	@Autowired
+	private UserProxy userProxy;
 	
 	private HorizontalLayout layout;
 	private HorizontalLayout innerlayout;
+	
+	private AuthenticationServiceInterface authenticationService;
 	
 	private Map<NavigationSteps, Button> navigationButtons = new HashMap<NavigationSteps, Button>();
 	
@@ -92,6 +100,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		this.addNavigationButton(NavigationSteps.PERIOD);
 		this.addNavigationButton(NavigationSteps.SCENARIO);
 		this.addNavigationButton(NavigationSteps.OUTPUT);
+		this.addLogoutButton("Logout");
 		
 		layout.addComponent(innerlayout);
 		layout.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
@@ -151,6 +160,29 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		
 		this.innerlayout.addComponent(navigationButton);
 		this.innerlayout.setComponentAlignment(navigationButton, Alignment.BOTTOM_CENTER);
+		
+	}
+	private void addLogoutButton(String text) {
+		Button navigationButton = new Button(text);
+		navigationButton.addListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 7411091035775152765L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				//do the logout
+				try {
+					//TODO :autowired user is not set
+					authenticationService.doLogout(userProxy.getSelectedUser());
+				} catch (UserNotLoggedInException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		navigationButton.setEnabled(true);
+		this.innerlayout.addComponent(navigationButton);
+		this.innerlayout.setComponentAlignment(navigationButton, Alignment.TOP_RIGHT);
 		
 	}
 	

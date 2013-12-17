@@ -23,10 +23,21 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
+
+
 import com.mvplite.view.View;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -48,6 +59,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	@Autowired
 	private InitialScreenPresenter presenter;
+	
+	@Autowired
+	private UserProxy userProxy;
 
 	private VerticalSplitPanel verticalPanel;
 
@@ -58,6 +72,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	private Label title;
 
 	private Label userData;
+	
+	private AuthenticationServiceInterface authenticationService;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -86,10 +102,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		verticalPanel = new VerticalSplitPanel();
 		verticalPanel.setSizeFull();
 		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
+		verticalPanel.setLocked(true);
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
 		heading = new VerticalLayout();
-		title = new Label("<h1>#YOLO Business Horizon 2</h1>");
+		title = new Label("<h1>Business Horizon 2</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
 		heading.addComponent(title);
 
@@ -99,13 +116,39 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		horizontalPanel = new HorizontalSplitPanel();
 		horizontalPanel.setSizeFull();
 		horizontalPanel.setSplitPosition(50, UNITS_PERCENTAGE);
+		horizontalPanel.setLocked(true);
 
 		verticalPanel.setSecondComponent(horizontalPanel);
 		logger.debug("Horizontales Panel für Projkte und Infos erstellt und an das vertikale Panel übergeben");
 
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
+		//logout button hintzufuegen
+		this.addButton("Logout");
+	}
 
+	private void addButton(String text) {
+		Button navigationButton = new Button(text);
+		navigationButton.addListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 7411091035775152765L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				//do the logout
+				try {
+					//TODO :autowired user is not set
+					authenticationService.doLogout(userProxy.getSelectedUser());
+				} catch (UserNotLoggedInException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		navigationButton.setEnabled(true);
+		heading.addComponent(navigationButton);
+		heading.setComponentAlignment(navigationButton, Alignment.TOP_RIGHT);
+		
 	}
 
 	/**

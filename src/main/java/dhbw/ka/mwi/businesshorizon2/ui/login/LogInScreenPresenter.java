@@ -110,6 +110,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	public void doLogin(String username, String password) {
 		try {
 			userProxy.setSelectedUser(authenticationService.doLogin(username, password));
+			System.out.println(userProxy.getSelectedUser().getEmailAdress());
 		} catch (UserNotFoundException e) {
 			getView().showErrorMessage(e.getMessage());
 			return;
