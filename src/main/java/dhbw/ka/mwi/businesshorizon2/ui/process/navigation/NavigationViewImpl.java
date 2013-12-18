@@ -163,10 +163,10 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		
 	}
 	private void addLogoutButton(String text) {
-		Button navigationButton = new Button(text);
-		navigationButton.addListener(new Button.ClickListener() {
+		Button logoutButton = new Button(text);
+		logoutButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 7411091035775152765L;
-
+			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				//do the logout
@@ -180,9 +180,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 			}
 		});
 		
-		navigationButton.setEnabled(true);
-		this.innerlayout.addComponent(navigationButton);
-		this.innerlayout.setComponentAlignment(navigationButton, Alignment.TOP_RIGHT);
+		logoutButton.setEnabled(true);
+		this.innerlayout.addComponent(logoutButton);
+		this.innerlayout.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 		
 	}
 	

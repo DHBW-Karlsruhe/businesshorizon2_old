@@ -124,14 +124,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
 		//logout button hintzufuegen
-		this.addButton("Logout");
+		this.addLogoutButton("Logout");
 	}
 
-	private void addButton(String text) {
-		Button navigationButton = new Button(text);
-		navigationButton.addListener(new Button.ClickListener() {
+	private void addLogoutButton(String text) {
+		Button logoutButton = new Button(text);
+		logoutButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 7411091035775152765L;
-
+			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				//do the logout
@@ -145,11 +145,12 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			}
 		});
 		
-		navigationButton.setEnabled(true);
-		heading.addComponent(navigationButton);
-		heading.setComponentAlignment(navigationButton, Alignment.TOP_RIGHT);
+		logoutButton.setEnabled(true);
+		heading.addComponent(logoutButton);
+		heading.setComponentAlignment(logoutButton, Alignment.BOTTOM_RIGHT);
 		
 	}
+
 
 	/**
 	 * Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
