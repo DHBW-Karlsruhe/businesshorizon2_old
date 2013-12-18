@@ -49,7 +49,7 @@ import com.vaadin.ui.Window;
  * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
  * Eingangs-Fenster).
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Marcel Rosenberger
  * 
  */
 public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
@@ -73,7 +73,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private Label userData;
 	
-	private AuthenticationServiceInterface authenticationService;
+	
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -123,7 +123,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
-		//logout button hintzufuegen
+		//logout button hinzufuegen
 		this.addLogoutButton("Logout");
 	}
 
@@ -134,14 +134,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				//do the logout
-				try {
-					//TODO :autowired user is not set
-					authenticationService.doLogout(userProxy.getSelectedUser());
-				} catch (UserNotLoggedInException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
+				presenter.doLogout();
 			}
 		});
 		

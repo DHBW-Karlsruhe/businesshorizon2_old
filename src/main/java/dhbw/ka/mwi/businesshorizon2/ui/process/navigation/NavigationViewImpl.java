@@ -46,7 +46,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
  * Diese View stellt die Vaadin-Implementierung der Navigation zur Prozessansicht dar.
  * Sie nutzt hierzu insbesondere Vaadings Buttons.
  * 
- * @author Julius Hacker
+ * @author Julius Hacker, Marcel Rosenberger
  *
  */
 public class NavigationViewImpl extends HorizontalLayout implements NavigationViewInterface {
@@ -62,6 +62,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	private HorizontalLayout layout;
 	private HorizontalLayout innerlayout;
 	
+	@Autowired
 	private AuthenticationServiceInterface authenticationService;
 	
 	private Map<NavigationSteps, Button> navigationButtons = new HashMap<NavigationSteps, Button>();
@@ -169,14 +170,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				//do the logout
-				try {
-					//TODO :autowired user is not set
-					authenticationService.doLogout(userProxy.getSelectedUser());
-				} catch (UserNotLoggedInException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
+				presenter.doLogout();
 			}
 		});
 		

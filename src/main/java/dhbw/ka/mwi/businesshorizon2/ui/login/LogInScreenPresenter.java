@@ -41,7 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
  * Dies ist der Presenter, der hier besonders zum Durchreichen des
  * Authentifizierungsmechanismus gebraucht wird.
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Marcel Rosenberger
  * 
  */
 
@@ -89,7 +89,9 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 */
 	@EventHandler
 	public void onShowLogInScreen(ShowLogInScreenEvent event) {
-
+		logger.debug("ShowLogInScreenEvent erhalten");
+		logger.debug("LogInScreenPresenter.onShowLogInScreen aufgerufen");
+		
 	}
 
 	/**
@@ -110,7 +112,6 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	public void doLogin(String username, String password) {
 		try {
 			userProxy.setSelectedUser(authenticationService.doLogin(username, password));
-			System.out.println(userProxy.getSelectedUser().getEmailAdress());
 		} catch (UserNotFoundException e) {
 			getView().showErrorMessage(e.getMessage());
 			return;

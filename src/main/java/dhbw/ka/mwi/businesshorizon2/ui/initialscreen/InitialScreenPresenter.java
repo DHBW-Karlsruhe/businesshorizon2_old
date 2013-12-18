@@ -32,19 +32,23 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 
 /**
- * Dieser Presenter stellt die Einganseite der Applikation darf. Er ist dafuer
+ * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
  * verantwortlich, die jeweils anzuzeigenden Fenster korrekt in der View zu
  * setzen. Somit ist es notwenig, dass er fuer jedes Anzuzeigende (Teil-)Fenster
  * einen entsprechenden EventHandler fuer den jeweiligen Show*Event registriert.
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Marcel Rosenberger
  * 
  */
 
@@ -69,6 +73,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private InfosViewInterface infosView;
+	
+	@Autowired
+	private AuthenticationServiceInterface authenticationService;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -107,6 +114,20 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		eventBus.fireEvent(new ShowInfosEvent());
 		logger.debug("ShowInfosEvent gefeuert");
 
+	}
+
+	//wird durch den Click-Listener des Logout-Button in der InitinalScreen-View aufgerufen
+	public void doLogout() {
+		try {
+			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
+			authenticationService.doLogout(userProxy.getSelectedUser());
+			logger.debug("LogoutEvent gefeuert");
+			eventBus.fireEvent(new LogoutEvent());	
+		} catch (UserNotLoggedInException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

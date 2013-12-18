@@ -23,6 +23,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.navigation;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
@@ -30,8 +31,13 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
@@ -41,17 +47,25 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 /**
  * Der Presenter zur Navigation der Prozessansicht.
  * 
- * @author Julius Hacker
+ * @author Julius Hacker, Marcel Rosenberger
  *
  */
 public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	private static final long serialVersionUID = 1L;
-
+	
+	private Logger logger = Logger.getLogger("LogInScreenPresenter.class");
+	
 	@Autowired
 	private EventBus eventBus;
 	
 	@Autowired
 	private ProjectProxy projectProxy;
+	
+	@Autowired
+	private UserProxy userProxy;
+	
+	@Autowired
+	private AuthenticationServiceInterface authenticationService;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -103,5 +117,19 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 
 	public String getProjectName() {
 		return this.projectProxy.getSelectedProject().getName();
+	}
+
+	//wird durch den Click-Listener des Logout-Buttosn in der Navigationsview aufgerufen
+	public void doLogout() {
+		try {
+			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
+			authenticationService.doLogout(userProxy.getSelectedUser());
+			eventBus.fireEvent(new LogoutEvent());
+			logger.debug("LogoutEvent gefeuert");	
+		} catch (UserNotLoggedInException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
