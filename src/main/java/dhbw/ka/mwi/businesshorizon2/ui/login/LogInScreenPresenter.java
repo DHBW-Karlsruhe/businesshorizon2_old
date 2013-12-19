@@ -18,6 +18,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
 import java.util.regex.Pattern;
@@ -80,6 +81,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	}
 
+	
 	/**
 	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Setzen des
 	 * Fensters) abgesetzt. Es müssen derzeit keine Objekte hierbei geladen
@@ -90,7 +92,9 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 */
 	@EventHandler
 	public void onShowLogInScreen(ShowLogInScreenEvent event) {
-
+		logger.debug("ShowLogInScreenEvent erhalten");
+		logger.debug("LogInScreenPresenter.onShowLogInScreen aufgerufen");
+		
 	}
 
 	/**
@@ -370,3 +374,4 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	}
 
 }
+

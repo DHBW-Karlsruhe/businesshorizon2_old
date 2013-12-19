@@ -32,6 +32,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
@@ -43,7 +44,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
  * erfolgt in der Klasse SpringApplicationServlet. Dabei werden auch die
  * Autowired-Annotations aufgeloest.
  * 
- * @author Christian Gahlert
+ * @author Christian Gahlert, Marcel Rosenberger
  */
 public class BHApplication extends Application {
 	private static final long serialVersionUID = 1L;
@@ -91,15 +92,16 @@ public class BHApplication extends Application {
 
 	/**
 	 * Die Methode triggert die Anzeige der Projektuebersichtsseite, sobald der User
-	 * sich erfolgreich eingeloggt hat.
+	 * sich erfolgreich eingeloggt hat. 
 	 * 
-	 * @author Julius Hacker
+	 * 
+	 * @author Julius Hacker, Marcel Rosenberger
 	 * @param event Der ausgeloeste ShowUserEvent
 	 */
 	@EventHandler
 	public void showInitialView(ShowUserEvent event) {
-		this.removeWindow(initialScreenView);
 		this.removeWindow(processView);
+		this.removeWindow(initialScreenView);
 		initialScreenView.setName("overview");
 		addWindow(initialScreenView);
 		setMainWindow(initialScreenView);
@@ -111,9 +113,9 @@ public class BHApplication extends Application {
 
 	/**
 	 * Die Methode triggert die Anzeige der Prozessansicht, sobald an einer
-	 * Stelle des Programmes ein Projekt angezeigt wurde.
+	 * Stelle des Programmes ein Projekt angezeigt wurde. 
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Marcel Rosenberger
 	 * @param event
 	 *            Der ausgeloeste ShowProjectEvent
 	 */
@@ -126,6 +128,30 @@ public class BHApplication extends Application {
 
 		eventBus.fireEvent(new ShowProcessViewEvent());
 		logger.debug("ShowProzessViewEvent gefeuert");
-		
 	}
+	
+	/**
+	 * Die Methode triggert die Anzeige der Loginview, sobald an einer
+	 * Stelle des Programmes (entweder InitialScreen oder in den ProcessViews) 
+	 * der Logout-Button betätigt wurde. 
+	 * Nachdem der Login-Screen als Main-Window gesetzt wurde müssen noch 
+	 * Initialscreen und ProcessView gelöscht werden.
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param event
+	 *            Das ausgeloeste LogoutEvent
+	 */
+	@EventHandler
+	public void showLoginView(LogoutEvent event) {
+		this.removeWindow(logInScreenView);
+		logInScreenView.setName("login");
+		addWindow(logInScreenView);
+		setMainWindow(logInScreenView);
+		logInScreenView.open(new ExternalResource(logInScreenView.getURL()));
+		this.removeWindow(processView);
+		this.removeWindow(initialScreenView);
+		eventBus.fireEvent(new ShowLogInScreenEvent());
+		logger.debug("ShowLogInScreenEvent gefeuert");
+	}
+	
 }
