@@ -32,6 +32,11 @@ import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
  */
 public class UserNotLoggedInException extends BusinessHorizonException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5999506911224985730L;
+
 	public UserNotLoggedInException(String s) {
 		super(s);
 	}

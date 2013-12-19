@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -21,6 +20,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
+import java.util.regex.Pattern;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -31,10 +32,6 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidFirstNameException;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidMailAdressException;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.InvalidLastNameException;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.TrivialPasswordException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotFoundException;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
@@ -45,7 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
  * Dies ist der Presenter, der hier besonders zum Durchreichen des
  * Authentifizierungsmechanismus gebraucht wird.
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Marcel Rosenberger
  * 
  */
 
@@ -56,7 +53,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private UserProxy userProxy;
 
@@ -113,7 +110,8 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 */
 	public void doLogin(String username, String password) {
 		try {
-			userProxy.setSelectedUser(authenticationService.doLogin(username, password));
+			userProxy.setSelectedUser(authenticationService.doLogin(username,
+					password));
 		} catch (UserNotFoundException e) {
 			getView().showErrorMessage(e.getMessage());
 			return;
@@ -136,11 +134,14 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * Aufruf an den Authentisierungsmechanismus weitergeleitet und das Ergebnis
 	 * zurückgegeben. Bei Misserfolg werden die entsprechenden Fehler geworfen.
 	 * 
-	 * Weitere Implementierte Prüfungen der Anmeldedaten: 
-	 * - Vorname gültig (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.)
-	 * - Nachname gültig (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.)
-	 * - Regex (regulärer Ausdruck) zum überprüfen der Mail-Adresse
-	 * - Passwort zwischen 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen
+	 * Weitere Implementierte Prüfungen der Anmeldedaten: - Vorname gültig (Muss
+	 * mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt.
+	 * Keine Accents o.ä. und maximal 20 Buchstaben lang.) - Nachname gültig
+	 * (Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen
+	 * erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.) - Regex
+	 * (regulärer Ausdruck) zum überprüfen der Mail-Adresse - Passwort zwischen
+	 * 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1
+	 * Sonderzeichen
 	 * 
 	 * 
 	 * @author Christian Scherer, Marcel Rosenberger, Annika Weis
@@ -155,9 +156,13 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			this.lastName = getView().getLastName();
 			this.company = getView().getCompany();
 
-			if (validatePassword() && validateNoNullPointer()) {
-
-				logger.debug("Alle Eingabefelder wurden vom Anwender befuellt und die Passwoerter stimmen ueberein.");
+			// ruft zuerst sämtliche Prüfmethoden auf
+			if (validateNoNullPointer() && validateFirstName()
+					&& validateLastName() && validateMailAdress()
+					&& validatePassword() && validatePasswordSafety()) {
+				logger.debug("Alle Eingabefelder wurden vom Anwender gültig befuellt und die Passwoerter stimmen überein.");
+				
+				//mit dieser Methode werden die Userdaten in einer Datei abgelegt
 				authenticationService.registerNewUser(emailAdress, password,
 						firstName, lastName, company);
 				logger.debug("Registrierung abgeschlossen.");
@@ -169,28 +174,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			getView().showErrorMessage(e.getMessage());
 			logger.debug("Der Benutzer Existiert bereits.");
 			return;
-		}
-		catch (InvalidFirstNameException e) {
-			getView().showErrorMessage(e.getMessage());
-			logger.debug("Der Vorname ist zu lange( >20 Zeichen).");
-			return;
-		}
-		catch (InvalidLastNameException e) {
-			getView().showErrorMessage(e.getMessage());
-			logger.debug("Der Nachname ist zu lange( >20 Zeichen).");
-			return;
-		}
-		catch (InvalidMailAdressException e) {
-			getView().showErrorMessage(e.getMessage());
-			logger.debug("Ungültige Mailadresse.");
-			return;
-		}
-		catch (TrivialPasswordException e) {
-			getView().showErrorMessage(e.getMessage());
-			logger.debug("Ungültiges Passwort. Passwort muss folgende Bedingungen erfüllen: 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen");
-			return;
-		}
-
+		} 
 
 	}
 
@@ -214,30 +198,153 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		return noNullPointer;
 	}
 
+	// TrivialPasswordException
+
+	/**
+	 * Prueft ob es sich um einen gültigen Vorname handelt. Gibt "true" fuer
+	 * gültig und "false" fuer nicht gültig zurueck. Ein Vorname muss mit einem
+	 * Großbuchstaben beginnen und darf maximal 20 Zeichen lang sein. Weiterhin
+	 * ist ein Bindestrich "-" erlaubt. Bei keiner Uebereinstimmung wird zudem
+	 * eine Fehlermeldung an die ViewImpl zur Ausgabe zurueckgegeben.
+	 * 
+	 * @author Marcel Rosenberger, Annika Weis
+	 * @return Ob es sich um einen gültigen Vornamen handelt.
+	 */
+	private boolean validateFirstName() {
+		boolean validFirstName;
+
+		// hier wird der Vorname überprüft
+		if (Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", firstName)) {
+			validFirstName = true;
+			logger.debug("Vorname gültig.");
+		} else {
+			validFirstName = false;
+			getView().showErrorMessage(
+					"Bitte geben Sie einen gültigen Vornamen ein.");
+			logger.debug("Vorname ungültig.");
+		}
+
+		return validFirstName;
+	}
+
+	/**
+	 * Prueft ob es sich um einen gültigen Nachnamen handelt. Gibt "true" fuer
+	 * gültig und "false" fuer nicht gültig zurueck. Ein Nachname muss mit einem
+	 * Großbuchstaben beginnen und darf maximal 20 Zeichen lang sein. Weiterhin
+	 * ist ein Bindestrich "-" erlaubt. Bei keiner Uebereinstimmung wird zudem
+	 * eine Fehlermeldung an die ViewImpl zur Ausgabe zurueckgegeben.
+	 * 
+	 * @author Marcel Rosenberger, Annika Weis
+	 * @return Ob es sich um einen gültigen Nachnamen handelt.
+	 */
+	private boolean validateLastName() {
+		boolean validLastName;
+
+		// hier wird der Nachname überprüft
+		if (Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", lastName)) {
+			validLastName = true;
+			logger.debug("Nachname gültig.");
+		} else {
+			validLastName = false;
+			getView().showErrorMessage(
+					"Bitte geben Sie einen gültigen Nachnamen ein.");
+			logger.debug("Nachname ungültig.");
+		}
+
+		return validLastName;
+	}
+
+	/**
+	 * Prueft ob es sich um eine gültige Mailadresse handelt und gibt "true"
+	 * fuer gültig und "false" fuer nicht gültig zurueck. Eine Mailadresse muss
+	 * aus mindestens einem Zeichen vor dem '@', mindestens einem zwischen '@'
+	 * und Domain, einem Punkt und einer Domain bestehen. Bei keiner
+	 * Uebereinstimmung wird zudem eine Fehlermeldung an die ViewImpl zur
+	 * Ausgabe zurueckgegeben.
+	 * 
+	 * @author Marcel Rosenberger, Annika Weis
+	 * @return Ob es sich um eine gültige Mailadresse handelt.
+	 */
+	private boolean validateMailAdress() {
+		boolean validMailAdress;
+
+		// hier wird die Mailadresse überprüft
+		if (Pattern
+				.matches(
+						"^([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})$",
+						emailAdress)) {
+			validMailAdress = true;
+			logger.debug("Mailadresse gültig.");
+		} else {
+			validMailAdress = false;
+			getView().showErrorMessage(
+					"Bitte geben Sie eine gültige Mailadresse ein.");
+			logger.debug("Mailadresse ungültig.");
+		}
+
+		return validMailAdress;
+	}
+
 	/**
 	 * Prueft ob das Passwort gleich der Passwortwiederholung ist und gibt
 	 * "true" fuer uebereinstimmung und "false" fuer keine Uebereinstimmung
 	 * zurueck. Bei keiner Uebereinstimmung wird zudem eine Fehlermeldung an die
 	 * ViewImpl zur Ausgabe zurueckgegeben.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Marcel Rosenberger
 	 * @return Ob die beiden Passwörter gleich sind oder nicht
 	 */
 	private boolean validatePassword() {
 
 		String password = getView().getPassword();
 		String passwordRep = getView().getPasswordRep();
-		boolean passwordValid;
+		boolean validPassword;
 
 		if (password.equals(passwordRep)) {
-			passwordValid = true;
+			validPassword = true;
+			logger.debug("Passwörter stimmen überein.");
 		} else {
-			passwordValid = false;
+			validPassword = false;
 			getView()
 					.showErrorMessage(
 							"Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre Eingabe");
+			logger.debug("Passwörter stimmen nicht überein.");
 		}
-		return passwordValid;
+		return validPassword;
+
+	}
+
+	/**
+	 * Prueft ob das Passwort den Sicherheitsbestimmungen entspricht und gibt
+	 * "true" fuer Entsprechnung und "false" fuer keine Entsprechung zurueck.
+	 * Wie im Fachkonzept beschrieben muss ein Passwort aus 6-20 Zeichen,
+	 * mindestens einer Zahl, Gruß- und Kleinbuchstaben sowie einem
+	 * Sonderzeichen bestehen. Trifft das nicht zu, wird zudem eine
+	 * Fehlermeldung an die ViewImpl zur Ausgabe zurueckgegeben.
+	 * 
+	 * @author Marcel Rosenberger, Annika Weis
+	 * @return Ob die beiden Passwörter gleich sind oder nicht
+	 */
+	private boolean validatePasswordSafety() {
+
+		boolean safePassword;
+
+		// hier wird das Passwort überprüft
+		if (Pattern
+				.matches(
+						"((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%\\.\\!\\?§\\&\\_\\-]).{6,20})",
+						password)) {
+			safePassword = true;
+			logger.debug("Passwort genügt Sicherheitsbestimmungen.");
+		} else {
+			safePassword = false;
+			getView()
+					.showErrorMessage(
+							"Das Passwort muss zwischen 6-20 Zeichen lang sein, sowie mindestens eine Zahl, Groß- und Kleinbuchstaben und ein Sonderzeichen enthalten.");
+			logger.debug("Passwort genügt Sicherheitsbestimmungen nicht.");
+		}
+
+		return safePassword;
 
 	}
 

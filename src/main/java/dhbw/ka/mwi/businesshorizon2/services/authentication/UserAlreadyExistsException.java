@@ -26,6 +26,11 @@ import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
 public class UserAlreadyExistsException extends BusinessHorizonException {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9222439608726393852L;
+
 	public UserAlreadyExistsException(String s) {
 		super(s);
 	}

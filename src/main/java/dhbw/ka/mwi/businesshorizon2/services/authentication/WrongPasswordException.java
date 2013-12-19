@@ -31,6 +31,11 @@ import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
 
 public class WrongPasswordException extends BusinessHorizonException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1226548678317334435L;
+
 	public WrongPasswordException(String s) {
 		super(s);
 	}

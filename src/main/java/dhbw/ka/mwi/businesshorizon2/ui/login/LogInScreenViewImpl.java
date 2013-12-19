@@ -139,7 +139,7 @@ public class LogInScreenViewImpl extends Window implements
 	}
 
 	/**
-	 * Clicklistener für den Registier-Button. Es wird ein Dialogfenster
+	 * Clicklistener für den Registrier-Button. Es wird ein Dialogfenster
 	 * aufgerufen.
 	 * 
 	 * @author Christian Scherer
@@ -189,41 +189,45 @@ public class LogInScreenViewImpl extends Window implements
 		fl.setSpacing(true);
 		fl.setMargin(true);
 		regDialog.addComponent(fl);
-
+		
+		//Vorname
 		textfieldFirstName = new TextField();
 		textfieldFirstName.setCaption("Bitte Vornamen angeben: ");
 		textfieldFirstName.setRequired(true);
 		textfieldFirstName.setRequiredError("Pflichtfeld");
 		fl.addComponent(textfieldFirstName);
-
+		
+		//Nachname
 		textfieldLastName = new TextField();
 		textfieldLastName.setCaption("Bitte Nachnamen angeben: ");
 		textfieldLastName.setRequired(true);
 		textfieldLastName.setRequiredError("Pflichtfeld");
 		fl.addComponent(textfieldLastName);
 
+		//Unternehmen
 		textfieldCompany = new TextField();
 		textfieldCompany.setCaption("Bitte Unternehmen angeben: ");
 		textfieldCompany.setRequired(true);
 		textfieldCompany.setRequiredError("Pflichtfeld");
 		fl.addComponent(textfieldCompany);
 
+		//Mailadresse
 		textfieldEmailAdress = new TextField();
 		textfieldEmailAdress.setCaption("Bitte Mailadresse angeben: ");
 		textfieldEmailAdress.setRequired(true);
 		textfieldEmailAdress.setRequiredError("Pflichtfeld");
 		fl.addComponent(textfieldEmailAdress);
 
+		//Passwort
 		passwordFieldPassword = new PasswordField("Bitte Passwort wählen: ");
 		passwordFieldPassword.setRequired(true);
 		passwordFieldPassword.setRequiredError("Pflichtfeld");
 		fl.addComponent(passwordFieldPassword);
 
-		passwordFieldPasswordRep = new PasswordField(
-				"Bitte Passwort wiederholen:");
+		//Passwort WDH
+		passwordFieldPasswordRep = new PasswordField("Bitte Passwort wiederholen:");
 		passwordFieldPasswordRep.setRequired(true);
-		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");
-		
+		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");		
 		fl.addComponent(passwordFieldPasswordRep);
 
 		VerticalLayout vl = new VerticalLayout();

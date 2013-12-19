@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -183,7 +182,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	 * @throws TrivialPasswordException 
 	 */
 	public synchronized void registerNewUser(String emailAdress, String password, String firstName, String lastName,
-			String company) throws UserAlreadyExistsException, InvalidMailAdressException, InvalidLastNameException, InvalidFirstNameException, TrivialPasswordException {
+			String company) throws UserAlreadyExistsException {
 		User user = new User(firstName, lastName, company, emailAdress, password);
 
 		if (allUsers == null) {
@@ -198,25 +197,6 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 			}
 		}
 		
-		//Prüfung ob der Vorname gültig ist. Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.
-		if(false == Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", firstName)){
-			throw new InvalidFirstNameException("Ungültiger Vorname. Maximal 20 Buchstaben, erster Buchstabe muss großgeschrieben sein.");
-		}
-		
-		////Prüfung ob der Vorname gültig ist. Muss mit Großbuchstaben beginnen, nur Buchstaben und Trennzeichen erlaubt. Keine Accents o.ä. und maximal 20 Buchstaben lang.
-		if(false == Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", lastName)){
-			throw new InvalidLastNameException("Ungültiger Nachname. Maximal 20 Buchstaben, erster Buchstabe muss großgeschrieben sein.");
-		}
-		
-		//Prüfung ob es sich um eine Mailadresse handelt.
-		if(false == Pattern.matches("^([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})$", emailAdress)){
-			throw new InvalidMailAdressException("Ungültige Mailadresse eingegeben.");
-		}
-		
-		//Prüfungen ob Passwort den Sicherheits-Bedingungen genügt.
-		if(false == Pattern.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%\\.\\!\\?§\\&\\_\\-]).{6,20})", password)){
-			throw new TrivialPasswordException("Passwort muss folgende Bedingungen erfüllen: 6-20 Zeichen, mind. 1 Zahl, Groß- und Kleinbuchstaben, mind. 1 Sonderzeichen");
-		}
 		allUsers.add(user);
 
 		

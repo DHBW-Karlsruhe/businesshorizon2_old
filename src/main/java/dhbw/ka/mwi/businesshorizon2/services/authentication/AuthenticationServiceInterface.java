@@ -78,7 +78,7 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * @throws InvalidFirstNameException 
 	 */
 	public void registerNewUser(String emailAdress, String password, String firstName, String lastName, String company)
-			throws UserAlreadyExistsException, InvalidMailAdressException, InvalidLastNameException, InvalidFirstNameException, TrivialPasswordException, InvalidFirstNameException;
+			throws UserAlreadyExistsException;
 
 	/**
 	 * Methode zum Löschen des als Parameter übergebenen Users.
