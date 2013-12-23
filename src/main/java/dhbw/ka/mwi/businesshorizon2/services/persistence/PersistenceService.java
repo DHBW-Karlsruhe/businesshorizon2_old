@@ -6,8 +6,10 @@ package dhbw.ka.mwi.businesshorizon2.services.persistence;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -18,6 +20,8 @@ import org.apache.log4j.Logger;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.UserAlreadyExistsException;
+import dhbw.ka.mwi.businesshorizon2.services.authentication.WrongPasswordException;
 
 /**
  * 
@@ -40,6 +44,9 @@ public class PersistenceService implements PersistenceServiceInterface {
 	private ArrayList<Project> allProjects;
 	
 	/**
+	 * 
+	 * @author Marcel Rosenberger
+	 * 
 	 * Methode zur Initialisierung des PersistenceService durch Spring.
 	 * Projektdatei wird erstellt.
 	 */
@@ -71,7 +78,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	/**
 	 * Die Methode initialisiert die ArrayList, in welcher alle Projekte werden. 
 	 * 
-	 * @author: Marcel Rosenberger
+	 * @author Marcel Rosenberger
 	 * 
 	 */
 	private synchronized void initializeProjectList() {
@@ -91,9 +98,10 @@ public class PersistenceService implements PersistenceServiceInterface {
 				Project project = (Project) projectInput.readObject();
 				allProjects.add(project);
 			}
-
+			
 			fileInput.close();
 			projectInput.close();
+			
 
 		} catch (FileNotFoundException e) {
 			logger.error("The specified file could not be found");
@@ -105,27 +113,84 @@ public class PersistenceService implements PersistenceServiceInterface {
 
 	}
 	
-	@Override
+	
 	/**
 	 * Methode zum Laden aller Projektdaten des angemeldeten Users.
+	 * 
+	 * @author Marcel Rosenberger
 	 * 
 	 * @param user
 	 *            User dessen Projektdaten geladen werden sollen
 	 * @return Project Objekt mit allen Projektdaten
 	 */
-	public ArrayList<Project> loadProjects(User user) {
-		return null;
+	public synchronized void loadProjects(User user) {
+		ArrayList<Project> userProjects = new ArrayList<Project>();
+		if (allProjects != null) {
+			//lädt alle Projekte....
+			for (Project project : allProjects) {
+				//...die von dem derzeit eingeloggten User angelegt wurden...
+				if (project.getCreatedFrom().getEmailAdress().equals(user.getEmailAdress())) {
+					//...fügt sie der ArrayList hinzu...
+					userProjects.add(project);
+				}
+			}
+		}
+		//...und speichert diese im aufrufenden Userobjekt
+		user.setProjects(userProjects);
+		logger.debug("Gespeicherte Projekte an den eingeloggten User übergeben.");
 	}
 
 	/**
 	 * Methode zum Hinzufügen eines Projekts für einen User
 	 * 
+	 * 
+	 * @author Marcel Rosenberger
 	 * @param user
 	 *            der User, für den ein Projekt hinzugefügt werden soll
 	 * @param project
 	 *            das Projekt, dessen Daten hinzugefügt werden sollen
 	 */
-	public void addProject(User user, Project project) {
+	public synchronized void addProject(User user, Project project) 
+		 throws ProjectAlreadyExistException {
+			ArrayList<Project> userProjects;	
+			userProjects = user.getProjects();
+
+			if (allProjects == null) {
+				allProjects = new ArrayList<Project>();
+			}
+			
+			//Prüfung ob Projektname bei diesem Nutzer schon beutzt wird
+			for (Project projektName : allProjects) {
+				if (projektName.getCreatedFrom().getEmailAdress().equals(user.getEmailAdress())) {
+					if (projektName.getName().equals(project.getName())) {
+					throw new ProjectAlreadyExistException("Projekt mit dem Namen " + project.getName() + " existiert bereits.");
+				}
+			}
+			logger.debug("Projektname wird noch nicht genutzt.");
+			
+			userProjects.add(project);
+			user.setProjects(userProjects);
+			logger.debug("Projekt zu Nutzerprojekten hinzufügen.");
+			allProjects.add(project);
+			
+			try {
+
+				FileOutputStream fileOutput = new FileOutputStream(file);
+				ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+
+				objectOutput.writeInt(allProjects.size());
+				for (Project projectToSave : allProjects) {
+					objectOutput.writeObject(projectToSave);
+				}
+
+				fileOutput.close();
+				objectOutput.close();
+				logger.debug("Projekt erfolgreich gespeichert.");
+
+			} catch (IOException e) {
+				logger.error("An IOException occured: " + e.getMessage());
+			}
+		}
 	}
 	
 	/**
@@ -136,7 +201,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 * @param project
 	 *            das Projekt,das entfernt werden sollen
 	 */
-	public void removeProject(User user, Project project) {
+	public synchronized void removeProject(User user, Project project) {
 	}
 	
 	/**
@@ -147,7 +212,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 * @param project
 	 *            das Projekt, dessen Daten geändert werden sollen
 	 */
-	public void changeProject(User user, Project project) {
+	public synchronized void changeProject(User user, Project project) {
 	}
 
 }
