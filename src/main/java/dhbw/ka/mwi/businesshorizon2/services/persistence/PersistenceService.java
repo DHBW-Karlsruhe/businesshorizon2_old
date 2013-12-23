@@ -40,7 +40,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 			+ "\\Business Horizon";
 	private static final String FILENAME = "\\projects.dat";
 
-	private static final Logger logger = Logger.getLogger(PersistenceService.class);
+	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
 	private ArrayList<Project> allProjects;
 
@@ -115,8 +115,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 					+ e.getMessage());
 			e.printStackTrace();
 		} catch (EOFException e) {
-			logger.error("Initialization: An EOFException occured: "
-					+ e.getMessage());
+			logger.error("Projektdatei ist leer.");
 		} catch (IOException e) {
 			logger.error("Initialization: An IOException occured: "
 					+ e.getMessage());
@@ -166,6 +165,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 */
 	public synchronized void addProject(User user, Project project)
 			throws ProjectAlreadyExistException {
+		//Nutzerprojekte in temporärer Liste abspeichern
 		ArrayList<Project> userProjects;
 		userProjects = user.getProjects();
 
@@ -186,16 +186,15 @@ public class PersistenceService implements PersistenceServiceInterface {
 			}
 		}
 		logger.debug("Projektname wird noch nicht genutzt.");
-
+		//Projekt zu temporärer Liste hinzufügen
 		userProjects.add(project);
-		logger.debug("userProjects.add(project)");
+		//Mit Temporärer Liste die Projekte des Nutzers überschreiben
 		user.setProjects(userProjects);
-		logger.debug("user.setProjects(userProjects);");
 		logger.debug("Projekt zu Nutzerprojekten hinzufügen.");
 		allProjects.add(project);
 		logger.debug("Projekt zu allen Projekten hinzugefügt.");
 		
-		//Projekte in Datei abspeichern
+		//Projektdatei aktualisieren
 		try {
 
 			FileOutputStream fileOutput = new FileOutputStream(file);
@@ -203,16 +202,60 @@ public class PersistenceService implements PersistenceServiceInterface {
 			logger.debug("OutputStreams erzeugt.");
 
 			objectOutput.writeInt(allProjects.size());
-			logger.debug("Projektgröße weggeschrieben");
 			for (Project projectToSave : allProjects) {
 				objectOutput.writeObject(projectToSave);
-				logger.debug("Ein Projekt wurde in die Datei geschrieben.");
 			}
 			logger.debug("Projektdatei aktualisiert");
 
 			fileOutput.close();
 			objectOutput.close();
-			logger.debug("Projekt erfolgreich gespeichert.");
+			logger.debug("OutputStreams geschlossen.");
+
+		} catch (NotSerializableException e){
+			logger.error("An NotSerializableException occured: "
+					+ e.getMessage());
+		} catch (IOException e) {
+			logger.error("An IOException occured: " + e.getMessage());
+		} 
+	}
+
+	/**
+	 * Methode zum Entfernen eines Projekts für einen User
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param user
+	 *            der User, für den ein Projekt entfernt werden soll
+	 * @param project
+	 *            das Projekt,das entfernt werden sollen
+	 */
+	public synchronized void removeProject(User user, Project project){
+		//Nutzerprojekte in temporärer Liste abspeichern
+		ArrayList<Project> userProjects;
+		userProjects = user.getProjects();
+		//Projekt aus der temporären Liste löschen
+		userProjects.remove(project);
+		//mit der temporären Liste die Nutzer-Projekte überschreiben
+		user.setProjects(userProjects);
+		logger.debug("Projekt aus Nutzerprojekten gelöscht");
+		allProjects.remove(project);
+		logger.debug("Projekt aus allen Projekten gelöscht.");
+		
+		//Projektdatei überschreiben
+		try {
+
+			FileOutputStream fileOutput = new FileOutputStream(file);
+			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+			logger.debug("OutputStreams erzeugt.");
+
+			objectOutput.writeInt(allProjects.size());
+			for (Project projectToSave : allProjects) {
+				objectOutput.writeObject(projectToSave);
+			}
+			logger.debug("Projektdatei aktualisiert");
+
+			fileOutput.close();
+			objectOutput.close();
+			logger.debug("Projekt erfolgreich gelöscht.");
 
 		} catch (NotSerializableException e){
 			logger.error("An NotSerializableException occured: "
@@ -220,30 +263,40 @@ public class PersistenceService implements PersistenceServiceInterface {
 			e.printStackTrace();
 		} catch (IOException e) {
 			logger.error("An IOException occured: " + e.getMessage());
-			e.printStackTrace();
 		} 
 	}
 
 	/**
-	 * Methode zum Entfernen eines Projekts für einen User
+	 * Methode zum Speichern der bearbeiteten Projekte.
+	 * Überschreibt die Projekt-Datei mit der aktuellen ArrayList allProjects.
 	 * 
-	 * @param user
-	 *            der User, für den ein Projekt entfernt werden soll
-	 * @param project
-	 *            das Projekt,das entfernt werden sollen
+	 * @author Marcel Rosenberger
+	 *
 	 */
-	public synchronized void removeProject(User user, Project project) {
-	}
+	public synchronized void saveProjects() {
+		//Projektdatei überschreiben
+				try {
+					FileOutputStream fileOutput = new FileOutputStream(file);
+					ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+					logger.debug("OutputStreams erzeugt.");
 
-	/**
-	 * Methode zum Ändern eines Projekts für einen User
-	 * 
-	 * @param user
-	 *            der User, für den ein Projekt geändert werden soll
-	 * @param project
-	 *            das Projekt, dessen Daten geändert werden sollen
-	 */
-	public synchronized void changeProject(User user, Project project) {
+					objectOutput.writeInt(allProjects.size());
+					for (Project projectToSave : allProjects) {
+						objectOutput.writeObject(projectToSave);
+					}
+					logger.debug("Projektdatei aktualisiert");
+
+					fileOutput.close();
+					objectOutput.close();
+					logger.debug("Projekt erfolgreich gespeichert.");
+
+				} catch (NotSerializableException e){
+					logger.error("An NotSerializableException occured: "
+							+ e.getMessage());
+					e.printStackTrace();
+				} catch (IOException e) {
+					logger.error("An IOException occured: " + e.getMessage());
+				} 
 	}
 
 }
