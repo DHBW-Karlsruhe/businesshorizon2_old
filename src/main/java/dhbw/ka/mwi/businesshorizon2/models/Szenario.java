@@ -21,7 +21,14 @@
 
 package dhbw.ka.mwi.businesshorizon2.models;
 
-public class Szenario {
+import java.io.Serializable;
+
+public class Szenario implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9003657837833197321L;
+
 	private double rateReturnEquity;
 	
 	private double rateReturnCapitalStock;

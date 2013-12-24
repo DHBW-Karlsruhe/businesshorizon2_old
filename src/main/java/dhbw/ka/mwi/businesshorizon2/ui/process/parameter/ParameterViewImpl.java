@@ -47,7 +47,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 		ParameterViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("ParameterViewImpl.class");
+	private static final Logger logger = Logger.getLogger("ParameterViewImpl.class");
 
 	private GridLayout gridLayout;
 

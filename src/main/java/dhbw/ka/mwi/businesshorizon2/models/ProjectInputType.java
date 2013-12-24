@@ -21,6 +21,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.models;
 
+import java.io.Serializable;
+
 /**
  * Diese Klasse enthält die Methoden die für ein Projekt ausgewählt sind.
  * 
@@ -33,7 +35,11 @@ package dhbw.ka.mwi.businesshorizon2.models;
  * 
  */
 
-public class ProjectInputType {
+public class ProjectInputType implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5922498137882142059L;
 	private Boolean stochastic = false;
 	private Boolean deterministic = false;
 	private InputType stochasticInput = InputType.DIRECT;

@@ -59,7 +59,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	private View currentInput = null;
 
-	private Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger("PeriodPresenter.class");
 
 	@Autowired
 	private TimelineViewInterface timelineView;

@@ -54,7 +54,6 @@ public class GesamtPresenter extends AbstractInputPresenter<GesamtViewInterface>
 
 	public void init() {
 		eventBus.addHandler(this);
-		logger = Logger.getLogger(GesamtPresenter.class);
 		shownProperties = new String[] { "immaterialFortune", "propertyValue",
 				"financialValue", "equity", "provisions", "suplies", "claims",
 				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",

@@ -39,7 +39,12 @@
     </bean>
 
     <!-- Services -->
-    <bean name="authenticationService" class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" scope="singleton"/>
+    <bean name="authenticationService" 
+   		class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" 
+    	scope="singleton"/>
+    <bean name="persistenceService" 
+   		class="dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceService" 
+    	scope="singleton"/>
     
     <!-- Methods -->
     <bean name="timeseries"

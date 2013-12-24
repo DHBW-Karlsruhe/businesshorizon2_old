@@ -67,7 +67,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 	private static final long serialVersionUID = 1L;
 
-	private final Logger logger = Logger.getLogger("ProjectListViewImpl.class");
+	private static final Logger logger = Logger.getLogger("ProjectListViewImpl.class");
 
 	@Autowired
 	private ProjectListPresenter presenter;

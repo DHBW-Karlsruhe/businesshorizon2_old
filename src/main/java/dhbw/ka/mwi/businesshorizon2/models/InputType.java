@@ -21,7 +21,9 @@
 
 package dhbw.ka.mwi.businesshorizon2.models;
 
-public enum InputType {
+import java.io.Serializable;
+
+public enum InputType implements Serializable {
 	DIRECT("Direkte Eingabe"),REVENUE("Umsatzkostenverfahren"),TOTAL("Gesamtkostenverfahren");
 	
 	private String caption;

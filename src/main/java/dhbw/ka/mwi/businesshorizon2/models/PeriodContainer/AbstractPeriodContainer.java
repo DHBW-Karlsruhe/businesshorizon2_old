@@ -21,6 +21,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
+import java.io.Serializable;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
@@ -34,8 +35,12 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
  * @author Kai Westerholz
  * 
  */
-abstract public class AbstractPeriodContainer implements Comparable<AbstractPeriodContainer> {
+abstract public class AbstractPeriodContainer implements Comparable<AbstractPeriodContainer>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4351757223322455067L;
 	private final TreeSet<Period> perioden;
 	private static int counter = 0;
 	private final int myCount;

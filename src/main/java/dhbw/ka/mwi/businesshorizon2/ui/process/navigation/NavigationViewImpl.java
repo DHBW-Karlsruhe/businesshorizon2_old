@@ -52,7 +52,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 public class NavigationViewImpl extends HorizontalLayout implements NavigationViewInterface {
 	private static final long serialVersionUID = -6649221675778809749L;
 
-	private Logger logger = Logger.getLogger("NavigationViewImpl.class");
+	private static final Logger logger = Logger.getLogger("NavigationViewImpl.class");
 	
 	@Autowired
 	private NavigationPresenter presenter;

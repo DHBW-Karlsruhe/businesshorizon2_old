@@ -49,7 +49,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 public class BHApplication extends Application {
 	private static final long serialVersionUID = 1L;
 	
-	private Logger logger = Logger.getLogger("BHApplication.class");
+	private static final Logger logger = Logger.getLogger("BHApplication.class");
 
 	@Autowired
 	private ProcessViewImpl processView;

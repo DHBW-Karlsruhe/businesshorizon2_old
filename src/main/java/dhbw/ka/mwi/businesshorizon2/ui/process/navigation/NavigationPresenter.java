@@ -33,6 +33,7 @@ import com.mvplite.presenter.Presenter;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
@@ -53,7 +54,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	private static final long serialVersionUID = 1L;
 	
-	private Logger logger = Logger.getLogger("LogInScreenPresenter.class");
+	private static final Logger logger = Logger.getLogger("LogInScreenPresenter.class");
 	
 	@Autowired
 	private EventBus eventBus;
@@ -66,6 +67,9 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
+	
+	@Autowired 
+	private PersistenceServiceInterface persistenceService;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -91,6 +95,9 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	 * @param step Anzuzeigende Prozessmaske
 	 */
 	public void showStep(NavigationSteps step) {
+		//speichert die Projekte in der externen Datei
+		persistenceService.saveProjects();
+		logger.debug("Projekte gespeichert");
 		eventBus.fireEvent(new ShowNavigationStepEvent(step));
 	}
 	
@@ -121,6 +128,9 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 
 	//wird durch den Click-Listener des Logout-Buttosn in der Navigationsview aufgerufen
 	public void doLogout() {
+		//speichert die Projekte in der externen Datei
+		persistenceService.saveProjects();
+		logger.debug("Projekte gespeichert");
 		try {
 			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
 			authenticationService.doLogout(userProxy.getSelectedUser());

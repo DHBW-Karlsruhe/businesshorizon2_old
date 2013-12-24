@@ -43,9 +43,6 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
 	private static final long serialVersionUID = 1L;
 
 	
-	
-
-
 	@Autowired
 	EventBus eventBus;
 
@@ -61,7 +58,6 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		logger = Logger.getLogger(DirektPresenter.class);
 		shownProperties = new String[] { "freeCashFlow", "capitalStock" };
 		germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
 	}

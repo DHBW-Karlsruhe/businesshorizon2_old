@@ -44,7 +44,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 
 public class AuthenticationDataInitializer {
 
-	private static Logger logger = Logger.getLogger(AuthenticationDataInitializer.class);
+	private static final Logger logger = Logger.getLogger(AuthenticationDataInitializer.class);
 
 	private static File file;
 

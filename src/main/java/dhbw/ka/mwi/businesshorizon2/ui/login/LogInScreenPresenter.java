@@ -50,7 +50,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("LogInScreenPresenter.class");
+	private static final Logger logger = Logger.getLogger("LogInScreenPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;

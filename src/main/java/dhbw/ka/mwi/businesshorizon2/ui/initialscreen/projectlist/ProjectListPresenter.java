@@ -35,6 +35,8 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 
 /**
@@ -51,7 +53,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("ProjectListPresenter.class");
+	private static final Logger logger = Logger.getLogger("ProjectListPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -61,6 +63,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 	@Autowired
 	private ProjectProxy projectProxy;
+	
+	@Autowired
+	private PersistenceServiceInterface persistenceService;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -109,7 +114,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void onShowProjectList(ShowProjectListEvent event) {
 
 		this.user = event.getUser();
-
+		persistenceService.loadProjects(this.user);
 		List<Project> projects = user.getProjects();
 		logger.debug("Projekte geladen. Anzahl: " + projects.size());
 
@@ -128,7 +133,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 *            - Zu loeschendes Projekt
 	 */
 	public void removeProject(Project project) {
-		user.removeProject(project);
+		persistenceService.removeProject(this.user, project);
 		logger.debug("Projekt aus User entfernt");
 		getView().setProjects(user.getProjects());
 		eventBus.fireEvent(new ProjectRemoveEvent(project));
@@ -154,7 +159,12 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 		Project project = new Project(name);
 		project.setLastChanged(new Date());
-		user.addProject(project);
+		project.setCreatedFrom(this.user);
+		try {
+			persistenceService.addProject(this.user, project);
+		} catch (ProjectAlreadyExistsException e) {
+			logger.debug("Projektname bereits vorhanden.");
+		}
 		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
 
 		getView().setProjects(user.getProjects());

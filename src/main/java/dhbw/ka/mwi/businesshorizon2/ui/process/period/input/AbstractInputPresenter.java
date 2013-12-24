@@ -27,7 +27,7 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 	private static final long serialVersionUID = 1L;
 
 	private Period period;
-	protected Logger logger;
+	private static final Logger logger = Logger.getLogger("AbstractInputPresenter.class");
 
 	private DecimalFormat df = new DecimalFormat(",##0.00");
 

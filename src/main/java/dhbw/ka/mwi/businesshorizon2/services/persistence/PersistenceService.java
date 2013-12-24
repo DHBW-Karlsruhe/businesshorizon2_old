@@ -164,7 +164,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 *            das Projekt, dessen Daten hinzugefügt werden sollen
 	 */
 	public synchronized void addProject(User user, Project project)
-			throws ProjectAlreadyExistException {
+			throws ProjectAlreadyExistsException {
 		//Nutzerprojekte in temporärer Liste abspeichern
 		ArrayList<Project> userProjects;
 		userProjects = user.getProjects();
@@ -179,7 +179,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 			if (projektName.getCreatedFrom().getEmailAdress()
 					.equals(user.getEmailAdress())) {
 				if (projektName.getName().equals(project.getName())) {
-					throw new ProjectAlreadyExistException(
+					throw new ProjectAlreadyExistsException(
 							"Projekt mit dem Namen " + project.getName()
 									+ " existiert bereits.");
 				}

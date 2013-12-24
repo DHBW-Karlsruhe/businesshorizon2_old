@@ -56,7 +56,7 @@ import com.vaadin.ui.VerticalLayout;
 public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
 
 	@Autowired
 	private ScenarioPresenter presenter;

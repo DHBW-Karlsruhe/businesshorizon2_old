@@ -175,27 +175,17 @@ public class User implements Serializable {
 	public ArrayList<Project> getProjects() {
 		return projects;
 	}
-
+	
 	/**
-	 * Fügt ein Projekt der Liste hinzu
+	 * Überschreibt die Nutzerprojekt-Liste
 	 * 
-	 * @author Christian Scherer
-	 * @param das
-	 *            hinzuzufügende Projekt
+	 * @author Marcel Rosenberger
+	 * @param die neue Liste
 	 */
-	public void addProject(Project project) {
-		projects.add(project);
+	public void setProjects(ArrayList<Project> userProjects) {
+		this.projects = userProjects;
 	}
+	
 
-	/**
-	 * Fügt ein Projekt der Liste hinzu
-	 * 
-	 * @author Christian Scherer
-	 * @param das
-	 *            zu löschende Projekt
-	 */
-	public void removeProject(Project project) {
-		projects.remove(project);
-	}
 
 }

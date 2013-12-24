@@ -67,7 +67,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	@Autowired
 	EventBus eventBus;
 
-	Logger logger = Logger.getLogger(TimelinePresenter.class);
+	private static final Logger logger = Logger.getLogger(TimelinePresenter.class);
 
 	private int fixedPastPeriods;
 	// private int fixedFuturePeriods; gibbets nibbets

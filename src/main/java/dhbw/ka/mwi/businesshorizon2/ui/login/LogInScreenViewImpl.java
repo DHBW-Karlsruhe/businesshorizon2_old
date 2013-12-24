@@ -51,7 +51,7 @@ public class LogInScreenViewImpl extends Window implements
 		LogInScreenViewInterface, ClickListener {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("LogInScreenViewImpl.class");
+	private static final Logger logger = Logger.getLogger("LogInScreenViewImpl.class");
 
 	@Autowired
 	private LogInScreenPresenter presenter;

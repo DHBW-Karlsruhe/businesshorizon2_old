@@ -57,7 +57,6 @@ public class UmsatzPresenter extends AbstractInputPresenter<UmsatzViewInterface>
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		logger = Logger.getLogger(UmsatzPresenter.class);
 		shownProperties = new String[] { "immaterialFortune", "propertyValue",
 				"financialValue", "equity", "provisions", "suplies", "claims",
 				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",

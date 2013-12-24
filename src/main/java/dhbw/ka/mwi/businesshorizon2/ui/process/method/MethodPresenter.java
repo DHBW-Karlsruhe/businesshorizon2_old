@@ -60,7 +60,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger(MethodPresenter.class);
+	private static final Logger logger = Logger.getLogger("MethodPresenter.class");
 
 	private Boolean showError = false;
 

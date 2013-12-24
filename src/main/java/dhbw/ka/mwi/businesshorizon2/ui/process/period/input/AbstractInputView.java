@@ -31,7 +31,7 @@ InputViewInterface  {
 
 	 private GridLayout panel = new GridLayout(2, 1);
 
-	 protected Logger logger;
+	 private static final Logger logger = Logger.getLogger("AbstractInputView.class");
 
 
 

@@ -62,7 +62,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	private List<User> allUsers;
 	private Map<String, User> loggedInUsers;
 
-	private static Logger logger = Logger.getLogger(AuthenticationService.class);
+	private static final Logger logger = Logger.getLogger(AuthenticationService.class);
 
 	/**
 	 * Methode zur Initialisierung des AuthenticationService durch Spring

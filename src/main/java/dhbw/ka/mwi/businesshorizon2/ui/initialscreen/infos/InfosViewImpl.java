@@ -39,7 +39,7 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
 
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("InfosViewImpl.class");
+	private static final Logger logger = Logger.getLogger("InfosViewImpl.class");
 	
 	@Autowired
 	private InfosPresenter presenter;

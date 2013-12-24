@@ -58,7 +58,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ShowScenarioViewEvent;
 public class ContentContainerPresenter extends Presenter<ContentContainerView> {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger("ContentContainerPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;

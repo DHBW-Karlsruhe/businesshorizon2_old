@@ -21,6 +21,12 @@
 
 package dhbw.ka.mwi.businesshorizon2.services.persistence;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 
@@ -29,26 +35,53 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * Klassen können entweder die Kommunikation mit einer Datebank herstellen oder
  * Daten aus/in einer einfachen Datei lesen/schreiben.
  * 
- * @author Florian Stier
+ * @author Marcel Rosenberger
  * 
  */
 public interface PersistenceServiceInterface {
 	/**
 	 * Methode zum Laden aller Projektdaten des angemeldeten Users.
 	 * 
+	 * @author Marcel Rosenberger
+	 * 
 	 * @param user
 	 *            User dessen Projektdaten geladen werden sollen
 	 * @return Project Objekt mit allen Projektdaten
 	 */
-	public Project loadProjectsForUser(User user);
+	public void loadProjects(User user);
 
 	/**
-	 * Methode zum Speichern eines Projekts für einen User
+	 * Methode zum Hinzufügen eines Projekts für einen User
 	 * 
+	 * 
+	 * @author Marcel Rosenberger
 	 * @param user
-	 *            der User, für den ein Projekt gespeichert werden soll
+	 *            der User, für den ein Projekt hinzugefügt werden soll
 	 * @param project
-	 *            das Projekt, dessen Daten gespeichert werden sollen
+	 *            das Projekt, dessen Daten hinzugefügt werden sollen
 	 */
-	public void saveProjectForUser(User user, Project project);
+	public  void addProject(User user, Project project)
+			throws ProjectAlreadyExistsException;
+	
+
+	/**
+	 * Methode zum Entfernen eines Projekts für einen User
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param user
+	 *            der User, für den ein Projekt entfernt werden soll
+	 * @param project
+	 *            das Projekt,das entfernt werden sollen
+	 */
+	public  void removeProject(User user, Project project);
+		
+
+	/**
+	 * Methode zum Speichern der bearbeiteten Projekte.
+	 * 
+	 * @author Marcel Rosenberger
+	 *
+	 */
+	public  void saveProjects();
+		
 }

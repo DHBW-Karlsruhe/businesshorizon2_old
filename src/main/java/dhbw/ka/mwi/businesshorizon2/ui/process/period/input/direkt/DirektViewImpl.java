@@ -49,9 +49,9 @@ public class DirektViewImpl extends AbstractInputView implements DirektViewInter
 	 * @author Daniel Dengler
 	 */
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
-		logger = Logger.getLogger(DirektViewImpl.class); 
 		presenter = presenterTemp;
 		presenter.setView(this);
 	}

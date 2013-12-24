@@ -44,7 +44,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
 public class AnalysisTimeseries {
 
-	private Logger logger = Logger.getLogger(AnalysisTimeseries.class);
+	private static final Logger logger = Logger.getLogger(AnalysisTimeseries.class);
 	private double variance;
 	private DoubleArrayList DoubleArrayListTimeseries;
 	private DoubleMatrix2D matrixValutaions;

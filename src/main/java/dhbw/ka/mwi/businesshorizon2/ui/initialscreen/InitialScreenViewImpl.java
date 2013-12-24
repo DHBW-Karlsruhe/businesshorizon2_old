@@ -55,7 +55,7 @@ import com.vaadin.ui.Window;
 public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
+	private static final Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
 
 	@Autowired
 	private InitialScreenPresenter presenter;

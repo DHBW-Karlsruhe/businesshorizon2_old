@@ -34,6 +34,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
@@ -60,7 +61,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	@Autowired
 	private UserProxy userProxy;
 
-	private Logger logger = Logger.getLogger("InitialScreenPresenter.class");
+	private static final Logger logger = Logger.getLogger("InitialScreenPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -76,6 +77,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
+	
+	@Autowired
+	private PersistenceServiceInterface persistenceService;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -118,6 +122,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	//wird durch den Click-Listener des Logout-Button in der InitinalScreen-View aufgerufen
 	public void doLogout() {
+		//speichert die Projekte in der externen Datei
+		persistenceService.saveProjects();
+		logger.debug("Projekte gespeichert");
 		try {
 			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
 			authenticationService.doLogout(userProxy.getSelectedUser());

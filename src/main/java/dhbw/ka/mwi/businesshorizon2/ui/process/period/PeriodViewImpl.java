@@ -50,7 +50,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	
 	HorizontalSplitPanel horizontalPanel;
 	
-	Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger("PeriodViewImpl.class");
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 

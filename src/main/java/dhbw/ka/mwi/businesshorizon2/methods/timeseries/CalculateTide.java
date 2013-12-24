@@ -1,4 +1,5 @@
 /*******************************************************************************
+
  * BusinessHorizon2
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
@@ -32,7 +33,7 @@ import org.apache.log4j.Logger;
 
 public class CalculateTide implements CalculateTideInterface {
 
-	private Logger logger = Logger.getLogger(CalculateTide.class);
+	private static final Logger logger = Logger.getLogger(CalculateTide.class);
 	private double reduceTideParameterA;
 	private double reduceTideParameterB;
 	private double averageTimeseries;

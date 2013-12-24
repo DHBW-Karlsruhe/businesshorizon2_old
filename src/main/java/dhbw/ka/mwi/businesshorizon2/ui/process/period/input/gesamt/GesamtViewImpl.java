@@ -51,7 +51,6 @@ public class GesamtViewImpl extends AbstractInputView implements GesamtViewInter
 
 	@PostConstruct
 	public void init() {
-		logger = Logger.getLogger(GesamtViewImpl.class); 
 		presenter = presenterTemp;
 		presenter.setView(this);
 	}

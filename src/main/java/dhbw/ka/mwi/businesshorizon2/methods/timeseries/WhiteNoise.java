@@ -37,7 +37,7 @@ public class WhiteNoise {
 
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger(WhiteNoise.class);
+	private static final Logger logger = Logger.getLogger(WhiteNoise.class);
 
 	private double deviation;
 	private Random randomGenerator;

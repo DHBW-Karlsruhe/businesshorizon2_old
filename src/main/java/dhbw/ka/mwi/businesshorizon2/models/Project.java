@@ -46,11 +46,17 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContain
  */
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9199799755347070847L;
 
 	protected TreeSet<? extends Period> periods = new TreeSet<>();
 
 	private Date lastChanged;
+	
+	private User createdFrom;
 
 
 	private String name;
@@ -412,5 +418,13 @@ public class Project implements Serializable {
 	public void addScenario(Szenario scenario) {
 		this.scenarios.add(scenario);
 
+	}
+
+	public User getCreatedFrom() {
+		return createdFrom;
+	}
+
+	public void setCreatedFrom(User user) {
+		createdFrom = user;		
 	}
 }

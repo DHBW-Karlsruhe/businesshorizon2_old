@@ -64,7 +64,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	PeriodButton pB;
 
-	Logger logger = Logger.getLogger(TimelineViewImpl.class);
+	private static final Logger logger = Logger.getLogger(TimelineViewImpl.class);
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
