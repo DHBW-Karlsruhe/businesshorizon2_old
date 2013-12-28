@@ -171,6 +171,24 @@ public class TimelineViewImpl extends VerticalLayout implements
 		future.setEnabled(usable);
 	}
 
+	/*
+	 * Annika Weis
+	 */
+	@Override
+	public void setPastDeleteButtonAccess(boolean usable) {
+		delPast.setEnabled(usable);
+
+	}
+
+	/*
+	 * Annika Weis
+	 */
+	@Override
+	public void setFutureDeleteButtonAccess(boolean usable) {
+		delFuture.setEnabled(usable);
+	}
+	
+	
 	@Override
 	public void addBasePeriod(Period period) {
 
