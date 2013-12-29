@@ -33,8 +33,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
  *
  */
 public interface MethodViewInterface extends ContentView {
-	
+
 	public void showMethod(AbstractStochasticMethod method);
+	
+	//Annika Weis
+	public void showMethod_deterministic(AbstractStochasticMethod method);
 	
 	public void enableOptions();
 	

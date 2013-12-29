@@ -209,6 +209,60 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,true));
 
 	}
+	
+	//Annika Weis
+	public void onShowMethod_deterministic(ShowMethodViewEvent event) {
+		getView().showMethodView();
+
+		project = projectProxy.getSelectedProject();
+		methods = new TreeSet<AbstractStochasticMethod>();
+
+		if (project.getMethods() == null) {
+
+			methods.add(new Wiener());
+			methods.add(new RandomWalk());
+			methods.add(new TimeseriesCalculator());
+
+			project.setMethods(methods);
+		} else {
+			methods = project.getMethods();
+		}
+
+		if (project.getProjectInputType() == null) {
+			projectInputType = new ProjectInputType();
+			project.setProjectInputType(projectInputType);
+		} else {
+			projectInputType = project.getProjectInputType();
+		}
+
+		for (AbstractStochasticMethod m : methods) {
+			getView().showMethod_deterministic(m);
+		}
+		
+		getView().setStochastic(projectInputType.getStochastic());
+		getView().setDeterministic(projectInputType.getDeterministic());
+
+		Boolean state = projectInputType.getStochastic();
+
+		if (state != null) {
+			getView().enableMethodSelection(state);
+		} else {
+			projectInputType.setStochastic(false);
+			getView().enableMethodSelection(false);
+		}
+
+		getView().showInputMethodSelection(true,
+				projectInputType.getStochastic());
+		getView().showInputMethodSelection(false,
+				projectInputType.getDeterministic());
+		getView().selectInput(true,
+				projectInputType.getStochasticInput());
+		getView().selectInput(false,
+				projectInputType.getDeterministicInput());
+
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,true));
+
+	}
 
 	@Override
 	@EventHandler
