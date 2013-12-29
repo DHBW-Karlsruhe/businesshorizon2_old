@@ -234,12 +234,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 						.getRelevantPastPeriods();
 			}
 
-			logger.debug("Initialisierungen");
 			// Deterministische Verfahren
 			// Hat sich nur der Inputtyp geaendert, muessen alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
-			logger.debug("Init.: (d):" + projectProxy.getSelectedProject().getProjectInputType()
-					.getDeterministic() + " / " + deterministic );
 			if (projectProxy.getSelectedProject().getProjectInputType()
 							.getDeterministic()) {//projectProxy.getSelectedProject().getProjectInputType().getDeterministic() != deterministic &&
 				logger.debug("Initialisierung (d)");
@@ -259,8 +256,19 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				getView().setPastButtonAccess(false);
 				getView().setPastDeleteButtonAccess(true);	
 				getView().setFutureDeleteButtonAccess(true);
-				addFuturePeriods(projectProxy.getSelectedProject()
-						.getPeriodsToForecast(), deterministicInput);
+				
+				/* 
+				 * Nur deterministisches verfahren: 3 zukünftige Perioden
+				 * bei stochastischem und determinstischem verfahren: 
+				 * Die Anzahl der zukünftigen Perioden entspricht dem Wert des Textfelds „Anzahl zu prognostizierender Perioden“ (Reiter „Parameter“)
+				 */
+				if(projectProxy.getSelectedProject().getProjectInputType()
+						.getStochastic()){
+					addFuturePeriods(projectProxy.getSelectedProject()
+							.getPeriodsToForecast(), deterministicInput);
+				} else {
+					addFuturePeriods(3, deterministicInput);
+				}
 			}
 
 			
@@ -270,8 +278,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			// Stochastische Verfahren
 			// Hat sich nur der Inputtyp geaendert, muessen alle betroffenen
 			// Perioden verworfen werden und neu angelegt werden.
-			logger.debug("Init.: (s)" + projectProxy.getSelectedProject().getProjectInputType()
-					.getStochastic() + " / " + stochastic );
+
 			if (projectProxy.getSelectedProject().getProjectInputType()
 							.getStochastic()) { //projectProxy.getSelectedProject().getProjectInputType().getStochastic() != stochastic && 
 				//Wenn auch deterministisch: Vergangenheit bereits abgefangen
