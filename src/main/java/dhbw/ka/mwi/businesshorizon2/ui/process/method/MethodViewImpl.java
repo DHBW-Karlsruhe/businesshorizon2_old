@@ -58,8 +58,12 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	@Autowired
 	private MethodPresenter presenter;
-	
+
 	private Panel methodPanel;
+	/* Annika Weis
+	 * neues Panel um für deterministische Eingaben Methoden auswählen zu können
+	 */
+	private Panel methodPanel_deterministic;
 
 	
 	private VerticalLayout methodList;
@@ -67,8 +71,9 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 
 	private OptionGroup stochasticInput;
 	private OptionGroup deterministicInput;
-	
+
 	private OptionGroup methods;
+	private OptionGroup methods_deterministic;
 			
 	private CheckBox stochastic; //= new CheckBox("Stochastische Berechnung");
 	private CheckBox deterministic; //= new CheckBox("Deterministische Eingabe");
@@ -101,6 +106,10 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		
 		methodPanel = new Panel();
 		methodPanel.addStyleName(Reindeer.PANEL_LIGHT);
+		
+		//Annika Weis
+		methodPanel_deterministic = new Panel();
+		methodPanel_deterministic.addStyleName(Reindeer.PANEL_LIGHT);
 		
 		stochastic.addListener(new Button.ClickListener() {
 			
@@ -138,6 +147,26 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 			}
 		});
 
+		/*
+		 * Annika Weis
+		 * Optiongroup für Auswahl der deterministischen Methoden erstellen
+		 */
+		methods_deterministic = new OptionGroup();
+		
+		methods_deterministic.setMultiSelect(true);
+		methods_deterministic.setImmediate(true);
+		methods_deterministic.addListener(new Property.ValueChangeListener() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				presenter.toggleMethod((Set<AbstractStochasticMethod>) methods_deterministic.getValue());
+			}
+		});
+		
+		
 		stochasticInput = new OptionGroup();
 		stochasticInput.setImmediate(true);
 		stochasticInput.addListener(new Property.ValueChangeListener() {
@@ -204,13 +233,15 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		
 		this.setFirstComponent(methodList);
 		this.setSecondComponent(inputMethod);
-		
+
 		methodPanel.addComponent(methods);
+		methodPanel_deterministic.addComponent(methods_deterministic);
 		Label methodCaption = new Label("Herkunft der Cashflows w\u00E4hlen:");
 		methodList.addComponent(methodCaption);
 		methodList.addComponent(stochastic);
-		methodList.addComponent(methodPanel);		
+		methodList.addComponent(methodPanel);
 		methodList.addComponent(deterministic);
+		methodList.addComponent(methodPanel_deterministic);		
 		
 		Label inputCaption = new Label("Eingabemethode der Cashflows w\u00E4hlen:");
 		inputMethod.addComponent(inputCaption);
@@ -229,11 +260,22 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		if (method.getSelected()){
 			methods.select(method);
 		}
-		
-
 
 	}
 
+	
+	@Override
+	public void showMethod_deterministic(AbstractStochasticMethod method) {
+		
+		methods.addItem(method);
+		methods.setItemEnabled(method, method.getImplemented());
+		
+		if (method.getSelected()){
+			methods.select(method);
+		}
+
+	}
+	
 	@Override
 	public void enableOptions() {
 		
