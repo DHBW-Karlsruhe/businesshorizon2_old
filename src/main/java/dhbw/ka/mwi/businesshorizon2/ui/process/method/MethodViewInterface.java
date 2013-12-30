@@ -21,6 +21,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
@@ -37,13 +38,19 @@ public interface MethodViewInterface extends ContentView {
 	public void showMethod(AbstractStochasticMethod method);
 	
 	//Annika Weis
-	public void showMethod_deterministic(AbstractStochasticMethod method);
+	public void showMethod_deterministic(AbstractDeterministicMethod method);
 	
 	public void enableOptions();
-	
+
 	public void enableMethodSelection(Boolean state);
-	
+
+	//Annika Weis
+	public void enableMethod_deterministicSelection(Boolean state);
+
 	public void showInputMethodSelection(Boolean stochastic, Boolean checked);
+
+	//Annika Weis
+	public void showInputMethod_deterministicSelection(Boolean deterministic, Boolean checked);
 	
 	public void setStochastic(Boolean checked);
 	
@@ -57,5 +64,6 @@ public interface MethodViewInterface extends ContentView {
 
 
 	public void showMethodView();
+	
 
 }

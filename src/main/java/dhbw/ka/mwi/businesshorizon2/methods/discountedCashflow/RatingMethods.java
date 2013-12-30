@@ -21,6 +21,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
@@ -34,7 +36,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
  * 
  */
 
-public abstract class RatingMethods {
+public abstract class RatingMethods{
 	protected StochasticResultContainer container;
 	protected Szenario szenario;
 

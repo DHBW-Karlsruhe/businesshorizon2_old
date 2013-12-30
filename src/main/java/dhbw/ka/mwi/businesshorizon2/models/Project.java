@@ -30,6 +30,7 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -75,8 +76,7 @@ public class Project implements Serializable {
 		return deterministicPeriods;
 	}
 
-	public void setDeterministicPeriods(
-			AbstractPeriodContainer deterministicPeriods) {
+	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
 		this.deterministicPeriods = deterministicPeriods;
 	}
 
@@ -92,6 +92,8 @@ public class Project implements Serializable {
 	private ProjectInputType projectInputType;
 
 	private SortedSet<AbstractStochasticMethod> methods;
+	//Annika Weis
+	private SortedSet<AbstractDeterministicMethod> methods_deterministic;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
@@ -300,6 +302,16 @@ public class Project implements Serializable {
 
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
+	}
+	
+	//Annika Weis
+	public void setMethods_deterministic(SortedSet<AbstractDeterministicMethod> methods_deterministic) {
+		this.methods_deterministic = methods_deterministic;
+	}
+
+	//Annika Weis
+	public SortedSet<AbstractDeterministicMethod> getMethods_deterministic() {
+		return methods_deterministic;
 	}
 
 	public ProjectInputType getProjectInputType() {
