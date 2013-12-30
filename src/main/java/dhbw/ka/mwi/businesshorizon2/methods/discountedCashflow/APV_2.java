@@ -3,6 +3,8 @@
  */
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
@@ -10,16 +12,21 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.DeterministicMethodException;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
+import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 
 /**
  * @author Annika Weis
  * @date 29.12.2013
- *
+ * 
  */
 public class APV_2 extends AbstractDeterministicMethod {
 
-	
 	@Override
 	public String getName() {
 
@@ -32,14 +39,11 @@ public class APV_2 extends AbstractDeterministicMethod {
 		return 5;
 	}
 
-
 	@Override
 	public Boolean getImplemented() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
-
 
 	@Override
 	public DeterministicResultContainer calculate(Project project,
@@ -47,9 +51,81 @@ public class APV_2 extends AbstractDeterministicMethod {
 			DeterministicMethodException {
 		// TODO Auto-generated method stub
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
-		
-		
-		DeterministicResultContainer drc = new DeterministicResultContainer(prognose);
+		DeterministicResultContainer drc = new DeterministicResultContainer(
+				prognose);
+		return drc;
+	}
+
+	public DeterministicResultContainer calculateValues(
+			StochasticResultContainer srContainer, Szenario szenario) {
+		// TODO Auto-generated method stub
+		System.out.println("DeterministicResultContainer calculateValues");
+		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
+
+		double gk = 0;
+		double v = 0;
+		double unternehmenswert = 0;
+		double sSteuersatz;
+		double sKS;
+		double sZinsen;
+		double sEK;
+
+		CashFlowPeriod first_period = null;
+		CashFlowPeriod period;
+		CashFlowPeriod lastPeriod = null;
+		double previousValueCF;
+		double previousValueBC;
+		double jahr = 1;
+
+		sKS = szenario.getCorporateAndSolitaryTax() / 100;
+		sSteuersatz = 0.75 * szenario.getBusinessTax() / 100 + sKS;
+		sEK = szenario.getRateReturnEquity() / 100;
+		sZinsen = szenario.getRateReturnCapitalStock() / 100;
+
+		System.out.println("Werte: " + sKS + " | " + sSteuersatz + " | " + sEK
+				+ " | " + sZinsen);
+
+		for (AbstractPeriodContainer i : srContainer.getPeriodContainers()) {
+
+			TreeSet<? extends Period> periods = i.getPeriods();
+			Iterator<? extends Period> iter = periods.iterator();// descendingIterator();
+			System.out.println("Perioden: " + periods.size());
+			int durchlauf = 0;
+			while (iter.hasNext()) {
+				period = (CashFlowPeriod) iter.next();
+
+				if (durchlauf == 0) { // Basisjahr
+					first_period = period;
+				} else if (durchlauf +1 == periods.size()) {
+				} else {
+					gk += period.getFreeCashFlow()
+							/ Math.pow(1 + sEK, durchlauf);
+					v += (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
+							/ Math.pow(1 + sZinsen, durchlauf);
+					System.out.println("Zwischenergebnis: (" + durchlauf + ") "
+							+ gk + " / " + v + " --> "
+							+ period.getFreeCashFlow() + " / " + lastPeriod.getCapitalStock());
+				}
+				lastPeriod = period;
+
+				durchlauf++;
+				jahr = durchlauf;
+			}
+		}
+		gk = gk + lastPeriod.getFreeCashFlow()
+				/ (sEK * Math.pow(1 + sEK, jahr-1));
+		v = v + (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
+				/ (sZinsen * Math.pow(1 + sZinsen, jahr-1));
+		unternehmenswert = gk + v - first_period.getCapitalStock();
+		System.out.println("Zwischenergebnis: (" + jahr + ") "
+				+ gk + " / " + v + " --> "
+				+ "xxx" + " / " + lastPeriod.getCapitalStock());
+		System.out.println("Endergebnis: " + gk + " + " + v + " / "
+				+ " - " + first_period.getCapitalStock() + " = " + unternehmenswert);
+		// }
+
+		DeterministicResultContainer drc = new DeterministicResultContainer(
+				prognose);
 		return drc;
 	}
 }

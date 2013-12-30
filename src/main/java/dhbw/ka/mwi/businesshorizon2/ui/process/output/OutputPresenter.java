@@ -36,6 +36,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
@@ -110,12 +111,18 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 				StochasticResultContainer srContainer = new StochasticResultContainer(periodContainer);
 
 				APV apv = new APV(srContainer, scenario);
+				//Annika Weis
+				APV_2 apv_2 = new APV_2();
+				apv_2.calculateValues(srContainer, scenario);//project, scenario
 				CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
 						.calculateCompanyValue();
 				for (Entry<Integer, Couple> companyValue : companyValueDeterministic.getCompanyValues().entrySet()) {
 					DeterministicChartArea deterministicChartArea = new DeterministicChartArea(companyValue.getValue()
 							.getDebitFreeCompany(), companyValue.getValue().getTaxBenefits(), companyValue.getValue()
 							.getCompanyValue(), companyValue.getValue().getCapitalStock());
+						System.out.println("Werte: " + companyValue.getValue()
+								.getDebitFreeCompany() +  " / " + companyValue.getValue().getTaxBenefits() + " / " + companyValue.getValue()
+								.getCompanyValue() + " / " + companyValue.getValue().getCapitalStock());
 					getView().addDeterministicChartArea(deterministicChartArea);
 				}
 				onProgressChange((float) 1);
