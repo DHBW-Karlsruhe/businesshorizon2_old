@@ -86,6 +86,7 @@ public class Project implements Serializable {
 	private double BorrowedCapitalStepRange;
 
 	private int periodsToForecast;
+	private int periodsToForecast_deterministic;//Annika Weis
 	private int relevantPastPeriods;
 	private int iterations;
 	private int basisYear;
@@ -353,6 +354,30 @@ public class Project implements Serializable {
 	public void setPeriodsToForecast(int periodsToForecast) {
 		this.periodsToForecast = periodsToForecast;
 	}
+	
+	
+	/**
+	 * Gibt die Anzahl vorherzusagender deterinistischer Perioden des Projekts zurück.
+	 * 
+	 * @author Annika Weis
+	 * @return Anzahl vorherzusagender Perioden
+	 */
+	public int getPeriodsToForecast_deterministic() {
+		return periodsToForecast_deterministic;
+	}
+
+	/**
+	 * Setzt die Anzahl vorherzusagender deterministischer Perioden des Projekts.
+	 * 
+	 * @author Annika Weis
+	 * @param periodsToForecast_deterministic
+	 *            Anzahl vorherzusagender Perioden (deterministisch)
+	 */
+	public void setPeriodsToForecast_deterministic(int periodsToForecast_deterministic) {
+		this.periodsToForecast_deterministic = periodsToForecast_deterministic;
+	}
+	
+	
 
 	/**
 	 * Setzt die Anzahl der vergangenen relevanten Perioden des Projekts.

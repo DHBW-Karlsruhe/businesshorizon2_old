@@ -34,6 +34,7 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
 import dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
@@ -224,6 +225,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		methods = new TreeSet<AbstractStochasticMethod>();
 		methods_determinisict = new TreeSet<AbstractDeterministicMethod>();
 
+		//Hier werden die Methoden die zur Auswahl stehen sollen, auf dem Reiter angezeigt
 		if (project.getMethods() == null) {
 			methods.add(new RandomWalk());
 			methods.add(new TimeseriesCalculator());
@@ -231,12 +233,11 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			project.setMethods(methods);
 		} else {
 			methods = project.getMethods();
-		}
-
-		
+		}		
 		//Annika Weis
 		if (project.getMethods_deterministic() == null) {
 			methods_determinisict.add(new DCF_2());
+			methods_determinisict.add(new APV_2());
 			project.setMethods_deterministic(methods_determinisict);
 		} else {
 			methods_determinisict = project.getMethods_deterministic();
