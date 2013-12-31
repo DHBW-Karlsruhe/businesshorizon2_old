@@ -53,8 +53,8 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		return drc;
 	}
 
-	public DeterministicResultContainer calculateValues(
-			StochasticResultContainer srContainer, Szenario szenario) {
+	public double calculateValues( //DeterministicResultContainer
+			DeterministicResultContainer drContainer, Szenario szenario) {
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 
 		double unternehmenswert = 0;
@@ -75,7 +75,7 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
 
-		for (AbstractPeriodContainer i : srContainer.getPeriodContainers()) {
+		for (AbstractPeriodContainer i : drContainer.getPeriodContainers()) {
 
 			TreeSet<? extends Period> periods = i.getPeriods();
 			Iterator<? extends Period> iter = periods.iterator();// descendingIterator();
@@ -104,7 +104,7 @@ public class DCF_2 extends AbstractDeterministicMethod {
 
 		DeterministicResultContainer drc = new DeterministicResultContainer(
 				prognose);
-		return drc;
+		return unternehmenswert;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class DCF_2 extends AbstractDeterministicMethod {
 	 * @param wert
 	 * @param zinssatz
 	 * @param jahre
-	 * @return
+	 * @return Double, abgezinster Wert
 	 */
 	private double abzinsen(double wert, double zinssatz, int jahre) {
 		return wert

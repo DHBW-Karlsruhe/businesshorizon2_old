@@ -25,6 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.models;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -39,7 +40,10 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContain
 
 public class DeterministicResultContainer {
 	TreeSet<? extends AbstractPeriodContainer> periodContainer = new TreeSet<>();
-
+	
+	//Annika Weis
+	ArrayList <Double> unternehmenswerte = new ArrayList<Double>();
+	
 	public DeterministicResultContainer(
 			TreeSet<? extends AbstractPeriodContainer> tree) {
 		periodContainer = tree;
@@ -55,5 +59,34 @@ public class DeterministicResultContainer {
 	public TreeSet<? extends AbstractPeriodContainer> getPeriodContainers() {
 		return this.periodContainer;
 	}
+	
+	/**
+	 * Diese Methode nimmt den Unternehmenswert auf
+	 * 
+	 * @return void
+	 * @author Annika Weis
+	 */
+	public void setUnternehmenswert(Double unternehmenswert){
+		this.unternehmenswerte.add(unternehmenswert);
+	}
 
+	/**
+	 * Diese Methode liefert den Unternehemnswert als Arraylist
+	 * 
+	 * @return Unternhemswert ArrayList<Double>
+	 * @author Annika Weis
+	 */
+	public ArrayList<Double> getUnternehmenswert(){
+		return unternehmenswerte;
+	}
+	
+	/**
+	 * Diese Methode liefert den Unternehemnswert im Array
+	 * 
+	 * @return Unternhemswert (Double[])
+	 * @author Annika Weis
+	 */
+	public Double[] getUnternehemnswert(){
+		return (Double[]) unternehmenswerte.toArray();
+	}
 }
