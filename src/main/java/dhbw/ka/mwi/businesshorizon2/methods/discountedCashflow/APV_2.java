@@ -73,8 +73,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 		CashFlowPeriod first_period = null;
 		CashFlowPeriod period;
 		CashFlowPeriod lastPeriod = null;
-		double previousValueCF;
-		double previousValueBC;
 		double jahr = 1;
 
 		sKS = szenario.getCorporateAndSolitaryTax() / 100;
@@ -96,15 +94,12 @@ public class APV_2 extends AbstractDeterministicMethod {
 
 				if (durchlauf == 0) { // Basisjahr
 					first_period = period;
-				} else if (durchlauf +1 == periods.size()) {
+				} else if (durchlauf +1 == periods.size()) { //letztes Jahr wird nach der Schleife extra berechnet
 				} else {
 					gk += period.getFreeCashFlow()
 							/ Math.pow(1 + sEK, durchlauf);
 					v += (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
 							/ Math.pow(1 + sZinsen, durchlauf);
-					System.out.println("Zwischenergebnis: (" + durchlauf + ") "
-							+ gk + " / " + v + " --> "
-							+ period.getFreeCashFlow() + " / " + lastPeriod.getCapitalStock());
 				}
 				lastPeriod = period;
 
@@ -112,17 +107,16 @@ public class APV_2 extends AbstractDeterministicMethod {
 				jahr = durchlauf;
 			}
 		}
+		//Berechnung des letzten Jahres
 		gk = gk + lastPeriod.getFreeCashFlow()
-				/ (sEK * Math.pow(1 + sEK, jahr-1));
+				/ (sEK * Math.pow(1 + sEK, jahr-2));
 		v = v + (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
-				/ (sZinsen * Math.pow(1 + sZinsen, jahr-1));
+				/ (sZinsen * Math.pow(1 + sZinsen, jahr-2));
+		
+		//Unternehmenswert gesamt berechnen
 		unternehmenswert = gk + v - first_period.getCapitalStock();
-		System.out.println("Zwischenergebnis: (" + jahr + ") "
-				+ gk + " / " + v + " --> "
-				+ "xxx" + " / " + lastPeriod.getCapitalStock());
 		System.out.println("Endergebnis: " + gk + " + " + v + " / "
 				+ " - " + first_period.getCapitalStock() + " = " + unternehmenswert);
-		// }
 
 		DeterministicResultContainer drc = new DeterministicResultContainer(
 				prognose);

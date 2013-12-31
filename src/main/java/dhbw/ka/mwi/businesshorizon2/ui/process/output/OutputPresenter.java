@@ -120,9 +120,6 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 					DeterministicChartArea deterministicChartArea = new DeterministicChartArea(companyValue.getValue()
 							.getDebitFreeCompany(), companyValue.getValue().getTaxBenefits(), companyValue.getValue()
 							.getCompanyValue(), companyValue.getValue().getCapitalStock());
-						System.out.println("Werte: " + companyValue.getValue()
-								.getDebitFreeCompany() +  " / " + companyValue.getValue().getTaxBenefits() + " / " + companyValue.getValue()
-								.getCompanyValue() + " / " + companyValue.getValue().getCapitalStock());
 					getView().addDeterministicChartArea(deterministicChartArea);
 				}
 				onProgressChange((float) 1);
