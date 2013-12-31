@@ -79,7 +79,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 
 			TreeSet<? extends Period> periods = i.getPeriods();
 			Iterator<? extends Period> iter = periods.iterator();// descendingIterator();
-			System.out.println("Perioden: " + periods.size());
 			int durchlauf = 0;
 			while (iter.hasNext()) {
 				period = (CashFlowPeriod) iter.next();
@@ -88,8 +87,8 @@ public class APV_2 extends AbstractDeterministicMethod {
 					first_period = period;
 				} else if (durchlauf +1 == periods.size()) { //letztes Jahr wird nach der Schleife extra berechnet
 				} else {
-					gk += period.getFreeCashFlow()
-							/ Math.pow(1 + sEK, durchlauf);
+					gk += abzinsen(period.getFreeCashFlow(),sEK,durchlauf);;
+					//period.getFreeCashFlow() / Math.pow(1 + sEK, durchlauf);
 					v += (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
 							/ Math.pow(1 + sZinsen, durchlauf);
 				}
@@ -112,5 +111,17 @@ public class APV_2 extends AbstractDeterministicMethod {
 		DeterministicResultContainer drc = new DeterministicResultContainer(
 				prognose);
 		return drc;
+	}
+	
+	/**
+	 * @author Annika Weis
+	 * @param wert
+	 * @param zinssatz
+	 * @param jahre
+	 * @return
+	 */
+	private double abzinsen(double wert, double zinssatz, int jahre) {
+		return wert
+				/ Math.pow(1 + zinssatz, jahre);
 	}
 }

@@ -55,7 +55,6 @@ public class DCF_2 extends AbstractDeterministicMethod {
 
 	public DeterministicResultContainer calculateValues(
 			StochasticResultContainer srContainer, Szenario szenario) {
-		System.out.println("DeterministicResultContainer calculateValues");
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 
 		double unternehmenswert = 0;
@@ -80,14 +79,12 @@ public class DCF_2 extends AbstractDeterministicMethod {
 
 			TreeSet<? extends Period> periods = i.getPeriods();
 			Iterator<? extends Period> iter = periods.iterator();// descendingIterator();
-			System.out.println("Perioden: " + periods.size());
 			int durchlauf = 1;
 			while (iter.hasNext()) {
 				period = (CashFlowPeriod) iter.next();
 
-				//zum Unternehmenswert einen weiterenabgezinsten Cashflow addieren
-				unternehmenswert += period.getFreeCashFlow()
-						/ Math.pow(1 + sEK, durchlauf);
+				//zum Unternehmenswert einen weiteren abgezinsten Cashflow addieren
+				unternehmenswert += abzinsen(period.getFreeCashFlow(), sEK, durchlauf);
 
 				lastPeriod = period;
 
@@ -98,14 +95,27 @@ public class DCF_2 extends AbstractDeterministicMethod {
 
 		//Restwert berechnen
 		restwert = lastPeriod.getFreeCashFlow() / sEK;
-		
+		//Restwert abzinsen
+		restwert = abzinsen(restwert, sEK, (int) jahr-1);
 		// Unternehmenswert gesamt berechnen
-		unternehmenswert = unternehmenswert + restwert
-				/ Math.pow(1 + sEK, jahr-1) + nbv;
-		System.out.println("Endergebnis DCF: )" + unternehmenswert);
+		unternehmenswert = unternehmenswert + restwert // / Math.pow(1 + sEK, jahr-1)
+				 + nbv;
+		System.out.println("Endergebnis DCF: " + unternehmenswert);
 
 		DeterministicResultContainer drc = new DeterministicResultContainer(
 				prognose);
 		return drc;
+	}
+
+	/**
+	 * @author Annika Weis
+	 * @param wert
+	 * @param zinssatz
+	 * @param jahre
+	 * @return
+	 */
+	private double abzinsen(double wert, double zinssatz, int jahre) {
+		return wert
+				/ Math.pow(1 + zinssatz, jahre);
 	}
 }
