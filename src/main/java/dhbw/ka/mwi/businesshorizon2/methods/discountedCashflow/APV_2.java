@@ -14,7 +14,6 @@ import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -41,7 +40,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 
 	@Override
 	public Boolean getImplemented() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -49,7 +47,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 	public DeterministicResultContainer calculate(Project project,
 			CallbackInterface callback) throws InterruptedException,
 			DeterministicMethodException {
-		// TODO Auto-generated method stub
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 		DeterministicResultContainer drc = new DeterministicResultContainer(
 				prognose);
@@ -58,8 +55,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 
 	public DeterministicResultContainer calculateValues(
 			StochasticResultContainer srContainer, Szenario szenario) {
-		// TODO Auto-generated method stub
-		System.out.println("DeterministicResultContainer calculateValues");
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 
 		double gk = 0;
@@ -79,9 +74,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 		sSteuersatz = 0.75 * szenario.getBusinessTax() / 100 + sKS;
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
-
-		System.out.println("Werte: " + sKS + " | " + sSteuersatz + " | " + sEK
-				+ " | " + sZinsen);
 
 		for (AbstractPeriodContainer i : srContainer.getPeriodContainers()) {
 
@@ -115,8 +107,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 		
 		//Unternehmenswert gesamt berechnen
 		unternehmenswert = gk + v - first_period.getCapitalStock();
-		System.out.println("Endergebnis: " + gk + " + " + v + " / "
-				+ " - " + first_period.getCapitalStock() + " = " + unternehmenswert);
+		System.out.println("Endergebnis APV:" + unternehmenswert);
 
 		DeterministicResultContainer drc = new DeterministicResultContainer(
 				prognose);

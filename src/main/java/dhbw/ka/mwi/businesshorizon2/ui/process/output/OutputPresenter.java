@@ -37,6 +37,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
@@ -114,6 +115,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface> implem
 				//Annika Weis
 				APV_2 apv_2 = new APV_2();
 				apv_2.calculateValues(srContainer, scenario);//project, scenario
+				DCF_2 dcf_2 = new DCF_2();
+				dcf_2.calculateValues(srContainer, scenario);
 				CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
 						.calculateCompanyValue();
 				for (Entry<Integer, Couple> companyValue : companyValueDeterministic.getCompanyValues().entrySet()) {
