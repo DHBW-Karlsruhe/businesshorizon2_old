@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Label;
 import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
@@ -104,6 +105,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	/**
 	 * @author Annika Weis
 	 */
+	@Override
 	public void addBasicLineChartArea(BasicLineChart chartArea) {
 		outputArea.addComponent(chartArea);
 	}
@@ -122,6 +124,17 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 			progressIndicator.setEnabled(true);
 		}
 
+	}
+	
+	/**
+	 * @author Annika Weis
+	 * @param Label
+	 * @return	void
+	 * 
+	 * Gibt das angegebene Label aus
+	 */
+	public void addLabel(Label label){
+		outputArea.addComponent(label);		
 	}
 
 }

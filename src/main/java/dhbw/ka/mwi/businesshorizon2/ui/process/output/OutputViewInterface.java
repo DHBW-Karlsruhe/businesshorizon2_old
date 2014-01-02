@@ -21,6 +21,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
+import com.vaadin.ui.Label;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
@@ -51,7 +53,8 @@ public interface OutputViewInterface extends ContentView {
 	
 	//Annika Weis
 	void addBasicLineChartArea(BasicLineChart chartArea);
-
+	void addLabel(Label label);
+	
 	void showErrorMessge(String message);
 
 	void changeProgress(float progress);

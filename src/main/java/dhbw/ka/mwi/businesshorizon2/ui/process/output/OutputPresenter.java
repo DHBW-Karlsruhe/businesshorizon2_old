@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
@@ -113,7 +114,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			// Annika Weis
 			for (AbstractDeterministicMethod method_deterministic : project
 					.getMethods_deterministic()) {
-				//alle Szenarios durchlaufen
+				// alle Szenarios durchlaufen
 				for (Szenario scenario : project.getScenarios()) {
 					onProgressChange((float) 0.5);
 					CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project
@@ -124,86 +125,84 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					DeterministicResultContainer drContainer = new DeterministicResultContainer(
 							periodContainer);
 					if (method_deterministic.getSelected()) {
+						double uwert = 0;
 						if (method_deterministic.getName() == "APV") {
 							System.out.println("APV");
 							APV_2 apv_2 = new APV_2();
-							apv_2.calculateValues(drContainer, scenario);// project,
-																			// scenario
+							uwert = apv_2
+									.calculateValues(drContainer, scenario);// project,
+							// scenario
+
+							// TODO: Unternehmenswert ausgeben
+
+							// TODO: Cashflows im Liniendiagramm ausgeben
+							project.getDeterministicPeriods().getPeriods()
+									.iterator();
+							BasicLineChart lineChart = new BasicLineChart(
+									"Jahre", drContainer.getJahre());
+							double[] CashFlows = cfPeriodContainer
+									.getCashflows();
+							Map<String, double[]> werteMap = new HashMap<String, double[]>();
+							werteMap.put("Cashflow", CashFlows);
+							lineChart.addValues(werteMap);
+							getView().addBasicLineChartArea(lineChart);
+							// methodRunner = new
+							// MethodRunner(method_deterministic, project,
+							// this);
+							// methodRunner.start();
 						}
-
-						//TODO: Unternehmenswert ausgeben
-						
-						//TODO: Cashflows im Liniendiagramm ausgeben
-						project.getDeterministicPeriods().getPeriods().iterator();
-						BasicLineChart lineChart = new BasicLineChart("Jahre", drContainer.getJahre());
-						double[] CashFlows = cfPeriodContainer.getCashflows();
-						Map<String, double[]> werteMap = new HashMap<String,double[]>();
-						werteMap.put("Cashflow", CashFlows);
-						lineChart.addValues(werteMap);
-						getView().addBasicLineChartArea(lineChart);
-						// methodRunner = new
-						// MethodRunner(method_deterministic, project,
-						// this);
-						// methodRunner.start();
-					}
-
-					if (method_deterministic.getSelected()) {
 						if (method_deterministic.getName() == "DCF") {
 							System.out.println("DCF");
 							DCF_2 dcf_2 = new DCF_2();
-							double uwert = dcf_2.calculateValues(drContainer, scenario);
+							uwert = dcf_2
+									.calculateValues(drContainer, scenario);
 							DeterministicChartArea deterministicChartArea = new DeterministicChartArea(
-									0,
-									0,
-									uwert,
-									0);
-							getView().addDeterministicChartArea(deterministicChartArea);
+									0, 0, uwert, 0);
+							getView().addDeterministicChartArea(
+									deterministicChartArea);
 						}
-
+						Label labelUnternehmenswert = new Label(
+								"Unternehemswert: " + uwert);
+						getView().addLabel(labelUnternehmenswert);
 						// methodRunner = new
 						// MethodRunner(method_deterministic, project,
 						// this);
 						// methodRunner.start();
-					}
 
+					}
 				}
 			}
 			onProgressChange((float) 1);
 
-			
 			/*
-			for (Szenario scenario : project.getScenarios()) {
-				onProgressChange((float) 0.5);
-				CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project
-						.getDeterministicPeriods();
-
-				TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<>();
-				periodContainer.add(cfPeriodContainer);
-				StochasticResultContainer srContainer = new StochasticResultContainer(
-						periodContainer);
-
-				APV apv = new APV(srContainer, scenario);
-				// Annika Weis
-				APV_2 apv_2 = new APV_2();
-				apv_2.calculateValues(new DeterministicResultContainer(
-						periodContainer), scenario);// project, scenario
-				DCF_2 dcf_2 = new DCF_2();
-				dcf_2.calculateValues(new DeterministicResultContainer(
-						periodContainer), scenario);// srContainer
-				CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
-						.calculateCompanyValue();
-				for (Entry<Integer, Couple> companyValue : companyValueDeterministic
-						.getCompanyValues().entrySet()) {
-					DeterministicChartArea deterministicChartArea = new DeterministicChartArea(
-							companyValue.getValue().getDebitFreeCompany(),
-							companyValue.getValue().getTaxBenefits(),
-							companyValue.getValue().getCompanyValue(),
-							companyValue.getValue().getCapitalStock());
-					getView().addDeterministicChartArea(deterministicChartArea);
-				}
-				onProgressChange((float) 1);
-			}
-			*/
+			 * for (Szenario scenario : project.getScenarios()) {
+			 * onProgressChange((float) 0.5); CashFlowPeriodContainer
+			 * cfPeriodContainer = (CashFlowPeriodContainer) project
+			 * .getDeterministicPeriods();
+			 * 
+			 * TreeSet<AbstractPeriodContainer> periodContainer = new
+			 * TreeSet<>(); periodContainer.add(cfPeriodContainer);
+			 * StochasticResultContainer srContainer = new
+			 * StochasticResultContainer( periodContainer);
+			 * 
+			 * APV apv = new APV(srContainer, scenario); // Annika Weis APV_2
+			 * apv_2 = new APV_2(); apv_2.calculateValues(new
+			 * DeterministicResultContainer( periodContainer), scenario);//
+			 * project, scenario DCF_2 dcf_2 = new DCF_2();
+			 * dcf_2.calculateValues(new DeterministicResultContainer(
+			 * periodContainer), scenario);// srContainer
+			 * CompanyValueDeterministic companyValueDeterministic =
+			 * (CompanyValueDeterministic) apv .calculateCompanyValue(); for
+			 * (Entry<Integer, Couple> companyValue : companyValueDeterministic
+			 * .getCompanyValues().entrySet()) { DeterministicChartArea
+			 * deterministicChartArea = new DeterministicChartArea(
+			 * companyValue.getValue().getDebitFreeCompany(),
+			 * companyValue.getValue().getTaxBenefits(),
+			 * companyValue.getValue().getCompanyValue(),
+			 * companyValue.getValue().getCapitalStock());
+			 * getView().addDeterministicChartArea(deterministicChartArea); }
+			 * onProgressChange((float) 1); }
+			 */
 		}
 
 		if (project.getProjectInputType().getStochastic()) {

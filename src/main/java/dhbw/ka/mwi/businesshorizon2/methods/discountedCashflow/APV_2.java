@@ -53,7 +53,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 		return drc;
 	}
 
-	public DeterministicResultContainer calculateValues(
+	public double calculateValues(
 			DeterministicResultContainer drContainer, Szenario szenario) {
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 
@@ -108,9 +108,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 		unternehmenswert = gk + v - first_period.getCapitalStock();
 		System.out.println("Endergebnis APV:" + unternehmenswert);
 
-		DeterministicResultContainer drc = new DeterministicResultContainer(
-				prognose);
-		return drc;
+		return unternehmenswert;
 	}
 	
 	/**

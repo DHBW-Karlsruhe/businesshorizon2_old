@@ -103,8 +103,6 @@ public class DCF_2 extends AbstractDeterministicMethod {
 				 + nbv;
 		System.out.println("Endergebnis DCF: " + unternehmenswert);
 
-		DeterministicResultContainer drc = new DeterministicResultContainer(
-				prognose);
 		return unternehmenswert;
 	}
 

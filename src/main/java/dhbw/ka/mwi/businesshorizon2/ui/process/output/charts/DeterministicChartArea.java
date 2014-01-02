@@ -72,5 +72,12 @@ public class DeterministicChartArea extends GridLayout {
 		this.setWidth("1000px");
 
 	}
-
+	
+	
+	/**
+	 * @author Annika Weis
+	 */
+	public void addElement(Label label){
+		this.addComponent(label);
+	}
 }
