@@ -29,6 +29,7 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
@@ -96,6 +97,14 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 
 	@Override
 	public void addDeterministicChartArea(DeterministicChartArea chartArea) {
+		outputArea.addComponent(chartArea);
+	}
+	
+	
+	/**
+	 * @author Annika Weis
+	 */
+	public void addBasicLineChartArea(BasicLineChart chartArea) {
 		outputArea.addComponent(chartArea);
 	}
 

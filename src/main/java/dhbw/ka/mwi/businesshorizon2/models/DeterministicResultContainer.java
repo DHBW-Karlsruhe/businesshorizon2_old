@@ -26,8 +26,12 @@
 package dhbw.ka.mwi.businesshorizon2.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
 /**
@@ -71,7 +75,7 @@ public class DeterministicResultContainer {
 	}
 
 	/**
-	 * Diese Methode liefert den Unternehemnswert als Arraylist
+	 * Diese Methode liefert den Unternehemnswert
 	 * 
 	 * @return Unternhemswert ArrayList<Double>
 	 * @author Annika Weis
@@ -79,14 +83,25 @@ public class DeterministicResultContainer {
 	public ArrayList<Double> getUnternehmenswert(){
 		return unternehmenswerte;
 	}
+
 	
-	/**
-	 * Diese Methode liefert den Unternehemnswert im Array
-	 * 
-	 * @return Unternhemswert (Double[])
-	 * @author Annika Weis
-	 */
-	public Double[] getUnternehemnswert(){
-		return (Double[]) unternehmenswerte.toArray();
+	@SuppressWarnings("null")
+	public List<String> getJahre(){
+		List<String> periodenNamen = new ArrayList<String>();
+		CashFlowPeriod period;
+
+		for (AbstractPeriodContainer abstractPeriodContainer : getPeriodContainers()) {
+			TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
+			Iterator<? extends Period> periodenIterator = periods.iterator();// descendingIterator();
+			System.out.println("Anzahl Perioden:: " + periods.size());
+			
+			while (periodenIterator.hasNext()) {
+				period = (CashFlowPeriod) periodenIterator.next();
+				periodenNamen.add("" + period.getYear());
+			    System.out.println("Jahre ermitteln:" + period.getYear());
+			}
+			
+		}
+		return periodenNamen;
 	}
 }

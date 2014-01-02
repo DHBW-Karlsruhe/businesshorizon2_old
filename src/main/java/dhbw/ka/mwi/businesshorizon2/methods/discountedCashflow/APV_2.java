@@ -75,13 +75,13 @@ public class APV_2 extends AbstractDeterministicMethod {
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
 
-		for (AbstractPeriodContainer i : drContainer.getPeriodContainers()) {
+		for (AbstractPeriodContainer abstractPeriodContainer : drContainer.getPeriodContainers()) {
 
-			TreeSet<? extends Period> periods = i.getPeriods();
-			Iterator<? extends Period> iter = periods.iterator();// descendingIterator();
+			TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
+			Iterator<? extends Period> periodenIter = periods.iterator();// descendingIterator();
 			int durchlauf = 0;
-			while (iter.hasNext()) {
-				period = (CashFlowPeriod) iter.next();
+			while (periodenIter.hasNext()) {
+				period = (CashFlowPeriod) periodenIter.next();
 
 				if (durchlauf == 0) { // Basisjahr
 					first_period = period;

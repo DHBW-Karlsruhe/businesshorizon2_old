@@ -19,6 +19,9 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeSet;
 
@@ -56,6 +59,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
@@ -109,6 +113,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			// Annika Weis
 			for (AbstractDeterministicMethod method_deterministic : project
 					.getMethods_deterministic()) {
+				//alle Szenarios durchlaufen
 				for (Szenario scenario : project.getScenarios()) {
 					onProgressChange((float) 0.5);
 					CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project
@@ -126,6 +131,16 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 																			// scenario
 						}
 
+						//TODO: Unternehmenswert ausgeben
+						
+						//TODO: Cashflows im Liniendiagramm ausgeben
+						project.getDeterministicPeriods().getPeriods().iterator();
+						BasicLineChart lineChart = new BasicLineChart("Jahre", drContainer.getJahre());
+						double[] CashFlows = cfPeriodContainer.getCashflows();
+						Map<String, double[]> werteMap = new HashMap<String,double[]>();
+						werteMap.put("Cashflow", CashFlows);
+						lineChart.addValues(werteMap);
+						getView().addBasicLineChartArea(lineChart);
 						// methodRunner = new
 						// MethodRunner(method_deterministic, project,
 						// this);

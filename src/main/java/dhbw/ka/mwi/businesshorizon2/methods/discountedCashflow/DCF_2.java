@@ -4,6 +4,7 @@
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
@@ -75,13 +76,13 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
 
-		for (AbstractPeriodContainer i : drContainer.getPeriodContainers()) {
+		for (AbstractPeriodContainer abstractPeriodenContainer : drContainer.getPeriodContainers()) {
 
-			TreeSet<? extends Period> periods = i.getPeriods();
-			Iterator<? extends Period> iter = periods.iterator();// descendingIterator();
+			TreeSet<? extends Period> periods = abstractPeriodenContainer.getPeriods();
+			Iterator<? extends Period> periodenIterator = periods.iterator();// descendingIterator();
 			int durchlauf = 1;
-			while (iter.hasNext()) {
-				period = (CashFlowPeriod) iter.next();
+			while (periodenIterator.hasNext()) {
+				period = (CashFlowPeriod) periodenIterator.next();
 
 				//zum Unternehmenswert einen weiteren abgezinsten Cashflow addieren
 				unternehmenswert += abzinsen(period.getFreeCashFlow(), sEK, durchlauf);
@@ -107,7 +108,16 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		return unternehmenswert;
 	}
 
+	
+	public List<String> getPeriodenNamen(Project project){
+		List<String> perioden = null;
+		
+		return perioden;
+	}
+	
+	
 	/**
+	 * Zinst einen angegebenen Wert zum Zinssatz über die Jahre ab
 	 * @author Annika Weis
 	 * @param wert
 	 * @param zinssatz

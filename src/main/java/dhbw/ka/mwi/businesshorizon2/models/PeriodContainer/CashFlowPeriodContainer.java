@@ -18,12 +18,14 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * Diese Klasse stellt einen Zeitreihe von CashFlow Perioden dar.
@@ -42,6 +44,25 @@ public class CashFlowPeriodContainer extends AbstractPeriodContainer {
 	public TreeSet<CashFlowPeriod> getPeriods() {
 		// TODO Auto-generated method stub
 		return (TreeSet<CashFlowPeriod>) super.getPeriods();
+	}
+
+	/**
+	 * @author: Annika Weis
+	 * @date: 02.01.2014
+	 */
+	public double[] getCashflows() {
+		TreeSet<CashFlowPeriod> perioden = (TreeSet<CashFlowPeriod>) super.getPeriods();
+
+		Iterator<CashFlowPeriod> itr = perioden.iterator();
+		double[] cashflows = new double[perioden.size()];
+		int i = 0;
+		while (itr.hasNext()) {
+			CashFlowPeriod c = itr.next();
+			cashflows[i] = c.getFreeCashFlow();
+			i++;
+		}
+
+		return cashflows;
 	}
 
 }

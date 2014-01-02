@@ -22,6 +22,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
@@ -47,6 +48,9 @@ public interface OutputViewInterface extends ContentView {
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
 	void addDeterministicChartArea(DeterministicChartArea chartArea);
+	
+	//Annika Weis
+	void addBasicLineChartArea(BasicLineChart chartArea);
 
 	void showErrorMessge(String message);
 
