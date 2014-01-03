@@ -12,7 +12,6 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.DeterministicMethodException;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
@@ -55,8 +54,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 
 	public double calculateValues(
 			DeterministicResultContainer drContainer, Szenario szenario) {
-		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
-
 		double gk = 0;
 		double v = 0;
 		double unternehmenswert = 0;
@@ -101,7 +98,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 		//Berechnung des letzten Jahres
 		gk = gk + lastPeriod.getFreeCashFlow()
 				/ (sEK * Math.pow(1 + sEK, jahr-2));
-		//TODO
 		v = v + (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
 				/ (sZinsen * Math.pow(1 + sZinsen, jahr-2));
 		

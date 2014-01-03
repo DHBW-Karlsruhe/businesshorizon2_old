@@ -27,7 +27,6 @@ package dhbw.ka.mwi.businesshorizon2.models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
@@ -84,7 +83,12 @@ public class DeterministicResultContainer {
 		return unternehmenswerte;
 	}
 
-	
+	/**
+	 * Diese Methode liefert die Jahre
+	 * 
+	 * @return Unternhemswert ArrayList<Double>
+	 * @author Annika Weis
+	 */
 	public int[] getJahre(){
 		CashFlowPeriod period;
 
@@ -108,6 +112,7 @@ public class DeterministicResultContainer {
 	
 
 	/**
+	 * Diese Methode liefert die Cashflows
 	 * @author: Annika Weis
 	 * @date: 02.01.2014
 	 */
@@ -130,5 +135,34 @@ public class DeterministicResultContainer {
 		}
 
 		return cashflows;
+	}
+	
+	
+	
+
+	/**
+	 * Diese Methode liefert das Fremdkapital aus jeder Periode
+	 * @author: Annika Weis
+	 * @date: 03.01.2014
+	 */
+	public double[] getFremdkapitl() {
+		CashFlowPeriod period;
+		
+		double[] fremdkapital = null;
+		int i = 0;
+		for (AbstractPeriodContainer abstractPeriodContainer : getPeriodContainers()) {
+			TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
+			Iterator<? extends Period> periodenIterator = periods.iterator();// descendingIterator();
+			
+			fremdkapital = new double[periods.size()];
+			while (periodenIterator.hasNext()) {
+				period = (CashFlowPeriod) periodenIterator.next();
+				fremdkapital[i] =period.getCapitalStock();
+			    System.out.println("Fremdkapital ermitteln:" + period.getFreeCashFlow());
+			    i++;
+			}
+		}
+
+		return fremdkapital;
 	}
 }
