@@ -85,23 +85,50 @@ public class DeterministicResultContainer {
 	}
 
 	
-	@SuppressWarnings("null")
-	public List<String> getJahre(){
-		List<String> periodenNamen = new ArrayList<String>();
+	public int[] getJahre(){
 		CashFlowPeriod period;
 
+		int periodenNamen[] = null;
 		for (AbstractPeriodContainer abstractPeriodContainer : getPeriodContainers()) {
 			TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
 			Iterator<? extends Period> periodenIterator = periods.iterator();// descendingIterator();
-			System.out.println("Anzahl Perioden:: " + periods.size());
-			
+			periodenNamen = new int[periods.size()];
+			int i = 0;
 			while (periodenIterator.hasNext()) {
 				period = (CashFlowPeriod) periodenIterator.next();
-				periodenNamen.add("" + period.getYear());
+				periodenNamen[i] =  period.getYear();
 			    System.out.println("Jahre ermitteln:" + period.getYear());
+			    i++;
 			}
 			
 		}
 		return periodenNamen;
+	}
+	
+	
+
+	/**
+	 * @author: Annika Weis
+	 * @date: 02.01.2014
+	 */
+	public double[] getCashflows() {
+		CashFlowPeriod period;
+		
+		double[] cashflows = null;
+		int i = 0;
+		for (AbstractPeriodContainer abstractPeriodContainer : getPeriodContainers()) {
+			TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
+			Iterator<? extends Period> periodenIterator = periods.iterator();// descendingIterator();
+			
+			cashflows = new double[periods.size()];
+			while (periodenIterator.hasNext()) {
+				period = (CashFlowPeriod) periodenIterator.next();
+				cashflows[i] =period.getFreeCashFlow();
+			    System.out.println("Cashflows ermitteln:" + period.getFreeCashFlow());
+			    i++;
+			}
+		}
+
+		return cashflows;
 	}
 }

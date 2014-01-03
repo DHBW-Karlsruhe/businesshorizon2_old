@@ -101,6 +101,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 		//Berechnung des letzten Jahres
 		gk = gk + lastPeriod.getFreeCashFlow()
 				/ (sEK * Math.pow(1 + sEK, jahr-2));
+		//TODO
 		v = v + (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
 				/ (sZinsen * Math.pow(1 + sZinsen, jahr-2));
 		

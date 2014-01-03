@@ -199,7 +199,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		setMargin(true);
 		
-		//TODO: Zielenanzahl anpassen
+		//TODO: Zeilenanzahl anpassen
 		gridLayout = new GridLayout(3, 30);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);

@@ -62,6 +62,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
@@ -127,47 +128,33 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					if (method_deterministic.getSelected()) {
 						double uwert = 0;
 						if (method_deterministic.getName() == "APV") {
-							System.out.println("APV");
 							APV_2 apv_2 = new APV_2();
 							uwert = apv_2
-									.calculateValues(drContainer, scenario);// project,
-							// scenario
-
+									.calculateValues(drContainer, scenario);
 							// TODO: Unternehmenswert ausgeben
+							// Cashflows im Liniendiagramm ausgeben
+							DeterministicLineChart chart = new DeterministicLineChart(
+									method_deterministic.getName(), uwert,
+									"Cashflows", drContainer.getJahre(),
+									drContainer.getCashflows());
+							getView().addDeterministicLineChartArea(chart); // chart
 
-							// TODO: Cashflows im Liniendiagramm ausgeben
-							project.getDeterministicPeriods().getPeriods()
-									.iterator();
-							BasicLineChart lineChart = new BasicLineChart(
-									"Jahre", drContainer.getJahre());
-							double[] CashFlows = cfPeriodContainer
-									.getCashflows();
-							Map<String, double[]> werteMap = new HashMap<String, double[]>();
-							werteMap.put("Cashflow", CashFlows);
-							lineChart.addValues(werteMap);
-							getView().addBasicLineChartArea(lineChart);
-							// methodRunner = new
-							// MethodRunner(method_deterministic, project,
-							// this);
-							// methodRunner.start();
 						}
 						if (method_deterministic.getName() == "DCF") {
-							System.out.println("DCF");
 							DCF_2 dcf_2 = new DCF_2();
 							uwert = dcf_2
 									.calculateValues(drContainer, scenario);
-							DeterministicChartArea deterministicChartArea = new DeterministicChartArea(
-									0, 0, uwert, 0);
-							getView().addDeterministicChartArea(
-									deterministicChartArea);
+
+							DeterministicLineChart chart = new DeterministicLineChart(
+									method_deterministic.getName(), uwert,
+									"Cashflows", drContainer.getJahre(),
+									drContainer.getCashflows());
+							getView().addDeterministicLineChartArea(chart); // chart
+
 						}
 						Label labelUnternehmenswert = new Label(
-								"Unternehemswert: " + uwert);
+								"Unternehmenswert: " + uwert);
 						getView().addLabel(labelUnternehmenswert);
-						// methodRunner = new
-						// MethodRunner(method_deterministic, project,
-						// this);
-						// methodRunner.start();
 
 					}
 				}

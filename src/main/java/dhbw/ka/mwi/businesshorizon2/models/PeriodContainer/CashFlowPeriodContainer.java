@@ -46,23 +46,5 @@ public class CashFlowPeriodContainer extends AbstractPeriodContainer {
 		return (TreeSet<CashFlowPeriod>) super.getPeriods();
 	}
 
-	/**
-	 * @author: Annika Weis
-	 * @date: 02.01.2014
-	 */
-	public double[] getCashflows() {
-		TreeSet<CashFlowPeriod> perioden = (TreeSet<CashFlowPeriod>) super.getPeriods();
-
-		Iterator<CashFlowPeriod> itr = perioden.iterator();
-		double[] cashflows = new double[perioden.size()];
-		int i = 0;
-		while (itr.hasNext()) {
-			CashFlowPeriod c = itr.next();
-			cashflows[i] = c.getFreeCashFlow();
-			i++;
-		}
-
-		return cashflows;
-	}
 
 }
