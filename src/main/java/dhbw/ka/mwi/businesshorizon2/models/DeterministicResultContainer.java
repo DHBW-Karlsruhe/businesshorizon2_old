@@ -101,7 +101,6 @@ public class DeterministicResultContainer {
 			while (periodenIterator.hasNext()) {
 				period = (CashFlowPeriod) periodenIterator.next();
 				periodenNamen[i] =  period.getYear();
-			    System.out.println("Jahre ermitteln:" + period.getYear());
 			    i++;
 			}
 			
@@ -129,7 +128,6 @@ public class DeterministicResultContainer {
 			while (periodenIterator.hasNext()) {
 				period = (CashFlowPeriod) periodenIterator.next();
 				cashflows[i] =period.getFreeCashFlow();
-			    System.out.println("Cashflows ermitteln:" + period.getFreeCashFlow());
 			    i++;
 			}
 		}
@@ -158,7 +156,6 @@ public class DeterministicResultContainer {
 			while (periodenIterator.hasNext()) {
 				period = (CashFlowPeriod) periodenIterator.next();
 				fremdkapital[i] =period.getCapitalStock();
-			    System.out.println("Fremdkapital ermitteln:" + period.getFreeCashFlow());
 			    i++;
 			}
 		}
