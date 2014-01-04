@@ -257,9 +257,14 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 		StochasticChartArea stochasticChartArea;
 
 		for (Szenario scenario : project.getScenarios()) {
-			APV apv = new APV(result, scenario);
-			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv
-					.calculateCompanyValue();
+			APV_2 apv = new APV_2();
+			
+			CompanyValueStochastic companyValues = new CompanyValueStochastic();
+			
+			
+					
+					
+					.calculateValues(result.getCashflows(), result.getFremdkapitl(), scenario);
 			if (methodName.equalsIgnoreCase("zeitreihenanalyse")) {
 				stochasticChartArea = new StochasticChartArea(methodName,
 						expectedCashFlows, companyValue.getCompanyValues());
