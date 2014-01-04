@@ -20,6 +20,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -52,6 +53,7 @@ import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministi
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
@@ -255,22 +257,52 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	public void onComplete(StochasticResultContainer result, String methodName) {
 
 		StochasticChartArea stochasticChartArea;
-
+		
+		//pro Szenario werden die Unternehmenswerte berechnet
 		for (Szenario scenario : project.getScenarios()) {
-			APV_2 apv = new APV_2();
 			
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
+			APV_2 apv = new APV_2();
 			
+			//Temporäre Variablen werden erzeugt, die später für die Schleife benötigt werden
+			CashFlowPeriod period;
+			double[] cashflow = null;
+			double[] fremdkapital = null;
+			int i;
+			double unternehmenswert;		
 			
-					
-					
-					.calculateValues(result.getCashflows(), result.getFremdkapitl(), scenario);
+			//für jeden Cashflow-Period-Container, der im Stochastic-Result-Container enthalten ist,
+			//wird die Schleife je einmal durchlaufen (=Anzahl der Iterationen in der Zeitreihenanalyse)
+			for (AbstractPeriodContainer abstractPeriodContainer : result.getPeriodContainers()) {
+				//holt pro Cashflow-Period-Container die enthaltenen Perioden und legt sie in einem TreeSet ab
+				TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
+				//ein Iterator zum durchlaufen des TreeSet wird erstellt.
+				Iterator<? extends Period> periodenIterator = periods.iterator();
+				//Zähler, Cashflow- und Fremdkapital-Arrays werden zurückgesetzt
+				cashflow = new double[periods.size()];
+				fremdkapital = new double[periods.size()];
+				i = 0;
+				//pro Periode sollen nun die Werte ausgelesen und ein Unternehmenswert berechnet werden
+				while (periodenIterator.hasNext()) {
+					period = (CashFlowPeriod) periodenIterator.next();
+					cashflow[i] = period.getFreeCashFlow(); 					
+					fremdkapital[i] = period.getCapitalStock();
+					i++;				
+				}
+				//berechnet den Unternehmenswert des betrachteten Cashflow-Period-Container
+				unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
+				//fügt den Unternehmenswert der Sammelklasse aller Unternehmenswert hinzu
+				companyValues.addCompanyValue(unternehmenswert);
+				logger.debug("Unternehmenswerte " + unternehmenswert + " hinzugefügt.");
+			}
+			logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
+			
 			if (methodName.equalsIgnoreCase("zeitreihenanalyse")) {
 				stochasticChartArea = new StochasticChartArea(methodName,
-						expectedCashFlows, companyValue.getCompanyValues());
+						expectedCashFlows, companyValues.getCompanyValues());
 			} else {
 				stochasticChartArea = new StochasticChartArea(methodName, null,
-						companyValue.getCompanyValues());
+						companyValues.getCompanyValues());
 			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
