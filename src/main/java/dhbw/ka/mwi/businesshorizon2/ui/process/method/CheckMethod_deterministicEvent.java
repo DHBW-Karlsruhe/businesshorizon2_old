@@ -18,50 +18,30 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+//Annika Weis
 
-package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
+package dhbw.ka.mwi.businesshorizon2.ui.process.method;
+
+import java.util.Set;
+
+import com.mvplite.event.Event;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
-import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValue;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 
-/**
- * Diese Klasse stellt die Oberklasse für Bewertungsmethoden der errechnet
- * CashFlows dar.
- * 
- * @author Kai Westerholz
- * 
- */
+public class CheckMethod_deterministicEvent extends Event {
 
-public abstract class RatingMethods{
-	protected StochasticResultContainer container;
-	protected Szenario szenario;
-
-	public RatingMethods(StochasticResultContainer container, Szenario szenario) {
-		this.container = container;
-		this.szenario = szenario;
-
-		CashFlowCalculator.calculateCashflows(container, szenario);
-	}
+	private static final long serialVersionUID = 1L;	
+	private Set<AbstractDeterministicMethod> checkedMethods;
 	
-	protected double getRateReturnEquity(){
-		return szenario.getRateReturnEquity() / 100;
-	}
-	
-	protected double getRateReturnCapitalStock(){
-		return szenario.getRateReturnCapitalStock() / 100;
-	}
-	
-	protected double getBusinessTax(){
-		return szenario.getBusinessTax() / 100;
-	}
-	
-	protected double getCorporateAndSolitaryTax(){
-		return szenario.getCorporateAndSolitaryTax() / 100;
+	public CheckMethod_deterministicEvent(Set<AbstractDeterministicMethod> checkedMethods) {
+		super();
+		this.checkedMethods=checkedMethods;
 	}
 
-	public abstract CompanyValue calculateCompanyValue();
+	public Set<AbstractDeterministicMethod> getCheckedMethods() {
+		return checkedMethods;
+	}
+
+
 }

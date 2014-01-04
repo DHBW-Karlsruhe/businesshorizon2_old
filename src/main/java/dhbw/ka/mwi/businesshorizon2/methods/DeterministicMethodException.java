@@ -18,33 +18,17 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
+package dhbw.ka.mwi.businesshorizon2.methods;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
 
-/**
- * Diese Klasse stellt einen Zeitreihe von CashFlow Perioden dar.
- * 
- * @author Kai Westerholz
- * 
- */
+public class DeterministicMethodException extends BusinessHorizonException {
 
-public class CashFlowPeriodContainer extends AbstractPeriodContainer {
+	private static final long serialVersionUID = 1L;
 
-	public CashFlowPeriodContainer() {
-		super();
+	public DeterministicMethodException(String s) {
+		super(s);
 	}
-
-	@Override
-	public TreeSet<CashFlowPeriod> getPeriods() {
-		// TODO Auto-generated method stub
-		return (TreeSet<CashFlowPeriod>) super.getPeriods();
-	}
-
 
 }

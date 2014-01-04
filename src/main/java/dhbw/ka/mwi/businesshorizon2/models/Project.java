@@ -30,6 +30,7 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -75,8 +76,7 @@ public class Project implements Serializable {
 		return deterministicPeriods;
 	}
 
-	public void setDeterministicPeriods(
-			AbstractPeriodContainer deterministicPeriods) {
+	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
 		this.deterministicPeriods = deterministicPeriods;
 	}
 
@@ -86,12 +86,15 @@ public class Project implements Serializable {
 	private double BorrowedCapitalStepRange;
 
 	private int periodsToForecast;
+	private int periodsToForecast_deterministic;//Annika Weis
 	private int relevantPastPeriods;
 	private int iterations;
 	private int basisYear;
 	private ProjectInputType projectInputType;
 
 	private SortedSet<AbstractStochasticMethod> methods;
+	//Annika Weis
+	private SortedSet<AbstractDeterministicMethod> methods_deterministic;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
@@ -301,6 +304,16 @@ public class Project implements Serializable {
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
+	
+	//Annika Weis
+	public void setMethods_deterministic(SortedSet<AbstractDeterministicMethod> methods_deterministic) {
+		this.methods_deterministic = methods_deterministic;
+	}
+
+	//Annika Weis
+	public SortedSet<AbstractDeterministicMethod> getMethods_deterministic() {
+		return methods_deterministic;
+	}
 
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
@@ -341,6 +354,30 @@ public class Project implements Serializable {
 	public void setPeriodsToForecast(int periodsToForecast) {
 		this.periodsToForecast = periodsToForecast;
 	}
+	
+	
+	/**
+	 * Gibt die Anzahl vorherzusagender deterinistischer Perioden des Projekts zurück.
+	 * 
+	 * @author Annika Weis
+	 * @return Anzahl vorherzusagender Perioden
+	 */
+	public int getPeriodsToForecast_deterministic() {
+		return periodsToForecast_deterministic;
+	}
+
+	/**
+	 * Setzt die Anzahl vorherzusagender deterministischer Perioden des Projekts.
+	 * 
+	 * @author Annika Weis
+	 * @param periodsToForecast_deterministic
+	 *            Anzahl vorherzusagender Perioden (deterministisch)
+	 */
+	public void setPeriodsToForecast_deterministic(int periodsToForecast_deterministic) {
+		this.periodsToForecast_deterministic = periodsToForecast_deterministic;
+	}
+	
+	
 
 	/**
 	 * Setzt die Anzahl der vergangenen relevanten Perioden des Projekts.

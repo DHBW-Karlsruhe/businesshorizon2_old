@@ -41,7 +41,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateComboBoxRepresentatives(boolean enabled);
@@ -52,7 +52,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateCheckboxIndustryRepresentative(boolean enabled);
@@ -62,17 +62,27 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activatePeriodsToForecast(boolean enabled);
+
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumPeriods_deterministic' aus.
+	 * TODO Welches Feld???
+	 * @author Annika Weis
+	 * @param enabled
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	void activatePeriodsToForecast_deterministic(boolean enabled);
 
 	/**
 	 * Diese Methode graut das Textfeld 'textfieldNumPastPeriods' aus.
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateRelevantPastPeriods(boolean enabled);
@@ -82,7 +92,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateIterations(boolean enabled);
@@ -109,7 +119,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateCashFlowStepRang(boolean enabled);
@@ -119,7 +129,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateCashFlowProbabilityOfRise(boolean enabled);
@@ -129,7 +139,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateBorrowedCapitalProbabilityOfRise(boolean enabled);
@@ -139,7 +149,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateBorrowedCapitalStepRange(boolean enabled);
@@ -149,7 +159,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	public void activateRiseOfPeriods(boolean enabled);
@@ -159,7 +169,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	public void activateRiseOfPeriodsCheckbox(boolean enabled);
@@ -169,7 +179,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	public void activateDeviation(boolean enabled);
@@ -180,7 +190,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	public void activateDeviationCheckbox(boolean enabled);
@@ -190,7 +200,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateStepsPerPeriod(boolean enabled);
@@ -200,7 +210,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateStepRange(boolean enabled);
@@ -210,7 +220,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateProbability(boolean enabled);
@@ -220,7 +230,7 @@ public interface ParameterViewInterface extends ContentView {
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
 	 *            den Komponenten
 	 */
 	void activateCalculateStepRange(boolean enabled);
@@ -243,6 +253,15 @@ public interface ParameterViewInterface extends ContentView {
 	 *            Anzahl zu prognostizierender Perioden
 	 */
 	void setPeriodsToForecast(String periodsToForecast);
+	
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren
+	 * 
+	 * @author Annika Weis
+	 * @param periodsToForecast_deterministic
+	 *            Anzahl zu prognostizierender Perioden (deterministisch)
+	 */
+	void setPeriodsToForecast_deterministic(String periodsToForecast_deterministic);
 
 	/**
 	 * Setzt den Wert des Texfelds 'Anzahl Wiederholungen'

@@ -25,11 +25,14 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Label;
 import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
@@ -98,7 +101,26 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	public void addDeterministicChartArea(DeterministicChartArea chartArea) {
 		outputArea.addComponent(chartArea);
 	}
+	
+	
+	/**
+	 * @author Annika Weis
+	 */
+	@Override
+	public void addBasicLineChartArea(BasicLineChart chartArea) {
+		outputArea.addComponent(chartArea);
+	}
+	
+	/**
+	 * @author Annika Weis
+	 */
+	@Override
+	public void addDeterministicLineChartArea(DeterministicLineChart lineChart) {
+		outputArea.addComponent(lineChart);
+		
+	}
 
+	
 	@Override
 	public void showErrorMessge(String message) {
 		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
@@ -114,5 +136,17 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 		}
 
 	}
+	
+	/**
+	 * @author Annika Weis
+	 * @param Label
+	 * @return	void
+	 * 
+	 * Gibt das angegebene Label aus
+	 */
+	public void addLabel(Label label){
+		outputArea.addComponent(label);		
+	}
+
 
 }
