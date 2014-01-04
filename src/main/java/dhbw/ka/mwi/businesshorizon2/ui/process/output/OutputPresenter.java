@@ -145,7 +145,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 						if (method_deterministic.getName() == "DCF") {
 							DCF_2 dcf_2 = new DCF_2();
 							uwert = dcf_2
-									.calculateValues(drContainer, scenario);
+									.calculateValues(drContainer.getCashflows(), scenario);
 
 							DeterministicLineChart chart = new DeterministicLineChart(
 									method_deterministic.getName(), uwert,
