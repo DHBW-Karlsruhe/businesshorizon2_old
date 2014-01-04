@@ -21,6 +21,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.models;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -36,7 +37,11 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContain
  * 
  */
 
-public class StochasticResultContainer {
+public class StochasticResultContainer implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	TreeSet<? extends AbstractPeriodContainer> periodContainer = new TreeSet<>();
 
 	public StochasticResultContainer(

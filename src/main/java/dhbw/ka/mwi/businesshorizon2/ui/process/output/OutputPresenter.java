@@ -19,11 +19,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -38,10 +34,7 @@ import com.vaadin.ui.Label;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
-import dhbw.ka.mwi.businesshorizon2.methods.DeterministicMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
-import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
@@ -49,8 +42,6 @@ import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
@@ -62,15 +53,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio
  * 
  */
 
@@ -196,26 +185,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 		if (project.getProjectInputType().getStochastic()) {
 			for (AbstractStochasticMethod method : project.getMethods()) {
-				try {
-					if (method.getSelected()) {
+				if (method.getSelected()) {
 
-						// Bei Verwendung der Zeitreihenanalyse sollen
-						// zusätzlich
-						// die Erwartungswerte der Cashflows berechnet werden
-						if (method.getName() == "Zeitreihenanalyse") {
-							TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
-							StochasticResultContainer src = timeseriesCalculator
-									.calculateExpectedValues(project);
+					
 
-							expectedCashFlows = (TreeSet<CashFlowPeriod>) src
-									.getPeriodContainers().first().getPeriods();
-						}
-
-						methodRunner = new MethodRunner(method, project, this);
-						methodRunner.start();
-					}
-				} catch (StochasticMethodException e) {
-					getView().showErrorMessge(e.getMessage());
+					methodRunner = new MethodRunner(method, project, this);
+					methodRunner.start();
 				}
 			}
 
@@ -252,9 +227,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	 * Wenn die Berechnung der stochastisch vorhergesagten Perioden erfolgreich
 	 * durchlaufen wurde, dann kann der Unternehmenswert berechnet werden
 	 * 
+	 * @author Marcel Rosenberger, Maurizio di Nunzio
+	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result, String methodName) {
+	public void onComplete(StochasticResultContainer result, AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
 		
@@ -263,6 +241,11 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
 			APV_2 apv = new APV_2();
+			
+			// Bei Verwendung der Zeitreihenanalyse sollen
+			// zusätzlich
+			// die Erwartungswerte der Cashflows berechnet werden
+			
 			
 			//Temporäre Variablen werden erzeugt, die später für die Schleife benötigt werden
 			CashFlowPeriod period;
@@ -297,11 +280,20 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			}
 			logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
 			
-			if (methodName.equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(methodName,
+			if (method.getName() == "Zeitreihenanalyse") {
+				TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
+                StochasticResultContainer src = timeseriesCalculator
+                                .getExpectedCashFlows();
+
+                expectedCashFlows = (TreeSet<CashFlowPeriod>) src
+                                .getPeriodContainers().first().getPeriods();
+			}
+			
+			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
+				stochasticChartArea = new StochasticChartArea(method.getName(),
 						expectedCashFlows, companyValues.getCompanyValues());
 			} else {
-				stochasticChartArea = new StochasticChartArea(methodName, null,
+				stochasticChartArea = new StochasticChartArea(method.getName(), null,
 						companyValues.getCompanyValues());
 			}
 			getView().changeProgress(1);

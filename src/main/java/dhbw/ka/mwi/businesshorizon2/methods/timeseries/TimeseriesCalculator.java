@@ -56,6 +56,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			.getLogger(TimeseriesCalculator.class);
 	public AbstractPeriodContainer periodsBSI;
 
+	private StochasticResultContainer expectedCashFlows;
+
 	@Override
 	public String getName() {
 		return "Zeitreihenanalyse";
@@ -65,70 +67,46 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	public int getOrderKey() {
 		return 1;
 	}
+	
+	
 
-	public StochasticResultContainer calculateExpectedValues(Project project)
+	public StochasticResultContainer calculateExpectedCashFlows(
+			double[][] resultTimeseries, Project project)
 			throws StochasticMethodException {
 
-		TreeSet<AbstractPeriodContainer> resultPeriods = new TreeSet<AbstractPeriodContainer>();
 		StochasticResultContainer resultContainer = null;
 
-		/**
-		 * Die Zeitreihenanalyse kann nur durchgefuehrt werden, wenn die Anzahl
-		 * der beruecksichtigten Vergangenheitsperioden kleiner ist als die
-		 * Anzahl der eingegebenen Vergangenheitsperioden
-		 */
-		if (project.getRelevantPastPeriods() > project.getStochasticPeriods()
-				.getPeriods().size() - 1) {
-			logger.debug("Anzahl der betrachteten Perioden der Vergangenheit ist zu groß!");
-			throw new ConsideredPeriodsOfPastException(
-					"Die Anzahl der betrachteten Perioden der Vergangenheit muss kleiner sein als die Azahl der beobachteten Perioden.");
-		}
-
-		if (project.getStochasticPeriods().getPeriods().first() instanceof CashFlowPeriod) {
-			// Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
-			// ausgefuehrt
-			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
-
-			double[] previousValues = new double[project.getStochasticPeriods()
-					.getPeriods().size()];
-			double[] previousBorrowedCapital = new double[project
-					.getStochasticPeriods().getPeriods().size()];
-			AnalysisTimeseries timeseries = new AnalysisTimeseries();
-			int counter = 0;
-
-			// Umwandlung der Perioden in ein Double-Arrays
-			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
-					.getStochasticPeriods().getPeriods()) {
-				previousValues[counter] = cFPeriod.getFreeCashFlow();
-				previousBorrowedCapital[counter] = cFPeriod.getCapitalStock();
-				counter++;
-			}
-
-			double[] expectedCF = timeseries.getExpectedValues(previousValues,
-					project.getRelevantPastPeriods(),
-					project.getPeriodsToForecast());
-			double[] expectedBC = timeseries.getExpectedValues(
-					previousBorrowedCapital, project.getRelevantPastPeriods(),
-					project.getPeriodsToForecast());
-			CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
-			for (int i = 0; i < expectedCF.length; i++) {
+		CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
+		for (int i = 0; i < resultTimeseries.length; i++) {
+			for (int j = 0; j < resultTimeseries[i].length; j++) {
 				CashFlowPeriod cfPeriod = new CashFlowPeriod(
 						project.getBasisYear() + (i));
-				cfPeriod.setFreeCashFlow(expectedCF[i]);
-				cfPeriod.setCapitalStock(expectedBC[i]);
+				cfPeriod.setFreeCashFlow(resultTimeseries[i][j]);
 				cFContainer.getPeriods().add(cfPeriod);
 			}
-			TreeSet<CashFlowPeriodContainer> periodContainer = new TreeSet<CashFlowPeriodContainer>();
-			periodContainer.add(cFContainer);
-			resultContainer = new StochasticResultContainer(periodContainer);
-
 		}
-		return resultContainer;
+		TreeSet<CashFlowPeriodContainer> periodContainer = new TreeSet<CashFlowPeriodContainer>();
+		periodContainer.add(cFContainer);
+		resultContainer = new StochasticResultContainer(periodContainer);
 
+		return resultContainer;
 	}
 
 	/**
-	 * @author Kai Westerholz
+	 * Diese Methode ruft die Zeitreihenanalyse auf und speichert die
+	 * enthaltenen Werte anschließend in einem StochasticResultContainer.
+	 * 
+	 * @author Kai Westerholz, Marcel Rosenberger, Maurizio Di Nunzio
+	 * 
+	 * @param project
+	 *            das Projekt für das die Zeitreihenanalyse durchgeführt werden
+	 *            soll
+	 * @param callback
+	 *            das CallbackInterface, das für die Kommunikation zwischen den
+	 *            Threads zuständig ist
+	 * @return StochasticResultContainer der Container, in dem die Prognosewerte
+	 *         enthalten sind
+	 * 
 	 */
 	@Override
 	public StochasticResultContainer calculate(Project project,
@@ -156,34 +134,42 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			// ausgefuehrt
 			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
 
-			double[] previousValues = new double[project.getStochasticPeriods()
-					.getPeriods().size()];
-			double[] previousBC = new double[project.getStochasticPeriods()
-					.getPeriods().size()];
+			double[] previousCashflows = new double[project
+					.getStochasticPeriods().getPeriods().size()];
+			double[] previousFremdkapital = new double[project
+					.getStochasticPeriods().getPeriods().size()];
 			AnalysisTimeseries timeseries = new AnalysisTimeseries();
 			int counter = 0;
 
 			// Umwandlung der Perioden in ein Double-Arrays
 			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
 					.getStochasticPeriods().getPeriods()) {
-				previousValues[counter] = cFPeriod.getFreeCashFlow();
-				previousBC[counter] = cFPeriod.getCapitalStock();
+				previousCashflows[counter] = cFPeriod.getFreeCashFlow();
+				previousFremdkapital[counter] = cFPeriod.getCapitalStock();
 				counter++;
 			}
 			// Durchfuehrung der Zeitreihenanalyse
-			double[][] resultTimeseries = timeseries.calculate(previousValues,
-					project.getRelevantPastPeriods(),
+			double[][] resultTimeseries = timeseries.calculate(
+					previousCashflows, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
 			double[][] resultTimeseriesBorrowedCapital = timeseries.calculate(
-					previousBC, project.getRelevantPastPeriods(),
+					previousFremdkapital, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
-
+			
+			// berechnet die zu erwartenden Cashflows
+			setExpectedCashFlows(calculateExpectedCashFlows(resultTimeseries, project));
+			logger.debug("Zu erwartende Cashflows berechnet.");
 			// Diese Schleife wird sooft durchlaufen, wie die Zeitreihenanalyse
 			// durchgeführt wurde
-			for (int prognosedurchlauf = 0; prognosedurchlauf < project
-					.getIterations(); prognosedurchlauf++) {
+			logger.debug("Größe resultTimeseries[][]:");
+			logger.debug("["+resultTimeseries.length+"]"+"["+resultTimeseries[0].length+"]");
+			logger.debug("Anzahl Prognosedurchläufe: " + project.getIterations());
+			for (int prognosedurchlauf = 0; prognosedurchlauf < (project
+					.getIterations()-1); prognosedurchlauf++) {
+				logger.debug("Prognosedurchlauf:" + prognosedurchlauf);
+				
 				/*
 				 * Pro Schleifen- (und somit auch Prognose-)durchlauf wird ein
 				 * neuer Cashflow-Period-Container (= eine Zeitreihe von
@@ -199,32 +185,36 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 				// prognostiziert werden sollen
 				// resultTimeseries.length = Anzahl der zu prognostizierenden
 				// Perioden (Wert im ersten Array)
-				for (int periode = 0; periode < resultTimeseries.length; periode++) {
+				for (int periode = 0; periode < resultTimeseries[0].length; periode++) {
+					
 					// eine neue Cashflow-Periode wird erstellt und mit dem Jahr
 					// der aktuellen Periode initialisiert
 					CashFlowPeriod cfPeriod = new CashFlowPeriod(
 							project.getBasisYear() + (periode + 1));
 					// der Cashflow des aktuellen Prognosedurchlauf pro Periode
 					// wird gesetzt
-					cfPeriod.setFreeCashFlow(resultTimeseries[periode][prognosedurchlauf]);
+					cfPeriod.setFreeCashFlow(resultTimeseries[prognosedurchlauf][periode]);
 					// das Fremdkapital des aktuellen Prognosedurchlauf pro
 					// Periode wird gesetzt
-					cfPeriod.setCapitalStock(resultTimeseriesBorrowedCapital[periode][prognosedurchlauf]);
-					//die Periode mit den gesetzten Werten wird dem Cashflow-Perioden-Container hinzugefügt
+					cfPeriod.setCapitalStock(resultTimeseriesBorrowedCapital[prognosedurchlauf][periode]);
+					// die Periode mit den gesetzten Werten wird dem
+					// Cashflow-Perioden-Container hinzugefügt
 					cFContainer.getPeriods().add(cfPeriod);
 				}
-				//der Cashflow-Perioden-Container wird mit all seinen Perioden dem Cashflow-Result-Container
-				//hinzugefügt.
+				// der Cashflow-Perioden-Container wird mit all seinen Perioden
+				// dem Cashflow-Result-Container
+				// hinzugefügt.
 				cFResultContainer.add(cFContainer);
 			}
-			//der Cashflow-Result-Container wird in einen StochasticResultContainer kopiert
+			// der Cashflow-Result-Container wird in einen
+			// StochasticResultContainer kopiert
 			StochasticResultContainer src = new StochasticResultContainer(
 					resultPeriods);
 
-			//bereits auskommentierter Code vom Vorjahr, Verwendung noch unklar
-					// if (callback != null) {
-					// callback.onComplete(src);
-					// }
+			// bereits auskommentierter Code vom Vorjahr, Verwendung noch unklar
+			// if (callback != null) {
+			// callback.onComplete(src);
+			// }
 			return src;
 
 		} else if (project.getStochasticPeriods().getPeriods().first() instanceof AggregateCostMethodPeriod) {
@@ -637,9 +627,18 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		return resultContainer;
 	}
 
+	private void setExpectedCashFlows(
+			StochasticResultContainer expectedCashFlows) {
+		this.expectedCashFlows = expectedCashFlows;		
+	}
+
 	@Override
 	public Boolean getImplemented() {
 		return true;
+	}
+
+	public StochasticResultContainer getExpectedCashFlows() {
+		return this.expectedCashFlows;
 	}
 
 }
