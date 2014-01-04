@@ -71,6 +71,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	private HorizontalSplitPanel horizontalPanel;
 
 	private HorizontalLayout heading;
+	
 	private HorizontalLayout left;
 
 	private Label title;
@@ -113,10 +114,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		left = new HorizontalLayout();
 		
 		
+		
 		title = new Label("<h1>Business Horizon 2</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
-		heading.addComponent(left);
 		heading.addComponent(title);
+		heading.addComponent(left);
 		heading.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 
 		verticalPanel.setFirstComponent(heading);
@@ -133,6 +135,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
 
+		
 		this.addLogoutButton("");
 	}
 
@@ -193,6 +196,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		
 		userData = new Label("<h2>" + username + "</h2>");
 		userData.setContentMode(Label.CONTENT_XHTML);
+		userData.setVisible(false);
 		heading.addComponent(userData);
 	}
 }
