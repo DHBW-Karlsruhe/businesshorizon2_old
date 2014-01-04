@@ -52,8 +52,8 @@ public class APV_2 extends AbstractDeterministicMethod {
 		return drc;
 	}
 
-	public double calculateValues(
-			DeterministicResultContainer drContainer, Szenario szenario) {
+	public double calculateValues(double[] cashflow, double[] fremdkapital,
+			Szenario szenario) {
 		double gk = 0;
 		double v = 0;
 		double unternehmenswert = 0;
@@ -62,9 +62,12 @@ public class APV_2 extends AbstractDeterministicMethod {
 		double sZinsen;
 		double sEK;
 
-		CashFlowPeriod first_period = null;
-		CashFlowPeriod period;
-		CashFlowPeriod lastPeriod = null;
+		Double first_period_cashflow = null;
+		Double first_period_fremdkapital = null;
+		Double period_cashflow;
+		Double period_fremdkapital;
+		Double lastPeriod_cashflow = null;
+		Double lastPeriod_fremdkapital = null;
 		double jahr = 1;
 
 		sKS = szenario.getCorporateAndSolitaryTax() / 100;
@@ -72,42 +75,39 @@ public class APV_2 extends AbstractDeterministicMethod {
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
 
-		for (AbstractPeriodContainer abstractPeriodContainer : drContainer.getPeriodContainers()) {
+		for (int durchlauf = 0; durchlauf < cashflow.length; durchlauf++) {
+			period_cashflow = cashflow[durchlauf];
+			period_fremdkapital = fremdkapital[durchlauf];
 
-			TreeSet<? extends Period> periods = abstractPeriodContainer.getPeriods();
-			Iterator<? extends Period> periodenIter = periods.iterator();// descendingIterator();
-			int durchlauf = 0;
-			while (periodenIter.hasNext()) {
-				period = (CashFlowPeriod) periodenIter.next();
-
-				if (durchlauf == 0) { // Basisjahr
-					first_period = period;
-				} else if (durchlauf +1 == periods.size()) { //letztes Jahr wird nach der Schleife extra berechnet
-				} else {
-					gk += abzinsen(period.getFreeCashFlow(),sEK,durchlauf);;
-					//period.getFreeCashFlow() / Math.pow(1 + sEK, durchlauf);
-					v += (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
-							/ Math.pow(1 + sZinsen, durchlauf);
-				}
-				lastPeriod = period;
-
-				durchlauf++;
-				jahr = durchlauf;
+			if (durchlauf == 0) { // Basisjahr
+				first_period_cashflow = cashflow[durchlauf];
+				first_period_fremdkapital = fremdkapital[durchlauf];
+			} else if (durchlauf + 1 == cashflow.length) { // letztes Jahr wird
+															// nach der Schleife
+															// extra berechnet
+			} else {
+				gk += abzinsen(cashflow[durchlauf], sEK, durchlauf);
+				v += (sSteuersatz * sZinsen * fremdkapital[durchlauf])
+						/ Math.pow(1 + sZinsen, durchlauf);
 			}
+			lastPeriod_cashflow = period_cashflow;
+			lastPeriod_fremdkapital = period_fremdkapital;
+
+			jahr = durchlauf;
 		}
-		//Berechnung des letzten Jahres
-		gk = gk + lastPeriod.getFreeCashFlow()
-				/ (sEK * Math.pow(1 + sEK, jahr-2));
-		v = v + (sSteuersatz * sZinsen * lastPeriod.getCapitalStock())
-				/ (sZinsen * Math.pow(1 + sZinsen, jahr-2));
-		
-		//Unternehmenswert gesamt berechnen
-		unternehmenswert = gk + v - first_period.getCapitalStock();
-		System.out.println("Endergebnis APV:" + unternehmenswert);
+		// Berechnung des letzten Jahres
+		gk = gk + lastPeriod_cashflow / (sEK * Math.pow(1 + sEK, jahr - 2));
+		v = v + (sSteuersatz * sZinsen * lastPeriod_fremdkapital)
+				/ (sZinsen * Math.pow(1 + sZinsen, jahr - 2));
+
+		// Unternehmenswert gesamt berechnen
+		unternehmenswert = gk + v - first_period_cashflow;
+		System.out.println("Endergebnis APV:" + gk + " + " + v + " - "
+				+ first_period_cashflow + " = " + unternehmenswert);
 
 		return unternehmenswert;
 	}
-	
+
 	/**
 	 * @author Annika Weis
 	 * @param wert
@@ -116,7 +116,6 @@ public class APV_2 extends AbstractDeterministicMethod {
 	 * @return Double, abgezinster Wert
 	 */
 	private double abzinsen(double wert, double zinssatz, int jahre) {
-		return wert
-				/ Math.pow(1 + zinssatz, jahre);
+		return wert / Math.pow(1 + zinssatz, jahre);
 	}
 }

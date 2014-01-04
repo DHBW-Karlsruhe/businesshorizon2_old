@@ -130,7 +130,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 						if (method_deterministic.getName() == "APV") {
 							APV_2 apv_2 = new APV_2();
 							uwert = apv_2
-									.calculateValues(drContainer, scenario);
+									.calculateValues(drContainer.getCashflows(),drContainer.getFremdkapitl() ,scenario);
 							// TODO: Unternehmenswert ausgeben
 							// Cashflows im Liniendiagramm ausgeben
 							DeterministicLineChart chart = new DeterministicLineChart(
