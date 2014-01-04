@@ -71,8 +71,9 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	private void generateUi() {
 		this.setSizeFull();
 		horizontalPanel = new HorizontalSplitPanel();
-		horizontalPanel.setSplitPosition(25);
+		horizontalPanel.setSplitPosition(150);
 		horizontalPanel.setSizeFull();
+		horizontalPanel.setLocked(true);
 		this.all.addComponent(horizontalPanel);
 		all.setStyleName(Reindeer.PANEL_LIGHT);
 		this.addComponent(all);

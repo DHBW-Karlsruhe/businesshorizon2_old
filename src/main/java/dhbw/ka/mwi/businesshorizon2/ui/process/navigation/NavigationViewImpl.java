@@ -31,12 +31,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
@@ -59,8 +63,11 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	@Autowired
 	private UserProxy userProxy;
 	
-	private HorizontalLayout layout;
+	private HorizontalLayout full;
+	private VerticalLayout layout;
 	private HorizontalLayout innerlayout;
+	private VerticalLayout topbar;
+	private VerticalLayout topbarinnerlayout;
 	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
@@ -87,10 +94,19 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	private void generateUi() {
 		setSizeFull();
 		
-		this.layout = new HorizontalLayout();
+		this.full = new HorizontalLayout();
+		this.full.setSizeFull();
+		
+		this.layout = new VerticalLayout();
+		this.layout.setStyleName("navigation");
 		this.layout.setSizeFull();
 		
 		this.innerlayout = new HorizontalLayout();
+		
+		this.topbar = new VerticalLayout();
+		this.topbar.setSizeFull();
+		
+		this.topbarinnerlayout = new VerticalLayout();
 		
 		this.addOverviewButton();
 		
@@ -103,9 +119,21 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		this.addNavigationButton(NavigationSteps.OUTPUT);
 		this.addLogoutButton("Logout");
 		
-		layout.addComponent(innerlayout);
-		layout.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
+		
+		full.addComponent(topbar);
+		full.addComponent(layout);
+		this.addComponent(full);
+		
+		
+		topbar.addComponent(topbarinnerlayout);
+		topbar.setComponentAlignment(topbarinnerlayout, Alignment.TOP_LEFT);
+		this.addComponent(topbar);
+		
+		topbar.addComponent(innerlayout);
+		topbar.setComponentAlignment(innerlayout, Alignment.BOTTOM_CENTER);
 		this.addComponent(layout);
+		
+		
 	}
 	
 	public void showNavigation() {
@@ -115,14 +143,17 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	}
 
 	private void addProjectName() {
-		Label projectName = new Label(presenter.getProjectName());
-		
-		this.innerlayout.addComponent(projectName);
+		Label projectName = new Label("Sie bearbeiten derzeit das Projekt: " + presenter.getProjectName());
+		projectName.setStyleName("projectname");
+		this.full.addComponent(projectName);
+		this.full.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
 		
 	}
 
 	private void addOverviewButton() {
-		Button overviewButton = new Button("Zur Projektliste");
+		Button overviewButton = new Button("");
+		overviewButton.addStyleName(Reindeer.BUTTON_LINK);
+		overviewButton.setIcon(new ThemeResource("images/homebutton.jpg"));
 		overviewButton.addListener(new Button.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -133,7 +164,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 			}
 		});
 		
-		this.innerlayout.addComponent(overviewButton);
+		this.topbarinnerlayout.addComponent(overviewButton);
+		this.topbarinnerlayout.setComponentAlignment(overviewButton, Alignment.MIDDLE_CENTER);
 	}
 
 	/**
@@ -158,13 +190,14 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		});
 		
 		navigationButton.setEnabled(false);
-		
+		navigationButton.setWidth(Sizeable.SIZE_UNDEFINED, 5);
 		this.innerlayout.addComponent(navigationButton);
 		this.innerlayout.setComponentAlignment(navigationButton, Alignment.BOTTOM_CENTER);
 		
 	}
 	private void addLogoutButton(String text) {
 		Button logoutButton = new Button(text);
+		logoutButton.setVisible(false);
 		logoutButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 7411091035775152765L;
 			
@@ -176,8 +209,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		});
 		
 		logoutButton.setEnabled(true);
-		this.innerlayout.addComponent(logoutButton);
-		this.innerlayout.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+		this.layout.addComponent(logoutButton);
+		this.layout.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+	
 		
 	}
 	

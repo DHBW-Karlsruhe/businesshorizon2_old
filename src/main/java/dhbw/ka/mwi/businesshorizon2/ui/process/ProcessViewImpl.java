@@ -71,7 +71,8 @@ public class ProcessViewImpl extends Window implements ProcessViewInterface {
 		setCaption("Business Horizon 2"); 
 		
 		splitpanel = new VerticalSplitPanel();
-		splitpanel.setSplitPosition(75, Sizeable.UNITS_PIXELS);
+		splitpanel.setLocked(true);
+		splitpanel.setSplitPosition(150, Sizeable.UNITS_PIXELS);
 		
 		setContent(splitpanel);
 	}

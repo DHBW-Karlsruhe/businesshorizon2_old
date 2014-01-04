@@ -35,10 +35,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
 
 import com.mvplite.view.View;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -67,7 +70,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private HorizontalSplitPanel horizontalPanel;
 
-	private VerticalLayout heading;
+	private HorizontalLayout heading;
+	private HorizontalLayout left;
 
 	private Label title;
 
@@ -101,21 +105,26 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		verticalPanel = new VerticalSplitPanel();
 		verticalPanel.setSizeFull();
-		verticalPanel.setSplitPosition(100, UNITS_PIXELS);
+		verticalPanel.setSplitPosition(150, UNITS_PIXELS);
 		verticalPanel.setLocked(true);
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
-		heading = new VerticalLayout();
+		heading = new HorizontalLayout();
+		left = new HorizontalLayout();
+		
+		
 		title = new Label("<h1>Business Horizon 2</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
+		heading.addComponent(left);
 		heading.addComponent(title);
+		heading.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 
 		verticalPanel.setFirstComponent(heading);
 		logger.debug("Überschrift hinzugefügt und dem vertikalen Panel übergeben");
 
 		horizontalPanel = new HorizontalSplitPanel();
 		horizontalPanel.setSizeFull();
-		horizontalPanel.setSplitPosition(50, UNITS_PERCENTAGE);
+		horizontalPanel.setSplitPosition(150, UNITS_PERCENTAGE);
 		horizontalPanel.setLocked(true);
 
 		verticalPanel.setSecondComponent(horizontalPanel);
@@ -123,12 +132,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
-		//logout button hinzufuegen
-		this.addLogoutButton("Logout");
+
+		this.addLogoutButton("");
 	}
 
 	private void addLogoutButton(String text) {
-		Button logoutButton = new Button(text);
+		Button logoutButton = new Button("");
+		logoutButton.addStyleName(Reindeer.BUTTON_LINK);
+		logoutButton.setIcon(new ThemeResource("images/logout.jpg"));
 		logoutButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 7411091035775152765L;
 			
@@ -139,9 +150,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			}
 		});
 		
+		//logout button hinzufuegen
+		
 		logoutButton.setEnabled(true);
-		heading.addComponent(logoutButton);
-		heading.setComponentAlignment(logoutButton, Alignment.BOTTOM_RIGHT);
+		left.addComponent(logoutButton);
+		left.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 		
 	}
 

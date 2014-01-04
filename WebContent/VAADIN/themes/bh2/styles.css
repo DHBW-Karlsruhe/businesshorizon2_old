@@ -17,5 +17,65 @@
 #     You should have received a copy of the GNU Affero General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-------------------------------------------------------------------------------*/
-@import "../runo/styles.css";
+@import "../reindeer/styles.css";
 
+.v-app {
+    background-image: url("images/background.png");
+    background-size:100%;
+}
+
+.v-button {
+	background-color: #ffffff;
+	display:inline-block;
+	
+}
+
+
+.v-button-caption{
+	color: #088A08;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	font-style:normal;
+	height:15px;
+	line-height:15px;
+	width:100px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 2px 0px #ffffff;
+}
+
+.v-splitpanel-hsplitter div  {
+    width: 1px;
+    height: 1px;
+    background-color: #088A08;
+} 
+
+.v-splitpanel-vsplitter div  {
+    width: 1px;
+    height: 1px;
+    background-color: #088A08;
+}
+
+.v-label{
+	color: #088A08;
+	font-family:Arial;	
+}
+
+.v-label-projectname{
+	color: #088A08;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:15px;
+	line-height:15px;
+	width:100px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 2px 0px #ffffff;
+	margin-bottom:50px
+	
+}
+
+}
