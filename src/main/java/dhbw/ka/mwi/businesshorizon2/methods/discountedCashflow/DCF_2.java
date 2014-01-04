@@ -54,8 +54,8 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		return drc;
 	}
 
-	public double calculateValues( //DeterministicResultContainer
-			DeterministicResultContainer drContainer, Szenario szenario) {
+	public double calculateValues( // DeterministicResultContainer
+			double[] cashflow,  Szenario szenario) {
 		TreeSet<CashFlowPeriodContainer> prognose = new TreeSet<CashFlowPeriodContainer>();
 
 		double unternehmenswert = 0;
@@ -66,9 +66,9 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		double sZinsen;
 		double sEK;
 
-		CashFlowPeriod first_period = null;
-		CashFlowPeriod period;
-		CashFlowPeriod lastPeriod = null;
+		Double first_period = null;
+		Double period;
+		Double lastPeriod = null;
 		double jahr = 1;
 
 		sKS = szenario.getCorporateAndSolitaryTax() / 100;
@@ -76,46 +76,39 @@ public class DCF_2 extends AbstractDeterministicMethod {
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
 
-		for (AbstractPeriodContainer abstractPeriodenContainer : drContainer.getPeriodContainers()) {
+		for (int durchlauf = 1; durchlauf <= cashflow.length; durchlauf++) {
+			period = cashflow[durchlauf-1];
 
-			TreeSet<? extends Period> periods = abstractPeriodenContainer.getPeriods();
-			Iterator<? extends Period> periodenIterator = periods.iterator();// descendingIterator();
-			int durchlauf = 1;
-			while (periodenIterator.hasNext()) {
-				period = (CashFlowPeriod) periodenIterator.next();
+			// zum Unternehmenswert einen weiteren abgezinsten Cashflow addieren
+			unternehmenswert += abzinsen(period, sEK,
+					durchlauf);
+			lastPeriod = period;
 
-				//zum Unternehmenswert einen weiteren abgezinsten Cashflow addieren
-				unternehmenswert += abzinsen(period.getFreeCashFlow(), sEK, durchlauf);
-
-				lastPeriod = period;
-
-				durchlauf++;
-				jahr = durchlauf;
-			}
+			jahr = durchlauf;
 		}
 
-		//Restwert berechnen
-		restwert = lastPeriod.getFreeCashFlow() / sEK;
-		//Restwert abzinsen
-		restwert = abzinsen(restwert, sEK, (int) jahr-1);
+		
+		// Restwert berechnen
+		restwert = lastPeriod / sEK;
+		// Restwert abzinsen
+		restwert = abzinsen(restwert, sEK, (int) jahr);
 		// Unternehmenswert gesamt berechnen
-		unternehmenswert = unternehmenswert + restwert // / Math.pow(1 + sEK, jahr-1)
-				 + nbv;
-		System.out.println("Endergebnis DCF: " + unternehmenswert);
+		unternehmenswert = unternehmenswert + restwert // / Math.pow(1 + sEK,
+														// jahr-1)
+				+ nbv;
 
 		return unternehmenswert;
 	}
 
-	
-	public List<String> getPeriodenNamen(Project project){
+	public List<String> getPeriodenNamen(Project project) {
 		List<String> perioden = null;
-		
+
 		return perioden;
 	}
-	
-	
+
 	/**
 	 * Zinst einen angegebenen Wert zum Zinssatz über die Jahre ab
+	 * 
 	 * @author Annika Weis
 	 * @param wert
 	 * @param zinssatz
@@ -123,7 +116,6 @@ public class DCF_2 extends AbstractDeterministicMethod {
 	 * @return Double, abgezinster Wert
 	 */
 	private double abzinsen(double wert, double zinssatz, int jahre) {
-		return wert
-				/ Math.pow(1 + zinssatz, jahre);
+		return wert / Math.pow(1 + zinssatz, jahre);
 	}
 }
