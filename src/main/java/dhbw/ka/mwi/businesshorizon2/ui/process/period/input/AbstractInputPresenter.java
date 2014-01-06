@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
@@ -36,6 +39,9 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 
 	@Autowired
 	EventBus eventBus;
+	
+	@Autowired
+	private ProjectProxy projectProxy;
 
 	@Override
 	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
@@ -202,6 +208,23 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 				}
 			}
 		}
+	
+		//test
+		int counter = 0;
+		double []fremdkapital = new double[this.projectProxy
+		                 				.getSelectedProject().getStochasticPeriods().getPeriods().size()];
+		double [] cashflow = new double[this.projectProxy
+		                 				.getSelectedProject().getStochasticPeriods().getPeriods().size()];
+		// Umwandlung der Perioden in ein Double-Arrays
+		for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) this.projectProxy
+				.getSelectedProject().getStochasticPeriods().getPeriods()) {
+			fremdkapital[counter] = cFPeriod.getCapitalStock();
+			logger.debug("Fremdkapital: " + fremdkapital[counter]);
+			cashflow[counter] = cFPeriod.getFreeCashFlow();
+			logger.debug("Cashflow: " + cashflow[counter]);
+			counter++;
+		}
+	
 	}
 
 }

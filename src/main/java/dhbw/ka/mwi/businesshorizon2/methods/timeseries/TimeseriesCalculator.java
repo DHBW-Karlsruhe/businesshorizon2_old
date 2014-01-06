@@ -143,7 +143,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	 *         enthalten sind
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public StochasticResultContainer calculate(Project project,
 			CallbackInterface callback) throws InterruptedException,
 			ConsideredPeriodsOfPastException, VarianceNegativeException,
@@ -167,6 +167,10 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		if (project.getStochasticPeriods().getPeriods().first() instanceof CashFlowPeriod) {
 			// Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
 			// ausgefuehrt
+			
+			TreeSet<CashFlowPeriod> alleperioden = (TreeSet<CashFlowPeriod>) project
+					.getStochasticPeriods().getPeriods();
+			
 			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
 
 			logger.debug("Übergebene Periodenanzahl: " + project
