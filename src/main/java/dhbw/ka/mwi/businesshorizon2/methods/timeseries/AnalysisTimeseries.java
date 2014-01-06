@@ -298,7 +298,7 @@ public class AnalysisTimeseries {
 		CalculateTide tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
-			zeitreihe = tide.reduceTide(zeitreihe);
+			//zeitreihe = tide.reduceTide(zeitreihe);
 		}
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese

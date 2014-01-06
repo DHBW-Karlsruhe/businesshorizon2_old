@@ -59,6 +59,7 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 
 	@PostConstruct
 	public void init() {
+	
 	}
 
 	@Override
@@ -207,24 +208,7 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 					}
 				}
 			}
-		}
-	
-		//test
-		int counter = 0;
-		double []fremdkapital = new double[this.projectProxy
-		                 				.getSelectedProject().getStochasticPeriods().getPeriods().size()];
-		double [] cashflow = new double[this.projectProxy
-		                 				.getSelectedProject().getStochasticPeriods().getPeriods().size()];
-		// Umwandlung der Perioden in ein Double-Arrays
-		for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) this.projectProxy
-				.getSelectedProject().getStochasticPeriods().getPeriods()) {
-			fremdkapital[counter] = cFPeriod.getCapitalStock();
-			logger.debug("Fremdkapital: " + fremdkapital[counter]);
-			cashflow[counter] = cFPeriod.getFreeCashFlow();
-			logger.debug("Cashflow: " + cashflow[counter]);
-			counter++;
-		}
-	
+		}	
 	}
 
 }

@@ -49,7 +49,7 @@ public class DirektViewImpl extends AbstractInputView implements DirektViewInter
 	 * @author Daniel Dengler
 	 */
 
-	@SuppressWarnings("unchecked")
+	
 	@PostConstruct
 	public void init() {
 		presenter = presenterTemp;
