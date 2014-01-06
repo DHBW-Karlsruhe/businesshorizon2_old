@@ -276,7 +276,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 				unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
 				//fügt den Unternehmenswert der Sammelklasse aller Unternehmenswert hinzu
 				companyValues.addCompanyValue(unternehmenswert);
-				logger.debug("Unternehmenswerte " + unternehmenswert + " hinzugefügt.");
+				
 			}
 			logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
 			

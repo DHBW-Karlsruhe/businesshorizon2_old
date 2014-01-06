@@ -49,7 +49,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 public class AnalysisTimeseries {
 
 	private static final Logger logger = Logger
-			.getLogger(AnalysisTimeseries.class);
+			.getLogger("AnalysisTimeseries.class");
 	private DoubleArrayList autokovarianzen;
 	private DoubleArrayList bereinigteZeitreihe;
 	private DoubleMatrix2D modellparameter;;
@@ -238,18 +238,12 @@ public class AnalysisTimeseries {
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
 		for (int i = 0; i < durchlaeufe; i++) {
-			logger.debug("Durchlauf " + (i + 1) + ":");
-
 			// Ein Durchlauf entspricht der Prognose eines Jahres j
 			for (int j = 0; j < zuberechnendeperioden; j++) {
 
 				// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
 				// passenden Vergangenheitswert.
 				for (int t = 0; t < p; t++) {
-					logger.debug(vergangeneUndZukuenftigeWerte.size() - (t + 1));
-					logger.debug(vergangeneUndZukuenftigeWerte
-							.get(vergangeneUndZukuenftigeWerte.size() - (t + 1)));
-					logger.debug(matrixPhi.get(t, 0));
 					prognosewert = prognosewert
 							+ matrixPhi.get(t, 0)
 							* vergangeneUndZukuenftigeWerte
@@ -262,14 +256,11 @@ public class AnalysisTimeseries {
 				vergangeneUndZukuenftigeWerte.add(prognosewert);
 				prognosewert = prognosewert + mittelwert;
 				prognosewertSammlung[i][j] = prognosewert;
-				logger.debug("Prognosewert " + (j + 1) + ":" + prognosewert);
 				prognosewert = 0;
 			}
 			vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 		}
-
-		// TODO: Prüfung der Eingabewerte (ggf. an anderer Stelle)
-
+		
 		return prognosewertSammlung;
 	}
 
@@ -300,9 +291,9 @@ public class AnalysisTimeseries {
 			CallbackInterface callback) throws InterruptedException,
 			StochasticMethodException {
 
-		// vorbereitene Initialisierung
+		// vorbereitende Initialisierung
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
-
+		
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		CalculateTide tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
@@ -318,6 +309,9 @@ public class AnalysisTimeseries {
 		for (int i = 0; i < zeitreihe.length; i++) {
 			this.bereinigteZeitreihe.add(zeitreihe[i]);
 		}
+		
+		logger.debug("Bereinigte Zeitreihe:");
+		logger.debug(bereinigteZeitreihe);
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
