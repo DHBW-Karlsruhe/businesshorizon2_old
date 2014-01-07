@@ -70,10 +70,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private HorizontalSplitPanel horizontalPanel;
 
-	private HorizontalLayout heading;
+	private VerticalLayout heading;
 	
-	private HorizontalLayout left;
-
+	private VerticalLayout vertical;
+	
+	private VerticalLayout left;
+	
+	private VerticalLayout middle;
+	
 	private Label title;
 
 	private Label userData;
@@ -110,17 +114,19 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		verticalPanel.setLocked(true);
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
-		heading = new HorizontalLayout();
-		left = new HorizontalLayout();
+		heading = new VerticalLayout();
+		vertical = new VerticalLayout();
+		left = new VerticalLayout();
+		middle = new VerticalLayout();
 		
 		
 		
-		title = new Label("<h1>Business Horizon 2</h1>");
-		title.setContentMode(Label.CONTENT_XHTML);
-		heading.addComponent(title);
-		heading.addComponent(left);
-		heading.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
-
+		
+		
+		heading.addComponent(middle);
+		middle.addComponent(vertical);
+		vertical.addComponent(left);
+			
 		verticalPanel.setFirstComponent(heading);
 		logger.debug("Überschrift hinzugefügt und dem vertikalen Panel übergeben");
 
@@ -135,8 +141,13 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setContent(verticalPanel);
 		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
 
-		
 		this.addLogoutButton("");
+		
+		title = new Label("<h1>Business Horizon 2</h1>");
+		title.setContentMode(Label.CONTENT_XHTML);
+		vertical.addComponent(title);
+		vertical.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
+		
 	}
 
 	private void addLogoutButton(String text) {
