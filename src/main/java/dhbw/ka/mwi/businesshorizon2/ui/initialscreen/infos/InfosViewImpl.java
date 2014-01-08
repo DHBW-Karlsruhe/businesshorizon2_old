@@ -67,9 +67,11 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
 		setSpacing(true);
 		setMargin(true);
 		
-		textLabel = new Label("<h1>Good to know...</h1>"
-                + "<p>Diese <b>brandneue</b> Applikation <sup>funktioniert</sup> folgendermaßen:</p>"
-                + "<p> blabla <i>bla</i>!</p>");
+		textLabel = new Label("Willkommen auf der Startseite von Business Horizon!" 
+				+" Mithilfe dieser Software können Sie Ihren zukünftigen Unternehmenswert berechenen lassen. </br>"
+				+ "Hierzu stehen Ihnen verschiedene Methoden zur Verfügung, welche im jeweiligen Prozessschritt erläutert werden. </br>"
+				+ "Im linken Bereich können Sie Ihre bisher angelegten Projekte verwalten oder neue Projekte hinzufügen. </br>"
+				+ "Durch einen Klick auf das Projektfenster gelangen Sie in das jeweilige Projekt.</br>");
 		textLabel.setContentMode(Label.CONTENT_XHTML);
 		addComponent(textLabel);
 		logger.debug("Rich text erzeugt");

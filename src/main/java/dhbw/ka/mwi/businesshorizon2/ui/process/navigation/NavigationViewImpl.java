@@ -69,6 +69,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	private VerticalLayout topbar;
 	private VerticalLayout topbarinnerlayout;
 	
+	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
 	
@@ -111,6 +112,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		this.addOverviewButton();
 		
 		this.addProjectName();
+		
+		
 		
 		this.addNavigationButton(NavigationSteps.METHOD);
 		this.addNavigationButton(NavigationSteps.PARAMETER);

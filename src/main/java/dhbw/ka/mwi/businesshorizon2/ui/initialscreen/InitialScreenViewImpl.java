@@ -144,6 +144,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		this.addLogoutButton("");
 		
 		title = new Label("<h1>Business Horizon 2</h1>");
+		title.setStyleName("ueberschriften");
 		title.setContentMode(Label.CONTENT_XHTML);
 		vertical.addComponent(title);
 		vertical.setComponentAlignment(title, Alignment.MIDDLE_CENTER);

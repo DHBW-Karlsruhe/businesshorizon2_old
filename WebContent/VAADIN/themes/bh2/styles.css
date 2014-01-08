@@ -22,6 +22,9 @@
 .v-app {
     background-image: url("images/background.png");
     background-size:100%;
+    color: #088A08;
+	font-family: Monotype Corsiva;
+	font-size:17px;
 }
 
 .v-button {
@@ -32,12 +35,12 @@
 
 .v-button-caption{
 	color: #088A08;
-	font-family:Arial;
-	font-size:12px;
-	font-weight:bold;
+	font-family: Monotype Corsiva;
+	font-size:15px;
+	font-weight: 450;
 	font-style:normal;
-	height:15px;
-	line-height:15px;
+	height:19px;
+	line-height:19px;
 	width:100px;
 	text-decoration:none;
 	text-align:center;
@@ -58,14 +61,21 @@
 
 .v-label{
 	color: #088A08;
-	font-family:Arial;	
+	font-family: Monotype Corsiva;
+	font-size:17px;
+		
+}
+
+.v-label-ueberschriften{
+	color: #088A08;
+	font-family: Magneto;
+	font-size:17px;
 }
 
 .v-label-projectname{
 	color: #088A08;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
+	font-family: Monotype Corsiva;
+	font-size:17px;
 	font-style:normal;
 	height:15px;
 	line-height:15px;
