@@ -109,8 +109,13 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
 	}
 
+	
+	
+	
+	
 	@EventHandler
 	public void onShowEvent(ShowGesamtViewEvent event) {
+		logger.debug("ShowGesamtViewEvent erhalten");
 		currentInput = gesamtView;
 		getView().showView(timelineView, currentInput);
 
@@ -127,10 +132,14 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	@EventHandler
 	public void onShowEvent(ShowUmsatzViewEvent event) {
+		logger.debug("ShowUmsatzViewEvent erhalten");
 		currentInput = umsatzView;
 		getView().showView(timelineView, currentInput);
 	}
 
+	
+	
+	
 	@Override
 	public boolean isValid() {
 		return true;
