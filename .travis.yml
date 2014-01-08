@@ -2,9 +2,3 @@ language: java
 jdk: oraclejdk7
 install: "echo"
 script: "mvn test"
-notifications:
- email:
-  recipients:
-   - wouf-it@chrisgahlert.com
- on_success: never
- on_failure: change
