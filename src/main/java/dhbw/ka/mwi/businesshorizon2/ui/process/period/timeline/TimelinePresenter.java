@@ -20,6 +20,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
 
+import java.util.Iterator;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -248,7 +250,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				/**
 				 * Annika Weis
 				 */
-				addFuturePeriods_vorhanden(4, deterministicInput);
+				addFuturePeriods_vorhanden();
 			}
 
 			// Stochastische Verfahren
@@ -268,7 +270,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 						.getProjectInputType().getStochasticInput();
 				createContainer(pastPeriods, stochasticInput);
 
-				addPastPeriods_vorhanden(4, stochasticInput);
+				addPastPeriods_vorhanden();
 
 				/*
 				 * Annika Weis Nur stochastische Verfahren -keine zukünftigen
@@ -383,12 +385,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 * Zukünftige deterministische Perioden anlegen
 	 * 
 	 * @author Annika Weis
-	 * 
-	 * @param howMany
-	 * @param inputType
-	 *            TODO
 	 */
-	private void addFuturePeriods_vorhanden(int howMany, InputType inputType) {
+	private void addFuturePeriods_vorhanden() {
 		/*
 		 * Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst so
 		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
@@ -405,7 +403,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				sumFuturePeriods++;
 			}
 
-		} catch (Exception c) {
+		} catch (Exception e) {
 		}
 		if (i == 0) {
 			logger.debug("Manuell Perioden anlegen");
@@ -452,12 +450,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 * Zukünftige stochastische Perioden anlegen
 	 * 
 	 * @author Annika Weis
-	 * 
-	 * @param howMany
-	 * @param inputType
-	 *            TODO
 	 */
-	private void addPastPeriods_vorhanden(int howMany, InputType inputType) {
+	private void addPastPeriods_vorhanden() {
 		/*
 		 * Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst so
 		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
@@ -466,13 +460,21 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		int i = 0;
 		sumPastPeriods = 0;
 		try {
-			for (Period periode : projectProxy.getSelectedProject()
-					.getStochasticPeriods().getPeriods()) {
+			int laenge = projectProxy.getSelectedProject()
+					.getStochasticPeriods().getPeriods().size()-1;
+			logger.debug("Länge: " + laenge);
+			for (int x=laenge; x>=0; x--){
+				Period periode = (Period) projectProxy.getSelectedProject()
+						.getStochasticPeriods().getPeriods().toArray()[x];
 				logger.debug(++i + " - " + periode.getYear());
 				getView().addPastPeriod(periode);
-				sumPastPeriods++;
+				sumPastPeriods++;				
 			}
-		} catch (Exception c) {
+			for (Period periode : projectProxy.getSelectedProject()
+					.getStochasticPeriods().getPeriods()) {
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		if (i == 0) {
 			logger.debug("Manuell Perioden anlegen");
