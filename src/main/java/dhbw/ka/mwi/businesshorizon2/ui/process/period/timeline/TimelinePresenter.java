@@ -177,21 +177,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				removeEverything();
 			}
 
-			// Wenn sich die relevanten Perioden aendern muss man nur auffuellen
-			// sollten es mehr sein als vorhanden
-
-			// Annika Weis
-			try {
-				logger.debug("Perioden: "
-						+ projectProxy.getSelectedProject()
-								.getRelevantPastPeriods() + " - "
-						+ fixedPastPeriods);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (projectProxy.getSelectedProject().getRelevantPastPeriods() != fixedPastPeriods) {
+			if (projectProxy.getSelectedProject().getRelevantPastPeriods() != fixedPastPeriods && false) {
 				if (projectProxy.getSelectedProject().getRelevantPastPeriods() > sumPastPeriods) {
 					// Hat sich zusaetzlich die Eingabe geaendert muessen alle
 					// verworfen werden
@@ -243,10 +229,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			// Perioden verworfen werden und neu angelegt werden.
 			if (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministic()) {// projectProxy.getSelectedProject().getProjectInputType().getDeterministic()
-											// != deterministic &&
+				// != deterministic &&
 				logger.debug("Initialisierung (d)");
 				removeAllFuturePeriods();
-				// Wenn auch stochastisch: Bearbeitung unten
 				removeAllPastPeriods();
 				deterministicInput = projectProxy.getSelectedProject()
 						.getProjectInputType().getDeterministicInput();
@@ -260,22 +245,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				getView().setPastDeleteButtonAccess(true);
 				getView().setFutureDeleteButtonAccess(true);
 
-				/*
-				 * Nur deterministisches verfahren: 3 zukünftige Perioden bei
-				 * stochastischem und determinstischem verfahren: Die Anzahl der
-				 * zukünftigen Perioden entspricht dem Wert des Textfelds
-				 * „Anzahl zu prognostizierender Perioden“ (Reiter „Parameter“)
+				/**
+				 * Annika Weis
 				 */
-				if (projectProxy.getSelectedProject().getProjectInputType()
-						.getStochastic()) {
-					addFuturePeriods(projectProxy.getSelectedProject()
-							.getPeriodsToForecast(), deterministicInput);
-				} else {
-					/**
-					 * Annika Weis
-					 */
-					addFuturePeriods_vorhanden(4, deterministicInput);
-				}
+				addFuturePeriods_vorhanden(4, deterministicInput);
 			}
 
 			// Stochastische Verfahren
@@ -284,26 +257,19 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 			if (projectProxy.getSelectedProject().getProjectInputType()
 					.getStochastic()) { // projectProxy.getSelectedProject().getProjectInputType().getStochastic()
-										// != stochastic &&
-				// Wenn auch deterministisch: Vergangenheit bereits abgefangen
-				if (!projectProxy.getSelectedProject().getProjectInputType()
-						.getDeterministic()) {
-					removeAllFuturePeriods();
-				}
-				removeAllPastPeriods();
-				fixedPastPeriods = projectProxy.getSelectedProject()
-						.getRelevantPastPeriods();
-				if ((projectProxy.getSelectedProject().getProjectInputType()
-						.getStochastic())) {
-					addPastPeriods(fixedPastPeriods + 1, projectProxy
-							.getSelectedProject().getProjectInputType()
-							.getStochasticInput());
-					stochasticInput = projectProxy.getSelectedProject()
-							.getProjectInputType().getStochasticInput();
-					createContainer(pastPeriods, stochasticInput);
-
-				}
+				// != stochastic &&
 				logger.debug("Initialisierung (s) " + fixedPastPeriods);
+				removeAllFuturePeriods();
+				removeAllPastPeriods();
+				// fixedPastPeriods =
+				// projectProxy.getSelectedProject().getRelevantPastPeriods();
+
+				stochasticInput = projectProxy.getSelectedProject()
+						.getProjectInputType().getStochasticInput();
+				createContainer(pastPeriods, stochasticInput);
+
+				addPastPeriods_vorhanden(4, stochasticInput);
+
 				/*
 				 * Annika Weis Nur stochastische Verfahren -keine zukünftigen
 				 * Perioden -Zukünftige Perioden können weder hinzugefügt noch
@@ -414,28 +380,39 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
+	 * Zukünftige deterministische Perioden anlegen
+	 * 
 	 * @author Annika Weis
 	 * 
 	 * @param howMany
 	 * @param inputType
+	 *            TODO
 	 */
 	private void addFuturePeriods_vorhanden(int howMany, InputType inputType) {
-		// Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst 3
-		logger.debug("vorhandene Perioden anzeigen(" + projectProxy.getSelectedProject().getName() + "): "
-				+ projectProxy.getSelectedProject().getDeterministicPeriods().getPeriods().size());
+		/*
+		 * Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst so
+		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
+		 */
+		logger.debug("future periods");
+
 		int i = 0;
+		sumFuturePeriods = 0;
 		try {
-			for (Period periode : projectProxy.getSelectedProject().getDeterministicPeriods().getPeriods()) {
-				logger.debug(++i);
+			for (Period periode : projectProxy.getSelectedProject()
+					.getDeterministicPeriods().getPeriods()) {
+				logger.debug(++i + " + " + periode.getYear());
 				getView().addFuturePeriod(periode);
+				sumFuturePeriods++;
 			}
+
+		} catch (Exception c) {
 		}
-		catch (Exception c) {}
-		sumFuturePeriods = projectProxy.getSelectedProject().getDeterministicPeriods().getPeriods().size();
 		if (i == 0) {
-			logger.debug("Manuell 3 Perioden anlegen");
-			addFuturePeriods(3, deterministicInput);
+			logger.debug("Manuell Perioden anlegen");
+			addFuturePeriods(projectProxy.getSelectedProject()
+					.getPeriodsToForecast_deterministic(), deterministicInput);
 		}
+		logger.debug("Periodenanzahl: " + sumFuturePeriods);
 		return;
 	}
 
@@ -469,7 +446,41 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().addPastPeriod(period);
 		}
 		projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
+	}
 
+	/**
+	 * Zukünftige stochastische Perioden anlegen
+	 * 
+	 * @author Annika Weis
+	 * 
+	 * @param howMany
+	 * @param inputType
+	 *            TODO
+	 */
+	private void addPastPeriods_vorhanden(int howMany, InputType inputType) {
+		/*
+		 * Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst so
+		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
+		 */
+		logger.debug("past periods");
+		int i = 0;
+		sumPastPeriods = 0;
+		try {
+			for (Period periode : projectProxy.getSelectedProject()
+					.getStochasticPeriods().getPeriods()) {
+				logger.debug(++i + " - " + periode.getYear());
+				getView().addPastPeriod(periode);
+				sumPastPeriods++;
+			}
+		} catch (Exception c) {
+		}
+		if (i == 0) {
+			logger.debug("Manuell Perioden anlegen");
+			addPastPeriods(projectProxy.getSelectedProject()
+					.getRelevantPastPeriods(), stochasticInput);
+		}
+		logger.debug("Periodenanzahl: " + sumPastPeriods);
+		return;
 	}
 
 	/**
