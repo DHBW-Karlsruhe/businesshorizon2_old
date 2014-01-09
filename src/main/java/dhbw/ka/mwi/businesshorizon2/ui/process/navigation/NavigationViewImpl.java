@@ -69,6 +69,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	private VerticalLayout topbar;
 	private VerticalLayout topbarinnerlayout;
 	
+	private Label arrow;
 	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
@@ -95,6 +96,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	private void generateUi() {
 		setSizeFull();
 		
+		this.arrow = new Label("&#10144;");
+		arrow.setContentMode(Label.CONTENT_XHTML);
+		
 		this.full = new HorizontalLayout();
 		this.full.setSizeFull();
 		
@@ -103,6 +107,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		this.layout.setSizeFull();
 		
 		this.innerlayout = new HorizontalLayout();
+		innerlayout.setStyleName("LayoutNavigationsButtons");
 		
 		this.topbar = new VerticalLayout();
 		this.topbar.setSizeFull();
@@ -180,6 +185,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	 */
 	@Override
 	public void addNavigationButton(final NavigationSteps navigationStep) {
+		this.innerlayout.addComponent(arrow);
 		Button navigationButton = new Button(navigationStep.getCaption());
 		this.navigationButtons.put(navigationStep, navigationButton);
 		

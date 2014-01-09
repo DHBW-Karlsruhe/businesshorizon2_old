@@ -55,6 +55,8 @@ public class LogInScreenViewImpl extends Window implements
 
 	@Autowired
 	private LogInScreenPresenter presenter;
+	
+	private VerticalLayout vertical;
 
 	private Window regDialog;
 	private FormLayout fl;
@@ -96,11 +98,14 @@ public class LogInScreenViewImpl extends Window implements
 		setCaption("Business Horizon 2");
 		logger.debug("Überschrift für Browser erstellt");
 
+		vertical = new VerticalLayout();
+		
+		
 		LoginForm login = new LoginForm();
 		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
 		login.setUsernameCaption("Mailadresse");
 		login.setPasswordCaption("Passwort");
-		login.setWidth("100%");
+		login.setWidth(null);
 		login.addListener(new LoginForm.LoginListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -112,18 +117,22 @@ public class LogInScreenViewImpl extends Window implements
 			}
 		});
 
-		addComponent(login);
+		vertical.addComponent(login);
+		vertical.setComponentAlignment(login, Alignment.MIDDLE_CENTER);
 
 		registerBtn = new Button("Registrieren", this);
 
 		passwordForgotBtn = new Button("Passwort vergessen", this);
 		passwordForgotBtn.setEnabled(false);
 
-		addComponent(registerBtn);
-		addComponent(passwordForgotBtn);
+		vertical.addComponent(registerBtn);
+		vertical.setComponentAlignment(registerBtn, Alignment.MIDDLE_CENTER);
+		vertical.addComponent(passwordForgotBtn);
+		vertical.setComponentAlignment(passwordForgotBtn, Alignment.MIDDLE_CENTER);
 
 		logger.debug("LogIn UI erstellt und Listener gesetzt");
 
+		addComponent(vertical);
 	}
 
 	/**

@@ -196,7 +196,9 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	
 	private void generateUi() {
 		methodList = new VerticalLayout();
+		methodList.setHeight("100%");
 		inputMethod = new VerticalLayout();
+		inputMethod.setHeight("100%");
 		methodList.setSizeFull();
 		inputMethod.setSizeFull();
 		

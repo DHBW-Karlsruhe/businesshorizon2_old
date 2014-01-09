@@ -22,13 +22,17 @@
 .v-app {
     background-image: url("images/background.png");
     background-size:100%;
+    height:100%;
     color: #088A08;
 	font-family: Monotype Corsiva;
 	font-size:17px;
 }
 
+.v-verticallayout-LayoutNavigationsButtons {
+	margin:20px;
+}
+
 .v-button {
-	background-color: #ffffff;
 	display:inline-block;
 }
 
@@ -47,17 +51,6 @@
 	text-shadow:1px 2px 0px #ffffff;
 }
 
-.v-splitpanel-hsplitter div  {
-    width: 1px;
-    height: 1px;
-    background-color: #088A08;
-} 
-
-.v-splitpanel-vsplitter div  {
-    width: 1px;
-    height: 1px;
-    background-color: #088A08;
-}
 
 .v-label{
 	color: #088A08;
@@ -69,7 +62,7 @@
 .v-label-ueberschriften{
 	color: #088A08;
 	font-family: Magneto;
-	font-size:17px;
+	font-size:15px;
 }
 
 .v-label-projectname{

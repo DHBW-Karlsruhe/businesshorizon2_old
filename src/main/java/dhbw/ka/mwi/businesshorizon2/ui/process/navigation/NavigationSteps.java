@@ -31,7 +31,7 @@ import java.util.Map;
  * @author Julius Hacker
  */
 public enum NavigationSteps {
-	METHOD("Methoden", 1), PARAMETER("Parameter", 2), PERIOD("Perioden", 3), SCENARIO("Szenarien", 4), OUTPUT("Ausgabe", 5);
+	METHOD("1. Methoden", 1), PARAMETER("2. Parameter", 2), PERIOD("3. Perioden", 3), SCENARIO("4. Szenarien", 4), OUTPUT("5. Ausgabe", 5);
 	
 	private String caption;
 	private Integer number;

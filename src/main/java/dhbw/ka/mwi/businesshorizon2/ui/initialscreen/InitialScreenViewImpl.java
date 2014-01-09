@@ -110,7 +110,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		verticalPanel = new VerticalSplitPanel();
 		verticalPanel.setSizeFull();
-		verticalPanel.setSplitPosition(150, UNITS_PIXELS);
+		verticalPanel.setSplitPosition(170, UNITS_PIXELS);
 		verticalPanel.setLocked(true);
 		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
 
@@ -132,7 +132,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		horizontalPanel = new HorizontalSplitPanel();
 		horizontalPanel.setSizeFull();
-		horizontalPanel.setSplitPosition(150, UNITS_PERCENTAGE);
+		horizontalPanel.setSplitPosition(170, UNITS_PERCENTAGE);
 		horizontalPanel.setLocked(true);
 
 		verticalPanel.setSecondComponent(horizontalPanel);
