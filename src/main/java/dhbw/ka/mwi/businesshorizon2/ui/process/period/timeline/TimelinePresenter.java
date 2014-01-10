@@ -21,6 +21,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
 
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 
@@ -178,7 +179,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			if (projectProxy.getSelectedProject().getBasisYear() != baseYear) {
 				removeEverything();
 			}
-
+			removeEverything();
 			if (projectProxy.getSelectedProject().getRelevantPastPeriods() != fixedPastPeriods && false) {
 				if (projectProxy.getSelectedProject().getRelevantPastPeriods() > sumPastPeriods) {
 					// Hat sich zusaetzlich die Eingabe geaendert muessen alle
@@ -398,17 +399,37 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		try {
 			for (Period periode : projectProxy.getSelectedProject()
 					.getDeterministicPeriods().getPeriods()) {
+				if (i == 0) {
+					// erste Periode = Basisjahr
+					getView().addBasePeriod(periode);
+					logger.debug("Basisjahr");
+				} else if (i + 1 > projectProxy.getSelectedProject()
+						.getPeriodsToForecast_deterministic()) {
+					//genug Perioden ausgegeben, mehr vorhanden als angegeben wurden
+					//Nix machen
+					logger.debug("Überspringen");
+				} else {
+					//Normalfall
+					getView().addFuturePeriod(periode);
+					sumFuturePeriods++;
+					logger.debug("Normalfall");
+				}
 				logger.debug(++i + " + " + periode.getYear());
-				getView().addFuturePeriod(periode);
-				sumFuturePeriods++;
 			}
 
 		} catch (Exception e) {
 		}
-		if (i == 0) {
+
+		// Wenn weniger Perioden vorhanden sind als geplant
+		if (projectProxy.getSelectedProject().getDeterministicPeriods()
+				.getPeriods().size() < projectProxy.getSelectedProject()
+				.getPeriodsToForecast_deterministic()) {
 			logger.debug("Manuell Perioden anlegen");
 			addFuturePeriods(projectProxy.getSelectedProject()
-					.getPeriodsToForecast_deterministic(), deterministicInput);
+					.getPeriodsToForecast_deterministic()
+					- projectProxy.getSelectedProject()
+							.getDeterministicPeriods().getPeriods().size(),
+					deterministicInput);
 		}
 		logger.debug("Periodenanzahl: " + sumFuturePeriods);
 		return;
@@ -456,30 +477,61 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		 * Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst so
 		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
 		 */
-		logger.debug("past periods");
+		logger.debug("past periods :"
+				+ projectProxy.getSelectedProject().getRelevantPastPeriods());
 		int i = 0;
 		sumPastPeriods = 0;
 		try {
+			/*
+			 * Perioden müssen in umgekehrter Reihenfolge angegeben werden,
+			 * sonst ensteht etwas wie: 2012-2011-2010-2009-2008-2013
+			 */
 			int laenge = projectProxy.getSelectedProject()
-					.getStochasticPeriods().getPeriods().size()-1;
+					.getStochasticPeriods().getPeriods().size() - 1;
+			TreeSet<Period> perioden = (TreeSet<Period>) projectProxy
+					.getSelectedProject().getStochasticPeriods().getPeriods();
+			// Länge der vorhandenen Perioden
+			laenge = perioden.size();
+			// nur so viele Perioden ausgeben, wie der Benutzer angegeben hat
+			// bzw vorhanden sind
+			laenge = Math.min(laenge, projectProxy.getSelectedProject()
+					.getRelevantPastPeriods());
+			// Länge-1 wegen dem Array-Index 0
+			laenge = laenge - 1;
 			logger.debug("Länge: " + laenge);
-			for (int x=laenge; x>=0; x--){
-				Period periode = (Period) projectProxy.getSelectedProject()
-						.getStochasticPeriods().getPeriods().toArray()[x];
-				logger.debug(++i + " - " + periode.getYear());
-				getView().addPastPeriod(periode);
-				sumPastPeriods++;				
+			// wenn mehr Perioden vorhanden sind als gewünscht...
+			if (perioden.size() > projectProxy.getSelectedProject()
+					.getRelevantPastPeriods()) {
+				// ...dann nur die letzten gewünschten ausgeben
+				laenge = perioden.size()
+						- projectProxy.getSelectedProject()
+								.getRelevantPastPeriods() + 1;
+			} else {
+				// ...sonst alle ausgeben
+				laenge = 0;
 			}
-			for (Period periode : projectProxy.getSelectedProject()
-					.getStochasticPeriods().getPeriods()) {
+			// Perioden ausgeben: Anfangen bei der letzten (höchstes Jahr!) bis
+			// zur gewünschten Länge
+			// Ausgabe erfolgt rückwärts
+			// -2 wegen Array-Index 0 UND Basisperiode abziehen
+			for (int x = perioden.size() - 2; x >= laenge; x--) {
+				Period periode = (Period) perioden.toArray()[x];
+				logger.debug(x + " - " + periode.getYear());
+				getView().addPastPeriod(periode);
+				sumPastPeriods++;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		if (i == 0) {
+		// wenn nicht genug Perioden vorhanden angelegt wurden wie vom Benutzer
+		// angegeben
+		logger.debug(sumPastPeriods + " | "
+				+ projectProxy.getSelectedProject().getRelevantPastPeriods());
+		if (sumPastPeriods < projectProxy.getSelectedProject()
+				.getRelevantPastPeriods()) {
 			logger.debug("Manuell Perioden anlegen");
 			addPastPeriods(projectProxy.getSelectedProject()
-					.getRelevantPastPeriods(), stochasticInput);
+					.getRelevantPastPeriods() - sumPastPeriods, stochasticInput);
 		}
 		logger.debug("Periodenanzahl: " + sumPastPeriods);
 		return;
