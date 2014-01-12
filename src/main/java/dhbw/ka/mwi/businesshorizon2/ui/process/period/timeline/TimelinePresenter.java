@@ -72,6 +72,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	private static final Logger logger = Logger
 			.getLogger(TimelinePresenter.class);
 
+	private String projektname;
+
 	private int fixedPastPeriods;
 	private int fixedFuturePeriods;// gibbets nibbets
 
@@ -108,187 +110,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
-	 * Ueberprueft ob sich die fuer die Maske relevanten Daten im ProjektObjekt
-	 * geaendert haben.
-	 * 
-	 * Überprüft werden: - Basisjahr - Inputtyp (deterministisch, stochastisch)
-	 * - Berechnungsart (Direkt, Umsatzkostenverfahren, Gesamtkostenverfahren)
-	 * 
-	 * @return true falls alles gleich ist, false wenn sich etwas geaendert hat
-	 * @author Daniel Dengler
-	 * @author Annika Weis
-	 */
-
-	@Override
-	public boolean isValid() {
-		try {
-			projectProxy.getSelectedProject();
-		} catch (Exception e) {
-			logger.debug("crash at getSelectedProject()");
-		}
-		try {
-			projectProxy.getSelectedProject().getProjectInputType();
-		} catch (Exception e) {
-			logger.debug("crash at getProjectInputType");
-		}
-		try {
-			projectProxy.getSelectedProject().getProjectInputType()
-					.getDeterministic();
-		} catch (Exception e) {
-			logger.debug("crash at getDeterministic()"
-					+ projectProxy.getSelectedProject().getProjectInputType());
-		}
-		try {
-			if (projectProxy.getSelectedProject().getBasisYear() == baseYear
-					&& projectProxy.getSelectedProject().getProjectInputType()
-							.getDeterministic() == deterministic
-					&& projectProxy.getSelectedProject().getProjectInputType()
-							.getStochastic() == stochastic
-					&& projectProxy.getSelectedProject().getProjectInputType()
-							.getDeterministicInput() == deterministicInput
-					&& projectProxy.getSelectedProject().getProjectInputType()
-							.getStochasticInput() == stochasticInput)
-				return true;
-			else
-				return false;
-
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Üerprueft ob sich die Periodenanzahl (zu planen, vergangene) geändert hat
-	 * 
-	 * @return true falls alles gleich ist, false wenn sich etwas geaendert hat
-	 * @author Annika WEis
-	 */
-	public boolean isValid_Zeitraum() {
-		logger.debug("Periodenanzahl: "
-				+ projectProxy.getSelectedProject().getRelevantPastPeriods()
-				+ " = "
-				+ fixedPastPeriods
-				+ " | "
-				+ projectProxy.getSelectedProject()
-						.getPeriodsToForecast_deterministic() + " = "
-				+ fixedFuturePeriods);
-		if (projectProxy.getSelectedProject().getRelevantPastPeriods() == fixedPastPeriods
-				&& projectProxy.getSelectedProject()
-						.getPeriodsToForecast_deterministic() == fixedFuturePeriods) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * @author Annika Weis
-	 * @return erter Aufruf des Projekts (true)
-	 * 
-	 *         Prüft, ob bereits Perioden für diesen Inputtyp vorhanden sind.
-	 *         Wenn ja, werden diese überprüft, ob es auch die gleichen
-	 *         Berechnungsverfahren sind. Wenn ja, wird noch überprüft, ob das
-	 *         erste Jahr gleich dem Basisjahr ist
-	 * 
-	 *         Nur wenn das alles zutrifft, gibt es bereits benutzbare Perioden
-	 *         Ansonsten gab es Änderungen, alles wird verworfen und das Fenster
-	 *         neu aufgebaut
-	 * 
-	 */
-	private boolean isFirst_call() {
-		// nur wenn sich was finden lässt, das ist wie angegeben, false. Sonst
-		// wird alles neu erstellt
-		boolean first_call = true;
-		int anz = 0;
-
-		if (projectProxy.getSelectedProject().getProjectInputType()
-				.getDeterministic()) {
-			// deterministisch
-			try {
-				anz = projectProxy.getSelectedProject()
-						.getDeterministicPeriods().getPeriods().size();
-				Period p = (Period) projectProxy.getSelectedProject()
-						.getDeterministicPeriods().getPeriods().toArray()[0];
-				// Inputtype der Periode abgleichen mit angegebenem Typ
-				switch (projectProxy.getSelectedProject().getProjectInputType()
-						.getDeterministicInput()) {
-				case REVENUE:
-					if (p instanceof CostOfSalesMethodPeriod) {
-						first_call = false;
-					}
-					break;
-				case TOTAL:
-					if (p instanceof AggregateCostMethodPeriod) {
-						first_call = false;
-					}
-					break;
-				case DIRECT:
-					if (p instanceof CashFlowPeriod) {
-						first_call = false;
-					}
-					break;
-				}
-				// Basisjahr überprüfen
-				if (!first_call) {
-					if (p.getYear() != projectProxy.getSelectedProject()
-							.getBasisYear()) {
-						first_call = true;
-						logger.debug("Basisjahr: "
-								+ projectProxy.getSelectedProject()
-										.getBasisYear());
-					}
-				}
-				logger.debug("Deterministische Perioden vorhanden");
-			} catch (Exception e) {
-			}
-		} else if (projectProxy.getSelectedProject().getProjectInputType()
-				.getStochastic()) {
-			// stochastisch
-			try {
-				anz = projectProxy.getSelectedProject().getStochasticPeriods()
-						.getPeriods().size();
-				Period p = (Period) projectProxy.getSelectedProject()
-						.getStochasticPeriods().getPeriods().toArray()[0];
-				// Inputtype der Periode abgleichen mit angegebenem Typ
-				switch (projectProxy.getSelectedProject().getProjectInputType()
-						.getDeterministicInput()) {
-				case REVENUE:
-					if (p instanceof CostOfSalesMethodPeriod) {
-						first_call = false;
-					}
-					break;
-				case TOTAL:
-					if (p instanceof AggregateCostMethodPeriod) {
-						first_call = false;
-					}
-					break;
-				case DIRECT:
-					if (p instanceof CashFlowPeriod) {
-						first_call = false;
-					}
-					break;
-				}
-
-				// Basisjahr überprüfen
-				if (!first_call) {
-					if (p.getYear() != projectProxy.getSelectedProject()
-							.getBasisYear()) {
-						first_call = true;
-						logger.debug("Basisjahr: "
-								+ projectProxy.getSelectedProject()
-										.getBasisYear());
-					}
-				}
-				logger.debug("Stochastische Perioden vorhanden");
-			} catch (Exception e) {
-			}
-
-		}
-		logger.debug("First_call: " + first_call);
-		return first_call;
-	}
-
-	/**
 	 * Diese Methode reagiert auf den Aufruf der View die auch diesen Zeitstrahl
 	 * enthaelt. Sollte sich etwas in den Daten des ProjektObjekts geaendert
 	 * haben oder wurde noch nicht initialisiert, dann kuemmert sich die Methode
@@ -303,139 +124,35 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	@EventHandler
 	public void onShowPeriodEvent(ShowPeriodViewEvent event)
 			throws NullPointerException {
-		if (isFirst_call()) {
-			/**
-			 * handelt es sich um den ersten Aufruf ODER es gab eine der folgenden Änderungen
-			 * - Typ stochastisch/deterministisch geändert
-			 * - Verfahren geändert
-			 * - Basisjahr geändert
-			 * muss alles neu erstellt werden
-			 */
-			logger.debug("Alles neu/Änderungen" + baseYear);
-			
-			
-			removeEverything();
-			if (stochastic) {
-				logger.debug("PastPeriods: "
-						+ projectProxy.getSelectedProject()
-								.getRelevantPastPeriods());
-				addPastPeriods(projectProxy.getSelectedProject()
-						.getRelevantPastPeriods(), projectProxy
-						.getSelectedProject().getProjectInputType()
-						.getStochasticInput());
-			}
-			if (deterministic) {
-				logger.debug("FuturePeriode: "
-						+ projectProxy.getSelectedProject()
-								.getPeriodsToForecast());
-				addFuturePeriods(projectProxy.getSelectedProject()
-						.getRelevantPastPeriods(), projectProxy
-						.getSelectedProject().getProjectInputType()
-						.getDeterministicInput());
-			}
-		} else {
-
-			// Wenn alles gleich geblieben ist muessen wir nichts tun
+		// prüfen, ob es sich um das selbe Projekt handelt wie zuvor
+		if (isSameProject()) {
+			logger.debug("=====gleiches Projekt====");
 			if (isValid() & isValid_Zeitraum()) {
+				// alles wie zuvor, keine Änderung notwendig
 				logger.debug("alles valid");
 				return;
 			} else {
-				/**
-				 * Wenn sich so viel geändert hat, dass alles neu angelegt
-				 * werden muss
-				 */
+				// Wenn sich so viel geändert hat, dass alles neu angelegt
+				// werden muss
 				if (!isValid()) {
-					logger.debug("Alles neu " + baseYear);
-					initalise();
-
-					removeEverything();
-					if (stochastic) {
-						logger.debug("PastPeriods: "
-								+ projectProxy.getSelectedProject()
-										.getRelevantPastPeriods());
-						addPastPeriods(projectProxy.getSelectedProject()
-								.getRelevantPastPeriods(), projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getStochasticInput());
-					}
-					if (deterministic) {
-						logger.debug("FuturePeriode: "
-								+ projectProxy.getSelectedProject()
-										.getPeriodsToForecast());
-						addFuturePeriods(projectProxy.getSelectedProject()
-								.getRelevantPastPeriods(), projectProxy
-								.getSelectedProject().getProjectInputType()
-								.getDeterministicInput());
-					}
-
+					alles_neu();
 				} else {
-					/**
-					 * Wenn sich NUR die Anzahl der Jahre geändert hat
-					 */
-					logger.debug("Jahresanzahl ändern");
-					initalise();
-
-					if (projectProxy.getSelectedProject().getProjectInputType()
-							.getDeterministic()) {// projectProxy.getSelectedProject().getProjectInputType().getDeterministic()
-						// != deterministic &&
-						logger.debug("Initialisierung (d) "
-								+ fixedFuturePeriods);
-						removeAllFuturePeriods();
-						removeAllPastPeriods();
-						deterministicInput = projectProxy.getSelectedProject()
-								.getProjectInputType().getDeterministicInput();
-						createContainer(futurePeriods, deterministicInput);
-
-						/*
-						 * Annika Weis Nur deterministisches Verfahren: keine
-						 * vergangenen Perioden
-						 */
-						getView().setPastButtonAccess(false);
-						getView().setPastDeleteButtonAccess(true);
-						getView().setFutureDeleteButtonAccess(true);
-
-						/**
-						 * Annika Weis
-						 */
-						addFuturePeriods_vorhanden();
-						fixedPastPeriods = projectProxy.getSelectedProject()
-								.getRelevantPastPeriods();
-					}
-
-					// Stochastische Verfahren
-					// Hat sich nur der Inputtyp geaendert, muessen alle
-					// betroffenen
-					// Perioden verworfen werden und neu angelegt werden.
-
-					if (projectProxy.getSelectedProject().getProjectInputType()
-							.getStochastic()) { // projectProxy.getSelectedProject().getProjectInputType().getStochastic()
-						// != stochastic &&
-						logger.debug("Initialisierung (s) " + fixedPastPeriods);
-						removeAllFuturePeriods();
-						removeAllPastPeriods();
-						// fixedPastPeriods =
-						// projectProxy.getSelectedProject().getRelevantPastPeriods();
-
-						stochasticInput = projectProxy.getSelectedProject()
-								.getProjectInputType().getStochasticInput();
-						createContainer(pastPeriods, stochasticInput);
-
-						addPastPeriods_vorhanden();
-						fixedFuturePeriods = projectProxy.getSelectedProject()
-								.getPeriodsToForecast_deterministic();
-
-						/*
-						 * Annika Weis Nur stochastische Verfahren -keine
-						 * zukünftigen Perioden -Zukünftige Perioden können
-						 * weder hinzugefügt noch gelöscht werden.
-						 */
-
-						getView().setPastButtonAccess(true);
-						getView().setPastDeleteButtonAccess(false);
-						getView().setFutureButtonAccess(false);
-						getView().setFutureDeleteButtonAccess(false);
-					}
+					// /Wenn sich NUR die Anzahl der Jahre geändert hat
+					jahresanzahl_geaendert();
 				}
+			}
+		} else {
+			logger.debug("====anderes Projekt====");
+			// wird das Projekt zum ersten Mal aufgerufen
+			if (isFirst_call()) {
+				logger.debug("Alles wird neu erstellt da erster Aufruf");
+				alles_neu();
+			} else {
+
+				// /Wenn sich NUR die Anzahl der Jahre geändert hat
+				logger.debug("Anzahl Jahre hat sich geändert");
+				jahresanzahl_geaendert();
+				
 				logger.debug("===========ENDE=========");
 				// Wenn sich unser Bezugsjahr aendert werden alle Perioden
 				// ungueltig
@@ -543,12 +260,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					 * können weder hinzugefügt noch gelöscht werden.
 					 */
 					/*
-					 * if
-					 * (projectProxy.getSelectedProject().getProjectInputType()
-					 * .getStochastic() &&
-					 * projectProxy.getSelectedProject().getProjectInputType()
-					 * .getDeterministic())
-					 * {//(projectProxy.getSelectedProject().getProjectInputType
+					 * if (projectProxy.getSelectedProject().getProjectInputType
+					 * () .getStochastic() && projectProxy.getSelectedProject
+					 * ().getProjectInputType() .getDeterministic())
+					 * {//(projectProxy
+					 * .getSelectedProject().getProjectInputType
 					 * ().getStochastic() != stochastic ||
 					 * projectProxy.getSelectedProject
 					 * ().getProjectInputType().getDeterministic() !=
@@ -590,6 +306,310 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	}
 
 	/**
+	 * @author Annika Weis Wenn sich NUR die Anzahl der Jahre geändert hat,
+	 *         werden die entsprechenden perioden angezeigt, hinzugefügt,
+	 *         gelöscht
+	 */
+	private void jahresanzahl_geaendert() {
+		logger.debug("Jahresanzahl ändern");
+		initalise();
+
+		if (projectProxy.getSelectedProject().getProjectInputType()
+				.getDeterministic()) {// projectProxy.getSelectedProject().getProjectInputType().getDeterministic()
+			// != deterministic &&
+			logger.debug("Initialisierung (d) " + fixedFuturePeriods);
+			removeAllFuturePeriods();
+			removeAllPastPeriods();
+			deterministicInput = projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministicInput();
+			createContainer(futurePeriods, deterministicInput);
+			/**
+			 * Annika Weis
+			 */
+			addFuturePeriods_vorhanden();
+			fixedPastPeriods = projectProxy.getSelectedProject()
+					.getRelevantPastPeriods();
+
+			/*
+			 * Annika Weis Nur deterministisches Verfahren: keine vergangenen
+			 * Perioden
+			 */
+			getView().setPastButtonAccess(false);
+			getView().setPastDeleteButtonAccess(true);
+			getView().setFutureDeleteButtonAccess(true);
+
+		}
+
+		// Stochastische Verfahren
+		// Hat sich nur der Inputtyp geaendert, muessen alle
+		// betroffenen
+		// Perioden verworfen werden und neu angelegt werden.
+
+		if (projectProxy.getSelectedProject().getProjectInputType()
+				.getStochastic()) { // projectProxy.getSelectedProject().getProjectInputType().getStochastic()
+			// != stochastic &&
+			logger.debug("Initialisierung (s) " + fixedPastPeriods);
+			removeAllFuturePeriods();
+			removeAllPastPeriods();
+			// fixedPastPeriods =
+			// projectProxy.getSelectedProject().getRelevantPastPeriods();
+
+			stochasticInput = projectProxy.getSelectedProject()
+					.getProjectInputType().getStochasticInput();
+			createContainer(pastPeriods, stochasticInput);
+
+			addPastPeriods_vorhanden();
+			fixedFuturePeriods = projectProxy.getSelectedProject()
+					.getPeriodsToForecast_deterministic();
+
+			/*
+			 * Annika Weis Nur stochastische Verfahren -keine zukünftigen
+			 * Perioden -Zukünftige Perioden können weder hinzugefügt noch
+			 * gelöscht werden.
+			 */
+
+			getView().setPastButtonAccess(true);
+			getView().setPastDeleteButtonAccess(false);
+			getView().setFutureButtonAccess(false);
+			getView().setFutureDeleteButtonAccess(false);
+		}
+	}
+
+	/**
+	 * legt so viele neue Perioden an, wie der Benutzer vorgegeben hat <br>
+	 * handelt es sich um den ersten Aufruf ODER es gab eine der folgenden
+	 * Änderungen <br>
+	 * - Typ stochastisch/deterministisch geändert, <br>
+	 * - Verfahren geändert, <br>
+	 * - Basisjahr geändert <br>
+	 * muss alles neu erstellt werden
+	 * 
+	 * @author Annika Weis
+	 * 
+	 */
+	private void alles_neu() {
+		logger.debug("Alles neu " + baseYear);
+		initalise();
+
+		removeEverything();
+		if (stochastic) {
+			logger.debug("PastPeriods: "
+					+ projectProxy.getSelectedProject()
+							.getRelevantPastPeriods());
+			addPastPeriods(projectProxy.getSelectedProject()
+					.getRelevantPastPeriods(), projectProxy
+					.getSelectedProject().getProjectInputType()
+					.getStochasticInput());
+		}
+		if (deterministic) {
+			logger.debug("FuturePeriode: "
+					+ projectProxy.getSelectedProject().getPeriodsToForecast());
+			addFuturePeriods(projectProxy.getSelectedProject()
+					.getPeriodsToForecast_deterministic(), projectProxy
+					.getSelectedProject().getProjectInputType()
+					.getDeterministicInput());
+		}
+	}
+
+	/**
+	 * Ueberprüft ob sich die für die Maske relevanten Daten im ProjektObjekt
+	 * geändert haben.<br>
+	 * 
+	 * Überprüft werden: <br>
+	 * - Basisjahr<br>
+	 * - Inputtyp (deterministisch, stochastisch)<br>
+	 * - Berechnungsart (Direkt, Umsatzkostenverfahren, Gesamtkostenverfahren)
+	 * 
+	 * @return Boolaen<br>
+	 *         true, falls alles gleich ist<br>
+	 *         false wenn sich etwas geaendert hat
+	 * @author Daniel Dengler
+	 * @author Annika Weis
+	 */
+
+	@Override
+	public boolean isValid() {
+		try {
+			projectProxy.getSelectedProject();
+		} catch (Exception e) {
+			logger.debug("crash at getSelectedProject()");
+		}
+		try {
+			projectProxy.getSelectedProject().getProjectInputType();
+		} catch (Exception e) {
+			logger.debug("crash at getProjectInputType");
+		}
+		try {
+			projectProxy.getSelectedProject().getProjectInputType()
+					.getDeterministic();
+		} catch (Exception e) {
+			logger.debug("crash at getDeterministic()"
+					+ projectProxy.getSelectedProject().getProjectInputType());
+		}
+		try {
+			if (projectProxy.getSelectedProject().getBasisYear() == baseYear
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getDeterministic() == deterministic
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getStochastic() == stochastic
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getDeterministicInput() == deterministicInput
+					&& projectProxy.getSelectedProject().getProjectInputType()
+							.getStochasticInput() == stochasticInput)
+				return true;
+			else
+				return false;
+
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Üerprueft ob sich die Periodenanzahl (zu planen, vergangene) geändert hat
+	 * 
+	 * @return true falls alles gleich ist, false wenn sich etwas geaendert hat
+	 * @author Annika WEis
+	 */
+	public boolean isValid_Zeitraum() {
+		logger.debug("Periodenanzahl: "
+				+ projectProxy.getSelectedProject().getRelevantPastPeriods()
+				+ " = "
+				+ fixedPastPeriods
+				+ " | "
+				+ projectProxy.getSelectedProject()
+						.getPeriodsToForecast_deterministic() + " = "
+				+ fixedFuturePeriods);
+		if (projectProxy.getSelectedProject().getRelevantPastPeriods() == fixedPastPeriods
+				&& projectProxy.getSelectedProject()
+						.getPeriodsToForecast_deterministic() == fixedFuturePeriods) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * @author Annika Weis
+	 * @return: Boolean, true: gleiches Projekt, false: andere Projekt
+	 *          Überprüfung anhand des Projektnamens
+	 */
+	private boolean isSameProject() {
+		return (projektname == projectProxy.getSelectedProject().getName());
+	}
+
+	/**
+	 * Prüft, ob bereits Perioden für diesen Inputtyp vorhanden sind. <br>
+	 * Wenn ja, werden diese überprüft, ob es auch die gleichen
+	 * Berechnungsverfahren sind. <br>
+	 * Wenn ja, wird noch überprüft, ob das erste Jahr gleich dem Basisjahr ist
+	 * 
+	 * Nur wenn das alles zutrifft, gibt es bereits benutzbare Perioden<br>
+	 * Ansonsten gab es Änderungen, alles wird verworfen und das Fenster neu
+	 * aufgebaut
+	 * 
+	 * @author Annika Weis
+	 * @return Boolean: erster Aufruf des Projekts (true)
+	 * 
+	 * 
+	 */
+	private boolean isFirst_call() {
+		// nur wenn sich was finden lässt, das ist wie angegeben, false. Sonst
+		// wird alles neu erstellt
+		boolean first_call = true;
+		int anz = 0;
+
+		if (projectProxy.getSelectedProject().getProjectInputType()
+				.getDeterministic()) {
+			// deterministisch
+			try {
+				anz = projectProxy.getSelectedProject()
+						.getDeterministicPeriods().getPeriods().size();
+				Period periode = (Period) projectProxy.getSelectedProject()
+						.getDeterministicPeriods().getPeriods().toArray()[0];
+				// Inputtype der Periode abgleichen mit angegebenem Typ
+				switch (projectProxy.getSelectedProject().getProjectInputType()
+						.getDeterministicInput()) {
+				case REVENUE:
+					if (periode instanceof CostOfSalesMethodPeriod) {
+						first_call = false;
+					}
+					break;
+				case TOTAL:
+					if (periode instanceof AggregateCostMethodPeriod) {
+						first_call = false;
+					}
+					break;
+				case DIRECT:
+					if (periode instanceof CashFlowPeriod) {
+						first_call = false;
+					}
+					break;
+				}
+				// Basisjahr überprüfen
+				if (!first_call) {
+					if (periode.getYear() != projectProxy.getSelectedProject()
+							.getBasisYear()) {
+						first_call = true;
+						logger.debug("Basisjahr: "
+								+ projectProxy.getSelectedProject()
+										.getBasisYear());
+					}
+				}
+				logger.debug("Deterministische Perioden vorhanden");
+			} catch (Exception e) {
+			}
+		} else if (projectProxy.getSelectedProject().getProjectInputType()
+				.getStochastic()) {
+			// stochastisch
+			try {
+				anz = projectProxy.getSelectedProject().getStochasticPeriods()
+						.getPeriods().size();
+				Period periode = (Period) projectProxy.getSelectedProject()
+						.getStochasticPeriods().getPeriods().toArray()[projectProxy
+						.getSelectedProject().getStochasticPeriods()
+						.getPeriods().toArray().length - 1];
+				// Inputtype der Periode abgleichen mit angegebenem Typ
+				switch (projectProxy.getSelectedProject().getProjectInputType()
+						.getDeterministicInput()) {
+				case REVENUE:
+					if (periode instanceof CostOfSalesMethodPeriod) {
+						first_call = false;
+					}
+					break;
+				case TOTAL:
+					if (periode instanceof AggregateCostMethodPeriod) {
+						first_call = false;
+					}
+					break;
+				case DIRECT:
+					if (periode instanceof CashFlowPeriod) {
+						first_call = false;
+					}
+					break;
+				}
+
+				// Basisjahr überprüfen
+				if (!first_call) {
+					if (periode.getYear() != projectProxy.getSelectedProject()
+							.getBasisYear()) {
+						first_call = true;
+						logger.debug("Basisjahr: "
+								+ projectProxy.getSelectedProject()
+										.getBasisYear() + " / "
+								+ periode.getYear());
+					}
+				}
+				logger.debug("Stochastische Perioden vorhanden");
+			} catch (Exception e) {
+			}
+
+		}
+		logger.debug("First_call: " + first_call);
+		return first_call;
+	}
+
+	/**
 	 * @author Annika Weis
 	 */
 	private void initalise() {
@@ -608,6 +628,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.getPeriodsToForecast_deterministic();
 		fixedPastPeriods = projectProxy.getSelectedProject()
 				.getRelevantPastPeriods();
+
+		projektname = projectProxy.getSelectedProject().getName();
 
 	}
 
@@ -750,6 +772,8 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			Period period = buildNewPeriod(inputType, baseYear - sumPastPeriods);
 			pastPeriods.addPeriod(period);
 			getView().addPastPeriod(period);
+			logger.debug("Periode " + period.getYear() + " angelegt ("
+					+ inputType.toString() + ")");
 		}
 		projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
 	}
@@ -764,7 +788,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		 * Wenn bereits Perioden vorhanden sind: so viele anlegen, sonst so
 		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
 		 */
-		logger.debug("past periods :"
+		logger.debug("past periods: "
 				+ projectProxy.getSelectedProject().getRelevantPastPeriods());
 		int i = 0;
 		sumPastPeriods = 0;
@@ -797,6 +821,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				// ...sonst alle ausgeben
 				laenge = 0;
 			}
+
+			// Basis-Periode anlegen
+			getView().addBasePeriod((Period) perioden.toArray()[0]);
+			pastPeriods.addPeriod(basePeriod);
+
 			// Perioden ausgeben: Anfangen bei der letzten (höchstes Jahr!) bis
 			// zur gewünschten Länge
 			// Ausgabe erfolgt rückwärts
@@ -828,8 +857,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (sumPastPeriods < projectProxy.getSelectedProject()
 				.getRelevantPastPeriods()) {
 			logger.debug("Manuell Perioden anlegen");
+			// -1, da Basisperiode sonst mitgezählt wird
 			addPastPeriods(projectProxy.getSelectedProject()
-					.getRelevantPastPeriods() - sumPastPeriods, stochasticInput);
+					.getRelevantPastPeriods() - sumPastPeriods + 1,
+					stochasticInput);
 		}
 		logger.debug("Periodenanzahl: " + sumPastPeriods);
 		return;
@@ -1072,9 +1103,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		getView().removeFuturePeriod();
 		futurePeriods.removePeriod(period);
 		sumFuturePeriods--;
-		/*
-		 * Annika Weis Bei deterministischem Verfahren: Bis auf zwei Perioden
-		 * können alle gelöscht werden
+		/**
+		 * Annika Weis<br>
+		 * Bei deterministischem Verfahren: Bis auf zwei Perioden können alle
+		 * gelöscht werden
 		 */
 		Boolean deterministic_2;
 		deterministic_2 = (projectProxy.getSelectedProject()
