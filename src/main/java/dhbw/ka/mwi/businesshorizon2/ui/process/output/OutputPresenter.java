@@ -283,14 +283,14 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			}
 			logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
 			
-			if (method.getName() == "Zeitreihenanalyse") {
-				TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
+			//Erwartete Cashflows laden (sind leider nicht im StochasticResultContainer)
+			TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
                 StochasticResultContainer src = timeseriesCalculator
                                 .getExpectedCashFlows();
 
                 expectedCashFlows = (TreeSet<CashFlowPeriod>) src
                                 .getPeriodContainers().first().getPeriods();
-			}
+			
 			
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
 				stochasticChartArea = new StochasticChartArea(method.getName(),
