@@ -27,6 +27,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
@@ -38,12 +40,15 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
  * stochastischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 
- * @author Florian Stier
+ * @author Marcel Rosenberger
  * 
  */
 public class StochasticChartArea extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = Logger
+			.getLogger("StochasticChartArea.class");
 
 	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
 
@@ -66,16 +71,19 @@ public class StochasticChartArea extends VerticalLayout {
 		String expectedCompanyValue = "";
 		double expectedCompanyValueFreq = 0;
 
+		logger.debug("Erwartungswert ermitteln:");
 		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
 
 			cvChartValues.put(Double.toString(companyValue.getKey()),
 					new double[] { companyValue.getValue().getCount() });
-
+			
+			
 			// Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
 			// Häufigkeit)
-			if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
+			if (companyValue.getValue().getCount() > expectedCompanyValueFreq) {
 				expectedCompanyValue = Double.toString(companyValue.getKey());
 				expectedCompanyValueFreq = companyValue.getValue().getCount();
+				logger.debug("Neuer Erwartungswert: " + companyValue.getValue().getCompanyValue());
 			}
 
 		}

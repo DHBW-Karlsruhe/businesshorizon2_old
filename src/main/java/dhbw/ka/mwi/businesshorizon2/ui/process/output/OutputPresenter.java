@@ -235,9 +235,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	public void onComplete(StochasticResultContainer result, AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
-		
+		int szenariozähler = 1;
 		//pro Szenario werden die Unternehmenswerte berechnet
 		for (Szenario scenario : project.getScenarios()) {
+			logger.debug("Szenariozähler: " + szenariozähler);
+			szenariozähler++;
+			
 			
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
 			APV_2 apv = new APV_2();
