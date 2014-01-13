@@ -694,10 +694,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		int i = 0;
 		sumFuturePeriods = 0;
 		try {
-			//enthält die Perioden die gelöscht werden sollen
+			// enthält die Perioden die gelöscht werden sollen
 			TreeSet<Period> del_periods = new TreeSet<>();
-			
-			//alle vorhandene Perioden durchlaufen
+
+			// alle vorhandene Perioden durchlaufen
 			for (Period periode : projectProxy.getSelectedProject()
 					.getDeterministicPeriods().getPeriods()) {
 				if (i == 0) {
@@ -705,12 +705,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					getView().addBasePeriod(periode);
 					futurePeriods.addPeriod(periode);
 					logger.debug("Basisjahr");
-				} else if (i + 2 > projectProxy.getSelectedProject()
+				} else if (i > projectProxy.getSelectedProject()
 						.getPeriodsToForecast_deterministic()) {
 					// mehr Perioden vorhanden, als der Benutzer will
 					// Diese werden gelöscht
 					logger.debug("Überspringen " + periode.getYear());
-					//Zwischenspeichern, wird später gelöscht
+					// Zwischenspeichern, wird später gelöscht
 					del_periods.add(periode);
 				} else {
 					// Normalfall, Periode anzeigen
@@ -723,10 +723,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				projectProxy.getSelectedProject().setDeterministicPeriods(
 						futurePeriods);
 			}
-			
-			for (Period periode : del_periods){
+
+			for (Period periode : del_periods) {
 				projectProxy.getSelectedProject().getDeterministicPeriods()
-				.removePeriod(periode);
+						.removePeriod(periode);
 				logger.debug("Löschen " + periode.getYear());
 			}
 		} catch (Exception e) {
@@ -821,7 +821,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			laenge = Math.min(laenge, projectProxy.getSelectedProject()
 					.getRelevantPastPeriods());
 			// Länge-1 wegen dem Array-Index 0
-			laenge = laenge ;
+			laenge = laenge;
 			logger.debug("Länge: " + laenge);
 			// wenn mehr Perioden vorhanden sind als gewünscht...
 			if (perioden.size() > projectProxy.getSelectedProject()
@@ -841,13 +841,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 			/**
 			 * Perioden ausgeben: Anfangen bei der letzten (höchstes Jahr!) bis
-		     * zur gewünschten Länge
-			 * Ausgabe erfolgt rückwärts
-			 * -2 wegen Array-Index 0 UND Basisperiode abziehen
+			 * zur gewünschten Länge Ausgabe erfolgt rückwärts -2 wegen
+			 * Array-Index 0 UND Basisperiode abziehen
 			 * 
 			 * TODO übrige Perioden löschen
 			 */
-			for (int x = perioden.size() - 1; x >= laenge-2; x--) {
+			for (int x = perioden.size() - 1; x >= laenge - 2; x--) {
 				Period period = (Period) perioden.toArray()[x];
 				logger.debug(x + " - " + period.getYear());
 				if (x == perioden.size() - 1) {
@@ -860,9 +859,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				pastPeriods.addPeriod(period);
 			}
 			projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
-			
-			//Übrige Perioden löschen
-			for (int x = laenge-3; x >= 0; x--) {
+
+			// Übrige Perioden löschen
+			for (int x = laenge - 3; x >= 0; x--) {
 				Period period = (Period) perioden.toArray()[x];
 				logger.debug("Lösche Jahr " + period.getYear());
 				pastPeriods.removePeriod(period);
@@ -881,8 +880,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.getRelevantPastPeriods()) {
 			logger.debug("Manuell Perioden anlegen");
 			addPastPeriods(projectProxy.getSelectedProject()
-					.getRelevantPastPeriods() - sumPastPeriods,
-					stochasticInput);
+					.getRelevantPastPeriods() - sumPastPeriods, stochasticInput);
 		}
 		logger.debug("Periodenanzahl: " + sumPastPeriods);
 		return;
