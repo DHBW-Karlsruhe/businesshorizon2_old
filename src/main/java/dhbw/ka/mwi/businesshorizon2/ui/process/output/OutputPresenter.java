@@ -53,6 +53,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
@@ -107,7 +108,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			for (AbstractDeterministicMethod method_deterministic : project
 					.getMethods_deterministic()) {
 				// alle Szenarios durchlaufen
-				for (Szenario scenario : project.getScenarios()) {
+				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
 					CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project
 							.getDeterministicPeriods();
@@ -117,34 +118,59 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					DeterministicResultContainer drContainer = new DeterministicResultContainer(
 							periodContainer);
 					if (method_deterministic.getSelected()) {
-						double uwert = 0;
+						double uwsteuerfrei = 0;
+						double steuervorteile = 0;
+						double unternehmenswert = 0;
+						double fremdkapital = 0;
+						
 						if (method_deterministic.getName() == "APV") {
 							APV_2 apv_2 = new APV_2();
-							uwert = apv_2
+							unternehmenswert = apv_2
 									.calculateValues(drContainer.getCashflows(),drContainer.getFremdkapitl() ,scenario);
-							// TODO: Unternehmenswert ausgeben
-							// Cashflows im Liniendiagramm ausgeben
-							DeterministicLineChart chart = new DeterministicLineChart(
-									method_deterministic.getName(), uwert,
+							uwsteuerfrei = apv_2.getUwsteuerfrei();
+							steuervorteile = apv_2.getSteuervorteile();
+							fremdkapital = apv_2.getFremdkapital();
+							
+							DeterministicChartArea balken = new DeterministicChartArea(uwsteuerfrei, steuervorteile, unternehmenswert,
+									 fremdkapital);					
+														
+							DeterministicLineChart linien = new DeterministicLineChart(
+									method_deterministic.getName(), unternehmenswert,
 									"Cashflows", drContainer.getJahre(),
 									drContainer.getCashflows());
-							getView().addDeterministicLineChartArea(chart); // chart
+							getView().addDeterministicChartArea(balken); // Unternehmenswert-Balken-Diagramm
+							getView().addDeterministicLineChartArea(linien); // CashFlow-Linien-Diagramm
+							
+							
+							/*
+							 * Alte Implementierung
+							 * 
+							 * 
+                             CompanyValueDeterministic companyValueDeterministic = (CompanyValueDeterministic) apv
+                                             .calculateCompanyValue();
+                             for (Entry<Integer, Couple> companyValue : companyValueDeterministic.getCompanyValues().entrySet()) {
+                                     DeterministicChartArea deterministicChartArea = new DeterministicChartArea(companyValue.getValue()
+                                                     .getDebitFreeCompany(), companyValue.getValue().getTaxBenefits(), companyValue.getValue()
+                                                     .getCompanyValue(), companyValue.getValue().getCapitalStock());
+                                     getView().addDeterministicChartArea(deterministicChartArea);
+                             }
+                             */
 
 						}
 						if (method_deterministic.getName() == "DCF") {
 							DCF_2 dcf_2 = new DCF_2();
-							uwert = dcf_2
+							unternehmenswert = dcf_2
 									.calculateValues(drContainer.getCashflows(), scenario);
 
 							DeterministicLineChart chart = new DeterministicLineChart(
-									method_deterministic.getName(), uwert,
+									method_deterministic.getName(), unternehmenswert,
 									"Cashflows", drContainer.getJahre(),
 									drContainer.getCashflows());
 							getView().addDeterministicLineChartArea(chart); // chart
 
 						}
 						Label labelUnternehmenswert = new Label(
-								"Unternehmenswert: " + uwert);
+								"Unternehmenswert: " + unternehmenswert);
 						getView().addLabel(labelUnternehmenswert);
 
 					}
@@ -237,7 +263,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 		StochasticChartArea stochasticChartArea;
 		int szenariozähler = 1;
 		//pro Szenario werden die Unternehmenswerte berechnet
-		for (Szenario scenario : project.getScenarios()) {
+		for (Szenario scenario : project.getIncludedScenarios()) {
 			logger.debug("Szenariozähler: " + szenariozähler);
 			szenariozähler++;
 			

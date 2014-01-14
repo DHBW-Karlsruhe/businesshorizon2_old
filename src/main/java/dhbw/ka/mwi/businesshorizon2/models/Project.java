@@ -451,6 +451,24 @@ public class Project implements Serializable {
 	public List<Szenario> getScenarios() {
 		return this.scenarios;
 	}
+	
+	/**
+	 * Gibt nur die einbezogenen Szenarios eines Projektes zurück.
+	 * 
+	 * @author Marcel Rosenberger
+	 * 
+	 * @return alle einbezogenen Szenarios
+	 */
+	public List<Szenario> getIncludedScenarios() {
+		List<Szenario> includedScenarios = new ArrayList<Szenario>();
+		
+		for (Szenario szenario : this.scenarios){
+			if(szenario.isIncludeInCalculation()){
+				includedScenarios.add(szenario);
+			}
+		}
+		return includedScenarios;
+	}
 
 	public void addScenario(Szenario scenario) {
 		this.scenarios.add(scenario);
