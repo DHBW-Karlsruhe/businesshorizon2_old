@@ -92,6 +92,7 @@ public class StochasticChartArea extends VerticalLayout {
 
 		cvChart.addValues(cvChartValues);
 		cvChart.setHeight("200px");
+		
 
 		this.addComponent(cvChart);
 
