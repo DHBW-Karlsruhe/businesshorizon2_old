@@ -36,11 +36,13 @@ import org.vaadin.dialogs.ConfirmDialog;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
+import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -59,11 +61,11 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
  * hier mittels der layoutClick Methode realisiert und fuehrt zum
  * Projekt-Wizard.
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Mirko Göpfrich
  * 
  */
 public class ProjectListViewImpl extends VerticalLayout implements
-		ProjectListViewInterface, Button.ClickListener, LayoutClickListener {
+		ProjectListViewInterface, Button.ClickListener, ClickListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,7 +83,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	Iterator<Project> iterator;
 
 	private VerticalLayout projectListPanel;
-	private List<VerticalLayout> singleProjectPanel;
+	private List<Panel> singleProjectPanel;
 
 	private Button addProjectBtn;
 	private List<Button> removeProjectBtn;
@@ -122,8 +124,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * @author Christian Scherer
 	 */
 	private void generateUi() {
-		setSpacing(true);
-		setMargin(true);
+		setSpacing(false);
+		setMargin(false);
 
 		title = new Label("<h1>Meine Projekte</h1>");
 		title.setContentMode(Label.CONTENT_XHTML);
@@ -146,7 +148,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	/**
 	 * 
 	 * Aufruf durch den Presenter (bei Ersterstellung oder Aenderungen durch
-	 * Buttonclicks) - wobei zunÃ¤chst die Projektliste aktualisiert wird.
+	 * Buttonclicks) - wobei zunächst die Projektliste aktualisiert wird.
 	 * Zunaechst werden - falls vorhanden - die derzeitg existenten Elemente des
 	 * projectListPanel geloescht und die Liste der Projekt Layouts und
 	 * Loeschbuttons neu erstellt. Darauf folgt dann in der Schleife die
@@ -163,7 +165,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		projectListPanel.removeAllComponents();
 		logger.debug("Projekt-Element-Liste geleert");
 
-		singleProjectPanel = new ArrayList<VerticalLayout>();
+		singleProjectPanel = new ArrayList<Panel>();
 		removeProjectBtn = new ArrayList<Button>();
 
 		for (int i = 0; i < projects.size(); i++) {
@@ -197,9 +199,10 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 *            Loeschbutton relevant)
 	 * @return ein VerticalLayout Objekt, das zur Eingliederung in das UI dient
 	 */
-	private VerticalLayout generateSingleProjectUi(Project project, int i) {
+	private Panel generateSingleProjectUi(Project project, int i) {
 
-		VerticalLayout singleProject = new VerticalLayout();
+		Panel singleProject = new Panel(project.getName());
+
 
 		projectName = new Label(project.getName());
 		periodList = (NavigableSet<Period>) project.getPeriods();
@@ -367,13 +370,14 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * @param event
 	 *            - Event des Layoutclicks
 	 */
-	@Override
-	public void layoutClick(LayoutClickEvent event) {
 
+
+	@Override
+	public void click(com.vaadin.event.MouseEvents.ClickEvent event) {
+		// TODO Auto-generated method stub
 		int index = singleProjectPanel.indexOf(event.getComponent());
 		logger.debug("Projekt ausgewaehlt. Projektnummer: " + (index + 1));
 		presenter.projectSelected(projects.get(index));
-
 	}
 
 }
