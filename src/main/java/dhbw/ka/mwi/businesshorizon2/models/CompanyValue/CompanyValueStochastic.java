@@ -71,7 +71,7 @@ public class CompanyValueStochastic extends CompanyValue {
 	private final TreeMap<Double, Couple> map;
 	private final TreeMap<Double, Couple> gradedmap;
 	// begrenzt die anzahl der angezeigten Unternehmenswerte
-	private static final int klassierungsschritte = 20;
+	private static final int klassierungsschritte = 40;
 
 	public CompanyValueStochastic() {
 		super();
