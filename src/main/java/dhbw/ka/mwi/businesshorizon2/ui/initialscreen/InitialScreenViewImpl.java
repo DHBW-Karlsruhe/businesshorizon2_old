@@ -23,7 +23,6 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,8 +32,8 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInExcep
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
-
 import com.mvplite.view.View;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -52,7 +51,7 @@ import com.vaadin.ui.Window;
  * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
  * Eingangs-Fenster).
  * 
- * @author Christian Scherer, Marcel Rosenberger
+ * @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich
  * 
  */
 public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
@@ -66,15 +65,17 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	@Autowired
 	private UserProxy userProxy;
 
-	private VerticalSplitPanel verticalPanel;
+	private VerticalSplitPanel verticalSplitPanel;
 
-	private HorizontalSplitPanel horizontalPanel;
+	private HorizontalSplitPanel horizontalSplitPanel;
 
 	private VerticalLayout heading;
 	
-	private VerticalLayout vertical;
+	private HorizontalLayout horizontal;
 	
 	private VerticalLayout left;
+	
+	private VerticalLayout right;
 	
 	private VerticalLayout middle;
 	
@@ -89,7 +90,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
 	 * und initialisiert die View-Komponenten.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Mirko Göpfrich
 	 */
 	@PostConstruct
 	public void init() {
@@ -99,63 +100,101 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	/**
 	 * Diese Methode setzt den Titel (im Browser-Fenster) zu
-	 * "Business Horizon 2" und erstellt die Überschrift sowie die zwei
+	 * "Business Horizon 2.1" und erstellt die Überschrift sowie die zwei
 	 * variablen Komponenten.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Mirko Göpfrich
 	 */
 	private void generateUi() {
 		setCaption("Business Horizon 2.1");
-		logger.debug("Überschrift für Browser erstellt");
+		logger.debug("Ueberschrift fuer Browser erstellt");
 
-		verticalPanel = new VerticalSplitPanel();
-		verticalPanel.setSizeFull();
-		verticalPanel.setSplitPosition(170, UNITS_PIXELS);
-		verticalPanel.setLocked(true);
-		logger.debug("Neues Vertikales Panel erstellt für Überschrift");
+		//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
+		verticalSplitPanel = new VerticalSplitPanel();
+		verticalSplitPanel.setSizeFull();
+		verticalSplitPanel.setSplitPosition(120, Sizeable.UNITS_PIXELS);
+		verticalSplitPanel.setLocked(true);
+		logger.debug("Neues Vertikales SplitPanel erstellt");
 
+		//erzeugt die Layouts
 		heading = new VerticalLayout();
-		vertical = new VerticalLayout();
-		left = new VerticalLayout();
 		middle = new VerticalLayout();
+		horizontal = new HorizontalLayout();
+		left = new VerticalLayout();
+		right = new VerticalLayout();
 		
+		heading.setSizeFull();
+		middle.setSizeFull();
+		horizontal.setSizeFull();
+		left.setWidth(50, UNITS_PERCENTAGE);
 		
-		
-		
-		
+		//verschachtelt die Layouts
 		heading.addComponent(middle);
-		middle.addComponent(vertical);
-		vertical.addComponent(left);
-			
-		verticalPanel.setFirstComponent(heading);
-		logger.debug("Überschrift hinzugefügt und dem vertikalen Panel übergeben");
-
-		horizontalPanel = new HorizontalSplitPanel();
-		horizontalPanel.setSizeFull();
-		horizontalPanel.setSplitPosition(170, UNITS_PERCENTAGE);
-		horizontalPanel.setLocked(true);
-
-		verticalPanel.setSecondComponent(horizontalPanel);
-		logger.debug("Horizontales Panel für Projkte und Infos erstellt und an das vertikale Panel übergeben");
-
-		setContent(verticalPanel);
-		logger.debug("Vertikales Panel mit allen Elementen an an das Hauptfenster übergeben");
-
-		this.addLogoutButton("");
+		middle.addComponent(horizontal);
+		horizontal.addComponent(left);
+		horizontal.addComponent(right);
 		
-		title = new Label("<h1>Business Horizon 2</h1>");
+		//fügt dem oberen Panel die Überschrift hinzu
+		verticalSplitPanel.setFirstComponent(heading);
+		title = new Label("<h1>Business Horizon 2.1</h1>");
 		title.setStyleName("ueberschriften");
 		title.setContentMode(Label.CONTENT_XHTML);
-		vertical.addComponent(title);
-		vertical.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
+		left.addComponent(title);
+		left.setComponentAlignment(title, Alignment.TOP_LEFT);
+		logger.debug("Überschrift hinzugefügt und dem oberen vertikalen Panel übergeben");
+		
+		//Teilt das Panel horizontal un zwei gleiche Bereiche auf und ertstellt eine vertiakel Trennlinie (nicht verstellbar.)
+		horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setSizeFull();
+		horizontalSplitPanel.setSplitPosition(50, UNITS_PERCENTAGE);
+		horizontalSplitPanel.setLocked(true);
+		
+		//fügt dem unteren vertikalen Panel ein horizontales SplitPanel hinzu.
+		verticalSplitPanel.setSecondComponent(horizontalSplitPanel);
+		logger.debug("Horizontales SplitPanel für Projkte und Infos erstellt und an das untere vertikale Panel übergeben");
+
+		// Setzt das vertikale Splitpanel (äußeres Panel) inkl innere Panels als Inhalt für das Fenster.
+		setContent(verticalSplitPanel);
+		logger.debug("Vertikales SplitPanel mit allen Elementen an das Hauptfenster übergeben");
+		
+		//ruft die Methode auf, welche den LogoutButton zum Sreen hinzufügt
+		this.addLogoutButton();
+		right.addComponent(new Label("Sie sind angemeldet als:"));
 		
 	}
-
-	private void addLogoutButton(String text) {
-		Button logoutButton = new Button("");
-		logoutButton.addStyleName(Reindeer.BUTTON_LINK);
-		logoutButton.setIcon(new ThemeResource("images/logout.jpg"));
+	
+	/**
+	 * Methode zum Darstellen der Userdaten im Header
+	 * 
+	 * @param username
+	 *            Der angezeigte Username
+	 * @author Mirko Göpfrich
+	 */
+	public void showUserData(String username) {
+		/*
+		 *  Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
+		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
+		 *  und Prozesssicht gesprungen wird. 
+		 */
+		if(userData != null) {
+			right.removeComponent(userData);
+		}
+		
+		userData = new Label(username);
+		userData.setContentMode(Label.CONTENT_XHTML);
+		userData.setVisible(true);
+		right.addComponent(userData);
+		right.setComponentAlignment(userData, Alignment.MIDDLE_RIGHT);;
+	}
+	
+	/**
+	 * 
+	 */
+	private void addLogoutButton() {
+		Button logoutButton = new Button("Logout");
+		logoutButton.addStyleName(Reindeer.BUTTON_DEFAULT);
 		logoutButton.addListener(new Button.ClickListener() {
+			
 			private static final long serialVersionUID = 7411091035775152765L;
 			
 			@Override
@@ -165,11 +204,10 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			}
 		});
 		
-		//logout button hinzufuegen
-		
+		//LogoutButton hinzufügen und ausrichten
 		logoutButton.setEnabled(true);
-		left.addComponent(logoutButton);
-		left.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+		right.addComponent(logoutButton);
+		right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 		
 	}
 
@@ -186,29 +224,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 */
 	@Override
 	public void showView(View leftView, View rightView) {
-		horizontalPanel.setFirstComponent((Component) leftView);
-		horizontalPanel.setSecondComponent((Component) rightView);
+		horizontalSplitPanel.setFirstComponent((Component) leftView);
+		horizontalSplitPanel.setSecondComponent((Component) rightView);
 	}
 
-	/**
-	 * Methode zum Darstellen der Userdaten im Header
-	 * 
-	 * @param username
-	 *            Der angezeigte Username
-	 */
-	public void showUserData(String username) {
-		/*
-		 *  Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
-		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
-		 *  und Prozesssicht gesprungen wird. 
-		 */
-		if(userData != null) {
-			heading.removeComponent(userData);
-		}
-		
-		userData = new Label("<h2>" + username + "</h2>");
-		userData.setContentMode(Label.CONTENT_XHTML);
-		userData.setVisible(false);
-		heading.addComponent(userData);
-	}
+
 }

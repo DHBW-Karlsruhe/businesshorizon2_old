@@ -44,7 +44,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * Datei durchführt. Die Klasse ist als Singleton implementiert, damit sie nur
  * einmal in der gesamten Applikation existiert.
  * 
- * @author Florian Stier, Marcel Rosenberger, Annika Weis
+ * @author Florian Stier, Marcel Rosenberger, Annika Weis, Mirko Göpfrich
  */
 
 public class AuthenticationService implements AuthenticationServiceInterface {
@@ -55,9 +55,11 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	private static final long serialVersionUID = 1L;
 
 	private File file;
+	
+	private static final String separator = System.getProperties().getProperty("file.separator");
 
-	private static final String DIRECTORY = System.getProperty("user.home") + "\\Business Horizon";
-	private static final String FILENAME = "\\users.dat";
+	private static final String DIRECTORY = System.getProperty("user.home") + separator + separator + "Business Horizon";
+	private static final String FILENAME = separator + separator + "users.dat";
 
 	private List<User> allUsers;
 	private Map<String, User> loggedInUsers;

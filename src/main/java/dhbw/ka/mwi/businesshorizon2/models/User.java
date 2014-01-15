@@ -104,6 +104,16 @@ public class User implements Serializable {
 	}
 
 	/**
+	 * Gibt den kompletten Namen des Users zurück
+	 * 
+	 * @author Mirko Göpfrich
+	 * @return Name des Users
+	 */
+	public String getFullName() {
+		return this.firstName + " " + this.lastName;
+	}
+	
+	/**
 	 * Gibt das Unternehmen des User-Objekts zurück
 	 * 
 	 * @author Christian Scherer

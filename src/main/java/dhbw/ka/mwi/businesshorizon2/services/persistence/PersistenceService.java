@@ -29,16 +29,18 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * eines Servers hinaus. Die Projekte werden in einer Datei gespeichert und dort
  * hinzugefügt, geändert und gelöscht.
  * 
- * @author Marcel Rosenberger
+ * @author Marcel Rosenberger, Mirko Göpfrich
  * 
  */
 public class PersistenceService implements PersistenceServiceInterface {
 
 	private File file;
+	
+	private static final String separator = System.getProperties().getProperty("file.separator");
 
 	private static final String DIRECTORY = System.getProperty("user.home")
-			+ "\\Business Horizon";
-	private static final String FILENAME = "\\projects.dat";
+			+ separator + separator + "Business Horizon";
+	private static final String FILENAME = separator + separator + "projects.dat";
 
 	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
