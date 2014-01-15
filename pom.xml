@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  BusinessHorizon2
-  
-      Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
-      Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker, Dennis Neufeld
-  
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as published by
-      the Free Software Foundation, either version 3 of the License, or
-      (at your option) any later version.
-  
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
-  
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
+<!-- BusinessHorizon2 Copyright (C) 2012-2013 Christian Gahlert, Florian 
+	Stier, Kai Westerholz, Timo Belz, Daniel Dengler, Katharina Huber, Christian 
+	Scherer, Julius Hacker, Dennis Neufeld This program is free software: you 
+	can redistribute it and/or modify it under the terms of the GNU Affero General 
+	Public License as published by the Free Software Foundation, either version 
+	3 of the License, or (at your option) any later version. This program is 
+	distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+	without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+	PURPOSE. See the GNU Affero General Public License for more details. You 
+	should have received a copy of the GNU Affero General Public License along 
+	with this program. If not, see <http://www.gnu.org/licenses/>. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -114,9 +106,9 @@
 		</dependency>
 
 		<dependency>
-		   <groupId>org.vaadin.addons</groupId>
-		   <artifactId>visualizationsforvaadin</artifactId>
-		   <version>1.1.2</version>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>visualizationsforvaadin</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 
 		<dependency>
@@ -124,6 +116,13 @@
 			<artifactId>colt</artifactId>
 			<version>1.2.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jamesii</groupId>
+			<artifactId>core</artifactId>
+			<version>0.9.4</version>
+		</dependency>
+		<!-- ... -->
 	</dependencies>
 
 	<build>
@@ -262,7 +261,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
+
 
 		<pluginManagement>
 			<plugins>
@@ -325,6 +324,11 @@
 				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</releases>
+		</repository>
+		<repository>
+			<id>james-ii-repo</id>
+			<name>james-ii-repo</name>
+			<url>http://wwwmosi.informatik.uni-rostock.de/jamesIIreleases/maven</url>
 		</repository>
 	</repositories>
 

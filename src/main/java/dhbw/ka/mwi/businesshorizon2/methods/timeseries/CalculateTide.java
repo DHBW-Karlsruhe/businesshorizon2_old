@@ -42,9 +42,12 @@ public class CalculateTide implements CalculateTideInterface {
 
 	/**
 	 * Diese Methode bereinigt die Zeitreihe um die Trendgerade und berechnet
-	 * diese wenn noetig. Die Formel der Bereinigung lautet: Y*(t) = T(t) - Y(t)
+	 * diese wenn noetig. Die Formel der Bereinigung lautet: Y*(t) = Y(t) - T(t)
 	 * 
-	 * @author Kai Westerholz
+	 * Änderung 08.01.2014: das Vorjahresprojekt hat die Formel Y*(t) = T(t) - Y(t)
+	 * verwendet. Dies ist allerdings falsch und wurde korrigiert.
+	 * 
+	 * @author Kai Westerholz, Marcel Rosenberger, Christian Meder, Valeska Heidt
 	 * 
 	 * @param Zeitreihe
 	 *            der Zeitreihe
@@ -59,7 +62,7 @@ public class CalculateTide implements CalculateTideInterface {
 		this.reduceTideParameterA = this.calculateTideParameterA(parameterB);
 
 		for (int i = 0; i < timeseries.length; i++) {
-			timeseries[i] = (this.getTideValue(i) - timeseries[i]);
+			timeseries[i] = (timeseries[i] - this.getTideValue(i));
 		}
 		logger.debug("Timeseries reduced.");
 		return timeseries;

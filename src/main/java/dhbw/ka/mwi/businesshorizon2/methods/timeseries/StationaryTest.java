@@ -33,7 +33,11 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 public class StationaryTest {
 
 	/**
-	 * Diese Methode ueberprueft die Zeitreihe und gibt das Ergebnis zurück
+	 * Diese Methode ueberprueft die Zeitreihe und gibt das Ergebnis zurück.
+	 * Anmerkung: Methode ist im Moment nicht ausprogrammiert. Dies liegt daran,
+	 * da diese Prüfung optional ist. Wird auf eine bereits stationäre Zeitreihe
+	 * eine Trendbereinigung durchgeführt, ist diese überflüssig und ändert nichts
+	 * an den letztendlichen Prognosewerten.
 	 * 
 	 * @author Kai Westerholz
 	 * @param timeseries

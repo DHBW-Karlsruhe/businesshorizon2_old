@@ -18,12 +18,15 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
+import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
 
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
@@ -38,89 +41,126 @@ import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
  * Zeitreihenanalyse durch zu fuehren. Sie baut auf der YuleWalkerGleichung auf
  * und implementiert das AR-Modell.
  * 
- * @author Kai Westerholz
+ * @author Kai Westerholz, Nina Brauch, Raffaele Cipolla, Mirko Göpfrich, Marcel
+ *         Rosenberger
  * 
  */
 
 public class AnalysisTimeseries {
 
-	private static final Logger logger = Logger.getLogger(AnalysisTimeseries.class);
-	private double variance;
-	private DoubleArrayList DoubleArrayListTimeseries;
-	private DoubleMatrix2D matrixValutaions;
-	private double yuleWalkerVariance;
-	private double mean;
-	private double[] equalizedValues;
+	private static final Logger logger = Logger
+			.getLogger("AnalysisTimeseries.class");
+	private DoubleArrayList autokovarianzen;
+	private DoubleArrayList bereinigteZeitreihe;
+	private DoubleMatrix2D modellparameter;;
+	private double standardabweichung;
+	private double mittelwert;
+	private double[] erwarteteCashFlows;
+	private double[] erwartetesFremdkapital;
+	private double abweichung;
 
-	public double getVariance() {
-		return variance;
+	/**
+	 * Methode zur Berechnung des Mittelwerts einer Zeitreihe.
+	 * 
+	 * @author Marcel Rosenberger, Nina Brauch, Mirko Göpfrich
+	 * 
+	 * @param zeitreihe
+	 *            Durch den Benutzer gegebene Zeitreihe vergangener Werte.
+	 * @return Gibt den Mittelwert einer Zeitreihe zurück.
+	 */
+	public double berechneMittelwert(DoubleArrayList zeitreihe) {
+		double mittelwert = 0;
+		double summe = 0;
+		int zaehler = 0;
+
+		for (int i = 0; i < zeitreihe.size(); i++) {
+			summe = summe + zeitreihe.get(i);
+			zaehler = zaehler + 1;
+		}
+
+		if (zaehler != 0) {
+			mittelwert = summe / zaehler;
+		}
+
+		return mittelwert;
 	}
 
 	/**
-	 * Diese Methode berechnet die Varianz der Zeitreihe
+	 * Methode zur Berechnung der Autokovarianzen einer Zeitreihe. Die
+	 * eigentliche Berechnung der Autokovarianzen wird durch eine Methode
+	 * durchgeführt, die aus der Java-Bibliothek "james ii" importiert wird.
+	 * Hierfür muss jedoch zunächst die eingegebene Zeitreihe zu einer von
+	 * Number erbenden Liste gecastet werden.
 	 * 
-	 * @authoer Kai Westerholz
+	 * @author Marcel Rosenberger, Nina Brauch, Mirko Göpfrich
 	 * 
-	 * @return double Varianz der Zeitreihe
+	 * @param zeitreihe
+	 *            Durch den Benutzer gegebene Zeitreihe vergangener Werte.
+	 * @return Autokovarianzen der Zeitreihe
 	 */
-	private double calculateVariance(DoubleArrayList DoubleArrayListTimeseries) {
-		double variance = Descriptive.variance(
-				DoubleArrayListTimeseries.size(),
-				Descriptive.sum(DoubleArrayListTimeseries),
-				Descriptive.sumOfSquares(DoubleArrayListTimeseries));
-		logger.debug("Variance of Timeseries calculated.");
-		return variance;
+	public DoubleArrayList berechneAutokovarianz(DoubleArrayList zeitreihe) {
+
+		DoubleArrayList autokovarianz = new DoubleArrayList();
+
+		// DoubleArrayList zu einer List casten, die von der
+		// autoCovariance-Methode verwendet werden kann
+		List<Double> lokalereihe = new ArrayList<Double>();
+		Double t = new Double(0);
+		for (int i = 0; i < zeitreihe.size(); i++) {
+			t = zeitreihe.get(i);
+			lokalereihe.add(t);
+		}
+
+		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
+		for (int j = 0; j < zeitreihe.size(); j++) {
+			autokovarianz.add(AutoCovariance.autoCovariance(lokalereihe, j));
+		}
+		return autokovarianz;
 	}
 
 	/**
-	 * Diese Methode berechnet die Autokorrelation zum angegebenen Zeit Lag.
+	 * Stellt ein Gleichungssystem auf und berechnet daraus die Modellparameter
+	 * (Yule-Walker-Schätzer)
 	 * 
-	 * @author Kai Westerholz
-	 * 
-	 * @param lag
-	 * @return double AutoKorrelation
+	 * @author Marcel Rosenberger, Nina Brauch, Mirko Göpfrich
+	 * @param Autokovarianzen
+	 *            die zuvor in einer eigenen Methode berechnet wurden
+	 * @param p
+	 *            die Anzahl der mit einbezogenen, vergangenen Perioden
+	 * @return Gibt den Vektor der Phi-Werte (Gewichtungen der
+	 *         Vergangenheitswerte) zurück.
+	 * @throws StochasticMethodException
 	 */
-	private double calculateAutoCorrelation(int lag) {
-		return Descriptive.autoCorrelation(DoubleArrayListTimeseries, lag,
-				this.mean, this.variance);
-
-	}
-
-	/**
-	 * Diese Methode stellt das Lineare Gleichungssystem auf, das benoetigt
-	 * wird, um die Schaetzwerte ci der Zeitreihenanalyse zu erhalten und loest
-	 * dieses. Die berechneten Werte werden benötigt um die Vergangenheitswerte
-	 * zu gewichten.
-	 * 
-	 * @param consideredPeriodsOfPast
-	 * @return Matrix der C Werte
-	 * @author Kai Westerholz
-	 */
-	private DoubleMatrix2D calculateValuations(int consideredPeriodsOfPast)
+	public DoubleMatrix2D berechneModellparameter(
+			DoubleArrayList autokovarianzen, int p)
 			throws StochasticMethodException {
 
-		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(
-				consideredPeriodsOfPast, consideredPeriodsOfPast);
-		for (int i = 0; i < consideredPeriodsOfPast; i++) { // Aktuelle
-															// Zeile
-			for (int j = 0; j < consideredPeriodsOfPast; j++) {// Aktuelle
-																// Spalte
+		// linke Seite des Gleichungssystems
+		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, p);
+		for (int i = 0; i < p; i++) { // Aktuelle
+										// Zeile
+			for (int j = 0; j < p; j++) { // Aktuelle
+											// Spalte
 
 				matrixValuations.set(i, j,
-						calculateAutoCorrelation(Math.abs((int) (i - j))));
+						autokovarianzen.get(Math.abs((int) (i - j))));
 
 			}
 		}
-		DoubleMatrix2D matrixERG = DoubleFactory2D.dense.make(
-				(int) (consideredPeriodsOfPast), 1);
-		for (int i = 1; i <= consideredPeriodsOfPast; i++) {
-			matrixERG.set(i - 1, 0, calculateAutoCorrelation(i));
+
+		// rechte Seite des Gleichungssystems
+		DoubleMatrix2D matrixERG = DoubleFactory2D.dense.make((int) (p), 1);
+		for (int i = 1; i <= p; i++) {
+			matrixERG.set((i - 1), 0, autokovarianzen.get(i));
 		}
+
 		LUDecomposition lUDecomp = new LUDecomposition(matrixValuations);
-		DoubleMatrix2D matrixC = null;
+
+		// Matrix mit Modellparametern (Phi)
+		DoubleMatrix2D matrixPhi = null;
 
 		try {
-			matrixC = lUDecomp.solve(matrixERG);
+			matrixPhi = lUDecomp.solve(matrixERG);
 			logger.debug("C-Values of Yule-Walker-Equitation calculated.");
 		} catch (IllegalArgumentException exception) {
 
@@ -128,211 +168,296 @@ public class AnalysisTimeseries {
 			throw new StochasticMethodException(exception.getMessage());
 
 		}
-		return matrixC;
+
+		return matrixPhi;
 	}
 
 	/**
-	 * Diese Methode berechnet die Varianz, die relevant ist für das weiße
-	 * Rauschen. Die übergebene Zeitreihe muss stationaer sein.
+	 * Methode zur Berechung der Standardabweichung einer Zeitreihe (mithilfe
+	 * des Yule-Walker-Schätzer).
 	 * 
-	 * @param double[] timeseries trendbereinigte Vergangenheitswerte
-	 * @return double Varianz für das weiße Rauschen
+	 * @author Nina Brauch, Mirko Göpfrich, Raffaele Cipolla, Marcel Rosenberger
 	 * 
-	 * @author Kai Westerholz
+	 * @param Autokovarianzen
+	 *            die zuvor in einer eigenen Methode berechnet wurden
+	 * @param matrixPhi
+	 *            Vektor der Phi-Werte ( =Modellparameter)
+	 * @return Gibt die Standardabweichung zurück.
 	 */
-	private double calculateMatrixVariance(double[] timeseries) {
+	//
+	public double berechneStandardabweichung(DoubleArrayList autokovarianzen,
+			DoubleMatrix2D matrixPhi) {
+		double standardabweichung = 0;
+		double s2 = autokovarianzen.get(0);
 
-		double sum = 0;
-		for (int i = 0; i < timeseries.length; i++) {
-			sum += Math.pow(timeseries[i] - this.mean, 2) / timeseries.length;
+		// Berechnung der Varianz
+		for (int i = 0; i < matrixPhi.size(); i++) {
+			s2 = s2 - (matrixPhi.get(i, 0) * autokovarianzen.get(i + 1));
 		}
-		logger.debug("" + Math.sqrt(sum));
-		return Math.sqrt(sum);
+
+		// Berechnung der Standardabweichung aus der Varianz
+		standardabweichung = Math.sqrt(s2);
+
+		return standardabweichung;
 	}
 
 	/**
-	 * Fuer die Formel des AR-Model wird eine bestimmte Anzahl an bisherigen
-	 * Perioden betrachtet. Der Term (forecast - past) gibt an wie viele dieser
-	 * Perioden aus den Beobachtungen gespeisst werden. Ist der Termn (forecast
-	 * - past) kleiner als 1 werden Beobachtungswerte herangezogen. Ansonsten
-	 * werden bereits prognostizierte Werte verwendet Da das Array der
-	 * Beobachtungswerte den aeltesten Wert beim Index = 0 hat wird der letzte
-	 * Werte abzueglich der bereits betrachteten Werte benoetigt. Die Werte
-	 * werden zwischengespeichert und es wird ueberprueft, ob eine Berechnung
-	 * noetig ist.
+	 * Methode zur Prognose zukünftiger Werte einer gegebenen Zeitreihe und
+	 * einem AR-Modell. Sie berechnet die jeweiligen Prognosewerte und gibt sie
+	 * in einem zweidimensionalen Array zurück.
 	 * 
-	 * @author Kai Westerholz
+	 * @author Nina Brauch, Mirko Göpfrich, Raffaele Cipolla, Marcel Rosenberger
 	 * 
-	 * @param consideredPeriodsOfPast
-	 *            betrachtete Methoden der Vergangenheit
-	 * @param forecast
-	 *            zu prognostizierende Periode
-	 * @param valuations
-	 *            Gewichtungsparameter
-	 * @param previousValues
-	 *            trendbereinigte Beobachtungswerte;
-	 * @return geglaetteter Prognosewert
+	 * @param trendbereinigtezeitreihe
+	 *            , die bereits trendbereinigte Zeitreihe
+	 * @param matrixPhi
+	 *            die ermittelte Matrix Phi
+	 * @param standardabweichung
+	 *            die ermittelte Standardabweichung der Zeitreihe
+	 * @param Ordnung
+	 *            p die Anzahl der mit einbezogenen, vergangenen Perioden
+	 * @param zuberechnendeperioden
+	 *            die Anzahl der zu prognostizierenden, zukünftigen Perioden
+	 * @param durchlaeufe
+	 *            die Anzahl der Iterationen, die die Zeitreihenanalyse
+	 *            durchlaufen soll
+	 * @param mittelwert
+	 *            der ermittelte Mittelwert der Zeitreihe
+	 * @param isfremdkapital 
+	 * @return Alle prognostizierten Werte in einem Array.
 	 */
-	private double calculateARModel(int consideredPeriodsOfPast, int forecast,
-			DoubleMatrix2D valuations, double[] previousValues)
-			throws StochasticMethodException {
-		if (this.equalizedValues[forecast - 1] == 0) {
-			if (valuations == null) {
-				valuations = calculateValuations(consideredPeriodsOfPast);
-			}
-			double equalizedValuePerPeriod = 0;
-			for (int past = 1; past <= consideredPeriodsOfPast; past++) {
-				double previousValue;
-				if ((forecast - past) < 1) {
-					int oldIndex = previousValues.length - 1
-							- Math.abs(forecast - past);
-					previousValue = previousValues[oldIndex];
-				} else {
-					previousValue = this.equalizedValues[(forecast - past) - 1];
+
+	public double[][] prognoseBerechnen(
+			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
+			double standardabweichung, int zuberechnendeperioden,
+			int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
+
+		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
+		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
+		double[][] prognosewertSammlung = new double[durchlaeufe][zuberechnendeperioden];
+		double prognosewert = 0;
+		double zNull = 0;
+		Random zufall = new Random();
+
+		// Erwartete Cashflows ausrechnen
+		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
+				zuberechnendeperioden, p, mittelwert, isfremdkapital);
+		
+		//Modellgenauigkeit validieren
+		this.validierung( trendbereinigtezeitreihe,
+				 matrixPhi,  p);
+		
+	
+		// Ein Durchlauf der Schleife entpricht einer Prognose für j
+		// Zukunftswerte
+		for (int i = 0; i < durchlaeufe; i++) {
+			// Ein Durchlauf entspricht der Prognose eines Jahres j
+			for (int j = 0; j < zuberechnendeperioden; j++) {
+
+				// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
+				// passenden Vergangenheitswert.
+				for (int t = 0; t < p; t++) {
+					prognosewert = prognosewert
+							+ matrixPhi.get(t, 0)
+							* vergangeneUndZukuenftigeWerte
+									.get(vergangeneUndZukuenftigeWerte.size()
+											- (t + 1));
 				}
-				double add = valuations.get(past - 1, 0) * previousValue;
-				equalizedValuePerPeriod += add;
 
+				zNull = zufall.nextGaussian() * standardabweichung;
+				prognosewert = prognosewert + zNull;
+				vergangeneUndZukuenftigeWerte.add(prognosewert);
+				prognosewert = prognosewert + mittelwert;
+				prognosewertSammlung[i][j] = prognosewert;
+				prognosewert = 0;
 			}
-
-			this.equalizedValues[forecast - 1] = equalizedValuePerPeriod;
-			logger.debug("Calculated constant forecast Value: "
-					+ new DecimalFormat("0.00").format(equalizedValuePerPeriod));
-			return equalizedValuePerPeriod;
-
-		} else {
-			return this.equalizedValues[forecast - 1];
+			vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 		}
+
+		return prognosewertSammlung;
 	}
 
 	/**
-	 * Diese Methode berechnet den prognostizierten Wert fuer die Periode auf
-	 * Basis der beobachteten Zeitreihe.
+	 * Methode für die Durchführung einer Zeitreihenanalyse und Prognostizierung
+	 * zukünftiger Werte.
 	 * 
-	 * @author Kai Westerholz
+	 * @author Marcel Rosenberger, Mirko Göpfrich, Nina Brauch, Raffaele
+	 *         Cipolla, Maurizio di Nunzio
+	 * @param zeitreihe
+	 *            auf deren Basis die Prognose erfolgt
+	 * @param p
+	 *            die Anzahl der mit einbezogenen, vergangenen Perioden
+	 * @param zuberechnendeperioden
+	 *            die Anzahl der zu prognostizierenden, zukünftigen Perioden
+	 * @param durchlaeufe
+	 *            die Anzahl der Iterationen, die die Zeitreihenanalyse
+	 *            durchlaufen soll
+	 * @param callback
+	 *            das Callback-Objekt, über das die Kommunikation über Threads
+	 *            hinweg gesteuert wird
+	 * @return Alle prognostizierten Werte in einem Array.
 	 */
 
 	// @Override
-	public double[][] calculate(double[] previousValues,
-			int consideredPeriodsOfPast, int periodsToForecast,
-			int numberOfIterations, CallbackInterface callback)
-			throws InterruptedException, StochasticMethodException {
+	public double[][] calculate(double[] zeitreihe, int p,
+			int zuberechnendePerioden, int durchlaeufe,
+			CallbackInterface callback, boolean isfremdkapital) throws InterruptedException,
+			StochasticMethodException {
 
-		// vorbereitene Initialisierung
-		double[][] returnValues = new double[periodsToForecast][numberOfIterations];
-		int progress_complete = periodsToForecast
-				* (consideredPeriodsOfPast + numberOfIterations);
-		int progress = 0;
+		// vorbereitende Initialisierung
+		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		CalculateTide tide = new CalculateTide();
-		boolean isStationary = StationaryTest.isStationary(previousValues);
+		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
-			previousValues = tide.reduceTide(previousValues);
+			zeitreihe = tide.reduceTide(zeitreihe);
 		}
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
 		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
 		 */
 
-		this.DoubleArrayListTimeseries = new DoubleArrayList();
-		for (int i = 0; i < previousValues.length; i++) {
-			this.DoubleArrayListTimeseries.add(previousValues[i]);
+		this.bereinigteZeitreihe = new DoubleArrayList();
+		for (int i = 0; i < zeitreihe.length; i++) {
+			this.bereinigteZeitreihe.add(zeitreihe[i]);
 		}
 
-		// Start der zur Prognose benoetigten Berechnungen
-		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
-		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
-		this.matrixValutaions = calculateValuations(consideredPeriodsOfPast);
-		this.yuleWalkerVariance = this.calculateMatrixVariance(previousValues);
+		logger.debug("Bereinigte Zeitreihe:");
+		logger.debug(bereinigteZeitreihe);
 
-		WhiteNoise whiteNoise = new WhiteNoise(this.yuleWalkerVariance);
-		this.equalizedValues = new double[periodsToForecast];
+		// Start der zur Prognose benoetigten Berechnungen
+		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
+		this.autokovarianzen = berechneAutokovarianz(bereinigteZeitreihe);
+		this.modellparameter = berechneModellparameter(autokovarianzen, p);
+		this.standardabweichung = berechneStandardabweichung(autokovarianzen,
+				modellparameter);
+		logger.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
 
 		// Start der Prognose
-		for (int forecast = 1; forecast <= periodsToForecast; forecast++) {
-			double[] forecastsForPeriod = new double[numberOfIterations];
-			double equalizedValuePerPeriod = 0.0;
-
-			progress += consideredPeriodsOfPast;
-			Thread.currentThread().isInterrupted();
-
-			for (int iterationStep = 0; iterationStep < numberOfIterations; iterationStep++) {
-				equalizedValuePerPeriod = 0;
-
-				// Berechnung des konstanten Teils der Prognose
-				equalizedValuePerPeriod = calculateARModel(
-						consideredPeriodsOfPast, forecast, matrixValutaions,
-						previousValues);
-
-				// Eigentliche Berechnung
-				if (!isStationary) {
-					double newTide = tide.getTideValue(forecast
-							+ previousValues.length - 1);
-					forecastsForPeriod[iterationStep] = (double) (whiteNoise
-							.getWhiteNoiseValue() + (newTide - equalizedValuePerPeriod));
-				} else {
-					forecastsForPeriod[iterationStep] = (double) (whiteNoise
-							.getWhiteNoiseValue() + equalizedValuePerPeriod);
-				}
-
-				if (iterationStep % 200 == 0) {
-					progress += iterationStep;
-					if (callback != null) {
-						callback.onProgressChange((float) (progress / progress_complete));
-					}
-					Thread.currentThread().isInterrupted();
-				}
+		prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
+				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
+				mittelwert, isfremdkapital);
+		logger.debug("Berechnung der Prognosewerte abgeschlossen.");
+		// Trendbereinigung wieder draufschlagen
+		// Perioden durchlaufen
+		for (int i = 0; i < prognosewerte[0].length; i++) {
+			// den Trend pro Periode ermitteln
+			double newtide = tide.getTideValue(i + p + 1);
+			
+			if(isfremdkapital){
+				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
+			}else{
+				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
 			}
-			equalizedValues[forecast - 1] = equalizedValuePerPeriod;
-
-			returnValues[forecast - 1] = forecastsForPeriod;
+			// alle Iterationen durchlaufen
+			for (int j = 0; j < prognosewerte.length; j++) {
+				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
+				// den Trend wieder aufaddieren
+				prognosewerte[j][i] = prognosewerte[j][i] + newtide;
+			}
+			
 		}
-		return returnValues;
+
+		logger.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
+
+		return prognosewerte;
 	}
 
-	public double[] getExpectedValues(double[] previousValues,
-			int consideredPeriodsOfPast, int periodsToForecast)
-			throws StochasticMethodException {
+	/*
+	 * Diese Methode berechnet eine Prognose für die mitgegebene Zeitreihe und
+	 * dem gegebenen Modell. Da Z0=seinem Erwartungswert= 0 gesetzt wird,
+	 * entspricht jeder prognostizierte Wert seinem Erwartungswert. Die Anzahl
+	 * der Prognosewerte ergibt sich aus der Variablen zuberechnendeperioden.
+	 * Die berechneten Werte werden in der Instanzvariablen erwarteteCashFlows
+	 * der Klasse AnalysisTimeseries gespeichert.
+	 * 
+	 * @author Nina Brauch
+	 */
+	public void erwarteteWerteBerechnen(
+			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
+			int zuberechnendeperioden, int p, double mittelwert, boolean isfremdkapital) {
+		double[] erwarteteWerte = new double[zuberechnendeperioden];
+		double prognosewert = 0;
+		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
+		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 
-		double[] expectedValues = new double[periodsToForecast];
-		CalculateTide tide = new CalculateTide();
-		boolean isStationary = StationaryTest.isStationary(previousValues);
-		if (!isStationary) {
-			previousValues = tide.reduceTide(previousValues);
-		}
-		/**
-		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
-		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
-		 */
-
-		this.DoubleArrayListTimeseries = new DoubleArrayList();
-		for (int i = 0; i < previousValues.length; i++) {
-			this.DoubleArrayListTimeseries.add(previousValues[i]);
-		}
-
-		// Start der zur Prognose benoetigten Berechnungen
-		this.mean = Descriptive.mean(DoubleArrayListTimeseries);
-		this.variance = this.calculateVariance(this.DoubleArrayListTimeseries);
-
-		this.yuleWalkerVariance = this.calculateMatrixVariance(previousValues);
-
-		this.equalizedValues = new double[periodsToForecast];
-
-		for (int forecast = 1; forecast <= expectedValues.length; forecast++) {
-			if (!isStationary) {
-				double newTide = tide.getTideValue(forecast
-						+ previousValues.length - 1);
-				expectedValues[forecast - 1] = (double) ((newTide - calculateARModel(
-						consideredPeriodsOfPast, forecast, matrixValutaions,
-						previousValues)));
-			} else {
-				expectedValues[forecast - 1] = (double) (calculateARModel(
-						consideredPeriodsOfPast, forecast, matrixValutaions,
-						previousValues));
+		erwarteteWerte = new double[zuberechnendeperioden];
+		// Ein Durchlauf entspricht der Prognose eines Jahres j
+		for (int j = 0; j < zuberechnendeperioden; j++) {
+			// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
+			// passenden Vergangenheitswert.
+			for (int t = 0; t < p; t++) {
+				prognosewert = prognosewert
+						+ matrixPhi.get(t, 0)
+						* vergangeneUndZukuenftigeWerte
+								.get(vergangeneUndZukuenftigeWerte.size()
+										- (t + 1));
 			}
-		}
+			vergangeneUndZukuenftigeWerte.add(prognosewert);
+			prognosewert = prognosewert + mittelwert;
+			erwarteteWerte[j] = prognosewert;
 
-		return expectedValues;
+			prognosewert = 0;
+		}
+		
+		if(isfremdkapital){
+			this.erwartetesFremdkapital = erwarteteWerte;
+		}else{
+			this.erwarteteCashFlows = erwarteteWerte;
+		}
+		
 	}
+
+	public double[] getErwarteteCashFlows() {
+		return this.erwarteteCashFlows;
+	}
+
+	/*
+	 * Diese Methode validiert das berechnete AR-Modell. Dabei wird angenommen,
+	 * dass der Wert zum Zeitpunkt 0 noch nicht realisiert ist und wird aus dem
+	 * berechneten Modell prognostiziert. Danach wird der Prognosewert mit dem
+	 * tatsächlich realiserten Wert verglichen und eine prozentuale Abweichung
+	 * berechnet.
+	 * 
+	 * @author: Nina Brauch
+	 */
+
+	public void validierung(DoubleArrayList trendbereinigtezeitreihe,
+			DoubleMatrix2D matrixPhi, int p) {		
+		
+		double prognosewert = 0;
+		double realisierungsWert = trendbereinigtezeitreihe
+				.get(trendbereinigtezeitreihe.size() - 1);
+		
+		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
+		// Vergangenheitswert.
+		// Hier wird der Prognosewert für den Zeitpunkt 0 berechnet
+		for (int t = 0; t < p; t++) {
+			prognosewert = prognosewert
+					+ (matrixPhi.get(t, 0)
+					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
+							.size() - (t + 2)));			
+		}
+		
+		// Berechnung der prozentualen Abweichung
+		double h = prognosewert / (realisierungsWert / 100);
+		// Die Variable abweichung enthält die Abweichung in %, abweichung =1
+		// --> Die Abweichung beträgt 1%
+		double abweichung = Math.abs(h - 100);
+		setAbweichung(abweichung);
+	}
+
+	public double getAbweichung() {
+		return abweichung;
+	}
+
+	public void setAbweichung(double abweichung) {
+		this.abweichung = abweichung;
+	}
+
+	public double[] getErwartetesFremdkapital() {
+		return erwartetesFremdkapital;
+	}
+
 }

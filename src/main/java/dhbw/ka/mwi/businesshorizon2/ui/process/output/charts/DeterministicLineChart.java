@@ -24,6 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 
@@ -38,7 +40,9 @@ import com.vaadin.ui.Label;
 public class DeterministicLineChart extends GridLayout {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger logger = Logger
+			.getLogger("DeterministicLineChart.class");
+	
 	public DeterministicLineChart(String methodName, double companyValue, String linienBeschriftung, int[] xWerte, double[] ywerte) {
 		super(2, 2);
 
@@ -55,7 +59,7 @@ public class DeterministicLineChart extends GridLayout {
 		double anzahlWerte = ywerte.length;
 		for (int i = 0; i<anzahlWerte;i++){
 			cvKeyValues.put("" +  xWerte[i], new double[] { ywerte[i]});
-			System.out.println("DeterministicLineChart: " + ywerte[i]);
+			logger.debug("DeterministicLineChart: " + ywerte[i]);
 		}
 
 

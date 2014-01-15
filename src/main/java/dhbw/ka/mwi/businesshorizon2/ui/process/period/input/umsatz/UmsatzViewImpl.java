@@ -41,7 +41,6 @@ public class UmsatzViewImpl extends AbstractInputView implements UmsatzViewInter
 	@Autowired
 	private UmsatzPresenter presenterTemp;
 	
-	private static final Logger logger = Logger.getLogger("UmsatzViewImpl.class");
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -51,9 +50,9 @@ public class UmsatzViewImpl extends AbstractInputView implements UmsatzViewInter
 	 * @author Daniel Dengler
 	 */
 
-	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
+		logger = Logger.getLogger(UmsatzViewImpl.class);
 		presenter = presenterTemp;
 		presenter.setView(this);
 		logger.debug("Umsatz presenter set");

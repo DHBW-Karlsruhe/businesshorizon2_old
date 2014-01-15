@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -19,7 +18,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 
 import javax.annotation.PostConstruct;
@@ -35,27 +33,30 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
+ * Vaadin.
  * 
  * @author Julius Hacker
- *
+ * 
  */
-public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterface {
+public class PeriodViewImpl extends VerticalLayout implements
+		PeriodViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private PeriodPresenter presenter;
-	
+
 	Panel all = new Panel();
-	
+
 	HorizontalSplitPanel horizontalPanel;
-	
-	private static final Logger logger = Logger.getLogger("PeriodViewImpl.class");
+
+	private static final Logger logger = Logger
+			.getLogger("PeriodViewImpl.class");
 
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
-	 * aufgerufen wird. Er registriert sich selbst beim Presenter und initialisiert die 
-	 * View-Komponenten.
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+	 * und initialisiert die View-Komponenten.
 	 * 
 	 * @author Daniel Dengler
 	 */
@@ -63,6 +64,7 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 	public void init() {
 		presenter.setView(this);
 	}
+
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Perioden"
 	 * 
@@ -87,20 +89,18 @@ public class PeriodViewImpl extends VerticalLayout implements PeriodViewInterfac
 		horizontalPanel.setSecondComponent((Component) rightView);
 		this.setSizeFull();
 		((Component) leftView).setSizeFull();
-		if(rightView != null)
-		((Component) rightView).setSizeFull();
+		if (rightView != null)
+			((Component) rightView).setSizeFull();
 		horizontalPanel.setSizeFull();
 		this.all.setSizeFull();
 		this.setSizeFull();
+		logger.debug("Alle Komponenten neu angelegt");
 	}
 
 	@Override
 	public void setSize(float max, int heightUnits) {
-		logger.debug("Setting size to "+(max)+" "+ heightUnits);
+		logger.debug("Setting size to " + (max) + " " + heightUnits);
 		this.setHeight(max, heightUnits);
-		
-		
+
 	}
 }
-
-

@@ -19,10 +19,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -37,10 +34,7 @@ import com.vaadin.ui.Label;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
-import dhbw.ka.mwi.businesshorizon2.methods.DeterministicMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
-import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
@@ -48,10 +42,9 @@ import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
@@ -60,7 +53,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
@@ -68,7 +60,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio
  * 
  */
 
@@ -89,7 +81,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 	private Project project;
 
-	private TreeSet<CashFlowPeriod> expectedCashFlows;
+	private TreeSet<CashFlowPeriod> expectedValues;
+	private double validierung;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -116,7 +109,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			for (AbstractDeterministicMethod method_deterministic : project
 					.getMethods_deterministic()) {
 				// alle Szenarios durchlaufen
-				for (Szenario scenario : project.getScenarios()) {
+				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
 					CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project
 							.getDeterministicPeriods();
@@ -126,34 +119,70 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					DeterministicResultContainer drContainer = new DeterministicResultContainer(
 							periodContainer);
 					if (method_deterministic.getSelected()) {
-						double uwert = 0;
+						double uwsteuerfrei = 0;
+						double steuervorteile = 0;
+						double unternehmenswert = 0;
+						double fremdkapital = 0;
+
 						if (method_deterministic.getName() == "APV") {
 							APV_2 apv_2 = new APV_2();
-							uwert = apv_2
-									.calculateValues(drContainer.getCashflows(),drContainer.getFremdkapitl() ,scenario);
-							// TODO: Unternehmenswert ausgeben
-							// Cashflows im Liniendiagramm ausgeben
-							DeterministicLineChart chart = new DeterministicLineChart(
-									method_deterministic.getName(), uwert,
-									"Cashflows", drContainer.getJahre(),
+							unternehmenswert = apv_2.calculateValues(
+									drContainer.getCashflows(),
+									drContainer.getFremdkapitl(), scenario);
+							uwsteuerfrei = apv_2.getUwsteuerfrei();
+							steuervorteile = apv_2.getSteuervorteile();
+							fremdkapital = apv_2.getFremdkapital();
+
+							DeterministicChartArea balken = new DeterministicChartArea(
+									uwsteuerfrei, steuervorteile,
+									unternehmenswert, fremdkapital);
+
+							DeterministicLineChart linien = new DeterministicLineChart(
+									method_deterministic.getName(),
+									unternehmenswert, "Cashflows",
+									drContainer.getJahre(),
 									drContainer.getCashflows());
-							getView().addDeterministicLineChartArea(chart); // chart
+							getView().addDeterministicChartArea(balken); // Unternehmenswert-Balken-Diagramm
+							getView().addDeterministicLineChartArea(linien); // CashFlow-Linien-Diagramm
+
+							/*
+							 * Alte Implementierung
+							 * 
+							 * 
+							 * CompanyValueDeterministic
+							 * companyValueDeterministic =
+							 * (CompanyValueDeterministic) apv
+							 * .calculateCompanyValue(); for (Entry<Integer,
+							 * Couple> companyValue :
+							 * companyValueDeterministic.getCompanyValues
+							 * ().entrySet()) { DeterministicChartArea
+							 * deterministicChartArea = new
+							 * DeterministicChartArea(companyValue.getValue()
+							 * .getDebitFreeCompany(),
+							 * companyValue.getValue().getTaxBenefits(),
+							 * companyValue.getValue() .getCompanyValue(),
+							 * companyValue.getValue().getCapitalStock());
+							 * getView
+							 * ().addDeterministicChartArea(deterministicChartArea
+							 * ); }
+							 */
 
 						}
 						if (method_deterministic.getName() == "DCF") {
 							DCF_2 dcf_2 = new DCF_2();
-							uwert = dcf_2
-									.calculateValues(drContainer.getCashflows(), scenario);
+							unternehmenswert = dcf_2.calculateValues(
+									drContainer.getCashflows(), scenario);
 
 							DeterministicLineChart chart = new DeterministicLineChart(
-									method_deterministic.getName(), uwert,
-									"Cashflows", drContainer.getJahre(),
+									method_deterministic.getName(),
+									unternehmenswert, "Cashflows",
+									drContainer.getJahre(),
 									drContainer.getCashflows());
 							getView().addDeterministicLineChartArea(chart); // chart
 
 						}
 						Label labelUnternehmenswert = new Label(
-								"Unternehmenswert: " + uwert);
+								"Unternehmenswert: " + unternehmenswert);
 						getView().addLabel(labelUnternehmenswert);
 
 					}
@@ -194,26 +223,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 		if (project.getProjectInputType().getStochastic()) {
 			for (AbstractStochasticMethod method : project.getMethods()) {
-				try {
-					if (method.getSelected()) {
+				if (method.getSelected()) {
 
-						// Bei Verwendung der Zeitreihenanalyse sollen
-						// zusätzlich
-						// die Erwartungswerte der Cashflows berechnet werden
-						if (method.getName() == "Zeitreihenanalyse") {
-							TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
-							StochasticResultContainer src = timeseriesCalculator
-									.calculateExpectedValues(project);
-
-							expectedCashFlows = (TreeSet<CashFlowPeriod>) src
-									.getPeriodContainers().first().getPeriods();
-						}
-
-						methodRunner = new MethodRunner(method, project, this);
-						methodRunner.start();
-					}
-				} catch (StochasticMethodException e) {
-					getView().showErrorMessge(e.getMessage());
+					methodRunner = new MethodRunner(method, project, this);
+					methodRunner.start();
 				}
 			}
 
@@ -250,22 +263,94 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	 * Wenn die Berechnung der stochastisch vorhergesagten Perioden erfolgreich
 	 * durchlaufen wurde, dann kann der Unternehmenswert berechnet werden
 	 * 
+	 * @author Marcel Rosenberger, Maurizio di Nunzio
+	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result, String methodName) {
+	public void onComplete(StochasticResultContainer result,
+			AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
+		int szenariozähler = 1;
+		// pro Szenario werden die Unternehmenswerte berechnet
+		for (Szenario scenario : project.getIncludedScenarios()) {
+			logger.debug("Szenariozähler: " + szenariozähler);
+			szenariozähler++;
 
-		for (Szenario scenario : project.getScenarios()) {
-			APV apv = new APV(result, scenario);
-			CompanyValueStochastic companyValue = (CompanyValueStochastic) apv
-					.calculateCompanyValue();
-			if (methodName.equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(methodName,
-						expectedCashFlows, companyValue.getCompanyValues());
+			CompanyValueStochastic companyValues = new CompanyValueStochastic();
+			APV_2 apv = new APV_2();
+
+			// Bei Verwendung der Zeitreihenanalyse sollen
+			// zusätzlich
+			// die Erwartungswerte der Cashflows berechnet werden
+
+			// Temporäre Variablen werden erzeugt, die später für die Schleife
+			// benötigt werden
+			CashFlowPeriod period;
+			double[] cashflow = null;
+			double[] fremdkapital = null;
+			int i;
+			double unternehmenswert;
+
+			// für jeden Cashflow-Period-Container, der im
+			// Stochastic-Result-Container enthalten ist,
+			// wird die Schleife je einmal durchlaufen (=Anzahl der Iterationen
+			// in der Zeitreihenanalyse)
+			for (AbstractPeriodContainer abstractPeriodContainer : result
+					.getPeriodContainers()) {
+				// holt pro Cashflow-Period-Container die enthaltenen Perioden
+				// und legt sie in einem TreeSet ab
+				TreeSet<? extends Period> periods = abstractPeriodContainer
+						.getPeriods();
+				// ein Iterator zum durchlaufen des TreeSet wird erstellt.
+				Iterator<? extends Period> periodenIterator = periods
+						.iterator();
+				// Zähler, Cashflow- und Fremdkapital-Arrays werden
+				// zurückgesetzt
+				cashflow = new double[periods.size()];
+				fremdkapital = new double[periods.size()];
+				i = 0;
+				// pro Periode sollen nun die Werte ausgelesen und ein
+				// Unternehmenswert berechnet werden
+				while (periodenIterator.hasNext()) {
+					period = (CashFlowPeriod) periodenIterator.next();
+					cashflow[i] = period.getFreeCashFlow();
+					fremdkapital[i] = period.getCapitalStock();
+					i++;
+				}
+				// berechnet den Unternehmenswert des betrachteten
+				// Cashflow-Period-Container
+				unternehmenswert = apv.calculateValues(cashflow, fremdkapital,
+						scenario);
+				// fügt den Unternehmenswert der Sammelklasse aller
+				// Unternehmenswert hinzu
+				companyValues.addCompanyValue(unternehmenswert);
+
+			}
+			logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
+
+			// Erwartete Cashflows und Fremdkapitalwerte laden (sind nicht im
+			// StochasticResultContainer)
+			TimeseriesCalculator timeseriesCalculator = (TimeseriesCalculator) method;
+
+			StochasticResultContainer src = timeseriesCalculator
+					.getExpectedValues();
+
+			expectedValues = (TreeSet<CashFlowPeriod>) src
+					.getPeriodContainers().first().getPeriods();
+			
+			validierung = timeseriesCalculator.getModellabweichung();
+			logger.debug("Modellabweichung: " + validierung);
+
+			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
+				stochasticChartArea = new StochasticChartArea(method.getName(),
+						expectedValues,
+						companyValues.getGradedCompanyValues(), validierung);
 			} else {
-				stochasticChartArea = new StochasticChartArea(methodName, null,
-						companyValue.getCompanyValues());
+				stochasticChartArea = new StochasticChartArea(method.getName(),
+						null, companyValues.getGradedCompanyValues(),
+						validierung);
 			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
