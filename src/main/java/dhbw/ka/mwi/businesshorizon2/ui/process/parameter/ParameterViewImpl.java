@@ -56,8 +56,13 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private Label labelHeadingTimeSeries;
 	private Label labelHeadingRandomWalk;
 	private Label labelHeadingWienerProcess;
+	private Label labelHeadingDeterministicCommon;	//Annika Weis
+	private Label labelHeadingDCF;	//Annika Weis
+	private Label labelHeadingAPV;	//Annika Weis
 	
+
 	private Label labelNumPeriods;
+	private Label labelNumPeriods_deterministic; //Annika Weis
 	private Label labelIterations;
 	private Label labelNumPastPeriods;
 	private Label labelBasisYear;
@@ -78,6 +83,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 
 	private TextField textfieldNumPeriodsToForecast;
+	private TextField textfieldNumPeriodsToForecast_deterministic;
 	private TextField textfieldNumPastPeriods;
 	private TextField textfieldBasisYear;
 	private TextField textfieldIterations;
@@ -101,6 +107,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private String toolTipBasisYear;
 	private String toolTipIterations;
 	private String toolTipNumPeriodsToForecast;
+	private String toolTipNumPeriodsToForecast_deterministic;
 	private String toolTipNumPastPeriods;
 	private String toolTipStepsPerPeriod;
 	private String toolTipIndustryRepresentatives;
@@ -154,7 +161,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private void setTooltips() {
 		toolTipBasisYear = "Hier wird das Basisjahr angegeben, auf welches die k\u00fcnftigen Cashflows abgezinst werden. Der Unternehmenswert wird zu dem hier angegebenen Zeitpunkt bestimmt.";
 		toolTipIterations = "Hier k\u00f6nnen Sie sich entscheiden, wie oft sie die Berechnung der Prognosewerte durchf\u00fchren wollen. Info: Je mehr Wiederholungen Sie durchf\u00fchren lassen, desto genauer werden die Prognosewerte, aber desto l\u00e4nger wird die Berechnung.";
-		toolTipNumPeriodsToForecast = "Hier tragen Sie die Anzahl der zu prognostizierenden Methoden. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
+		toolTipNumPeriodsToForecast = "Hier tragen Sie die Anzahl der zu prognostizierenden Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
+		toolTipNumPeriodsToForecast_deterministic = "Hier tragen Sie die Anzahl der zu prognostizierenden deterministischen Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
 		toolTipNumPastPeriods = "Hier geben Sie an, wie viele vergangene Perioden für die Berechnung des Prognosewert gewichtet werden sollen. Info: Für die Berechnung m\u00fcssen Sie im n\u00e4chsten Prozessschritt immer eine Periode mehr angeben, als Sie hier eingeben.";
 		toolTipStepsPerPeriod = "";
 		toolTipIndustryRepresentatives = "Als Vergleichswert zu den prognostizierten Cashflows k\u00f6nnen Sie branchenspezifischen Vertreter mit einbeziehen. Dazu müssen Sie die Checkbox aktivieren und in der Dropdown-Liste die gew\u00fcnschte Branche ausw\u00e4hlen.";
@@ -191,7 +199,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		setMargin(true);
 		
-		gridLayout = new GridLayout(3, 26);
+		//TODO: Zeilenanzahl anpassen
+		gridLayout = new GridLayout(3, 30);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
 				 
@@ -586,7 +595,32 @@ public class ParameterViewImpl extends VerticalLayout implements
 		});
 		gridLayout.addComponent(textfieldDeviation,1,25);
 		
+
+		//Heading 6
 		
+		labelNumPeriods_deterministic = new Label("Anzahl zu prognostizierender Perioden");
+		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 27);
+
+		textfieldNumPeriodsToForecast_deterministic = new TextField();
+		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
+		textfieldNumPeriodsToForecast_deterministic.setDescription(toolTipNumPeriodsToForecast_deterministic);
+		textfieldNumPeriodsToForecast_deterministic.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				presenter
+						.numberPeriodsToForecastChosen_deterministic((String) textfieldNumPeriodsToForecast_deterministic
+								.getValue());
+			}
+		});
+		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1, 27);
+		
+		labelUnitQuantity = new Label("Anzahl");
+		gridLayout.addComponent(labelUnitQuantity, 2, 27);
+		
+	
+		
+
 
 	}
 
@@ -614,6 +648,20 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void activatePeriodsToForecast(boolean enabled) {
 		this.textfieldNumPeriodsToForecast.setEnabled(enabled);
+
+	}
+	
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumPeriodsToForecast_deterministic' aus.
+	 * 
+	 * @author Annika Weis
+	 * @param enabled
+	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
+	 *            den Komponenten
+	 */
+	@Override
+	public void activatePeriodsToForecast_deterministic(boolean enabled) {
+		this.textfieldNumPeriodsToForecast_deterministic.setEnabled(enabled);
 
 	}
 
@@ -751,7 +799,14 @@ public class ParameterViewImpl extends VerticalLayout implements
 			} else {
 				this.textfieldBorrowedCapitalProbabilityOfRise.setComponentError(null);
 			}
-
+		//Annika Weis
+		} else if (component.equals("periodsToForecast_deterministic")) {
+			if (setError) {
+				this.textfieldNumPeriodsToForecast_deterministic.setComponentError(new UserError(
+						message));
+			} else {
+				this.textfieldNumPeriodsToForecast_deterministic.setComponentError(null);
+			}
 		}
 
 	}
@@ -951,6 +1006,20 @@ public class ParameterViewImpl extends VerticalLayout implements
 	}
 
 	/**
+	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren
+	 * 
+	 * @author Annika Weis
+	 * @param periodsToForecast_deterministic
+	 *            Anzahl zu prognostizierender Perioden (deterministisch)
+	 */
+	@Override
+	public void setPeriodsToForecast_deterministic(
+			String periodsToForecast_deterministic) {
+		this.textfieldNumPeriodsToForecast_deterministic.setValue(periodsToForecast_deterministic);	
+		
+	}
+
+	/**
 	 * Setzt den Wert des Texfelds 'Anzahl Wiederholungen'
 	 * 
 	 * @author Christian Scherer
@@ -1022,5 +1091,9 @@ public class ParameterViewImpl extends VerticalLayout implements
 			String cashFlowProbabilityOfRise) {
 		this.textfieldCashFlowProbabilityOfRise.setValue(cashFlowProbabilityOfRise);		
 	}
+
+
+
+
 
 }

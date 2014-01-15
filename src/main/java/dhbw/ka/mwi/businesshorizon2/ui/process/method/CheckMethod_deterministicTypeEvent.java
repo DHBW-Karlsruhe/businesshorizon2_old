@@ -18,33 +18,30 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
+package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import com.mvplite.event.Event;
 
-/**
- * Diese Klasse stellt einen Zeitreihe von CashFlow Perioden dar.
- * 
- * @author Kai Westerholz
- * 
- */
+public class CheckMethod_deterministicTypeEvent extends Event {
 
-public class CashFlowPeriodContainer extends AbstractPeriodContainer {
+	private static final long serialVersionUID = 1L;
+	
+	private Boolean deterministic;
+	private Boolean checked;
 
-	public CashFlowPeriodContainer() {
+	public CheckMethod_deterministicTypeEvent(Boolean deterministic, Boolean checked){
 		super();
+		this.deterministic = deterministic;
+		this.checked = checked;
+		
+	}
+	public Boolean getStochastic() {
+		return deterministic;
 	}
 
-	@Override
-	public TreeSet<CashFlowPeriod> getPeriods() {
-		// TODO Auto-generated method stub
-		return (TreeSet<CashFlowPeriod>) super.getPeriods();
+	public Boolean getChecked() {
+		return checked;
 	}
-
 
 }

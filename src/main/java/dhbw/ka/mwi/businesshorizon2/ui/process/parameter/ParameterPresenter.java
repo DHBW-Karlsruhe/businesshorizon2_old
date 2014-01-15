@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
@@ -65,12 +66,18 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private boolean iterationsValid;
 	private boolean basisYearValid;
 	private boolean periodsToForecastValid;
+	private boolean periodsToForecast_deterministicValid; //Annika Weis
 	private boolean relevantPastPeriodsValid;
 
 	private boolean stochMethod;
 	private boolean randomWalk;
 	private boolean wienerProcess;
 	private boolean timeSeries;
+	
+	private boolean detMethod;
+	private boolean dcf;
+	private boolean apv;
+	
 
 	private double cashFlowProbabilityOfRise;
 	private double cashFlowStepRange;
@@ -91,12 +98,15 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private String errorMessageBorrowedCapitalStepRange;
 	private String errorMessageBorrowedCapitalProbabilityOfRise;
 	private String errorMessagePeriodsToForecast;
+	private String errorMessagePeriodsToForecast_deterministic; //Annika Weis
 	private String errorMessagePastPeriods;
 	private String errorMessageIterations;
 
 	private SortedSet<AbstractStochasticMethod> methods;
+	private SortedSet<AbstractDeterministicMethod> methods_deterministic;//Annika Weis
 
 	private Iterator<AbstractStochasticMethod> methodIterator;
+	private Iterator<AbstractDeterministicMethod> method_deterministicIterator;//Annika Weis
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -159,6 +169,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		errorMessageBorrowedCapitalStepRange = "Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000";
 		errorMessageBorrowedCapitalProbabilityOfRise = "Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50";
 		errorMessagePeriodsToForecast = "Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
+		errorMessagePeriodsToForecast_deterministic = "Bitte geben Sie die Anzahl vorherzusehender Perioden (deterministische Verfahren) in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
 		errorMessagePastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 an. Beispiel: 5";
 		errorMessageIterations = "Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen als Ganzzahl zwischen 1000 und 100000 an. Beispiel: 10000";
 	}
@@ -197,6 +208,13 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			stochMethod = this.projectProxy.getSelectedProject()
 					.getProjectInputType().getStochastic();
 		} 
+		
+		//Annika Weis
+		detMethod = false;
+		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+			detMethod = this.projectProxy.getSelectedProject()
+					.getProjectInputType().getDeterministic();
+		} 
 
 		randomWalk = false;
 		wienerProcess = false;
@@ -214,6 +232,25 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 				timeSeries = true;
 			}
 		}
+		
+		/* 
+		 * Annika Weis
+		 * ausgewählte deterministische Methoden überprüfen
+		 */
+		dcf=false;
+		apv=false;
+		methods_deterministic = this.projectProxy.getSelectedProject().getMethods_deterministic();
+		method_deterministicIterator = methods_deterministic.iterator();
+		while (method_deterministicIterator.hasNext()) {
+			AbstractDeterministicMethod m_d = (AbstractDeterministicMethod) method_deterministicIterator
+					.next();
+			if (m_d.getName().equals("DCF") && m_d.getSelected()) {
+				dcf = true;
+			} else if (m_d.getName().equals("APV") && m_d.getSelected()){
+				apv = true;
+			}
+		}
+		
 		
 		this.setValues();
 		this.greyOut();
@@ -259,6 +296,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
 			getView().setBorrowedCapitalProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise())))/10000));
 		}
+		if(this.projectProxy.getSelectedProject().getPeriodsToForecast_deterministic()!=0){
+			getView().setPeriodsToForecast_deterministic(""+this.projectProxy.getSelectedProject().getPeriodsToForecast_deterministic());
+		}
 		
 	}
 
@@ -270,7 +310,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * Felder nicht mehr gueltig sind und diese mit einem ComponentenError
 	 * (rotem Ausrufezeichen) markiert werden. Zudem wird der Sonderfall
 	 * behandelt, dass es der erste Aufruf ist, dann wird sofort true
-	 * zurueckgegeben, da der Nutzer noch nicht die moeglichkeit hatte korrekte
+	 * zurueckgegeben, da der Nutzer noch nicht die Moeglichkeit hatte korrekte
 	 * Angaben einzugeben
 	 * 
 	 * @author Christian Scherer
@@ -371,6 +411,23 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			}
 		}
 		
+		
+		//falls mindestens eine deterministische Methode aktiv
+		// TODO
+		if(detMethod&&(dcf||apv)){
+			if(!periodsToForecast_deterministicValid){
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"periodsToForecast_deterministic", errorMessagePeriodsToForecast_deterministic);
+				}
+				valid = false;
+			} 
+
+		}
+		
+		
 		return valid;
 	}
 
@@ -458,6 +515,51 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
+	
+	//Annika Weis
+	/**
+	 * Methode die sich nach der Auswahl der zu Vorherzusagenden Perioden um die
+	 * davon abhaengigen Objekte kuemmert. Konkret wird aus dem String des
+	 * Eingabefelds der Integer-Wert gezogen und geprueft ob der eingegebene
+	 * Wert groesser 0 ist. Ist einer der beiden Kriterien nicht erfuellt wird
+	 * eine ClassCastException geworfen, die zu einer Fehlermeldung auf der
+	 * Benutzeroberflaecher fuehrt.
+	 * 
+	 * @author Christian Scherer
+	 * @param numberPeriodsToForecast
+	 *            Anzahl der Perioden die in die Vorhergesagt werden sollen
+	 */
+	public void numberPeriodsToForecastChosen_deterministic(String periodsToForecast_deterministic) {
+		logger.debug("Anwender-Eingabe zu deterministischen Perioden die vorherzusagen sind");
+
+		int periodsToForecast_deterministicInt;
+		try {
+			periodsToForecast_deterministicInt = Integer.parseInt(periodsToForecast_deterministic);
+			if (periodsToForecast_deterministicInt > 0) {
+				periodsToForecast_deterministicValid = true;
+				getView().setComponentError(false, "periodsToForecast_deterministic", "");
+				this.projectProxy.getSelectedProject().setPeriodsToForecast(
+						periodsToForecast_deterministicInt);
+				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			periodsToForecast_deterministicValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"periodsToForecast_deterministic",
+							errorMessagePeriodsToForecast_deterministic);
+			getView()
+					.showErrorMessage(errorMessagePeriodsToForecast_deterministic);
+			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+	
+	
 	/**
 	 * Methode die sich nach der Auswahl der zu beachtenenden vergangenen
 	 * Perioden um die davon abhaengigen Objekte kuemmert. Diese muessen laut
@@ -782,7 +884,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().activateIterations(false);
 			getView().setComponentError(false, "iterations", null);
 			getView().setComponentError(false, "periodsToForecast", null);
-		}else {
+		} else {
 			getView().activatePeriodsToForecast(true);
 			getView().activateIterations(true);
 		}
@@ -807,13 +909,23 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().setComponentError(false, "cashFlowProbabilityOfRise", null);
 
 			
-		}else {
+		} else {
 			getView().activateCashFlowStepRang(true);
 			getView().activateCashFlowProbabilityOfRise(true);
 			getView().activateBorrowedCapitalProbabilityOfRise(true);
 			getView().activateBorrowedCapitalStepRange(true);
 		}
 
+		
+		//Annika Weis
+		//Keine deterministische Methode aktiv / mindestens eine aktiv
+		if(!detMethod){
+			getView().activatePeriodsToForecast_deterministic(false);
+			getView().setComponentError(false, "iterations", null);
+			getView().setComponentError(false, "periodsToForecast_deterministic", null);
+		} else {
+			getView().activatePeriodsToForecast_deterministic(true);
+		}
 	}
 
 	/**

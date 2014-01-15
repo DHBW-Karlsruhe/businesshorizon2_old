@@ -53,11 +53,9 @@ public class BasicLineChart extends LineChart {
 	}
 
 	public void addValues(Map<String, double[]> values) {
-
 		for (Map.Entry<String, double[]> value : values.entrySet()) {
 			add(value.getKey(), value.getValue());
 		}
-
 	}
 
 }
