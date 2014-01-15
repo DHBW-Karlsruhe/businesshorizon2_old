@@ -40,7 +40,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
  * stochastischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 
- * @author Marcel Rosenberger
+ * @author Florian Stier, Marcel Rosenberger
  * 
  */
 public class StochasticChartArea extends VerticalLayout {
@@ -71,9 +71,8 @@ public class StochasticChartArea extends VerticalLayout {
 		String expectedCompanyValue = "";
 		double expectedCompanyValueFreq = 0;
 
-		logger.debug("Erwartungswert ermitteln:");
+		logger.debug("Erwartungswert ermitteln");
 		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
-
 			cvChartValues.put(Double.toString(companyValue.getKey()),
 					new double[] { companyValue.getValue().getCount() });
 			
@@ -83,7 +82,6 @@ public class StochasticChartArea extends VerticalLayout {
 			if (companyValue.getValue().getCount() > expectedCompanyValueFreq) {
 				expectedCompanyValue = Double.toString(companyValue.getKey());
 				expectedCompanyValueFreq = companyValue.getValue().getCount();
-				logger.debug("Neuer Erwartungswert: " + companyValue.getValue().getCompanyValue());
 			}
 
 		}
@@ -92,6 +90,7 @@ public class StochasticChartArea extends VerticalLayout {
 
 		cvChart.addValues(cvChartValues);
 		cvChart.setHeight("200px");
+		cvChart.setWidth("2024px");
 		
 
 		this.addComponent(cvChart);

@@ -306,6 +306,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 				//fügt den Unternehmenswert der Sammelklasse aller Unternehmenswert hinzu
 				companyValues.addCompanyValue(unternehmenswert);
 				
+				
+				
 			}
 			logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
 			
@@ -320,10 +322,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
 				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedCashFlows, companyValues.getCompanyValues());
+						expectedCashFlows, companyValues.getGradedCompanyValues());
 			} else {
 				stochasticChartArea = new StochasticChartArea(method.getName(), null,
-						companyValues.getCompanyValues());
+						companyValues.getGradedCompanyValues());
 			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
