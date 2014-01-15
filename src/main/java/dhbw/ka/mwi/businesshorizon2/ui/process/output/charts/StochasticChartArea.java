@@ -19,6 +19,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class StochasticChartArea extends VerticalLayout {
 	private static final Logger logger = Logger
 			.getLogger("StochasticChartArea.class");
 
-	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
+	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung) {
 
 		// Überschrift anzeigen
 		Label title = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
@@ -105,7 +106,7 @@ public class StochasticChartArea extends VerticalLayout {
 			BasicLineChart cfChart = new BasicLineChart("Cashflows", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()+1), new double[] { period.getFreeCashFlow() });
+				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
 
 			}
 
@@ -113,6 +114,10 @@ public class StochasticChartArea extends VerticalLayout {
 			cfChart.setHeight("200px");
 			this.addComponent(cfChart);
 		}
+		
+		
+		DecimalFormat df = new DecimalFormat("#.00");
+		this.addComponent(new Label("Die Modellgenauigkeit beträgt " + df.format(validierung) + "%"));
 		this.setHeight("590px");
 		this.setWidth("1024px");
 

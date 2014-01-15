@@ -155,7 +155,7 @@ public class CompanyValueStochastic extends CompanyValue {
 		// legt die Klassierte Map an mit einem Eintrag pro Klassierungsschritt
 		for(int i = 0; i <= klassierungsschritte; i++ ) {
 			klassierungsdurchschnitt = klassierungsdurchschnitt +  schritt;
-			logger.debug("Klassierung:" + klassierungsdurchschnitt);
+			//logger.debug("Klassierung:" + klassierungsdurchschnitt);
 			this.gradedmap.put(klassierungsdurchschnitt, new Couple(
 					klassierungsdurchschnitt, 0));
 		}

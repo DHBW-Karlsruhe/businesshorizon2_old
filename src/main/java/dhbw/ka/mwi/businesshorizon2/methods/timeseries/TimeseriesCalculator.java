@@ -58,6 +58,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 
 	private StochasticResultContainer expectedCashFlows;
 
+	private double modellabweichung;
+
 	@Override
 	public String getName() {
 		return "Zeitreihenanalyse";
@@ -83,20 +85,20 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	 *         enthalten sind
 	 * 
 	 */
-	public void setExpectedCashFlows(
-			double[] cashflows, Project project)
+	public void setExpectedCashFlows(double[] cashflows, Project project)
 			throws StochasticMethodException {
 
 		StochasticResultContainer resultContainer;
 
 		CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
 
-		// wird pro Periode einmal durchlaufen und berechnet jeweils den Mittelwert
-		for (int i = 0; i < cashflows.length; i++) {
+		// wird pro Periode einmal durchlaufen und speichert jeweils den
+		// Erwartungswert der Cashflows in einen Perioden-Container
+		for (int i = 1; i <= cashflows.length; i++) {
 			CashFlowPeriod cfPeriod = new CashFlowPeriod(project.getBasisYear()
 					+ (i));
-			//als Cashflow der Periode wird der Erwartungswert eingesetzt
-			cfPeriod.setFreeCashFlow(cashflows[i]);
+			// als Cashflow der Periode wird der Erwartungswert eingesetzt
+			cfPeriod.setFreeCashFlow(cashflows[i - 1]);
 			cFContainer.getPeriods().add(cfPeriod);
 		}
 
@@ -105,7 +107,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		resultContainer = new StochasticResultContainer(periodContainer);
 
 		this.expectedCashFlows = resultContainer;
-		}
+	}
 
 	/**
 	 * Diese Methode ruft die Zeitreihenanalyse auf und speichert die
@@ -147,14 +149,14 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		if (project.getStochasticPeriods().getPeriods().first() instanceof CashFlowPeriod) {
 			// Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
 			// ausgefuehrt
-			
+
 			TreeSet<CashFlowPeriod> alleperioden = (TreeSet<CashFlowPeriod>) project
 					.getStochasticPeriods().getPeriods();
-			
+
 			TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
 
-			logger.debug("Übergebene Periodenanzahl: " + project
-					.getStochasticPeriods().getPeriods().size());
+			logger.debug("Übergebene Periodenanzahl: "
+					+ project.getStochasticPeriods().getPeriods().size());
 			double[] previousCashflows = new double[project
 					.getStochasticPeriods().getPeriods().size()];
 			double[] previousFremdkapital = new double[project
@@ -165,7 +167,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			// Umwandlung der Perioden in ein Double-Arrays
 			for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
 					.getStochasticPeriods().getPeriods()) {
-				previousFremdkapital[counter] = cFPeriod.getCapitalStock();				
+				previousFremdkapital[counter] = cFPeriod.getCapitalStock();
 				logger.debug("Fremdkapital: " + previousFremdkapital[counter]);
 				previousCashflows[counter] = cFPeriod.getFreeCashFlow();
 				logger.debug("Cashflow: " + previousCashflows[counter]);
@@ -176,11 +178,17 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 					previousFremdkapital, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
+			double abweichungfk = timeseries.getAbweichung();
 			double[][] resultTimeseries = timeseries.calculate(
 					previousCashflows, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
 					callback);
-		
+			double abweichungcf = timeseries.getAbweichung();
+
+			// Modellabweichung berechnen (Durchschnitt Abweichung Fremdkapital
+			// und Cashflow)
+			this.setModellabweichung((abweichungfk + abweichungcf) / 2);
+
 			// berechnet die zu erwartenden Cashflows
 			setExpectedCashFlows(timeseries.getErwarteteCashFlows(), project);
 			logger.debug("Zu erwartende Cashflows berechnet.");
@@ -653,6 +661,14 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 
 	public StochasticResultContainer getExpectedCashFlows() {
 		return this.expectedCashFlows;
+	}
+
+	public double getModellabweichung() {
+		return modellabweichung;
+	}
+
+	public void setModellabweichung(double modellabweichung) {
+		this.modellabweichung = modellabweichung;
 	}
 
 }

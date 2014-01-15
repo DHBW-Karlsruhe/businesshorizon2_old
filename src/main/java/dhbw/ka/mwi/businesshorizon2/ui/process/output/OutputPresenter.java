@@ -82,6 +82,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	private Project project;
 
 	private TreeSet<CashFlowPeriod> expectedCashFlows;
+	private double validierung;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -318,14 +319,17 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
                 expectedCashFlows = (TreeSet<CashFlowPeriod>) src
                                 .getPeriodContainers().first().getPeriods();
+                
+                validierung = timeseriesCalculator.getModellabweichung();
+                logger.debug("Modellabweichung: " + validierung);
 			
 			
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
 				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedCashFlows, companyValues.getGradedCompanyValues());
+						expectedCashFlows, companyValues.getGradedCompanyValues(), validierung);
 			} else {
 				stochasticChartArea = new StochasticChartArea(method.getName(), null,
-						companyValues.getGradedCompanyValues());
+						companyValues.getGradedCompanyValues(), validierung);
 			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
