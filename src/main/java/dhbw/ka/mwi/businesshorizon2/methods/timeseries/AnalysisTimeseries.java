@@ -55,6 +55,7 @@ public class AnalysisTimeseries {
 	private DoubleMatrix2D modellparameter;;
 	private double standardabweichung;
 	private double mittelwert;
+	public double[] erwarteteCashFlows;
 
 	/**
 	 * Methode zur Berechnung des Mittelwerts einer Zeitreihe.
@@ -234,6 +235,9 @@ public class AnalysisTimeseries {
 		double prognosewert = 0;
 		double zNull = 0;
 		Random zufall = new Random();
+		
+		//Erwartete Cashflows ausrechnen
+		this.erwarteteCashFlowsBerechnen(trendbereinigtezeitreihe, matrixPhi, zuberechnendeperioden, p, mittelwert);
 
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
@@ -260,6 +264,7 @@ public class AnalysisTimeseries {
 			}
 			vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 		}
+		
 		
 		return prognosewertSammlung;
 	}
@@ -293,12 +298,12 @@ public class AnalysisTimeseries {
 
 		// vorbereitende Initialisierung
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
-		
+
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		CalculateTide tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
-			//zeitreihe = tide.reduceTide(zeitreihe);
+			zeitreihe = tide.reduceTide(zeitreihe);
 		}
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
@@ -309,7 +314,7 @@ public class AnalysisTimeseries {
 		for (int i = 0; i < zeitreihe.length; i++) {
 			this.bereinigteZeitreihe.add(zeitreihe[i]);
 		}
-		
+
 		logger.debug("Bereinigte Zeitreihe:");
 		logger.debug(bereinigteZeitreihe);
 
@@ -326,7 +331,70 @@ public class AnalysisTimeseries {
 				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
 				mittelwert);
 		logger.debug("Berechnung der Prognosewerte abgeschlossen.");
+		// Trendbereinigung wieder draufschlagen
+		// Perioden durchlaufen
+		for (int i = 0; i < prognosewerte[0].length; i++) {
+			// den Trend pro Periode ermitteln
+			double newtide = tide.getTideValue(i + p + 1);
+			logger.debug("Trendwert für Periode " + (i + 1) + ": " + newtide);
+			// alle Iterationen durchlaufen
+			for (int j = 0; j < prognosewerte.length; j++) {
+				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows) den Trend wieder aufaddieren
+				prognosewerte[j][i] = prognosewerte[j][i] + newtide;
+				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
+			}
+			
+			logger.debug("Prognosewert in Periode " + (i + 1) + ": " + prognosewerte[0][i]);
+			logger.debug("Erwarteter Cashflow in Periode " + (i + 1) + ": " + erwarteteCashFlows[i]);
+		}
+		
+		
+		
+		logger.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
+
 		return prognosewerte;
+	}
+
+	/*
+	 * Diese Methode berechnet eine Prognose für die mitgegebene Zeitreihe und
+	 * dem gegebenen Modell. Da Z0=seinem Erwartungswert= 0 gesetzt wird,
+	 * entspricht jeder prognostizierte Wert seinem Erwartungswert. Die Anzahl
+	 * der Prognosewerte ergibt sich aus der Variablen zuberechnendeperioden.
+	 * Die berechneten Werte werden in der Instanzvariablen erwarteteCashFlows
+	 * der Klasse AnalysisTimeseries gespeichert.
+	 * 
+	 * @author Ninan Brauch
+	 */
+	public void erwarteteCashFlowsBerechnen(
+			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
+			int zuberechnendeperioden, int p, double mittelwert) {
+		double prognosewert = 0;
+		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
+		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
+		
+		erwarteteCashFlows = new double[zuberechnendeperioden];
+		
+		// Ein Durchlauf entspricht der Prognose eines Jahres j
+		for (int j = 0; j < zuberechnendeperioden; j++) {
+			// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
+			// passenden Vergangenheitswert.
+			for (int t = 0; t < p; t++) {
+				prognosewert = prognosewert
+						+ matrixPhi.get(t, 0)
+						* vergangeneUndZukuenftigeWerte
+								.get(vergangeneUndZukuenftigeWerte.size()
+										- (t + 1));
+			}
+			vergangeneUndZukuenftigeWerte.add(prognosewert);
+			//	prognosewert = prognosewert + mittelwert;
+			erwarteteCashFlows[j] = prognosewert;
+			logger.debug("Erwarteter Cashflow" + (j+1) + ": " + erwarteteCashFlows[j]);
+			prognosewert = 0;
+		}
+	}
+	
+	public double[] getErwarteteCashFlows(){
+		return this.erwarteteCashFlows;
 	}
 
 }

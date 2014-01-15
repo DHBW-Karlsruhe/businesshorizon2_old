@@ -105,7 +105,7 @@ public class StochasticChartArea extends VerticalLayout {
 			BasicLineChart cfChart = new BasicLineChart("Cashflows", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
+				cfChartValues.put(Integer.toString(period.getYear()+1), new double[] { period.getFreeCashFlow() });
 
 			}
 
