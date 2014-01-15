@@ -56,6 +56,7 @@ public class AnalysisTimeseries {
 	private double standardabweichung;
 	private double mittelwert;
 	private double[] erwarteteCashFlows;
+	private double[] erwartetesFremdkapital;
 	private double abweichung;
 
 	/**
@@ -222,13 +223,14 @@ public class AnalysisTimeseries {
 	 *            durchlaufen soll
 	 * @param mittelwert
 	 *            der ermittelte Mittelwert der Zeitreihe
+	 * @param isfremdkapital 
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */
 
 	public double[][] prognoseBerechnen(
 			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
 			double standardabweichung, int zuberechnendeperioden,
-			int durchlaeufe, int p, double mittelwert) {
+			int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
 
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
 		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
@@ -238,8 +240,8 @@ public class AnalysisTimeseries {
 		Random zufall = new Random();
 
 		// Erwartete Cashflows ausrechnen
-		this.erwarteteCashFlowsBerechnen(trendbereinigtezeitreihe, matrixPhi,
-				zuberechnendeperioden, p, mittelwert);
+		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
+				zuberechnendeperioden, p, mittelwert, isfremdkapital);
 		
 		//Modellgenauigkeit validieren
 		this.validierung( trendbereinigtezeitreihe,
@@ -299,7 +301,7 @@ public class AnalysisTimeseries {
 	// @Override
 	public double[][] calculate(double[] zeitreihe, int p,
 			int zuberechnendePerioden, int durchlaeufe,
-			CallbackInterface callback) throws InterruptedException,
+			CallbackInterface callback, boolean isfremdkapital) throws InterruptedException,
 			StochasticMethodException {
 
 		// vorbereitende Initialisierung
@@ -309,7 +311,7 @@ public class AnalysisTimeseries {
 		CalculateTide tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
-			//zeitreihe = tide.reduceTide(zeitreihe);
+			zeitreihe = tide.reduceTide(zeitreihe);
 		}
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
@@ -335,19 +337,24 @@ public class AnalysisTimeseries {
 		// Start der Prognose
 		prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
 				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
-				mittelwert);
+				mittelwert, isfremdkapital);
 		logger.debug("Berechnung der Prognosewerte abgeschlossen.");
 		// Trendbereinigung wieder draufschlagen
 		// Perioden durchlaufen
 		for (int i = 0; i < prognosewerte[0].length; i++) {
 			// den Trend pro Periode ermitteln
 			double newtide = tide.getTideValue(i + p + 1);
-			//this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
+			
+			if(isfremdkapital){
+				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
+			}else{
+				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
+			}
 			// alle Iterationen durchlaufen
 			for (int j = 0; j < prognosewerte.length; j++) {
 				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
 				// den Trend wieder aufaddieren
-				//prognosewerte[j][i] = prognosewerte[j][i] + newtide;
+				prognosewerte[j][i] = prognosewerte[j][i] + newtide;
 			}
 			
 		}
@@ -367,14 +374,15 @@ public class AnalysisTimeseries {
 	 * 
 	 * @author Nina Brauch
 	 */
-	public void erwarteteCashFlowsBerechnen(
+	public void erwarteteWerteBerechnen(
 			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
-			int zuberechnendeperioden, int p, double mittelwert) {
+			int zuberechnendeperioden, int p, double mittelwert, boolean isfremdkapital) {
+		double[] erwarteteWerte = new double[zuberechnendeperioden];
 		double prognosewert = 0;
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
 		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 
-		this.erwarteteCashFlows = new double[zuberechnendeperioden];
+		erwarteteWerte = new double[zuberechnendeperioden];
 		// Ein Durchlauf entspricht der Prognose eines Jahres j
 		for (int j = 0; j < zuberechnendeperioden; j++) {
 			// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
@@ -388,10 +396,17 @@ public class AnalysisTimeseries {
 			}
 			vergangeneUndZukuenftigeWerte.add(prognosewert);
 			prognosewert = prognosewert + mittelwert;
-			this.erwarteteCashFlows[j] = prognosewert;
+			erwarteteWerte[j] = prognosewert;
 
 			prognosewert = 0;
 		}
+		
+		if(isfremdkapital){
+			this.erwartetesFremdkapital = erwarteteWerte;
+		}else{
+			this.erwarteteCashFlows = erwarteteWerte;
+		}
+		
 	}
 
 	public double[] getErwarteteCashFlows() {
@@ -439,6 +454,10 @@ public class AnalysisTimeseries {
 
 	public void setAbweichung(double abweichung) {
 		this.abweichung = abweichung;
+	}
+
+	public double[] getErwartetesFremdkapital() {
+		return erwartetesFremdkapital;
 	}
 
 }

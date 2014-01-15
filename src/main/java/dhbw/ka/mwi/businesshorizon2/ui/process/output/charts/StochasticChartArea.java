@@ -100,13 +100,14 @@ public class StochasticChartArea extends VerticalLayout {
 		if (periods != null) {
 			List<String> cfChartLines = new ArrayList<String>();
 			cfChartLines.add("Erwartete Cashflows");
+			cfChartLines.add("Erwartetes Fremdkapital");
 
 			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
-			BasicLineChart cfChart = new BasicLineChart("Cashflows", cfChartLines);
+			BasicLineChart cfChart = new BasicLineChart("Erwartete Werte", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
+				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow(), period.getCapitalStock() });
 
 			}
 
@@ -117,7 +118,7 @@ public class StochasticChartArea extends VerticalLayout {
 		
 		
 		DecimalFormat df = new DecimalFormat("#.00");
-		this.addComponent(new Label("Die Modellgenauigkeit beträgt " + df.format(validierung) + "%"));
+		this.addComponent(new Label("Die Modellabweichung beträgt " + df.format(validierung) + "%"));
 		this.setHeight("590px");
 		this.setWidth("1024px");
 

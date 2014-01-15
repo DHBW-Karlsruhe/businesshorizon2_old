@@ -56,7 +56,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			.getLogger("TimeseriesCalculator.class");
 	public AbstractPeriodContainer periodsBSI;
 
-	private StochasticResultContainer expectedCashFlows;
+	private StochasticResultContainer expectedValues;
 
 	private double modellabweichung;
 
@@ -72,10 +72,12 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 
 	/**
 	 * Diese Methode speichert pro Periode den Erwartungswert aller
-	 * prognostizierten Casfhlows in einen StochasticResultContainer.
+	 * prognostizierten Casfhlows und Fremdkapitalbeträge in einen StochasticResultContainer.
 	 * 
 	 * @author Marcel Rosenberger
 	 * 
+	 * @param fremdkapital
+	 *            die erwarteten Fremdkapitalbeträge
 	 * @param cashflows
 	 *            die erwarteten Cashflows
 	 * @param project
@@ -85,7 +87,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 	 *         enthalten sind
 	 * 
 	 */
-	public void setExpectedCashFlows(double[] cashflows, Project project)
+	public void setExpectedValues(double[] fremdkapital, double[] cashflows, Project project)
 			throws StochasticMethodException {
 
 		StochasticResultContainer resultContainer;
@@ -93,12 +95,13 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
 
 		// wird pro Periode einmal durchlaufen und speichert jeweils den
-		// Erwartungswert der Cashflows in einen Perioden-Container
+		// Erwartungswert der Cashflows und Fremdkapitalbeträge in einen Perioden-Container
 		for (int i = 1; i <= cashflows.length; i++) {
 			CashFlowPeriod cfPeriod = new CashFlowPeriod(project.getBasisYear()
 					+ (i));
 			// als Cashflow der Periode wird der Erwartungswert eingesetzt
 			cfPeriod.setFreeCashFlow(cashflows[i - 1]);
+			cfPeriod.setCapitalStock(fremdkapital[i - 1]);
 			cFContainer.getPeriods().add(cfPeriod);
 		}
 
@@ -106,7 +109,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		periodContainer.add(cFContainer);
 		resultContainer = new StochasticResultContainer(periodContainer);
 
-		this.expectedCashFlows = resultContainer;
+		this.expectedValues = resultContainer;
 	}
 
 	/**
@@ -177,21 +180,21 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			double[][] resultTimeseriesBorrowedCapital = timeseries.calculate(
 					previousFremdkapital, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, true);
 			double abweichungfk = timeseries.getAbweichung();
 			double[][] resultTimeseries = timeseries.calculate(
 					previousCashflows, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			double abweichungcf = timeseries.getAbweichung();
 
 			// Modellabweichung berechnen (Durchschnitt Abweichung Fremdkapital
 			// und Cashflow)
 			this.setModellabweichung((abweichungfk + abweichungcf) / 2);
 
-			// berechnet die zu erwartenden Cashflows
-			setExpectedCashFlows(timeseries.getErwarteteCashFlows(), project);
-			logger.debug("Zu erwartende Cashflows berechnet.");
+			// berechnet die zu erwartenden Fremdkapital bzw. Cashflow-Werte
+			setExpectedValues(timeseries.getErwartetesFremdkapital(), timeseries.getErwarteteCashFlows(), project);
+			logger.debug("Zu erwartende Cashflows und Fremdkapitalwerte berechnet.");
 			// Diese Schleife wird sooft durchlaufen, wie die Zeitreihenanalyse
 			// durchgeführt wurde
 			for (int prognosedurchlauf = 0; prognosedurchlauf < (project
@@ -352,76 +355,76 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			salesRevenueResult = timeseries.calculate(salesRevenue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			otherBusinessRevenueResult = timeseries.calculate(
 					otherBusinessRevenue, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			interestAndOtherCostsResult = timeseries.calculate(
 					interestAndOtherCosts, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			internallyProducedAndCapitalizedAssetsResult = timeseries
 					.calculate(internallyProducedAndCapitalizedAssets,
 							project.getRelevantPastPeriods(),
 							project.getPeriodsToForecast(),
-							project.getIterations(), callback);
+							project.getIterations(), callback, false);
 			materialCostsResult = timeseries.calculate(materialCosts,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			humanCapitalCostsResult = timeseries.calculate(humanCapitalCosts,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			writeDownsResult = timeseries.calculate(writeDowns,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			otherBusinessCostsResult = timeseries.calculate(otherBusinessCosts,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			borrowedCapitalResult = timeseries.calculate(borrowedCapital,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			cashAssetsResult = timeseries.calculate(cashAssets,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			stocksResult = timeseries.calculate(stocks,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			claimsResult = timeseries.calculate(claims,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			supliesResult = timeseries.calculate(suplies,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			provisionsResult = timeseries.calculate(provisions,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			equityResult = timeseries.calculate(equity,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			financialValueResult = timeseries.calculate(financialValue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			propertyValueResult = timeseries.calculate(propertyValue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			immaterialFortuneResult = timeseries.calculate(immaterialFortune,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			// Erstellung der Ausgabecontainer und Integration in den
 			// StochasticResultContainer
 			for (int iteration = 0; iteration < project.getIterations(); iteration++) {
@@ -552,60 +555,60 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 			borrowedCapitalResult = timeseries.calculate(borrowedCapital,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			cashAssetsResult = timeseries.calculate(cashAssets,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			stocksResult = timeseries.calculate(stocks,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			claimsResult = timeseries.calculate(claims,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			supliesResult = timeseries.calculate(suplies,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			provisionsResult = timeseries.calculate(provisions,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			equityResult = timeseries.calculate(equity,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			financialValueResult = timeseries.calculate(financialValue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			propertyValueResult = timeseries.calculate(propertyValue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			immaterialFortuneResult = timeseries.calculate(immaterialFortune,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			costOfSalesAdministrationOthersResult = timeseries.calculate(
 					costOfSalesAdministrationOthers,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			costOfPoductionResult = timeseries.calculate(costOfPoduction,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			otherBusinessRevenueResult = timeseries.calculate(
 					otherBusinessRevenue, project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 			salesRevenueResult = timeseries.calculate(salesRevenue,
 					project.getRelevantPastPeriods(),
 					project.getPeriodsToForecast(), project.getIterations(),
-					callback);
+					callback, false);
 
 			// Erstellung des Rueckgabecontainers aus den einzelnen
 			// Ergebnisarrays
@@ -659,8 +662,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 		return true;
 	}
 
-	public StochasticResultContainer getExpectedCashFlows() {
-		return this.expectedCashFlows;
+	public StochasticResultContainer getExpectedValues() {
+		return this.expectedValues;
 	}
 
 	public double getModellabweichung() {

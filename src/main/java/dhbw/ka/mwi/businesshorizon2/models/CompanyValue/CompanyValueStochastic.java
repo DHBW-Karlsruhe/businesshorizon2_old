@@ -20,10 +20,13 @@
 
 package dhbw.ka.mwi.businesshorizon2.models.CompanyValue;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+
+import com.vaadin.ui.Label;
 
 /**
  * Diese Klasse speichert die Unternehmenswerte und ihre jeweiligen Häufigkeiten
@@ -148,7 +151,7 @@ public class CompanyValueStochastic extends CompanyValue {
 		logger.debug("delta:" + delta);
 		double deltahalbe = delta / 2.0;
 		// Schritte Ermitteln
-		double schritt = delta / klassierungsschritte;
+		double schritt = delta / klassierungsschritte;		
 		//Klassierungsdurchschnitt initialisieren
 		double klassierungsdurchschnitt = kleinster;
 		
