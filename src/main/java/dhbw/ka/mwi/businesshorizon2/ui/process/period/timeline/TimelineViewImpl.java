@@ -64,7 +64,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 
         PeriodButton pB;
 
-        Logger logger = Logger.getLogger(TimelineViewImpl.class);
+        private static final Logger logger = Logger.getLogger(TimelineViewImpl.class);
 
         /**
          * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -135,11 +135,13 @@ public class TimelineViewImpl extends VerticalLayout implements
                 logger.debug("" + layout.getRows());
                 layout.removeRow(layout.getRows() - 1);
                 logger.debug("" + layout.getRows());
-                if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
-                                .getCaption().startsWith("Basis")) {
-
-                } else
-                        layout.addComponent(delFuture, 1, layout.getRows() - 1);
+                try {
+                        if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
+                                        .getCaption().startsWith("Basis")) {
+                        } else
+                                layout.addComponent(delFuture, 1, layout.getRows() - 1);                        
+                } catch(Exception e){
+                }
         }
 
         /**
@@ -148,10 +150,15 @@ public class TimelineViewImpl extends VerticalLayout implements
         @Override
         public void removePastPeriod() {
                 layout.removeRow(0);
-                if (layout.getComponent(0, 0).getCaption().startsWith("Basis")) {
-
-                } else
-                        layout.addComponent(delPast, 1, 0);
+                try {
+                        logger.debug("removePastPeriod: " + layout.getComponent(0, 0).getCaption());
+                        if (layout.getComponent(0, 0).getCaption().startsWith("Basis")) {
+                                
+                        } else
+                                layout.addComponent(delPast, 1, 0);                        
+                } catch (Exception e){
+                        
+                }
         }
 
         /*
@@ -171,6 +178,24 @@ public class TimelineViewImpl extends VerticalLayout implements
                 future.setEnabled(usable);
         }
 
+        /*
+         * Annika Weis
+         */
+        @Override
+        public void setPastDeleteButtonAccess(boolean usable) {
+                delPast.setEnabled(usable);
+
+        }
+
+        /*
+         * Annika Weis
+         */
+        @Override
+        public void setFutureDeleteButtonAccess(boolean usable) {
+                delFuture.setEnabled(usable);
+        }
+        
+        
         @Override
         public void addBasePeriod(Period period) {
 

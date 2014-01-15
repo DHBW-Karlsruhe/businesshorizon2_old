@@ -39,6 +39,12 @@ public interface TimelineViewInterface extends ContentView {
         public void setPastButtonAccess(boolean usable);
 
         public void setFutureButtonAccess(boolean usable);
+        
+        //Annika Weis
+        public void setPastDeleteButtonAccess(boolean usable);
+        
+        //Annika Weis
+        public void setFutureDeleteButtonAccess(boolean usable);
 
         void addBasePeriod(Period period);
 
