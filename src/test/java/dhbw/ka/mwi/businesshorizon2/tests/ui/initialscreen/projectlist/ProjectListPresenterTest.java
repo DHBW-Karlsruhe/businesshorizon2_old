@@ -53,7 +53,7 @@ public class ProjectListPresenterTest extends AbstractPresenterTestCase {
 
 	@Test
 	public void testProjectSelected() {
-		Project project = new Project("testProject");
+		Project project = new Project("testProject", "testDescription");
 		presenter.projectSelected(project);
 
 		assertEventFired(ShowProjectEvent.class);

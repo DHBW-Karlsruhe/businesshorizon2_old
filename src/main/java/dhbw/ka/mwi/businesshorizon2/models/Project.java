@@ -34,6 +34,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -59,8 +60,9 @@ public class Project implements Serializable {
 	
 	private User createdFrom;
 
-
 	private String name;
+	
+	private String description;
 
 	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
 
@@ -105,8 +107,9 @@ public class Project implements Serializable {
 	 * @param Der
 	 *            Name des Projekts
 	 */
-	public Project(String name) {
+	public Project(String name, String description) {
 		this.name = name;
+		this.setDescription(description);
 		this.projectInputType = new ProjectInputType();
 		this.iterations = 10000;
 	}
@@ -481,5 +484,19 @@ public class Project implements Serializable {
 
 	public void setCreatedFrom(User user) {
 		createdFrom = user;		
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

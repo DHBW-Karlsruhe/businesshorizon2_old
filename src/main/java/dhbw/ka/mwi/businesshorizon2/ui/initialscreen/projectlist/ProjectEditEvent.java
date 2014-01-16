@@ -21,27 +21,38 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
-import java.util.List;
-
-import com.mvplite.view.View;
-
+import com.mvplite.event.Event;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
-
 /**
- * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
- * mit denen der Presenter mit der View kommunizieren kann.
+ * Der Event, der nach dem Bearbeiten eines Perojekts abgesetzt wird. Aktuell
+ * gibt es dafuer noch keinen EventHandler.
  * 
- * @author Christian Scherer, Mirko Göpfrich
+ * @author Christian Scherer
  * 
  */
-public interface ProjectListViewInterface extends View {
-	
-	public void setProjects(List<Project> projects);
-	
-	public void showAddProjectDialog();
-	
-	public void showEditProjectDialog(Project project);
+public class ProjectEditEvent extends Event {
+	private static final long serialVersionUID = 1L;
 
+	private Project project;
+
+	/**
+	 * Konstruktor für das hinzugefuegte Projekt
+	 * 
+	 * @author Christian Scherer
+	 * @param project
+	 */
+	public ProjectEditEvent(Project project) {
+		this.project = project;
+	}
+
+	/**
+	 * Getter Methode für das hinzugefuegte Projekt
+	 * 
+	 * @author Christian Scherer
+	 * @return
+	 */
+	public Project getProject() {
+		return project;
+	}
 }
-

@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -277,6 +278,8 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 */
 	public synchronized void saveProjects() {
 		//Projektdatei überschreiben
+		// Prüfung ob Projektname bei diesem Nutzer schon beutzt wird
+					
 				try {
 					FileOutputStream fileOutput = new FileOutputStream(file);
 					ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);

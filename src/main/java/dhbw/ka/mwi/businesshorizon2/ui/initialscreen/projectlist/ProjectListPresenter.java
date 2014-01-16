@@ -155,9 +155,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 *            Der Name des neue Projekt-Objekts, welches in die Liste
 	 *            hinzugefuegt werden soll
 	 */
-	public void addProject(String name) {
+	public void addProject(String name, String description) {
 
-		Project project = new Project(name);
+		Project project = new Project(name, description);
 		project.setLastChanged(new Date());
 		project.setCreatedFrom(this.user);
 		try {
@@ -177,6 +177,44 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		this.projectSelected(project);
 
 	}
+	
+	public void editProject(Project project, String name, String description) {
+		
+
+		try {
+			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
+			if (project.getName().equals(name));
+			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
+			else {
+				for (Project projektName : user.getProjects()) {
+					if (projektName.getCreatedFrom().getEmailAdress()
+							.equals(user.getEmailAdress())) {
+						if (projektName.getName().equals(name)) {
+							throw new ProjectAlreadyExistsException(
+									"Projekt mit dem Namen " + project.getName()
+											+ " existiert bereits.");
+						}
+					}
+				}
+			}
+			project.setName(name);
+			project.setDescription(description);
+			persistenceService.saveProjects();
+		} catch (ProjectAlreadyExistsException e) {
+			logger.debug("Projektname bereits vorhanden.");
+		}
+		logger.debug("Projekname und/oder Projektbeschreibung wurden bearbeitet");
+
+		getView().setProjects(user.getProjects());
+
+		eventBus.fireEvent(new ProjectEditEvent(project));
+		logger.debug("ShowEdditEvent gefeuert");
+		
+		project.setLastChanged(new Date());
+
+		
+
+	}
 
 	/**
 	 * 
@@ -188,6 +226,17 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void addProjectDialog() {
 		getView().showAddProjectDialog();
 
+	}
+
+	/**
+	 * Aufruf aus dem ClickListener der Impl. Es soll lediglich das Oeffnen des
+	 * Projekt-Bearbeiten-Dialog eingeleutet der Impl angestossen werden.
+	 * 
+	 * @author Mirko Göpfrich
+	 */
+	public void editProjectDialog(Project project) {
+		getView().showEditProjectDialog(project);
+		
 	}
 
 }

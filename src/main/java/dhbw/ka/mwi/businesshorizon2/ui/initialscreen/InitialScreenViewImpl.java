@@ -95,7 +95,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUi();
+		generateUI();
+		logger.debug("Initialisierung beendet");
 	}
 
 	/**
@@ -105,14 +106,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 * 
 	 * @author Christian Scherer, Mirko Göpfrich
 	 */
-	private void generateUi() {
+	private void generateUI() {
 		setCaption("Business Horizon 2.1");
 		logger.debug("Ueberschrift fuer Browser erstellt");
 
 		//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
 		verticalSplitPanel = new VerticalSplitPanel();
 		verticalSplitPanel.setSizeFull();
-		verticalSplitPanel.setSplitPosition(120, Sizeable.UNITS_PIXELS);
+		verticalSplitPanel.setSplitPosition(100, Sizeable.UNITS_PIXELS);
 		verticalSplitPanel.setLocked(true);
 		logger.debug("Neues Vertikales SplitPanel erstellt");
 
@@ -159,7 +160,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		
 		//ruft die Methode auf, welche den LogoutButton zum Sreen hinzufügt
 		this.addLogoutButton();
-		right.addComponent(new Label("Sie sind angemeldet als:"));
 		
 	}
 	
@@ -176,8 +176,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
 		 *  und Prozesssicht gesprungen wird. 
 		 */
+		Label userInfo = new Label("Sie sind angemeldet als:");
+		right.addComponent(userInfo);
+		right.setComponentAlignment(userInfo, Alignment.MIDDLE_RIGHT);
+		
+		
 		if(userData != null) {
 			right.removeComponent(userData);
+			right.removeComponent(userInfo);
 		}
 		
 		userData = new Label(username);
@@ -192,7 +198,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 */
 	private void addLogoutButton() {
 		Button logoutButton = new Button("Logout");
-		logoutButton.addStyleName(Reindeer.BUTTON_DEFAULT);
+		logoutButton.setStyleName("default");
 		logoutButton.addListener(new Button.ClickListener() {
 			
 			private static final long serialVersionUID = 7411091035775152765L;
