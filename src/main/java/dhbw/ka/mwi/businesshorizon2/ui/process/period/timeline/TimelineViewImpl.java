@@ -240,6 +240,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 
 	@Override
 	public void addPastPeriod(Period period) {
+		logger.debug("Button past angelegt");
 		// TODO Auto-generated method stub
 		PeriodButton pB = new PeriodButton("" + period.getYear(),
 				new Button.ClickListener() {
