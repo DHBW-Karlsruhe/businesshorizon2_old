@@ -74,7 +74,22 @@ public class StochasticChartArea extends VerticalLayout {
 		double expectedCompanyValueFreq = 0;
 
 		logger.debug("Erwartungswert ermitteln");
-		int i = 0;
+		
+
+        for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
+
+                cvChartValues.put(Double.toString(companyValue.getKey()),
+                                new double[] { companyValue.getValue().getCount() });
+
+                // Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
+                // Häufigkeit)
+                if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
+                        expectedCompanyValue = Double.toString(companyValue.getKey());
+                        expectedCompanyValueFreq = companyValue.getValue().getCount();
+                }
+
+        }
+		/*int i = 0;
 
 		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
 			cvChartValues.put(Double.toString(companyValue.getKey()),
@@ -87,7 +102,7 @@ public class StochasticChartArea extends VerticalLayout {
 				i = - 1;
 			} 
 			i++;
-		}
+		}*/
 
 		cvChartValues.put(expectedCompanyValue, new double[] { 0, expectedCompanyValueFreq });
 
