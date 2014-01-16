@@ -755,7 +755,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					futurePeriods.addPeriod(periode);
 					basisperiode = periode;
 					logger.debug("Basisjahr");
-				} else if (i > projectProxy.getSelectedProject()
+				} else if (i-1 > projectProxy.getSelectedProject()
 						.getPeriodsToForecast_deterministic() + extra_periode) {
 					// mehr Perioden vorhanden, als der Benutzer will
 					// Diese werden gelöscht
@@ -798,12 +798,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		// Wenn weniger Perioden vorhanden sind als geplant
 		if (vorhandene < projectProxy.getSelectedProject()
-				.getPeriodsToForecast_deterministic()) {
+				.getPeriodsToForecast_deterministic() + extra_periode) {
 			logger.debug("Manuell Perioden anlegen "
 					+ (projectProxy.getSelectedProject()
-							.getPeriodsToForecast_deterministic() - vorhandene));
+							.getPeriodsToForecast_deterministic() + extra_periode - vorhandene));
 			addFuturePeriods(projectProxy.getSelectedProject()
-					.getPeriodsToForecast_deterministic() - vorhandene,
+					.getPeriodsToForecast_deterministic() + extra_periode - vorhandene,
 					deterministicInput);
 
 		}
@@ -894,16 +894,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			 * zur gewünschten Länge Ausgabe erfolgt rückwärts -2 wegen
 			 * Array-Index 0 UND Basisperiode abziehen
 			 */
-			/*
-			 * 
-			 */
-			// for (int x = perioden.size() - 1; x >= laenge - 2; x--) { Period
-			// period = (Period) perioden.toArray()[x]; logger.debug(x + " - " +
-			// period.getYear()); if (x == perioden.size() - 1) {
-			// logger.debug("Basisperiode: " + period.getYear());
-			// getView().addBasePeriod(period); basisperiode = period; } else {
-			// getView().addPastPeriod(period); sumPastPeriods++; }
-			// pastPeriods.addPeriod(period); }
 
 			for (int x = perioden.size() - 1; x >= 0; x--) {
 				Period period = (Period) perioden.toArray()[x];
@@ -924,21 +914,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				}
 			}
 
-			/**
-			 * 
-			 * // Basis-Periode anlegen <br>
-			 * getView().addBasePeriod((Period) perioden.toArray()[0]);
-			 * basePeriod = basisperiode; pastPeriods.addPeriod(basePeriod);
-			 */
-
 			projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
-			/*
-			 * 
-			 */
-			// // Übrige Perioden löschen for (int x = laenge - 3; x >= 0; x--)
-			// { Period period = (Period) perioden.toArray()[x];
-			// logger.debug("Lösche Jahr " + period.getYear());
-			// pastPeriods.removePeriod(period); }
 
 			periodClicked(basisperiode);
 		} catch (Exception e) {
