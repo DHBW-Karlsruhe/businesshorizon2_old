@@ -337,7 +337,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 			expectedValues = (TreeSet<CashFlowPeriod>) src
 					.getPeriodContainers().first().getPeriods();
-
+			
 			validierung = timeseriesCalculator.getModellabweichung();
 			logger.debug("Modellabweichung: " + validierung);
 
