@@ -19,12 +19,11 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
+	
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-public interface GesamtViewInterface extends InputViewInterface {
-
-	
+public interface DirectCalculationViewInterface extends InputViewInterface {
 
 }

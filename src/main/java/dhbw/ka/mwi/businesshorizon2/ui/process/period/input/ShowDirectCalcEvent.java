@@ -19,10 +19,30 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
+import com.mvplite.event.Event;
 
-public interface UmsatzViewInterface extends InputViewInterface {
+import dhbw.ka.mwi.businesshorizon2.models.Period.DirectCalculatedCashflowPeriod;
 
+public class ShowDirectCalcEvent extends Event implements ShowInputViewEventInterface{
+
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3463254158996055840L;
+	private DirectCalculatedCashflowPeriod period;
+
+	public ShowDirectCalcEvent(DirectCalculatedCashflowPeriod period){
+		this.period = period;
+	}
+
+	public DirectCalculatedCashflowPeriod getPeriod() {
+		return period;
+	}
+
+
+	
 }

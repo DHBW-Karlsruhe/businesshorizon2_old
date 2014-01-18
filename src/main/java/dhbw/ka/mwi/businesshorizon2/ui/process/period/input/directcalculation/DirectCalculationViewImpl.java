@@ -19,7 +19,7 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
 
 import javax.annotation.PostConstruct;
 
@@ -32,26 +32,31 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
  * Vaadin.
  * 
- * @author Daniel Dengler
+ * @author Marcel Rosenberger
  * 
  */
-public class GesamtViewImpl extends AbstractInputView implements GesamtViewInterface{
+public class DirectCalculationViewImpl extends AbstractInputView implements DirectCalculationViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private GesamtPresenter presenterTemp;
+	private DirectCalculationPresenter presenterTemp;
+	
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Daniel Dengler
+	 * @author Marcel Rosenberger
 	 */
 
 	@PostConstruct
 	public void init() {
+		logger = Logger.getLogger(DirectCalculationViewImpl.class);
 		presenter = presenterTemp;
 		presenter.setView(this);
+		logger.debug("Umsatz presenter set");
+		
 	}
 }
+

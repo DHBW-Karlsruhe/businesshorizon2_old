@@ -19,7 +19,7 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe;
 
 import javax.annotation.PostConstruct;
 

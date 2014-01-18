@@ -121,19 +121,19 @@
 	<bean name="timelineView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewImpl" scope="session"/>
 	
 	<!-- Periode-DirektEingabe -->
-	<bean name="direktPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektPresenter" scope="session"/>
-	<bean name="direktView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewImpl" scope="session"/>
+	<bean name="direktPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektPresenter" scope="session"/>
+	<bean name="direktView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewImpl" scope="session"/>
 	
 	
-	<!-- Periode-GesamtEingabe -->
-	<bean name="gesamtPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtPresenter" scope="session"/>
-	<bean name="gesamtView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtViewImpl" scope="session"/>
+	<!-- Periode-DirekteCashflowBerechnung -->
+	<bean name="directCalculationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationPresenter" scope="session"/>
+	<bean name="directCalculationView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationViewImpl" scope="session"/>
 	
 	
 	
-	<!-- Periode-UmsatzEingabe -->
-	<bean name="umsatzPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzPresenter" scope="session"/>
-	<bean name="umsatzView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewImpl" scope="session"/>
+	<!-- Periode-DirekteCashflowBerechnung -->
+	<bean name="indirectCalculationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationPresenter" scope="session"/>
+	<bean name="indirectCalculationView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationViewImpl" scope="session"/>
 	
 	
 	<!-- Parameter-Maske -->

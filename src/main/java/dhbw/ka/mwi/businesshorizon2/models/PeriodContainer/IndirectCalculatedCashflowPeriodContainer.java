@@ -19,41 +19,36 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt;
+package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
+import java.util.TreeSet;
+import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
- * Vaadin.
+ * Diese Klasse stellt einen Container für Perioden zu verfügung. Die
+ * enthaltenen Bilanzposten der Periode sind nach dem Umsatzkostenverfahren
+ * bewertet.
  * 
- * @author Daniel Dengler
+ * 
+ * @author Kai Westerholz
  * 
  */
-public class DirektViewImpl extends AbstractInputView implements DirektViewInterface {
-	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private DirektPresenter presenterTemp;
+public class IndirectCalculatedCashflowPeriodContainer extends
+		AbstractPeriodContainer {
 
 	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
 	 * 
-	 * @author Daniel Dengler
 	 */
+	private static final long serialVersionUID = -6233272268973216545L;
 
-	
-	@PostConstruct
-	public void init() {
-		presenter = presenterTemp;
-		presenter.setView(this);
+	public IndirectCalculatedCashflowPeriodContainer() {
+		super();
 	}
-}
 
+	@Override
+	public TreeSet<IndirectCalculatedCashflowPeriod> getPeriods() {
+		return (TreeSet<IndirectCalculatedCashflowPeriod>) super.getPeriods();
+	}
+
+}

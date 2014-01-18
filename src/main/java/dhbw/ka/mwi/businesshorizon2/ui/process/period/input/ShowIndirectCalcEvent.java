@@ -19,29 +19,26 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
 
-import java.util.TreeSet;
+import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
 
-/**
- * Diese Klasse stellt den Container für die Perioden zur Verfügung. Die
- * Bilanzinhalte der Perioden sind nach dem Umsazukostenverfahren bewertet.
- * 
- * @author Kai Westerholz
- * 
- */
-
-public class CostOfSalesMethodPeriodContainer extends AbstractPeriodContainer {
-
-	public CostOfSalesMethodPeriodContainer() {
-		super();
+public class ShowIndirectCalcEvent extends Event implements ShowInputViewEventInterface{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2773797208503072554L;
+	private IndirectCalculatedCashflowPeriod period;
+	
+	public ShowIndirectCalcEvent(IndirectCalculatedCashflowPeriod period){
+		this.period = period;
 	}
 
-	@Override
-	public TreeSet<CostOfSalesMethodPeriod> getPeriods() {
-		return (TreeSet<CostOfSalesMethodPeriod>) super.getPeriods();
+	public IndirectCalculatedCashflowPeriod getPeriod() {
+		return period;
 	}
 
 }
