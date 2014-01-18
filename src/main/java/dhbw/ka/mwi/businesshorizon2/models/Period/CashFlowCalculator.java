@@ -20,6 +20,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
+import org.apache.log4j.Logger;
+
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
@@ -33,7 +35,9 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCas
 *
 */
 public class CashFlowCalculator {
-
+	
+	private static final Logger logger = Logger
+			.getLogger("CashFlowCalculator.class");
 	
 	  /**
      * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
@@ -47,16 +51,14 @@ public class CashFlowCalculator {
      * @param szenario
      * 				Szenario
      */
-    public static void calculateCashflows(DeterministicResultContainer result,
-                    Szenario szenario) {
-
+    public static void calculateCashflows(DeterministicResultContainer result) {
+    		
             for (AbstractPeriodContainer container : result.getPeriodContainers()) {
                     if (container instanceof DirectCalculatedCashflowPeriodContainer) {
                             calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
                     } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
                             calculateIndirectCashflows(
-                                            (IndirectCalculatedCashflowPeriodContainer) container,
-                                            szenario);
+                                            (IndirectCalculatedCashflowPeriodContainer) container);
                     }
             }
     }
@@ -72,16 +74,14 @@ public class CashFlowCalculator {
          * @param szenario
          * Szenario
          */
-        public static void calculateCashflows(StochasticResultContainer result,
-                        Szenario szenario) {
+        public static void calculateCashflows(StochasticResultContainer result) {
 
                 for (AbstractPeriodContainer container : result.getPeriodContainers()) {
                         if (container instanceof DirectCalculatedCashflowPeriodContainer) {
                                 calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
                         } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
                                 calculateIndirectCashflows(
-                                                (IndirectCalculatedCashflowPeriodContainer) container,
-                                                szenario);
+                                                (IndirectCalculatedCashflowPeriodContainer) container);
                         }
                 }
         }
@@ -101,6 +101,7 @@ public class CashFlowCalculator {
                                         - period.getUmsatzKosten()
                                         - period.getSteuernBeiReinerEigenfinanzierung()
                                         - period.getSaldoAusAuszahlungen();
+                       
 
                         period.setFreeCashFlow(freeCashFlow);
 
@@ -116,8 +117,7 @@ public class CashFlowCalculator {
          */
 
         private static void calculateIndirectCashflows(
-                        IndirectCalculatedCashflowPeriodContainer container,
-                        Szenario szenario) {
+                        IndirectCalculatedCashflowPeriodContainer container) {
 
                 for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
                         double freeCashFlow = period.getJahresÜberschuss()

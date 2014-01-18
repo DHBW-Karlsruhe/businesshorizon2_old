@@ -108,7 +108,25 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 		project = projectProxy.getSelectedProject();
 
-		if (project.getProjectInputType().getDeterministic()) {
+		if (project.getProjectInputType().isDeterministic()) {
+			TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
+			AbstractPeriodContainer apc = project.getDeterministicPeriods();
+			periodContainer.add(apc);
+			DeterministicResultContainer drContainer= new DeterministicResultContainer(
+					periodContainer);
+			
+			//Cashflows berechnen falls notwendig
+			for (AbstractPeriodContainer container : drContainer.getPeriodContainers()){
+				if (container instanceof CashFlowPeriodContainer){
+					logger.debug("Cashflows wurden direkt eingegeben");
+				} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
+					logger.debug("Cashflows werden direkt berechnet");
+					CashFlowCalculator.calculateCashflows(drContainer);
+				} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
+					logger.debug("Cashflows werden indirekt berechnet");
+					CashFlowCalculator.calculateCashflows(drContainer);
+				}
+			}
 
 			// Annika Weis
 			for (AbstractDeterministicMethod method_deterministic : project
@@ -116,34 +134,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 				// alle Szenarios durchlaufen
 				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
-					TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
-					AbstractPeriodContainer apc = project.getDeterministicPeriods();
-					DeterministicResultContainer drContainer = null;
-					
-					
-					if (apc instanceof CashFlowPeriodContainer){
-						CashFlowPeriodContainer cfPeriodContainer = (CashFlowPeriodContainer) project
-								.getDeterministicPeriods();
-						periodContainer.add(cfPeriodContainer);
-						drContainer= new DeterministicResultContainer(
-								periodContainer);
-					} else if(apc instanceof DirectCalculatedCashflowPeriodContainer){
-						DirectCalculatedCashflowPeriodContainer dccfPeriodContainer = (DirectCalculatedCashflowPeriodContainer) project
-								.getDeterministicPeriods();
-						periodContainer.add(dccfPeriodContainer);
-						drContainer= new DeterministicResultContainer(
-								periodContainer);
-						CashFlowCalculator.calculateCashflows(drContainer, scenario);
-					} else if(apc instanceof IndirectCalculatedCashflowPeriodContainer){
-						IndirectCalculatedCashflowPeriodContainer idcccfPeriodContainer = (IndirectCalculatedCashflowPeriodContainer) project
-								.getDeterministicPeriods();
-						periodContainer.add(idcccfPeriodContainer);
-						drContainer= new DeterministicResultContainer(
-								periodContainer);
-						CashFlowCalculator.calculateCashflows(drContainer, scenario);
-					}
-			
-					
+				
 					if (method_deterministic.getSelected()) {
 						double uwsteuerfrei = 0;
 						double steuervorteile = 0;
@@ -153,7 +144,6 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 						double[] fremdkapital;
 						int i;
 						Period period;
-						
 						
 						// für jedenPeriod-Container, der im
 						// Deterministic-Result-Container enthalten ist,
@@ -282,7 +272,25 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 		}
 		}
 
-		if (project.getProjectInputType().getStochastic()) {
+		if (project.getProjectInputType().isStochastic()) {
+			TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
+			AbstractPeriodContainer apc = project.getStochasticPeriods();
+			periodContainer.add(apc);
+			StochasticResultContainer srContainer= new StochasticResultContainer(
+					periodContainer);
+			
+			//Cashflows berechnen falls notwendig
+			for (AbstractPeriodContainer container : srContainer.getPeriodContainers()){
+				if (container instanceof CashFlowPeriodContainer){
+					logger.debug("Cashflows wurden direkt eingegeben");
+				} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
+					logger.debug("Cashflows werden direkt berechnet");
+					CashFlowCalculator.calculateCashflows(srContainer);
+				} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
+					logger.debug("Cashflows werden indirekt berechnet");
+					CashFlowCalculator.calculateCashflows(srContainer);
+				}
+			}
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				if (method.getSelected()) {
 					methodRunner = new MethodRunner(method, project, this);
@@ -357,7 +365,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			// wird die Schleife je einmal durchlaufen (=Anzahl der Iterationen
 			// in der Zeitreihenanalyse)
 			for (AbstractPeriodContainer abstractPeriodContainer : result
-					.getPeriodContainers()) {
+					.getPeriodContainers()) {	
 				// holt pro Cashflow-Period-Container die enthaltenen Perioden
 				// und legt sie in einem TreeSet ab
 				TreeSet<? extends Period> periods = abstractPeriodContainer
@@ -398,7 +406,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 			expectedValues = (TreeSet<CashFlowPeriod>) src
 					.getPeriodContainers().first().getPeriods();
-			
+
 			validierung = timeseriesCalculator.getModellabweichung();
 			logger.debug("Modellabweichung: " + validierung);
 

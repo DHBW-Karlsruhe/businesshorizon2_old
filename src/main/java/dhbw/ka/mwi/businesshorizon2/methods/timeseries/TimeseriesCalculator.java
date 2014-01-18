@@ -31,6 +31,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
@@ -169,11 +170,11 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                 int counter = 0;
 
                 // Umwandlung der Perioden in ein Double-Arrays
-                for (CashFlowPeriod cFPeriod : (TreeSet<CashFlowPeriod>) project
+                for (Period period : (TreeSet<Period>) project
                                 .getStochasticPeriods().getPeriods()) {
-                        previousFremdkapital[counter] = cFPeriod.getCapitalStock();
+                        previousFremdkapital[counter] = period.getCapitalStock();
                         logger.debug("Fremdkapital: " + previousFremdkapital[counter]);
-                        previousCashflows[counter] = cFPeriod.getFreeCashFlow();
+                        previousCashflows[counter] = period.getFreeCashFlow();
                         logger.debug("Cashflow: " + previousCashflows[counter]);
                         counter++;
                 }

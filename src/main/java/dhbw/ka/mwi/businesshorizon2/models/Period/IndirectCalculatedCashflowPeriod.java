@@ -32,6 +32,8 @@ public class IndirectCalculatedCashflowPeriod extends Period {
 
 
         private static final long serialVersionUID = 1L;
+        
+        
 
         /**
          * Jahresüberschuss
