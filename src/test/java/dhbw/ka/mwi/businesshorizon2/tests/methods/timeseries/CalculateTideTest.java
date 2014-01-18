@@ -27,6 +27,13 @@ import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
 
+/**
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTime dar.
+ * 
+ * @author Volker Maier
+ * 
+ */
+
 public class CalculateTideTest extends TestCase {
 	@Test
 	public void testReduceTide() {

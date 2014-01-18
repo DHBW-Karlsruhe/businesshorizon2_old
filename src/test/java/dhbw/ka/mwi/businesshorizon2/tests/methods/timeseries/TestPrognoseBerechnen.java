@@ -1,0 +1,73 @@
+package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
+
+import junit.framework.TestCase;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+
+import cern.colt.list.DoubleArrayList;
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix2D;
+
+
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
+
+
+/**
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTime dar.
+ * 
+ * @author Volker Maier
+ * 
+ */
+
+public class TestPrognoseBerechnen extends TestCase {
+	
+	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
+	
+		
+	@Test
+	public void testPrognoseBerechnen() {
+		int p = 5;
+		int i = 1;
+		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, i);
+		DoubleArrayList cashflows = new DoubleArrayList ();
+		double standardabweichung = 1.8551461075783124; 
+		int zuberechnendeperioden = 5;
+		int durchlaeufe = 10000;
+		double mittelwert = 8.166666666666666;
+		boolean isfremdkapital = true;
+		double[][] prognosewerte = new double[zuberechnendeperioden][durchlaeufe];
+		
+		cashflows.add (7);
+		cashflows.add (9);
+		cashflows.add (5);
+		cashflows.add (14);
+		cashflows.add (6);
+		cashflows.add (8);
+		
+		matrixValuations.set(0,0,-1.09253751);
+		matrixValuations.set(1,0,-0.790322469);
+		matrixValuations.set(2,0,-0.651577395);
+		matrixValuations.set(3,0,-0.488155996);
+		matrixValuations.set(4,0,-0.215330237);
+	
+		AnalysisTimeseries at = new AnalysisTimeseries();
+		DoubleArrayList autokovarianzVorgabe = new DoubleArrayList();
+		autokovarianzVorgabe.add (8.472222222222223);
+		autokovarianzVorgabe.add (-5.726851851851852);
+		autokovarianzVorgabe.add (2.407407407407408);
+		autokovarianzVorgabe.add (-1.3472222222222223);
+		autokovarianzVorgabe.add (0.3981481481481479);
+		autokovarianzVorgabe.add (0.032407407407407274);
+		
+		
+		prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
+				
+		logger.debug(prognosewerte);
+		
+		
+		
+		assertNotNull(prognosewerte);
+		}
+
+	}
