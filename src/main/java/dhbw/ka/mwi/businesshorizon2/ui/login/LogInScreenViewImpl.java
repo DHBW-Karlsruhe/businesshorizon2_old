@@ -143,8 +143,10 @@ public class LogInScreenViewImpl extends Window implements
 	 *            Fehlermeldung die der Methode zur Ausgabe uebergeben wird
 	 */
 	public void showErrorMessage(String message) {
-		getWindow().showNotification((String) "",
-				message, Notification.TYPE_ERROR_MESSAGE);
+		Window.Notification notif = new Notification((String) "",
+				message, Notification.TYPE_WARNING_MESSAGE);
+		notif.setPosition(Window.Notification.POSITION_CENTERED_BOTTOM);
+		getWindow().showNotification(notif);
 	}
 
 	/**

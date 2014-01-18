@@ -33,7 +33,6 @@ import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
@@ -53,14 +52,22 @@ import dhbw.ka.mwi.businesshorizon2.models.InputType;
  *
  */
 
-public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewInterface {
+public class MethodViewImpl extends VerticalLayout implements MethodViewInterface {
 
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private MethodPresenter presenter;
-
+	
+	// Panel für die Auswahl zischen APV und FTE
+	private Panel calculationMethodPanel;
+	// Panel für die Auwahl zwischen Deterministisch und Stochastisch;
+	private Panel cashflowSourcePanel;
+	// Panel für die Auswahl der Eingabemethode (nur bei APV)
+	private Panel cashflowInput;
+	
 	private Panel methodPanel;
+	
 	/* Annika Weis
 	 * neues Panel um für deterministische Eingaben Methoden auswählen zu können
 	 */
@@ -97,7 +104,8 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	}
 	
 	public void showMethodView() {
-		this.removeAllComponents();
+		
+		//this.removeAllComponents();
 		
 		stochastic = new CheckBox("Stochastische Berechnung");
 		deterministic = new CheckBox("Deterministische Eingabe");
@@ -226,6 +234,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 	
 	
 	private void generateUi() {
+		
 		methodList = new VerticalLayout();
 		methodList.setHeight("100%");
 		inputMethod = new VerticalLayout();
@@ -233,10 +242,10 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
 		methodList.setSizeFull();
 		inputMethod.setSizeFull();
 		
-		this.setSizeFull();
+		//this.setSizeFull();
 		
-		this.setFirstComponent(methodList);
-		this.setSecondComponent(inputMethod);
+		//this.addComponent(methodList);
+		//this.addComponent(inputMethod);
 
 		methodPanel.addComponent(methods);
 		methodPanel_deterministic.addComponent(methods_deterministic);

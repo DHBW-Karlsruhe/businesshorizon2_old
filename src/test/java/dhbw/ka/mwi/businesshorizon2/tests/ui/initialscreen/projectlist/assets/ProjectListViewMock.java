@@ -62,4 +62,11 @@ public class ProjectListViewMock implements ProjectListViewInterface {
 		
 	}
 
+
+	@Override
+	public void showErrorMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -58,7 +58,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 
-	// @Autowired
+	@Autowired
 	private User user;
 
 	@Autowired
@@ -163,7 +163,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		try {
 			persistenceService.addProject(this.user, project);
 		} catch (ProjectAlreadyExistsException e) {
+			getView().showErrorMessage(e.getMessage());
 			logger.debug("Projektname bereits vorhanden.");
+
 		}
 		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
 
@@ -173,17 +175,17 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 		eventBus.fireEvent(new ProjectAddEvent(project));
 		logger.debug("ShowAddEvent gefeuert");
-		
-		this.projectSelected(project);
 
 	}
 	
-	public void editProject(Project project, String name, String description) {
+	public boolean editProject(Project project, String name, String description) {
 		
 
 		try {
 			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
-			if (project.getName().equals(name));
+			if (project.getName().equals(name)) {
+			logger.debug("nur Projekt-Beschreibung geändert");
+			}
 			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
 			else {
 				for (Project projektName : user.getProjects()) {
@@ -191,7 +193,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 							.equals(user.getEmailAdress())) {
 						if (projektName.getName().equals(name)) {
 							throw new ProjectAlreadyExistsException(
-									"Projekt mit dem Namen " + project.getName()
+									"Projekt mit dem Namen " + name
 											+ " existiert bereits.");
 						}
 					}
@@ -199,18 +201,20 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 			}
 			project.setName(name);
 			project.setDescription(description);
+			project.setLastChanged(new Date());
 			persistenceService.saveProjects();
+			getView().setProjects(user.getProjects());
+			getView().setProjects(user.getProjects());
+			return true;
 		} catch (ProjectAlreadyExistsException e) {
+			getView().showErrorMessage(e.getMessage());
 			logger.debug("Projektname bereits vorhanden.");
+			return false;
 		}
-		logger.debug("Projekname und/oder Projektbeschreibung wurden bearbeitet");
 
-		getView().setProjects(user.getProjects());
 
-		eventBus.fireEvent(new ProjectEditEvent(project));
-		logger.debug("ShowEdditEvent gefeuert");
-		
-		project.setLastChanged(new Date());
+		//eventBus.fireEvent(new ProjectEditEvent(project));
+		//logger.debug("ShowEdditEvent gefeuert");
 
 		
 
