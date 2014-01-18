@@ -19,29 +19,30 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
 
-import java.io.Serializable;
+import com.mvplite.event.Event;
 
-public enum InputType implements Serializable {
-        DIRECT("Direkte Eingabe"),DIRECTCALCULATION("Direkte Berechnung des Cashflows"),INDIRECTCALCULATION("Indirekte Berechnung des Cashflows");
-        
-        private String caption;
-        
+import dhbw.ka.mwi.businesshorizon2.models.Period.DirectCalculatedCashflowPeriod;
 
-        private InputType(String caption){
-                this.caption = caption;
-        }
+public class ShowDirectCalcEvent extends Event implements ShowInputViewEventInterface{
+
         
-        public String getCaption() {
-                return caption;
-        }
         
-        @Override
-        public String toString(){
-                
-                return this.getCaption();
+        /**
+         *
+         */
+        private static final long serialVersionUID = -3463254158996055840L;
+        private DirectCalculatedCashflowPeriod period;
+
+        public ShowDirectCalcEvent(DirectCalculatedCashflowPeriod period){
+                this.period = period;
         }
 
+        public DirectCalculatedCashflowPeriod getPeriod() {
+                return period;
+        }
+
+
+        
 }
-

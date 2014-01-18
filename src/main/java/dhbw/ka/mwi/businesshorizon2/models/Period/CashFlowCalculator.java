@@ -1,158 +1,108 @@
 /*******************************************************************************
- * BusinessHorizon2
- * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
- *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- * 
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-
+* BusinessHorizon2
+*
+* Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+* Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+******************************************************************************/
 
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AggregateCostMethodBalanceSheetPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CostOfSalesMethodPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.DirectCalculatedCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCashflowPeriodContainer;
 
 /**
- * 
- * @author kathie
- * 
- */
+*
+* @author kathie
+*
+*/
 public class CashFlowCalculator {
 
-	/**
-	 * Mit Hilfe dieser Methode kann der 'Free Cashflow' aus den Bilanzen nach
-	 * dem Umsatz- und nach dem Gesamtkostenverfahren berechnet werden. Der
-	 * 'Free Cashflow' wird einfach in der entsprechenden Periode durch eine
-	 * setter-Methode gesetzt.
-	 * 
-	 * @param result
-	 *            StochasticResultContainer
-	 * @param szenario
-	 *            Szenario
-	 */
-	public static void calculateCashflows(StochasticResultContainer result,
-			Szenario szenario) {
+        /**
+         * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
+         * indirekten Berechnungsmethoden ermitteln. Der 'Free Cashflow' wird
+         * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
+         *
+         * @author Marcel Rosenberger
+         *
+         * @param result
+         * StochasticResultContainer
+         * @param szenario
+         * Szenario
+         */
+        public static void calculateCashflows(StochasticResultContainer result,
+                        Szenario szenario) {
 
-		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
-			if (container instanceof AggregateCostMethodBalanceSheetPeriodContainer) {
-				calculateAggregateCostCashflows(
-						(AggregateCostMethodBalanceSheetPeriodContainer) container,
-						szenario);
-			} else if (container instanceof CostOfSalesMethodPeriodContainer) {
-				calculateCostOfSalesCashflows(
-						(CostOfSalesMethodPeriodContainer) container, szenario);
-			}
-		}
-	}
+                for (AbstractPeriodContainer container : result.getPeriodContainers()) {
+                        if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+                                calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+                        } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+                                calculateIndirectCashflows(
+                                                (IndirectCalculatedCashflowPeriodContainer) container,
+                                                szenario);
+                        }
+                }
+        }
 
-	private static void calculateAggregateCostCashflows(
-			AggregateCostMethodBalanceSheetPeriodContainer container,
-			Szenario szenario) {
+        /**
+         * Direkte Free-Cash-Flow Ermittlung
+         *
+         * @author Marcel Rosenberger
+         *
+         */
 
-		boolean firstPeriod = true;
-		AggregateCostMethodPeriod pastPeriod = null;
+        private static void calculateDirectCashflows(
+                        DirectCalculatedCashflowPeriodContainer container) {
 
-		for (AggregateCostMethodPeriod period : container.getPeriods()) {
-			if (firstPeriod) {
-				pastPeriod = (AggregateCostMethodPeriod) period.deepCopy();
-				firstPeriod = false;
-			} else {
+                for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
+                        double freeCashFlow = period.getUmsatzErlöse()
+                                        - period.getUmsatzKosten()
+                                        - period.getSteuernBeiReinerEigenfinanzierung()
+                                        - period.getSaldoAusAuszahlungen();
 
-				/**
-				 * EBIT steht für 'earnings before interest and taxes', also für
-				 * den 'Gewinn vor Zinsen und Steuern'. Der EBIT wird wie folgt
-				 * berechnet:<br>
-				 * (Umsatzerlöse + Sonstige betriebliche Erträge + Sonstige
-				 * aktive Eigenleistungen) - (Materialaufwand + Personalaufwand
-				 * + Abschreibungen + Sonstiger betrieblicher Aufwand)
-				 */
-				double ebit = (period.getSalesRevenue()
-						+ period.getOtherBusinessRevenue() + period
-							.getInternallyProducedAndCapitalizedAssets())
-						- (period.getMaterialCosts()
-								+ period.getHumanCapitalCosts()
-								+ period.getWriteDowns() + period
-									.getOtherBusinessCosts());
-				/**
-				 * EBT steht für 'earnings beforde taxes', also für den 'Gewinn
-				 * vor Steuern'. Der EBT wird wie folgt berechnet:<br>
-				 * EBIT - Zinsen und ähnliche Anwendungen
-				 */
-				double ebt = ebit - period.getInterestAndOtherCosts();
+                        period.setFreeCashFlow(freeCashFlow);
 
-				double businessTax = ebt * szenario.getBusinessTax();
-				double corporateAndBusinessTax = ebt
-						* szenario.getBusinessTax()
-						* szenario.getCorporateAndSolitaryTax();
+                }
 
-				/**
-				 * Nettojahreseinkommen
-				 */
-				double annualNetIncome = ebt + businessTax
-						+ corporateAndBusinessTax;
+        }
 
-				double operationalCF = annualNetIncome + period.getWriteDowns()
-						+ (period.getProvisions() - pastPeriod.getProvisions())
-						+ period.getInterestAndOtherCosts();
+        /**
+         * Indirekte Free-Cash-Flow Ermittlung
+         *
+         * @author Marcel Rosenberger
+         *
+         */
 
-				double avBefore = pastPeriod.getImmaterialFortune()
-						+ pastPeriod.getPropertyValue()
-						+ pastPeriod.getFinancialValue()
-						- period.getWriteDowns();
-				double avNow = period.getImmaterialFortune()
-						+ period.getPropertyValue()
-						+ period.getFinancialValue();
+        private static void calculateIndirectCashflows(
+                        IndirectCalculatedCashflowPeriodContainer container,
+                        Szenario szenario) {
 
-				double invDelta = avNow - avBefore;
+                for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
+                        double freeCashFlow = period.getJahresÜberschuss()
+                                        - period.getTaxShield()
+                                        + period.getNichtZahlungswirksameAufwendungen()
+                                        - period.getNichtZahlungswirksameErtraege()
+                                        - period.getBruttoInvestitionen();
 
-				double uvDiff = (period.getSuplies() + period.getClaims()
-						+ period.getStocks() + period.getCashAssets())
-						- (pastPeriod.getSuplies() + pastPeriod.getClaims()
-								+ pastPeriod.getStocks() + pastPeriod
-									.getCashAssets());
+                        period.setFreeCashFlow(freeCashFlow);
 
-				double afterInvestmentCF = invDelta + uvDiff;
+                }
 
-				double ekdif = period.getEquity() - pastPeriod.getEquity();
-
-				double fkdif = (period.getCapitalStock() + period
-						.getProvisions())
-						- (pastPeriod.getCapitalStock() + pastPeriod
-								.getProvisions());
-
-				double afterFinancingCF = ekdif + fkdif;
-
-				double freeCashFlow = operationalCF + afterInvestmentCF
-						+ afterFinancingCF;
-
-				period.setFreeCashFlow(freeCashFlow);
-
-				pastPeriod = (AggregateCostMethodPeriod) period.deepCopy();
-
-			}
-		}
-
-	}
-
-	private static void calculateCostOfSalesCashflows(
-			CostOfSalesMethodPeriodContainer container, Szenario szenario) {
-		// TODO Muss noch ausimplementiert werden
-
-	}
+        }
 
 }
