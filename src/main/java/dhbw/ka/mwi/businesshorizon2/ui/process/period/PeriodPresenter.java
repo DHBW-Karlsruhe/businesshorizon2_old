@@ -36,22 +36,22 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUmsatzViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInterface;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Daniel Dengler
+ * @author Daniel Dengler, Marcel Rosenberger
  */
 
 public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
@@ -65,28 +65,30 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	private TimelineViewInterface timelineView;
 
 	@Autowired
-	private UmsatzViewInterface umsatzView;
+	private IndirectCalculationViewInterface indirectCalcView;
 
 	@Autowired
 	private DirektViewInterface direktView;
 
 	@Autowired
-	private GesamtViewInterface gesamtView;
+	private DirectCalculationViewInterface directCalcView;
 
 	@Autowired
 	private TimelinePresenter timelinePresenter;
 
 	@Autowired
-	private UmsatzPresenter umsatzPresenter;
+	private IndirectCalculationPresenter indirectCalculationPresenter;
 
 	@Autowired
 	private DirektPresenter direktPresenter;
 
 	@Autowired
-	private GesamtPresenter gesamtPresenter;
+	private DirectCalculationPresenter directCalculationPresenter;
 
 	@Autowired
 	private EventBus eventBus;
+
+
 
 
 	/**
@@ -104,7 +106,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	@EventHandler
 
 	public void onShowEvent(ShowPeriodViewEvent event) {
-		logger.debug("DirektVieEvent gefeuert");
+		logger.debug("DirektViewEvent gefeuert");
 		getView().showView(timelineView, currentInput);
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
 	}
@@ -114,9 +116,9 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	
 	
 	@EventHandler
-	public void onShowEvent(ShowGesamtViewEvent event) {
-		logger.debug("ShowGesamtViewEvent erhalten");
-		currentInput = gesamtView;
+	public void onShowEvent(ShowDirectCalcEvent event) {
+		logger.debug("ShowDirectCalcEvent erhalten");
+		currentInput = directCalcView;
 		getView().showView(timelineView, currentInput);
 
 	}
@@ -131,9 +133,9 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	}
 
 	@EventHandler
-	public void onShowEvent(ShowUmsatzViewEvent event) {
+	public void onShowEvent(ShowIndirectCalcEvent event) {
 		logger.debug("ShowUmsatzViewEvent erhalten");
-		currentInput = umsatzView;
+		currentInput = indirectCalcView;
 		getView().showView(timelineView, currentInput);
 	}
 

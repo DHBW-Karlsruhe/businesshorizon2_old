@@ -19,7 +19,7 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe;
 
 import javax.annotation.PostConstruct;
 
@@ -35,12 +35,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
  * @author Daniel Dengler
  * 
  */
-public class UmsatzViewImpl extends AbstractInputView implements UmsatzViewInterface {
+public class DirektViewImpl extends AbstractInputView implements DirektViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private UmsatzPresenter presenterTemp;
-	
+	private DirektPresenter presenterTemp;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -50,13 +49,11 @@ public class UmsatzViewImpl extends AbstractInputView implements UmsatzViewInter
 	 * @author Daniel Dengler
 	 */
 
+	
 	@PostConstruct
 	public void init() {
-		logger = Logger.getLogger(UmsatzViewImpl.class);
 		presenter = presenterTemp;
 		presenter.setView(this);
-		logger.debug("Umsatz presenter set");
-		
 	}
 }
 

@@ -19,25 +19,26 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
 
-import org.apache.log4j.Logger;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGesamtViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Daniel Dengler
+ * @author Marcel Rosenberger
  * 
  */
 
-public class GesamtPresenter extends AbstractInputPresenter<GesamtViewInterface> {
+public class DirectCalculationPresenter extends AbstractInputPresenter<DirectCalculationViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 
@@ -49,27 +50,29 @@ public class GesamtPresenter extends AbstractInputPresenter<GesamtViewInterface>
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Daniel Dengler
+	 * @author Marcel Rosenberger
 	 */
 
+	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
 		shownProperties = new String[] { "immaterialFortune", "propertyValue",
 				"financialValue", "equity", "provisions", "suplies", "claims",
 				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
-				"otherBusinessRevenue", "internallyProducedAndCapializedAssets",
-				"materialCosts", "humanCapitalCosts", "writeDowns",
-				"otherBusinessCosts", "interestAndOtherCosts" };
+				"otherBusinessRevenue", "costOfProduction",
+				"costOfSalesAdministrationOthers" };
 		germanNamesProperties = new String[] { "Immaterielle Verm\u00f6gensgegenst\u00e4nde", "Sachanlagen",
 				"Finanzanlagen", "Eigenkapital", "R\u00fcckstellungen", "Vorr\u00e4te", "Forderungen und sonstige Verm\u00f6gensgegenst\u00e4nde",
 				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerl\u00f6se",
-				"Sonstige betriebliche Ertr\u00e4ge", "Andere aktivierte Eigenleistungen",
-				"Materialaufwand", "Personalaufwand", "Abschreibungen",
-				"Sonstige betriebliche Aufwendungen", "Zinsen und andere Aufwendungen" };
+				"Sonstige betriebliche Ertr\u00e4ge", "Herstellkosten",
+		"Vertriebskosten" };
 	}	
+	
 
+
+	
 	/**
-	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
+	 * Faengt das ShowEvent ab und sorgt dafuecr das die View die benoetigten
 	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
 	 * <p>
 	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
@@ -81,9 +84,8 @@ public class GesamtPresenter extends AbstractInputPresenter<GesamtViewInterface>
 	 * 
 	 * @param event
 	 */
-	
 	@EventHandler
-	public void onShowEvent(ShowGesamtViewEvent event) {
+	public void onShowEvent(ShowDirectCalcEvent event) {
 		processEvent(event);
 	}
 	

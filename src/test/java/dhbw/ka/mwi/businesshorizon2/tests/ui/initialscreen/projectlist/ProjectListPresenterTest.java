@@ -58,6 +58,7 @@ public class ProjectListPresenterTest extends AbstractPresenterTestCase {
 
 		assertEventFired(ShowProjectEvent.class);
 		
+		
 		/*
 		 * Kommentar Marcel Rosenberger: Musste DIESE eine Zeile auskommentieren,
 		 * da sie bei einer Weiterentwicklung der Project-Klasse den Build aufhängt.

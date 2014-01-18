@@ -18,14 +18,13 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AggregateCostMethodBalanceSheetPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CostOfSalesMethodPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.DirectCalculatedCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCashflowPeriodContainer;
 
 /**
  * 
@@ -35,10 +34,11 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CostOfSalesMethodPeri
 public class CashFlowCalculator {
 
 	/**
-	 * Mit Hilfe dieser Methode kann der 'Free Cashflow' aus den Bilanzen nach
-	 * dem Umsatz- und nach dem Gesamtkostenverfahren berechnet werden. Der
-	 * 'Free Cashflow' wird einfach in der entsprechenden Periode durch eine
-	 * setter-Methode gesetzt.
+	 * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
+	 * indirekten Berechnungsmethoden ermitteln. Der 'Free Cashflow' wird
+	 * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
+	 * 
+	 * @author Marcel Rosenberger
 	 * 
 	 * @param result
 	 *            StochasticResultContainer
@@ -49,109 +49,59 @@ public class CashFlowCalculator {
 			Szenario szenario) {
 
 		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
-			if (container instanceof AggregateCostMethodBalanceSheetPeriodContainer) {
-				calculateAggregateCostCashflows(
-						(AggregateCostMethodBalanceSheetPeriodContainer) container,
+			if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+				calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+			} else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+				calculateIndirectCashflows(
+						(IndirectCalculatedCashflowPeriodContainer) container,
 						szenario);
-			} else if (container instanceof CostOfSalesMethodPeriodContainer) {
-				calculateCostOfSalesCashflows(
-						(CostOfSalesMethodPeriodContainer) container, szenario);
 			}
 		}
 	}
 
-	private static void calculateAggregateCostCashflows(
-			AggregateCostMethodBalanceSheetPeriodContainer container,
+	/**
+	 * Direkte Free-Cash-Flow Ermittlung
+	 * 
+	 * @author Marcel Rosenberger
+	 * 
+	 */
+
+	private static void calculateDirectCashflows(
+			DirectCalculatedCashflowPeriodContainer container) {
+
+		for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
+			double freeCashFlow = period.getUmsatzErlöse()
+					- period.getUmsatzKosten()
+					- period.getSteuernBeiReinerEigenfinanzierung()
+					- period.getSaldoAusAuszahlungen();
+
+			period.setFreeCashFlow(freeCashFlow);
+
+		}
+
+	}
+
+	/**
+	 * Indirekte Free-Cash-Flow Ermittlung
+	 * 
+	 * @author Marcel Rosenberger
+	 * 
+	 */
+
+	private static void calculateIndirectCashflows(
+			IndirectCalculatedCashflowPeriodContainer container,
 			Szenario szenario) {
 
-		boolean firstPeriod = true;
-		AggregateCostMethodPeriod pastPeriod = null;
+		for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
+			double freeCashFlow = period.getJahresÜberschuss()
+					- period.getTaxShield()
+					+ period.getNichtZahlungswirksameAufwendungen()
+					- period.getNichtZahlungswirksameErtraege()
+					- period.getBruttoInvestitionen();
 
-		for (AggregateCostMethodPeriod period : container.getPeriods()) {
-			if (firstPeriod) {
-				pastPeriod = (AggregateCostMethodPeriod) period.deepCopy();
-				firstPeriod = false;
-			} else {
+			period.setFreeCashFlow(freeCashFlow);
 
-				/**
-				 * EBIT steht für 'earnings before interest and taxes', also für
-				 * den 'Gewinn vor Zinsen und Steuern'. Der EBIT wird wie folgt
-				 * berechnet:<br>
-				 * (Umsatzerlöse + Sonstige betriebliche Erträge + Sonstige
-				 * aktive Eigenleistungen) - (Materialaufwand + Personalaufwand
-				 * + Abschreibungen + Sonstiger betrieblicher Aufwand)
-				 */
-				double ebit = (period.getSalesRevenue()
-						+ period.getOtherBusinessRevenue() + period
-							.getInternallyProducedAndCapitalizedAssets())
-						- (period.getMaterialCosts()
-								+ period.getHumanCapitalCosts()
-								+ period.getWriteDowns() + period
-									.getOtherBusinessCosts());
-				/**
-				 * EBT steht für 'earnings beforde taxes', also für den 'Gewinn
-				 * vor Steuern'. Der EBT wird wie folgt berechnet:<br>
-				 * EBIT - Zinsen und ähnliche Anwendungen
-				 */
-				double ebt = ebit - period.getInterestAndOtherCosts();
-
-				double businessTax = ebt * szenario.getBusinessTax();
-				double corporateAndBusinessTax = ebt
-						* szenario.getBusinessTax()
-						* szenario.getCorporateAndSolitaryTax();
-
-				/**
-				 * Nettojahreseinkommen
-				 */
-				double annualNetIncome = ebt + businessTax
-						+ corporateAndBusinessTax;
-
-				double operationalCF = annualNetIncome + period.getWriteDowns()
-						+ (period.getProvisions() - pastPeriod.getProvisions())
-						+ period.getInterestAndOtherCosts();
-
-				double avBefore = pastPeriod.getImmaterialFortune()
-						+ pastPeriod.getPropertyValue()
-						+ pastPeriod.getFinancialValue()
-						- period.getWriteDowns();
-				double avNow = period.getImmaterialFortune()
-						+ period.getPropertyValue()
-						+ period.getFinancialValue();
-
-				double invDelta = avNow - avBefore;
-
-				double uvDiff = (period.getSuplies() + period.getClaims()
-						+ period.getStocks() + period.getCashAssets())
-						- (pastPeriod.getSuplies() + pastPeriod.getClaims()
-								+ pastPeriod.getStocks() + pastPeriod
-									.getCashAssets());
-
-				double afterInvestmentCF = invDelta + uvDiff;
-
-				double ekdif = period.getEquity() - pastPeriod.getEquity();
-
-				double fkdif = (period.getCapitalStock() + period
-						.getProvisions())
-						- (pastPeriod.getCapitalStock() + pastPeriod
-								.getProvisions());
-
-				double afterFinancingCF = ekdif + fkdif;
-
-				double freeCashFlow = operationalCF + afterInvestmentCF
-						+ afterFinancingCF;
-
-				period.setFreeCashFlow(freeCashFlow);
-
-				pastPeriod = (AggregateCostMethodPeriod) period.deepCopy();
-
-			}
 		}
-
-	}
-
-	private static void calculateCostOfSalesCashflows(
-			CostOfSalesMethodPeriodContainer container, Szenario szenario) {
-		// TODO Muss noch ausimplementiert werden
 
 	}
 

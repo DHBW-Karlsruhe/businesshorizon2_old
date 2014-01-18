@@ -19,32 +19,12 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation;
 
-import java.util.TreeSet;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.AggregateCostMethodPeriod;
+public interface IndirectCalculationViewInterface extends InputViewInterface {
 
-/**
- * Diese Klasse stellt einen Container für Perioden zu verfügung. Die
- * enthaltenen Bilanzposten der Periode sind nach dem Umsatzkostenverfahren
- * bewertet.
- * 
- * 
- * @author Kai Westerholz
- * 
- */
-
-public class AggregateCostMethodBalanceSheetPeriodContainer extends
-		AbstractPeriodContainer {
-
-	public AggregateCostMethodBalanceSheetPeriodContainer() {
-		super();
-	}
-
-	@Override
-	public TreeSet<AggregateCostMethodPeriod> getPeriods() {
-		return (TreeSet<AggregateCostMethodPeriod>) super.getPeriods();
-	}
+	
 
 }
