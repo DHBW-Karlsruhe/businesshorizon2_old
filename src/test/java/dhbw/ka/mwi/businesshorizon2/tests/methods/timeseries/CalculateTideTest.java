@@ -40,12 +40,12 @@ public class CalculateTideTest extends TestCase {
 		CalculateTide tide = new CalculateTide();
 		timeseries = tide.reduceTide(timeseries);
 		double[] results = new double[timeseries.length];
-		results[0] = 3969476.190476209;
-		results[1] = -7802980.952380925;
-		results[2] = 894561.9047619104;
-		results[3] = 4116104.761904776;
-		results[4] = 448647.61904764175;
-		results[5] = -1625809.5238094926;
+		results[0] = -3969476.190476209;
+		results[1] = 7802980.952380925;
+		results[2] = -894561.9047619104;
+		results[3] = -4116104.761904776;
+		results[4] = -448647.61904764175;
+		results[5] = 1625809.5238094926;
 
 		System.out.println(timeseries[0]);
 		System.out.println(results[0]);

@@ -19,35 +19,33 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
+package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
+import java.util.TreeSet;
+import dhbw.ka.mwi.businesshorizon2.models.Period.DirectCalculatedCashflowPeriod;
 
-public interface TimelineViewInterface extends ContentView {
+/**
+* Diese Klasse stellt den Container für die Perioden zur Verfügung. Die
+* Bilanzinhalte der Perioden sind nach dem Umsazukostenverfahren bewertet.
+*
+* @author Kai Westerholz
+*
+*/
 
-        public void addFuturePeriod(Period period);
+public class DirectCalculatedCashflowPeriodContainer extends AbstractPeriodContainer {
 
-        public void removeFuturePeriod();
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1780595206691527261L;
 
-        public void addPastPeriod(Period period);
+        public DirectCalculatedCashflowPeriodContainer() {
+                super();
+        }
 
-        public void removePastPeriod();
-
-        // public void setPeriodValid(int year, boolean isValid);
-
-        public void setPastButtonAccess(boolean usable);
-
-        public void setFutureButtonAccess(boolean usable);
-        
-        //Annika Weis
-        public void setPastDeleteButtonAccess(boolean usable);
-        
-        //Annika Weis
-        public void setFutureDeleteButtonAccess(boolean usable);
-
-        void addBasePeriod(Period period);
-
-        public void setButtonWrong(int year, boolean isWrong);
+        @Override
+        public TreeSet<DirectCalculatedCashflowPeriod> getPeriods() {
+                return (TreeSet<DirectCalculatedCashflowPeriod>) super.getPeriods();
+        }
 
 }

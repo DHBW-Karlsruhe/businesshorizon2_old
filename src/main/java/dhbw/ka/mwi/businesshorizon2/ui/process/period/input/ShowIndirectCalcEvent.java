@@ -19,35 +19,26 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
+import com.mvplite.event.Event;
 
-public interface TimelineViewInterface extends ContentView {
+import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
 
-        public void addFuturePeriod(Period period);
-
-        public void removeFuturePeriod();
-
-        public void addPastPeriod(Period period);
-
-        public void removePastPeriod();
-
-        // public void setPeriodValid(int year, boolean isValid);
-
-        public void setPastButtonAccess(boolean usable);
-
-        public void setFutureButtonAccess(boolean usable);
+public class ShowIndirectCalcEvent extends Event implements ShowInputViewEventInterface{
         
-        //Annika Weis
-        public void setPastDeleteButtonAccess(boolean usable);
+        /**
+         *
+         */
+        private static final long serialVersionUID = -2773797208503072554L;
+        private IndirectCalculatedCashflowPeriod period;
         
-        //Annika Weis
-        public void setFutureDeleteButtonAccess(boolean usable);
+        public ShowIndirectCalcEvent(IndirectCalculatedCashflowPeriod period){
+                this.period = period;
+        }
 
-        void addBasePeriod(Period period);
-
-        public void setButtonWrong(int year, boolean isWrong);
+        public IndirectCalculatedCashflowPeriod getPeriod() {
+                return period;
+        }
 
 }

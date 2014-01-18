@@ -29,8 +29,8 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
  * 
  */
 public interface CallbackInterface {
-	public void onComplete(StochasticResultContainer result, String methodName);
-
+	public void onComplete(StochasticResultContainer result, AbstractStochasticMethod method);
+	
 	public void onProgressChange(float progress);
 
 	public void onError(Throwable t);

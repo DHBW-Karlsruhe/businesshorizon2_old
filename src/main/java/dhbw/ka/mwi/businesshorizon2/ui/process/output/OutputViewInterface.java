@@ -26,7 +26,6 @@ import com.vaadin.ui.Label;
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 public interface OutputViewInterface extends ContentView {
@@ -51,10 +50,7 @@ public interface OutputViewInterface extends ContentView {
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
 	void addDeterministicChartArea(DeterministicChartArea chartArea);
-	
-	//Annika Weis
-	void addBasicLineChartArea(BasicLineChart chartArea);
-	void addDeterministicLineChartArea(DeterministicLineChart lineChart);
+
 	void addLabel(Label label);
 	
 	void showErrorMessge(String message);

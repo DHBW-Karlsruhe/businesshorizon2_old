@@ -19,37 +19,44 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
+
+import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
 /**
  * Die DeterministicChartArea komponiert die Ausgabe der Ergebnisse des
  * deterministischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Marcel Rosenberger, Annika Weis
  * 
  */
-public class DeterministicChartArea extends GridLayout {
+public class DeterministicChartArea extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger
+			.getLogger("DeterministicChartArea.class");
 
-	public DeterministicChartArea(double debitFreeCompanyValue, double taxBenefits, double companyValue,
-			double capitalStock) {
-
-		super(2, 2);
+	public DeterministicChartArea(double uwsteuerfrei, double steuervorteile,
+			double unternehmenswert, double fremdkapital, String name,
+			DeterministicResultContainer drContainer, Szenario scenario) {
 
 		Label headline = new Label("<h2>Deterministisches Verfahren</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
-		this.addComponent(headline, 0, 0);
+		this.addComponent(headline);
 
 		// Chart zur Aufschlüsselung des Unternehmenswert
-
 		List<String> cvKeyColumns = new ArrayList<String>();
 		cvKeyColumns.add("Unverschuldetes Unternehmen");
 		cvKeyColumns.add("Steuervorteil");
@@ -57,19 +64,56 @@ public class DeterministicChartArea extends GridLayout {
 		cvKeyColumns.add("Fremdkapital");
 
 		Map<String, double[]> cvKeyValues = new LinkedHashMap<String, double[]>();
-		cvKeyValues.put("Unverschuldetes Unternehmen und Steuervorteil", new double[] { debitFreeCompanyValue,
-				taxBenefits, 0, 0 });
-		cvKeyValues.put("Unternehmenswert und Fremdkapital", new double[] { 0, 0, companyValue, capitalStock });
+		cvKeyValues.put("Unverschuldetes Unternehmen und Steuervorteil",
+				new double[] { uwsteuerfrei, steuervorteile, 0, 0 });
+		cvKeyValues.put("Unternehmenswert und Fremdkapital", new double[] { 0,
+				0, unternehmenswert, fremdkapital });
 
-		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart", cvKeyColumns);
+		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart",
+				cvKeyColumns);
 		cvKeyChart.addValues(cvKeyValues);
+		cvKeyChart.setOption("is3D", true);
+		cvKeyChart.setHeight("300px");
+		cvKeyChart.setWidth("500px");
+		this.addComponent(cvKeyChart);
+		// Platzhalter
+		this.addComponent(new Label(""));
 
-		this.addComponent(cvKeyChart, 0, 1);
+		// Chart zu Fremdkapital und Cashflow Verlauf
+		// Beschriftung der Linie hinzufügen
+		List<String> cfKeyColumns = new ArrayList<String>();
+		cfKeyColumns.add("Cashflows");
+		cfKeyColumns.add("Fremdkapital");
 
-		// Chart zur Kapitalstruktur
+		double[] cashflows = new double[drContainer.getJahre().length];
+		double[] fremdkapitalwerte = new double[drContainer.getJahre().length];
+		int[] jahre = new int[drContainer.getJahre().length];
+		cashflows = drContainer.getCashflows();
+		fremdkapitalwerte = drContainer.getFremdkapitl();
+		jahre = drContainer.getJahre();
+		int anzahlWerte = drContainer.getJahre().length;
 
-		this.setHeight("600px");
-		this.setWidth("1000px");
+		// Werte hinzufügen
+		Map<String, double[]> cfKeyValues = new LinkedHashMap<String, double[]>();
+		for (int i = 0; i < anzahlWerte; i++) {
+			cfKeyValues.put(jahre[i] + "", new double[] { cashflows[i],
+					fremdkapitalwerte[i] });
+			logger.debug("DeterministicLineChart: " + cashflows[i] + " &  "
+					+ fremdkapitalwerte[i]);
+		}
+
+		BasicLineChart cfKeyChart = new BasicLineChart("Chart", cfKeyColumns);
+		cfKeyChart.addValues(cfKeyValues);
+		cfKeyChart.setHeight("300px");
+		cfKeyChart.setWidth("500px");
+		this.addComponent(cfKeyChart);
+
+
+		// Planungsprämissen des Szenarios hinzufügen
+		ScenarioTable st = new ScenarioTable(scenario);
+		st.setHeight("200px");
+		this.addComponent(st);
+		this.setHeight("800px");
 
 	}
 

@@ -19,35 +19,11 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
-
-import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
-
-public interface TimelineViewInterface extends ContentView {
-
-        public void addFuturePeriod(Period period);
-
-        public void removeFuturePeriod();
-
-        public void addPastPeriod(Period period);
-
-        public void removePastPeriod();
-
-        // public void setPeriodValid(int year, boolean isValid);
-
-        public void setPastButtonAccess(boolean usable);
-
-        public void setFutureButtonAccess(boolean usable);
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
         
-        //Annika Weis
-        public void setPastDeleteButtonAccess(boolean usable);
-        
-        //Annika Weis
-        public void setFutureDeleteButtonAccess(boolean usable);
 
-        void addBasePeriod(Period period);
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-        public void setButtonWrong(int year, boolean isWrong);
+public interface DirectCalculationViewInterface extends InputViewInterface {
 
 }

@@ -19,26 +19,11 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe;
 
-import com.mvplite.event.Event;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
-
-public class ShowUmsatzViewEvent extends Event implements ShowInputViewEventInterface{
-
+public interface DirektViewInterface extends InputViewInterface {
 	
-	
-	private CostOfSalesMethodPeriod period;
 
-	public ShowUmsatzViewEvent(CostOfSalesMethodPeriod period){
-		this.period = period;
-	}
-
-	public CostOfSalesMethodPeriod getPeriod() {
-		return period;
-	}
-
-
-	
 }

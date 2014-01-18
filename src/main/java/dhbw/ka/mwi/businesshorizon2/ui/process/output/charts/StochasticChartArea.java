@@ -19,6 +19,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output.charts;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,9 +28,12 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 
@@ -38,14 +42,17 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
  * stochastischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Marcel Rosenberger
  * 
  */
 public class StochasticChartArea extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = Logger
+			.getLogger("StochasticChartArea.class");
 
-	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues) {
+	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung, Szenario scenario) {
 
 		// Überschrift anzeigen
 		Label title = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
@@ -66,24 +73,43 @@ public class StochasticChartArea extends VerticalLayout {
 		String expectedCompanyValue = "";
 		double expectedCompanyValueFreq = 0;
 
-		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
+		logger.debug("Erwartungswert ermitteln");
+		
 
+        for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
+
+                cvChartValues.put(Double.toString(companyValue.getKey()),
+                                new double[] { companyValue.getValue().getCount() });
+
+                // Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
+                // Häufigkeit)
+                if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
+                        expectedCompanyValue = Double.toString(companyValue.getKey());
+                        expectedCompanyValueFreq = companyValue.getValue().getCount();
+                }
+
+        }
+		/*int i = 0;
+
+		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
 			cvChartValues.put(Double.toString(companyValue.getKey()),
 					new double[] { companyValue.getValue().getCount() });
-
-			// Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
-			// Häufigkeit)
-			if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
+			//Erwartungswert der Unternehmenswerte bestimmen
+			//der mittlere Balken einer Normalverteilung ist der Erwartungswert
+			if(i >=(companyValues.entrySet().size()/2)){
 				expectedCompanyValue = Double.toString(companyValue.getKey());
 				expectedCompanyValueFreq = companyValue.getValue().getCount();
-			}
-
-		}
+				i = - 1;
+			} 
+			i++;
+		}*/
 
 		cvChartValues.put(expectedCompanyValue, new double[] { 0, expectedCompanyValueFreq });
 
 		cvChart.addValues(cvChartValues);
 		cvChart.setHeight("200px");
+		cvChart.setWidth("1024px");
+		
 
 		this.addComponent(cvChart);
 
@@ -91,13 +117,14 @@ public class StochasticChartArea extends VerticalLayout {
 		if (periods != null) {
 			List<String> cfChartLines = new ArrayList<String>();
 			cfChartLines.add("Erwartete Cashflows");
+			cfChartLines.add("Erwartetes Fremdkapital");
 
 			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
-			BasicLineChart cfChart = new BasicLineChart("Cashflows", cfChartLines);
+			BasicLineChart cfChart = new BasicLineChart("Erwartete Werte", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow() });
+				cfChartValues.put(Integer.toString(period.getYear()), new double[] { period.getFreeCashFlow(), period.getCapitalStock() });
 
 			}
 
@@ -105,7 +132,17 @@ public class StochasticChartArea extends VerticalLayout {
 			cfChart.setHeight("200px");
 			this.addComponent(cfChart);
 		}
-		this.setHeight("590px");
+		
+		//Modellabweichung hinzufügen		
+		DecimalFormat df = new DecimalFormat("#.00");
+		this.addComponent(new Label("Die Modellabweichung beträgt " + df.format(validierung) + "%"));
+		
+		//Planungsprämissen des Szenarios hinzufügen
+		ScenarioTable st = new ScenarioTable(scenario);
+		st.setHeight("200px");
+		this.addComponent(st);
+		
+		this.setHeight("900px");
 		this.setWidth("1024px");
 
 	}

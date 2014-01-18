@@ -24,6 +24,14 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
  * 
  */
 public class APV_2 extends AbstractDeterministicMethod {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3577122037488635230L;
+	private double uwsteuerfrei;
+	private double steuervorteile;
+	private double fremdkapital;
 
 	@Override
 	public String getName() {
@@ -113,6 +121,9 @@ public class APV_2 extends AbstractDeterministicMethod {
 
 		// Unternehmenswert gesamt berechnen
 		unternehmenswert = gk + v - first_period_fremdkapital;
+		this.setUwsteuerfrei(gk);
+		this.setSteuervorteile(v);
+		this.setFremdkapital(first_period_fremdkapital);
 
 
 		return unternehmenswert;
@@ -128,4 +139,48 @@ public class APV_2 extends AbstractDeterministicMethod {
 	private double abzinsen(double wert, double zinssatz, int jahre) {
 		return wert / Math.pow(1 + zinssatz, jahre);
 	}
+	
+	/**
+	 * @author Marcel Rosenberger
+	 */
+	public double getUwsteuerfrei() {
+		return uwsteuerfrei;
+	}
+
+	/**
+	 * @author Marcel Rosenberger
+	 */
+	public void setUwsteuerfrei(double uwsteuerfrei) {
+		this.uwsteuerfrei = uwsteuerfrei;
+	}
+
+	/**
+	 * @author Marcel Rosenberger
+	 */
+	public double getSteuervorteile() {
+		return steuervorteile;
+	}
+
+	/**
+	 * @author Marcel Rosenberger
+	 */
+	public void setSteuervorteile(double steuervorteile) {
+		this.steuervorteile = steuervorteile;
+	}
+
+	/**
+	 * @author Marcel Rosenberger
+	 */
+	public double getFremdkapital() {
+		return fremdkapital;
+	}
+
+	/**
+	 * @author Marcel Rosenberger
+	 */
+	public void setFremdkapital(double fremdkapital) {
+		this.fremdkapital = fremdkapital;
+	}
+
+
 }

@@ -206,14 +206,14 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		stochMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			stochMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getStochastic();
+					.getProjectInputType().isStochastic();
 		} 
 		
 		//Annika Weis
 		detMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			detMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getDeterministic();
+					.getProjectInputType().isDeterministic();
 		} 
 
 		randomWalk = false;
@@ -538,7 +538,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			if (periodsToForecast_deterministicInt > 0) {
 				periodsToForecast_deterministicValid = true;
 				getView().setComponentError(false, "periodsToForecast_deterministic", "");
-				this.projectProxy.getSelectedProject().setPeriodsToForecast(
+				this.projectProxy.getSelectedProject().setPeriodsToForecast_deterministic(
 						periodsToForecast_deterministicInt);
 				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
 			} else {
@@ -962,7 +962,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		stochMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			stochMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getStochastic();
+					.getProjectInputType().isStochastic();
 		} 
 
 		randomWalk = false;

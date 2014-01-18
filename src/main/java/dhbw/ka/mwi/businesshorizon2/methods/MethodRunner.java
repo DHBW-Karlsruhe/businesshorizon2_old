@@ -75,11 +75,11 @@ public class MethodRunner extends Thread {
 	public void run() {
 		try {
 			StochasticResultContainer result = method.calculate(project, callback);
-			callback.onComplete(result, method.getName());
+			callback.onComplete(result, method);
 		} catch (InterruptedException e) {
-			callback.onComplete(null, method.getName());
+			callback.onComplete(null, method);
 		} catch (StochasticMethodException e) {
-			callback.onComplete(null, method.getName());
+			callback.onComplete(null, method);
 		}
 	}
 }

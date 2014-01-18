@@ -19,29 +19,41 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe;
 
-import java.util.TreeSet;
+import javax.annotation.PostConstruct;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CostOfSalesMethodPeriod;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
- * Diese Klasse stellt den Container für die Perioden zur Verfügung. Die
- * Bilanzinhalte der Perioden sind nach dem Umsazukostenverfahren bewertet.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
+ * Vaadin.
  * 
- * @author Kai Westerholz
+ * @author Daniel Dengler
  * 
  */
+public class DirektViewImpl extends AbstractInputView implements DirektViewInterface {
+	private static final long serialVersionUID = 1L;
 
-public class CostOfSalesMethodPeriodContainer extends AbstractPeriodContainer {
+	@Autowired
+	private DirektPresenter presenterTemp;
 
-	public CostOfSalesMethodPeriodContainer() {
-		super();
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 * 
+	 * @author Daniel Dengler
+	 */
+
+	
+	@PostConstruct
+	public void init() {
+		presenter = presenterTemp;
+		presenter.setView(this);
 	}
-
-	@Override
-	public TreeSet<CostOfSalesMethodPeriod> getPeriods() {
-		return (TreeSet<CostOfSalesMethodPeriod>) super.getPeriods();
-	}
-
 }
+
