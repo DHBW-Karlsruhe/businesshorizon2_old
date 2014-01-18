@@ -20,6 +20,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
+import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -28,11 +29,37 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCas
 
 /**
 *
-* @author kathie
+* @author Marcel Rosenberger
 *
 */
 public class CashFlowCalculator {
 
+	
+	  /**
+     * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
+     * indirekten Berechnungsmethoden ermitteln. Der 'Free Cashflow' wird
+     * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
+     *
+     * @author Marcel Rosenberger
+     *
+     * @param result
+     * DeterministicResultContainer
+     * @param szenario
+     * 				Szenario
+     */
+    public static void calculateCashflows(DeterministicResultContainer result,
+                    Szenario szenario) {
+
+            for (AbstractPeriodContainer container : result.getPeriodContainers()) {
+                    if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+                            calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+                    } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+                            calculateIndirectCashflows(
+                                            (IndirectCalculatedCashflowPeriodContainer) container,
+                                            szenario);
+                    }
+            }
+    }
         /**
          * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
          * indirekten Berechnungsmethoden ermitteln. Der 'Free Cashflow' wird
@@ -94,6 +121,7 @@ public class CashFlowCalculator {
 
                 for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
                         double freeCashFlow = period.getJahresÜberschuss()
+                        				+ period.getZinsen()
                                         - period.getTaxShield()
                                         + period.getNichtZahlungswirksameAufwendungen()
                                         - period.getNichtZahlungswirksameErtraege()

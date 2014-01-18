@@ -40,6 +40,12 @@ public class IndirectCalculatedCashflowPeriod extends Period {
         private double jahresÜberschuss;
 
         /**
+         * Zinsen
+         */
+        private double zinsen;
+        private boolean zinsenSet;
+        
+        /**
          * Fiktive Steuern
          */
         private double taxShield;
@@ -216,5 +222,34 @@ public class IndirectCalculatedCashflowPeriod extends Period {
         public void setBruttoInvestitionenSet(boolean bruttoInvestitionenSet) {
                 this.bruttoInvestitionenSet = bruttoInvestitionenSet;
         }
+
+		/**
+		 * @return the zinsen
+		 */
+		public double getZinsen() {
+			return zinsen;
+		}
+
+		/**
+		 * @param zinsen the zinsen to set
+		 */
+		public void setZinsen(double zinsen) {
+			this.zinsen = zinsen;
+			zinsenSet = true;
+		}
+
+		/**
+		 * @return the zinsenSet
+		 */
+		public boolean isZinsenSet() {
+			return zinsenSet;
+		}
+
+		/**
+		 * @param zinsenSet the zinsenSet to set
+		 */
+		public void setZinsenSet(boolean zinsenSet) {
+			this.zinsenSet = zinsenSet;
+		}
 
 }
