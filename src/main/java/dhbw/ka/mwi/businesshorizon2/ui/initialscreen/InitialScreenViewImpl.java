@@ -69,15 +69,13 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private HorizontalSplitPanel horizontalSplitPanel;
 
-	private VerticalLayout heading;
+	private VerticalLayout header;
 	
 	private HorizontalLayout horizontal;
 	
 	private VerticalLayout left;
 	
-	private VerticalLayout right;
-	
-	private VerticalLayout middle;
+	private HorizontalLayout right;
 	
 	private Label title;
 
@@ -95,7 +93,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUI();
+		generateUi();
 		logger.debug("Initialisierung beendet");
 	}
 
@@ -106,37 +104,36 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 * 
 	 * @author Christian Scherer, Mirko Göpfrich
 	 */
-	private void generateUI() {
+	private void generateUi() {
 		setCaption("Business Horizon 2.1");
 		logger.debug("Ueberschrift fuer Browser erstellt");
 
 		//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
 		verticalSplitPanel = new VerticalSplitPanel();
-		verticalSplitPanel.setSizeFull();
 		verticalSplitPanel.setSplitPosition(100, Sizeable.UNITS_PIXELS);
 		verticalSplitPanel.setLocked(true);
+		verticalSplitPanel.setStyleName("small");
 		logger.debug("Neues Vertikales SplitPanel erstellt");
 
 		//erzeugt die Layouts
-		heading = new VerticalLayout();
-		middle = new VerticalLayout();
+		header = new VerticalLayout();
 		horizontal = new HorizontalLayout();
 		left = new VerticalLayout();
-		right = new VerticalLayout();
+		right = new HorizontalLayout();
 		
-		heading.setSizeFull();
-		middle.setSizeFull();
+		header.setSizeFull();
 		horizontal.setSizeFull();
 		left.setWidth(50, UNITS_PERCENTAGE);
 		
 		//verschachtelt die Layouts
-		heading.addComponent(middle);
-		middle.addComponent(horizontal);
+		header.addComponent(horizontal);
 		horizontal.addComponent(left);
 		horizontal.addComponent(right);
 		
+		horizontal.setComponentAlignment(right, Alignment.TOP_RIGHT);
+		
 		//fügt dem oberen Panel die Überschrift hinzu
-		verticalSplitPanel.setFirstComponent(heading);
+		verticalSplitPanel.setFirstComponent(header);
 		title = new Label("<h1>Business Horizon 2.1</h1>");
 		title.setStyleName("ueberschriften");
 		title.setContentMode(Label.CONTENT_XHTML);
@@ -149,10 +146,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		horizontalSplitPanel.setSizeFull();
 		horizontalSplitPanel.setSplitPosition(50, UNITS_PERCENTAGE);
 		horizontalSplitPanel.setLocked(true);
+		horizontalSplitPanel.setStyleName("small");
 		
 		//fügt dem unteren vertikalen Panel ein horizontales SplitPanel hinzu.
 		verticalSplitPanel.setSecondComponent(horizontalSplitPanel);
-		logger.debug("Horizontales SplitPanel für Projkte und Infos erstellt und an das untere vertikale Panel übergeben");
+		logger.debug("Horizontales SplitPanel für Projekte und Infos erstellt und an das untere vertikale Panel übergeben");
 
 		// Setzt das vertikale Splitpanel (äußeres Panel) inkl innere Panels als Inhalt für das Fenster.
 		setContent(verticalSplitPanel);
@@ -176,9 +174,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
 		 *  und Prozesssicht gesprungen wird. 
 		 */
-		Label userInfo = new Label("Sie sind angemeldet als:");
+		Label userInfo = new Label("Sie sind angemeldet als: ");
 		right.addComponent(userInfo);
-		right.setComponentAlignment(userInfo, Alignment.MIDDLE_RIGHT);
+		right.setComponentAlignment(userInfo, Alignment.TOP_RIGHT);
 		
 		
 		if(userData != null) {
@@ -190,7 +188,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		userData.setContentMode(Label.CONTENT_XHTML);
 		userData.setVisible(true);
 		right.addComponent(userData);
-		right.setComponentAlignment(userData, Alignment.MIDDLE_RIGHT);;
+		right.setComponentAlignment(userData, Alignment.TOP_RIGHT);;
 	}
 	
 	/**

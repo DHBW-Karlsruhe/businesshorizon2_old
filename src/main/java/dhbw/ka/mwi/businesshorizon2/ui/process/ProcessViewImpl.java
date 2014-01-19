@@ -23,11 +23,13 @@ package dhbw.ka.mwi.businesshorizon2.ui.process;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
@@ -36,16 +38,20 @@ import com.vaadin.ui.Window;
  * Sie rendert die Ansicht der Navigation als obere View und den entsprechenden
  * Masken als untere View
  * 
- * @author Christian Gahlert, Julius Hacker
+ * @author Christian Gahlert, Julius Hacker, Mirko Göpfrich
  *
  */
 public class ProcessViewImpl extends Window implements ProcessViewInterface {
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger logger = Logger.getLogger("ProcessViewImpl.class");
+	
 	@Autowired
 	private ProcessPresenter presenter;
 	
-	private VerticalSplitPanel splitpanel;
+	private VerticalSplitPanel verticalSplitPanel;
+
+	private HorizontalSplitPanel horizontalSplitPanel;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -58,23 +64,31 @@ public class ProcessViewImpl extends Window implements ProcessViewInterface {
 	public void init() {
 		presenter.setView(this);
 		generateUi();
+		logger.debug("Initialisierung beendet");
 	}
 	
 	/**
-	 * Diese Methode setzt den Titel (im Browser-Fenster) zu "Business Horizon 2" und
+	 * Diese Methode setzt den Titel (im Browser-Fenster) zu "Business Horizon 2.1" und
 	 * erstellt das zugehoerige Vertikale Splitpanel, in dem oben die Navigation und
 	 * unten die anzuzeigende Maske eingefuegt werden koennen.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Mirko Göpfrich
 	 */
 	private void generateUi() {
-		setCaption("Business Horizon 2"); 
+		setCaption("Business Horizon 2.1");
+		logger.debug("Ueberschrift fuer Browser erstellt");
 		
-		splitpanel = new VerticalSplitPanel();
-		splitpanel.setLocked(true);
-		splitpanel.setSplitPosition(150, Sizeable.UNITS_PIXELS);
+		//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
+		verticalSplitPanel = new VerticalSplitPanel();
+		verticalSplitPanel.setSplitPosition(100, Sizeable.UNITS_PIXELS);
+		verticalSplitPanel.setLocked(true);
+		verticalSplitPanel.setStyleName("small");
+		logger.debug("Neues Vertikales SplitPanel erstellt");
+
+		// Setzt das vertikale Splitpanel (äußeres Panel) inkl innere Panels als Inhalt für das Fenster.
+		setContent(verticalSplitPanel);
+		logger.debug("Vertikales SplitPanel mit allen Elementen an das Hauptfenster übergeben");
 		
-		setContent(splitpanel);
 	}
 	
 	/**
@@ -86,8 +100,36 @@ public class ProcessViewImpl extends Window implements ProcessViewInterface {
 	 */
 	@Override
 	public void showView(View topView, View bottomView) {
-		splitpanel.setFirstComponent((Component) topView);
-		splitpanel.setSecondComponent((Component) bottomView);
+		verticalSplitPanel.setFirstComponent((Component) topView);
+		verticalSplitPanel.setSecondComponent((Component) bottomView);
 		
 	}
+	
+	/**
+	 * Diese Methode setzt die obere und die zwei unteren Views in der Prozessansicht.
+	 * 
+	 * @author: Mirko Göpfrich
+	 */
+	
+	@Override
+	public void showView(View topView, View bottomLeftView, View bottomRigthView) {
+		verticalSplitPanel.setFirstComponent((Component) topView);
+		
+		//Teilt das Panel horizontal un zwei gleiche Bereiche auf und ertstellt eine vertiakel Trennlinie (nicht verstellbar.)
+		horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setSizeFull();
+		horizontalSplitPanel.setSplitPosition(50, UNITS_PERCENTAGE);
+		horizontalSplitPanel.setLocked(true);
+		horizontalSplitPanel.setStyleName("small");
+	
+		horizontalSplitPanel.setFirstComponent((Component) bottomLeftView);
+		horizontalSplitPanel.setSecondComponent((Component) bottomRigthView);
+		
+		//fügt dem unteren vertikalen Panel ein horizontales SplitPanel hinzu.
+		verticalSplitPanel.setSecondComponent(horizontalSplitPanel);
+		logger.debug("Horizontales SplitPanel für Prozessschritte und Infos erstellt und an das untere vertikale Panel übergeben");
+	
+	}
+
 }
+

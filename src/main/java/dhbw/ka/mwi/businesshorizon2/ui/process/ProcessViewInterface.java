@@ -48,4 +48,6 @@ public interface ProcessViewInterface extends View {
 	 * @author Julius Hacker
 	 */
 	public void showView(View topView, View bottomView);
+
+	public void showView(View topVie, View bottomViewleft, View bottomViewRigth);
 }

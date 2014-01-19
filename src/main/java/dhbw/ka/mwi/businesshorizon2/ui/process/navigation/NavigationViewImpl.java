@@ -60,13 +60,18 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	
 	@Autowired
 	private NavigationPresenter presenter;
+	
 	@Autowired
 	private UserProxy userProxy;
 	
 	private HorizontalLayout full;
+	
 	private VerticalLayout layout;
+	
 	private HorizontalLayout innerlayout;
+	
 	private VerticalLayout topbar;
+	
 	private VerticalLayout topbarinnerlayout;
 	
 	private Label arrow;
@@ -91,13 +96,13 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	/**
 	 * Diese Methode baut die Navigationsoberflaeche auf.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Mirko Göpfrich
 	 */
 	private void generateUi() {
-		setSizeFull();
+		this.setSizeFull();
 		
-		this.arrow = new Label("&#10144;");
-		arrow.setContentMode(Label.CONTENT_XHTML);
+		//this.arrow = new Label("&#10144;");
+		//arrow.setContentMode(Label.CONTENT_XHTML);
 		
 		this.full = new HorizontalLayout();
 		this.full.setSizeFull();
@@ -159,9 +164,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	}
 
 	private void addOverviewButton() {
-		Button overviewButton = new Button("");
-		overviewButton.addStyleName(Reindeer.BUTTON_LINK);
-		overviewButton.setIcon(new ThemeResource("images/homebutton.jpg"));
+		Button overviewButton = new Button("Projektübersicht");
+		overviewButton.addStyleName("default");
 		overviewButton.addListener(new Button.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -185,7 +189,7 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	 */
 	@Override
 	public void addNavigationButton(final NavigationSteps navigationStep) {
-		this.innerlayout.addComponent(arrow);
+		//this.innerlayout.addComponent(arrow);
 		Button navigationButton = new Button(navigationStep.getCaption());
 		this.navigationButtons.put(navigationStep, navigationButton);
 		
@@ -206,7 +210,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	}
 	private void addLogoutButton(String text) {
 		Button logoutButton = new Button(text);
-		logoutButton.setVisible(false);
+		logoutButton.addStyleName("default");
+		logoutButton.setVisible(true);
 		logoutButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 7411091035775152765L;
 			
