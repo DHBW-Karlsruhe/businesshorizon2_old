@@ -41,7 +41,7 @@ import com.vaadin.ui.themes.Reindeer;
  * @author Julius Hacker
  *
  */
-public class ContentContainerViewImpl extends VerticalLayout implements ContentContainerView {
+public class ContentContainerViewImpl extends VerticalLayout implements ContentContainerViewInterface {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired

@@ -30,7 +30,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerView;
+import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.ShowNavigationEvent;
@@ -54,7 +54,7 @@ public class ProcessPresenter extends Presenter<ProcessViewInterface>{
 	private NavigationViewInterface navigationView;
 	
 	@Autowired
-	private ContentContainerView contentContainerView;
+	private ContentContainerViewInterface contentContainerView;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
