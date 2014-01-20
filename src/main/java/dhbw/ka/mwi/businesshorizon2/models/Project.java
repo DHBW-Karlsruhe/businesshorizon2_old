@@ -94,9 +94,9 @@ public class Project implements Serializable {
 	private int basisYear;
 	private ProjectInputType projectInputType;
 
-	private SortedSet<AbstractStochasticMethod> methods;
+	private SortedSet<AbstractStochasticMethod> stochasticMethods;
 	//Annika Weis
-	private SortedSet<AbstractCalculationMethod> methods_deterministic;
+	private SortedSet<AbstractCalculationMethod> calculationMethods;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
@@ -300,22 +300,22 @@ public class Project implements Serializable {
 		return name;
 	}
 
-	public void setMethods(SortedSet<AbstractStochasticMethod> methods) {
-		this.methods = methods;
+	public void setStochasticMethods(SortedSet<AbstractStochasticMethod> methods) {
+		this.stochasticMethods = methods;
 	}
 
-	public SortedSet<AbstractStochasticMethod> getMethods() {
-		return methods;
+	public SortedSet<AbstractStochasticMethod> getStochasticMethods() {
+		return stochasticMethods;
 	}
 	
 	//Annika Weis
-	public void setMethods_deterministic(SortedSet<AbstractCalculationMethod> methods_deterministic) {
-		this.methods_deterministic = methods_deterministic;
+	public void setCalculationMethods(SortedSet<AbstractCalculationMethod> methods_deterministic) {
+		this.calculationMethods = methods_deterministic;
 	}
 
 	//Annika Weis
-	public SortedSet<AbstractCalculationMethod> getMethods_deterministic() {
-		return methods_deterministic;
+	public SortedSet<AbstractCalculationMethod> getCalculationMethods() {
+		return calculationMethods;
 	}
 
 	public ProjectInputType getProjectInputType() {
@@ -360,7 +360,7 @@ public class Project implements Serializable {
 	
 	
 	/**
-	 * Gibt die Anzahl vorherzusagender deterinistischer Perioden des Projekts zurück.
+	 * Gibt die Anzahl vorherzusagender deterimistischer Perioden des Projekts zurück.
 	 * 
 	 * @author Annika Weis
 	 * @return Anzahl vorherzusagender Perioden
@@ -370,7 +370,7 @@ public class Project implements Serializable {
 	}
 
 	/**
-	 * Setzt die Anzahl vorherzusagender deterministischer Perioden des Projekts.
+	 * Setzt die Anzahl vorherzusagender determimistischer Perioden des Projekts.
 	 * 
 	 * @author Annika Weis
 	 * @param periodsToForecast_deterministic

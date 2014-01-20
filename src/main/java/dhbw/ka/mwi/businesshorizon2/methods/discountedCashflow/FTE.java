@@ -24,12 +24,12 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
  * @date 29.12.2013
  * 
  */
-public class DCF_2 extends AbstractCalculationMethod {
+public class FTE extends AbstractCalculationMethod {
 
 	@Override
 	public String getName() {
 
-		return "DCF";
+		return "Flow-to-Equity (FTE)";
 	}
 
 	@Override

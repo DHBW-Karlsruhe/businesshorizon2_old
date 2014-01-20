@@ -213,13 +213,13 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		detMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			detMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getDeterministic();
+					.getProjectInputType().getCalculation();
 		} 
 
 		randomWalk = false;
 		wienerProcess = false;
 		timeSeries = false;
-		methods = this.projectProxy.getSelectedProject().getMethods();
+		methods = this.projectProxy.getSelectedProject().getStochasticMethods();
 		methodIterator = methods.iterator();
 		while (methodIterator.hasNext()) {
 			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
@@ -239,7 +239,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		 */
 		dcf=false;
 		apv=false;
-		methods_deterministic = this.projectProxy.getSelectedProject().getMethods_deterministic();
+		methods_deterministic = this.projectProxy.getSelectedProject().getCalculationMethods();
 		method_deterministicIterator = methods_deterministic.iterator();
 		while (method_deterministicIterator.hasNext()) {
 			AbstractCalculationMethod m_d = (AbstractCalculationMethod) method_deterministicIterator
@@ -968,7 +968,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		randomWalk = false;
 		wienerProcess = false;
 		timeSeries = false;
-		methods = this.projectProxy.getSelectedProject().getMethods();
+		methods = this.projectProxy.getSelectedProject().getStochasticMethods();
 		methodIterator = methods.iterator();
 		while (methodIterator.hasNext()) {
 			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator

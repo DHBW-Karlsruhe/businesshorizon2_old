@@ -35,8 +35,8 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -104,10 +104,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 		project = projectProxy.getSelectedProject();
 
-		if (project.getProjectInputType().getDeterministic()) {
+		if (project.getProjectInputType().getCalculation()) {
 			// Annika Weis
 			for (AbstractCalculationMethod method_deterministic : project
-					.getMethods_deterministic()) {
+					.getCalculationMethods()) {
 				// alle Szenarios durchlaufen
 				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
@@ -125,7 +125,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 						double fremdkapital = 0;
 
 						if (method_deterministic.getName() == "APV") {
-							APV_2 apv_2 = new APV_2();
+							APV apv_2 = new APV();
 							unternehmenswert = apv_2.calculateValues(
 									drContainer.getCashflows(),
 									drContainer.getFremdkapitl(), scenario);
@@ -169,7 +169,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 						}
 						if (method_deterministic.getName() == "DCF") {
-							DCF_2 dcf_2 = new DCF_2();
+							FTE dcf_2 = new FTE();
 							unternehmenswert = dcf_2.calculateValues(
 									drContainer.getCashflows(), scenario);
 
@@ -222,7 +222,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 		}
 
 		if (project.getProjectInputType().getStochastic()) {
-			for (AbstractStochasticMethod method : project.getMethods()) {
+			for (AbstractStochasticMethod method : project.getStochasticMethods()) {
 				if (method.getSelected()) {
 
 					methodRunner = new MethodRunner(method, project, this);
@@ -279,7 +279,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			szenariozähler++;
 
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
-			APV_2 apv = new APV_2();
+			APV apv = new APV();
 
 			// Bei Verwendung der Zeitreihenanalyse sollen
 			// zusätzlich

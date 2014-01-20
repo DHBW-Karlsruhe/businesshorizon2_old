@@ -33,7 +33,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_alt;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueDeterministic;
@@ -130,7 +130,7 @@ public class APVTest {
 
 	@Test
 	public void testCalculateCompanyValue() {
-		APV apv = new APV(result, szenario);
+		APV_alt apv = new APV_alt(result, szenario);
 		CompanyValueDeterministic companyValue = (CompanyValueDeterministic) apv
 				.calculateCompanyValue();
 

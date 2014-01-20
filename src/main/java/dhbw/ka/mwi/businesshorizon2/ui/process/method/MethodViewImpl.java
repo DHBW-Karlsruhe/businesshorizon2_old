@@ -71,14 +71,16 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	private Panel stochasticInputPanel;
 	private Panel deterministicInputPanel;
 	
+	//Die entsprechenden OptionGroups (RadioButton) für die Auswahlpanels.
 	private OptionGroup calculationMethod;
 	private OptionGroup cashflowSource;
 	private OptionGroup stochasticMethod; //
 	private OptionGroup deterministicInput;
 	private OptionGroup stochasticInput;
-			
-	private CheckBox stochastic; //= new CheckBox("Stochastische Berechnung");
-	private CheckBox deterministic; //= new CheckBox("Deterministische Eingabe");
+	
+	//auskommentieren
+	private CheckBox stochasticCheckbox; //= new CheckBox("Stochastische Berechnung");
+	private CheckBox deterministicCheckbox; //= new CheckBox("Deterministische Eingabe");
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -97,13 +99,13 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		
 		this.removeAllComponents();
 		
-		stochastic = new CheckBox("Stochastische Berechnung"); //
-		deterministic = new CheckBox("Deterministische Eingabe"); //
+		stochasticCheckbox = new CheckBox("Stochastische Berechnung"); //
+		deterministicCheckbox = new CheckBox("Deterministische Eingabe"); //
 		
-		stochastic.setImmediate(true); //
-		deterministic.setImmediate(true); //	
+		//stochastic.setImmediate(true); //
+		//deterministic.setImmediate(true); //	
 		
-		//Annika Weis
+		//Auswahlpanels initialisieren
 		calculationMethodPanel = new Panel("Berechnungsmethode:");
 		calculationMethodPanel.addStyleName("light");
 		
@@ -113,7 +115,8 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		stochasticMethodPanel = new Panel("Stochastische Methode:"); //
 		stochasticMethodPanel.addStyleName("light"); //
 		
-		stochastic.addListener(new Button.ClickListener() { //
+		//auskommentieren
+		stochasticCheckbox.addListener(new Button.ClickListener() { //
 			
 			private static final long serialVersionUID = 1L;
 
@@ -123,8 +126,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			}
 		});
 		
-		deterministic.addListener(new Button.ClickListener() { //
-	
+		deterministicCheckbox.addListener(new Button.ClickListener() { //
 			
 			private static final long serialVersionUID = 1L;
 
@@ -135,7 +137,8 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			}
 		});
 
-		// ff auskommentieren/entfernen
+		
+		// ff deaktivieren
 		stochasticMethod = new OptionGroup();
 		stochasticMethod.setMultiSelect(false);
 		stochasticMethod.setImmediate(true);
@@ -146,18 +149,16 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				presenter.toggleMethod((Set<AbstractStochasticMethod>) stochasticMethod.getValue());
+				presenter.toggleStochasticMethod((Set<AbstractStochasticMethod>) stochasticMethod.getValue());
 			}
 		});
 		
 
-		/*
-		 * Annika Weis
-		 * Optiongroup für Auswahl der deterministischen Methoden erstellen
-		 */
+
+		 // OptionGroup für Auswahl der Berechnungsmethoden erstellen
 		calculationMethod = new OptionGroup();
 		calculationMethod.setMultiSelect(false);
-		calculationMethod.setImmediate(true);
+		//calculationMethod.setImmediate(true);
 		calculationMethod.addListener(new Property.ValueChangeListener() {
 			
 			private static final long serialVersionUID = 1L;
@@ -165,10 +166,23 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				presenter.toggleMethod_deterministic((Set<AbstractCalculationMethod>) calculationMethod.getValue());
+				presenter.toggleCalculationMethod((Set<AbstractCalculationMethod>) calculationMethod.getValue());
 			}
 		});
 		
+		// OptipnGroup für Auswahl der Herkunft der Cashflows
+		cashflowSource = new OptionGroup();
+		cashflowSource.setMultiSelect(false);
+		//cashflowSource.setImmediate(true);
+		cashflowSource.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				InputType selected = (InputType) event.getProperty().getValue();
+				presenter.togglecashflowSource(true,selected);	
+			}
+		});
 		
 		stochasticInput = new OptionGroup();
 		stochasticInput.setMultiSelect(false);
@@ -179,7 +193,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				InputType selected = (InputType) event.getProperty().getValue();
-				presenter.toggleMethodTypeInput(true,selected);	
+				presenter.toggleStochasticInput(true,selected);	
 			}
 		});
 		
@@ -192,7 +206,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				InputType selected = (InputType) event.getProperty().getValue();
-				presenter.toggleMethod_deterministicTypeInput(true,selected);				
+				presenter.toggleDeterministicInput(true,selected);				
 			}
 		});
 		
@@ -211,9 +225,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		deterministicInputPanel.addStyleName(Reindeer.PANEL_LIGHT);
 		deterministicInputPanel.addComponent(deterministicInput);
 		
-		stochasticInputPanel = new Panel();
-		Label stoCaption= new Label ("Vergangene Perioden (stochastisch):");
-		stochasticInputPanel.addComponent(stoCaption);
+		stochasticInputPanel = new Panel("Vergangene Perioden (stochastisch):");
 		stochasticInput.addItem(InputType.DIRECT);
 		stochasticInput.addItem(InputType.DIRECTCALCULATION);
 		stochasticInput.addItem(InputType.INDIRECTCALCULATION);
@@ -244,6 +256,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		methodList.addComponent(stochasticInputPanel);
 	
 	}
+
 
 	@Override
 	public void showStochasticMethod(AbstractStochasticMethod method) { 
@@ -314,11 +327,11 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	}
 
 	public void setStochastic(Boolean checked) {
-		this.stochastic.setValue(checked);
+		this.stochasticCheckbox.setValue(checked);
 	}
 	
 	public void setDeterministic(Boolean checked) {
-		this.deterministic.setValue(checked);
+		this.deterministicCheckbox.setValue(checked);
 	}
 	
 	@Override
@@ -347,10 +360,10 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	public void showErrorNothingSelected(Boolean state) {
 		
 		if (!state) {
-			this.stochastic.setComponentError(new UserError("Es muss mindestens eine Cashflowherkunft ausgew\u00E4hlt werden"));
+			this.stochasticCheckbox.setComponentError(new UserError("Es muss mindestens eine Cashflowherkunft ausgew\u00E4hlt werden"));
 		}
 		else {
-			this.stochastic.setComponentError(null);
+			this.stochasticCheckbox.setComponentError(null);
 		}
 		
 	}
