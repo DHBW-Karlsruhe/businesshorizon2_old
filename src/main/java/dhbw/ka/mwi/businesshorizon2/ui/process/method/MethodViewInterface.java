@@ -38,7 +38,7 @@ public interface MethodViewInterface extends ContentView {
 	public void showStochasticMethod(AbstractStochasticMethod method);
 	
 	//Annika Weis
-	public void showDerterministicMethod(AbstractCalculationMethod method);
+	public void showCalculationMethod(AbstractCalculationMethod method);
 	
 	public void enableOptions();
 

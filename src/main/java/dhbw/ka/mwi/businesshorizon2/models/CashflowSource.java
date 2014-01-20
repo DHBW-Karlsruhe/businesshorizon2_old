@@ -19,19 +19,28 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
+package dhbw.ka.mwi.businesshorizon2.models;
 
-import com.mvplite.event.Event;
+import java.io.Serializable;
 
-/**
- * Der Event, der zum Auswählen eins Projekts der vom ProjectListPresenter
- * abgesetzt wird. Es kann danach im Wizard mit den Daten des Projekts
- * gearbeitet werden.
- * 
- * 
- * @author Christian Scherer
- * 
- */
-public class ShowProjectEvent extends Event {
-	private static final long serialVersionUID = 1L;
+public enum CashflowSource implements Serializable {
+	DETERMINISTIC("Deterministisch"),STOCHASTIC("Stochastisch");
+	
+	private String caption;
+	
+
+	private CashflowSource(String caption){
+		this.caption = caption;
+	}
+	
+	public String getCaption() {
+		return caption;
+	}
+	
+	@Override
+	public String toString(){
+		
+		return this.getCaption();
+	}
+
 }

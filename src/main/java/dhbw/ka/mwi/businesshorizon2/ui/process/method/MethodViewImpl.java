@@ -41,6 +41,7 @@ import com.vaadin.ui.themes.Reindeer;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.models.CashflowSource;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 
@@ -102,37 +103,45 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		stochasticCheckbox = new CheckBox("Stochastische Berechnung"); //
 		deterministicCheckbox = new CheckBox("Deterministische Eingabe"); //
 		
-		//stochastic.setImmediate(true); //
-		//deterministic.setImmediate(true); //	
+		//?
+		stochasticCheckbox.setImmediate(true); //
+		deterministicCheckbox.setImmediate(true); //	
 		
 		//Auswahlpanels initialisieren
 		calculationMethodPanel = new Panel("Berechnungsmethode:");
 		calculationMethodPanel.addStyleName("light");
 		
-		cashflowSourcePanel = new Panel("Herkunftr der Cashflows:");
+		cashflowSourcePanel = new Panel("Herkunft der Cashflows:");
 		cashflowSourcePanel.addStyleName("light");
 		
+		//deaktivieren
 		stochasticMethodPanel = new Panel("Stochastische Methode:"); //
 		stochasticMethodPanel.addStyleName("light"); //
 		
-		//auskommentieren
+		deterministicInputPanel = new Panel("Zukünftige Perioden (deterministisch):");
+		deterministicInputPanel.addStyleName("light");
+		
+		stochasticInputPanel = new Panel("Vergangene Perioden (stochastisch):");
+		stochasticInputPanel.addStyleName("light");
+		
+		
+		//entfernen
 		stochasticCheckbox.addListener(new Button.ClickListener() { //
-			
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.toggleMethodType(true,event.getButton().booleanValue());				
+				presenter.toggleStochasticMethodType(true,event.getButton().booleanValue());				
 			}
 		});
 		
+		//entfernen
 		deterministicCheckbox.addListener(new Button.ClickListener() { //
-			
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.toggleMethod_deterministicType(true,event.getButton().booleanValue());
+				presenter.toggleDeterministicMethodType(true,event.getButton().booleanValue());
 				
 			}
 		});
@@ -141,7 +150,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		// ff deaktivieren
 		stochasticMethod = new OptionGroup();
 		stochasticMethod.setMultiSelect(false);
-		stochasticMethod.setImmediate(true);
+		//stochasticMethod.setImmediate(true);
 		stochasticMethod.addListener(new Property.ValueChangeListener() {
 			
 			private static final long serialVersionUID = 1L;
@@ -180,7 +189,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				InputType selected = (InputType) event.getProperty().getValue();
-				presenter.togglecashflowSource(true,selected);	
+				presenter.toggleCashflowSource(true,selected);	
 			}
 		});
 		
@@ -216,21 +225,23 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	}
 
 	private void initOptionGroups() {
-		deterministicInputPanel = new Panel();
-		Label detCaption = new Label ("Zukünftige Perioden (deterministisch):");
-		deterministicInputPanel.addComponent(detCaption);
+		
+		cashflowSource.addItem(CashflowSource.DETERMINISTIC);
+		cashflowSource.addItem(CashflowSource.STOCHASTIC);
+		cashflowSourcePanel.addComponent(cashflowSource);
+		
 		deterministicInput.addItem(InputType.DIRECT);
 		deterministicInput.addItem(InputType.DIRECTCALCULATION);
 		deterministicInput.addItem(InputType.INDIRECTCALCULATION);
-		deterministicInputPanel.addStyleName(Reindeer.PANEL_LIGHT);
 		deterministicInputPanel.addComponent(deterministicInput);
 		
-		stochasticInputPanel = new Panel("Vergangene Perioden (stochastisch):");
 		stochasticInput.addItem(InputType.DIRECT);
 		stochasticInput.addItem(InputType.DIRECTCALCULATION);
 		stochasticInput.addItem(InputType.INDIRECTCALCULATION);
-		stochasticInputPanel.addStyleName(Reindeer.PANEL_LIGHT);
 		stochasticInputPanel.addComponent(stochasticInput);
+		
+		//presenter.toggleDeterministicMethodType(true,true);
+		//presenter.toggleStochasticMethodType(true,true);	
 	}
 
 	/**
@@ -246,7 +257,6 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		this.addComponent(methodList);
 		
 		calculationMethodPanel.addComponent(calculationMethod);
-		cashflowSourcePanel.addComponent(cashflowSource);
 		stochasticMethodPanel.addComponent(stochasticMethod);
 		
 		methodList.addComponent(calculationMethodPanel);
@@ -254,9 +264,26 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		methodList.addComponent(stochasticMethodPanel);
 		methodList.addComponent(deterministicInputPanel);
 		methodList.addComponent(stochasticInputPanel);
+		
+		//entfernen
+		methodList.addComponent(deterministicCheckbox);
+		methodList.addComponent(stochasticCheckbox);
 	
 	}
 
+	/*
+	 * Annika Weis
+	 * zeigt die deterministische Methode an
+	 */
+	@Override
+	public void showCalculationMethod(AbstractCalculationMethod method) {
+		calculationMethod.addItem(method);
+		calculationMethod.setItemEnabled(method, method.getImplemented());
+		
+		if (method.getSelected()){
+			calculationMethod.select(method);
+		}
+	}
 
 	@Override
 	public void showStochasticMethod(AbstractStochasticMethod method) { 
@@ -266,29 +293,12 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		if (method.getSelected()){
 			stochasticMethod.select(method);
 		}
-
 	}
 
-	
-	/*
-	 * Annika Weis
-	 * zeigt die deterministische Methode an
-	 */
-	@Override
-	public void showDerterministicMethod(AbstractCalculationMethod method) {
-		calculationMethod.addItem(method);
-		calculationMethod.setItemEnabled(method, method.getImplemented());
-		
-		if (method.getSelected()){
-			calculationMethod.select(method);
-		}
-
-	}
 	
 	@Override
 	public void enableOptions() {
-		
-		
+			
 	}
 
 	@Override

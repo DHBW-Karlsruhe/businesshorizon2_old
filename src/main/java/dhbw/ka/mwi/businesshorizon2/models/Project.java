@@ -92,6 +92,7 @@ public class Project implements Serializable {
 	private int relevantPastPeriods;
 	private int iterations;
 	private int basisYear;
+	
 	private ProjectInputType projectInputType;
 
 	private SortedSet<AbstractStochasticMethod> stochasticMethods;

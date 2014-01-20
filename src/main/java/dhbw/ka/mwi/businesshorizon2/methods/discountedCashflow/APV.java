@@ -32,7 +32,7 @@ public class APV extends AbstractCalculationMethod {
 	@Override
 	public String getName() {
 
-		return "APV";
+		return "Adjusted-Present-Value (APV)";
 	}
 
 	@Override
