@@ -40,8 +40,8 @@ import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
  * @author Christian Gahlert
  * 
  */
-abstract public class AbstractDeterministicMethod implements
-		Comparable<AbstractDeterministicMethod>, Serializable {
+abstract public class AbstractCalculationMethod implements
+		Comparable<AbstractCalculationMethod>, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	protected Boolean selected = false;
@@ -110,7 +110,7 @@ abstract public class AbstractDeterministicMethod implements
 	 * @see getOrderKey()
 	 */
 	@Override
-	public int compareTo(AbstractDeterministicMethod o) {
+	public int compareTo(AbstractCalculationMethod o) {
 		return this.getOrderKey() - o.getOrderKey();
 	}
 	

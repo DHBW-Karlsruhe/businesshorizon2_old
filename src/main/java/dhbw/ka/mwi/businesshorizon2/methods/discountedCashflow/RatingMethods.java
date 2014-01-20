@@ -21,7 +21,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;

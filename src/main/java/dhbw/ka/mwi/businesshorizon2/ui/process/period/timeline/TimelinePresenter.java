@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
@@ -602,7 +602,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 }
 
                 if (deterministic) {
-                        for (AbstractDeterministicMethod method_deterministic : projectProxy
+                        for (AbstractCalculationMethod method_deterministic : projectProxy
                                         .getSelectedProject().getMethods_deterministic()) {
                                 if (method_deterministic.getSelected()) {
                                         methode = method_deterministic.getName();

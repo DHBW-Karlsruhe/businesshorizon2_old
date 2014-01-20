@@ -31,7 +31,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
@@ -106,7 +106,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 		if (project.getProjectInputType().getDeterministic()) {
 			// Annika Weis
-			for (AbstractDeterministicMethod method_deterministic : project
+			for (AbstractCalculationMethod method_deterministic : project
 					.getMethods_deterministic()) {
 				// alle Szenarios durchlaufen
 				for (Szenario scenario : project.getIncludedScenarios()) {

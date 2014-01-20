@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
@@ -77,7 +77,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	private Project project;
 
 	private SortedSet<AbstractStochasticMethod> methods;
-	private SortedSet<AbstractDeterministicMethod> methods_determinisict;
+	private SortedSet<AbstractCalculationMethod> methods_determinisict;
 
 	private ProjectInputType projectInputType;
 
@@ -114,7 +114,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 			// Annika Weis
 			valid = false;
-			for (AbstractDeterministicMethod m : methods_determinisict) {
+			for (AbstractCalculationMethod m : methods_determinisict) {
 				if (m.getSelected()) {
 					valid = true;
 				}
@@ -182,10 +182,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	}
 	
-	public void toggleMethod_deterministic(Set<AbstractDeterministicMethod> checkedMethods) {
+	public void toggleMethod_deterministic(Set<AbstractCalculationMethod> checkedMethods) {
 		eventBus.fireEvent(new CheckMethod_deterministicEvent(checkedMethods));
 
-		for (AbstractDeterministicMethod m : methods_determinisict) {
+		for (AbstractCalculationMethod m : methods_determinisict) {
 			m.setSelected(false);
 			if (checkedMethods.contains(m)) {
 				m.setSelected(true);
@@ -223,7 +223,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 		project = projectProxy.getSelectedProject();
 		methods = new TreeSet<AbstractStochasticMethod>();
-		methods_determinisict = new TreeSet<AbstractDeterministicMethod>();
+		methods_determinisict = new TreeSet<AbstractCalculationMethod>();
 
 		//Hier werden die Methoden die zur Auswahl stehen sollen, auf dem Reiter angezeigt
 		if (project.getMethods() == null) {
@@ -252,11 +252,11 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 		for (AbstractStochasticMethod m : methods) {
-			getView().showMethod(m);
+			getView().showStochasticMethod(m);
 		}
 		// Annika Weis
-		for (AbstractDeterministicMethod m : methods_determinisict) {
-			getView().showMethod_deterministic(m);
+		for (AbstractCalculationMethod m : methods_determinisict) {
+			getView().showDerterministicMethod(m);
 		}
 
 		getView().setStochastic(projectInputType.getStochastic());

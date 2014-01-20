@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.DeterministicMethodException;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
@@ -24,7 +24,7 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
  * @date 29.12.2013
  * 
  */
-public class DCF_2 extends AbstractDeterministicMethod {
+public class DCF_2 extends AbstractCalculationMethod {
 
 	@Override
 	public String getName() {

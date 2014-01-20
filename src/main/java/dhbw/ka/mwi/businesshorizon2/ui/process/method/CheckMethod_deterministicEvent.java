@@ -26,20 +26,20 @@ import java.util.Set;
 
 import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 
 public class CheckMethod_deterministicEvent extends Event {
 
 	private static final long serialVersionUID = 1L;	
-	private Set<AbstractDeterministicMethod> checkedMethods;
+	private Set<AbstractCalculationMethod> checkedMethods;
 	
-	public CheckMethod_deterministicEvent(Set<AbstractDeterministicMethod> checkedMethods) {
+	public CheckMethod_deterministicEvent(Set<AbstractCalculationMethod> checkedMethods) {
 		super();
 		this.checkedMethods=checkedMethods;
 	}
 
-	public Set<AbstractDeterministicMethod> getCheckedMethods() {
+	public Set<AbstractCalculationMethod> getCheckedMethods() {
 		return checkedMethods;
 	}
 

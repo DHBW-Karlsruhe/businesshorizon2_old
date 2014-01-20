@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
@@ -103,10 +103,10 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private String errorMessageIterations;
 
 	private SortedSet<AbstractStochasticMethod> methods;
-	private SortedSet<AbstractDeterministicMethod> methods_deterministic;//Annika Weis
+	private SortedSet<AbstractCalculationMethod> methods_deterministic;//Annika Weis
 
 	private Iterator<AbstractStochasticMethod> methodIterator;
-	private Iterator<AbstractDeterministicMethod> method_deterministicIterator;//Annika Weis
+	private Iterator<AbstractCalculationMethod> method_deterministicIterator;//Annika Weis
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -242,7 +242,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		methods_deterministic = this.projectProxy.getSelectedProject().getMethods_deterministic();
 		method_deterministicIterator = methods_deterministic.iterator();
 		while (method_deterministicIterator.hasNext()) {
-			AbstractDeterministicMethod m_d = (AbstractDeterministicMethod) method_deterministicIterator
+			AbstractCalculationMethod m_d = (AbstractCalculationMethod) method_deterministicIterator
 					.next();
 			if (m_d.getName().equals("DCF") && m_d.getSelected()) {
 				dcf = true;
