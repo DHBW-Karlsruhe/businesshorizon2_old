@@ -136,10 +136,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					onProgressChange((float) 0.5);
 				
 					if (method_deterministic.getSelected()) {
-						double uwsteuerfrei = 0;
-						double steuervorteile = 0;
 						double unternehmenswert = 0;
-						double fremdkapitalout = 0;
 						double[] cashflow;
 						double[] fremdkapital;
 						int i;
@@ -174,6 +171,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							
 						
 						if (method_deterministic.getName() == "APV") {
+							double steuervorteile = 0;							
+							double fremdkapitalout = 0;
+							double uwsteuerfrei = 0;
+
 							APV_2 apv_2 = new APV_2();
 							// berechnet den Unternehmenswert des betrachteten
 							// Period-Container
@@ -219,6 +220,14 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							DCF_2 dcf_2 = new DCF_2();
 							unternehmenswert = dcf_2.calculateValues(
 									drContainer.getCashflows(), scenario);
+							
+
+							DeterministicChartArea deterministicarea = new DeterministicChartArea(
+									unternehmenswert, method_deterministic.getName(),
+									drContainer, scenario);
+
+							getView().addDeterministicChartArea(
+									deterministicarea);
 
 							/*
 							 * DeterministicChartArea chart = new
