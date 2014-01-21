@@ -102,8 +102,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private String errorMessagePastPeriods;
 	private String errorMessageIterations;
 
-	private SortedSet<AbstractStochasticMethod> methods;
-	private SortedSet<AbstractCalculationMethod> methods_deterministic;//Annika Weis
+	private AbstractStochasticMethod stochasticMethod;
+	private AbstractCalculationMethod calculationMethod;//Annika Weis
 
 	private Iterator<AbstractStochasticMethod> methodIterator;
 	private Iterator<AbstractCalculationMethod> method_deterministicIterator;//Annika Weis
@@ -213,25 +213,24 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		detMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			detMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getCalculation();
+					.getProjectInputType().getDeterministic();
 		} 
 
 		randomWalk = false;
 		wienerProcess = false;
 		timeSeries = false;
-		methods = this.projectProxy.getSelectedProject().getStochasticMethods();
-		methodIterator = methods.iterator();
-		while (methodIterator.hasNext()) {
-			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
-					.next();
-			if (m.getName().equals("Random Walk") && m.getSelected()) {
+		stochasticMethod = this.projectProxy.getSelectedProject().getStochasticMethod();
+		//methodIterator = stochasticMethod.iterator();
+		//while (methodIterator.hasNext()) {
+			//AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator.next();
+			if (stochasticMethod.getName().equals("Random Walk") && stochasticMethod.getSelected()) {
 				randomWalk = true;
-			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
+			} else if (stochasticMethod.getName().equals("Wiener Prozess") && stochasticMethod.getSelected()){
 				wienerProcess = true;
-			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
+			} else if (stochasticMethod.getName().equals("Zeitreihenanalyse") && stochasticMethod.getSelected()){
 				timeSeries = true;
 			}
-		}
+		//}
 		
 		/* 
 		 * Annika Weis
@@ -239,17 +238,16 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		 */
 		dcf=false;
 		apv=false;
-		methods_deterministic = this.projectProxy.getSelectedProject().getCalculationMethods();
-		method_deterministicIterator = methods_deterministic.iterator();
-		while (method_deterministicIterator.hasNext()) {
-			AbstractCalculationMethod m_d = (AbstractCalculationMethod) method_deterministicIterator
-					.next();
-			if (m_d.getName().equals("DCF") && m_d.getSelected()) {
+		calculationMethod = this.projectProxy.getSelectedProject().getCalculationMethod();
+		//method_deterministicIterator = calculationMethod.iterator();
+		//while (method_deterministicIterator.hasNext()) {
+			//AbstractCalculationMethod m_d = (AbstractCalculationMethod) method_deterministicIterator.next();
+			if (calculationMethod.getName().equals("Flow-to-Equity (FTE)") && calculationMethod.getSelected()) {
 				dcf = true;
-			} else if (m_d.getName().equals("APV") && m_d.getSelected()){
+			} else if (calculationMethod.getName().equals("Adjusted-Present-Value (APV)") && calculationMethod.getSelected()){
 				apv = true;
 			}
-		}
+		//}
 		
 		
 		this.setValues();
@@ -968,19 +966,20 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		randomWalk = false;
 		wienerProcess = false;
 		timeSeries = false;
-		methods = this.projectProxy.getSelectedProject().getStochasticMethods();
-		methodIterator = methods.iterator();
-		while (methodIterator.hasNext()) {
-			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
-					.next();
-			if (m.getName().equals("Random Walk") && m.getSelected()) {
+		stochasticMethod = this.projectProxy.getSelectedProject().getStochasticMethod();
+		//methodIterator = stochasticMethod.iterator();
+		//while (methodIterator.hasNext()) {
+			//AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator.next();
+		while(stochasticMethod!=null) {
+			if (stochasticMethod.getName().equals("Random Walk") && stochasticMethod.getSelected()) {
 				randomWalk = true;
-			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
+			} else if (stochasticMethod.getName().equals("Wiener Prozess") && stochasticMethod.getSelected()){
 				wienerProcess = true;
-			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
+			} else if (stochasticMethod.getName().equals("Zeitreihenanalyse") && stochasticMethod.getSelected()){
 				timeSeries = true;
 			}
 		}
+		//}
 		
 		if (!firstCall && !isValid()) {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,

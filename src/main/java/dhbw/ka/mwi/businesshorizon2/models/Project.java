@@ -72,15 +72,18 @@ public class Project implements Serializable {
 	//Berechnungsmethode
 	private AbstractCalculationMethod calculationMethod;
 	
+	//Herkunft der Cashflows
+	private ProjectCashflowSource projectCashflowSource;
+	
 	//Stochastische Methode
 	private AbstractStochasticMethod stochasticMethod;
 	
 	//Eingabemethode
 	private ProjectInputType projectInputType;
 	
-	private SortedSet<AbstractCalculationMethod> calculationMethods;//Annika Weis
+	//private SortedSet<AbstractCalculationMethod> calculationMethods;//Annika Weis
 
-	private SortedSet<AbstractStochasticMethod> stochasticMethods;
+	//private SortedSet<AbstractStochasticMethod> stochasticMethods;
 	
 	
 	protected TreeSet<? extends Period> periods = new TreeSet<>();
@@ -304,6 +307,20 @@ public class Project implements Serializable {
 	}
 
 	/**
+	 * @return the cashflowSource
+	 */
+	public ProjectCashflowSource getProjectCashflowSource() {
+		return projectCashflowSource;
+	}
+
+	/**
+	 * @param cashflowSource the cashflowSource to set
+	 */
+	public void setProjectCashflowSource(ProjectCashflowSource cashflowSource) {
+		this.projectCashflowSource = cashflowSource;
+	}
+
+	/**
 	 * @return the stochasticMethod
 	 */
 	public AbstractStochasticMethod getStochasticMethod() {
@@ -317,6 +334,7 @@ public class Project implements Serializable {
 		this.stochasticMethod = stochasticMethod;
 	}
 
+	/**
 	//Annika Weis
 	public void setCalculationMethods(SortedSet<AbstractCalculationMethod> methods_deterministic) {
 		this.calculationMethods = methods_deterministic;
@@ -334,6 +352,7 @@ public class Project implements Serializable {
 	public SortedSet<AbstractStochasticMethod> getStochasticMethods() {
 		return stochasticMethods;
 	}
+	*/
 	
 
 	public ProjectInputType getProjectInputType() {

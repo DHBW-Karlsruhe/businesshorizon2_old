@@ -241,7 +241,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 initalise();
 
                 if (projectProxy.getSelectedProject().getProjectInputType()
-                                .getCalculation()) {
+                                .getDeterministic()) {
                         logger.debug("Initialisierung (d) " + fixedFuturePeriods);
                         removeAllFuturePeriods();
                         removeAllPastPeriods();
@@ -374,7 +374,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 }
                 try {
                         projectProxy.getSelectedProject().getProjectInputType()
-                                        .getCalculation();
+                                        .getDeterministic();
                 } catch (Exception e) {
                         logger.debug("crash at getDeterministic()"
                                         + projectProxy.getSelectedProject().getProjectInputType());
@@ -382,7 +382,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 try {
                         if (projectProxy.getSelectedProject().getBasisYear() == baseYear
                                         && projectProxy.getSelectedProject().getProjectInputType()
-                                                        .getCalculation() == deterministic
+                                                        .getDeterministic() == deterministic
                                         && projectProxy.getSelectedProject().getProjectInputType()
                                                         .getStochastic() == stochastic
                                         && projectProxy.getSelectedProject().getProjectInputType()
@@ -472,7 +472,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 int anz = 0;
 
                 if (projectProxy.getSelectedProject().getProjectInputType()
-                                .getCalculation()) {
+                                .getDeterministic()) {
                         // deterministisch
                         try {
                                 anz = projectProxy.getSelectedProject()
@@ -581,7 +581,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 stochastic = projectProxy.getSelectedProject().getProjectInputType()
                                 .getStochastic();
                 deterministic = projectProxy.getSelectedProject().getProjectInputType()
-                                .getCalculation();
+                                .getDeterministic();
                 baseYear = projectProxy.getSelectedProject().getBasisYear();
 
                 fixedFuturePeriods = projectProxy.getSelectedProject()
@@ -592,23 +592,27 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 projektname = projectProxy.getSelectedProject().getName();
 
                 if (stochastic) {
-                        for (AbstractStochasticMethod method_stochastic : projectProxy
-                                        .getSelectedProject().getStochasticMethods()) {
-                                if (method_stochastic.getSelected()) {
-                                        methode = method_stochastic.getName();
+                        /**for (AbstractStochasticMethod method_stochastic : projectProxy
+                                        .getSelectedProject().getStochasticMethod()) {*/
+                                if (projectProxy
+                                        .getSelectedProject().getStochasticMethod().getSelected()) {
+                                        methode = projectProxy
+                                                .getSelectedProject().getStochasticMethod().getName();
                                         logger.debug("Methode: " + methode);
                                 }
                         }
-                }
+                //}
 
                 if (deterministic) {
-                        for (AbstractCalculationMethod method_deterministic : projectProxy
-                                        .getSelectedProject().getCalculationMethods()) {
-                                if (method_deterministic.getSelected()) {
-                                        methode = method_deterministic.getName();
+                        /**for (AbstractCalculationMethod method_deterministic : projectProxy
+                                        .getSelectedProject().getCalculationMethod()) {*/
+                                if (projectProxy
+                                        .getSelectedProject().getCalculationMethod().getSelected()) {
+                                        methode = projectProxy
+                                                .getSelectedProject().getCalculationMethod().getName();
                                         logger.debug("Methode: " + methode);
                                 }
-                        }
+                        //}
                 }
                 logger.debug("Methode: " + methode);
 
@@ -757,7 +761,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                 sumFuturePeriods = 0;
 
                 deterministic = projectProxy.getSelectedProject().getProjectInputType()
-                                .getCalculation();
+                                .getDeterministic();
 
         }
 
@@ -964,7 +968,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
                                 .getProjectInputType().getDeterministicInput());
 
                 deterministic = projectProxy.getSelectedProject().getProjectInputType()
-                                .getCalculation();
+                                .getDeterministic();
                 stochastic = projectProxy.getSelectedProject().getProjectInputType()
                                 .getStochastic();
 

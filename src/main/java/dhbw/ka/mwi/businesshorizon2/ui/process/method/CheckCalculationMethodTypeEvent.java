@@ -23,14 +23,14 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
 import com.mvplite.event.Event;
 
-public class CheckMethod_deterministicTypeEvent extends Event {
+public class CheckCalculationMethodTypeEvent extends Event {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Boolean deterministic;
 	private Boolean checked;
 
-	public CheckMethod_deterministicTypeEvent(Boolean deterministic, Boolean checked){
+	public CheckCalculationMethodTypeEvent(Boolean deterministic, Boolean checked){
 		super();
 		this.deterministic = deterministic;
 		this.checked = checked;

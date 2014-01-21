@@ -104,10 +104,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 		project = projectProxy.getSelectedProject();
 
-		if (project.getProjectInputType().getCalculation()) {
+		if (project.getProjectInputType().getDeterministic()) {
 			// Annika Weis
-			for (AbstractCalculationMethod method_deterministic : project
-					.getCalculationMethods()) {
+			/**for (AbstractCalculationMethod method_deterministic : project
+					.getCalculationMethods()) {*/
 				// alle Szenarios durchlaufen
 				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
@@ -118,13 +118,13 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					periodContainer.add(cfPeriodContainer);
 					DeterministicResultContainer drContainer = new DeterministicResultContainer(
 							periodContainer);
-					if (method_deterministic.getSelected()) {
+					if (project.getCalculationMethod().getSelected()) {
 						double uwsteuerfrei = 0;
 						double steuervorteile = 0;
 						double unternehmenswert = 0;
 						double fremdkapital = 0;
 
-						if (method_deterministic.getName() == "APV") {
+						if (project.getCalculationMethod().getName() == "Adjusted-Present-Value (APV)") {
 							APV apv_2 = new APV();
 							unternehmenswert = apv_2.calculateValues(
 									drContainer.getCashflows(),
@@ -138,7 +138,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 									unternehmenswert, fremdkapital);
 
 							DeterministicLineChart linien = new DeterministicLineChart(
-									method_deterministic.getName(),
+									project.getCalculationMethod().getName(),
 									unternehmenswert, "Cashflows",
 									drContainer.getJahre(),
 									drContainer.getCashflows());
@@ -168,13 +168,13 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							 */
 
 						}
-						if (method_deterministic.getName() == "DCF") {
+						if (project.getCalculationMethod().getName() == "Flow-to-Equity (FTE)") {
 							FTE dcf_2 = new FTE();
 							unternehmenswert = dcf_2.calculateValues(
 									drContainer.getCashflows(), scenario);
 
 							DeterministicLineChart chart = new DeterministicLineChart(
-									method_deterministic.getName(),
+									project.getCalculationMethod().getName(),
 									unternehmenswert, "Cashflows",
 									drContainer.getJahre(),
 									drContainer.getCashflows());
@@ -219,16 +219,16 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			 * getView().addDeterministicChartArea(deterministicChartArea); }
 			 * onProgressChange((float) 1); }
 			 */
-		}
+		//}
 
 		if (project.getProjectInputType().getStochastic()) {
-			for (AbstractStochasticMethod method : project.getStochasticMethods()) {
-				if (method.getSelected()) {
+			// for (AbstractStochasticMethod method : project.getStochasticMethod()) {
+				if (project.getStochasticMethod().getSelected()) {
 
-					methodRunner = new MethodRunner(method, project, this);
+					methodRunner = new MethodRunner(project.getStochasticMethod(), project, this);
 					methodRunner.start();
 				}
-			}
+			//}
 
 		}
 

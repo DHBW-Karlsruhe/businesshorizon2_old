@@ -35,46 +35,41 @@ import java.io.Serializable;
  * 
  */
 
-public class ProjectInputType implements Serializable {
+public class ProjectCashflowSource implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5922498137882142059L;
-	private Boolean calculation = false;
-	private Boolean deterministic = false;
-	private InputType stochasticInput = InputType.DIRECT;
-	private InputType deterministicInput = InputType.DIRECT;
-
-	public Boolean getStochastic() {
-		return calculation;
+	private Boolean cashflow = false;
+	private CashflowSource cashflowSource = CashflowSource.DETERMINISTIC;
+	
+	/**
+	 * @return the cashflow
+	 */
+	public Boolean getCashflow() {
+		return cashflow;
+	}
+	
+	/**
+	 * @param cashflow the cashflow to set
+	 */
+	public void setCashflow(Boolean cashflow) {
+		this.cashflow = cashflow;
 	}
 
-	public void setStochastic(Boolean stochastic) {
-		this.calculation = stochastic;
+	/**
+	 * @return the cashflowSource
+	 */
+	public CashflowSource getCashflowSource() {
+		return cashflowSource;
 	}
 
-	public Boolean getDeterministic() {
-		return deterministic;
+	/**
+	 * @param cashflowSource the cashflowSource to set
+	 */
+	public void setCashflowSource(CashflowSource cashflowSource) {
+		this.cashflowSource = cashflowSource;
 	}
 
-	public void setDeterministic(Boolean deterministic) {
-		this.deterministic = deterministic;
-	}
-
-	public InputType getStochasticInput() {
-		return stochasticInput;
-	}
-
-	public void setStochasticInput(InputType stochasticInput) {
-		this.stochasticInput = stochasticInput;
-	}
-
-	public InputType getDeterministicInput() {
-		return deterministicInput;
-	}
-
-	public void setDeterministicInput(InputType deterministicInput) {
-		this.deterministicInput = deterministicInput;
-	}
 
 }

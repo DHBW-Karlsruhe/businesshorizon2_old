@@ -30,40 +30,41 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
  * mit denen der Presenter mit der View kommunizieren kann.
  * 
- * @author Christian Gahlert
+ * @author Christian Gahlert, Annika Weis
  *
  */
 public interface MethodViewInterface extends ContentView {
 
-	public void showStochasticMethod(AbstractStochasticMethod method);
+	//public void showStochasticMethod(AbstractStochasticMethod method);
 	
 	//Annika Weis
 	public void showCalculationMethod(AbstractCalculationMethod method);
 	
 	public void enableOptions();
 
-	public void enableStochasticMethodSelection(Boolean state);
+	//public void enableStochasticMethodSelection(Boolean state);
 
 	//Annika Weis
 	public void enableCalculationMethodSelection(Boolean state);
-
-	public void showInputMethodSelection(Boolean stochastic, Boolean checked);
-
-	//Annika Weis
-	public void showInputMethod_deterministicSelection(Boolean deterministic, Boolean checked);
 	
-	public void setStochastic(Boolean checked);
+	public void enableCashflowSourceSelection(Boolean cashflowState);
 	
-	public void setDeterministic(Boolean checked);
+	//public void setStochastic(Boolean checked);
+	
+	//public void setDeterministic(Boolean checked);
 	
 	public void selectInput(Boolean stochastic,InputType selected);
 	
-	public void showErrorNoMethodSelected(Boolean state);
+	//public void showErrorNoMethodSelected(Boolean state);
 	
 	public void showErrorNothingSelected(Boolean state);
 
-
 	public void showMethodView();
-	
 
+	public void showDeterministicInputPanel(Boolean checked);
+
+	public void showStochasticInputPanel(Boolean checked);
+
+	public void showCashflowSourcePanel(Boolean checked);
+	
 }
