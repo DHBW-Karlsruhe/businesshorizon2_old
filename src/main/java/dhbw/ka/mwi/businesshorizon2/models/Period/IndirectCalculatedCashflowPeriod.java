@@ -1,4 +1,5 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * BusinessHorizon2
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
@@ -22,199 +23,237 @@
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 /**
- * Diese Klasse bildet eine Periode der direkten Cashflow Ermittlung ab.
- * 
- * @author Marcel Rosenberger
- * 
- */
+* Diese Klasse bildet eine Periode der direkten Cashflow Ermittlung ab.
+*
+* @author Marcel Rosenberger
+*
+*/
 
 public class IndirectCalculatedCashflowPeriod extends Period {
 
 
-	private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
+        
+        
 
-	/**
-	 * Jahresüberschuss
-	 */
-	private boolean jahresÜberschussSet;
-	private double jahresÜberschuss;
+        /**
+         * Jahresüberschuss
+         */
+        private boolean jahresÜberschussSet;
+        private double jahresÜberschuss;
 
-	/**
-	 * Fiktive Steuern
-	 */
-	private double taxShield;
-	private boolean taxShieldSet;
+        /**
+         * Zinsen
+         */
+        private double zinsen;
+        private boolean zinsenSet;
+        
+        /**
+         * Fiktive Steuern
+         */
+        private double taxShield;
+        private boolean taxShieldSet;
 
-	/**
-	 * Nicht zahlungswirksame Aufwendungen
-	 */
-	private double nichtZahlungswirksameAufwendungen;
-	private boolean nichtZahlungswirksameAufwendungenSet;
+        /**
+         * Nicht zahlungswirksame Aufwendungen
+         */
+        private double nichtZahlungswirksameAufwendungen;
+        private boolean nichtZahlungswirksameAufwendungenSet;
 
-	/**
-	 * Nicht zahlungswirksame Erträge
-	 */
-	private double nichtZahlungswirksameErtraege;
-	private boolean nichtZahlungswirksameErtraegeSet;
-	
-	/**
-	 * Brutto-Investitionen
-	 */
-	private double bruttoInvestitionen;
-	private boolean bruttoInvestitionenSet;
+        /**
+         * Nicht zahlungswirksame Erträge
+         */
+        private double nichtZahlungswirksameErtraege;
+        private boolean nichtZahlungswirksameErtraegeSet;
+        
+        /**
+         * Brutto-Investitionen
+         */
+        private double bruttoInvestitionen;
+        private boolean bruttoInvestitionenSet;
 
 
-	public IndirectCalculatedCashflowPeriod(int year) {
-		super(year);
-	}
+        public IndirectCalculatedCashflowPeriod(int year) {
+                super(year);
+        }
 
-	/**
-	 * @return the jahresÜberschussSet
-	 */
-	public boolean isJahresÜberschussSet() {
-		return jahresÜberschussSet;
-	}
+        /**
+         * @return the jahresÜberschussSet
+         */
+        public boolean isJahresÜberschussSet() {
+                return jahresÜberschussSet;
+        }
 
-	/**
-	 * @param jahresÜberschussSet the jahresÜberschussSet to set
-	 */
-	public void setJahresÜberschussSet(boolean jahresÜberschussSet) {
-		this.jahresÜberschussSet = jahresÜberschussSet;
-	}
+        /**
+         * @param jahresÜberschussSet the jahresÜberschussSet to set
+         */
+        public void setJahresÜberschussSet(boolean jahresÜberschussSet) {
+                this.jahresÜberschussSet = jahresÜberschussSet;
+        }
 
-	/**
-	 * @return the jahresÜberschuss
-	 */
-	public double getJahresÜberschuss() {
-		return jahresÜberschuss;
-	}
+        /**
+         * @return the jahresÜberschuss
+         */
+        public double getJahresÜberschuss() {
+                return jahresÜberschuss;
+        }
 
-	/**
-	 * @param jahresÜberschuss the jahresÜberschuss to set
-	 */
-	public void setJahresÜberschuss(double jahresÜberschuss) {
-		this.jahresÜberschuss = jahresÜberschuss;
-		jahresÜberschussSet = true;
-	}
+        /**
+         * @param jahresÜberschuss the jahresÜberschuss to set
+         */
+        public void setJahresÜberschuss(double jahresÜberschuss) {
+                this.jahresÜberschuss = jahresÜberschuss;
+                jahresÜberschussSet = true;
+        }
 
-	/**
-	 * @return the taxShield
-	 */
-	public double getTaxShield() {
-		return taxShield;
-	}
+        /**
+         * @return the taxShield
+         */
+        public double getTaxShield() {
+                return taxShield;
+        }
 
-	/**
-	 * @param fiktiveSteuern the fiktiveSteuern to set
-	 */
-	public void setTaxShield(double taxShield) {
-		this.taxShield = taxShield;
-		taxShieldSet = true;
-	}
+        /**
+         * @param fiktiveSteuern the fiktiveSteuern to set
+         */
+        public void setTaxShield(double taxShield) {
+                this.taxShield = taxShield;
+                taxShieldSet = true;
+        }
 
-	/**
-	 * @return the fiktiveSteuernSet
-	 */
-	public boolean isTaxShieldSet() {
-		return taxShieldSet;
-	}
+        /**
+         * @return the fiktiveSteuernSet
+         */
+        public boolean isTaxShieldSet() {
+                return taxShieldSet;
+        }
 
-	/**
-	 * @param fiktiveSteuernSet the fiktiveSteuernSet to set
-	 */
-	public void setTaxShieldSet(boolean taxShieldSetSet) {
-		this.taxShieldSet = taxShieldSetSet;
-	}
+        /**
+         * @param fiktiveSteuernSet the fiktiveSteuernSet to set
+         */
+        public void setTaxShieldSet(boolean taxShieldSetSet) {
+                this.taxShieldSet = taxShieldSetSet;
+        }
 
-	/**
-	 * @return the nichtZahlungswirksameAufwendungen
-	 */
-	public double getNichtZahlungswirksameAufwendungen() {
-		return nichtZahlungswirksameAufwendungen;
-	}
+        /**
+         * @return the nichtZahlungswirksameAufwendungen
+         */
+        public double getNichtZahlungswirksameAufwendungen() {
+                return nichtZahlungswirksameAufwendungen;
+        }
 
-	/**
-	 * @param nichtZahlungswirksameAufwendungen the nichtZahlungswirksameAufwendungen to set
-	 */
-	public void setNichtZahlungswirksameAufwendungen(
-			double nichtZahlungswirksameAufwendungen) {
-		this.nichtZahlungswirksameAufwendungen = nichtZahlungswirksameAufwendungen;
-		nichtZahlungswirksameAufwendungenSet = true;
-	}
+        /**
+         * @param nichtZahlungswirksameAufwendungen the nichtZahlungswirksameAufwendungen to set
+         */
+        public void setNichtZahlungswirksameAufwendungen(
+                        double nichtZahlungswirksameAufwendungen) {
+                this.nichtZahlungswirksameAufwendungen = nichtZahlungswirksameAufwendungen;
+                nichtZahlungswirksameAufwendungenSet = true;
+        }
 
-	/**
-	 * @return the nichtZahlungswirksameAufwendungenSet
-	 */
-	public boolean isNichtZahlungswirksameAufwendungenSet() {
-		return nichtZahlungswirksameAufwendungenSet;
-	}
+        /**
+         * @return the nichtZahlungswirksameAufwendungenSet
+         */
+        public boolean isNichtZahlungswirksameAufwendungenSet() {
+                return nichtZahlungswirksameAufwendungenSet;
+        }
 
-	/**
-	 * @param nichtZahlungswirksameAufwendungenSet the nichtZahlungswirksameAufwendungenSet to set
-	 */
-	public void setNichtZahlungswirksameAufwendungenSet(
-			boolean nichtZahlungswirksameAufwendungenSet) {
-		this.nichtZahlungswirksameAufwendungenSet = nichtZahlungswirksameAufwendungenSet;
-	}
+        /**
+         * @param nichtZahlungswirksameAufwendungenSet the nichtZahlungswirksameAufwendungenSet to set
+         */
+        public void setNichtZahlungswirksameAufwendungenSet(
+                        boolean nichtZahlungswirksameAufwendungenSet) {
+                this.nichtZahlungswirksameAufwendungenSet = nichtZahlungswirksameAufwendungenSet;
+        }
 
-	/**
-	 * @return the nichtZahlungswirksameErtraege
-	 */
-	public double getNichtZahlungswirksameErtraege() {
-		return nichtZahlungswirksameErtraege;
-	}
+        /**
+         * @return the nichtZahlungswirksameErtraege
+         */
+        public double getNichtZahlungswirksameErtraege() {
+                return nichtZahlungswirksameErtraege;
+        }
 
-	/**
-	 * @param nichtZahlungswirksameErtraege the nichtZahlungswirksameErtraege to set
-	 */
-	public void setNichtZahlungswirksameErtraege(
-			double nichtZahlungswirksameErtraege) {
-		this.nichtZahlungswirksameErtraege = nichtZahlungswirksameErtraege;
-		nichtZahlungswirksameErtraegeSet = true;
-	}
+        /**
+         * @param nichtZahlungswirksameErtraege the nichtZahlungswirksameErtraege to set
+         */
+        public void setNichtZahlungswirksameErtraege(
+                        double nichtZahlungswirksameErtraege) {
+                this.nichtZahlungswirksameErtraege = nichtZahlungswirksameErtraege;
+                nichtZahlungswirksameErtraegeSet = true;
+        }
 
-	/**
-	 * @return the nichtZahlungswirksameErtraegeSet
-	 */
-	public boolean isNichtZahlungswirksameErtraegeSet() {
-		return nichtZahlungswirksameErtraegeSet;
-	}
+        /**
+         * @return the nichtZahlungswirksameErtraegeSet
+         */
+        public boolean isNichtZahlungswirksameErtraegeSet() {
+                return nichtZahlungswirksameErtraegeSet;
+        }
 
-	/**
-	 * @param nichtZahlungswirksameErtraegeSet the nichtZahlungswirksameErtraegeSet to set
-	 */
-	public void setNichtZahlungswirksameErtraegeSet(
-			boolean nichtZahlungswirksameErtraegeSet) {
-		this.nichtZahlungswirksameErtraegeSet = nichtZahlungswirksameErtraegeSet;
-	}
+        /**
+         * @param nichtZahlungswirksameErtraegeSet the nichtZahlungswirksameErtraegeSet to set
+         */
+        public void setNichtZahlungswirksameErtraegeSet(
+                        boolean nichtZahlungswirksameErtraegeSet) {
+                this.nichtZahlungswirksameErtraegeSet = nichtZahlungswirksameErtraegeSet;
+        }
 
-	/**
-	 * @return the bruttoInvestitionen
-	 */
-	public double getBruttoInvestitionen() {
-		return bruttoInvestitionen;
-	}
+        /**
+         * @return the bruttoInvestitionen
+         */
+        public double getBruttoInvestitionen() {
+                return bruttoInvestitionen;
+        }
 
-	/**
-	 * @param bruttoInvestitionen the bruttoInvestitionen to set
-	 */
-	public void setBruttoInvestitionen(double bruttoInvestitionen) {
-		this.bruttoInvestitionen = bruttoInvestitionen;
-		bruttoInvestitionenSet = true;
-	}
+        /**
+         * @param bruttoInvestitionen the bruttoInvestitionen to set
+         */
+        public void setBruttoInvestitionen(double bruttoInvestitionen) {
+                this.bruttoInvestitionen = bruttoInvestitionen;
+                bruttoInvestitionenSet = true;
+        }
 
-	/**
-	 * @return the bruttoInvestitionenSet
-	 */
-	public boolean isBruttoInvestitionenSet() {
-		return bruttoInvestitionenSet;
-	}
+        /**
+         * @return the bruttoInvestitionenSet
+         */
+        public boolean isBruttoInvestitionenSet() {
+                return bruttoInvestitionenSet;
+        }
 
-	/**
-	 * @param bruttoInvestitionenSet the bruttoInvestitionenSet to set
-	 */
-	public void setBruttoInvestitionenSet(boolean bruttoInvestitionenSet) {
-		this.bruttoInvestitionenSet = bruttoInvestitionenSet;
-	}
+        /**
+         * @param bruttoInvestitionenSet the bruttoInvestitionenSet to set
+         */
+        public void setBruttoInvestitionenSet(boolean bruttoInvestitionenSet) {
+                this.bruttoInvestitionenSet = bruttoInvestitionenSet;
+        }
+
+		/**
+		 * @return the zinsen
+		 */
+		public double getZinsen() {
+			return zinsen;
+		}
+
+		/**
+		 * @param zinsen the zinsen to set
+		 */
+		public void setZinsen(double zinsen) {
+			this.zinsen = zinsen;
+			zinsenSet = true;
+		}
+
+		/**
+		 * @return the zinsenSet
+		 */
+		public boolean isZinsenSet() {
+			return zinsenSet;
+		}
+
+		/**
+		 * @param zinsenSet the zinsenSet to set
+		 */
+		public void setZinsenSet(boolean zinsenSet) {
+			this.zinsenSet = zinsenSet;
+		}
+
 
 }

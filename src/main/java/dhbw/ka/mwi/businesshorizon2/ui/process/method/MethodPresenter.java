@@ -33,14 +33,18 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_alt;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+
 import dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener;
+
 import dhbw.ka.mwi.businesshorizon2.models.CashflowSource;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
+
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectCashflowSource;
@@ -100,6 +104,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	public void init() {
 		eventBus.addHandler(this);
 	}
+
 	
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event) {
@@ -136,8 +141,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 		// Annika Weis
+
 		for (AbstractCalculationMethod m : calculationMethods) {
 			getView().showCalculationMethod(m);
+
 		}
 		
 		//deaktivieren
@@ -149,8 +156,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		//getView().setStochastic(projectInputType.getStochastic());
 		//getView().setDeterministic(projectInputType.getCalculation());
 		
-		//Annika Weis
-		Boolean CalculationState = projectInputType.getDeterministic();
+		
+
+		Boolean CalculationState = projectInputType.isDeterministic();
+
 
 		//Falls für das Projekt bereits eine Berechnungsmethode ausgewählt wurde,
 		//wird (das Panel und) die Auswahl angezeigt
@@ -161,7 +170,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			getView().enableCalculationMethodSelection(false);
 		}
 		
-		Boolean CashflowState = projectInputType.getDeterministic();
+		Boolean CashflowState = projectInputType.isDeterministic();
+
 
 		//Falls für das Projekt bereits die Herkunft der Cashflow ausgewählt wurde,
 		//wird das Panel und die Auswahl angezeigt
@@ -171,7 +181,9 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			projectInputType.setDeterministic(false);
 			getView().enableCashflowSourceSelection(false);
 		}
+
 		
+
 		/**Boolean StochasticState = projectInputType.getStochastic();
 		
 		if (CalculationState != null) {
@@ -183,8 +195,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		
 		getView().showCashflowSourcePanel(projectCashflowSource.getCashflow());
 
-		getView().showStochasticInputPanel(projectInputType.getStochastic());
-		getView().showDeterministicInputPanel(projectInputType.getDeterministic());
+		getView().showStochasticInputPanel(projectInputType.isStochastic());
+		getView().showDeterministicInputPanel(projectInputType.isDeterministic());
 		
 		
 		getView().selectInput(true, projectInputType.getStochasticInput());
@@ -212,7 +224,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 				getView().showErrorNoMethodSelected(valid);
 			}
 
-		} else */ if (projectInputType.getDeterministic()) {
+		} else */ if (projectInputType.isDeterministic()) {
 
 			valid = true;
 

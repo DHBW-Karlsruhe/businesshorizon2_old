@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 
@@ -51,7 +52,7 @@ public class StochasticChartArea extends VerticalLayout {
 	private static final Logger logger = Logger
 			.getLogger("StochasticChartArea.class");
 
-	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung) {
+	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung, Szenario scenario) {
 
 		// Überschrift anzeigen
 		Label title = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
@@ -73,25 +74,41 @@ public class StochasticChartArea extends VerticalLayout {
 		double expectedCompanyValueFreq = 0;
 
 		logger.debug("Erwartungswert ermitteln");
+		
+
+        for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
+
+                cvChartValues.put(Double.toString(companyValue.getKey()),
+                                new double[] { companyValue.getValue().getCount() });
+
+                // Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
+                // Häufigkeit)
+                if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
+                        expectedCompanyValue = Double.toString(companyValue.getKey());
+                        expectedCompanyValueFreq = companyValue.getValue().getCount();
+                }
+
+        }
+		/*int i = 0;
+
 		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
 			cvChartValues.put(Double.toString(companyValue.getKey()),
 					new double[] { companyValue.getValue().getCount() });
-			
-			
-			// Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
-			// Häufigkeit)
-			if (companyValue.getValue().getCount() > expectedCompanyValueFreq) {
+			//Erwartungswert der Unternehmenswerte bestimmen
+			//der mittlere Balken einer Normalverteilung ist der Erwartungswert
+			if(i >=(companyValues.entrySet().size()/2)){
 				expectedCompanyValue = Double.toString(companyValue.getKey());
 				expectedCompanyValueFreq = companyValue.getValue().getCount();
-			}
-
-		}
+				i = - 1;
+			} 
+			i++;
+		}*/
 
 		cvChartValues.put(expectedCompanyValue, new double[] { 0, expectedCompanyValueFreq });
 
 		cvChart.addValues(cvChartValues);
 		cvChart.setHeight("200px");
-		cvChart.setWidth("2024px");
+		cvChart.setWidth("1024px");
 		
 
 		this.addComponent(cvChart);
@@ -116,10 +133,16 @@ public class StochasticChartArea extends VerticalLayout {
 			this.addComponent(cfChart);
 		}
 		
-		
+		//Modellabweichung hinzufügen		
 		DecimalFormat df = new DecimalFormat("#.00");
 		this.addComponent(new Label("Die Modellabweichung beträgt " + df.format(validierung) + "%"));
-		this.setHeight("590px");
+		
+		//Planungsprämissen des Szenarios hinzufügen
+		ScenarioTable st = new ScenarioTable(scenario);
+		st.setHeight("200px");
+		this.addComponent(st);
+		
+		this.setHeight("900px");
 		this.setWidth("1024px");
 
 	}

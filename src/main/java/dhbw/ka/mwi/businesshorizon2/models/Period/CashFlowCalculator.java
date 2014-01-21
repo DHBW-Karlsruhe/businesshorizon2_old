@@ -1,4 +1,5 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * BusinessHorizon2
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
@@ -18,8 +19,12 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
+import org.apache.log4j.Logger;
+
+import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -27,11 +32,40 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.DirectCalculatedCashf
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCashflowPeriodContainer;
 
 /**
- * 
- * @author kathie
- * 
- */
+*
+* @author Marcel Rosenberger
+*
+*/
 public class CashFlowCalculator {
+	
+	private static final Logger logger = Logger
+			.getLogger("CashFlowCalculator.class");
+	
+	  /**
+     * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
+     * indirekten Berechnungsmethoden ermitteln. Der 'Free Cashflow' wird
+     * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
+     *
+     * @author Marcel Rosenberger
+     *
+     * @param result
+     * DeterministicResultContainer
+     * @param szenario
+     * 				Szenario
+     */
+    public static void calculateCashflows(DeterministicResultContainer result) {
+    		
+            for (AbstractPeriodContainer container : result.getPeriodContainers()) {
+                    if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+                            calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+                    } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+                            calculateIndirectCashflows(
+                                            (IndirectCalculatedCashflowPeriodContainer) container);
+                    }
+            }
+    }
+        
+
 
 	/**
 	 * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
@@ -45,41 +79,22 @@ public class CashFlowCalculator {
 	 * @param szenario
 	 *            Szenario
 	 */
-	public static void calculateCashflows(StochasticResultContainer result,
-			Szenario szenario) {
+	public static void calculateCashflows(StochasticResultContainer result) {
 
-		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
-			if (container instanceof DirectCalculatedCashflowPeriodContainer) {
-				calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
-			} else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
-				calculateIndirectCashflows(
-						(IndirectCalculatedCashflowPeriodContainer) container,
-						szenario);
-			}
-		}
-	}
+                for (AbstractPeriodContainer container : result.getPeriodContainers()) {
+                        if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+                                calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+                        } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+                                calculateIndirectCashflows(
+                                                (IndirectCalculatedCashflowPeriodContainer) container);
+                        }
+                }
+        }
 
-	/**
-	 * Direkte Free-Cash-Flow Ermittlung
-	 * 
-	 * @author Marcel Rosenberger
-	 * 
-	 */
 
-	private static void calculateDirectCashflows(
-			DirectCalculatedCashflowPeriodContainer container) {
 
-		for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
-			double freeCashFlow = period.getUmsatzErlöse()
-					- period.getUmsatzKosten()
-					- period.getSteuernBeiReinerEigenfinanzierung()
-					- period.getSaldoAusAuszahlungen();
-
-			period.setFreeCashFlow(freeCashFlow);
-
-		}
-
-	}
+        
+	
 
 	/**
 	 * Indirekte Free-Cash-Flow Ermittlung
@@ -88,21 +103,52 @@ public class CashFlowCalculator {
 	 * 
 	 */
 
-	private static void calculateIndirectCashflows(
-			IndirectCalculatedCashflowPeriodContainer container,
-			Szenario szenario) {
 
-		for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
-			double freeCashFlow = period.getJahresÜberschuss()
-					- period.getTaxShield()
-					+ period.getNichtZahlungswirksameAufwendungen()
-					- period.getNichtZahlungswirksameErtraege()
-					- period.getBruttoInvestitionen();
+        private static void calculateDirectCashflows(
+                        DirectCalculatedCashflowPeriodContainer container) {
 
-			period.setFreeCashFlow(freeCashFlow);
+                for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
+                        double freeCashFlow = period.getUmsatzErlöse()
+                                        - period.getUmsatzKosten()
+                                        - period.getSteuernBeiReinerEigenfinanzierung()
+                                        - period.getSaldoAusAuszahlungen();
+
+
+                        period.setFreeCashFlow(freeCashFlow);
 
 		}
 
 	}
 
+
+
+                
+
+        
+
+        /**
+         * Indirekte Free-Cash-Flow Ermittlung
+         *
+         * @author Marcel Rosenberger
+         *
+         */
+
+        private static void calculateIndirectCashflows(
+                        IndirectCalculatedCashflowPeriodContainer container) {
+
+                for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
+                        double freeCashFlow = period.getJahresÜberschuss()
+                        				+ period.getZinsen()
+                                        - period.getTaxShield()
+                                        + period.getNichtZahlungswirksameAufwendungen()
+                                        - period.getNichtZahlungswirksameErtraege()
+                                        - period.getBruttoInvestitionen();
+
+                        period.setFreeCashFlow(freeCashFlow);
+
+                }
+
+        }
+
 }
+

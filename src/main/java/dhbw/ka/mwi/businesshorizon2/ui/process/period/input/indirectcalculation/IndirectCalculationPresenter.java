@@ -1,23 +1,22 @@
 /*******************************************************************************
  * BusinessHorizon2
- * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
- *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- * 
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+ * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation;
 
@@ -30,7 +29,6 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEvent;
 
-
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
@@ -38,9 +36,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEven
  * 
  */
 
-public class IndirectCalculationPresenter extends AbstractInputPresenter<IndirectCalculationViewInterface> {
+public class IndirectCalculationPresenter extends
+		AbstractInputPresenter<IndirectCalculationViewInterface> {
 	private static final long serialVersionUID = 1L;
-
 
 	@Autowired
 	EventBus eventBus;
@@ -55,19 +53,16 @@ public class IndirectCalculationPresenter extends AbstractInputPresenter<Indirec
 
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "immaterialFortune", "propertyValue",
-				"financialValue", "equity", "provisions", "suplies", "claims",
-				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
-				"otherBusinessRevenue", "internallyProducedAndCapializedAssets",
-				"materialCosts", "humanCapitalCosts", "writeDowns",
-				"otherBusinessCosts", "interestAndOtherCosts" };
-		germanNamesProperties = new String[] { "Immaterielle Verm\u00f6gensgegenst\u00e4nde", "Sachanlagen",
-				"Finanzanlagen", "Eigenkapital", "R\u00fcckstellungen", "Vorr\u00e4te", "Forderungen und sonstige Verm\u00f6gensgegenst\u00e4nde",
-				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerl\u00f6se",
-				"Sonstige betriebliche Ertr\u00e4ge", "Andere aktivierte Eigenleistungen",
-				"Materialaufwand", "Personalaufwand", "Abschreibungen",
-				"Sonstige betriebliche Aufwendungen", "Zinsen und andere Aufwendungen" };
-	}	
+		shownProperties = new String[] { "capitalStock", "jahresÜberschuss",
+				"zinsen", "taxShield", "nichtZahlungswirksameAufwendungen",
+				"nichtZahlungswirksameErtraege", "bruttoInvestitionen" };
+		germanNamesProperties = new String[] {"Fremdkapital", "Jahres\u00fcberschuss",
+				"Zinsen",
+				"Fiktive Steuern (Tax Shield)",
+				"Aufwendungen, die im betrachteten Jahr nicht zahlungswirksam waren", 
+				"Ertr\u00e4ge, die im betrachteten Jahr nicht zahlungswirksam waren", 
+				"Brutto-Investitionen"};
+	}
 
 	/**
 	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
@@ -82,10 +77,11 @@ public class IndirectCalculationPresenter extends AbstractInputPresenter<Indirec
 	 * 
 	 * @param event
 	 */
-	
+
 	@EventHandler
 	public void onShowEvent(ShowIndirectCalcEvent event) {
 		processEvent(event);
 	}
-	
+
 }
+

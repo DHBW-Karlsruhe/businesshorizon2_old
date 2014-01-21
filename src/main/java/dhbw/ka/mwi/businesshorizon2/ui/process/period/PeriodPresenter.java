@@ -1,22 +1,22 @@
 /*******************************************************************************
- * BusinessHorizon2
- * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
- *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- * 
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+* BusinessHorizon2
+*
+* Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+* Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+******************************************************************************/
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period;
 
@@ -54,110 +54,123 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInter
  * @author Daniel Dengler, Marcel Rosenberger
  */
 
+
 public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
-	private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-	private View currentInput = null;
+        private View currentInput = null;
 
-	private static final Logger logger = Logger.getLogger("PeriodPresenter.class");
+        private static final Logger logger = Logger.getLogger("PeriodPresenter.class");
 
-	@Autowired
-	private TimelineViewInterface timelineView;
-
-	@Autowired
-	private IndirectCalculationViewInterface indirectCalcView;
-
-	@Autowired
-	private DirektViewInterface direktView;
-
-	@Autowired
-	private DirectCalculationViewInterface directCalcView;
-
-	@Autowired
-	private TimelinePresenter timelinePresenter;
-
-	@Autowired
-	private IndirectCalculationPresenter indirectCalculationPresenter;
-
-	@Autowired
-	private DirektPresenter direktPresenter;
-
-	@Autowired
-	private DirectCalculationPresenter directCalculationPresenter;
-
-	@Autowired
-	private EventBus eventBus;
+        @Autowired
+        private TimelineViewInterface timelineView;
 
 
+        @Autowired
+		private IndirectCalculationViewInterface indirectCalcView;
 
 
-	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
-	 * 
-	 * @author Daniel Dengler
-	 */
-	@PostConstruct
-	public void init() {
-		eventBus.addHandler(this);
-	}
+        @Autowired
+        private DirektViewInterface direktView;
 
-	@EventHandler
 
-	public void onShowEvent(ShowPeriodViewEvent event) {
-		logger.debug("DirektViewEvent gefeuert");
-		getView().showView(timelineView, currentInput);
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
-	}
+        @Autowired
+        private DirectCalculationViewInterface directCalcView;
+
+
+        @Autowired
+        private TimelinePresenter timelinePresenter;
+
+
+        @Autowired
+        private IndirectCalculationPresenter indirectCalculationPresenter;
+
+
+        @Autowired
+        private DirektPresenter direktPresenter;
+
+
+        @Autowired
+        private DirectCalculationPresenter directCalculationPresenter;
 
 	
-	
-	
-	
-	@EventHandler
-	public void onShowEvent(ShowDirectCalcEvent event) {
-		logger.debug("ShowDirectCalcEvent erhalten");
-		currentInput = directCalcView;
-		getView().showView(timelineView, currentInput);
+        @Autowired
+        private EventBus eventBus;
 
-	}
 
-	@EventHandler
-	public void onShowEvent(ShowDirektViewEvent event) {
-		logger.debug("ShowDirektViewEvent erhalten");
-		currentInput = direktView;
-		getView().showView(timelineView, currentInput);
 
-		
-	}
 
-	@EventHandler
-	public void onShowEvent(ShowIndirectCalcEvent event) {
-		logger.debug("ShowUmsatzViewEvent erhalten");
-		currentInput = indirectCalcView;
-		getView().showView(timelineView, currentInput);
-	}
 
-	
-	
-	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+        /**
+         * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+         * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+         * einen EventHandler.
+         *
+         * @author Daniel Dengler
+         */
+        @PostConstruct
+        public void init() {
+                eventBus.addHandler(this);
+        }
 
-	@Override
-	@EventHandler
-	public void validate(ValidateContentStateEvent event) {
-		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
-		logger.debug("Presenter valid, ValidStateEvent fired");
-	}
 
-	@Override
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
 
-	}
+        @EventHandler
+        public void onShowEvent(ShowPeriodViewEvent event) {
+                logger.debug("DirektViewEvent gefeuert");
+                getView().showView(timelineView, currentInput);
+                eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
+        }
 
+        
+        
+        
+        
+        @EventHandler
+        public void onShowEvent(ShowDirectCalcEvent event) {
+                logger.debug("ShowDirectCalcEvent erhalten");
+                currentInput = directCalcView;
+                getView().showView(timelineView, currentInput);
+
+        }
+
+
+        @EventHandler
+        public void onShowEvent(ShowDirektViewEvent event) {
+                logger.debug("ShowDirektViewEvent erhalten");
+                currentInput = direktView;
+                getView().showView(timelineView, currentInput);
+
+                
+        }
+
+        @EventHandler
+        public void onShowEvent(ShowIndirectCalcEvent event) {
+                logger.debug("ShowUmsatzViewEvent erhalten");
+                currentInput = indirectCalcView;
+                getView().showView(timelineView, currentInput);
+        }
+
+        
+        
+        
+        @Override
+        public boolean isValid() {
+                return true;
+        }
+
+        @Override
+        @EventHandler
+        public void validate(ValidateContentStateEvent event) {
+                eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
+                logger.debug("Presenter valid, ValidStateEvent fired");
+        }
+
+        @Override
+        public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+                // TODO Auto-generated method stub
+
+        }
+        
 }
+

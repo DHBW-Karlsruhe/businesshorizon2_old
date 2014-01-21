@@ -32,7 +32,7 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicLineChart;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
@@ -103,22 +103,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	}
 	
 	
-	/**
-	 * @author Annika Weis
-	 */
-	@Override
-	public void addBasicLineChartArea(BasicLineChart chartArea) {
-		outputArea.addComponent(chartArea);
-	}
 	
-	/**
-	 * @author Annika Weis
-	 */
-	@Override
-	public void addDeterministicLineChartArea(DeterministicLineChart lineChart) {
-		outputArea.addComponent(lineChart);
-		
-	}
 
 	
 	@Override
