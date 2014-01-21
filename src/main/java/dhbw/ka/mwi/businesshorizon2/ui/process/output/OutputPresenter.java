@@ -133,7 +133,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					onProgressChange((float) 0.5);
 
 					
-					if (project.getCalculationMethod().getSelected()) {
+					if (project.getCalculationMethod().isSelected()) {
 					
 						double unternehmenswert = 0;
 

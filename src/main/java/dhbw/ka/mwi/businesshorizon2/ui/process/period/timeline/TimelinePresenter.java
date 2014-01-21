@@ -623,7 +623,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
                 if (deterministic) {
                                 if (projectProxy
-                                        .getSelectedProject().getCalculationMethod().getSelected()) {
+                                        .getSelectedProject().getCalculationMethod().isSelected()) {
                                         methode = projectProxy
                                                 .getSelectedProject().getCalculationMethod().getName();
                                         logger.debug("Methode: " + methode);

@@ -106,14 +106,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		logger.debug("showMethodView aufgerufen");
 		
 		this.removeAllComponents();
-		logger.debug("Alle Komponenten entfernt");
-		
-		//stochasticCheckbox = new CheckBox("Stochastische Berechnung"); //
-		//deterministicCheckbox = new CheckBox("Deterministische Eingabe"); //
-		
-		//?
-		//stochasticCheckbox.setImmediate(true); //
-		//deterministicCheckbox.setImmediate(true); //	
+		logger.debug("Alle Komponenten entfernt");	
 		
 		//Auswahlpanels initialisieren
 		calculationMethodPanel = new Panel("Berechnungsmethode:");
@@ -122,10 +115,6 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		cashflowSourcePanel = new Panel("Herkunft der Cashflows:");
 		cashflowSourcePanel.addStyleName("light");
 		
-		//deaktivieren
-		//stochasticMethodPanel = new Panel("Stochastische Methode:"); //
-		//stochasticMethodPanel.addStyleName("light"); //
-		
 		deterministicInputPanel = new Panel("Zukünftige Perioden (deterministisch):");
 		deterministicInputPanel.addStyleName("light");
 		
@@ -133,28 +122,6 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		stochasticInputPanel.addStyleName("light");
 		
 		logger.debug("Panels mit Ueberschrift erstellt");
-		
-		
-		//entfernen
-		/**stochasticCheckbox.addListener(new Button.ClickListener() { //
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter.toggleStochasticMethodType(true,event.getButton().booleanValue());				
-			}
-		});*/
-		
-		//entfernen
-		/**deterministicCheckbox.addListener(new Button.ClickListener() { //
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter.toggleDeterministicMethodType(true,event.getButton().booleanValue());
-				
-			}
-		});*/
 
 		 // OptionGroup für Auswahl der Berechnungsmethoden erstellen
 		calculationMethod = new OptionGroup();
@@ -178,25 +145,9 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				CashflowSource selected = (CashflowSource) event.getProperty().getValue();
-				presenter.toggleCashflowSource(true,selected);;	
+				presenter.toggleCashflowSource((CashflowSource) cashflowSource.getValue());;	
 			}	
 		});
-		
-		// ff deaktivieren
-		//stochasticMethod = new OptionGroup();
-		//stochasticMethod.setMultiSelect(false);
-		//stochasticMethod.setImmediate(true);
-		/**stochasticMethod.addListener(new Property.ValueChangeListener() {
-			
-			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				presenter.toggleStochasticMethod((Set<AbstractStochasticMethod>) stochasticMethod.getValue());
-			}
-		});*/
 		
 		deterministicInput = new OptionGroup();
 		deterministicInput.setMultiSelect(false);
@@ -286,20 +237,18 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	
 	}
 
-	/*
-	 * Annika Weis
-	 * zeigt die deterministische Methode an
+	/**Fügt die Berechungsmethoden zur OptionGroup hinu
+	 * 
 	 */
 	@Override
 	public void showCalculationMethod(AbstractCalculationMethod method) {
 		calculationMethod.addItem(method);
 		calculationMethod.setItemEnabled(method, method.getImplemented());
 		
-		if (method.getSelected()){
+		if (method.isSelected()){
 			calculationMethod.select(method);
 		}
 	}
-
 
 
 	/**@Override
@@ -345,17 +294,17 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	
 	//Annika Weis
 	@Override
-	public void showDeterministicInputPanel(Boolean checked) {
+	public void showDeterministicInputPanel() {
 	
-			deterministicInputPanel.setVisible(checked);
-			stochasticInputPanel.setVisible(!checked);
+			deterministicInputPanel.setVisible(true);
+			stochasticInputPanel.setVisible(false);
 	}
 
 	@Override
-	public void showStochasticInputPanel(Boolean checked) {
+	public void showStochasticInputPanel() {
 
-			stochasticInputPanel.setVisible(checked);
-			deterministicInputPanel.setVisible(!checked);
+			stochasticInputPanel.setVisible(true);
+			deterministicInputPanel.setVisible(false);
 	
 	}
 	

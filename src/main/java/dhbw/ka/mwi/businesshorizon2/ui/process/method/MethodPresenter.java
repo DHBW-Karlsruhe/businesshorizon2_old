@@ -83,11 +83,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	private Project project;
 
 	private AbstractCalculationMethod calculationMethod;
-	//private AbstractStochasticMethod stochasticMethod;
+	private AbstractStochasticMethod stochasticMethod;
 	
 	//Liste für die Auswahloptionen
 	private SortedSet<AbstractCalculationMethod> calculationMethods;
-	//private SortedSet<AbstractStochasticMethod> stochasticMethods;
 	
 	private ProjectCashflowSource projectCashflowSource;
 	
@@ -141,25 +140,12 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 
 		// Annika Weis
-
 		for (AbstractCalculationMethod m : calculationMethods) {
 			getView().showCalculationMethod(m);
 
 		}
-		
-		//deaktivieren
-		/**for (AbstractStochasticMethod m : stochasticMethods) {
-			getView().showStochasticMethod(m);
-		}*/
-		
-		//Setzt Zustand der CheckBoxes
-		//getView().setStochastic(projectInputType.getStochastic());
-		//getView().setDeterministic(projectInputType.getCalculation());
-		
-		
 
 		Boolean CalculationState = projectInputType.isDeterministic();
-
 
 		//Falls für das Projekt bereits eine Berechnungsmethode ausgewählt wurde,
 		//wird (das Panel und) die Auswahl angezeigt
@@ -172,7 +158,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		
 		Boolean CashflowState = projectInputType.isDeterministic();
 
-
 		//Falls für das Projekt bereits die Herkunft der Cashflow ausgewählt wurde,
 		//wird das Panel und die Auswahl angezeigt
 		if (CashflowState != null) {
@@ -181,9 +166,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			projectInputType.setDeterministic(false);
 			getView().enableCashflowSourceSelection(false);
 		}
-
 		
-
 		/**Boolean StochasticState = projectInputType.getStochastic();
 		
 		if (CalculationState != null) {
@@ -195,9 +178,11 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		
 		getView().showCashflowSourcePanel(projectCashflowSource.getCashflow());
 
-		getView().showStochasticInputPanel(projectInputType.isStochastic());
-		getView().showDeterministicInputPanel(projectInputType.isDeterministic());
-		
+		if (projectInputType.isStochastic()) {
+		getView().showStochasticInputPanel();
+		} else if (projectInputType.isDeterministic()){
+		getView().showDeterministicInputPanel();
+		}
 		
 		getView().selectInput(true, projectInputType.getStochasticInput());
 		getView().selectInput(false, projectInputType.getDeterministicInput());
@@ -231,7 +216,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			// Annika Weis
 			valid = false;
 			for (AbstractCalculationMethod m : calculationMethods) {
-				if (m.getSelected()) {
+				if (m.isSelected()) {
 					valid = true;
 				}
 
@@ -302,17 +287,17 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	}
 	
-	public void toggleCashflowSource(Boolean cashflow, CashflowSource newSelected) {
+	public void toggleCashflowSource(CashflowSource newSelected) {
 		eventBus.fireEvent(new CashflowSourceChangedEvent());
-		if (cashflow) {
-			projectCashflowSource.setCashflowSource(newSelected);
-			if(newSelected.equals(CashflowSource.DETERMINISTIC)){
-				getView().showDeterministicInputPanel(cashflow);
-			}
-			if(newSelected.equals(CashflowSource.STOCHASTIC)){
-				getView().showStochasticInputPanel(cashflow);
-				
-			}
+		projectCashflowSource.setCashflowSource(newSelected);
+		if(newSelected.equals(CashflowSource.DETERMINISTIC)){
+			getView().showDeterministicInputPanel();
+			projectInputType.setDeterministic(true);
+		}
+		else if(newSelected.equals(CashflowSource.STOCHASTIC)){
+			getView().showStochasticInputPanel();
+			stochasticMethod = new TimeseriesCalculator();
+			
 		}
 	}
 

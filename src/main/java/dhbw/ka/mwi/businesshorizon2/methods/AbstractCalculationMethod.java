@@ -46,7 +46,7 @@ abstract public class AbstractCalculationMethod implements
 	
 	protected Boolean selected = false;
 	
-	public Boolean getSelected() {
+	public Boolean isSelected() {
 		return selected;
 	}
 	public void setSelected(Boolean selected) {

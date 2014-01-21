@@ -43,7 +43,7 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsExc
  * Objekt uebergeben werden (d.h. es ist nicht moeglich, dieses Objekt zu
  * ersetzen).
  * 
- * @author Christian Gahlert
+ * @author Christian Gahlert, Mirko Göpfrich
  * 
  */
 public class Project implements Serializable {
@@ -93,36 +93,19 @@ public class Project implements Serializable {
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
 	/**
-	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
+	 * Konstruktor des Projekts, mit dessen der Name und Beschreibung gesetzt wird.
 	 * 
-	 * @author Christian Scherer
-	 * @param Der
-	 *            Name des Projekts
 	 */
 	public Project(String name, String description) {
 		this.name = name;
 		this.setDescription(description);
-		this.projectInputType = new ProjectInputType();
 		this.iterations = 10000;
 	}
 
-	/**
-	 * Standardkonstruktor des Projekt
-	 * 
-	 * @author Christian Scherer
-	 */
-
-	public Project() {
-		this.projectInputType = new ProjectInputType();
-
-	}
 
 	/**
 	 * Gibt die Erhöhungswahrscheinlichkeit des CashFlows zurueck.
 	 * 
-	 * @author Kai Westerholz
-	 * @return
-	 */
 	public double getCashFlowProbabilityOfRise() {
 		return CashFlowProbabilityOfRise;
 	}
@@ -133,6 +116,8 @@ public class Project implements Serializable {
 	 * @author Kai Westerholz
 	 * @param cashFlowProbabilityOfRise
 	 */
+	
+	
 	public void setCashFlowProbabilityOfRise(double cashFlowProbabilityOfRise) {
 		CashFlowProbabilityOfRise = cashFlowProbabilityOfRise;
 	}
@@ -212,7 +197,7 @@ public class Project implements Serializable {
 
 
 	/**
-	 * @deprecated Bitte getter für die stochastiPeriods und DeterministicPeriods
+	 * @deprecated Bitte getter für die stochastiPeriods und deterministicPeriods
 	 *             verwenden Ueberschreibt die bisher verwendeten Methoden. Die
 	 *             Perioden muessen in Form eines sortierten NavigableSet
 	 *             vorliegen.
@@ -291,6 +276,17 @@ public class Project implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Setzt den Namen des Projekts.
+	 * 
+	 * @author Christian Scherer
+	 * @param name
+	 *            Name des Projekts
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	/**
 	 * @return the calculationMethod
@@ -361,17 +357,6 @@ public class Project implements Serializable {
 
 	public void setProjectInputType(ProjectInputType projectInputType) {
 		this.projectInputType = projectInputType;
-	}
-
-	/**
-	 * Setzt den Namen des Projekts.
-	 * 
-	 * @author Christian Scherer
-	 * @param name
-	 *            Name des Projekts
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**
@@ -551,6 +536,12 @@ public class Project implements Serializable {
 
 	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
 		this.deterministicPeriods = deterministicPeriods;
+	}
+
+
+	public double getCashFlowProbabilityOfRise() {
+		// TODO Auto-generated method stub
+		return CashFlowProbabilityOfRise;
 	}
 	
 }

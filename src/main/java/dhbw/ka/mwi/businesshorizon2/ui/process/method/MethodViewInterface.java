@@ -61,10 +61,10 @@ public interface MethodViewInterface extends ContentView {
 
 	public void showMethodView();
 
-	public void showDeterministicInputPanel(Boolean checked);
-
-	public void showStochasticInputPanel(Boolean checked);
-
 	public void showCashflowSourcePanel(Boolean checked);
+
+	public void showDeterministicInputPanel();
+
+	void showStochasticInputPanel();
 	
 }

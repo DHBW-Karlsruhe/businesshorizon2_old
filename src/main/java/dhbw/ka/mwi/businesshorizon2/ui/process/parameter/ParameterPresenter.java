@@ -242,9 +242,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		//method_deterministicIterator = calculationMethod.iterator();
 		//while (method_deterministicIterator.hasNext()) {
 			//AbstractCalculationMethod m_d = (AbstractCalculationMethod) method_deterministicIterator.next();
-			if (calculationMethod.getName().equals("Flow-to-Equity (FTE)") && calculationMethod.getSelected()) {
+			if (calculationMethod.getName().equals("Flow-to-Equity (FTE)") && calculationMethod.isSelected()) {
 				dcf = true;
-			} else if (calculationMethod.getName().equals("Adjusted-Present-Value (APV)") && calculationMethod.getSelected()){
+			} else if (calculationMethod.getName().equals("Adjusted-Present-Value (APV)") && calculationMethod.isSelected()){
 				apv = true;
 			}
 		//}
