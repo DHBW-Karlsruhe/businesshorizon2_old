@@ -29,18 +29,18 @@ import com.mvplite.event.Event;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 
-public class CheckMethod_deterministicEvent extends Event {
+public class CheckCalculationMethod extends Event {
 
 	private static final long serialVersionUID = 1L;	
-	private Set<AbstractCalculationMethod> checkedMethods;
+	private AbstractCalculationMethod checkedMethod;
 	
-	public CheckMethod_deterministicEvent(Set<AbstractCalculationMethod> checkedMethods) {
+	public CheckCalculationMethod(AbstractCalculationMethod checkedMethod) {
 		super();
-		this.checkedMethods=checkedMethods;
+		this.checkedMethod=checkedMethod;
 	}
 
-	public Set<AbstractCalculationMethod> getCheckedMethods() {
-		return checkedMethods;
+	public AbstractCalculationMethod getCheckedMethod() {
+		return checkedMethod;
 	}
 
 

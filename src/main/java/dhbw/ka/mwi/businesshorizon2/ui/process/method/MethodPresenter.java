@@ -76,6 +76,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	private Project project;
 
+	private AbstractStochasticMethod stochasticMethod;
+	private AbstractCalculationMethod calculationMethod;
+	
+	//entfernen, da nur eine Methode pro Projekt
 	private SortedSet<AbstractStochasticMethod> stochasticMethods;
 	private SortedSet<AbstractCalculationMethod> calculationMethods;
 
@@ -96,6 +100,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@EventHandler
 	public void onShowMethod(ShowMethodViewEvent event) {
 		getView().showMethodView();
+		logger.debug("showMethodView aufgerufen");
 
 		project = projectProxy.getSelectedProject();
 		stochasticMethods = new TreeSet<AbstractStochasticMethod>();
@@ -103,8 +108,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 		//Hier werden die Methoden die zur Auswahl stehen sollen, auf dem Reiter angezeigt
 		if (project.getCalculationMethods() == null) {
-			calculationMethods.add(new FTE());
 			calculationMethods.add(new APV());
+			calculationMethods.add(new FTE());
 			project.setCalculationMethods(calculationMethods);
 		} else {
 			calculationMethods = project.getCalculationMethods();
@@ -140,25 +145,25 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		getView().setStochastic(projectInputType.getStochastic());
 		getView().setDeterministic(projectInputType.getCalculation());
 
-		Boolean state = projectInputType.getStochastic();
+		Boolean CalculationState = projectInputType.getStochastic();
 
 		//Stand 17:30
-		if (state != null) {
-			getView().enableMethodSelection(state);
+		if (CalculationState != null) {
+			getView().enableStochasticMethodSelection(CalculationState);
 		} else {
 			projectInputType.setStochastic(false);
-			getView().enableMethodSelection(false);
+			getView().enableStochasticMethodSelection(false);
 		}
 		
 		
 		//Annika Weis
-		Boolean state_deterministic = projectInputType.getCalculation();
+		Boolean DeterministicState = projectInputType.getCalculation();
 
-		if (state_deterministic != null) {
-			getView().enableMethod_deterministicSelection(state_deterministic);
+		if (DeterministicState != null) {
+			getView().enableCalculationMethodSelection(DeterministicState);
 		} else {
 			projectInputType.setCalculation(false);
-			getView().enableMethod_deterministicSelection(false);
+			getView().enableCalculationMethodSelection(false);
 		}
 		
 
@@ -175,6 +180,8 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,
 				true));
+		
+		toggleCalculationMethodType(true,true);
 
 	}
 
@@ -216,6 +223,33 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		return valid;
 	}
 
+	//Annika Weis
+	public void toggleCalculationMethodType(Boolean deterministic, Boolean checked) {
+		//logger.debug("toggleMethod_deterministicType " + deterministic +  " / " + checked);
+		logger.debug("Panel fuer Berechnungsmethode anzeigen");
+		eventBus.fireEvent(new CheckMethod_deterministicTypeEvent(true, true));
+
+		//getView().showInputMethod_deterministicSelection(deterministic, checked);
+
+		/**if (deterministic) {
+			projectInputType.setCalculation(checked);
+			getView().enableCalculationMethodSelection(checked);
+
+		} else if (!deterministic) {
+			projectInputType.setCalculation(checked);
+		}*/
+		
+		getView().enableCalculationMethodSelection(checked);
+
+		this.validate(new ValidateContentStateEvent());
+
+	}
+	
+	public void toggleCashflowSource(boolean b, InputType selected) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void toggleStochasticMethodType(Boolean stochastic, Boolean checked) {
 		logger.debug("toggleMethodType");
 		eventBus.fireEvent(new CheckMethodTypeEvent(stochastic, checked));
@@ -224,7 +258,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 		if (stochastic) {
 			projectInputType.setStochastic(checked);
-			getView().enableMethodSelection(checked);
+			getView().enableStochasticMethodSelection(checked);
 
 		} else if (!stochastic) {
 			projectInputType.setCalculation(checked);
@@ -234,24 +268,26 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	}
 	
-	//Annika Weis
-	public void toggleDeterministicMethodType(Boolean deterministic, Boolean checked) {
-		logger.debug("toggleMethod_deterministicType " + deterministic +  " / " + checked);
-		eventBus.fireEvent(new CheckMethod_deterministicTypeEvent(deterministic, checked));
+	public void toggleCalculationMethod(AbstractCalculationMethod checkedMethod) {
+		eventBus.fireEvent(new CheckCalculationMethod(checkedMethod));
 
-		getView().showInputMethod_deterministicSelection(deterministic, checked);
-
-		if (deterministic) {
-			projectInputType.setCalculation(checked);
-			getView().enableMethod_deterministicSelection(checked);
-
-		} else if (!deterministic) {
-			projectInputType.setCalculation(checked);
-		}
-
+		calculationMethod = checkedMethod;
+		calculationMethod.setSelected(true);
+		logger.debug("Berechnungsmethode ausgewaehlt: " + checkedMethod.toString());
+		
+		/**for (AbstractCalculationMethod m : calculationMethods) {
+			m.setSelected(false);
+			if (checkedMethod.contains(m)) {
+				m.setSelected(true);
+			}
+		}*/
+		
+		//TODO: weitere Auswahlmöglichkeiten abhängig vom Berechnungstyp einblenden
+		
 		this.validate(new ValidateContentStateEvent());
 
 	}
+	
 
 	public void toggleStochasticMethod(Set<AbstractStochasticMethod> checkedMethods) {
 		eventBus.fireEvent(new CheckMethodEvent(checkedMethods));
@@ -267,20 +303,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 
 	}
 	
-	public void toggleCalculationMethod(Set<AbstractCalculationMethod> checkedMethods) {
-		eventBus.fireEvent(new CheckMethod_deterministicEvent(checkedMethods));
 
-		for (AbstractCalculationMethod m : calculationMethods) {
-			m.setSelected(false);
-			if (checkedMethods.contains(m)) {
-				m.setSelected(true);
-			}
-
-		}
-		this.validate(new ValidateContentStateEvent());
-
-	}
-	
 	//Annika Weis
 	public void toggleDeterministicInput(Boolean deterministic, InputType newSelected) {
 		eventBus.fireEvent(new InputTypeChangedEvent());
@@ -298,12 +321,6 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		} else {
 			projectInputType.setDeterministicInput(newSelected);
 		}
-	}
-	
-	
-	public void toggleCashflowSource(boolean b, InputType selected) {
-		// TODO Auto-generated method stub
-		
 	}
 
 

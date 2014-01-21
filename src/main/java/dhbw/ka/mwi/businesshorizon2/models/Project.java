@@ -48,39 +48,15 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsExc
  */
 public class Project implements Serializable {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 9199799755347070847L;
-
-	protected TreeSet<? extends Period> periods = new TreeSet<>();
-
-	private Date lastChanged;
-	
-	private User createdFrom;
 
 	private String name;
 	
 	private String description;
-
-	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
-
-	public AbstractPeriodContainer getStochasticPeriods() {
-		return stochasticPeriods;
-	}
-
-	public void setStochasticPeriods(AbstractPeriodContainer stochasticPeriods) {
-		this.stochasticPeriods = stochasticPeriods;
-	}
-
-	public AbstractPeriodContainer getDeterministicPeriods() {
-		return deterministicPeriods;
-	}
-
-	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
-		this.deterministicPeriods = deterministicPeriods;
-	}
+	
+	private Date lastChanged;
+	
+	private User createdFrom;
 
 	private double CashFlowProbabilityOfRise;
 	private double CashFlowStepRange;
@@ -93,11 +69,23 @@ public class Project implements Serializable {
 	private int iterations;
 	private int basisYear;
 	
+	//Berechnungsmethode
+	private AbstractCalculationMethod calculationMethod;
+	
+	//Stochastische Methode
+	private AbstractStochasticMethod stochasticMethod;
+	
+	//Eingabemethode
 	private ProjectInputType projectInputType;
+	
+	private SortedSet<AbstractCalculationMethod> calculationMethods;//Annika Weis
 
 	private SortedSet<AbstractStochasticMethod> stochasticMethods;
-	//Annika Weis
-	private SortedSet<AbstractCalculationMethod> calculationMethods;
+	
+	
+	protected TreeSet<? extends Period> periods = new TreeSet<>();
+	
+	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
@@ -301,14 +289,34 @@ public class Project implements Serializable {
 		return name;
 	}
 
-	public void setStochasticMethods(SortedSet<AbstractStochasticMethod> methods) {
-		this.stochasticMethods = methods;
+	/**
+	 * @return the calculationMethod
+	 */
+	public AbstractCalculationMethod getCalculationMethod() {
+		return calculationMethod;
 	}
 
-	public SortedSet<AbstractStochasticMethod> getStochasticMethods() {
-		return stochasticMethods;
+	/**
+	 * @param calculationMethod the calculationMethod to set
+	 */
+	public void setCalculationMethod(AbstractCalculationMethod calculationMethod) {
+		this.calculationMethod = calculationMethod;
 	}
-	
+
+	/**
+	 * @return the stochasticMethod
+	 */
+	public AbstractStochasticMethod getStochasticMethod() {
+		return stochasticMethod;
+	}
+
+	/**
+	 * @param stochasticMethod the stochasticMethod to set
+	 */
+	public void setStochasticMethod(AbstractStochasticMethod stochasticMethod) {
+		this.stochasticMethod = stochasticMethod;
+	}
+
 	//Annika Weis
 	public void setCalculationMethods(SortedSet<AbstractCalculationMethod> methods_deterministic) {
 		this.calculationMethods = methods_deterministic;
@@ -318,6 +326,15 @@ public class Project implements Serializable {
 	public SortedSet<AbstractCalculationMethod> getCalculationMethods() {
 		return calculationMethods;
 	}
+	
+	public void setStochasticMethods(SortedSet<AbstractStochasticMethod> methods) {
+		this.stochasticMethods = methods;
+	}
+
+	public SortedSet<AbstractStochasticMethod> getStochasticMethods() {
+		return stochasticMethods;
+	}
+	
 
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
@@ -500,4 +517,21 @@ public class Project implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public AbstractPeriodContainer getStochasticPeriods() {
+		return stochasticPeriods;
+	}
+
+	public void setStochasticPeriods(AbstractPeriodContainer stochasticPeriods) {
+		this.stochasticPeriods = stochasticPeriods;
+	}
+
+	public AbstractPeriodContainer getDeterministicPeriods() {
+		return deterministicPeriods;
+	}
+
+	public void setDeterministicPeriods(AbstractPeriodContainer deterministicPeriods) {
+		this.deterministicPeriods = deterministicPeriods;
+	}
+	
 }

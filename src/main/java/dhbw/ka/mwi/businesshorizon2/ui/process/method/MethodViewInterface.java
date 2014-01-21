@@ -42,10 +42,10 @@ public interface MethodViewInterface extends ContentView {
 	
 	public void enableOptions();
 
-	public void enableMethodSelection(Boolean state);
+	public void enableStochasticMethodSelection(Boolean state);
 
 	//Annika Weis
-	public void enableMethod_deterministicSelection(Boolean state);
+	public void enableCalculationMethodSelection(Boolean state);
 
 	public void showInputMethodSelection(Boolean stochastic, Boolean checked);
 

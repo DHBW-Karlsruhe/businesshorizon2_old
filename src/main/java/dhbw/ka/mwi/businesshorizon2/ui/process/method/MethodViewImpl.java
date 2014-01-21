@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
@@ -57,6 +58,8 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger logger = Logger.getLogger("MethodViewImpl.class");
+	
 	@Autowired
 	private MethodPresenter presenter;
 	
@@ -136,7 +139,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		});
 		
 		//entfernen
-		deterministicCheckbox.addListener(new Button.ClickListener() { //
+		/**deterministicCheckbox.addListener(new Button.ClickListener() { //
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -144,38 +147,18 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 				presenter.toggleDeterministicMethodType(true,event.getButton().booleanValue());
 				
 			}
-		});
-
-		
-		// ff deaktivieren
-		stochasticMethod = new OptionGroup();
-		stochasticMethod.setMultiSelect(false);
-		//stochasticMethod.setImmediate(true);
-		stochasticMethod.addListener(new Property.ValueChangeListener() {
-			
-			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				presenter.toggleStochasticMethod((Set<AbstractStochasticMethod>) stochasticMethod.getValue());
-			}
-		});
-		
-
+		});*/
 
 		 // OptionGroup für Auswahl der Berechnungsmethoden erstellen
 		calculationMethod = new OptionGroup();
 		calculationMethod.setMultiSelect(false);
-		//calculationMethod.setImmediate(true);
+		calculationMethod.setImmediate(true);
 		calculationMethod.addListener(new Property.ValueChangeListener() {
-			
 			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("unchecked")
+			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				presenter.toggleCalculationMethod((Set<AbstractCalculationMethod>) calculationMethod.getValue());
+				presenter.toggleCalculationMethod((AbstractCalculationMethod) calculationMethod.getValue());
 			}
 		});
 		
@@ -190,6 +173,21 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			public void valueChange(ValueChangeEvent event) {
 				InputType selected = (InputType) event.getProperty().getValue();
 				presenter.toggleCashflowSource(true,selected);	
+			}
+		});
+		
+		// ff deaktivieren
+		stochasticMethod = new OptionGroup();
+		stochasticMethod.setMultiSelect(false);
+		//stochasticMethod.setImmediate(true);
+		stochasticMethod.addListener(new Property.ValueChangeListener() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				presenter.toggleStochasticMethod((Set<AbstractStochasticMethod>) stochasticMethod.getValue());
 			}
 		});
 		
@@ -302,13 +300,13 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	}
 
 	@Override
-	public void enableMethodSelection(Boolean state) {
+	public void enableStochasticMethodSelection(Boolean state) {
 		stochasticMethod.setEnabled(state);
 	}
 	
 	//Annika Weis
 	@Override
-	public void enableMethod_deterministicSelection(Boolean state) {
+	public void enableCalculationMethodSelection(Boolean state) {
 		calculationMethod.setEnabled(state);
 		
 	}
