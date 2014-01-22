@@ -218,7 +218,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		boolean validFirstName;
 
 		// hier wird der Vorname überprüft
-		if (Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", firstName)) {
+		if (Pattern.matches("^[A-ZÄÖÜ][a-zäöüA-ZÄÖÜ\\ \\-]{1,19}$", firstName)) {
 			validFirstName = true;
 			logger.debug("Vorname gültig.");
 		} else {
@@ -245,7 +245,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		boolean validLastName;
 
 		// hier wird der Nachname überprüft
-		if (Pattern.matches("^[A-Z][a-zA-Z\\ \\-]{1,19}$", lastName)) {
+		if (Pattern.matches("^[A-ZÄÖÜ][a-zäöüA-ZÄÖÜ\\ \\-]{1,19}$", lastName)) {
 			validLastName = true;
 			logger.debug("Nachname gültig.");
 		} else {
