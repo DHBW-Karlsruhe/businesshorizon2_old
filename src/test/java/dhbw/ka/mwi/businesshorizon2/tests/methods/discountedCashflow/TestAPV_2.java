@@ -54,7 +54,7 @@ public class TestAPV_2 extends TestCase {
 		boolean includeInCalculation = true;
 		Szenario szenario = new Szenario( rateReturnEquity,  rateReturnCapitalStock,
 				 businessTax,  corporateAndSolitaryTax,  includeInCalculation);
-		double ergebnisVorgabe= 1055.755762598144;
+		double ergebnisVorgabe= 1055.2755762598144;
 		double ergebnis;
 		
 		
