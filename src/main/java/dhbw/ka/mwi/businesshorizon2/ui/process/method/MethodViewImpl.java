@@ -241,7 +241,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	 * 
 	 */
 	@Override
-	public void showCalculationMethod(AbstractCalculationMethod method) {
+	public void addCalculationMethod(AbstractCalculationMethod method) {
 		calculationMethod.addItem(method);
 		calculationMethod.setItemEnabled(method, method.getImplemented());
 		
@@ -288,7 +288,6 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	
 	@Override
 	public void showCashflowSourcePanel(Boolean checked) {
-	
 			cashflowSourcePanel.setVisible(checked);
 	}
 	
@@ -348,6 +347,14 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 			this.stochasticCheckbox.setComponentError(null);
 		}
 		*/
+		
+	}
+
+	@Override
+	public void setSelectCalculationMethod(
+			AbstractCalculationMethod calculationMethod) {
+		this.calculationMethod.select(calculationMethod);
+		calculationMethod.setSelected(true);
 		
 	}
 

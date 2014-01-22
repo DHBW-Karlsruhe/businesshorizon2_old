@@ -102,7 +102,10 @@ public class Project implements Serializable {
 		this.iterations = 10000;
 	}
 
-
+	public Project(){
+	
+	}
+	
 	/**
 	 * Gibt die Erhöhungswahrscheinlichkeit des CashFlows zurueck.
 	 * 

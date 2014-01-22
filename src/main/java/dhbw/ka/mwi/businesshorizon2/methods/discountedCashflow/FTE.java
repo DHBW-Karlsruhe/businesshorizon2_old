@@ -35,7 +35,7 @@ public class FTE extends AbstractCalculationMethod {
 	@Override
 	public int getOrderKey() {
 
-		return 4;
+		return 2;
 	}
 
 	@Override

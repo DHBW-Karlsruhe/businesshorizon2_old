@@ -40,25 +40,25 @@ public class ProjectInputType implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5922498137882142059L;
-	private Boolean stochastic = false;
-	private Boolean deterministic = false;
-	private InputType stochasticInput = InputType.DIRECT;
-	private InputType deterministicInput = InputType.DIRECT;
+	private Boolean stochasticSelected = false;
+	private Boolean deterministicSelected = false;
+	private InputType stochasticInput; // = InputType.DIRECT;
+	private InputType deterministicInput; // = InputType.DIRECT;
 
 	public Boolean isStochastic() {
-		return stochastic;
+		return stochasticSelected;
 	}
 
 	public void setStochastic(Boolean stochastic) {
-		this.stochastic = stochastic;
+		this.stochasticSelected = stochastic;
 	}
 
 	public Boolean isDeterministic() {
-		return deterministic;
+		return deterministicSelected;
 	}
 
 	public void setDeterministic(Boolean deterministic) {
-		this.deterministic = deterministic;
+		this.deterministicSelected = deterministic;
 	}
 
 	public InputType getStochasticInput() {

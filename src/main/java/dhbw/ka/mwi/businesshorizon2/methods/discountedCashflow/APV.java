@@ -38,7 +38,7 @@ public class APV extends AbstractCalculationMethod {
 	@Override
 	public int getOrderKey() {
 
-		return 5;
+		return 1;
 	}
 
 	@Override
