@@ -1047,12 +1047,14 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.setDeterministicPeriods(futurePeriods);
 		periodenanzahl_geaendert();
 
-		//andere Periode anzeigen
-		try{
-			TreeSet set =projectProxy.getSelectedProject().getDeterministicPeriods().getPeriods();
+		// andere Periode anzeigen
+		try {
+			TreeSet set = projectProxy.getSelectedProject()
+					.getDeterministicPeriods().getPeriods();
 			int laenge = set.toArray().length;
-			periodClicked((Period) set.toArray()[laenge-1]);
-		} catch(Exception e){}
+			periodClicked((Period) set.toArray()[laenge - 1]);
+		} catch (Exception e) {
+		}
 	}
 
 	/**
@@ -1077,14 +1079,15 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.setDeterministicPeriods(futurePeriods);
 
 		periodenanzahl_geaendert();
-		
-	
-		//andere Periode anzeigen
-		try{
-			TreeSet set =projectProxy.getSelectedProject().getStochasticPeriods().getPeriods();
+
+		// andere Periode anzeigen
+		try {
+			TreeSet set = projectProxy.getSelectedProject()
+					.getStochasticPeriods().getPeriods();
 			int laenge = set.toArray().length;
-			periodClicked((Period) set.toArray()[laenge-1]);
-		} catch(Exception e){}
+			periodClicked((Period) set.toArray()[0]);
+		} catch (Exception e) {
+		}
 	}
 
 	/**
