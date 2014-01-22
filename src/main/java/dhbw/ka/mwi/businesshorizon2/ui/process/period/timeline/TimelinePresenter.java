@@ -1077,7 +1077,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		projectProxy.getSelectedProject()
 				.setDeterministicPeriods(futurePeriods);
-
+ 
 		periodenanzahl_geaendert();
 
 		// andere Periode anzeigen
