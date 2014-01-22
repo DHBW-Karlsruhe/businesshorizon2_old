@@ -211,7 +211,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		if (deterministic) {
 			getView().setFutureButtonAccess(true);
-			if (sumFuturePeriods >= 2 + weitere_perioden_future) {
+			if (sumFuturePeriods >= 3 + weitere_perioden_future) {
 				getView().setFutureDeleteButtonAccess(true);
 			} else {
 				getView().setFutureDeleteButtonAccess(false);
@@ -220,7 +220,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().setPastDeleteButtonAccess(false);
 		}
 		if (stochastic) {
-			if (sumPastPeriods >= 5 + weitere_perioden_past) {
+			if (sumPastPeriods >= 6 + weitere_perioden_past) {
 				getView().setPastDeleteButtonAccess(true);
 			} else {
 				getView().setPastDeleteButtonAccess(false);
