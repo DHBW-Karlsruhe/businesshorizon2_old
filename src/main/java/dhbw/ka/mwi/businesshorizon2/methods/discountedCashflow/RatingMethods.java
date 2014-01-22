@@ -44,7 +44,7 @@ public abstract class RatingMethods{
 		this.container = container;
 		this.szenario = szenario;
 
-		CashFlowCalculator.calculateCashflows(container);
+		CashFlowCalculator.calculateCashflows(container, szenario);
 	}
 	
 	protected double getRateReturnEquity(){

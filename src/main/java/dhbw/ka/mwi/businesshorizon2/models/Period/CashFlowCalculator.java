@@ -51,11 +51,11 @@ public class CashFlowCalculator {
      * @param szenario
      * 				Szenario
      */
-    public static void calculateCashflows(DeterministicResultContainer result) {
+    public static void calculateCashflows(DeterministicResultContainer result, Szenario scenario) {
     		
             for (AbstractPeriodContainer container : result.getPeriodContainers()) {
                     if (container instanceof DirectCalculatedCashflowPeriodContainer) {
-                            calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+                            calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container, scenario);
                     } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
                             calculateIndirectCashflows(
                                             (IndirectCalculatedCashflowPeriodContainer) container);
@@ -74,11 +74,11 @@ public class CashFlowCalculator {
          * @param szenario
          * Szenario
          */
-        public static void calculateCashflows(StochasticResultContainer result) {
+        public static void calculateCashflows(StochasticResultContainer result, Szenario scenario) {
 
                 for (AbstractPeriodContainer container : result.getPeriodContainers()) {
                         if (container instanceof DirectCalculatedCashflowPeriodContainer) {
-                                calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container);
+                                calculateDirectCashflows((DirectCalculatedCashflowPeriodContainer) container, scenario);
                         } else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
                                 calculateIndirectCashflows(
                                                 (IndirectCalculatedCashflowPeriodContainer) container);
@@ -94,13 +94,16 @@ public class CashFlowCalculator {
          */
 
         private static void calculateDirectCashflows(
-                        DirectCalculatedCashflowPeriodContainer container) {
+                        DirectCalculatedCashflowPeriodContainer container, Szenario scenario) {
 
                 for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
-                        double freeCashFlow = period.getUmsatzErlöse()
-                                        - period.getUmsatzKosten()
-                                        - period.getSteuernBeiReinerEigenfinanzierung()
-                                        - period.getSaldoAusAuszahlungen();
+                    //Cash-Flow vor Zins und Steuern.    
+                	double ebit = period.getUmsatzErlöse()
+                                        - period.getUmsatzKosten();
+                	double steuersatz = scenario.getCorporateAndSolitaryTax() + scenario.getBusinessTax();
+                	double freeCashFlow = ebit - ebit* steuersatz                            
+                                        + period.getDesinvestitionen()
+                                        - period.getInvestitionen();
                        
 
                         period.setFreeCashFlow(freeCashFlow);
@@ -121,7 +124,7 @@ public class CashFlowCalculator {
 
                 for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
                         double freeCashFlow = period.getJahresÜberschuss()
-                        				+ period.getZinsen()
+                        				+ period.getZinsaufwand()
                                         - period.getTaxShield()
                                         + period.getNichtZahlungswirksameAufwendungen()
                                         - period.getNichtZahlungswirksameErtraege()

@@ -54,10 +54,10 @@ public class IndirectCalculationPresenter extends
 	public void init() {
 		eventBus.addHandler(this);
 		shownProperties = new String[] { "capitalStock", "jahresÜberschuss",
-				"zinsen", "taxShield", "nichtZahlungswirksameAufwendungen",
+				"zinsaufwand", "taxShield", "nichtZahlungswirksameAufwendungen",
 				"nichtZahlungswirksameErtraege", "bruttoInvestitionen" };
 		germanNamesProperties = new String[] {"Fremdkapital", "Jahres\u00fcberschuss",
-				"Zinsen",
+				"Zinsaufwand",
 				"Fiktive Steuern (Tax Shield)",
 				"Aufwendungen, die im betrachteten Jahr nicht zahlungswirksam waren", 
 				"Ertr\u00e4ge, die im betrachteten Jahr nicht zahlungswirksam waren", 

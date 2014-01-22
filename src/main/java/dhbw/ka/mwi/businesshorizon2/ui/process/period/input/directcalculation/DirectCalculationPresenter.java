@@ -56,14 +56,13 @@ public class DirectCalculationPresenter extends
 	public void init() {
 		eventBus.addHandler(this);
 		shownProperties = new String[] { "capitalStock", "umsatzErlöse",
-				"umsatzKosten", "steuernBeiReinerEigenfinanzierung",
-				"saldoAusAuszahlungen" };
+				"umsatzKosten",
+				"investitionen", "desinvestitionen" };
 		germanNamesProperties = new String[] {
 				"Fremdkapital",
 				"Umsatzerl\u00f6se",
 				"Umsatzkosten",
-				"Steuern bei reiner Eigenfinanzierung",
-				"Saldo aus Auszahlungen für Investitionen und Einzahlungen für Desinvestitionen" };
+				"Investitionen", "Desinvestitionen" };
 	}
 
 	/**
