@@ -245,9 +245,10 @@ public class AnalysisTimeseries {
 				zuberechnendeperioden, p, mittelwert, isfremdkapital);
 		
 		//Modellgenauigkeit validieren
-		this.validierung( trendbereinigtezeitreihe,
+		if(this.tide != null){
+			this.validierung( trendbereinigtezeitreihe,
 				 matrixPhi,  p);
-		
+		}
 	
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
