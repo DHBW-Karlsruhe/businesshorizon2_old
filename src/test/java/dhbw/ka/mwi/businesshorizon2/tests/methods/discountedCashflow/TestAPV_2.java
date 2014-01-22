@@ -40,7 +40,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
 public class TestAPV_2 extends TestCase {
 	
-	private static final Logger logger = Logger.getLogger("APV_2.class");
+	private static final Logger logger = Logger.getLogger("TestAPV_2.class");
 	
 		
 	@Test
@@ -52,23 +52,24 @@ public class TestAPV_2 extends TestCase {
 		double businessTax = 14.0; 
 		double corporateAndSolitaryTax = 15.825; 
 		boolean includeInCalculation = true;
-		Szenario szenario = new Szenario (rateReturnEquity, rateReturnCapitalStock, businessTax, corporateAndSolitaryTax, includeInCalculation);
-		double ergebnisVorgabe= 1055.247;
+		Szenario szenario = new Szenario( rateReturnEquity,  rateReturnCapitalStock,
+				 businessTax,  corporateAndSolitaryTax,  includeInCalculation);
+		double ergebnisVorgabe= 1055.755762598144;
 		double ergebnis;
 		
 		
 		cashflow [0]= 0.0;
-		cashflow [1]= 133.61;
+		cashflow [1]= 138.61;
 		cashflow [2]= 202.31;
 		cashflow [3]= 174.41;
 		cashflow [4]= 202.52;
 		
 		
-		fremdkapital [0]= 1260;
-		fremdkapital [1]= 1320;
-		fremdkapital [2]= 1330;
-		fremdkapital [3]= 1400;
-		fremdkapital [4]= 1400;
+		fremdkapital [0]= 1260.0;
+		fremdkapital [1]= 1320.0;
+		fremdkapital [2]= 1330.0;
+		fremdkapital [3]= 1400.0;
+		fremdkapital [4]= 1400.0;
 		
 		APV_2 ap = new APV_2();
 	

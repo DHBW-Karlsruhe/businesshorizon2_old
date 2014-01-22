@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.DeterministicMethodException;
@@ -28,6 +30,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 	/**
 	 * 
 	 */
+	private static final Logger logger = Logger.getLogger("APV_2.class");
 	private static final long serialVersionUID = 3577122037488635230L;
 	private double uwsteuerfrei;
 	private double steuervorteile;
@@ -69,6 +72,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 	 */
 	public double calculateValues(double[] cashflow, double[] fremdkapital,
 			Szenario szenario) {
+		
 		double gk = 0;
 		double v = 0;
 		double unternehmenswert = 0;
@@ -89,7 +93,19 @@ public class APV_2 extends AbstractDeterministicMethod {
 		sSteuersatz = 0.75 * szenario.getBusinessTax() / 100 + sKS;
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
-
+		
+		for (int i= 0; i< cashflow.length; i++){
+		logger.debug("c"+i+": "+cashflow [i]);
+		logger.debug("f"+i+": "+fremdkapital [i]);
+		}
+		
+		logger.debug(szenario.getCorporateAndSolitaryTax());
+		logger.debug(szenario.getBusinessTax());
+		logger.debug(szenario.getRateReturnEquity());
+		logger.debug(szenario.getRateReturnCapitalStock());
+		
+		
+		
 		for (int durchlauf = 0; durchlauf < cashflow.length; durchlauf++) {
 			period_cashflow = cashflow[durchlauf];
 			period_fremdkapital = fremdkapital[durchlauf];
@@ -125,7 +141,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 		this.setSteuervorteile(v);
 		this.setFremdkapital(first_period_fremdkapital);
 
-
+		logger.debug(unternehmenswert);
 		return unternehmenswert;
 	}
 
