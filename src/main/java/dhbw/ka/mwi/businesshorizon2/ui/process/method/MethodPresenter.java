@@ -33,13 +33,13 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
 import dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener;
-import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
+
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
@@ -96,7 +96,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	@Override
 	public boolean isValid() {
 		boolean valid = false;
-		if (projectInputType.getStochastic()) {
+		if (projectInputType.isStochastic()) {
 
 			for (AbstractStochasticMethod m : methods) {
 				if (m.getSelected()) {
@@ -108,7 +108,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 				getView().showErrorNoMethodSelected(valid);
 			}
 
-		} else if (projectInputType.getDeterministic()) {
+		} else if (projectInputType.isDeterministic()) {
 
 			valid = true;
 
@@ -259,10 +259,10 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 			getView().showMethod_deterministic(m);
 		}
 
-		getView().setStochastic(projectInputType.getStochastic());
-		getView().setDeterministic(projectInputType.getDeterministic());
+		getView().setStochastic(projectInputType.isStochastic());
+		getView().setDeterministic(projectInputType.isDeterministic());
 
-		Boolean state = projectInputType.getStochastic();
+		Boolean state = projectInputType.isStochastic();
 
 		if (state != null) {
 			getView().enableMethodSelection(state);
@@ -273,7 +273,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		
 		
 		//Annika Weis
-		Boolean state_deterministic = projectInputType.getDeterministic();
+		Boolean state_deterministic = projectInputType.isDeterministic();
 
 		if (state_deterministic != null) {
 			getView().enableMethod_deterministicSelection(state_deterministic);
@@ -283,12 +283,12 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		}
 		
 
-		getView().showInputMethodSelection(true,projectInputType.getStochastic());
-		getView().showInputMethodSelection(false,projectInputType.getDeterministic());
+		getView().showInputMethodSelection(true,projectInputType.isStochastic());
+		getView().showInputMethodSelection(false,projectInputType.isDeterministic());
 		
 		//Annika Weis
-		getView().showInputMethod_deterministicSelection(true,projectInputType.getDeterministic());
-		getView().showInputMethod_deterministicSelection(false,projectInputType.getStochastic());
+		getView().showInputMethod_deterministicSelection(true,projectInputType.isDeterministic());
+		getView().showInputMethod_deterministicSelection(false,projectInputType.isStochastic());
 		
 		
 		getView().selectInput(true, projectInputType.getStochasticInput());

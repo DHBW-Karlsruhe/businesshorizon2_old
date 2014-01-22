@@ -36,6 +36,11 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 public class CashFlowPeriodContainer extends AbstractPeriodContainer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3915804403679972643L;
+
 	public CashFlowPeriodContainer() {
 		super();
 	}

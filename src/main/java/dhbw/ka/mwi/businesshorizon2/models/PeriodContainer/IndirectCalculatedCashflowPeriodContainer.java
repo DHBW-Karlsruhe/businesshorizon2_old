@@ -19,29 +19,36 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.models;
+package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
-import java.io.Serializable;
+import java.util.TreeSet;
+import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
 
-public enum InputType implements Serializable {
-        DIRECT("Direkte Eingabe"),DIRECTCALCULATION("Direkte Berechnung des Cashflows"),INDIRECTCALCULATION("Indirekte Berechnung des Cashflows");
-        
-        private String caption;
-        
+/**
+* Diese Klasse stellt einen Container für Perioden zu verfügung. Die
+* enthaltenen Bilanzposten der Periode sind nach dem Umsatzkostenverfahren
+* bewertet.
+*
+*
+* @author Kai Westerholz
+*
+*/
 
-        private InputType(String caption){
-                this.caption = caption;
+public class IndirectCalculatedCashflowPeriodContainer extends
+                AbstractPeriodContainer {
+
+        /**
+         *
+         */
+        private static final long serialVersionUID = -6233272268973216545L;
+
+        public IndirectCalculatedCashflowPeriodContainer() {
+                super();
         }
-        
-        public String getCaption() {
-                return caption;
-        }
-        
+
         @Override
-        public String toString(){
-                
-                return this.getCaption();
+        public TreeSet<IndirectCalculatedCashflowPeriod> getPeriods() {
+                return (TreeSet<IndirectCalculatedCashflowPeriod>) super.getPeriods();
         }
 
 }
-

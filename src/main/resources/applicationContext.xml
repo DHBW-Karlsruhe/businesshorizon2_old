@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-  BusinessHorizon2
-  
-      Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
-      Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
-  
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU Affero General Public License as published by
-      the Free Software Foundation, either version 3 of the License, or
-      (at your option) any later version.
-  
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU Affero General Public License for more details.
-  
-      You should have received a copy of the GNU Affero General Public License
-      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+BusinessHorizon2
+Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
     <bean
         class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
     <bean
@@ -39,12 +35,12 @@
     </bean>
 
     <!-- Services -->
-    <bean name="authenticationService" 
-   		class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService" 
-    	scope="singleton"/>
-    <bean name="persistenceService" 
-   		class="dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceService" 
-    	scope="singleton"/>
+    <bean name="authenticationService"
+                   class="dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationService"
+            scope="singleton"/>
+    <bean name="persistenceService"
+                   class="dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceService"
+            scope="singleton"/>
     
     <!-- Methods -->
     <bean name="timeseries"
@@ -53,7 +49,7 @@
     <bean name="wiener" class="dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener"
         scope="session" />
     <bean name="random" class="dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk"
-		scope="session" />
+                scope="session" />
 
 
     <!-- Models -->
@@ -86,71 +82,69 @@
 
     <!-- Project-List -->
     <bean name="projectListPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListPresenter" scope="session" />
-    <bean name="projectListView"      class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewImpl"  scope="session" />
+    <bean name="projectListView" class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewImpl" scope="session" />
 
     <!-- Infos -->
     <bean name="infosViewPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosPresenter" scope="session" />
-    <bean name="infosView"          class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewImpl"  scope="session" />
+    <bean name="infosView" class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewImpl" scope="session" />
         
     <!-- Process -->
     <bean name="processPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessPresenter" scope="session" />
-    <bean name="processView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl"  scope="session" />
+    <bean name="processView" class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl" scope="session" />
 
-	<!-- Process-Navigation -->
-	<bean name="navigationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationPresenter" scope="session" />
-	<bean name="navigationView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationViewImpl"  scope="session"/>
+        <!-- Process-Navigation -->
+        <bean name="navigationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationPresenter" scope="session" />
+        <bean name="navigationView" class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationViewImpl" scope="session"/>
 
 
     <!-- ContentContainer -->
     <bean name="contentContainerPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerPresenter" scope="session" />
-    <bean name="contentContainerView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerViewImpl"  scope="session"/>
+    <bean name="contentContainerView" class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerViewImpl" scope="session"/>
     
 
-	<!-- Methodenmaske -->
-	<bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter" scope="session" />
-	<bean name="methodView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewImpl"  scope="session" />
-	
-	
-	
-	<!-- Periodenmaske -->
-	<bean name="periodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodPresenter" scope="session" />
-	<bean name="periodView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewImpl"  scope="session" />
-	
-	<!-- Periode-Timeline -->
-	<bean name="timelinePresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter" scope="session"/>
-	<bean name="timelineView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewImpl" scope="session"/>
-	
-	<!-- Periode-DirektEingabe -->
-	<bean name="direktPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektPresenter" scope="session"/>
-	<bean name="direktView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkt.DirektViewImpl" scope="session"/>
-	
-	
-	<!-- Periode-GesamtEingabe -->
-	<bean name="gesamtPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtPresenter" scope="session"/>
-	<bean name="gesamtView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamt.GesamtViewImpl" scope="session"/>
-	
-	
-	
-	<!-- Periode-UmsatzEingabe -->
-	<bean name="umsatzPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzPresenter" scope="session"/>
-	<bean name="umsatzView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatz.UmsatzViewImpl" scope="session"/>
-	
-	
-	<!-- Parameter-Maske -->
-	<bean name="parameterPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter" scope="session" />
-	<bean name="parameterView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImpl"  scope="session" />
-	
+        <!-- Methodenmaske -->
+        <bean name="methodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter" scope="session" />
+        <bean name="methodView" class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewImpl" scope="session" />
+        
+        
+        
+        <!-- Periodenmaske -->
+        <bean name="periodPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodPresenter" scope="session" />
+        <bean name="periodView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewImpl" scope="session" />
+        
+        <!-- Periode-Timeline -->
+        <bean name="timelinePresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter" scope="session"/>
+        <bean name="timelineView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewImpl" scope="session"/>
+        
+        <!-- Periode-DirektEingabe -->
+        <bean name="direktPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektPresenter" scope="session"/>
+        <bean name="direktView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewImpl" scope="session"/>
+        
+        
+        <!-- Periode-DirekteCashflowBerechnung -->
+        <bean name="directCalculationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationPresenter" scope="session"/>
+        <bean name="directCalculationView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationViewImpl" scope="session"/>
+        
+        
+        
+        <!-- Periode-DirekteCashflowBerechnung -->
+        <bean name="indirectCalculationPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationPresenter" scope="session"/>
+        <bean name="indirectCalculationView" class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationViewImpl" scope="session"/>
+        
+        
+        <!-- Parameter-Maske -->
+        <bean name="parameterPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter" scope="session" />
+        <bean name="parameterView" class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImpl" scope="session" />
+        
 
     
     <!-- Szenarien-Maske -->
     <bean name="scenarioPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioPresenter" scope="session" />
-    <bean name="scenarioView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewImpl"  scope="session" />
+    <bean name="scenarioView" class="dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewImpl" scope="session" />
     
     
     
     <!-- Ausgabe-Maske -->
     <bean name="outputPresenter" class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputPresenter" scope="session" />
-    <bean name="outputView"      class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl"  scope="session" />
+    <bean name="outputView" class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl" scope="session" />
 </beans>
-
-
