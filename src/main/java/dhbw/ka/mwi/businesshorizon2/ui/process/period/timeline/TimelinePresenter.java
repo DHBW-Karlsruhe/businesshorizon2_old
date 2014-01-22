@@ -755,7 +755,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					futurePeriods.addPeriod(periode);
 					basisperiode = periode;
 					logger.debug("Basisjahr");
-				} else if (i-1 > projectProxy.getSelectedProject()
+				} else if (i - 1 > projectProxy.getSelectedProject()
 						.getPeriodsToForecast_deterministic() + extra_periode) {
 					// mehr Perioden vorhanden, als der Benutzer will
 					// Diese werden gelöscht
@@ -801,10 +801,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.getPeriodsToForecast_deterministic() + extra_periode) {
 			logger.debug("Manuell Perioden anlegen "
 					+ (projectProxy.getSelectedProject()
-							.getPeriodsToForecast_deterministic() + extra_periode - vorhandene));
+							.getPeriodsToForecast_deterministic()
+							+ extra_periode - vorhandene));
 			addFuturePeriods(projectProxy.getSelectedProject()
-					.getPeriodsToForecast_deterministic() + extra_periode - vorhandene,
-					deterministicInput);
+					.getPeriodsToForecast_deterministic()
+					+ extra_periode
+					- vorhandene, deterministicInput);
 
 		}
 		logger.debug("Periodenanzahl: " + sumFuturePeriods);
@@ -903,7 +905,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					getView().addBasePeriod(period);
 					basisperiode = period;
 					pastPeriods.addPeriod(period);
-				} else if (x < laenge - 3) {
+				} else if (x < laenge - 2) {
 					logger.debug("Lösche Jahr " + period.getYear());
 					pastPeriods.removePeriod(period);
 				} else {
@@ -988,22 +990,21 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 	}
 
-	// Folgende Funktionen haneln die Buttonklicks aus der View
+	// Folgende Funktionen handeln die Buttonklicks aus der View
 
 	/**
 	 * Methode zum Aufruf aus der View. Ruft die Folgemethode auf.
 	 */
 	public void addPastPeriod() {
-		addPastPeriods(1, projectProxy.getSelectedProject()
-				.getProjectInputType().getStochasticInput());
-		eventBus.fireEvent(new ShowPeriodViewEvent());
-
 		// Anzahl der Perioden wird im Projekt angepasst
+		// muss passieren, bevor das Event gefeuert wird
 		projectProxy.getSelectedProject().setRelevantPastPeriods(
 				projectProxy.getSelectedProject().getRelevantPastPeriods() + 1);
 		projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
 
-		periodenanzahl_geaendert();
+		addPastPeriods(1, projectProxy.getSelectedProject()
+				.getProjectInputType().getStochasticInput());
+		eventBus.fireEvent(new ShowPeriodViewEvent());
 
 	}
 
@@ -1011,18 +1012,18 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 * Methode zum Aufruf aus der View. Ruft die Folgemethode auf.
 	 */
 	public void addFuturePeriod() {
-		addFuturePeriods(1, projectProxy.getSelectedProject()
-				.getProjectInputType().getDeterministicInput());
-		eventBus.fireEvent(new ShowPeriodViewEvent());
-
 		// Anzahl der Perioden wird im Projekt angepasst
+		// muss passieren, bevor das Event gefeuert wird
 		projectProxy.getSelectedProject().setPeriodsToForecast_deterministic(
 				projectProxy.getSelectedProject()
 						.getPeriodsToForecast_deterministic() + 1);
 		projectProxy.getSelectedProject()
 				.setDeterministicPeriods(futurePeriods);
 
-		periodenanzahl_geaendert();
+		addFuturePeriods(1, projectProxy.getSelectedProject()
+				.getProjectInputType().getDeterministicInput());
+		eventBus.fireEvent(new ShowPeriodViewEvent());
+
 	}
 
 	/**
