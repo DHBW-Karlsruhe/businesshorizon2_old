@@ -26,11 +26,13 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.PasswordField;
@@ -56,6 +58,7 @@ public class LogInScreenViewImpl extends Window implements
 	@Autowired
 	private LogInScreenPresenter presenter;
 	
+	private VerticalLayout topbar;
 	private VerticalLayout vertical;
 
 	private Window regDialog;
@@ -69,6 +72,10 @@ public class LogInScreenViewImpl extends Window implements
 	private Button dialogRegBtn;
 	private Button registerBtn;
 	private Button passwordForgotBtn;
+	
+	private Label ueberschrift;
+	private Label logo;
+
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -98,7 +105,15 @@ public class LogInScreenViewImpl extends Window implements
 		setCaption("Business Horizon 2");
 		logger.debug("Überschrift für Browser erstellt");
 
+		topbar = new VerticalLayout();		
 		vertical = new VerticalLayout();
+		
+		ueberschrift = new Label("<h1>Willkommen bei</h1>");
+		ueberschrift.setStyleName("ueberschriften");
+		ueberschrift.setContentMode(Label.CONTENT_XHTML);
+				
+		logo = new Label();
+		logo.setIcon(new ThemeResource("images/Logo.jpg"));
 		
 		
 		LoginForm login = new LoginForm();
@@ -117,6 +132,12 @@ public class LogInScreenViewImpl extends Window implements
 			}
 		});
 
+		topbar.addComponent(ueberschrift);
+		topbar.addComponent(logo);
+		
+		topbar.setComponentAlignment(ueberschrift, Alignment.MIDDLE_CENTER);
+		topbar.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
+				
 		vertical.addComponent(login);
 		vertical.setComponentAlignment(login, Alignment.MIDDLE_CENTER);
 
@@ -132,6 +153,7 @@ public class LogInScreenViewImpl extends Window implements
 
 		logger.debug("LogIn UI erstellt und Listener gesetzt");
 
+		addComponent(topbar);
 		addComponent(vertical);
 	}
 
