@@ -83,19 +83,13 @@ public class CompanyValueStochastic extends CompanyValue {
 	}
 
 	public void addCompanyValue(double companyValue) {
-
-		companyValue = this.roundToDecimalPlaces(companyValue, 0, false);
-
-		if (map.containsKey(companyValue)) {
-			map.get(companyValue).increaseCount();
-		} else {
-			map.put(companyValue, new Couple(companyValue));
-		}
+		
+		map.put(companyValue, new Couple(companyValue));
+		
 	}
 
 	public void addCompanyBalue(double companyValue, int count) {
 
-		companyValue = this.roundToDecimalPlaces(companyValue, 0, false);
 
 		if (map.containsKey(companyValue)) {
 			map.get(companyValue).increaseCount(count);
@@ -154,6 +148,7 @@ public class CompanyValueStochastic extends CompanyValue {
 
 		// Klassenbreite (Berechnung mit der Regel nach Scott) aus Wikipedia
 		double h = (3.49 * streuung) / Math.pow(n, (1.0 / 3.0));
+		logger.debug("klassenbreite: " + h);
 
 		// Kleinsten Wert ermitteln
 		double kleinster = this.map.firstEntry().getValue().getCompanyValue();
@@ -166,11 +161,21 @@ public class CompanyValueStochastic extends CompanyValue {
 
 		// Anzahl Klassierungsschritte ermitteln
 		int klassierungsschritte = (int) (delta / h);
+		logger.debug("klassierungsschritte: " + klassierungsschritte);
+		
 		//halbenSchritt ermitteln
 		double halberschritt = h / 2.0;
 		// Klassierungsdurchschnitt initialisieren
 		double klassierungsdurchschnitt = kleinster;
-
+		
+		//In wenigen Ausnahmefällen kann es sein, dass zu wenig (< 10)Balken errechnet werden.
+		//In diesen Fällen sollen default-mäßig 14 Balken angezeigt werden.
+		if(klassierungsschritte < 10){
+			klassierungsschritte = 14;
+			h = delta / klassierungsschritte;
+			halberschritt = h / 2.0;
+		}
+		
 		// legt die Klassierte Map an mit einem Eintrag pro Klassierungsschritt
 		for (int i = 0; i <= klassierungsschritte; i++) {
 			klassierungsdurchschnitt = klassierungsdurchschnitt + h;
