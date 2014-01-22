@@ -132,9 +132,7 @@ public class TimelineViewImpl extends VerticalLayout implements
 	 */
 	@Override
 	public void removeFuturePeriod() {
-		logger.debug("" + layout.getRows());
 		layout.removeRow(layout.getRows() - 1);
-		logger.debug("" + layout.getRows());
 		try {
 			if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
 					.getCaption().startsWith("Basis")) {

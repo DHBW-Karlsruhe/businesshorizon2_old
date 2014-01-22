@@ -714,7 +714,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			logger.debug("Periode " + period.getYear() + " angelegt ("
 					+ inputType.toString() + ")");
 		}
-		// TODO
+
 		projectProxy.getSelectedProject()
 				.setDeterministicPeriods(futurePeriods);
 		periodenanzahl_geaendert();
@@ -834,7 +834,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
 		periodenanzahl_geaendert();
-		// TODO
 
 	}
 
@@ -876,7 +875,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			// nur so viele Perioden ausgeben, wie der Benutzer angegeben hat
 			// bzw vorhanden sind
 			laenge = Math.min(laenge, projectProxy.getSelectedProject()
-					.getRelevantPastPeriods() + extra_periode);// TODO
+					.getRelevantPastPeriods() + extra_periode);//
 
 			// wenn mehr Perioden vorhanden sind als gewünscht...
 			if (perioden.size() > projectProxy.getSelectedProject()
@@ -1048,6 +1047,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.setDeterministicPeriods(futurePeriods);
 		periodenanzahl_geaendert();
 
+		//andere Periode anzeigen
+		try{
+			TreeSet set =projectProxy.getSelectedProject().getDeterministicPeriods().getPeriods();
+			int laenge = set.toArray().length;
+			periodClicked((Period) set.toArray()[laenge-1]);
+		} catch(Exception e){}
 	}
 
 	/**
@@ -1072,6 +1077,14 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				.setDeterministicPeriods(futurePeriods);
 
 		periodenanzahl_geaendert();
+		
+	
+		//andere Periode anzeigen
+		try{
+			TreeSet set =projectProxy.getSelectedProject().getStochasticPeriods().getPeriods();
+			int laenge = set.toArray().length;
+			periodClicked((Period) set.toArray()[laenge-1]);
+		} catch(Exception e){}
 	}
 
 	/**
