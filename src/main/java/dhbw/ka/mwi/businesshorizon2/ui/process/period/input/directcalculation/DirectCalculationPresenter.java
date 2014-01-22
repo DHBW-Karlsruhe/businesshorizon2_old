@@ -57,12 +57,12 @@ public class DirectCalculationPresenter extends
 		eventBus.addHandler(this);
 		shownProperties = new String[] { "capitalStock", "umsatzErlöse",
 				"umsatzKosten",
-				"investitionen", "desinvestitionen" };
+				"investitionen", "desinvestitionen", "ebit"};
 		germanNamesProperties = new String[] {
 				"Fremdkapital",
 				"Umsatzerl\u00f6se",
 				"Umsatzkosten",
-				"Investitionen", "Desinvestitionen" };
+				"Investitionen", "Desinvestitionen", "EBIT" };
 	}
 
 	/**

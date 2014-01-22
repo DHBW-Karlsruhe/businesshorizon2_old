@@ -54,6 +54,12 @@ public class DirectCalculatedCashflowPeriod extends Period {
          */
         private double investitionen;
         private boolean investitionenSet;
+        
+        /**
+         * EBIT
+         */
+        private double ebit;
+        private boolean ebitSet;
 
 
 
@@ -184,6 +190,35 @@ public class DirectCalculatedCashflowPeriod extends Period {
 		 */
 		public void setInvestitionenSet(boolean investitionenSet) {
 			this.investitionenSet = investitionenSet;
+		}
+
+		/**
+		 * @return the ebit
+		 */
+		public double getEbit() {
+			return ebit;
+		}
+
+		/**
+		 * @param ebit the ebit to set
+		 */
+		public void setEbit(double ebit) {
+			this.ebit = ebit;
+			ebitSet = true;
+		}
+
+		/**
+		 * @return the ebitSet
+		 */
+		public boolean isEbitSet() {
+			return ebitSet;
+		}
+
+		/**
+		 * @param ebitSet the ebitSet to set
+		 */
+		public void setEbitSet(boolean ebitSet) {
+			this.ebitSet = ebitSet;
 		}
 
 
