@@ -158,8 +158,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	private void addProjectName() {
 		Label projectName = new Label("Sie bearbeiten derzeit das Projekt: " + presenter.getProjectName());
 		projectName.setStyleName("projectname");
-		this.full.addComponent(projectName);
-		this.full.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
+		this.topbarinnerlayout.addComponent(projectName);
+		this.topbarinnerlayout.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
 		
 	}
 

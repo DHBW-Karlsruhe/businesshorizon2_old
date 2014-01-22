@@ -174,21 +174,21 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
 		 *  und Prozesssicht gesprungen wird. 
 		 */
-		Label userInfo = new Label("Sie sind angemeldet als: ");
-		right.addComponent(userInfo);
-		right.setComponentAlignment(userInfo, Alignment.TOP_RIGHT);
+		Label userInfo = new Label("Herzlich Willkommen, Sie sind angemeldet als: ");
+		left.addComponent(userInfo);
+		left.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
 		
 		
 		if(userData != null) {
-			right.removeComponent(userData);
-			right.removeComponent(userInfo);
+			left.removeComponent(userData);
+			left.removeComponent(userInfo);
 		}
 		
 		userData = new Label(username);
 		userData.setContentMode(Label.CONTENT_XHTML);
 		userData.setVisible(true);
-		right.addComponent(userData);
-		right.setComponentAlignment(userData, Alignment.TOP_RIGHT);;
+		left.addComponent(userData);
+		left.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
 	}
 	
 	/**
