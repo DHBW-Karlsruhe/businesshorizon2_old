@@ -127,22 +127,21 @@ public class TimelineViewImpl extends VerticalLayout implements
                 this.addComponent(p);
         }
 
-        /**
-         * Entfernt die letzte zukuenftige Periode und verschiebt den entferne Knopf
-         */
-        @Override
-        public void removeFuturePeriod() {
-                logger.debug("" + layout.getRows());
-                layout.removeRow(layout.getRows() - 1);
-                logger.debug("" + layout.getRows());
-                try {
-                        if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
-                                        .getCaption().startsWith("Basis")) {
-                        } else
-                                layout.addComponent(delFuture, 1, layout.getRows() - 1);                        
-                } catch(Exception e){
-                }
-        }
+	/**
+	 * Entfernt die letzte zukuenftige Periode und verschiebt den entferne Knopf
+	 */
+	@Override
+	public void removeFuturePeriod() {
+		layout.removeRow(layout.getRows() - 1);
+		try {
+			if (((PeriodButton) layout.getComponent(0, layout.getRows() - 1))
+					.getCaption().startsWith("Basis")) {
+			} else
+				layout.addComponent(delFuture, 1, layout.getRows() - 1);			
+		} catch(Exception e){
+		}
+	}
+
 
         /**
          * Entfernt die letzte vergangene Periode und verschiebt den entferne Knopf
@@ -238,11 +237,13 @@ public class TimelineViewImpl extends VerticalLayout implements
 
         }
 
-        @Override
-        public void addPastPeriod(Period period) {
-                // TODO Auto-generated method stub
-                PeriodButton pB = new PeriodButton("" + period.getYear(),
-                                new Button.ClickListener() {
+
+	@Override
+	public void addPastPeriod(Period period) {
+		logger.debug("Button past angelegt");
+		// TODO Auto-generated method stub
+		PeriodButton pB = new PeriodButton("" + period.getYear(),
+				new Button.ClickListener() {
 
                                         @Override
                                         public void buttonClick(ClickEvent event) {
