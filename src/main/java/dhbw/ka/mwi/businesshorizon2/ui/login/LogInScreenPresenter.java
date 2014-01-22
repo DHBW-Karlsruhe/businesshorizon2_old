@@ -333,10 +333,18 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 		boolean safePassword;
 
-		// hier wird das Passwort überprüft
+		/**
+		 * hier wird das Passwort überprüft
+		 * - 6 bis 20 Zeichen
+		 * - Groß- und Kleinbuchstaben entalten
+		 * - Ziffer enthalten
+		 * - Sonderzeichen enthalten
+		 * Erlaubte Sonderzeichen:
+		 * @ # $ % . , ; : ? ! ' | ° ^ § & _ - + / ( ) [ ] { } * "
+		 */
 		if (Pattern
 				.matches(
-						"((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%\\.\\!\\?§\\&\\_\\-]).{6,20})",
+						"((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%\\.,;\\:\\?!'|°\\^§&\\_\\-\\+/\\(\\)\\[\\]{}\\*\"]).{6,20})",
 						password)) {
 			safePassword = true;
 			logger.debug("Passwort genügt Sicherheitsbestimmungen.");
