@@ -41,7 +41,7 @@ public class ProjectCashflowSource implements Serializable {
 	 */
 	private static final long serialVersionUID = -5922498137882142059L;
 	private Boolean cashflowSelected = false;
-	private CashflowSource cashflowSource = CashflowSource.DETERMINISTIC;
+	private CashflowSource cashflowSource; // = CashflowSource.DETERMINISTIC;
 	
 	/**
 	 * @return the cashflow
@@ -51,10 +51,10 @@ public class ProjectCashflowSource implements Serializable {
 	}
 	
 	/**
-	 * @param cashflow the cashflow to set
+	 * @param cashflowSelected the cashflow to set
 	 */
-	public void setCashflowSelected(Boolean cashflow) {
-		this.cashflowSelected = cashflow;
+	public void setCashflowSelected(Boolean cashflowSelected) {
+		this.cashflowSelected = cashflowSelected;
 	}
 
 	/**
