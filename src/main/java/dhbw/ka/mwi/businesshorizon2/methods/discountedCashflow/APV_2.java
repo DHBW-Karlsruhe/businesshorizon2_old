@@ -94,15 +94,7 @@ public class APV_2 extends AbstractDeterministicMethod {
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
 		
-		for (int i= 0; i< cashflow.length; i++){
-		logger.debug("c"+i+": "+cashflow [i]);
-		logger.debug("f"+i+": "+fremdkapital [i]);
-		}
 		
-		logger.debug(szenario.getCorporateAndSolitaryTax());
-		logger.debug(szenario.getBusinessTax());
-		logger.debug(szenario.getRateReturnEquity());
-		logger.debug(szenario.getRateReturnCapitalStock());
 		
 		
 		

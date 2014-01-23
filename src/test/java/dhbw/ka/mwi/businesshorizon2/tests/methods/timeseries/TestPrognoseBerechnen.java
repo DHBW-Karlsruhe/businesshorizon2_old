@@ -62,12 +62,20 @@ public class TestPrognoseBerechnen extends TestCase {
 		
 		
 		prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
-				
-		logger.debug(prognosewerte);
 		
-		
+		logger.debug("prognosewerte[0][0] " + prognosewerte[0][0]);
+		logger.debug("prognosewerte[0][1] " + prognosewerte[0][1]);
+		logger.debug("prognosewerte[0][2] " + prognosewerte[0][2]);
+		logger.debug("prognosewerte[0][3] " + prognosewerte[0][3]);
+		logger.debug("prognosewerte[0][4] " + prognosewerte[0][4]);
+		logger.debug("prognosewerte[1][0] " + prognosewerte[1][0]);
+		logger.debug("prognosewerte[1][1] " + prognosewerte[1][1]);
+		logger.debug("prognosewerte[1][2] " + prognosewerte[1][2]);
+		logger.debug("prognosewerte[1][3] " + prognosewerte[1][3]);
+		logger.debug("prognosewerte[1][4] " + prognosewerte[1][4]);
 		
 		assertNotNull(prognosewerte);
+		
 		}
 
 	}

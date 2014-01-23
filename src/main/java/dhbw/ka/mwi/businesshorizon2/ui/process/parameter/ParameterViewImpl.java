@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * BusinessHorizon2
  * 
@@ -47,7 +46,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 		ParameterViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ParameterViewImpl.class");
+	private static final Logger logger = Logger
+			.getLogger("ParameterViewImpl.class");
 
 	private GridLayout gridLayout;
 
@@ -56,13 +56,12 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private Label labelHeadingTimeSeries;
 	private Label labelHeadingRandomWalk;
 	private Label labelHeadingWienerProcess;
-	private Label labelHeadingDeterministicCommon;	//Annika Weis
-	private Label labelHeadingDCF;	//Annika Weis
-	private Label labelHeadingAPV;	//Annika Weis
-	
+	private Label labelHeadingDeterministicCommon; // Annika Weis
+	private Label labelHeadingDCF; // Annika Weis
+	private Label labelHeadingAPV; // Annika Weis
 
 	private Label labelNumPeriods;
-	private Label labelNumPeriods_deterministic; //Annika Weis
+	private Label labelNumPeriods_deterministic; // Annika Weis
 	private Label labelIterations;
 	private Label labelNumPastPeriods;
 	private Label labelBasisYear;
@@ -76,11 +75,9 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private Label labelRiseOfPeriods;
 	private Label labelDeviation;
 
-	
 	private Label labelUnitMonetaryUnit;
 	private Label labelUnitPercentage;
 	private Label labelUnitQuantity;
-
 
 	private TextField textfieldNumPeriodsToForecast;
 	private TextField textfieldNumPeriodsToForecast_deterministic;
@@ -97,13 +94,12 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private TextField textfieldRiseOfPeriods;
 	private TextField textfieldDeviation;
 
-	
 	private ComboBox comboBoxRepresentatives;
 	private CheckBox checkboxIndustryRepresentative;
 	private CheckBox checkboxCalculateStepRange;
 	private CheckBox checkboxRiseOfPeriods;
 	private CheckBox checkboxDeviationOfPeriods;
-	
+
 	private String toolTipBasisYear;
 	private String toolTipIterations;
 	private String toolTipNumPeriodsToForecast;
@@ -122,14 +118,9 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private String toolTipProbability;
 	private String toolTipCheckBoxCalculateStepRange;
 	private String toolTipStepRange;
-	
+
 	@Autowired
 	private ParameterPresenter presenter;
-
-
-	
-
-
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -138,7 +129,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 * Initialisierung des Basisjahrs und der Iteraionsschritte aufgerufen,
 	 * sowie weitere Methoden zur UI generierung und zum Ausgrauen unrelevanter
 	 * Felder.
-	 *  
+	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
 	@PostConstruct
@@ -174,10 +165,10 @@ public class ParameterViewImpl extends VerticalLayout implements
 		toolTipRiseOfPeriods = "";
 		toolTipDeviationCheckbox = "";
 		toolTipDeviation = "";
-		toolTipProbability="";
-		toolTipCheckBoxCalculateStepRange ="";
+		toolTipProbability = "";
+		toolTipCheckBoxCalculateStepRange = "";
 		toolTipStepRange = "";
-		
+
 	}
 
 	/**
@@ -187,38 +178,35 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 * 
 	 * @author Julius Hacker, Christian Scherer
 	 */
-	
+
 	@Override
 	public void showParameterView() {
 		this.removeAllComponents();
 		generateUi();
-		
+
 	}
-	
+
 	private void generateUi() {
 
 		setMargin(true);
-		
-		//TODO: Zeilenanzahl anpassen
+
+		// TODO: Zeilenanzahl anpassen
 		gridLayout = new GridLayout(3, 30);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
-				 
 
-		 addComponent(gridLayout);
-		
-		
+		addComponent(gridLayout);
+
 		// Heading 1
 		labelHeadingCommon = new Label("Allgemein");
 		gridLayout.addComponent(labelHeadingCommon, 0, 0);
-		
+
 		labelBasisYear = new Label("Basisjahr");
 		gridLayout.addComponent(labelBasisYear, 0, 1);
-		
+
 		textfieldBasisYear = new TextField();
 		textfieldBasisYear.setImmediate(true);
-		textfieldBasisYear
-				.setDescription(toolTipBasisYear);
+		textfieldBasisYear.setDescription(toolTipBasisYear);
 		textfieldBasisYear.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -228,8 +216,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 			}
 		});
 		gridLayout.addComponent(textfieldBasisYear, 1, 1);
-		
-		//Heading 2
+
+		// Heading 2
 		labelHeadingMeth = new Label("Stochastische Methoden: Allgemeines");
 		gridLayout.addComponent(labelHeadingMeth, 0, 3);
 
@@ -238,48 +226,47 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		textfieldNumPeriodsToForecast = new TextField();
 		textfieldNumPeriodsToForecast.setImmediate(true);
-		textfieldNumPeriodsToForecast.setDescription(toolTipNumPeriodsToForecast);
-		textfieldNumPeriodsToForecast.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+		textfieldNumPeriodsToForecast
+				.setDescription(toolTipNumPeriodsToForecast);
+		textfieldNumPeriodsToForecast
+				.addListener(new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
 
-			public void valueChange(ValueChangeEvent event) {
-				presenter
-						.numberPeriodsToForecastChosen((String) textfieldNumPeriodsToForecast
-								.getValue());
-			}
-		});
+					public void valueChange(ValueChangeEvent event) {
+						presenter
+								.numberPeriodsToForecastChosen((String) textfieldNumPeriodsToForecast
+										.getValue());
+					}
+				});
 		gridLayout.addComponent(textfieldNumPeriodsToForecast, 1, 4);
-		
+
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 4);
-		
-		
-		
+
 		labelIterations = new Label("Anzahl Wiederholungen");
 		gridLayout.addComponent(labelIterations, 0, 5);
 
 		textfieldIterations = new TextField();
 		textfieldIterations.setImmediate(true);
-		//textfieldIterations.setValue(10000);
+		// textfieldIterations.setValue(10000);
 		textfieldIterations.setDescription(toolTipIterations);
 		textfieldIterations.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
 				logger.debug(textfieldIterations.getValue());
-				presenter
-						.iterationChosen((String) textfieldIterations
-								.getValue());
+				presenter.iterationChosen((String) textfieldIterations
+						.getValue());
 			}
 		});
 		gridLayout.addComponent(textfieldIterations, 1, 5);
-		
+
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 5);
-		
+
 		labelStepsPerPeriod = new Label("Schritte pro Periode");
 		gridLayout.addComponent(labelStepsPerPeriod, 0, 6);
-		
+
 		textfieldStepsPerPeriod = new TextField();
 		textfieldStepsPerPeriod.setImmediate(true);
 		textfieldStepsPerPeriod.setDescription(toolTipStepsPerPeriod);
@@ -287,31 +274,33 @@ public class ParameterViewImpl extends VerticalLayout implements
 			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
-				presenter
-						.stepsPerPeriodChosen((String) textfieldStepsPerPeriod
-								.getValue());
+				presenter.stepsPerPeriodChosen((String) textfieldStepsPerPeriod
+						.getValue());
 			}
 		});
 		gridLayout.addComponent(textfieldStepsPerPeriod, 1, 6);
-		
+
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 6);
-		
-		
-		
-		//Heading 3
-		
+
+		// Heading 3
+
 		labelHeadingTimeSeries = new Label("Stochastisch: Zeitreihenanalyse");
 		gridLayout.addComponent(labelHeadingTimeSeries, 0, 8);
-		
+
 		labelNumPastPeriods = new Label(
 				"Anzahl einbezogener, vergangener Perioden");
 		gridLayout.addComponent(labelNumPastPeriods, 0, 9);
 
 		textfieldNumPastPeriods = new TextField();
 		textfieldNumPastPeriods.setImmediate(true);
-		textfieldNumPastPeriods.setValue(5);
-		textfieldNumPastPeriods.setDescription(toolTipNumPastPeriods+" Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.");
+		// textfieldNumPastPeriods: Wert darf hier nicht gesetzt werden
+		// -> über Event, sodass der Wert ins Projekt übernommen wird und nicht
+		// nur einfach angezeigt wird ohne ausgewertet werden zu können
+		// textfieldNumPastPeriods.setValue(5);
+		textfieldNumPastPeriods
+				.setDescription(toolTipNumPastPeriods
+						+ " Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.");
 		textfieldNumPastPeriods.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -322,14 +311,15 @@ public class ParameterViewImpl extends VerticalLayout implements
 			}
 		});
 		gridLayout.addComponent(textfieldNumPastPeriods, 1, 9);
-		
+
 		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity,2, 9);
-		
+		gridLayout.addComponent(labelUnitQuantity, 2, 9);
+
 		checkboxIndustryRepresentative = new CheckBox();
 		checkboxIndustryRepresentative
 				.setCaption("Branchenstellvertreter einbeziehen");
-		checkboxIndustryRepresentative.setDescription(toolTipIndustryRepresentatives);
+		checkboxIndustryRepresentative
+				.setDescription(toolTipIndustryRepresentatives);
 		checkboxIndustryRepresentative.addListener(new ClickListener() {
 			/**
 			 * Derzeit unbenutzt, da die Funkionalitaet in der Berechnung noch
@@ -371,35 +361,36 @@ public class ParameterViewImpl extends VerticalLayout implements
 		});
 
 		gridLayout.addComponent(comboBoxRepresentatives, 1, 10);
-		
-		
-		//Heading 4
-		
-		labelHeadingRandomWalk = new Label("Stochastisch: Random Walk (Free Cash Flow)");
-		gridLayout.addComponent(labelHeadingRandomWalk,0,12);
-		
+
+		// Heading 4
+
+		labelHeadingRandomWalk = new Label(
+				"Stochastisch: Random Walk (Free Cash Flow)");
+		gridLayout.addComponent(labelHeadingRandomWalk, 0, 12);
+
 		labelProbability = new Label("Wahrscheinlichkeit");
 		gridLayout.addComponent(labelProbability, 0, 13);
-		
+
 		textfieldProbability = new TextField();
 		textfieldProbability.setImmediate(true);
-		textfieldProbability
-				.setDescription(toolTipProbability);
+		textfieldProbability.setDescription(toolTipProbability);
 		textfieldProbability.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
-					presenter.probablityChosen(textfieldProbability.getValue());
+				presenter.probablityChosen(textfieldProbability.getValue());
 			}
 		});
 		gridLayout.addComponent(textfieldProbability, 1, 13);
-		
+
 		labelUnitPercentage = new Label("%");
-		gridLayout.addComponent(labelUnitPercentage,2,13);
-		
+		gridLayout.addComponent(labelUnitPercentage, 2, 13);
+
 		checkboxCalculateStepRange = new CheckBox();
-		checkboxCalculateStepRange.setCaption("Schrittweite aus angegebenen Perioden ermitteln");
-		checkboxCalculateStepRange.setDescription(toolTipCheckBoxCalculateStepRange);
+		checkboxCalculateStepRange
+				.setCaption("Schrittweite aus angegebenen Perioden ermitteln");
+		checkboxCalculateStepRange
+				.setDescription(toolTipCheckBoxCalculateStepRange);
 		checkboxCalculateStepRange.addListener(new ClickListener() {
 			/**
 			 * Derzeit unbenutzt, da die Funkionalitaet in der Berechnung noch
@@ -411,19 +402,18 @@ public class ParameterViewImpl extends VerticalLayout implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter
-					.calculateStepRangeCheckBoxSelected(checkboxRiseOfPeriods
-						.booleanValue());
+						.calculateStepRangeCheckBoxSelected(checkboxRiseOfPeriods
+								.booleanValue());
 			}
 		});
-		gridLayout.addComponent(checkboxCalculateStepRange,0,14);
-		
+		gridLayout.addComponent(checkboxCalculateStepRange, 0, 14);
+
 		labelStepRange = new Label("Schrittweite");
 		gridLayout.addComponent(labelStepRange, 0, 15);
-		
-		textfieldStepRange= new TextField();
+
+		textfieldStepRange = new TextField();
 		textfieldStepRange.setImmediate(true);
-		textfieldStepRange
-				.setDescription(toolTipStepRange);
+		textfieldStepRange.setDescription(toolTipStepRange);
 		textfieldStepRange.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -433,97 +423,109 @@ public class ParameterViewImpl extends VerticalLayout implements
 			}
 		});
 		gridLayout.addComponent(textfieldStepRange, 1, 15);
-		
+
 		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity,2,15);
-		
+		gridLayout.addComponent(labelUnitQuantity, 2, 15);
+
 		labelCashFlowStepRange = new Label("Schrittweite Cashflows");
 		gridLayout.addComponent(labelCashFlowStepRange, 0, 16);
-		
+
 		textfieldCashFlowStepRange = new TextField();
 		textfieldCashFlowStepRange.setImmediate(true);
+		textfieldCashFlowStepRange.setDescription(toolTipCashFlowStepRange);
 		textfieldCashFlowStepRange
-				.setDescription(toolTipCashFlowStepRange);
-		textfieldCashFlowStepRange.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+				.addListener(new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
 
-			public void valueChange(ValueChangeEvent event) {
-				presenter.cashFlowStepRangeChosen((String) textfieldCashFlowStepRange
-						.getValue());
-			}
-		});
+					public void valueChange(ValueChangeEvent event) {
+						presenter
+								.cashFlowStepRangeChosen((String) textfieldCashFlowStepRange
+										.getValue());
+					}
+				});
 		gridLayout.addComponent(textfieldCashFlowStepRange, 1, 16);
-		
+
 		labelUnitMonetaryUnit = new Label("GE");
-		gridLayout.addComponent(labelUnitMonetaryUnit,2,16);
-		
-		labelCashFlowProbabilityOfRise = new Label("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+		gridLayout.addComponent(labelUnitMonetaryUnit, 2, 16);
+
+		labelCashFlowProbabilityOfRise = new Label(
+				"Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
 		gridLayout.addComponent(labelCashFlowProbabilityOfRise, 0, 17);
-		
+
 		textfieldCashFlowProbabilityOfRise = new TextField();
 		textfieldCashFlowProbabilityOfRise.setImmediate(true);
 		textfieldCashFlowProbabilityOfRise
 				.setDescription(toolTipCashFlowProbabilityOfRise);
-		textfieldCashFlowProbabilityOfRise.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+		textfieldCashFlowProbabilityOfRise
+				.addListener(new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
 
-			public void valueChange(ValueChangeEvent event) {
-				presenter.cashFlowProbabilityOfRiseChosen((String) textfieldCashFlowProbabilityOfRise
-						.getValue());
-			}
-		});
+					public void valueChange(ValueChangeEvent event) {
+						presenter
+								.cashFlowProbabilityOfRiseChosen((String) textfieldCashFlowProbabilityOfRise
+										.getValue());
+					}
+				});
 		gridLayout.addComponent(textfieldCashFlowProbabilityOfRise, 1, 17);
-		
+
 		labelUnitPercentage = new Label("%");
-		gridLayout.addComponent(labelUnitPercentage,2,17);
-		
+		gridLayout.addComponent(labelUnitPercentage, 2, 17);
+
 		labelBorrowedCapitalStepRange = new Label("Schrittweite Fremdkapital");
 		gridLayout.addComponent(labelBorrowedCapitalStepRange, 0, 18);
-		
+
 		textfieldBorrowedCapitalStepRange = new TextField();
 		textfieldBorrowedCapitalStepRange.setImmediate(true);
 		textfieldBorrowedCapitalStepRange
 				.setDescription(toolTipBorrowedCapitalStepRange);
-		textfieldBorrowedCapitalStepRange.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+		textfieldBorrowedCapitalStepRange
+				.addListener(new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
 
-			public void valueChange(ValueChangeEvent event) {
-				presenter.borrowedCapitalStepRangeChosen((String) textfieldBorrowedCapitalStepRange
-						.getValue());
-			}
-		});
+					public void valueChange(ValueChangeEvent event) {
+						presenter
+								.borrowedCapitalStepRangeChosen((String) textfieldBorrowedCapitalStepRange
+										.getValue());
+					}
+				});
 		gridLayout.addComponent(textfieldBorrowedCapitalStepRange, 1, 18);
-		
+
 		labelUnitMonetaryUnit = new Label("GE");
-		gridLayout.addComponent(labelUnitMonetaryUnit,2,18);
-		
-		labelBorrowedCapitalProbabilityOfRise = new Label("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+		gridLayout.addComponent(labelUnitMonetaryUnit, 2, 18);
+
+		labelBorrowedCapitalProbabilityOfRise = new Label(
+				"Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
 		gridLayout.addComponent(labelBorrowedCapitalProbabilityOfRise, 0, 19);
-		
+
 		textfieldBorrowedCapitalProbabilityOfRise = new TextField();
 		textfieldBorrowedCapitalProbabilityOfRise.setImmediate(true);
 		textfieldBorrowedCapitalProbabilityOfRise
 				.setDescription(toolTipBorrowedCapitalProbabilityOfRise);
-		textfieldBorrowedCapitalProbabilityOfRise.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+		textfieldBorrowedCapitalProbabilityOfRise
+				.addListener(new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
 
-			public void valueChange(ValueChangeEvent event) {
-				presenter.borrowedCapitalProbabilityOfRiseChosen((String) textfieldBorrowedCapitalProbabilityOfRise
-						.getValue());
-			}
-		});
-		gridLayout.addComponent(textfieldBorrowedCapitalProbabilityOfRise, 1, 19);
+					public void valueChange(ValueChangeEvent event) {
+						presenter
+								.borrowedCapitalProbabilityOfRiseChosen((String) textfieldBorrowedCapitalProbabilityOfRise
+										.getValue());
+					}
+				});
+		gridLayout.addComponent(textfieldBorrowedCapitalProbabilityOfRise, 1,
+				19);
 
 		labelUnitPercentage = new Label("%");
-		gridLayout.addComponent(labelUnitPercentage,2,19);
-		
-		//Heading 5
-		
-		labelHeadingWienerProcess = new Label("Stochastisch: Wiener-Prozess (Free Cash Flow)");
-		gridLayout.addComponent(labelHeadingWienerProcess,0,21);
-		
+		gridLayout.addComponent(labelUnitPercentage, 2, 19);
+
+		// Heading 5
+
+		labelHeadingWienerProcess = new Label(
+				"Stochastisch: Wiener-Prozess (Free Cash Flow)");
+		gridLayout.addComponent(labelHeadingWienerProcess, 0, 21);
+
 		checkboxRiseOfPeriods = new CheckBox();
-		checkboxRiseOfPeriods.setCaption("Steigung aus angegebenen Perioden ermitteln");
+		checkboxRiseOfPeriods
+				.setCaption("Steigung aus angegebenen Perioden ermitteln");
 		checkboxRiseOfPeriods.setDescription(toolTipCheckBoxRiseOfPeriods);
 		checkboxRiseOfPeriods.addListener(new ClickListener() {
 			/**
@@ -535,20 +537,18 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter
-					.riseOfPeriodsCheckBoxSelected(checkboxRiseOfPeriods
+				presenter.riseOfPeriodsCheckBoxSelected(checkboxRiseOfPeriods
 						.booleanValue());
 			}
 		});
-		gridLayout.addComponent(checkboxRiseOfPeriods,0,22);
-		
+		gridLayout.addComponent(checkboxRiseOfPeriods, 0, 22);
+
 		labelRiseOfPeriods = new Label("Steigung");
-		gridLayout.addComponent(labelRiseOfPeriods,0,23);
-		
+		gridLayout.addComponent(labelRiseOfPeriods, 0, 23);
+
 		textfieldRiseOfPeriods = new TextField();
 		textfieldRiseOfPeriods.setImmediate(true);
-		textfieldRiseOfPeriods
-				.setDescription(toolTipRiseOfPeriods);
+		textfieldRiseOfPeriods.setDescription(toolTipRiseOfPeriods);
 		textfieldRiseOfPeriods.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -557,10 +557,11 @@ public class ParameterViewImpl extends VerticalLayout implements
 						.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldRiseOfPeriods,1,23);
-		
+		gridLayout.addComponent(textfieldRiseOfPeriods, 1, 23);
+
 		checkboxDeviationOfPeriods = new CheckBox();
-		checkboxDeviationOfPeriods.setCaption("Standardabweichung aus angegebenen Perioden ermitteln");
+		checkboxDeviationOfPeriods
+				.setCaption("Standardabweichung aus angegebenen Perioden ermitteln");
 		checkboxDeviationOfPeriods.setDescription(toolTipDeviationCheckbox);
 		checkboxDeviationOfPeriods.addListener(new ClickListener() {
 			/**
@@ -573,18 +574,17 @@ public class ParameterViewImpl extends VerticalLayout implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter
-					.deviationOfPeriodsCheckBoxSelected(checkboxDeviationOfPeriods
-						.booleanValue());
+						.deviationOfPeriodsCheckBoxSelected(checkboxDeviationOfPeriods
+								.booleanValue());
 			}
 		});
-		gridLayout.addComponent(checkboxDeviationOfPeriods,0,24);
-		
+		gridLayout.addComponent(checkboxDeviationOfPeriods, 0, 24);
+
 		labelDeviation = new Label("Standardabweichung");
-		gridLayout.addComponent(labelDeviation,0,25);
+		gridLayout.addComponent(labelDeviation, 0, 25);
 		textfieldDeviation = new TextField();
 		textfieldDeviation.setImmediate(true);
-		textfieldDeviation
-				.setDescription(toolTipDeviation);
+		textfieldDeviation.setDescription(toolTipDeviation);
 		textfieldDeviation.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -593,34 +593,33 @@ public class ParameterViewImpl extends VerticalLayout implements
 						.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldDeviation,1,25);
-		
+		gridLayout.addComponent(textfieldDeviation, 1, 25);
 
-		//Heading 6
-		
-		labelNumPeriods_deterministic = new Label("Anzahl zu prognostizierender Perioden");
+		// Heading 6
+
+		labelNumPeriods_deterministic = new Label(
+				"Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 27);
 
 		textfieldNumPeriodsToForecast_deterministic = new TextField();
 		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
-		textfieldNumPeriodsToForecast_deterministic.setDescription(toolTipNumPeriodsToForecast_deterministic);
-		textfieldNumPeriodsToForecast_deterministic.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+		textfieldNumPeriodsToForecast_deterministic
+				.setDescription(toolTipNumPeriodsToForecast_deterministic);
+		textfieldNumPeriodsToForecast_deterministic
+				.addListener(new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
 
-			public void valueChange(ValueChangeEvent event) {
-				presenter
-						.numberPeriodsToForecastChosen_deterministic((String) textfieldNumPeriodsToForecast_deterministic
-								.getValue());
-			}
-		});
-		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1, 27);
-		
+					public void valueChange(ValueChangeEvent event) {
+						presenter
+								.numberPeriodsToForecastChosen_deterministic((String) textfieldNumPeriodsToForecast_deterministic
+										.getValue());
+					}
+				});
+		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1,
+				27);
+
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 27);
-		
-	
-		
-
 
 	}
 
@@ -650,9 +649,10 @@ public class ParameterViewImpl extends VerticalLayout implements
 		this.textfieldNumPeriodsToForecast.setEnabled(enabled);
 
 	}
-	
+
 	/**
-	 * Diese Methode graut das Textfeld 'textfieldNumPeriodsToForecast_deterministic' aus.
+	 * Diese Methode graut das Textfeld
+	 * 'textfieldNumPeriodsToForecast_deterministic' aus.
 	 * 
 	 * @author Annika Weis
 	 * @param enabled
@@ -740,8 +740,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 			String message) {
 		if (component.equals("periodsToForecast")) {
 			if (setError) {
-				this.textfieldNumPeriodsToForecast.setComponentError(new UserError(
-						message));
+				this.textfieldNumPeriodsToForecast
+						.setComponentError(new UserError(message));
 			} else {
 				this.textfieldNumPeriodsToForecast.setComponentError(null);
 			}
@@ -762,8 +762,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		} else if (component.equals("iterations")) {
 			if (setError) {
-				this.textfieldIterations
-						.setComponentError(new UserError(message));
+				this.textfieldIterations.setComponentError(new UserError(
+						message));
 			} else {
 				this.textfieldIterations.setComponentError(null);
 			}
@@ -797,15 +797,17 @@ public class ParameterViewImpl extends VerticalLayout implements
 				this.textfieldBorrowedCapitalProbabilityOfRise
 						.setComponentError(new UserError(message));
 			} else {
-				this.textfieldBorrowedCapitalProbabilityOfRise.setComponentError(null);
+				this.textfieldBorrowedCapitalProbabilityOfRise
+						.setComponentError(null);
 			}
-		//Annika Weis
+			// Annika Weis
 		} else if (component.equals("periodsToForecast_deterministic")) {
 			if (setError) {
-				this.textfieldNumPeriodsToForecast_deterministic.setComponentError(new UserError(
-						message));
+				this.textfieldNumPeriodsToForecast_deterministic
+						.setComponentError(new UserError(message));
 			} else {
-				this.textfieldNumPeriodsToForecast_deterministic.setComponentError(null);
+				this.textfieldNumPeriodsToForecast_deterministic
+						.setComponentError(null);
 			}
 		}
 
@@ -822,11 +824,12 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void activateCashFlowStepRang(boolean enabled) {
 		this.textfieldCashFlowStepRange.setEnabled(enabled);
-		
+
 	}
 
 	/**
-	 * Diese Methode graut das Textfeld 'textfieldCashFlowProbabilityOfRise' aus.
+	 * Diese Methode graut das Textfeld 'textfieldCashFlowProbabilityOfRise'
+	 * aus.
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
@@ -836,11 +839,12 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void activateCashFlowProbabilityOfRise(boolean enabled) {
 		this.textfieldCashFlowProbabilityOfRise.setEnabled(enabled);
-		
+
 	}
 
 	/**
-	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalProbabilityOfRise' aus.
+	 * Diese Methode graut das Textfeld
+	 * 'textfieldBorrowedCapitalProbabilityOfRise' aus.
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
@@ -850,7 +854,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void activateBorrowedCapitalProbabilityOfRise(boolean enabled) {
 		this.textfieldBorrowedCapitalProbabilityOfRise.setEnabled(enabled);
-		
+
 	}
 
 	/**
@@ -865,9 +869,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void activateBorrowedCapitalStepRange(boolean enabled) {
 		this.textfieldBorrowedCapitalStepRange.setEnabled(enabled);
 
-		
 	}
-	
+
 	/**
 	 * Diese Methode graut das Textfeld 'textfieldRiseOfPeriods' aus.
 	 * 
@@ -880,9 +883,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void activateRiseOfPeriods(boolean enabled) {
 		this.textfieldRiseOfPeriods.setEnabled(enabled);
 
-		
 	}
-	
+
 	/**
 	 * Diese Methode graut die Checkbox 'checkboxRiseOfPeriods' aus.
 	 * 
@@ -895,9 +897,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void activateRiseOfPeriodsCheckbox(boolean enabled) {
 		this.checkboxRiseOfPeriods.setEnabled(enabled);
 
-		
 	}
-	
+
 	/**
 	 * Diese Methode graut das Textfeld 'textfieldDeviaton' aus.
 	 * 
@@ -910,9 +911,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void activateDeviation(boolean enabled) {
 		this.textfieldDeviation.setEnabled(enabled);
 
-		
 	}
-	
+
 	/**
 	 * Diese Methode graut die Checkbos 'checkboxDeviationOfPeriods' aus.
 	 * 
@@ -925,7 +925,6 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void activateDeviationCheckbox(boolean enabled) {
 		this.checkboxDeviationOfPeriods.setEnabled(enabled);
 
-		
 	}
 
 	/**
@@ -940,7 +939,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void activateStepsPerPeriod(boolean enabled) {
 		this.textfieldStepsPerPeriod.setEnabled(false);
 	}
-	
+
 	/**
 	 * Diese Methode graut das Textfeld 'Schrittweite' aus.
 	 * 
@@ -968,7 +967,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Diese Methode graut das Textfeld 'Steigung aus angegebenen Perioden ermitteln' aus.
+	 * Diese Methode graut das Textfeld 'Steigung aus angegebenen Perioden
+	 * ermitteln' aus.
 	 * 
 	 * @author Christian Scherer
 	 * @param enabled
@@ -992,7 +992,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 	public void setValueBasisYear(String basisYear) {
 		this.textfieldBasisYear.setValue(basisYear);
 	}
-	
+
 	/**
 	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden'
 	 * 
@@ -1002,11 +1002,12 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 */
 	@Override
 	public void setPeriodsToForecast(String periodsToForecast) {
-		this.textfieldNumPeriodsToForecast.setValue(periodsToForecast);	
+		this.textfieldNumPeriodsToForecast.setValue(periodsToForecast);
 	}
 
 	/**
-	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren
+	 * Setzt den Wert des Texfelds 'Anzahl zu prognostizierender Perioden' bei
+	 * den deterministischen Verfahren
 	 * 
 	 * @author Annika Weis
 	 * @param periodsToForecast_deterministic
@@ -1015,8 +1016,9 @@ public class ParameterViewImpl extends VerticalLayout implements
 	@Override
 	public void setPeriodsToForecast_deterministic(
 			String periodsToForecast_deterministic) {
-		this.textfieldNumPeriodsToForecast_deterministic.setValue(periodsToForecast_deterministic);	
-		
+		this.textfieldNumPeriodsToForecast_deterministic
+				.setValue(periodsToForecast_deterministic);
+
 	}
 
 	/**
@@ -1052,19 +1054,22 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 */
 	@Override
 	public void setCashFlowStepRange(String cashFlowStepRange) {
-		this.textfieldCashFlowStepRange.setValue(cashFlowStepRange);		
+		this.textfieldCashFlowStepRange.setValue(cashFlowStepRange);
 	}
 
 	/**
-	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Fremdkaptialentwicklung'
+	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende
+	 * Fremdkaptialentwicklung'
 	 * 
 	 * @author Christian Scherer
 	 * @param borrowedCapitalProbabilityOfRise
 	 *            Wahrscheinlichkeit für steigende Fremdkaptialentwicklung
 	 */
 	@Override
-	public void setBorrowedCapitalProbabilityOfRise(String borrowedCapitalProbabilityOfRise) {
-		this.textfieldBorrowedCapitalProbabilityOfRise.setValue(borrowedCapitalProbabilityOfRise);
+	public void setBorrowedCapitalProbabilityOfRise(
+			String borrowedCapitalProbabilityOfRise) {
+		this.textfieldBorrowedCapitalProbabilityOfRise
+				.setValue(borrowedCapitalProbabilityOfRise);
 	}
 
 	/**
@@ -1076,24 +1081,22 @@ public class ParameterViewImpl extends VerticalLayout implements
 	 */
 	@Override
 	public void setBorrowedCapitalStepRange(String borrowedCapitalStepRange) {
-		this.textfieldBorrowedCapitalStepRange.setValue(borrowedCapitalStepRange);	
+		this.textfieldBorrowedCapitalStepRange
+				.setValue(borrowedCapitalStepRange);
 	}
 
 	/**
-	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Cashflowentwicklung'
+	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende
+	 * Cashflowentwicklung'
 	 * 
 	 * @author Christian Scherer
 	 * @param cashFlowProbabilityOfRise
 	 *            Wahrscheinlichkeit für steigende Cashflowentwicklung
 	 */
 	@Override
-	public void setCashFlowProbabilityOfRise(
-			String cashFlowProbabilityOfRise) {
-		this.textfieldCashFlowProbabilityOfRise.setValue(cashFlowProbabilityOfRise);		
+	public void setCashFlowProbabilityOfRise(String cashFlowProbabilityOfRise) {
+		this.textfieldCashFlowProbabilityOfRise
+				.setValue(cashFlowProbabilityOfRise);
 	}
-
-
-
-
 
 }

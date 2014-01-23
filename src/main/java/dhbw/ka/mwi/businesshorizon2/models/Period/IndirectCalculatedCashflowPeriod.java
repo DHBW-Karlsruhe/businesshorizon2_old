@@ -42,10 +42,10 @@ public class IndirectCalculatedCashflowPeriod extends Period {
         private double jahresÜberschuss;
 
         /**
-         * Zinsen
+         * Zinsaufwand
          */
-        private double zinsen;
-        private boolean zinsenSet;
+        private double zinsaufwand;
+        private boolean zinsaufwandSet;
         
         /**
          * Fiktive Steuern
@@ -70,6 +70,14 @@ public class IndirectCalculatedCashflowPeriod extends Period {
          */
         private double bruttoInvestitionen;
         private boolean bruttoInvestitionenSet;
+        
+        /**
+         * EBIT
+         */
+        private double ebit;
+        private boolean ebitSet;
+        
+        
 
 
         public IndirectCalculatedCashflowPeriod(int year) {
@@ -226,32 +234,61 @@ public class IndirectCalculatedCashflowPeriod extends Period {
         }
 
 		/**
-		 * @return the zinsen
+		 * @return the zinsaufwand
 		 */
-		public double getZinsen() {
-			return zinsen;
+		public double getZinsaufwand() {
+			return zinsaufwand;
 		}
 
 		/**
-		 * @param zinsen the zinsen to set
+		 * @param zinsaufwand the zinsaufwand to set
 		 */
-		public void setZinsen(double zinsen) {
-			this.zinsen = zinsen;
-			zinsenSet = true;
+		public void setZinsaufwand(double zinsaufwand) {
+			this.zinsaufwand = zinsaufwand;
+			zinsaufwandSet = true;
 		}
 
 		/**
 		 * @return the zinsenSet
 		 */
-		public boolean isZinsenSet() {
-			return zinsenSet;
+		public boolean isZinsaufwandSet() {
+			return zinsaufwandSet;
 		}
 
 		/**
 		 * @param zinsenSet the zinsenSet to set
 		 */
-		public void setZinsenSet(boolean zinsenSet) {
-			this.zinsenSet = zinsenSet;
+		public void setZinsaufwandSet(boolean zinsaufwandSet) {
+			this.zinsaufwandSet = zinsaufwandSet;
+		}
+
+		/**
+		 * @return the ebit
+		 */
+		public double getEbit() {
+			return ebit;
+		}
+
+		/**
+		 * @param ebit the ebit to set
+		 */
+		public void setEbit(double ebit) {
+			this.ebit = ebit;
+			ebitSet = true;
+		}
+
+		/**
+		 * @return the ebitSet
+		 */
+		public boolean isEbitSet() {
+			return ebitSet;
+		}
+
+		/**
+		 * @param ebitSet the ebitSet to set
+		 */
+		public void setEbitSet(boolean ebitSet) {
+			this.ebitSet = ebitSet;
 		}
 
 }

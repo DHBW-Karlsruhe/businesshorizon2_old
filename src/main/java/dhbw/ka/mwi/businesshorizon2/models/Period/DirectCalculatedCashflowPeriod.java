@@ -42,19 +42,26 @@ public class DirectCalculatedCashflowPeriod extends Period {
          */
         private double umsatzKosten;
         private boolean umsatzKostenSet;
-
+        
         /**
-         * * Steuern bei reiner Eigenfinanzierung
+         * Desinvestitionen
          */
-        private double steuernBeiReinerEigenfinanzierung;
-        private boolean steuernBeiReinerEigenfinanzierungSet;
-
+        private double desinvestitionen;
+        private boolean desinvestitionenSet;
+        
         /**
-         * * Saldo aus Auszahlungen für Investitionen und Einzahlungen aus
-         * Desinves-titionen
+         * Investitionen
          */
-        private double saldoAusAuszahlungen;
-        private boolean saldoAusAuszahlungenSet;
+        private double investitionen;
+        private boolean investitionenSet;
+        
+        /**
+         * EBIT
+         */
+        private double ebit;
+        private boolean ebitSet;
+
+
 
         /**
          * Der Konstruktor erstellt eine Methode für das Jahr year
@@ -127,64 +134,94 @@ public class DirectCalculatedCashflowPeriod extends Period {
                 this.umsatzKostenSet = umsatzKostenSet;
         }
 
-        /**
-         * @return the steuernBeiReinerEigenfinanzierung
-         */
-        public double getSteuernBeiReinerEigenfinanzierung() {
-                return steuernBeiReinerEigenfinanzierung;
-        }
+		/**
+		 * @return the desinvestitionen
+		 */
+		public double getDesinvestitionen() {
+			return desinvestitionen;
+		}
 
-        /**
-         * @param steuernBeiReinerEigenfinanzierung the steuernBeiReinerEigenfinanzierung to set
-         */
-        public void setSteuernBeiReinerEigenfinanzierung(
-                        double steuernBeiReinerEigenfinanzierung) {
-                this.steuernBeiReinerEigenfinanzierung = steuernBeiReinerEigenfinanzierung;
-                steuernBeiReinerEigenfinanzierungSet = true;
-        }
+		/**
+		 * @param desinvestitionen the desinvestitionen to set
+		 */
+		public void setDesinvestitionen(double desinvestitionen) {
+			this.desinvestitionen = desinvestitionen;
+			desinvestitionenSet = true;
+		}
 
-        /**
-         * @return the steuernBeiReinerEigenfinanzierungSet
-         */
-        public boolean isSteuernBeiReinerEigenfinanzierungSet() {
-                return steuernBeiReinerEigenfinanzierungSet;
-        }
+		/**
+		 * @return the desinvestitionenSet
+		 */
+		public boolean isDesinvestitionenSet() {
+			return desinvestitionenSet;
+		}
 
-        /**
-         * @param steuernBeiReinerEigenfinanzierungSet the steuernBeiReinerEigenfinanzierungSet to set
-         */
-        public void setSteuernBeiReinerEigenfinanzierungSet(
-                        boolean steuernBeiReinerEigenfinanzierungSet) {
-                this.steuernBeiReinerEigenfinanzierungSet = steuernBeiReinerEigenfinanzierungSet;
-        }
+		/**
+		 * @param desinvestitionenSet the desinvestitionenSet to set
+		 */
+		public void setDesinvestitionenSet(boolean desinvestitionenSet) {
+			this.desinvestitionenSet = desinvestitionenSet;
+		}
 
-        /**
-         * @return the saldoAusAuszahlungen
-         */
-        public double getSaldoAusAuszahlungen() {
-                return saldoAusAuszahlungen;
-        }
+		/**
+		 * @return the investitionen
+		 */
+		public double getInvestitionen() {
+			return investitionen;
+		}
 
-        /**
-         * @param saldoAusAuszahlungen the saldoAusAuszahlungen to set
-         */
-        public void setSaldoAusAuszahlungen(double saldoAusAuszahlungen) {
-                this.saldoAusAuszahlungen = saldoAusAuszahlungen;
-                saldoAusAuszahlungenSet = true;
-        }
+		/**
+		 * @param investitionen the investitionen to set
+		 */
+		public void setInvestitionen(double investitionen) {
+			this.investitionen = investitionen;
+			investitionenSet = true;
+		}
 
-        /**
-         * @return the saldoAusAuszahlungenSet
-         */
-        public boolean isSaldoAusAuszahlungenSet() {
-                return saldoAusAuszahlungenSet;
-        }
+		/**
+		 * @return the investitionenSet
+		 */
+		public boolean isInvestitionenSet() {
+			return investitionenSet;
+		}
 
-        /**
-         * @param saldoAusAuszahlungenSet the saldoAusAuszahlungenSet to set
-         */
-        public void setSaldoAusAuszahlungenSet(boolean saldoAusAuszahlungenSet) {
-                this.saldoAusAuszahlungenSet = saldoAusAuszahlungenSet;
-        }
+		/**
+		 * @param investitionenSet the investitionenSet to set
+		 */
+		public void setInvestitionenSet(boolean investitionenSet) {
+			this.investitionenSet = investitionenSet;
+		}
+
+		/**
+		 * @return the ebit
+		 */
+		public double getEbit() {
+			return ebit;
+		}
+
+		/**
+		 * @param ebit the ebit to set
+		 */
+		public void setEbit(double ebit) {
+			this.ebit = ebit;
+			ebitSet = true;
+		}
+
+		/**
+		 * @return the ebitSet
+		 */
+		public boolean isEbitSet() {
+			return ebitSet;
+		}
+
+		/**
+		 * @param ebitSet the ebitSet to set
+		 */
+		public void setEbitSet(boolean ebitSet) {
+			this.ebitSet = ebitSet;
+		}
+
+
+       
 
 }

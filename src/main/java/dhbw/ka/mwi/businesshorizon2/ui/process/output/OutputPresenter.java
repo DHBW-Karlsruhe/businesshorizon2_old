@@ -113,20 +113,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			AbstractPeriodContainer apc = project.getDeterministicPeriods();
 			periodContainer.add(apc);
 			DeterministicResultContainer drContainer= new DeterministicResultContainer(
-					periodContainer);
+					periodContainer);		
 			
-			//Cashflows berechnen falls notwendig
-			for (AbstractPeriodContainer container : drContainer.getPeriodContainers()){
-				if (container instanceof CashFlowPeriodContainer){
-					logger.debug("Cashflows wurden direkt eingegeben");
-				} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
-					logger.debug("Cashflows werden direkt berechnet");
-					CashFlowCalculator.calculateCashflows(drContainer);
-				} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
-					logger.debug("Cashflows werden indirekt berechnet");
-					CashFlowCalculator.calculateCashflows(drContainer);
-				}
-			}
 
 			// Annika Weis
 			for (AbstractDeterministicMethod method_deterministic : project
@@ -134,6 +122,19 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 				// alle Szenarios durchlaufen
 				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
+					
+					//Cashflows berechnen falls notwendig
+					for (AbstractPeriodContainer container : drContainer.getPeriodContainers()){
+						if (container instanceof CashFlowPeriodContainer){
+							logger.debug("Cashflows wurden direkt eingegeben");
+						} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
+							logger.debug("Cashflows werden direkt berechnet");
+							CashFlowCalculator.calculateCashflows(drContainer, scenario);
+						} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
+							logger.debug("Cashflows werden indirekt berechnet");
+							CashFlowCalculator.calculateCashflows(drContainer, scenario);
+						}
+					}
 				
 					if (method_deterministic.getSelected()) {
 						double unternehmenswert = 0;
@@ -288,17 +289,22 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			StochasticResultContainer srContainer= new StochasticResultContainer(
 					periodContainer);
 			
+			
+			// pro Szenario werden die Cashflows berechnet
+			for (Szenario scenario : project.getIncludedScenarios()) {
+			
 			//Cashflows berechnen falls notwendig
 			for (AbstractPeriodContainer container : srContainer.getPeriodContainers()){
 				if (container instanceof CashFlowPeriodContainer){
 					logger.debug("Cashflows wurden direkt eingegeben");
 				} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
 					logger.debug("Cashflows werden direkt berechnet");
-					CashFlowCalculator.calculateCashflows(srContainer);
+					CashFlowCalculator.calculateCashflows(srContainer, scenario);
 				} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
 					logger.debug("Cashflows werden indirekt berechnet");
-					CashFlowCalculator.calculateCashflows(srContainer);
+					CashFlowCalculator.calculateCashflows(srContainer, scenario);
 				}
+			}
 			}
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				if (method.getSelected()) {
@@ -307,6 +313,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 				}
 			}
 		}
+			
 		
 	}
 
@@ -347,13 +354,9 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	public void onComplete(StochasticResultContainer result,
 			AbstractStochasticMethod method) {
 
-		StochasticChartArea stochasticChartArea;
-		int szenariozähler = 1;
-		// pro Szenario werden die Unternehmenswerte berechnet
-		for (Szenario scenario : project.getIncludedScenarios()) {
-			logger.debug("Szenariozähler: " + szenariozähler);
-			szenariozähler++;
-
+			StochasticChartArea stochasticChartArea;
+		
+			for (Szenario scenario : project.getIncludedScenarios()) {
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
 			APV_2 apv = new APV_2();
 
@@ -430,8 +433,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			}
 			getView().changeProgress(1);
 			getView().addStochasticChartArea(stochasticChartArea);
+		
 		}
-
 	}
 
 	@Override
