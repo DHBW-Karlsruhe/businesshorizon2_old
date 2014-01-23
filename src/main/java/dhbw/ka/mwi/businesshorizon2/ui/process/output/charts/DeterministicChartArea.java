@@ -66,9 +66,9 @@ public class DeterministicChartArea extends VerticalLayout {
 
 		Map<String, double[]> cvKeyValues = new LinkedHashMap<String, double[]>();
 		cvKeyValues.put("Unverschuldetes Unternehmen und Steuervorteil",
-				new double[] { uwsteuerfrei, steuervorteile, 0, 0 });
+				new double[] { Math.round(uwsteuerfrei), Math.round(steuervorteile), 0, 0 });
 		cvKeyValues.put("Unternehmenswert und Fremdkapital", new double[] { 0,
-				0, unternehmenswert, fremdkapital });
+				0, Math.round(unternehmenswert), Math.round(fremdkapital) });
 
 		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart",
 				cvKeyColumns);
@@ -97,8 +97,8 @@ public class DeterministicChartArea extends VerticalLayout {
 		// Werte hinzufügen
 		Map<String, double[]> cfKeyValues = new LinkedHashMap<String, double[]>();
 		for (int i = 0; i < anzahlWerte; i++) {
-			cfKeyValues.put(jahre[i] + "", new double[] { cashflows[i],
-					fremdkapitalwerte[i] });
+			cfKeyValues.put(jahre[i] + "", new double[] { Math.round(cashflows[i]),
+					Math.round(fremdkapitalwerte[i]) });
 			logger.debug("DeterministicLineChart: " + cashflows[i] + " &  "
 					+ fremdkapitalwerte[i]);
 		}
@@ -131,7 +131,7 @@ public class DeterministicChartArea extends VerticalLayout {
 		
 
 		Map<String, double[]> cvKeyValues = new LinkedHashMap<String, double[]>();
-		cvKeyValues.put("Unternehmenswert", new double[] {unternehmenswert});
+		cvKeyValues.put("Unternehmenswert", new double[] {Math.round(unternehmenswert)});
 
 		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart",
 				cvKeyColumns);
@@ -159,7 +159,7 @@ public class DeterministicChartArea extends VerticalLayout {
 		// Werte hinzufügen
 		Map<String, double[]> cfKeyValues = new LinkedHashMap<String, double[]>();
 		for (int i = 0; i < anzahlWerte; i++) {
-			cfKeyValues.put(jahre[i] + "", new double[] { cashflows[i]});
+			cfKeyValues.put(jahre[i] + "", new double[] { Math.round(cashflows[i])});
 			logger.debug("DeterministicLineChart: " + cashflows[i]);
 		}
 
