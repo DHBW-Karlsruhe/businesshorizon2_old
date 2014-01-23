@@ -204,7 +204,6 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 			project.setLastChanged(new Date());
 			persistenceService.saveProjects();
 			getView().setProjects(user.getProjects());
-			getView().setProjects(user.getProjects());
 			return true;
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());

@@ -44,6 +44,7 @@ import com.vaadin.ui.themes.Reindeer;
 
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 
 /**
@@ -78,6 +79,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;
+	
+	@Autowired
+	private PersistenceServiceInterface persistenceService;
 	
 	private Map<NavigationSteps, Button> navigationButtons = new HashMap<NavigationSteps, Button>();
 	
@@ -172,7 +176,9 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.showProjectList();				
+				presenter.showProjectList();
+				 presenter.showProjectList();
+				 persistenceService.saveProjects();
 			}
 		});
 		
