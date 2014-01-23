@@ -107,11 +107,14 @@ public class CashFlowCalculator {
 
 		for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
 			// Cash-Flow vor Zins und Steuern.
-			double ebit = period.getUmsatzErlöse() - period.getUmsatzKosten();
-			double steuersatz = scenario.getCorporateAndSolitaryTax()
-					+ scenario.getBusinessTax();
-			double freeCashFlow = ebit - ebit * steuersatz
+			double freeCashFlow = period.getUmsatzErlöse()
+					- period.getUmsatzKosten();
+			double steuersatz = (scenario.getCorporateAndSolitaryTax() + scenario
+					.getBusinessTax()) / 100;
+			logger.debug("Steuersatz: " + steuersatz);
+			freeCashFlow = freeCashFlow - (period.getEbit() * steuersatz)
 					+ period.getDesinvestitionen() - period.getInvestitionen();
+			logger.debug("FCF: " + freeCashFlow);
 
 			period.setFreeCashFlow(freeCashFlow);
 
@@ -134,17 +137,18 @@ public class CashFlowCalculator {
 
 			double freeCashFlow = period.getJahresÜberschuss()
 					+ period.getZinsaufwand();
-			double fiktivesteuern = (period.getEbit() * (scenario
-					.getBusinessTax() + scenario.getCorporateAndSolitaryTax()))
-					- (((period.getEbit() - period.getZinsaufwand() * 0.75) * scenario
-							.getBusinessTax()) + ((period.getEbit() - period
-							.getZinsaufwand()) * scenario
-							.getCorporateAndSolitaryTax()));
+			logger.debug("FreeCashFlow: " + freeCashFlow);
+			double fiktivesteuern = period.getEbit()-period.getZinsaufwand()*0.75;
+			logger.debug("Fiktive Steuern: " + fiktivesteuern);
+			fiktivesteuern = fiktivesteuern*(scenario.getBusinessTax()/100);
+			logger.debug("Fiktive Steuern: " + fiktivesteuern);
+			fiktivesteuern = fiktivesteuern + ((period.getEbit()-period.getZinsaufwand())*(scenario.getCorporateAndSolitaryTax()/100));
+			logger.debug("Fiktive Steuern: " + fiktivesteuern);
 			freeCashFlow = freeCashFlow - fiktivesteuern
 					+ period.getNichtZahlungswirksameAufwendungen()
 					- period.getNichtZahlungswirksameErtraege()
 					- period.getBruttoInvestitionen();
-
+			logger.debug("FreeCashFlow: " + freeCashFlow);
 			period.setFreeCashFlow(freeCashFlow);
 
 		}
