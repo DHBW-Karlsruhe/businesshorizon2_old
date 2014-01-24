@@ -1,23 +1,22 @@
 /*******************************************************************************
  * BusinessHorizon2
- * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
- *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- * 
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+ * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
 
@@ -38,9 +37,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
  * 
  */
 
-public class DirectCalculationPresenter extends AbstractInputPresenter<DirectCalculationViewInterface> {
+public class DirectCalculationPresenter extends
+		AbstractInputPresenter<DirectCalculationViewInterface> {
 	private static final long serialVersionUID = 1L;
-
 
 	@Autowired
 	EventBus eventBus;
@@ -56,21 +55,16 @@ public class DirectCalculationPresenter extends AbstractInputPresenter<DirectCal
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "immaterialFortune", "propertyValue",
-				"financialValue", "equity", "provisions", "suplies", "claims",
-				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
-				"otherBusinessRevenue", "costOfProduction",
-				"costOfSalesAdministrationOthers" };
-		germanNamesProperties = new String[] { "Immaterielle Verm\u00f6gensgegenst\u00e4nde", "Sachanlagen",
-				"Finanzanlagen", "Eigenkapital", "R\u00fcckstellungen", "Vorr\u00e4te", "Forderungen und sonstige Verm\u00f6gensgegenst\u00e4nde",
-				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerl\u00f6se",
-				"Sonstige betriebliche Ertr\u00e4ge", "Herstellkosten",
-		"Vertriebskosten" };
-	}	
-	
+		shownProperties = new String[] { "capitalStock", "umsatzErlöse",
+				"umsatzKosten",
+				"investitionen", "desinvestitionen", "ebit"};
+		germanNamesProperties = new String[] {
+				"Fremdkapital",
+				"Umsatzerl\u00f6se",
+				"Umsatzkosten",
+				"Investitionen", "Desinvestitionen", "EBIT" };
+	}
 
-
-	
 	/**
 	 * Faengt das ShowEvent ab und sorgt dafuecr das die View die benoetigten
 	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
@@ -88,5 +82,6 @@ public class DirectCalculationPresenter extends AbstractInputPresenter<DirectCal
 	public void onShowEvent(ShowDirectCalcEvent event) {
 		processEvent(event);
 	}
-	
+
 }
+

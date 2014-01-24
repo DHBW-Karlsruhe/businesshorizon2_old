@@ -1,5 +1,6 @@
 /*******************************************************************************
  * BusinessHorizon2
+<<<<<<< HEAD
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
  *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
@@ -38,9 +39,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEven
  * 
  */
 
-public class IndirectCalculationPresenter extends AbstractInputPresenter<IndirectCalculationViewInterface> {
+public class IndirectCalculationPresenter extends
+		AbstractInputPresenter<IndirectCalculationViewInterface> {
 	private static final long serialVersionUID = 1L;
-
 
 	@Autowired
 	EventBus eventBus;
@@ -55,19 +56,16 @@ public class IndirectCalculationPresenter extends AbstractInputPresenter<Indirec
 
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "immaterialFortune", "propertyValue",
-				"financialValue", "equity", "provisions", "suplies", "claims",
-				"stocks", "cashAssets", "borrowedCapital", "salesRevenue",
-				"otherBusinessRevenue", "internallyProducedAndCapializedAssets",
-				"materialCosts", "humanCapitalCosts", "writeDowns",
-				"otherBusinessCosts", "interestAndOtherCosts" };
-		germanNamesProperties = new String[] { "Immaterielle Verm\u00f6gensgegenst\u00e4nde", "Sachanlagen",
-				"Finanzanlagen", "Eigenkapital", "R\u00fcckstellungen", "Vorr\u00e4te", "Forderungen und sonstige Verm\u00f6gensgegenst\u00e4nde",
-				"Wertpapiere", "Kassenbestand", "Fremdkapital", "Umsatzerl\u00f6se",
-				"Sonstige betriebliche Ertr\u00e4ge", "Andere aktivierte Eigenleistungen",
-				"Materialaufwand", "Personalaufwand", "Abschreibungen",
-				"Sonstige betriebliche Aufwendungen", "Zinsen und andere Aufwendungen" };
-	}	
+		shownProperties = new String[] { "capitalStock", "jahresÜberschuss",
+				"zinsaufwand", "taxShield", "nichtZahlungswirksameAufwendungen",
+				"nichtZahlungswirksameErtraege", "bruttoInvestitionen", "ebit"};
+		germanNamesProperties = new String[] {"Fremdkapital", "Jahres\u00fcberschuss",
+				"Zinsaufwand",
+				"Fiktive Steuern (Tax Shield)",
+				"Nicht zahlungswirksame Aufwände", 
+				"Nicht zahlungswirksame Ertr\u00e4ge", 
+				"Brutto-Investitionen", "EBIT"};
+	}
 
 	/**
 	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
@@ -82,10 +80,10 @@ public class IndirectCalculationPresenter extends AbstractInputPresenter<Indirec
 	 * 
 	 * @param event
 	 */
-	
+
 	@EventHandler
 	public void onShowEvent(ShowIndirectCalcEvent event) {
 		processEvent(event);
 	}
-	
+
 }

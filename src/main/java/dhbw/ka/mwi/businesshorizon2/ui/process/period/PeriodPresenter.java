@@ -1,21 +1,21 @@
 /*******************************************************************************
  * BusinessHorizon2
- * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
- *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- * 
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+ * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.period;
@@ -49,6 +49,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInterface;
 
 /**
+ * 
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
  * @author Daniel Dengler, Marcel Rosenberger
@@ -59,7 +60,8 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 
 	private View currentInput = null;
 
-	private static final Logger logger = Logger.getLogger("PeriodPresenter.class");
+	private static final Logger logger = Logger
+			.getLogger("PeriodPresenter.class");
 
 	@Autowired
 	private TimelineViewInterface timelineView;
@@ -88,9 +90,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	@Autowired
 	private EventBus eventBus;
 
-
-
-
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
@@ -104,17 +103,13 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	}
 
 	@EventHandler
-
 	public void onShowEvent(ShowPeriodViewEvent event) {
 		logger.debug("DirektViewEvent gefeuert");
 		getView().showView(timelineView, currentInput);
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD, true));
+		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD,
+				true));
 	}
 
-	
-	
-	
-	
 	@EventHandler
 	public void onShowEvent(ShowDirectCalcEvent event) {
 		logger.debug("ShowDirectCalcEvent erhalten");
@@ -129,7 +124,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		currentInput = direktView;
 		getView().showView(timelineView, currentInput);
 
-		
 	}
 
 	@EventHandler
@@ -139,9 +133,6 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 		getView().showView(timelineView, currentInput);
 	}
 
-	
-	
-	
 	@Override
 	public boolean isValid() {
 		return true;

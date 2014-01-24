@@ -58,6 +58,7 @@ public class AnalysisTimeseries {
 	private double[] erwarteteCashFlows;
 	private double[] erwartetesFremdkapital;
 	private double abweichung;
+	private CalculateTide tide;
 
 	/**
 	 * Methode zur Berechnung des Mittelwerts einer Zeitreihe.
@@ -244,9 +245,10 @@ public class AnalysisTimeseries {
 				zuberechnendeperioden, p, mittelwert, isfremdkapital);
 		
 		//Modellgenauigkeit validieren
-		this.validierung( trendbereinigtezeitreihe,
+		if(this.tide != null){
+			this.validierung( trendbereinigtezeitreihe,
 				 matrixPhi,  p);
-		
+		}
 	
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
@@ -308,7 +310,7 @@ public class AnalysisTimeseries {
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
-		CalculateTide tide = new CalculateTide();
+		tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
 			zeitreihe = tide.reduceTide(zeitreihe);
@@ -429,6 +431,8 @@ public class AnalysisTimeseries {
 		double prognosewert = 0;
 		double realisierungsWert = trendbereinigtezeitreihe
 				.get(trendbereinigtezeitreihe.size() - 1);
+		realisierungsWert = realisierungsWert + tide.getTideValue(p);
+		logger.debug("Realisierungswert: " + realisierungsWert);
 		
 		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
 		// Vergangenheitswert.
@@ -439,7 +443,7 @@ public class AnalysisTimeseries {
 					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
 							.size() - (t + 2)));			
 		}
-		
+		prognosewert = prognosewert + tide.getTideValue(p);
 		// Berechnung der prozentualen Abweichung
 		double h = prognosewert / (realisierungsWert / 100);
 		// Die Variable abweichung enthält die Abweichung in %, abweichung =1

@@ -1,4 +1,5 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * BusinessHorizon2
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
@@ -29,29 +30,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
- * Vaadin.
- * 
- * @author Marcel Rosenberger
- * 
- */
+* Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
+* Vaadin.
+*
+* @author Marcel Rosenberger
+*
+*/
 public class IndirectCalculationViewImpl extends AbstractInputView implements IndirectCalculationViewInterface{
-	private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private IndirectCalculationPresenter presenterTemp;
+        @Autowired
+        private IndirectCalculationPresenter presenterTemp;
 
-	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
-	 * 
-	 * @author Marcel Rosenberger
-	 */
+        /**
+         * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+         * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+         * einen EventHandler.
+         *
+         * @author Marcel Rosenberger
+         */
 
-	@PostConstruct
-	public void init() {
-		presenter = presenterTemp;
-		presenter.setView(this);
-	}
+        @PostConstruct
+        public void init() {
+                presenter = presenterTemp;
+                presenter.setView(this);
+        }
 }

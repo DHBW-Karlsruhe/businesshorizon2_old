@@ -45,7 +45,7 @@ public class ProjectInputType implements Serializable {
 	private InputType stochasticInput = InputType.DIRECT;
 	private InputType deterministicInput = InputType.DIRECT;
 
-	public Boolean getStochastic() {
+	public Boolean isStochastic() {
 		return stochastic;
 	}
 
@@ -53,7 +53,7 @@ public class ProjectInputType implements Serializable {
 		this.stochastic = stochastic;
 	}
 
-	public Boolean getDeterministic() {
+	public Boolean isDeterministic() {
 		return deterministic;
 	}
 

@@ -1,4 +1,5 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * BusinessHorizon2
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
@@ -25,6 +26,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
 public interface IndirectCalculationViewInterface extends InputViewInterface {
 
-	
+        
 
 }
+

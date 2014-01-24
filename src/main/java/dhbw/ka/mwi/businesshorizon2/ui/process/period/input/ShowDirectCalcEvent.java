@@ -1,4 +1,5 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * BusinessHorizon2
  * 
  *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
@@ -27,22 +28,23 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.DirectCalculatedCashflowPeriod
 
 public class ShowDirectCalcEvent extends Event implements ShowInputViewEventInterface{
 
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3463254158996055840L;
-	private DirectCalculatedCashflowPeriod period;
+        
+        
+        /**
+         *
+         */
+        private static final long serialVersionUID = -3463254158996055840L;
+        private DirectCalculatedCashflowPeriod period;
 
-	public ShowDirectCalcEvent(DirectCalculatedCashflowPeriod period){
-		this.period = period;
-	}
+        public ShowDirectCalcEvent(DirectCalculatedCashflowPeriod period){
+                this.period = period;
+        }
 
-	public DirectCalculatedCashflowPeriod getPeriod() {
-		return period;
-	}
+        public DirectCalculatedCashflowPeriod getPeriod() {
+                return period;
+        }
 
 
-	
+        
 }
+

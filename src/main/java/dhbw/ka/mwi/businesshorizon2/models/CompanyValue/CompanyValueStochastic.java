@@ -73,8 +73,8 @@ public class CompanyValueStochastic extends CompanyValue {
 
 	private final TreeMap<Double, Couple> map;
 	private final TreeMap<Double, Couple> gradedmap;
+
 	// begrenzt die anzahl der angezeigten Unternehmenswerte
-	private static final int klassierungsschritte = 40;
 
 	public CompanyValueStochastic() {
 		super();
@@ -83,19 +83,13 @@ public class CompanyValueStochastic extends CompanyValue {
 	}
 
 	public void addCompanyValue(double companyValue) {
-
-		companyValue = this.roundToDecimalPlaces(companyValue, 0, false);
-
-		if (map.containsKey(companyValue)) {
-			map.get(companyValue).increaseCount();
-		} else {
-			map.put(companyValue, new Couple(companyValue));
-		}
+		
+		map.put(companyValue, new Couple(companyValue));
+		
 	}
 
 	public void addCompanyBalue(double companyValue, int count) {
 
-		companyValue = this.roundToDecimalPlaces(companyValue, 0, false);
 
 		if (map.containsKey(companyValue)) {
 			map.get(companyValue).increaseCount(count);
@@ -126,10 +120,10 @@ public class CompanyValueStochastic extends CompanyValue {
 
 	/**
 	 * Gibt eine Map mit den klassierten Unternehmenswerten und deren
-	 * Häufigkeiten zurück. Die Anzahl der Klassierungsschritten (=Balken im
-	 * Diagramm) ist festgesetzt und sollte nur unter Vorbehalt geändert werden.
-	 * Wenn man bspw. zu viele Klassierungsschritte wählt, kann es sein dass der
-	 * Erwartungswert später nicht mehr sichtbar ist. Die Map kann
+	 * Häufigkeiten zurück. Die Anzahl der Klassierungsbreiten-/bzw.schritten
+	 * (=Balken im Diagramm) wird. Dies geschieht anhand der Regel nach Scott
+	 * zur Ermittlung der Klassenbreite. Ausgehend von der Klassenbreite kann
+	 * berechnet werden wie viele Balken benötigt werden. Die Map kann
 	 * beispielsweise folgendermaßen ausgelesen werden:
 	 * 
 	 * @author: Marcel Rosenberger
@@ -140,32 +134,61 @@ public class CompanyValueStochastic extends CompanyValue {
 	 */
 	public TreeMap<Double, Couple> getGradedCompanyValues() {
 		// Klassierungsschrittweite ermitteln
+
+		// Streuung der Unternehmenswerte ermitteln
+		double[] unternehmenswerte = new double[this.map.entrySet().size()];
+		int z = 0;
+		// Unternehmenswerte in ein Array casten
+		for (Map.Entry<Double, Couple> entry : this.map.entrySet()) {
+			unternehmenswerte[z] = entry.getValue().getCompanyValue();
+			z++;
+		}
+		double streuung = this.berechnestreuung(unternehmenswerte); // Streuung
+		double n = unternehmenswerte.length; // Anzahl der Unternehmenswerte
+
+		// Klassenbreite (Berechnung mit der Regel nach Scott) aus Wikipedia
+		double h = (3.49 * streuung) / Math.pow(n, (1.0 / 3.0));
+		logger.debug("klassenbreite: " + h);
+
 		// Kleinsten Wert ermitteln
 		double kleinster = this.map.firstEntry().getValue().getCompanyValue();
-		logger.debug("kleinster:" + kleinster);
+	
 		// Größten Wert ermitteln
 		double größter = this.map.lastEntry().getValue().getCompanyValue();
-		logger.debug("größter:" + größter);
+	
 		// Delta Ermitteln
 		double delta = größter - kleinster;
-		logger.debug("delta:" + delta);
-		double deltahalbe = delta / 2.0;
-		// Schritte Ermitteln
-		double schritt = delta / klassierungsschritte;		
-		//Klassierungsdurchschnitt initialisieren
+
+		// Anzahl Klassierungsschritte ermitteln
+		int klassierungsschritte = (int) (delta / h);
+		logger.debug("klassierungsschritte: " + klassierungsschritte);
+		
+		//halbenSchritt ermitteln
+		double halberschritt = h / 2.0;
+		// Klassierungsdurchschnitt initialisieren
 		double klassierungsdurchschnitt = kleinster;
 		
+		//In wenigen Ausnahmefällen kann es sein, dass zu wenig (< 10)Balken errechnet werden.
+		//In diesen Fällen sollen default-mäßig 14 Balken angezeigt werden.
+		if(klassierungsschritte < 10){
+			klassierungsschritte = 14;
+			h = delta / klassierungsschritte;
+			halberschritt = h / 2.0;
+		}
+		
 		// legt die Klassierte Map an mit einem Eintrag pro Klassierungsschritt
-		for(int i = 0; i <= klassierungsschritte; i++ ) {
-			klassierungsdurchschnitt = klassierungsdurchschnitt +  schritt;
-			//logger.debug("Klassierung:" + klassierungsdurchschnitt);
+		for (int i = 0; i <= klassierungsschritte; i++) {
+			klassierungsdurchschnitt = klassierungsdurchschnitt + h;
+			// logger.debug("Klassierung:" + klassierungsdurchschnitt);
 			this.gradedmap.put(klassierungsdurchschnitt, new Couple(
 					klassierungsdurchschnitt, 0));
 		}
-
+		
+		boolean nochnichtverteilt = true;
 		// Unternehmenswerte werden auf die klassierte Map verteilt
 		for (Map.Entry<Double, Couple> entry : this.map.entrySet()) {
 			double unternehmenswert = entry.getValue().getCompanyValue();
+			nochnichtverteilt = true;
 			for (Map.Entry<Double, Couple> klassierterEintrag : this.gradedmap
 					.entrySet()) {
 				double key = klassierterEintrag.getKey();
@@ -173,13 +196,33 @@ public class CompanyValueStochastic extends CompanyValue {
 				// Klassierungsschrittes liegt,
 				// wird die Anzahl der Werte dieses Klassierungsschrittes
 				// erhöht.
-				if (((unternehmenswert - deltahalbe) <= key)
-						&& ((unternehmenswert + deltahalbe) >= key)) {
+				if ((((unternehmenswert - halberschritt) < key) )
+						&& ((unternehmenswert + halberschritt) >= key) && nochnichtverteilt) {
 					klassierterEintrag.getValue().increaseCount();
-				}
+					nochnichtverteilt = false;
+				} 
+				
+				
 			}
 		}
 
 		return this.gradedmap;
+	}
+
+	public double berechnestreuung(double[] unternehmenswerte) {
+		// Mittelwert berechnen
+		double s = 0; // Vorbereitung
+		for (int j = 0; j < unternehmenswerte.length; j++) { // Schleife
+			s = s + unternehmenswerte[j];
+		}
+		double mw = s / unternehmenswerte.length; // Nachbereitung
+
+		// Streuung berechnen
+		s = 0;
+		for (int i = 0; i < unternehmenswerte.length; i++) {
+			s = s + ((mw - unternehmenswerte[i]) * (mw - unternehmenswerte[i]));
+		}
+		double streuung = Math.sqrt(s / unternehmenswerte.length);
+		return streuung;
 	}
 }

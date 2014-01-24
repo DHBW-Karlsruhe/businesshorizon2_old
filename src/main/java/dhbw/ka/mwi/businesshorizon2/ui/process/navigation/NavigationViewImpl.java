@@ -177,8 +177,8 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.showProjectList();
-				 presenter.showProjectList();
-				 persistenceService.saveProjects();
+				
+				
 			}
 		});
 		

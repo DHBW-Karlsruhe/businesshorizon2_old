@@ -206,14 +206,19 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		stochMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			stochMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getStochastic();
+					.getProjectInputType().isStochastic();
 		} 
+		
+		//Annika Weis: Wert für Anzahl einbezogener, vergangener Perioden setzen
+		if (projectProxy.getSelectedProject().getRelevantPastPeriods() == 0) {
+			initializePastPeriods();
+		}
 		
 		//Annika Weis
 		detMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			detMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getDeterministic();
+					.getProjectInputType().isDeterministic();
 		} 
 
 		randomWalk = false;
@@ -943,6 +948,17 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	}
 
+	
+	/**
+	 * Initialisiert Anzahl einbezogener, vergangener Perioden bei der stochastischen Eingabe
+	 * 
+	 * @author Annika Weis
+	 */
+	public void initializePastPeriods(){
+		getView().setRelevantPastPeriods("5");
+	}
+	
+	
 	/**
 	 * 
 	 * Eventhandler der zuerst prueft ob sich Vorbedingungen geaendert haben,
@@ -962,7 +978,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		stochMethod = false;
 		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
 			stochMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().getStochastic();
+					.getProjectInputType().isStochastic();
 		} 
 
 		randomWalk = false;

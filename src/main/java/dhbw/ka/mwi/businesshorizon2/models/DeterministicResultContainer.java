@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
@@ -90,7 +91,7 @@ public class DeterministicResultContainer {
 	 * @author Annika Weis
 	 */
 	public int[] getJahre(){
-		CashFlowPeriod period;
+		Period period;
 
 		int periodenNamen[] = null;
 		for (AbstractPeriodContainer abstractPeriodContainer : getPeriodContainers()) {
@@ -99,7 +100,7 @@ public class DeterministicResultContainer {
 			periodenNamen = new int[periods.size()];
 			int i = 0;
 			while (periodenIterator.hasNext()) {
-				period = (CashFlowPeriod) periodenIterator.next();
+				period = periodenIterator.next();
 				periodenNamen[i] =  period.getYear();
 			    i++;
 			}
@@ -115,8 +116,8 @@ public class DeterministicResultContainer {
 	 * @author: Annika Weis
 	 * @date: 02.01.2014
 	 */
-	public double[] getCashflows() {
-		CashFlowPeriod period;
+	public double[] getCashflows() {		
+		Period period;
 		
 		double[] cashflows = null;
 		int i = 0;
@@ -126,8 +127,8 @@ public class DeterministicResultContainer {
 			
 			cashflows = new double[periods.size()];
 			while (periodenIterator.hasNext()) {
-				period = (CashFlowPeriod) periodenIterator.next();
-				cashflows[i] =period.getFreeCashFlow();
+				period = periodenIterator.next();
+				cashflows[i] = period.getFreeCashFlow();
 			    i++;
 			}
 		}
@@ -144,7 +145,7 @@ public class DeterministicResultContainer {
 	 * @date: 03.01.2014
 	 */
 	public double[] getFremdkapitl() {
-		CashFlowPeriod period;
+		Period period;
 		
 		double[] fremdkapital = null;
 		int i = 0;
@@ -154,7 +155,7 @@ public class DeterministicResultContainer {
 			
 			fremdkapital = new double[periods.size()];
 			while (periodenIterator.hasNext()) {
-				period = (CashFlowPeriod) periodenIterator.next();
+				period = periodenIterator.next();
 				fremdkapital[i] =period.getCapitalStock();
 			    i++;
 			}
