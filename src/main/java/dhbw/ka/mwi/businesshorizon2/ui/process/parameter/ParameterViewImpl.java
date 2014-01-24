@@ -189,12 +189,15 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private void generateUi() {
 
 		setMargin(true);
+		setSizeFull();
 
 		// TODO: Zeilenanzahl anpassen
 		gridLayout = new GridLayout(3, 30);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
-
+		gridLayout.setSizeFull();
+	
+		
 		addComponent(gridLayout);
 
 		// Heading 1
