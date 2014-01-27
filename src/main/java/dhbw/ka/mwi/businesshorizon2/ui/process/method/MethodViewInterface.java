@@ -23,6 +23,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.process.method;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractCalculationMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.models.CashflowSource;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
@@ -38,17 +39,10 @@ public interface MethodViewInterface extends ContentView {
 	//public void showStochasticMethod(AbstractStochasticMethod method);
 	
 	//Annika Weis
-	public void addCalculationMethod(AbstractCalculationMethod method);
-	
-	public void enableOptions();
+	//public void addCalculationMethod(AbstractCalculationMethod method);
 
 	//public void enableStochasticMethodSelection(Boolean state);
 
-	//Annika Weis
-	public void enableCalculationMethodSelection(Boolean state);
-	
-	public void enableCashflowSourceSelection(Boolean cashflowState);
-	
 	//public void setStochastic(Boolean checked);
 	
 	//public void setDeterministic(Boolean checked);
@@ -65,9 +59,13 @@ public interface MethodViewInterface extends ContentView {
 
 	public void showDeterministicInputPanel();
 
-	void showStochasticInputPanel();
+	public void showStochasticInputPanel();
 
-	public void setSelectCalculationMethod(
-			AbstractCalculationMethod calculationMethod);
+	public void hideInputPanels();
+
+	public void selectCalculation(AbstractCalculationMethod selected);
+
+	public void selectCashflow(CashflowSource selected);
+	
 	
 }

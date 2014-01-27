@@ -86,7 +86,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 	private AbstractStochasticMethod stochasticMethod;
 	
 	//Liste für die Auswahloptionen
-	private SortedSet<AbstractCalculationMethod> calculationMethods;
+	//private SortedSet<AbstractCalculationMethod> calculationMethods;
 	
 	private ProjectCashflowSource projectCashflowSource;
 	
@@ -110,177 +110,203 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		getView().showMethodView();
 
 		project = projectProxy.getSelectedProject();
-
-		//Hier werden die Methoden die zur Auswahl stehen sollen, auf dem Reiter angezeigt
-		calculationMethods = new TreeSet<AbstractCalculationMethod>();
-		calculationMethods.add(new APV());
-		calculationMethods.add(new FTE());
 		
-		for (AbstractCalculationMethod m : calculationMethods) {
-			getView().addCalculationMethod(m);
-
-		}
+		getView().showCashflowSourcePanel(false);
+		getView().hideInputPanels();
 		
-		//Falls bereits eine Auswahl gespeichert wurde, soll diese ausgewählt werden
-		if (project.getCalculationMethod() == null) {
-			project.setCalculationMethod(calculationMethod);
-		} else {
+		//Falls bereits eine Auswahl gespeichert wurde, soll diese gesetzt werden, andernfalls neues erzeugen
+		if (project.getCalculationMethod() != null){
 			calculationMethod = project.getCalculationMethod();
-			getView().setSelectCalculationMethod(calculationMethod);
+			toggleCalculationMethod(calculationMethod);
+			logger.debug("Berechnungsmethode bereits ausgewaehlt: " + project.getCalculationMethod());
+		} else if (project.getCalculationMethod() == null) {
+			project.setCalculationMethod(calculationMethod);
+			logger.debug("Berechnungsmethode noch nicht ausgewaehlt");
 		}
-		
-		//Falls bereits eine Auswahl gespeichert wurde, soll diese ausgewählt werden
-		if (project.getProjectCashflowSource() == null) {
-			//projectCashflowSource = new ProjectCashflowSource();
-			project.setProjectCashflowSource(projectCashflowSource);
-		} else {
+
+		//Falls bereits eine Herkunft-Auswahl gespeichert wurde, soll diese gesetzt werden, andernfalls neues erzeugen
+		if (project.getProjectCashflowSource() != null) {
 			projectCashflowSource = project.getProjectCashflowSource();
+			toggleCashflowSource(projectCashflowSource.getCashflowSource());
+			logger.debug("Herkunft der Cashflows bereits ausgewaehlt");
+		} else if (project.getProjectCashflowSource() == null){
+			projectCashflowSource = new ProjectCashflowSource();
+			project.setProjectCashflowSource(projectCashflowSource);
+			logger.debug("Herkunft der Cashflows noch nicht ausgewaehlt:");
 		}
 		
-		//Falls bereits eine Auswahl gespeichert wurde, soll diese ausgewählt werden
-		if (project.getProjectInputType() == null) {
-			//projectInputType = new ProjectInputType();
-			project.setProjectInputType(projectInputType);
-		} else {
+		//Falls bereits eine Auswahl gespeichert wurde, soll diese gesetzt werden, andernfalls neues erzeugen
+		if (project.getProjectInputType() != null){
 			projectInputType = project.getProjectInputType();
+			if (projectInputType.isDeterministic()) {
+				toggleDeterministicInput(projectInputType.getDeterministicInput());
+				logger.debug("Deterministische Eingabemethode bereits ausgewaehlt");
+			} else if (projectInputType.isStochastic()) {
+				toggleStochasticInput(projectInputType.getStochasticInput());
+				logger.debug("Stochastische Eingabemethode bereits ausgewaehlt");
+			}
+		} else if (project.getProjectInputType() == null) {
+			projectInputType = new ProjectInputType();
+			project.setProjectInputType(projectInputType);
+			logger.debug("Eingabemethode noch nicht ausgewaehlt");
 		}
+			
 		
-		/**if (projectInputType.isDeterministic() != null && projectInputType.isDeterministic()) {
-			getView().showDeterministicInputPanel();
-		}
-		
-		if (projectInputType.isStochastic() != null && projectInputType.isStochastic()) {
-			getView().showStochasticInputPanel();
-		}*/
-		
-		getView().showCashflowSourcePanel(projectCashflowSource.isCashflowSelected());
-
-		if (projectInputType.isStochastic()) {
-		getView().showStochasticInputPanel();
-		} else if (projectInputType.isDeterministic()){
-		getView().showDeterministicInputPanel();
-		}
-		
-		getView().selectInput(true, projectInputType.getStochasticInput());
-		getView().selectInput(false, projectInputType.getDeterministicInput());
-
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.METHOD,
 				true));
 		
-		//toggleCalculationMethodSelection(true);
-
 	}
-
-	@Override
-	public boolean isValid() {
-		boolean valid = false;
-		/**if (projectInputType.getStochastic()) {
-
-			for (AbstractStochasticMethod m : stochasticMethods) {
-				if (m.getSelected()) {
-					valid = true;
-				}
-			}
-
-			if (showError) {
-				getView().showErrorNoMethodSelected(valid);
-			}
-
-		} else */ if (projectInputType.isDeterministic()) {
-
-			valid = true;
-
-			// Annika Weis
-			valid = false;
-			for (AbstractCalculationMethod m : calculationMethods) {
-				if (m.isSelected()) {
-					valid = true;
-				}
-
-			}
-
-			/**if (showError) {
-				// Annika Weis
-				// getView().showErrorNothingSelected(valid);
-				getView().showErrorNoMethodSelected(valid);
-			}*/
+	
+	public void saveCalculationMethod(AbstractCalculationMethod newSelected){
+		eventBus.fireEvent(new CheckCalculationMethod(newSelected));
+		
+		if (newSelected instanceof APV){
+			calculationMethod = new APV();
+			calculationMethod.setSelected(true);
+			project.setCalculationMethod(calculationMethod);
+			logger.debug("Berechnungsmethode im Projekt gespeichert: " + project.getCalculationMethod());
+			
+			toggleCalculationMethod(newSelected);
 		}
-
-		return valid;
-	}
-
-	//Annika Weis
-	public void toggleCalculationMethodSelection(Boolean enable) {
-		
-		logger.debug("Auswahl fuer Berechnungsmethode aktivieren");
-		eventBus.fireEvent(new CheckCalculationMethodTypeEvent(true, true));
-		
-		getView().enableCalculationMethodSelection(enable);
-
-		this.validate(new ValidateContentStateEvent());
-
+		else if (newSelected instanceof FTE){
+			calculationMethod = new FTE();
+			calculationMethod.setSelected(true);
+			project.setCalculationMethod(calculationMethod);
+			logger.debug("Berechnungsmethode im Projekt gespeichert: " + project.getCalculationMethod());
+			
+			saveCashflowSource(CashflowSource.DETERMINISTIC);
+			
+		}
 	}
 	
-	public void toggleCashflowSourcePanel(Boolean enable) {
-		logger.debug("Auswahl fuer Herkunft der Cashflows aktivieren");
-		eventBus.fireEvent(new CheckCalculationMethodTypeEvent(true, true));
+	public void saveCashflowSource(CashflowSource newSelected){
+		eventBus.fireEvent(new CashflowSourceChangedEvent());
 		
-		getView().enableCalculationMethodSelection(enable);
-
-		this.validate(new ValidateContentStateEvent());
-
+		projectCashflowSource.setCashflowSource(newSelected);
+		projectCashflowSource.setCashflowSelected(true);
+		project.setProjectCashflowSource(projectCashflowSource);
+		logger.debug("Herkunft der Cashflows im Projekt gespeichert: " + project.getProjectCashflowSource().getCashflowSource());
+		
+		if(newSelected.equals(CashflowSource.DETERMINISTIC)){
+			projectInputType.setDeterministic(true);
+			
+			if (!(project.getCalculationMethod() instanceof FTE)){
+				toggleCashflowSource(newSelected);
+			}
+			
+		}
+		else if(newSelected.equals(CashflowSource.STOCHASTIC)){
+			projectInputType.setStochastic(true);
+			
+			saveStochasticMethod();
+			toggleCashflowSource(newSelected);
+			
+		}
 	}
-
 	
-	public void toggleCalculationMethod(AbstractCalculationMethod checkedMethod) {
-		eventBus.fireEvent(new CheckCalculationMethod(checkedMethod));
+	public void saveStochasticMethod(){
+		stochasticMethod = new TimeseriesCalculator();
+		project.setStochasticMethod(stochasticMethod);
+		logger.debug("Stochastische Methode im Projekt gespeichert: " + project.getStochasticMethod());
+	}
+	
+	public void saveDeterministicInput(InputType newSelected){
+		eventBus.fireEvent(new InputTypeChangedEvent());
+		
+		projectInputType.setDeterministicInput(newSelected);
+		projectInputType.isDeterministic();
+		project.setProjectInputType(projectInputType);
+		logger.debug("Deterministische Eingabe im Projekt gespeichert: " + project.getProjectInputType().getDeterministicInput());
+		
+		toggleDeterministicInput(newSelected);
+		
+	}
+	
+	public void saveStochasticInput(InputType newSelected) {
+		eventBus.fireEvent(new InputTypeChangedEvent());
+		
+		projectInputType.setStochasticInput(newSelected);
+		projectInputType.isStochastic();
+		project.setProjectInputType(projectInputType);
+		logger.debug("Stochastische Eingabe im Projekt gespeichert: " + project.getProjectInputType().getStochasticInput());
+		
+		toggleStochasticInput(newSelected);
+		
+	}
+	
+	public void toggleCalculationMethod(AbstractCalculationMethod newSelected) {
+		
+		getView().selectCalculation(newSelected);
+		
+		if (newSelected instanceof APV){
+			//projectCashflowSource.setCashflowSource(null);
+			//project.setProjectCashflowSource(projectCashflowSource);
+			//logger.debug("CashflowSource des Projektes zurueckgesetzt");
+			
+			getView().showCashflowSourcePanel(true);
+			getView().hideInputPanels();
+			logger.debug("Panel fuer Herkunft der Cahslflows anzeigen");	
+		}	
 
-		calculationMethod = checkedMethod;
-		calculationMethod.setSelected(true);
-		logger.debug("Berechnungsmethode ausgewaehlt: " + checkedMethod.toString());
-		project.setCalculationMethod(checkedMethod);
-		logger.debug("project.getCalculationMethod(): " + project.getCalculationMethod().toString());
-		//TODO: weitere Auswahlmöglichkeiten abhängig vom Berechnungstyp einblenden
+		else if (newSelected instanceof FTE){
+			getView().showDeterministicInputPanel();
+			getView().showCashflowSourcePanel(false);
+			logger.debug("Panel fuer Auswahl der deterministischen Eingabe anzeigen");	
+		}
 		
 		this.validate(new ValidateContentStateEvent());
 
 	}
 	
 	public void toggleCashflowSource(CashflowSource newSelected) {
-		eventBus.fireEvent(new CashflowSourceChangedEvent());
-		projectCashflowSource.setCashflowSource(newSelected);
+		
+		getView().selectCashflow(newSelected);
+		
 		if(newSelected.equals(CashflowSource.DETERMINISTIC)){
 			getView().showDeterministicInputPanel();
-			projectInputType.setDeterministic(true);
+			logger.debug("Panel fuer Auswahl der deterministischen Eingabe anzeigen");
 		}
 		else if(newSelected.equals(CashflowSource.STOCHASTIC)){
 			getView().showStochasticInputPanel();
-			stochasticMethod = new TimeseriesCalculator();
+			logger.debug("Panel fuer Auswahl der stochastischen Eingabe anzeigen");
 			
 		}
+		
+		this.validate(new ValidateContentStateEvent());
+	}
+	
+	public void toggleDeterministicInput(InputType newSelected) {
+		
+		getView().selectInput(false, newSelected);
+		
+		this.validate(new ValidateContentStateEvent());
+	}
+
+	public void toggleStochasticInput(InputType newSelected) {
+		
+		getView().selectInput(true, newSelected);
+		
+		this.validate(new ValidateContentStateEvent());
+	
 	}
 	
 
-	//Annika Weis
-	public void toggleDeterministicInput(Boolean deterministic, InputType newSelected) {
-		eventBus.fireEvent(new InputTypeChangedEvent());
-		if (deterministic) {
-			projectInputType.setDeterministicInput(newSelected);
-		} else {
-			projectInputType.setStochasticInput(newSelected);
+	@Override
+	public boolean isValid() {
+		boolean valid = false;
+		
+		if (project.getProjectInputType() != null) {
+			valid = true;
 		}
-	}
+		
+		
+		if (showError) {
+				
+		}
 
-	public void toggleStochasticInput(Boolean stochastic, InputType newSelected) {
-		eventBus.fireEvent(new InputTypeChangedEvent());
-		if (stochastic) {
-			projectInputType.setStochasticInput(newSelected);
-		} else {
-			projectInputType.setDeterministicInput(newSelected);
-		}
+		return valid;
 	}
 	
-
 	@Override
 	@EventHandler
 	public void validate(ValidateContentStateEvent event) {
