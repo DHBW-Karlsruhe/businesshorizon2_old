@@ -210,7 +210,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		if (deterministic) {
 			getView().setFutureButtonAccess(true);
-			if (sumFuturePeriods >= 5 + weitere_perioden_future) {
+			if (sumFuturePeriods >= 3 + weitere_perioden_future) {
 				getView().setFutureDeleteButtonAccess(true);
 			} else {
 				getView().setFutureDeleteButtonAccess(false);
@@ -219,19 +219,16 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().setPastDeleteButtonAccess(false);
 		}
 		if (stochastic) {
-			if (sumPastPeriods >= 2 + weitere_perioden_past) {
-				getView().setFutureDeleteButtonAccess(true);
+			if (sumPastPeriods >= 6 + weitere_perioden_past) {
+				getView().setPastDeleteButtonAccess(true);
 			} else {
-				getView().setFutureDeleteButtonAccess(false);
+				getView().setPastDeleteButtonAccess(false);
 			}
-			getView().setFutureButtonAccess(false);
 			getView().setPastButtonAccess(true);
-			getView().setPastDeleteButtonAccess(false);
+			getView().setFutureButtonAccess(false);
+			getView().setFutureDeleteButtonAccess(false);
 		}
 	}
-
-
-
 
 	/**
 	 * Ueberprüft ob sich die für die Maske relevanten Daten im ProjektObjekt
@@ -1057,7 +1054,22 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		addPastPeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getStochasticInput());
+		
 		eventBus.fireEvent(new ShowPeriodViewEvent());
+
+		// andere Periode anzeigen
+		// TODO
+		try {
+			TreeSet set = projectProxy.getSelectedProject()
+					.getStochasticPeriods().getPeriods();
+			int laenge = set.toArray().length;
+			Period t;
+			t = (Period) set.toArray()[0];
+			periodClicked(t);
+		} catch (Exception e) {
+			logger.debug("Fehler beim anzeigen der neuesten Periode");
+		}
+		
 
 	}
 
@@ -1075,8 +1087,22 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		addFuturePeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getDeterministicInput());
-		eventBus.fireEvent(new ShowPeriodViewEvent());
 
+
+		eventBus.fireEvent(new ShowPeriodViewEvent());
+		// andere Periode anzeigen
+		// TODO
+		try {
+			TreeSet set = projectProxy.getSelectedProject()
+					.getDeterministicPeriods().getPeriods();
+			int laenge = set.toArray().length;
+			Period t;
+			t = (Period) set.toArray()[laenge-1];
+			periodClicked(t);
+		} catch (Exception e) {
+			logger.debug("Fehler beim anzeigen der neuesten Periode");
+		}
+		
 	}
 
 	/**
@@ -1131,10 +1157,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		projectProxy.getSelectedProject()
 				.setDeterministicPeriods(futurePeriods);
- 
+
 		periodenanzahl_geaendert();
 
 		// andere Periode anzeigen
+		// TODO
 		try {
 			TreeSet set = projectProxy.getSelectedProject()
 					.getStochasticPeriods().getPeriods();
