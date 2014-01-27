@@ -82,6 +82,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	private Label userData;
 	
 	
+	
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
