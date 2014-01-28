@@ -30,7 +30,7 @@ public class APV extends AbstractDeterministicMethod {
 	/**
 	 * 
 	 */
-	private static final Logger logger = Logger.getLogger("APV_2.class");
+	private static final Logger logger = Logger.getLogger("APV.class");
 	private static final long serialVersionUID = 3577122037488635230L;
 	private double uwsteuerfrei;
 	private double steuervorteile;

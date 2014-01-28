@@ -68,7 +68,7 @@ public class StochasticChartArea extends HorizontalLayout {
 
 	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung, Szenario scenario) {
 		
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#0.00");
 		
 		// Überschrift anzeigen
 		headline = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
@@ -128,13 +128,11 @@ public class StochasticChartArea extends HorizontalLayout {
                 if (companyValue.getKey() < erwartungswert){
                 	keydrunter = companyValue.getKey();
                 	keydrunterfreq = companyValue.getValue().getCount();
-                	logger.debug("Neuer Key drunter: " + keydrunter);
                 } 
                 
                 if ((companyValue.getKey() > erwartungswert) && (keydrueber != 0)){
                 	keydrueber = companyValue.getKey();
                 	keydrueberfreq = companyValue.getValue().getCount();
-                	logger.debug("Neuer Key drueber: " + keydrueber);
                 }
                 
                 /*
@@ -178,7 +176,7 @@ public class StochasticChartArea extends HorizontalLayout {
 			BasicLineChart cfChart = new BasicLineChart("Erwartete Werte", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()), new double[] { Math.round(period.getFreeCashFlow()), Math.round(period.getCapitalStock()) });
+				cfChartValues.put(Integer.toString(period.getYear()), new double[] { Double.parseDouble((df.format(period.getFreeCashFlow())).replace(",", ".")), Double.parseDouble((df.format(period.getCapitalStock())).replace(",", ".")) });
 
 			}
 
