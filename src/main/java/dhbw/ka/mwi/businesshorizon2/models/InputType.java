@@ -24,6 +24,7 @@ package dhbw.ka.mwi.businesshorizon2.models;
 import java.io.Serializable;
 
 public enum InputType implements Serializable {
+
         DIRECT("Direkte Eingabe"),DIRECTCALCULATION("Direkte Berechnung des Cashflows"),INDIRECTCALCULATION("Indirekte Berechnung des Cashflows");
         
         private String caption;

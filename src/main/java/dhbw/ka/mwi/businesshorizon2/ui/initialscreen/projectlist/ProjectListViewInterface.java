@@ -32,16 +32,18 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
  * mit denen der Presenter mit der View kommunizieren kann.
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Mirko Göpfrich
  * 
  */
 public interface ProjectListViewInterface extends View {
-
-
 	
 	public void setProjects(List<Project> projects);
 	
 	public void showAddProjectDialog();
+	
+	public void showEditProjectDialog(Project project);
+
+	public void showErrorMessage(String message);
 
 }
 

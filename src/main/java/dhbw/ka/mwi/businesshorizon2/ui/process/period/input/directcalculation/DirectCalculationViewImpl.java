@@ -59,3 +59,4 @@ public class DirectCalculationViewImpl extends AbstractInputView implements Dire
                 
         }
 }
+

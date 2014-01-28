@@ -43,8 +43,11 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
 	
 	@Autowired
 	private InfosPresenter presenter;
+	
+	private VerticalLayout infoContent;
 
 	private Label textLabel;
+	private Label title;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -63,15 +66,25 @@ public class InfosViewImpl extends VerticalLayout implements InfosViewInterface 
 
 	public void generateUi() {
 		
-		setSizeFull();
+		infoContent = new VerticalLayout();
+		this.addComponent(infoContent);
+		
+		infoContent.setSizeFull();
 		setSpacing(true);
 		setMargin(true);
 		
-		textLabel = new Label("<h1>Good to know...</h1>"
-                + "<p>Diese <b>brandneue</b> Applikation <sup>funktioniert</sup> folgendermaßen:</p>"
-                + "<p> blabla <i>bla</i>!</p>");
+		title = new Label("<h1>Willkommen</h1>");
+		title.setContentMode(Label.CONTENT_XHTML);
+		infoContent.addComponent(title);
+		logger.debug("Ueberschrift erstellt");
+		
+		textLabel = new Label("Willkommen auf der Startseite von Business Horizon!" 
+				+" Mithilfe dieser Software können Sie Ihren zukünftigen Unternehmenswert berechenen lassen. </br>"
+				+ "Hierzu stehen Ihnen verschiedene Methoden zur Verfügung, welche im jeweiligen Prozessschritt erläutert werden. </br>"
+				+ "Im linken Bereich können Sie Ihre bisher angelegten Projekte verwalten oder neue Projekte hinzufügen. </br>"
+				+ "Durch einen Klick auf das Projektfenster gelangen Sie in das jeweilige Projekt.</br>");
 		textLabel.setContentMode(Label.CONTENT_XHTML);
-		addComponent(textLabel);
+		infoContent.addComponent(textLabel);
 		logger.debug("Rich text erzeugt");
 
 

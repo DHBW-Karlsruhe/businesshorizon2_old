@@ -55,4 +55,18 @@ public class ProjectListViewMock implements ProjectListViewInterface {
 		projectAddDialogShown  = true;
 	}
 
+
+	@Override
+	public void showEditProjectDialog(Project project) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void showErrorMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

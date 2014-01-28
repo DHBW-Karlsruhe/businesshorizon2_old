@@ -249,9 +249,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		while (method_deterministicIterator.hasNext()) {
 			AbstractDeterministicMethod m_d = (AbstractDeterministicMethod) method_deterministicIterator
 					.next();
-			if (m_d.getName().equals("DCF") && m_d.getSelected()) {
+			if (m_d.getName().equals("Flow-to-Equity (FTE)") && m_d.getSelected()) {
 				dcf = true;
-			} else if (m_d.getName().equals("APV") && m_d.getSelected()){
+			} else if (m_d.getName().equals("Adjusted-Present-Value (APV)") && m_d.getSelected()){
 				apv = true;
 			}
 		}

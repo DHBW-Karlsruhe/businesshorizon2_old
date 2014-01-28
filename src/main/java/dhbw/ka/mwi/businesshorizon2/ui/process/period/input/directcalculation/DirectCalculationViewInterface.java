@@ -27,3 +27,4 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 public interface DirectCalculationViewInterface extends InputViewInterface {
 
 }
+

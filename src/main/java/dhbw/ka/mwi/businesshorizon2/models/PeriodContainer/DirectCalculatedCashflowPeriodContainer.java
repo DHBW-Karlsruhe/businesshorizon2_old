@@ -49,3 +49,4 @@ public class DirectCalculatedCashflowPeriodContainer extends AbstractPeriodConta
         }
 
 }
+

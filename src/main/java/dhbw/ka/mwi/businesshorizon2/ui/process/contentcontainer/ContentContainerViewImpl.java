@@ -33,7 +33,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.VerticalSplitPanel;
 
 /**
  * Dies ist die Vaadin-Implementierung der MainView (dem Haupt-Fenster).
@@ -41,14 +41,13 @@ import com.vaadin.ui.themes.Reindeer;
  * @author Julius Hacker
  *
  */
-public class ContentContainerViewImpl extends VerticalLayout implements ContentContainerView {
+public class ContentContainerViewImpl extends VerticalSplitPanel implements ContentContainerViewInterface {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private ContentContainerPresenter presenter;
 	
-	private VerticalLayout layout;
-	private Panel panel;
+	private VerticalLayout content;
 	private HorizontalLayout buttons;
 	private Button backButton, nextButton;
 	
@@ -63,25 +62,21 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	public void init() {
 		presenter.setView(this);
 		
-		this.panel = new Panel();
-		this.panel.setSizeFull();
-		this.panel.setScrollable(true);
-        this.panel.setStyleName(Reindeer.PANEL_LIGHT);
-		
-		this.layout = new VerticalLayout();
-		this.layout.setSizeFull();
-		
 		this.setSizeFull();
-		this.setWidth(100, UNITS_PERCENTAGE);
+		this.setSplitPosition(60, UNITS_PIXELS, true);
+		this.setLocked(true);
+		this.addStyleName("small");
 		
-		this.backButton = new Button("Vorheriger Schritt");
-		this.nextButton = new Button("N\u00e4chster Schritt");
+		content = new VerticalLayout();
 		
-		this.buttons = new HorizontalLayout();
-		this.buttons.addComponent(this.backButton);
-		this.buttons.addComponent(this.nextButton);
+		backButton = new Button("Vorheriger Schritt");
+		nextButton = new Button("N\u00e4chster Schritt");
 		
-		this.backButton.addListener(new ClickListener() {
+		buttons = new HorizontalLayout();
+		buttons.addComponent(backButton);
+		buttons.addComponent(nextButton);
+		
+		backButton.addListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -91,7 +86,7 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 			
 		});
 		
-		this.nextButton.addListener(new ClickListener() {
+		nextButton.addListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -101,8 +96,9 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 			
 		});
 		
-		panel.addComponent(layout);
-		this.addComponent(panel);
+		this.setFirstComponent(content);
+
+
 	}
 	
 	/**
@@ -113,11 +109,10 @@ public class ContentContainerViewImpl extends VerticalLayout implements ContentC
 	 */
 
 	public void showContentView(ContentView contentView) {
-		this.layout.removeAllComponents();
-		this.layout.addComponent((Component) contentView);
-		this.layout.addComponent(this.buttons);
-		this.layout.setComponentAlignment(this.buttons, Alignment.BOTTOM_RIGHT);
-		this.layout.setSizeFull();
+		this.content.removeAllComponents();
+		this.content.addComponent((Component) contentView);
+		this.setSecondComponent(buttons);
+		this.content.setSizeFull();
 	}
 	
 	public void activateBack(boolean activate) {

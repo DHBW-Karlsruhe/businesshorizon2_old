@@ -222,6 +222,6 @@ public class DirectCalculatedCashflowPeriod extends Period {
 		}
 
 
-       
+
 
 }

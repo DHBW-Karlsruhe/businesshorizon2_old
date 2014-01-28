@@ -119,6 +119,7 @@ public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	}
 
 	public void showProjectList() {
+		persistenceService.saveProjects();
 		eventBus.fireEvent(new ShowUserEvent());
 	}
 

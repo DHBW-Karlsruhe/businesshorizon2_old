@@ -31,11 +31,11 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
-
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic.Couple;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
@@ -48,25 +48,34 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
  * @author Florian Stier, Marcel Rosenberger
  * 
  */
-public class StochasticChartArea extends VerticalLayout {
+public class StochasticChartArea extends HorizontalLayout {
 
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger logger = Logger
 			.getLogger("StochasticChartArea.class");
+	private Label headline;
 	
+	private Label modulAbweichung;
 	
+	public Label getHeadline(){
+		return headline;
+	}		
+	
+	public Label getModulAbweichung(){
+		return modulAbweichung;
+	}
 
 	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung, Szenario scenario) {
 		
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#0.00");
 		
 		// Überschrift anzeigen
-		Label title = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
-		title.setContentMode(Label.CONTENT_XHTML);
-		title.setHeight("50px");
+		headline = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
+		headline.setContentMode(Label.CONTENT_XHTML);
+		headline.setHeight("50px");
 
-		this.addComponent(title);
+
 
 		// Chart zur Anzeige der Unternehmenswerte
 		List<String> cvChartColumns = new ArrayList<String>();
@@ -78,7 +87,7 @@ public class StochasticChartArea extends VerticalLayout {
 		BasicColumnChart cvChart = new BasicColumnChart("Unternehmenswert", cvChartColumns);
 
 		logger.debug("Erwartungswert ermitteln");
-		APV_2 apv = new APV_2();
+		APV apv = new APV();
 		double[] cashflow = null;
 		double[] fremdkapital = null;
 		int i;
@@ -119,13 +128,11 @@ public class StochasticChartArea extends VerticalLayout {
                 if (companyValue.getKey() < erwartungswert){
                 	keydrunter = companyValue.getKey();
                 	keydrunterfreq = companyValue.getValue().getCount();
-                	logger.debug("Neuer Key drunter: " + keydrunter);
                 } 
                 
                 if ((companyValue.getKey() > erwartungswert) && (keydrueber != 0)){
                 	keydrueber = companyValue.getKey();
                 	keydrueberfreq = companyValue.getValue().getCount();
-                	logger.debug("Neuer Key drueber: " + keydrueber);
                 }
                 
                 /*
@@ -151,8 +158,9 @@ public class StochasticChartArea extends VerticalLayout {
 		
 
 		cvChart.addValues(cvChartValues);
-		cvChart.setHeight("200px");
-		cvChart.setWidth("1024px");
+		cvChart.setHeight("300px");
+		cvChart.setWidth("410px");
+		cvChart.setStyleName("chart1");
 		
 
 		this.addComponent(cvChart);
@@ -168,26 +176,29 @@ public class StochasticChartArea extends VerticalLayout {
 			BasicLineChart cfChart = new BasicLineChart("Erwartete Werte", cfChartLines);
 
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()), new double[] { Math.round(period.getFreeCashFlow()), Math.round(period.getCapitalStock()) });
+				cfChartValues.put(Integer.toString(period.getYear()), new double[] { Double.parseDouble((df.format(period.getFreeCashFlow())).replace(",", ".")), Double.parseDouble((df.format(period.getCapitalStock())).replace(",", ".")) });
 
 			}
 
 			cfChart.addValues(cfChartValues);
 			cfChart.setHeight("200px");
+			cfChart.setWidth("510px");
+			cfChart.addStyleName("chart2");
 			this.addComponent(cfChart);
 		}
 		
 		//Modellabweichung hinzufügen		
 		
-		this.addComponent(new Label("Die Modellabweichung beträgt " + df.format(validierung) + "%"));
+		modulAbweichung = new Label("Die Modellabweichung beträgt " + df.format(validierung) + "%");
 		
 		//Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
-		st.setHeight("200px");
+		st.setHeight("100px");
+		st.setStyleName("chart3");
 		this.addComponent(st);
 		
-		this.setHeight("900px");
-		this.setWidth("1024px");
+		//this.setHeight("900px");
+		//this.setWidth("1024px");
 
 	}
 }

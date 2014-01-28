@@ -28,7 +28,7 @@ import com.mvplite.view.View;
  * @author Julius Hacker
  * 
  */
-public interface ContentContainerView extends View {
+public interface ContentContainerViewInterface extends View {
 
 	/**
 	 * Diese Methode kuemmert sich um die Anzeige der ihr vom Presenter

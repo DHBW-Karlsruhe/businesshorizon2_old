@@ -31,7 +31,9 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+
 
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 
@@ -71,6 +73,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                 return 1;
         }
 
+
         /**
          * Diese Methode speichert pro Periode den Erwartungswert aller
          * prognostizierten Casfhlows und Fremdkapitalbeträge in einen
@@ -92,9 +95,11 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
         public void setExpectedValues(double[] fremdkapital, double[] cashflows,
                         Project project) throws StochasticMethodException {
 
+
                 StochasticResultContainer resultContainer;
 
                 CashFlowPeriodContainer cFContainer = new CashFlowPeriodContainer();
+
 
                 // wird pro Periode einmal durchlaufen und speichert jeweils den
                 // Erwartungswert der Cashflows und Fremdkapitalbeträge in einen
@@ -107,6 +112,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                         cfPeriod.setCapitalStock(fremdkapital[i - 1]);
                         cFContainer.getPeriods().add(cfPeriod);
                 }
+
 
                 TreeSet<CashFlowPeriodContainer> periodContainer = new TreeSet<CashFlowPeriodContainer>();
                 periodContainer.add(cFContainer);
@@ -152,13 +158,18 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                                         "Die Anzahl der betrachteten Perioden der Vergangenheit muss kleiner sein als die Azahl der beobachteten Perioden.");
                 }
 
+
                 // Nachfolgend wird die Zeitreihenanalyse fuer CashFlowPerioden
                 // ausgefuehrt
+
+
 
                 TreeSet<CashFlowPeriod> alleperioden = (TreeSet<CashFlowPeriod>) project
                                 .getStochasticPeriods().getPeriods();
 
                 TreeSet<? super CashFlowPeriodContainer> cFResultContainer = resultPeriods;
+
+
 
                 logger.debug("Übergebene Periodenanzahl: "
                                 + project.getStochasticPeriods().getPeriods().size());
@@ -168,6 +179,8 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                                 .getStochasticPeriods().getPeriods().size()];
                 AnalysisTimeseries timeseries = new AnalysisTimeseries();
                 int counter = 0;
+
+
 
                 // Umwandlung der Perioden in ein Double-Arrays
                 for (Period period : (TreeSet<Period>) project
@@ -268,5 +281,6 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
         public void setModellabweichung(double modellabweichung) {
                 this.modellabweichung = modellabweichung;
         }
+
 
 }

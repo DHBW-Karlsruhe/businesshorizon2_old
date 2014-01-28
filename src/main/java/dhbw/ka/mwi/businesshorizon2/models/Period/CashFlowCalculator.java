@@ -45,6 +45,8 @@ public class CashFlowCalculator {
 	 * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
 	 * 
 	 * @author Marcel Rosenberger
+<<<<<<< HEAD
+=======
 	 * 
 	 * @param result
 	 *            DeterministicResultContainer
@@ -73,6 +75,7 @@ public class CashFlowCalculator {
 	 * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
 	 * 
 	 * @author Marcel Rosenberger
+>>>>>>> refs/remotes/origin/master
 	 * 
 	 * @param result
 	 *            StochasticResultContainer
@@ -84,6 +87,7 @@ public class CashFlowCalculator {
 
 		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
 			if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+
 				calculateDirectCashflows(
 						(DirectCalculatedCashflowPeriodContainer) container,
 						scenario);
@@ -91,6 +95,7 @@ public class CashFlowCalculator {
 				calculateIndirectCashflows(
 						(IndirectCalculatedCashflowPeriodContainer) container,
 						scenario);
+
 			}
 		}
 	}
@@ -101,6 +106,7 @@ public class CashFlowCalculator {
 	 * @author Marcel Rosenberger
 	 * 
 	 */
+
 
 	private static void calculateDirectCashflows(
 			DirectCalculatedCashflowPeriodContainer container, Szenario scenario) {
@@ -118,7 +124,9 @@ public class CashFlowCalculator {
 
 			period.setFreeCashFlow(freeCashFlow);
 
+
 		}
+
 
 	}
 
@@ -152,6 +160,7 @@ public class CashFlowCalculator {
 			period.setFreeCashFlow(freeCashFlow);
 
 		}
+
 
 	}
 }

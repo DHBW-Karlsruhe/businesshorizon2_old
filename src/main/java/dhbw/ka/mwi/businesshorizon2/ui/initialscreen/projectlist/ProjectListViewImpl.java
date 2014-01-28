@@ -34,15 +34,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
+import com.vaadin.event.MouseEvents;
+import com.vaadin.event.MouseEvents.ClickListener;
+import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
@@ -59,11 +65,11 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
  * hier mittels der layoutClick Methode realisiert und fuehrt zum
  * Projekt-Wizard.
  * 
- * @author Christian Scherer
+ * @author Christian Scherer, Mirko Göpfrich
  * 
  */
-public class ProjectListViewImpl extends VerticalLayout implements
-		ProjectListViewInterface, Button.ClickListener, LayoutClickListener {
+public class ProjectListViewImpl extends VerticalSplitPanel implements
+		ProjectListViewInterface, Button.ClickListener, ClickListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -72,29 +78,42 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	@Autowired
 	private ProjectListPresenter presenter;
 
+	private Project project;
 	private List<Project> projects;
-
+	
 	NavigableSet<Period> periodList;
 
-	private Project project;
-
 	Iterator<Project> iterator;
-
+	
+	private HorizontalLayout projectListHead;
 	private VerticalLayout projectListPanel;
-	private List<VerticalLayout> singleProjectPanel;
-
+	
+	private Panel singleProject;
+	private List<Panel> singleProjectPanelList;
+	
+	//Buttons, um ein Projekt hinzuzufügen
 	private Button addProjectBtn;
-	private List<Button> removeProjectBtn;
 	private Button dialogAddBtn;
-
-	private Label projectName;
+	
+	//Buttons, um ein Projekt zu bearbeiten
+	private Button dialogEditBtn;
+	
+	private List<Button> editBtnList;	
+	private int indexEditBtn;
+	private List<Button> dialogEditBtnList;
+	
+	private List<Button> removeBtnList;
+	
+	//private Label projectName;
 	private Label periods;
 	private Label lastChanged;
 	private Label title;
 
 	private TextField tfName;
+	private TextArea taDescription;
 
 	private Window addDialog;
+	private Window editDialog;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -108,8 +127,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-
-		generateUi();
+		generateUI();
 		logger.debug("Initialisierung beendet");
 	}
 
@@ -119,41 +137,56 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
 	 * gefuellt.
 	 * 
-	 * @author Christian Scherer
+	 * @author Mirko Göpfrich
 	 */
-	private void generateUi() {
-		setSpacing(true);
-		setMargin(true);
-
-		title = new Label("<h1>Meine Projekte</h1>");
-		title.setContentMode(Label.CONTENT_XHTML);
-		addComponent(title);
-		logger.debug("Ueberschrift erstellt");
-
+	private void generateUI() {
+		setMargin(false);
+		
+		//Teilt die View vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
+		setSizeFull();
+		setSplitPosition(60, Sizeable.UNITS_PIXELS);
+		setLocked(true);
+		logger.debug("Neues Vertikales SplitPanel erstellt");
+		this.
+		
+		//Layout für oberes Panel erstellen
+		projectListHead = new HorizontalLayout();
+		projectListHead.setSizeFull();
+		setFirstComponent(projectListHead);
+		
+		//Layout für unteres Panel erstellen
 		projectListPanel = new VerticalLayout();
-		projectListPanel.setSpacing(true);
-		addComponent(projectListPanel);
+		setSecondComponent(projectListPanel);
+		projectListPanel.setSpacing(false);
+
 		logger.debug("Leeres ProjektList Panel erstellt");
 
+		//Überschrift im oberen Panel hinzufügen
+		title = new Label("<h1>Meine Projekte</h1>");
+		title.setContentMode(Label.CONTENT_XHTML);
+		projectListHead.addComponent(title);
+		logger.debug("Ueberschrift erstellt");
+		
+		//Hinzufügen-Button im oberen Panel hinzufügen
 		addProjectBtn = new Button("Projekt hinzufügen", this);
-		addComponent(addProjectBtn);
+		projectListHead.addComponent(addProjectBtn);
 		logger.debug("Hinzufuege-Button erzeugt");
+		projectListHead.setComponentAlignment(addProjectBtn, Alignment.MIDDLE_RIGHT);
 
 		logger.debug("Feste UI Elemente dem Fenster hinzugefuegt");
-
 	}
 
 	/**
 	 * 
 	 * Aufruf durch den Presenter (bei Ersterstellung oder Aenderungen durch
-	 * Buttonclicks) - wobei zunÃ¤chst die Projektliste aktualisiert wird.
+	 * Buttonclicks) - wobei zunächst die Projektliste aktualisiert wird.
 	 * Zunaechst werden - falls vorhanden - die derzeitg existenten Elemente des
 	 * projectListPanel geloescht und die Liste der Projekt Layouts und
 	 * Loeschbuttons neu erstellt. Darauf folgt dann in der Schleife die
 	 * Erzeugung der einzelnen VadinKomponenten fuer jedes Projekt durch die
 	 * Methode generateSingleProjectUi.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Mirko Göpfrich
 	 */
 	@Override
 	public void setProjects(List<Project> projects) {
@@ -163,14 +196,20 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		projectListPanel.removeAllComponents();
 		logger.debug("Projekt-Element-Liste geleert");
 
-		singleProjectPanel = new ArrayList<VerticalLayout>();
-		removeProjectBtn = new ArrayList<Button>();
+		singleProjectPanelList = new ArrayList<Panel>();
+		
+		//?
+		removeBtnList = new ArrayList<Button>();
+		editBtnList = new ArrayList<Button>();
+		dialogEditBtnList = new ArrayList<Button>();
+	
 
 		for (int i = 0; i < projects.size(); i++) {
 			project = projects.get(i);
-
-			singleProjectPanel.add(generateSingleProjectUi(project, i));
-			projectListPanel.addComponent(singleProjectPanel.get(i));
+			
+			singleProjectPanelList.add(generateSingleProjectUI(project, i));
+			projectListPanel.addComponent(singleProjectPanelList.get(i));
+			//projectListPanel.setComponentAlignment(singleProjectPanelList.get(i), Alignment.MIDDLE_CENTER);
 
 		}
 
@@ -189,7 +228,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * Projekts wechselt und das VerticalLayout dem projectListPanel
 	 * hinzgefuegt.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Mirko Göpfrich
 	 * @param project
 	 *            das darzustellende Projekt und der aktuelle Index der Liste
 	 * @param i
@@ -197,14 +236,29 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 *            Loeschbutton relevant)
 	 * @return ein VerticalLayout Objekt, das zur Eingliederung in das UI dient
 	 */
-	private VerticalLayout generateSingleProjectUi(Project project, int i) {
+	private Panel generateSingleProjectUI(Project project, int i) {
+		
+		//erzeugt eine Panel für ein Projekt
+		singleProject = new Panel(project.getName());
+		singleProject.setStyleName("light");
+		
+		//Legt ein Layout für das Projekt-Panel fest
+		HorizontalLayout panelContent = new HorizontalLayout();
+		panelContent.setSizeFull();
+		singleProject.setContent(panelContent);
+		panelContent.addStyleName("projectListPanel");
+		
+		//Legt ein linkes und ein rechtes Layout innerhalb des Panels an.
+		VerticalLayout panelContentLeft = new VerticalLayout();
+		HorizontalLayout panelContentRight = new HorizontalLayout();
+		panelContent.addComponent(panelContentLeft);
+		panelContent.addComponent(panelContentRight);
+		panelContent.setComponentAlignment(panelContentLeft, Alignment.BOTTOM_LEFT);
+		panelContent.setComponentAlignment(panelContentRight, Alignment.BOTTOM_RIGHT);
 
-		VerticalLayout singleProject = new VerticalLayout();
-
-		projectName = new Label(project.getName());
 		periodList = (NavigableSet<Period>) project.getPeriods();
 
-		// String fuer saubere Periodenausgebe erstellen. Bsp:
+		// String fuer saubere Periodenausgabe erstellen. Bsp:
 		// "3 Perioden (2009-2012)"
 		String periodString;
 		switch (periodList.size()) {
@@ -233,15 +287,77 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		}
 		lastChanged = new Label(lastChangedString);
 
-		// Liste an Buttons zur spaeteren identifikation
-		removeProjectBtn.add(new Button("löschen", this));
 
-		singleProject.addComponent(projectName);
-		singleProject.addComponent(periods);
-		singleProject.addComponent(lastChanged);
-		singleProject.addComponent(removeProjectBtn.get(i));
+		//Buttons erstellen
+		final Button removeBtn = new Button("");
+		final Button editBtn = new Button("");
+		
+		//Button formatieren
+		removeBtn.addStyleName("borderless");
+		removeBtn.setIcon(new ThemeResource("images/icons/trash.png"));
+		editBtn.addStyleName("borderless");
+		editBtn.setIcon(new ThemeResource("images/icons/pen.png"));
+		
+		//Button-Listener hinzufügen
+		removeBtn.addListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
 
+			public void buttonClick(ClickEvent event) {
+				final int index3 = removeBtnList.indexOf(event.getButton());
+				
+				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "
+						+ (index3 + 1));
+
+				ConfirmDialog.show(getWindow(), projects.get(index3).getName()
+						+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
+						"Ja", "Nein", new ConfirmDialog.Listener() {
+							/**
+							 * 
+							 */
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClose(ConfirmDialog dialog) {
+								if (dialog.isConfirmed()) {
+									presenter.removeProject(projects.get(index3));
+								} else {
+
+								}
+							}
+						});
+		    }
+		});
+		
+		editBtn.addListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void buttonClick(ClickEvent event) {
+				indexEditBtn = editBtnList.indexOf(event.getButton());
+				
+				logger.debug("Projekt-bearbeiten Button aus dem Hauptfenster aufgerufen. Projektnummer: "
+						+ (indexEditBtn + 1));
+				presenter.editProjectDialog(projects.get(indexEditBtn));		
+			}
+		});
+		
+
+		
+		// Liste für Buttons zur spaeteren Identifikation
+		removeBtnList.add(removeBtn);
+		editBtnList.add(editBtn);
+		dialogEditBtnList.add(dialogEditBtn);
+
+		//Inhalt dem Panel hinzufügen
+		panelContentLeft.addComponent(periods);
+		panelContentLeft.addComponent(lastChanged);
+		panelContentRight.addComponent(removeBtnList.get(i));
+		panelContentRight.addComponent(editBtnList.get(i));
+		logger.debug("Edit-Button " + i + " hinzugefuegt");
+		
+		
+		//CLick-Listener für das Panel hinzuüfgen
 		singleProject.addListener(this);
+		
 
 		projectListPanel.addComponent(singleProject);
 		logger.debug("Einzelnes Projektelement erzeugt");
@@ -250,47 +366,130 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Zeige das Projekt-Hinzuegen-Dialogfenster, bei dem ein Eingabefeld fuer
+	 * Zeige das Projekt-Hinzufuegen-Dialogfenster, bei dem ein Eingabefeld fuer
 	 * den Namen des Projekts und ein Hinzfuege-Button vorhanden ist. Funktion
 	 * bei geklicktem Button siehe Clicklistener in dieser Klasse. Das
 	 * horizontale Layout zur Darstellung besitzt ein Formlayout und den Button,
 	 * die nebeneinander dargestellt werden.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Mirko Göpfrich
 	 */
 	@Override
 	public void showAddProjectDialog() {
 		addDialog = new Window("Projekt hinzufügen");
 		addDialog.setModal(true);
-		addDialog.setWidth(430, UNITS_PIXELS);
+		addDialog.setWidth(410, UNITS_PIXELS);
 		addDialog.setResizable(false);
 		addDialog.setDraggable(false);
 
-		HorizontalLayout layout = new HorizontalLayout();
-		layout.setSpacing(true);
+		VerticalLayout layout = new VerticalLayout();
+		layout.setSpacing(false);
 
 		FormLayout formLayout = new FormLayout();
-		formLayout.setMargin(false);
-		formLayout.setSpacing(false);
-
-		tfName = new TextField();
-		tfName.setCaption("Bitte Namen wählen:");
+		formLayout.setMargin(true);
+		formLayout.setSpacing(true);
+		
+		//TextFeld für Name dem Formular hinzufügen
+		tfName = new TextField("Name wählen:");
 		tfName.setRequired(true);
 		tfName.addValidator(new StringLengthValidator(
 				"Der Projektname muss zwischen 2 und 20 Zeichen lang sein.", 2,
 				20, false));
 		tfName.setRequiredError("Pflichtfeld");
+		tfName.setSizeFull();
 		formLayout.addComponent(tfName);
+		
+		//TextArea für Beschreibung dem Formular hinzufügen
+		taDescription = new TextArea("Beschreibung wählen");
+		taDescription.setSizeFull();
+		formLayout.addComponent(taDescription);
+		
+		//Formular dem Layout hinzufügen
 		layout.addComponent(formLayout);
-
+		
+		//Hinzufüge-Button erstllen und dem Layout hinzufügen
 		dialogAddBtn = new Button("Hinzufügen", this);
 		layout.addComponent(dialogAddBtn);
-
+		
+		//Layout dem Dialog-Fenster hinzufügen
 		addDialog.addComponent(layout);
 
+		//Dialog dem Hauptfenster hinzufügen
 		getWindow().addWindow(addDialog);
 		logger.debug("Hinzufuege-Dialog erzeugt");
+	}
+	
+	/**Methode zur Implementierung des Dialogfensters für Projekt-Änderungen.
+	 * 
+	 */
+	@Override
+	public void showEditProjectDialog(Project project) {
+		editDialog = new Window("Projekt bearbeiten");
+		editDialog.setModal(true);
+		editDialog.setWidth(410, UNITS_PIXELS);
+		editDialog.setResizable(false);
+		editDialog.setDraggable(false);
 
+
+		VerticalLayout layout = new VerticalLayout();
+		layout.setSpacing(true);
+
+		FormLayout formLayout = new FormLayout();
+		formLayout.setMargin(false);
+		formLayout.setSpacing(true);
+		
+		//TextFeld für Name dem Formular hinzufügen
+		tfName = new TextField("Name ändern:", project.getName());
+		tfName.setRequired(true);
+		tfName.addValidator(new StringLengthValidator(
+				"Der Projektname muss zwischen 2 und 20 Zeichen lang sein.", 2,
+				20, false));
+		tfName.setRequiredError("Pflichtfeld");
+		tfName.setSizeFull();
+		formLayout.addComponent(tfName);
+		
+		//TextArea für Beschreibung dem Formular hinzufügen
+		taDescription = new TextArea("Beschreibung ändern:", project.getDescription());
+		taDescription.setSizeFull();
+		formLayout.addComponent(taDescription);
+		
+		//Formular dem Layout hinzufügen
+		layout.addComponent(formLayout);
+		
+		//Speichern-Button erstllen und dem Layout hinzufügen
+		//TODO: ist das korrekt?
+		dialogEditBtn = new Button("Speichern");
+		layout.addComponent(dialogEditBtn);
+		
+		dialogEditBtn.addListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void buttonClick(ClickEvent event) {
+					
+				if (tfName.isValid()) {
+					boolean succed = presenter.editProject(projects.get(indexEditBtn), (String) tfName.getValue(), (String) taDescription.getValue());
+					if (succed) {
+						getWindow().removeWindow(editDialog);
+						logger.debug("Projekt-bearbeiten Dialog geschlossen");
+						
+					}
+						
+				} else {
+					getWindow().showNotification(
+						"",
+						"Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
+						Notification.TYPE_ERROR_MESSAGE);
+				}		
+			}
+		});
+		
+		//Layout dem Dialog-Fenster hinzufügen
+		editDialog.addComponent(layout);
+
+		//Dialog dem Hauptfenster hinzufügen
+		getWindow().addWindow(editDialog);
+		logger.debug("Bearbeiten-Dialog erzeugt");
+		
 	}
 
 	/**
@@ -307,13 +506,13 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * identifiziert, also welches Projekt zu loeschen ist. Die jeweils folgende
 	 * Logid ist in der je aufgerufen Methode des Presenters zu finden.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Mirko Göpfrich
 	 * @param event
 	 *            Klick-event des Buttons
 	 */
 	@Override
 	public void buttonClick(ClickEvent event) {
-
+		
 		if (event.getButton() == addProjectBtn) {
 			logger.debug("Projekt-hinzufügen Button aus dem Hauptfenster aufgerufen");
 			presenter.addProjectDialog();
@@ -322,38 +521,18 @@ public class ProjectListViewImpl extends VerticalLayout implements
 			logger.debug("Projekt-hinzufügen Button aus dem Dialogfenster aufgerufen");
 
 			if (tfName.isValid()) {
-				presenter.addProject((String) tfName.getValue());
+				presenter.addProject((String) tfName.getValue(), (String) taDescription.getValue());
+				//TODO: Fenster nur schließen, wenn das Hinzufügen erfolgreich war (s. Projekt Bearbeiten).
 				getWindow().removeWindow(addDialog);
+				logger.debug("Projekt-hinzufügen Dialog geschlossen");
 			} else {
 				getWindow()
 						.showNotification(
 								"",
 								"Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
 								Notification.TYPE_ERROR_MESSAGE);
-			}
-
-		} else {
-
-			final int index = removeProjectBtn.indexOf(event.getButton());
-
-			logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "
-					+ (index + 1));
-
-			ConfirmDialog.show(getWindow(), projects.get(index).getName()
-					+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
-					"Ja", "Nein", new ConfirmDialog.Listener() {
-						@Override
-						public void onClose(ConfirmDialog dialog) {
-							if (dialog.isConfirmed()) {
-								presenter.removeProject(projects.get(index));
-							} else {
-
-							}
-						}
-					});
-
+			}	
 		}
-
 	}
 
 	/**
@@ -367,13 +546,19 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	 * @param event
 	 *            - Event des Layoutclicks
 	 */
-	@Override
-	public void layoutClick(LayoutClickEvent event) {
 
-		int index = singleProjectPanel.indexOf(event.getComponent());
+	@Override
+	public void click(MouseEvents.ClickEvent event) {
+		int index = singleProjectPanelList.indexOf(event.getComponent());
 		logger.debug("Projekt ausgewaehlt. Projektnummer: " + (index + 1));
 		presenter.projectSelected(projects.get(index));
+	}
 
+	public void showErrorMessage(String message) {
+		Window.Notification notif = new Notification((String) "",
+				message, Notification.TYPE_WARNING_MESSAGE);
+		notif.setPosition(Window.Notification.POSITION_CENTERED_TOP);
+		getWindow().showNotification(notif);
 	}
 
 }

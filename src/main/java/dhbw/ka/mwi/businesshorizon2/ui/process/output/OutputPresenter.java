@@ -36,8 +36,8 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.DCF_2;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -171,12 +171,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							}
 							
 						
-						if (method_deterministic.getName() == "APV") {
+						if (method_deterministic.getName() == "Adjusted-Present-Value (APV)") {
 							double steuervorteile = 0;							
 							double fremdkapitalout = 0;
 							double uwsteuerfrei = 0;
 
-							APV_2 apv_2 = new APV_2();
+							APV apv_2 = new APV();
 							// berechnet den Unternehmenswert des betrachteten
 							// Period-Container
 							unternehmenswert = apv_2.calculateValues(cashflow, fremdkapital,
@@ -217,8 +217,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							 */
 
 						}
-						if (method_deterministic.getName() == "DCF") {
-							DCF_2 dcf_2 = new DCF_2();
+						if (method_deterministic.getName() == "Flow-to-Equity (FTE)") {
+							FTE dcf_2 = new FTE();
 							unternehmenswert = dcf_2.calculateValues(
 									drContainer.getCashflows(), scenario);
 							
@@ -358,7 +358,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 		
 			for (Szenario scenario : project.getIncludedScenarios()) {
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
-			APV_2 apv = new APV_2();
+			APV apv = new APV();
 
 			// Bei Verwendung der Zeitreihenanalyse sollen
 			// zusätzlich
