@@ -871,6 +871,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		//Branchenvertreter ausgrauen
 		getView().activateCheckboxIndustryRepresentative(false);
 		getView().activateComboBoxRepresentatives(false);
+		/**
 		//Wienerprozess ausgrauen
 		getView().activateRiseOfPeriods(false);
 		getView().activateRiseOfPeriodsCheckbox(false);
@@ -881,7 +882,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		getView().activateStepRange(false);
 		getView().activateProbability(false);
 		getView().activateCalculateStepRange(false);
-
+		*/
 		
 		//Keine Stochastische Methode aktiv / mindestens eine aktiv
 		if(!stochMethod){
@@ -902,6 +903,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().activateRelevantPastPeriods(true);
 		}
 		
+		/**
 		//RandomWalk nicht aktiv / aktiv
 		if(!stochMethod||!randomWalk){
 			getView().activateCashFlowStepRang(false);
@@ -920,7 +922,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView().activateBorrowedCapitalProbabilityOfRise(true);
 			getView().activateBorrowedCapitalStepRange(true);
 		}
-
+		 */
 		
 		//Annika Weis
 		//Keine deterministische Methode aktiv / mindestens eine aktiv
