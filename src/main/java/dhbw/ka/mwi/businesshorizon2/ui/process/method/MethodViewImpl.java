@@ -33,7 +33,9 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
@@ -69,6 +71,13 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	private MethodPresenter presenter;
 	
 	private VerticalLayout methodList;
+	private HorizontalLayout full;
+	
+	private HorizontalLayout berechnungsmethoden;
+	private HorizontalLayout erklaerungsFenster;
+	
+	private Label erklaerung;
+	private Panel panel;
 	
 	// Berechnungsmethode: Panel für die Auswahl zischen APV und FTE
 	private Panel calculationMethodPanel;
@@ -112,15 +121,23 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 		//Auswahlpanels initialisieren
 		calculationMethodPanel = new Panel("Berechnungsmethode:");
 		calculationMethodPanel.addStyleName("light");
+		calculationMethodPanel.setWidth("700px");
+		calculationMethodPanel.setHeight("150px");
 		
 		cashflowSourcePanel = new Panel("Herkunft der Cashflows:");
 		cashflowSourcePanel.addStyleName("light");
+		cashflowSourcePanel.setWidth("700px");
+		cashflowSourcePanel.setHeight("150px");
 		
 		deterministicInputPanel = new Panel("Zukünftige Perioden (deterministisch):");
 		deterministicInputPanel.addStyleName("light");
+		deterministicInputPanel.setWidth("700px");
+		deterministicInputPanel.setHeight("150px");
 		
 		stochasticInputPanel = new Panel("Vergangene Perioden (stochastisch):");
 		stochasticInputPanel.addStyleName("light");
+		stochasticInputPanel.setHeight("150px");
+		stochasticInputPanel.setWidth("700px");
 		
 		logger.debug("Panels mit Ueberschrift erstellt");
 
@@ -226,18 +243,60 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	 */
 	private void generateUi() {
 		
-		methodList = new VerticalLayout();
-		methodList.setSizeFull();
+		panel = new Panel();
+		panel.setWidth("500px");
+		panel.setHeight("450px");
 		
-		this.addComponent(methodList);
+		full = new HorizontalLayout();
+		
+		berechnungsmethoden = new HorizontalLayout();
+		berechnungsmethoden.setWidth("50%");
+		erklaerungsFenster = new HorizontalLayout();
+		
+		erklaerung = new Label("<b>Hier können Sie die Berechnungsmethode wählen. Zur Auswahl stehen Ihnen die beiden folgenden Verfahren:</b></br></br>"
+							+ " - Adjusted-Present-Value </br></br> - Flow-to-Equity </br></br>"
+							+ "Bei der Adjusted-Present-Value Methode berechnet sich der Unternehmenswert aus dem Wert des rein eigenfinanzierten "
+							+ "Unternehmens zuzüglich der Steuervorteile durch das ver-zinsliche Fremdkapital, abzüglich des verzinslichen Fremdkapitals. </br> </br>"
+							+ "Die Flow-to-Equity Methode diskontiert alle zukünftigen Cashflows auf einen Stichtag und addiert den diskontierten Restwert."
+							+ "Folglich betrachtet dieses Verfahren für die Be-rechnung des Unternehmenswertes ausschließlich das Eigenkapital.");
+		
+		erklaerung.setContentMode(Label.CONTENT_XHTML);
+		
+		panel.addComponent(erklaerung);
+				
+		methodList = new VerticalLayout();
+		//methodList.setSizeFull();
+		
+		
+		
+		this.addComponent(full);
+		
+		/*
+		methodList.addComponent(calculationMethodPanel);
+		methodList.addComponent(cashflowSourcePanel);
+		methodList.addComponent(deterministicInputPanel);
+		methodList.addComponent(stochasticInputPanel);
+		*/
 		
 		methodList.addComponent(calculationMethodPanel);
 		methodList.addComponent(cashflowSourcePanel);
 		methodList.addComponent(deterministicInputPanel);
 		methodList.addComponent(stochasticInputPanel);
+		
+		berechnungsmethoden.addComponent(methodList);
+		methodList.addComponent(erklaerungsFenster);
+		erklaerungsFenster.addComponent(panel);
+		erklaerungsFenster.setComponentAlignment(panel, Alignment.TOP_RIGHT);
+		
+		full.addComponent(berechnungsmethoden);
+		full.setComponentAlignment(berechnungsmethoden, Alignment.TOP_LEFT);
+		full.addComponent(erklaerungsFenster);
+		full.setComponentAlignment(erklaerungsFenster, Alignment.TOP_RIGHT);
+		
 		logger.debug("Panels dem Layout hinzugefuegt");
 		
 		logger.debug("genarateUI abgeschlossen");
+		
 	
 	}
 
@@ -263,6 +322,7 @@ public class MethodViewImpl extends VerticalLayout implements MethodViewInterfac
 	@Override
 	public void hideInputPanels() {
 		deterministicInputPanel.setVisible(false);
+		methodList.setComponentAlignment(deterministicInputPanel, Alignment.MIDDLE_CENTER);
 		stochasticInputPanel.setVisible(false);
 	}
 	

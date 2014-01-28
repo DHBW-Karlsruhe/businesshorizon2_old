@@ -295,8 +295,11 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		//Button formatieren
 		removeBtn.addStyleName("borderless");
 		removeBtn.setIcon(new ThemeResource("images/icons/trash.png"));
+		removeBtn.setDescription("Projekt löschen");
 		editBtn.addStyleName("borderless");
 		editBtn.setIcon(new ThemeResource("images/icons/pen.png"));
+		editBtn.setDescription("Projekt bearbeiten");
+		
 		
 		//Button-Listener hinzufügen
 		removeBtn.addListener(new Button.ClickListener() {

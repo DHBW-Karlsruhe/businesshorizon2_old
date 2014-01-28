@@ -75,10 +75,8 @@ public class LogInScreenViewImpl extends Window implements
 	private Button registerBtn;
 	private Button passwordForgotBtn;
 	
-	private Label ueberschrift;
 	private Label logo;
-	private InfoButton button;
-
+	
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -111,12 +109,7 @@ public class LogInScreenViewImpl extends Window implements
 		topbar = new VerticalLayout();		
 		vertical = new VerticalLayout();
 		
-		ueberschrift = new Label("<h1>Willkommen bei</h1>");
-		ueberschrift.setStyleName("ueberschriften");
-		ueberschrift.setContentMode(Label.CONTENT_XHTML);
-		
-				
-		
+	
 		logo = new Label();
 		logo.setIcon(new ThemeResource("images/Logo.jpg"));
 		
@@ -138,15 +131,9 @@ public class LogInScreenViewImpl extends Window implements
 		});
 		
 		
-		button = new InfoButton("Test");
-		topbar.addComponent(button);
-		
-		
-		topbar.addComponent(ueberschrift);
 		topbar.addComponent(logo);
 		
 		
-		topbar.setComponentAlignment(ueberschrift, Alignment.MIDDLE_CENTER);
 		topbar.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
 				
 		vertical.addComponent(login);
