@@ -38,13 +38,13 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  * 
  */
 
-public class TestAPV_2 extends TestCase {
+public class TestAPV extends TestCase {
 	
 	private static final Logger logger = Logger.getLogger("TestAPV_2.class");
 	
 		
 	@Test
-	public void testAPV_2() {
+	public void testAPV() {
 		double[] cashflow = new double [5]; 
 		double[] fremdkapital= new double [5];
 		double rateReturnEquity = 9.969;  
