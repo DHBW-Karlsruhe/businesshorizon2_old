@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
@@ -32,14 +33,13 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
  * Vaadin.
  * 
- * @author Florian Stier
+ * @author Florian Stier, Mirko Göpfrich
  * 
  */
 public class OutputViewImpl extends VerticalLayout implements OutputViewInterface {
@@ -48,7 +48,9 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	@Autowired
 	private OutputPresenter presenter;
 
-	private VerticalLayout outputArea;
+	private VerticalLayout headline;
+	
+	private HorizontalLayout outputArea;
 
 	private ProgressIndicator progressIndicator;
 
@@ -76,9 +78,12 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 		progressIndicator.setIndeterminate(true);
 		progressIndicator.setEnabled(true);
 
-		outputArea = new VerticalLayout();
+		headline = new VerticalLayout();
+		
+		outputArea = new HorizontalLayout();
 
 		addComponent(progressIndicator);
+		addComponent(headline);
 		addComponent(outputArea);
 
 	}
@@ -93,12 +98,15 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 
 
 	public void addStochasticChartArea(StochasticChartArea chartArea) {
+		headline.addComponent(chartArea.getHeadline());
+		headline.addComponent(chartArea.getModulAbweichung());
 		outputArea.addComponent(chartArea);
 	}
 
 
 	@Override
 	public void addDeterministicChartArea(DeterministicChartArea chartArea) {
+		headline.addComponent(chartArea.getHeadline());
 		outputArea.addComponent(chartArea);
 	}
 	
@@ -130,7 +138,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	 * Gibt das angegebene Label aus
 	 */
 	public void addLabel(Label label){
-		outputArea.addComponent(label);		
+		headline.addComponent(label);		
 	}
 
 

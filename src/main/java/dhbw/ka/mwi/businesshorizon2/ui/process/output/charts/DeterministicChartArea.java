@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
@@ -39,23 +40,27 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  * deterministischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 
- * @author Florian Stier, Marcel Rosenberger, Annika Weis
+ * @author Florian Stier, Marcel Rosenberger, Annika Weis, Mirko Göpfrich
  * 
  */
-public class DeterministicChartArea extends VerticalLayout {
+public class DeterministicChartArea extends HorizontalLayout{
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger
 			.getLogger("DeterministicChartArea.class");
+	private Label headline;
+	
+	public Label getHeadline(){
+		return headline;
+	}		
 
 	//APV Ausgabe
 	public DeterministicChartArea(double uwsteuerfrei, double steuervorteile,
 			double unternehmenswert, double fremdkapital, String name,
 			DeterministicResultContainer drContainer, Szenario scenario) {
 
-		Label headline = new Label("<h2>Deterministisches Verfahren - APV</h2>");
+		headline = new Label("<h2>Deterministisches Verfahren - APV</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
-		this.addComponent(headline);
 
 		// Chart zur Aufschlüsselung des Unternehmenswert
 		List<String> cvKeyColumns = new ArrayList<String>();
@@ -75,10 +80,11 @@ public class DeterministicChartArea extends VerticalLayout {
 		cvKeyChart.addValues(cvKeyValues);
 		cvKeyChart.setOption("is3D", true);
 		cvKeyChart.setHeight("300px");
-		cvKeyChart.setWidth("500px");
+		cvKeyChart.setWidth("410px");
+		cvKeyChart.addStyleName("chart1");
 		this.addComponent(cvKeyChart);
 		// Platzhalter
-		this.addComponent(new Label(""));
+
 
 		// Chart zu Fremdkapital und Cashflow Verlauf
 		// Beschriftung der Linie hinzufügen
@@ -106,24 +112,23 @@ public class DeterministicChartArea extends VerticalLayout {
 		BasicLineChart cfKeyChart = new BasicLineChart("Chart", cfKeyColumns);
 		cfKeyChart.addValues(cfKeyValues);
 		cfKeyChart.setHeight("300px");
-		cfKeyChart.setWidth("500px");
+		cfKeyChart.setWidth("510px");
+		cfKeyChart.addStyleName("chart2");
 		this.addComponent(cfKeyChart);
 
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
-		st.setHeight("200px");
+		st.setHeight("100px");
 		this.addComponent(st);
-		this.setHeight("800px");
 
 	}
 	
 	//FTE Ausgabe
 	public DeterministicChartArea(double unternehmenswert, String name,
 			DeterministicResultContainer drContainer, Szenario scenario) {
-		Label headline = new Label("<h2>Deterministisches Verfahren - FTE</h2>");
+		headline = new Label("<h2>Deterministisches Verfahren - FTE</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
-		this.addComponent(headline);
 
 		// Chart zur Aufschlüsselung des Unternehmenswert
 		List<String> cvKeyColumns = new ArrayList<String>();
@@ -138,10 +143,10 @@ public class DeterministicChartArea extends VerticalLayout {
 		cvKeyChart.addValues(cvKeyValues);
 		cvKeyChart.setOption("is3D", true);
 		cvKeyChart.setHeight("300px");
-		cvKeyChart.setWidth("500px");
+		cvKeyChart.setWidth("410px");
+		cvKeyChart.setStyleName("chart1");
 		this.addComponent(cvKeyChart);
 		// Platzhalter
-		this.addComponent(new Label(""));
 
 		// Chart zu Cashflow Verlauf
 		// Beschriftung der Linie hinzufügen
@@ -166,15 +171,16 @@ public class DeterministicChartArea extends VerticalLayout {
 		BasicLineChart cfKeyChart = new BasicLineChart("Chart", cfKeyColumns);
 		cfKeyChart.addValues(cfKeyValues);
 		cfKeyChart.setHeight("300px");
-		cfKeyChart.setWidth("500px");
+		cfKeyChart.setWidth("510px");
+		cfKeyChart.setStyleName("chart2");
 		this.addComponent(cfKeyChart);
 
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
-		st.setHeight("200px");
+		st.setHeight("100px");
+		st.setStyleName("chart3");
 		this.addComponent(st);
-		this.setHeight("800px");
 	}
 
 }

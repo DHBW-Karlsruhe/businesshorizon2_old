@@ -47,7 +47,6 @@ import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 
 /**
-<<<<<<< HEAD
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
  * 
  * @author Julius Hacker, Annika Weis, Mirko Göpfrich

@@ -203,7 +203,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			weitere_perioden_past = 1;
 		}
 		int weitere_perioden_future = 0;
-		if (methode == "APV") {
+		if (methode == "Adjusted-Present-Value (APV)") {
 			weitere_perioden_future = 1;
 		}
 		if (deterministic) {
@@ -339,7 +339,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (methode == "Zeitreihenanalyse") {
 			extra_zukunft = 1;
 		}
-		if (methode == "APV") {
+		if (methode == "Adjusted-Present-Value (APV)") {
 			extra_vergangenheit = 1;
 		}
 		if (projectProxy.getSelectedProject().getRelevantPastPeriods() == fixedPastPeriods
@@ -673,7 +673,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			 * Standardanzahl vergangener Perioden = Eingabefeld PLUS 1
 			 */
 			int weitere_perioden = 0;
-			if (methode == "APV") {
+			if (methode == "Adjusted-Present-Value (APV)") {
 				weitere_perioden = 1;
 			}
 
@@ -786,7 +786,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		int i = 0;
 		int extra_periode = 0;
-		if (methode == "APV") {
+		if (methode == "Adjusted-Present-Value (APV)") {
 			extra_periode = 1;
 		}
 		sumFuturePeriods = 0;

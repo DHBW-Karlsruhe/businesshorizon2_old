@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV_2;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
 
@@ -71,7 +71,7 @@ public class TestAPV_2 extends TestCase {
 		fremdkapital [3]= 1400.0;
 		fremdkapital [4]= 1400.0;
 		
-		APV_2 ap = new APV_2();
+		APV ap = new APV();
 	
 		ergebnis = ap.calculateValues(cashflow , fremdkapital, szenario);
 				
