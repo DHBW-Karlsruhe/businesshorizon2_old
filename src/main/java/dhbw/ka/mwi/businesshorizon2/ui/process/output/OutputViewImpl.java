@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ProgressIndicator;
@@ -77,12 +78,15 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 		progressIndicator = new ProgressIndicator();
 		progressIndicator.setIndeterminate(true);
 		progressIndicator.setEnabled(true);
+		progressIndicator.setStyleName("bar");
+		progressIndicator.setCaption("Berechung");
 
 		headline = new VerticalLayout();
 		
 		outputArea = new HorizontalLayout();
 
 		addComponent(progressIndicator);
+		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
 		addComponent(headline);
 		addComponent(outputArea);
 
@@ -124,8 +128,10 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	public void changeProgress(float progress) {
 		if (progress == 1) {
 			progressIndicator.setEnabled(false);
+			removeComponent(progressIndicator);
 		} else {
 			progressIndicator.setEnabled(true);
+			
 		}
 
 	}

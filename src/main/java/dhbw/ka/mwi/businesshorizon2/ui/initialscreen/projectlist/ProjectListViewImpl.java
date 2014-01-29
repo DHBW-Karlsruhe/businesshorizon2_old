@@ -140,14 +140,15 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	 * @author Mirko Göpfrich
 	 */
 	private void generateUI() {
-		setMargin(false);
+		setMargin(true);
 		
 		//Teilt die View vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
 		setSizeFull();
 		setSplitPosition(60, Sizeable.UNITS_PIXELS);
 		setLocked(true);
+		setStyleName("small");
 		logger.debug("Neues Vertikales SplitPanel erstellt");
-		this.
+		
 		
 		//Layout für oberes Panel erstellen
 		projectListHead = new HorizontalLayout();

@@ -106,7 +106,7 @@ public class LogInScreenViewImpl extends Window implements
 		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
 		login.setUsernameCaption("Mailadresse");
 		login.setPasswordCaption("Passwort");
-		//login.setWidth(null);
+		login.setWidth(null);
 		login.setStyleName("login_form");
 		login.addListener(new LoginForm.LoginListener() {
 			private static final long serialVersionUID = 1L;

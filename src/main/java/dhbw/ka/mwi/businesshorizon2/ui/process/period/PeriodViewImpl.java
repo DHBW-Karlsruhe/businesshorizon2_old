@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.view.View;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -39,14 +40,13 @@ import com.vaadin.ui.themes.Reindeer;
  * @author Julius Hacker
  * 
  */
-public class PeriodViewImpl extends VerticalLayout implements
+public class PeriodViewImpl extends HorizontalSplitPanel implements
 		PeriodViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private PeriodPresenter presenter;
 
-	Panel all = new Panel();
 
 	HorizontalSplitPanel horizontalPanel;
 
@@ -71,14 +71,29 @@ public class PeriodViewImpl extends VerticalLayout implements
 	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
-		this.setSizeFull();
+		setSizeFull();
+		setSplitPosition(60, UNITS_PERCENTAGE);
+		setSizeFull();
+		setLocked(true);
+		setStyleName("small");
+		setMargin(true);
 		horizontalPanel = new HorizontalSplitPanel();
-		horizontalPanel.setSplitPosition(50, UNITS_PERCENTAGE);
+		horizontalPanel.setSplitPosition(35, UNITS_PERCENTAGE);
 		horizontalPanel.setSizeFull();
 		horizontalPanel.setLocked(true);
-		this.all.addComponent(horizontalPanel);
-		all.setStyleName("light");
-		this.addComponent(all);
+		horizontalPanel.setStyleName("small");
+		setFirstComponent(horizontalPanel);
+		
+		VerticalLayout infoBox = new VerticalLayout();
+		infoBox.setMargin(true);
+		Label infoText1 = new Label ("<h3>Eingabe der Perioden</h3>");
+		infoText1.setContentMode(Label.CONTENT_XHTML);
+		Label infoText2 = new Label("Der Zeitstrahl ist gemäß Ihren getätigten Eingaben vorgegeben. Mit einem Klick auf den „Jahresbutton“ können Sie auf der rechten Seite die entsprechenden Werte eintragen. Fehlen Werte in einer Periode, ist dies mit einem roten „!“ gekennzeichnet. Das ausge-wählte Jahr ist orangenfarben hervorgehoben.");
+		infoBox.addComponent(infoText1);
+		infoBox.addComponent(infoText2);
+		setSecondComponent(infoBox);
+	
+		
 	}
 
 	@Override
@@ -92,7 +107,6 @@ public class PeriodViewImpl extends VerticalLayout implements
 		if (rightView != null)
 			((Component) rightView).setSizeFull();
 		horizontalPanel.setSizeFull();
-		this.all.setSizeFull();
 		this.setSizeFull();
 		logger.debug("Alle Komponenten neu angelegt");
 	}
