@@ -109,17 +109,21 @@ public class NavigationViewImpl extends HorizontalLayout implements NavigationVi
 		//arrow.setContentMode(Label.CONTENT_XHTML);
 		
 		this.full = new HorizontalLayout();
-		this.full.setSizeFull();
+		//this.full.setSizeFull();
+		this.full.setWidth("270px");
 		
 		this.layout = new VerticalLayout();
 		this.layout.setStyleName("navigation");
-		this.layout.setSizeFull();
+		//this.layout.setSizeFull();
+		//this.layout.setWidth("300px");
+		
 		
 		this.innerlayout = new HorizontalLayout();
 		innerlayout.setStyleName("LayoutNavigationsButtons");
 		
 		this.topbar = new VerticalLayout();
-		this.topbar.setSizeFull();
+		//this.topbar.setSizeFull();
+		this.topbar.setWidth("600px");
 		
 		this.topbarinnerlayout = new VerticalLayout();
 		

@@ -212,6 +212,7 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
          * @author Julius Hacker
          */  
         private void generateUi() {
+        		setMargin(true);
                 methodList = new VerticalLayout();
                 infoBox = new VerticalLayout();
                 
@@ -236,6 +237,26 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
                 methodList.addComponent(stoInput);
                 methodList.addComponent(detInput);
 
+                VerticalLayout infoBox = new VerticalLayout();
+        		infoBox.setMargin(true);
+        		Label infoText1 = new Label ("<h3>Herkunft der Cashflows:</h3>");
+        		infoText1.setContentMode(Label.CONTENT_XHTML);
+        		Label infoText2 = new Label ("Hier haben Sie die Wahl zwischen der „Eingabe der Cashflows“ und einer „direkten-“ oder „indirekten Berechnung der Cashflows“ auf Basis der Bilanz, sowie Gewinn- und Verlust-rechnung (GuV). Bei der „Eingabe der Cashflows“ muss der Benutzer die Cashflows und den Bilanzwert des Fremdkapitals eingeben. Zur „direkten Berechnung des Cashflows“ werden bestimmte Posten aus der Bilanz und GuV benötigt, welche für jede Periode ein-gegeben werden müssen. Die „indirekte Berechnung des Cashflows“ unterscheidet sich durch die benötigten Posten von der „direkten Berechnung“.");
+        		Label infoText3 = new Label  ("<h3>Deterministische Methode:</h3>");
+        		infoText3.setContentMode(Label.CONTENT_XHTML);
+        		Label infoText4 = new Label ("Hier können Sie die Berechnungsmethode wählen. Bei der Adjusted-Present-Value Methode berechnet sich der Unternehmenswert aus dem Wert des rein eigenfinanzierten Unternehmens zuzüglich der Steuervorteile durch das ver-zinsliche Fremdkapital, abzüglich des verzinslichen Fremdkapitals. Die Flow-to-Equity Methode diskontiert alle zukünftigen Cashflows auf einen Stichtag und addiert den diskontierten Restwert. Folglich betrachtet dieses Verfahren für die Be-rechnung des Unternehmenswertes ausschließlich das Eigenkapital.");
+        		Label infoText5 = new Label  ("<h3>Eingabemethode:</h3>");
+        		infoText5.setContentMode(Label.CONTENT_XHTML);
+        		Label infoText6 = new Label ("Hier haben Sie die Wahl zwischen der „Eingabe der Cashflows“ und einer „direkten-“ oder „indirekten Berechnung der Cashflows“ auf Basis der Bilanz, sowie Gewinn- und Verlust-rechnung (GuV). Bei der „Eingabe der Cashflows“ muss der Benutzer die Cashflows und den Bilanzwert des Fremdkapitals eingeben. Zur „direkten Berechnung des Cashflows“ werden bestimmte Posten aus der Bilanz und GuV benötigt, welche für jede Periode ein-gegeben werden müssen. Die „indirekte Berechnung des Cashflows“ unterscheidet sich durch die benötigten Posten von der „direkten Berechnung“.");
+        		
+        		infoBox.addComponent(infoText1);
+        		infoBox.addComponent(infoText2);
+        		infoBox.addComponent(infoText3);
+        		infoBox.addComponent(infoText4);
+        		infoBox.addComponent(infoText5);
+        		infoBox.addComponent(infoText6);
+        		
+        		setSecondComponent(infoBox);
                 
         }
 

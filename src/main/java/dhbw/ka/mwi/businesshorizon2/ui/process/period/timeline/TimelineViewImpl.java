@@ -86,7 +86,7 @@ public class TimelineViewImpl extends VerticalLayout implements
          */
         private void generateUi() {
                 p.setScrollable(true);
-                p.setStyleName(Reindeer.PANEL_LIGHT);
+                p.setStyleName("borderless light");
                 delPast = new NativeButton("X", new Button.ClickListener() {
                         private static final long serialVersionUID = 1L;
 

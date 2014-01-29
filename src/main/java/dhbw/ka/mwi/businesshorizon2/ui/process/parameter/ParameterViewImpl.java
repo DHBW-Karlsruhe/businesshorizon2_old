@@ -20,8 +20,10 @@
 package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
 
 import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.UserError;
@@ -29,6 +31,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -42,17 +45,17 @@ import com.vaadin.ui.Window.Notification;
  * @author Julius Hacker, Christian Scherer
  * 
  */
-public class ParameterViewImpl extends VerticalLayout implements
+public class ParameterViewImpl extends HorizontalSplitPanel implements
 		ParameterViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
 			.getLogger("ParameterViewImpl.class");
-
+	
 	private GridLayout gridLayout;
 
 	private Label labelHeadingCommon;
-	private Label labelHeadingMeth;
+	private Label labelHeadingMethDet;
 	private Label labelHeadingTimeSeries;
 	private Label labelHeadingRandomWalk;
 	private Label labelHeadingWienerProcess;
@@ -189,20 +192,44 @@ public class ParameterViewImpl extends VerticalLayout implements
 	private void generateUi() {
 
 		setMargin(true);
-		setSizeFull();
+		//setSizeFull();
+		setLocked(true);
+		setStyleName("small");
 
 		// TODO: Zeilenanzahl anpassen
 		gridLayout = new GridLayout(3, 30);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
-		gridLayout.setSizeFull();
-	
+		//gridLayout.setSizeFull();
 		
-		addComponent(gridLayout);
+		VerticalLayout infoBox = new VerticalLayout();
+		infoBox.setMargin(true);
+		Label infoText1 = new Label ("<h3>Deterministische Parameter:</h3>");
+		infoText1.setContentMode(Label.CONTENT_XHTML);
+		Label infoText2 = new Label ("Hier geben Sie das Basisjahr an, auf welches die künftigen Cashflows abgezinst werden. "
+				+ "Zusätzlich müssen Sie auch die Anzahl der einzubeziehenden zukünftigen Perioden ange-ben. "
+				+ "Beachten Sie hierbei, dass Sie nur so viele Perioden angeben, "
+				+ "wie Sie Daten über die Cashflows des Unternehmens haben.");
+		Label infoText3 = new Label  ("<h3>Stochastische Parameter:</h3>");
+		infoText3.setContentMode(Label.CONTENT_XHTML);
+		Label infoText4 = new Label ("Hier geben Sie das Basisjahr an, auf welches die künftigen Cashflows abgezinst werden. "
+				+ "Zusätzlich müssen Sie auch die Anzahl der zu prognostizierenden Perioden angeben. "
+				+ "Die Prognose erfolgt auf Basis vergangener Werte, daher müssen Sie auch die Anzahl der ver-gangenen Perioden angeben. "
+				+ "Beachten Sie hierbei, dass Sie nur so viele Perioden angeben, wie Sie Daten über die Cashflows des Unternehmens haben. "
+				+ "Des Weiteren haben Sie die Möglichkeit die Anzahl der Wiederholungen anzugeben. "
+				+ "Info: Je mehr Iterationen Sie durchführen lassen, desto genauer werden die Prognosewerte, aber desto länger dauert die Berechnung.");
+		
+		infoBox.addComponent(infoText1);
+		infoBox.addComponent(infoText2);
+		infoBox.addComponent(infoText3);
+		infoBox.addComponent(infoText4);
+		
+		setFirstComponent(gridLayout);
+		setSecondComponent(infoBox);
 
 		// Heading 1
 		labelHeadingCommon = new Label("Allgemein");
-		gridLayout.addComponent(labelHeadingCommon, 0, 0);
+		//gridLayout.addComponent(labelHeadingCommon, 0, 0);
 
 		labelBasisYear = new Label("Basisjahr");
 		gridLayout.addComponent(labelBasisYear, 0, 1);
@@ -221,8 +248,8 @@ public class ParameterViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(textfieldBasisYear, 1, 1);
 
 		// Heading 2
-		labelHeadingMeth = new Label("Stochastische Methoden: Allgemeines");
-		gridLayout.addComponent(labelHeadingMeth, 0, 3);
+		labelHeadingMethDet = new Label("Stochastische Parameter:");
+		gridLayout.addComponent(labelHeadingMethDet, 0, 3);
 
 		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods, 0, 4);
@@ -246,7 +273,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 4);
 
-		labelIterations = new Label("Anzahl Wiederholungen");
+		labelIterations = new Label("Durchläufe / Iterartionen");
 		gridLayout.addComponent(labelIterations, 0, 5);
 
 		textfieldIterations = new TextField();
@@ -266,10 +293,12 @@ public class ParameterViewImpl extends VerticalLayout implements
 
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 5);
-
+		
+		/**
 		labelStepsPerPeriod = new Label("Schritte pro Periode");
 		gridLayout.addComponent(labelStepsPerPeriod, 0, 6);
 
+		
 		textfieldStepsPerPeriod = new TextField();
 		textfieldStepsPerPeriod.setImmediate(true);
 		textfieldStepsPerPeriod.setDescription(toolTipStepsPerPeriod);
@@ -282,14 +311,14 @@ public class ParameterViewImpl extends VerticalLayout implements
 			}
 		});
 		gridLayout.addComponent(textfieldStepsPerPeriod, 1, 6);
-
+		
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 6);
-
+		 */
 		// Heading 3
-
+		
 		labelHeadingTimeSeries = new Label("Stochastisch: Zeitreihenanalyse");
-		gridLayout.addComponent(labelHeadingTimeSeries, 0, 8);
+		//gridLayout.addComponent(labelHeadingTimeSeries, 0, 8);
 
 		labelNumPastPeriods = new Label(
 				"Anzahl einbezogener, vergangener Perioden");
@@ -366,13 +395,13 @@ public class ParameterViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(comboBoxRepresentatives, 1, 10);
 
 		// Heading 4
-
+		/**
 		labelHeadingRandomWalk = new Label(
 				"Stochastisch: Random Walk (Free Cash Flow)");
-		gridLayout.addComponent(labelHeadingRandomWalk, 0, 12);
+		//gridLayout.addComponent(labelHeadingRandomWalk, 0, 12);
 
 		labelProbability = new Label("Wahrscheinlichkeit");
-		gridLayout.addComponent(labelProbability, 0, 13);
+		//gridLayout.addComponent(labelProbability, 0, 13);
 
 		textfieldProbability = new TextField();
 		textfieldProbability.setImmediate(true);
@@ -384,7 +413,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 				presenter.probablityChosen(textfieldProbability.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldProbability, 1, 13);
+		//gridLayout.addComponent(textfieldProbability, 1, 13);
 
 		labelUnitPercentage = new Label("%");
 		gridLayout.addComponent(labelUnitPercentage, 2, 13);
@@ -400,7 +429,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 			 * nicht hinterlegt ist.
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+		/**	private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -536,7 +565,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 			 * nicht hinterlegt ist.
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+		/**	private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -572,7 +601,7 @@ public class ParameterViewImpl extends VerticalLayout implements
 			 * nicht hinterlegt ist.
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+		/**	private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -597,9 +626,10 @@ public class ParameterViewImpl extends VerticalLayout implements
 			}
 		});
 		gridLayout.addComponent(textfieldDeviation, 1, 25);
-
+		*/
 		// Heading 6
-
+		labelHeadingMethDet = new Label("Deterministische Parameter:");
+		gridLayout.addComponent(labelHeadingMethDet, 0, 26);
 		labelNumPeriods_deterministic = new Label(
 				"Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 27);

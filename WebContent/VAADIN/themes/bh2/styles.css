@@ -19,7 +19,26 @@
 #-------------------------------------------------------------------------------*/
 @import "../chameleon-green/styles.css";
 
+
+input.v-textfield[type="text"], .v-filterselect{
+	height: 1em;
+	border-radius: 0px;
+}
+
+.login_view{
+	margin-top: 200px;
+}
+
 /*
+.login_form div.v-button {
+	width: 200px;
+}
+
+.login_form input {
+	width: 194px;
+}
+
+
 .v-panel {
 	background-color: red;
 }

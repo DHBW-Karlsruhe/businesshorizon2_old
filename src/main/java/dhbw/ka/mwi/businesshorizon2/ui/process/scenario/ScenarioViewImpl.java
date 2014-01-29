@@ -43,6 +43,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -53,7 +54,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker
  *
  */
-public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInterface {
+public class ScenarioViewImpl extends HorizontalSplitPanel implements ScenarioViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
@@ -84,7 +85,13 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 	 * @author Julius Hacker
 	 */
 	private void generateUi() {
+		VerticalLayout content = new VerticalLayout();
+		
+		
 		this.vlScenarios = new VerticalLayout();
+		this.setLocked(true);
+		this.setStyleName("small");
+		this.setMargin(true);
 		
 		Button newScenario = new Button("Weiteres Szenario");
 		
@@ -96,10 +103,24 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 				presenter.addScenario();
 			}
 		});
+		content.addComponent(this.vlScenarios);
+		content.addComponent(newScenario);
+		setFirstComponent(content);
 		
-		this.addComponent(this.vlScenarios);
-		this.addComponent(newScenario);
-		this.setComponentAlignment(newScenario, Alignment.BOTTOM_RIGHT);
+		VerticalLayout infoBox = new VerticalLayout();
+		infoBox.setMargin(true);
+		Label infoText1 = new Label ("<h3>Eingabe der Szenarien</h3>");
+		infoText1.setContentMode(Label.CONTENT_XHTML);
+		Label infoText2 = new Label("Sie können verschiedene Szenarien für die Berechnung erstellen. Über die Checkbox „Berechnung einbeziehen“, können Sie selbst festlegen, für welche Szenarien eine Berechnung durchgeführt werden soll. "
+				+ "Über den Button „neues Szenario“ kann man beliebig viele weitere Szenarien anlegen. Für jedes Szenario können Sie unterschiedliche Berechnungswerte für die Eigen- und Fremdkapitalrendite, sowie die einzelnen Steuersätze angeben. "
+				+ "Info: Bei dem Flow-to-Equity Verfahren beschränken sich die geforderten Werte auf die Eigenkapitalkosten."
+				+ "Sie müssen mindestens ein Szenario in die Berechnung einbeziehen. Des Weiteren können Sie jedes Szenario über den Löschen-Button löschen. Dabei muss jedoch mindestens ein Szenario angelegt bleiben."
+				+ "Über den Button „Auswertung starten“ können Sie die Berechnung starten.");
+		infoBox.addComponent(infoText1);
+		infoBox.addComponent(infoText2);
+		setSecondComponent(infoBox);
+		
+		
 	}
 	
 	/**
@@ -135,7 +156,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		FormLayout formLeft = new FormLayout();
 		FormLayout formRight = new FormLayout();
 		hlScenario.addComponent(formLeft);
-		hlScenario.addComponent(formRight);
+		//hlScenario.addComponent(formRight);
 		
 		final Label scenarioName = new Label("<strong>Szenario " + number + "</strong>");
 		scenarioName.setContentMode(Label.CONTENT_XHTML);
@@ -157,7 +178,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 			
 		});
 		scenarioComponents.put("isIncludeInCalculation", cbBerechnungEinbezug);
-		formRight.addComponent(cbBerechnungEinbezug);
+		formLeft.addComponent(cbBerechnungEinbezug);
 		
 		final TextField tfEigenkapital = new TextField("Renditeforderung Eigenkapital: ");
 		if(!"0.0".equals(rateReturnEquity)) {
@@ -184,7 +205,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		tfGewerbesteuer.setImmediate(true);
 		tfGewerbesteuer.addListener(changeListener);
 		scenarioComponents.put("businessTax", tfGewerbesteuer);
-		formRight.addComponent(tfGewerbesteuer);
+		formLeft.addComponent(tfGewerbesteuer);
 		
 		final TextField tfKoerperschaftssteuer = new TextField("K\u00F6rperschaftssteuer mit Solidarit\u00E4tszuschlag: ");
 		if(!"0.0".equals(corporateAndSolitaryTax)) {
@@ -193,7 +214,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		tfKoerperschaftssteuer.setImmediate(true);
 		tfKoerperschaftssteuer.addListener(changeListener);
 		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
-		formRight.addComponent(tfKoerperschaftssteuer);
+		formLeft.addComponent(tfKoerperschaftssteuer);
 		
 		final Button removeScenario = new Button("Szenario entfernen");
 		removeScenario.addListener(new ClickListener() {
@@ -208,7 +229,7 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 		formLeft.addComponent(removeScenario);
 		
 		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		formRight.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		
 		scenarioComponents.put("scenario", hlScenario);
 		

@@ -114,7 +114,7 @@ InputViewInterface  {
 
 	public void initForm() {
 		this.removeAllComponents();
-		all.setStyleName(Reindeer.PANEL_LIGHT);
+		all.setStyleName("borderless light");
 		all.removeAllComponents();
 		panel.removeAllComponents();
 		panel.setSpacing(true);

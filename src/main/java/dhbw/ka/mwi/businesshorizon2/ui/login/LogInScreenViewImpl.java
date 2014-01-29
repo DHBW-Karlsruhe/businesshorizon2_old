@@ -100,12 +100,14 @@ public class LogInScreenViewImpl extends Window implements
 
 		vertical = new VerticalLayout();
 		
+		addStyleName("login_view");
 		
 		LoginForm login = new LoginForm();
 		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
 		login.setUsernameCaption("Mailadresse");
 		login.setPasswordCaption("Passwort");
 		login.setWidth(null);
+		login.setStyleName("login_form");
 		login.addListener(new LoginForm.LoginListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -127,8 +129,8 @@ public class LogInScreenViewImpl extends Window implements
 
 		vertical.addComponent(registerBtn);
 		vertical.setComponentAlignment(registerBtn, Alignment.MIDDLE_CENTER);
-		vertical.addComponent(passwordForgotBtn);
-		vertical.setComponentAlignment(passwordForgotBtn, Alignment.MIDDLE_CENTER);
+		//vertical.addComponent(passwordForgotBtn);
+		//vertical.setComponentAlignment(passwordForgotBtn, Alignment.MIDDLE_CENTER);
 
 		logger.debug("LogIn UI erstellt und Listener gesetzt");
 
