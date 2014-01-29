@@ -208,7 +208,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		if (deterministic) {
 			getView().setFutureButtonAccess(true);
-			if (sumFuturePeriods >= 3 + weitere_perioden_future) {
+			if (sumFuturePeriods> 1 + weitere_perioden_future) {
 				getView().setFutureDeleteButtonAccess(true);
 			} else {
 				getView().setFutureDeleteButtonAccess(false);
@@ -217,7 +217,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().setPastDeleteButtonAccess(false);
 		}
 		if (stochastic) {
-			if (sumPastPeriods >= 6 + weitere_perioden_past) {
+			if (sumPastPeriods> 3 + weitere_perioden_past) {
 				getView().setPastDeleteButtonAccess(true);
 			} else {
 				getView().setPastDeleteButtonAccess(false);
@@ -1052,7 +1052,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		addPastPeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getStochasticInput());
-		
+
 		eventBus.fireEvent(new ShowPeriodViewEvent());
 
 		// andere Periode anzeigen
@@ -1067,7 +1067,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		} catch (Exception e) {
 			logger.debug("Fehler beim anzeigen der neuesten Periode");
 		}
-		
 
 	}
 
@@ -1086,7 +1085,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		addFuturePeriods(1, projectProxy.getSelectedProject()
 				.getProjectInputType().getDeterministicInput());
 
-
 		eventBus.fireEvent(new ShowPeriodViewEvent());
 		// andere Periode anzeigen
 		// TODO
@@ -1095,12 +1093,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					.getDeterministicPeriods().getPeriods();
 			int laenge = set.toArray().length;
 			Period t;
-			t = (Period) set.toArray()[laenge-1];
+			t = (Period) set.toArray()[laenge - 1];
 			periodClicked(t);
 		} catch (Exception e) {
 			logger.debug("Fehler beim anzeigen der neuesten Periode");
 		}
-		
+
 	}
 
 	/**
