@@ -132,8 +132,6 @@ public class APV extends AbstractDeterministicMethod {
 		this.setUwsteuerfrei(gk);
 		this.setSteuervorteile(v);
 		this.setFremdkapital(first_period_fremdkapital);
-
-		logger.debug(unternehmenswert);
 		return unternehmenswert;
 	}
 

@@ -40,7 +40,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
 public class TestAPV extends TestCase {
 	
-	private static final Logger logger = Logger.getLogger("TestAPV_2.class");
+	private static final Logger logger = Logger.getLogger("TestAPV.class");
 	
 		
 	@Test
