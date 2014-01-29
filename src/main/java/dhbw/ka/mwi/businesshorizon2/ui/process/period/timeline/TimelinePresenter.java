@@ -201,15 +201,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		int weitere_perioden_past = 0;
 		if (methode == "Zeitreihenanalyse") {
 			weitere_perioden_past = 1;
-			logger.debug("Perioden Vergangenheit +1");
 		}
 		int weitere_perioden_future = 0;
 		if (methode == "Adjusted-Present-Value (APV)") {
 			weitere_perioden_future = 1;
-			logger.debug("Perioden Zukunft +1");
 		}
 		if (deterministic) {
-			logger.debug("Perioden Zukunft: " + sumFuturePeriods);
 			getView().setFutureButtonAccess(true);
 			if (sumFuturePeriods> 1 + weitere_perioden_future) {
 				getView().setFutureDeleteButtonAccess(true);
@@ -220,7 +217,6 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			getView().setPastDeleteButtonAccess(false);
 		}
 		if (stochastic) {
-			logger.debug("Perioden Vergangenheit: " + sumPastPeriods);
 			if (sumPastPeriods> 3 + weitere_perioden_past) {
 				getView().setPastDeleteButtonAccess(true);
 			} else {
