@@ -36,6 +36,7 @@
     <bean name="navigationController" class="com.mvplite.view.LiteNavigationController"
         scope="session">
         <constructor-arg ref="eventBus" />
+        <!--not break-->
     </bean>
 
     <!-- Services -->
