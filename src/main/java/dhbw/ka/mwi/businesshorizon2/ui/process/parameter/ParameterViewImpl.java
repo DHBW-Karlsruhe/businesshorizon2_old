@@ -67,6 +67,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 	private Label labelNumPeriods_deterministic; // Annika Weis
 	private Label labelIterations;
 	private Label labelNumPastPeriods;
+	private Label labelNumSpecifiedPastPeriods;
 	private Label labelBasisYear;
 	private Label labelProbability;
 	private Label labelCashFlowStepRange;
@@ -85,6 +86,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 	private TextField textfieldNumPeriodsToForecast;
 	private TextField textfieldNumPeriodsToForecast_deterministic;
 	private TextField textfieldNumPastPeriods;
+	private TextField textfieldNumSpecifiedPastPeriods;
 	private TextField textfieldBasisYear;
 	private TextField textfieldIterations;
 	private TextField textfieldProbability;
@@ -108,6 +110,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 	private String toolTipNumPeriodsToForecast;
 	private String toolTipNumPeriodsToForecast_deterministic;
 	private String toolTipNumPastPeriods;
+	private String toolTipNumSpecifiedPastPeriods;
 	private String toolTipStepsPerPeriod;
 	private String toolTipIndustryRepresentatives;
 	private String toolTipCashFlowStepRange;
@@ -158,6 +161,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 		toolTipNumPeriodsToForecast = "Hier tragen Sie die Anzahl der zu prognostizierenden Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
 		toolTipNumPeriodsToForecast_deterministic = "Hier tragen Sie die Anzahl der zu prognostizierenden deterministischen Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
 		toolTipNumPastPeriods = "Hier geben Sie an, wie viele vergangene Perioden für die Berechnung des Prognosewert gewichtet werden sollen. Info: Für die Berechnung m\u00fcssen Sie im n\u00e4chsten Prozessschritt immer eine Periode mehr angeben, als Sie hier eingeben.";
+		toolTipNumSpecifiedPastPeriods ="Bitte beachten Sie, dass die Anzahl anzugebender Perioden immer um mindestens eins größer sein muss als die Anzahl der einbezogenen Perioden. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.";
 		toolTipStepsPerPeriod = "";
 		toolTipIndustryRepresentatives = "Als Vergleichswert zu den prognostizierten Cashflows k\u00f6nnen Sie branchenspezifischen Vertreter mit einbeziehen. Dazu müssen Sie die Checkbox aktivieren und in der Dropdown-Liste die gew\u00fcnschte Branche ausw\u00e4hlen.";
 		toolTipCashFlowStepRange = "";
@@ -273,7 +277,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 4);
 
-		labelIterations = new Label("Durchläufe / Iterartionen");
+		labelIterations = new Label("Durchläufe / Iterationen");
 		gridLayout.addComponent(labelIterations, 0, 5);
 
 		textfieldIterations = new TextField();
@@ -294,7 +298,33 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 5);
 		
+		
+		
+		labelNumSpecifiedPastPeriods = new Label(
+				"Anzahl anzugebender, vergangener Perioden");
+		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 6);
+		
+		textfieldNumSpecifiedPastPeriods = new TextField();
+		textfieldNumSpecifiedPastPeriods.setImmediate(true);
+		// textfieldIterations.setValue(10000);
+		textfieldNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
+		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				logger.debug(textfieldNumSpecifiedPastPeriods.getValue());
+				presenter.specifiedPastPeriodsChosen((String) textfieldNumSpecifiedPastPeriods
+						.getValue());
+			}
+		});
+		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 6);
+
+		labelUnitQuantity = new Label("Anzahl");
+		gridLayout.addComponent(labelUnitQuantity, 2, 6);
+		
 		/**
+		 * Auskommentiert, da nicht für Zeitreihenanalyse benötigt
+		 * 
 		labelStepsPerPeriod = new Label("Schritte pro Periode");
 		gridLayout.addComponent(labelStepsPerPeriod, 0, 6);
 
@@ -631,7 +661,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 		labelHeadingMethDet = new Label("Deterministische Parameter:");
 		gridLayout.addComponent(labelHeadingMethDet, 0, 26);
 		labelNumPeriods_deterministic = new Label(
-				"Anzahl zu prognostizierender Perioden");
+				"Anzahl prognostizierter Perioden");
 		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 27);
 
 		textfieldNumPeriodsToForecast_deterministic = new TextField();
@@ -698,6 +728,19 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 
 	}
 
+	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumSpecifiedPastPeriods' aus.
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param enabled
+	 *            true aktiviert die Komponente, false deaktiviert (graut aus)
+	 *            die Komponenten
+	 */
+	@Override
+	public void activateSpecifiedPastPeriods(boolean enabled) {
+		this.textfieldNumSpecifiedPastPeriods.setEnabled(enabled);
+	}
+	
 	/**
 	 * Diese Methode graut das Textfeld 'textfieldNumPastPeriods' aus.
 	 * 
@@ -778,7 +821,14 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 			} else {
 				this.textfieldNumPeriodsToForecast.setComponentError(null);
 			}
-		} else if (component.equals("pastPeriods")) {
+		}else if (component.equals("specifiedPastPeriods")) {
+			if (setError) {
+				this.textfieldNumSpecifiedPastPeriods.setComponentError(new UserError(
+						message));
+			} else {
+				this.textfieldNumSpecifiedPastPeriods.setComponentError(null);
+			}
+		} else if (component.equals("relevantPastPeriods")) {
 			if (setError) {
 				this.textfieldNumPastPeriods.setComponentError(new UserError(
 						message));
@@ -1064,6 +1114,18 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 	@Override
 	public void setIterations(String iterations) {
 		this.textfieldIterations.setValue(iterations);
+	}
+	
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl anzugebender, vergangener Perioden'
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param specifiedPastPeriods
+	 *            Anzahl einbezogener, vergangener Perioden
+	 */
+	@Override
+	public void setSpecifiedPastPeriods(String specifiedPastPeriods) {
+		this.textfieldNumSpecifiedPastPeriods.setValue(specifiedPastPeriods);
 	}
 
 	/**
