@@ -35,7 +35,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
  * 
 =======
 >>>>>>> refs/heads/master
-=======
+=======ValidStateEvent
 >>>>>>> branch 'master' of local repository
  */
 public class InvalidStateEvent extends Event {

@@ -18,7 +18,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 /**
@@ -36,8 +35,7 @@ public class CashFlowPeriod extends Period {
 	public CashFlowPeriod(int year) {
 		super(year);
 	}
-	
-	
+
 	/**
 	 * Gibt zurück, ob alle erforderlichen Parameter gesetzt sind
 	 * 
@@ -47,10 +45,10 @@ public class CashFlowPeriod extends Period {
 		Boolean valid = true;
 		Double capitalStock = this.getCapitalStock();
 		Double freeCashFlowSet = this.getFreeCashFlow();
-		if (capitalStock.isNaN()) {
+		if (capitalStock == null) {
 			valid = false;
 		}
-		if (freeCashFlowSet.isNaN()) {
+		if (freeCashFlowSet == null) {
 			valid = false;
 		}
 		return valid;
