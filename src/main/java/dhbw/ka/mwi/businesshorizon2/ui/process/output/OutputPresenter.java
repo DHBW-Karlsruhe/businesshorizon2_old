@@ -46,12 +46,12 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.DirectCalculatedCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
@@ -127,10 +127,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 					for (AbstractPeriodContainer container : drContainer.getPeriodContainers()){
 						if (container instanceof CashFlowPeriodContainer){
 							logger.debug("Cashflows wurden direkt eingegeben");
-						} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
+						} else if(container instanceof GesamtkostenVerfahrenCashflowPeriodContainer){
 							logger.debug("Cashflows werden direkt berechnet");
 							CashFlowCalculator.calculateCashflows(drContainer, scenario);
-						} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
+						} else if(container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
 							logger.debug("Cashflows werden indirekt berechnet");
 							CashFlowCalculator.calculateCashflows(drContainer, scenario);
 						}
@@ -297,10 +297,10 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			for (AbstractPeriodContainer container : srContainer.getPeriodContainers()){
 				if (container instanceof CashFlowPeriodContainer){
 					logger.debug("Cashflows wurden direkt eingegeben");
-				} else if(container instanceof DirectCalculatedCashflowPeriodContainer){
+				} else if(container instanceof GesamtkostenVerfahrenCashflowPeriodContainer){
 					logger.debug("Cashflows werden direkt berechnet");
 					CashFlowCalculator.calculateCashflows(srContainer, scenario);
-				} else if(container instanceof IndirectCalculatedCashflowPeriodContainer){
+				} else if(container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
 					logger.debug("Cashflows werden indirekt berechnet");
 					CashFlowCalculator.calculateCashflows(srContainer, scenario);
 				}

@@ -26,8 +26,8 @@ import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.DirectCalculatedCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 
 /**
  * 
@@ -45,8 +45,6 @@ public class CashFlowCalculator {
 	 * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
 	 * 
 	 * @author Marcel Rosenberger
-<<<<<<< HEAD
-=======
 	 * 
 	 * @param result
 	 *            DeterministicResultContainer
@@ -57,13 +55,13 @@ public class CashFlowCalculator {
 			Szenario scenario) {
 
 		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
-			if (container instanceof DirectCalculatedCashflowPeriodContainer) {
-				calculateDirectCashflows(
-						(DirectCalculatedCashflowPeriodContainer) container,
-						scenario);
-			} else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+			if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
+			//	calculateDirectCashflows(
+					//	(GesamtkostenVerfahrenCashflowPeriodContainer) container,
+					//	scenario);
+			} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
 				calculateIndirectCashflows(
-						(IndirectCalculatedCashflowPeriodContainer) container,
+						(UmsatzkostenVerfahrenCashflowPeriodContainer) container,
 						scenario);
 			}
 		}
@@ -75,7 +73,6 @@ public class CashFlowCalculator {
 	 * einfach in der entsprechenden Periode durch eine setter-Methode gesetzt.
 	 * 
 	 * @author Marcel Rosenberger
->>>>>>> refs/remotes/origin/master
 	 * 
 	 * @param result
 	 *            StochasticResultContainer
@@ -86,14 +83,14 @@ public class CashFlowCalculator {
 			Szenario scenario) {
 
 		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
-			if (container instanceof DirectCalculatedCashflowPeriodContainer) {
+			if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
 
-				calculateDirectCashflows(
-						(DirectCalculatedCashflowPeriodContainer) container,
-						scenario);
-			} else if (container instanceof IndirectCalculatedCashflowPeriodContainer) {
+				//calculateDirectCashflows(
+						//(GesamtkostenVerfahrenCashflowPeriodContainer) container,
+						//scenario);
+			} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
 				calculateIndirectCashflows(
-						(IndirectCalculatedCashflowPeriodContainer) container,
+						(UmsatzkostenVerfahrenCashflowPeriodContainer) container,
 						scenario);
 
 			}
@@ -107,13 +104,13 @@ public class CashFlowCalculator {
 	 * 
 	 */
 
-
+	/*
 	private static void calculateDirectCashflows(
-			DirectCalculatedCashflowPeriodContainer container, Szenario scenario) {
+			GesamtkostenVerfahrenCashflowPeriodContainer container, Szenario scenario) {
 
-		for (DirectCalculatedCashflowPeriod period : container.getPeriods()) {
+		for (GesamtkostenVerfahrenCashflowPeriod period : container.getPeriods()) {
 			// Cash-Flow vor Zins und Steuern.
-			double freeCashFlow = period.getUmsatzErlöse()
+			double freeCashFlow = period.getUmsatzerlöse()
 					- period.getUmsatzKosten();
 			double steuersatz = (scenario.getCorporateAndSolitaryTax() + scenario
 					.getBusinessTax()) / 100;
@@ -126,9 +123,9 @@ public class CashFlowCalculator {
 
 
 		}
+	
 
-
-	}
+	}*/
 
 	/**
 	 * Indirekte Free-Cash-Flow Ermittlung
@@ -138,10 +135,10 @@ public class CashFlowCalculator {
 	 */
 
 	private static void calculateIndirectCashflows(
-			IndirectCalculatedCashflowPeriodContainer container,
+			UmsatzkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
 
-		for (IndirectCalculatedCashflowPeriod period : container.getPeriods()) {
+		/*for (UmsatzkostenVerfahrenCashflowPeriod period : container.getPeriods()) {
 
 			double freeCashFlow = period.getJahresÜberschuss()
 					+ period.getZinsaufwand();
@@ -159,7 +156,7 @@ public class CashFlowCalculator {
 			logger.debug("FreeCashFlow: " + freeCashFlow);
 			period.setFreeCashFlow(freeCashFlow);
 
-		}
+		} */
 
 
 	}

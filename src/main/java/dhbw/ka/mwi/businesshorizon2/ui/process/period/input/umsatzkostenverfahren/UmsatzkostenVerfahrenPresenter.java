@@ -19,8 +19,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEvent;
-
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
@@ -39,8 +37,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEven
  * 
  */
 
-public class IndirectCalculationPresenter extends
-		AbstractInputPresenter<IndirectCalculationViewInterface> {
+public class UmsatzkostenVerfahrenPresenter extends
+		AbstractInputPresenter<UmsatzkostenVerfahrenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -56,15 +54,21 @@ public class IndirectCalculationPresenter extends
 
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "capitalStock", "jahresÜberschuss",
-				"zinsaufwand", "taxShield", "nichtZahlungswirksameAufwendungen",
-				"nichtZahlungswirksameErtraege", "bruttoInvestitionen", "ebit"};
-		germanNamesProperties = new String[] {"Fremdkapital", "Jahres\u00fcberschuss",
-				"Zinsaufwand",
-				"Fiktive Steuern (Tax Shield)",
-				"Nicht zahlungswirksame Aufwände", 
-				"Nicht zahlungswirksame Ertr\u00e4ge", 
-				"Brutto-Investitionen", "EBIT"};
+		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
+				"herstellungskosten", "vertriebskosten", "forschungskosten",
+				"verwaltungskosten", "sonstigerertrag", "sonstigeraufwand",
+				"wertpapiererträge", "zinsenundaufwendungen",
+				"außerordentlicheerträge", "außerordentlicheaufwände",
+				"abschreibungen", "pensionsrückstellungen" };
+		germanNamesProperties = new String[] { "Fremdkapital",
+				"Umsatzerl\u00f6se", "Herstellungskosten des Umsatzes",
+				"Vertriebskosten", "Kosten F und E", "Verwaltungskosten",
+				"Sonstiger Ertrag", "Sonstiger Aufwand",
+				"Ertr\u00e4ge aus Wertpapieren",
+				"Zinsen und \u00e4hnliche Aufwendungen",
+				"Außerordentliche Ertr\u00e4ge",
+				"Außerordentliche Aufwendungen", "Abschreibungen",
+				"Pensionsr\u00fckstellungen" };
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class IndirectCalculationPresenter extends
 	 */
 
 	@EventHandler
-	public void onShowEvent(ShowIndirectCalcEvent event) {
+	public void onShowEvent(ShowUKVEvent event) {
 		processEvent(event);
 	}
 
