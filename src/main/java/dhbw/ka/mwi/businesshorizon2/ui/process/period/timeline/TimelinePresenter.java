@@ -200,12 +200,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		// Ausnahmen bei Zeitreihenanalyse und APV
 		int weitere_perioden_past = 0;
 		if (methode == "Zeitreihenanalyse") {
-			//weitere_perioden_past = 1; //Annika Weis 2014-05-03
+			weitere_perioden_past = -1; //Annika Weis 2014-05-03
 		}
 		int weitere_perioden_future = 0;
-		if (methode == "Adjusted-Present-Value (APV)") {
+		//if (methode == "Adjusted-Present-Value (APV)") {
 			weitere_perioden_future = -1;
-		}
+		//}
 		if (deterministic) {
 			getView().setFutureButtonAccess(false);//(true);
 			if (sumFuturePeriods> 1 + weitere_perioden_future) {
@@ -337,11 +337,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		int weitere_perioden_past = 0;
 		int weitere_perioden_future = 0;
 		if (methode == "Zeitreihenanalyse") {
-			//weitere_perioden_past = 1; //Annika Weis 2014-05-03
+			weitere_perioden_past = -1; //Annika Weis 2014-05-03
 		}
-		if (methode == "Adjusted-Present-Value (APV)") {
+		//if (methode == "Adjusted-Present-Value (APV)") {
 			weitere_perioden_future = -1;
-		}
+		//}
 		if (projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 				== fixedPastPeriods
 				+ weitere_perioden_future
@@ -652,7 +652,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			 */
 			int weitere_perioden_past = 0;
 			if (methode == "Zeitreihenanalyse") {
-				//weitere_perioden_past = 1; //Annika Weis 2014-05-03
+				weitere_perioden_past = -1; //Annika Weis 2014-05-03
 			}
 
 			logger.debug("PastPeriods: "
@@ -672,9 +672,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			 * Standardanzahl vergangener Perioden = Eingabefeld PLUS 1
 			 */
 			int weitere_perioden_future = 0;
-			if (methode == "Adjusted-Present-Value (APV)") {
+			//if (methode == "Adjusted-Present-Value (APV)") {
 				weitere_perioden_future = -1;
-			}
+			//}
 
 			logger.debug("FuturePeriods: "
 					+ projectProxy.getSelectedProject()
@@ -785,9 +785,9 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		int i = 0;
 		int weitere_perioden_future = 0;
-		if (methode == "Adjusted-Present-Value (APV)") {
+		//if (methode == "Adjusted-Present-Value (APV)") {
 			weitere_perioden_future = -1;
-		}
+		//}
 		sumFuturePeriods = 0;
 		Period basisperiode = null;
 		try {
@@ -905,7 +905,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		// bei Zeitreihenanalyse: ein Jahr mehr
 		int weitere_perioden_past = 0;
 		if (methode == "Zeitreihenanalyse") {
-			//weitere_perioden_past = 1; //Annika Weis 2014-05-03
+			weitere_perioden_past = -1; //Annika Weis 2014-05-03
 		}
 
 		sumPastPeriods = 0;

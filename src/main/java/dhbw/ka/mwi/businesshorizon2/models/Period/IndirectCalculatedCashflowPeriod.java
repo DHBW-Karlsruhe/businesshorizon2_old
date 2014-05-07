@@ -291,5 +291,46 @@ public class IndirectCalculatedCashflowPeriod extends Period {
 			this.ebitSet = ebitSet;
 		}
 
+		/**
+		 * Gibt zurück, ob alle erforderlichen Parameter gesetzt sind
+		 * 
+		 * @author Annika Weis
+		 */
+		public boolean isValid() {
+			Boolean valid = true;
+			Double BruttoInvestitionen = this.getBruttoInvestitionen();
+			Double CapitalStock = this.getCapitalStock();
+			Double Ebit = this.getEbit();
+			Double JahresÜberschuss = this.getJahresÜberschuss();
+			Double NichtZahlungswirksameAufwendungen = this.getNichtZahlungswirksameAufwendungen();
+			Double NichtZahlungswirksameErtraege = this.getNichtZahlungswirksameErtraege();
+			Double TaxShield = this.getTaxShield();
+			Double Zinsaufwand = this.getZinsaufwand();
+			if (BruttoInvestitionen.isNaN()) {
+				valid = false;
+			}
+			if (CapitalStock.isNaN()) {
+				valid = false;
+			}
+			if (Ebit.isNaN()) {
+				valid = false;
+			}
+			if (JahresÜberschuss.isNaN()) {
+				valid = false;
+			}
+			if (NichtZahlungswirksameAufwendungen.isNaN()) {
+				valid = false;
+			}
+			if (NichtZahlungswirksameErtraege.isNaN()) {
+				valid = false;
+			}
+			if (TaxShield.isNaN()) {
+				valid = false;
+			}
+			if (Zinsaufwand.isNaN()) {
+				valid = false;
+			}
+			return valid;
+		}
 
 }

@@ -18,7 +18,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.models.Period;
 
 import java.io.ByteArrayInputStream;
@@ -30,7 +29,6 @@ import java.io.Serializable;
 public abstract class Period implements Comparable<Period>, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
 
 	/**
 	 * Jahr
@@ -67,7 +65,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	 */
 	public void setFreeCashFlow(double freeCashFlow) {
 		this.freeCashFlow = freeCashFlow;
-		freeCashFlowSet=true;
+		freeCashFlowSet = true;
 	}
 
 	/**
@@ -96,7 +94,7 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	 */
 	public void setCapitalStock(double capitalStock) {
 		this.capitalStock = capitalStock;
-		capitalStockSet=true;
+		capitalStockSet = true;
 	}
 
 	/**
@@ -155,9 +153,10 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	}
 
 	/**
-	 * @param freeCashFlowSet the freeCashFlowSet to set
+	 * @param freeCashFlowSet
+	 *            the freeCashFlowSet to set
 	 */
-	public void setFreeCashFlowSet( boolean freeCashFlowSet) {
+	public void setFreeCashFlowSet(boolean freeCashFlowSet) {
 		this.freeCashFlowSet = freeCashFlowSet;
 	}
 
@@ -169,10 +168,15 @@ public abstract class Period implements Comparable<Period>, Serializable {
 	}
 
 	/**
-	 * @param capitalStockSet the capitalStockSet to set
+	 * @param capitalStockSet
+	 *            the capitalStockSet to set
 	 */
-	public void setCapitalStockSet( boolean capitalStockSet) {
+	public void setCapitalStockSet(boolean capitalStockSet) {
 		this.capitalStockSet = capitalStockSet;
 	}
 
+	/**
+	 * @author Annika Weis
+	 */
+	public abstract boolean isValid();
 }

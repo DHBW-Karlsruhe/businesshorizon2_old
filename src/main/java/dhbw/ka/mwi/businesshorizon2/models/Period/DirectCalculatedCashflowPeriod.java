@@ -221,6 +221,40 @@ public class DirectCalculatedCashflowPeriod extends Period {
 			this.ebitSet = ebitSet;
 		}
 
+		
+		/**
+		 * Gibt zurück, ob alle erforderlichen Parameter gesetzt sind
+		 * 
+		 * @author Annika Weis
+		 */
+		public boolean isValid() {
+			Boolean valid = true;
+			Double CapitalStock = this.getCapitalStock();
+			Double Desinvestitionen = this.getDesinvestitionen();
+			Double Ebit = this.getEbit();
+			Double Investitionen = this.getInvestitionen();
+			Double UmsatzErlöse = this.getUmsatzErlöse();
+			Double UmsatzKosten = this.getUmsatzKosten();
+			if (CapitalStock.isNaN()) {
+				valid = false;
+			}
+			if (Desinvestitionen.isNaN()) {
+				valid = false;
+			}
+			if (Ebit.isNaN()) {
+				valid = false;
+			}
+			if (Investitionen.isNaN()) {
+				valid = false;
+			}
+			if (UmsatzErlöse.isNaN()) {
+				valid = false;
+			}
+			if (UmsatzKosten.isNaN()) {
+				valid = false;
+			}
+			return valid;
+		}
 
 
 

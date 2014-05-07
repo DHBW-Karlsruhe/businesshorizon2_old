@@ -36,4 +36,23 @@ public class CashFlowPeriod extends Period {
 	public CashFlowPeriod(int year) {
 		super(year);
 	}
+	
+	
+	/**
+	 * Gibt zurück, ob alle erforderlichen Parameter gesetzt sind
+	 * 
+	 * @author Annika Weis
+	 */
+	public boolean isValid() {
+		Boolean valid = true;
+		Double capitalStock = this.getCapitalStock();
+		Double freeCashFlowSet = this.getFreeCashFlow();
+		if (capitalStock.isNaN()) {
+			valid = false;
+		}
+		if (freeCashFlowSet.isNaN()) {
+			valid = false;
+		}
+		return valid;
+	}
 }
