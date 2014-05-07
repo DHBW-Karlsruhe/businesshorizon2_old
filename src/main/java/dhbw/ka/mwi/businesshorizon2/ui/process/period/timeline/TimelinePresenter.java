@@ -318,7 +318,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	 */
 	public boolean isValid_Zeitraum() {
 		logger.debug("Periodenanzahl: "
-				+ projectProxy.getSelectedProject().getRelevantPastPeriods()
+				+ projectProxy.getSelectedProject().getSpecifiedPastPeriods()
 				+ " = "
 				+ fixedPastPeriods
 				+ " | "
@@ -342,7 +342,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (methode == "Adjusted-Present-Value (APV)") {
 			weitere_perioden_future = -1;
 		}
-		if (projectProxy.getSelectedProject().getRelevantPastPeriods() 
+		if (projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 				== fixedPastPeriods
 				+ weitere_perioden_future
 				&& projectProxy.getSelectedProject()
@@ -498,7 +498,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		fixedFuturePeriods = projectProxy.getSelectedProject()
 				.getPeriodsToForecast_deterministic();
-		fixedPastPeriods = projectProxy.getSelectedProject().getRelevantPastPeriods();
+		fixedPastPeriods = projectProxy.getSelectedProject().getSpecifiedPastPeriods();
 
 		projektname = projectProxy.getSelectedProject().getName();
 
@@ -597,7 +597,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			 * Annika Weis
 			 */
 			addFuturePeriods_vorhanden();
-			fixedPastPeriods = projectProxy.getSelectedProject().getRelevantPastPeriods();
+			fixedPastPeriods = projectProxy.getSelectedProject().getSpecifiedPastPeriods();
 
 		}
 
@@ -613,7 +613,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			removeAllFuturePeriods();
 			removeAllPastPeriods();
 			// fixedPastPeriods =
-			// projectProxy.getSelectedProject().getRelevantPastPeriods();
+			// projectProxy.getSelectedProject().getSpecifiedPastPeriods();
 
 			stochasticInput = projectProxy.getSelectedProject()
 					.getProjectInputType().getStochasticInput();
@@ -656,10 +656,10 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			}
 
 			logger.debug("PastPeriods: "
-					+ projectProxy.getSelectedProject().getRelevantPastPeriods() 
+					+ projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 					+ " + "
 					+ weitere_perioden_past);
-			addPastPeriods(projectProxy.getSelectedProject().getRelevantPastPeriods()
+			addPastPeriods(projectProxy.getSelectedProject().getSpecifiedPastPeriods()
 					+ weitere_perioden_past, projectProxy
 					.getSelectedProject().getProjectInputType()
 					.getStochasticInput());
@@ -899,7 +899,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		 * viele, wie es der Benutzer vorgibt auf der Parameter-Maske
 		 */
 		logger.debug("past periods: "
-				+ projectProxy.getSelectedProject().getRelevantPastPeriods()
+				+ projectProxy.getSelectedProject().getSpecifiedPastPeriods()
 				);
 		int i = 0;
 		// bei Zeitreihenanalyse: ein Jahr mehr
@@ -922,15 +922,15 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			laenge = perioden.size();
 			// nur so viele Perioden ausgeben, wie der Benutzer angegeben hat
 			// bzw vorhanden sind
-			laenge = Math.min(laenge, projectProxy.getSelectedProject().getRelevantPastPeriods()
+			laenge = Math.min(laenge, projectProxy.getSelectedProject().getSpecifiedPastPeriods()
 					+ weitere_perioden_past);//
 
 			// wenn mehr Perioden vorhanden sind als gewünscht...
-			if (perioden.size() > projectProxy.getSelectedProject().getRelevantPastPeriods()
+			if (perioden.size() > projectProxy.getSelectedProject().getSpecifiedPastPeriods()
 					+ weitere_perioden_past) {
 				// ...dann nur die letzten gewünschten ausgeben
 				laenge = perioden.size()
-						- (projectProxy.getSelectedProject().getRelevantPastPeriods() 
+						- (projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 								+ weitere_perioden_past) + 1;
 			} else {
 				// ...sonst alle ausgeben
@@ -972,16 +972,16 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		}
 		// wenn nicht genug Perioden angelegt wurden wie vom Benutzer angegeben
 		logger.debug(sumPastPeriods + " | "
-				+ projectProxy.getSelectedProject().getRelevantPastPeriods()
+				+ projectProxy.getSelectedProject().getSpecifiedPastPeriods()
 				);
 		if (sumPastPeriods == 0) {
 			create_base();
 		}
 
-		if (sumPastPeriods < projectProxy.getSelectedProject().getRelevantPastPeriods() 
+		if (sumPastPeriods < projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 				+ weitere_perioden_past) {
 			logger.debug("Manuell Perioden anlegen");
-			addPastPeriods(projectProxy.getSelectedProject().getRelevantPastPeriods() 
+			addPastPeriods(projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 					+ weitere_perioden_past - sumPastPeriods,
 					stochasticInput);
 		}
@@ -1048,7 +1048,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		// Anzahl der Perioden wird im Projekt angepasst
 		// muss passieren, bevor das Event gefeuert wird
 		projectProxy.getSelectedProject().setRelevantPastPeriods(
-				projectProxy.getSelectedProject().getRelevantPastPeriods() 
+				projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 				+ 1);
 		projectProxy.getSelectedProject().setStochasticPeriods(pastPeriods);
 
@@ -1151,7 +1151,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		// Anzahl der Perioden wird im Projekt angepasst
 		projectProxy.getSelectedProject().setRelevantPastPeriods(
-				projectProxy.getSelectedProject().getRelevantPastPeriods() 
+				projectProxy.getSelectedProject().getSpecifiedPastPeriods() 
 				- 1);
 
 		projectProxy.getSelectedProject()
