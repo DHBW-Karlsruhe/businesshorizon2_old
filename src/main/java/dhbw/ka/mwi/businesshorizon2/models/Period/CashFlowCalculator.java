@@ -56,11 +56,11 @@ public class CashFlowCalculator {
 
 		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
 			if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
-			//	calculateDirectCashflows(
-					//	(GesamtkostenVerfahrenCashflowPeriodContainer) container,
-					//	scenario);
+				calculateGKVCashflows(
+						(GesamtkostenVerfahrenCashflowPeriodContainer) container,
+						scenario);
 			} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
-				calculateIndirectCashflows(
+				calculateUKVCashflows(
 						(UmsatzkostenVerfahrenCashflowPeriodContainer) container,
 						scenario);
 			}
@@ -85,11 +85,11 @@ public class CashFlowCalculator {
 		for (AbstractPeriodContainer container : result.getPeriodContainers()) {
 			if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
 
-				//calculateDirectCashflows(
-						//(GesamtkostenVerfahrenCashflowPeriodContainer) container,
-						//scenario);
+				calculateGKVCashflows(
+						(GesamtkostenVerfahrenCashflowPeriodContainer) container,
+						scenario);
 			} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
-				calculateIndirectCashflows(
+				calculateUKVCashflows(
 						(UmsatzkostenVerfahrenCashflowPeriodContainer) container,
 						scenario);
 
@@ -98,66 +98,121 @@ public class CashFlowCalculator {
 	}
 
 	/**
-	 * Direkte Free-Cash-Flow Ermittlung
+	 * Free-Cash-Flow Ermittlung Gesamtkostenverfahren
 	 * 
 	 * @author Marcel Rosenberger
 	 * 
 	 */
 
-	/*
-	private static void calculateDirectCashflows(
-			GesamtkostenVerfahrenCashflowPeriodContainer container, Szenario scenario) {
+	private static void calculateGKVCashflows(
+			GesamtkostenVerfahrenCashflowPeriodContainer container,
+			Szenario scenario) {
+		logger.debug("Cash-Flow-Ermittlung nach Gesamtkostenverfahren");
+		for (GesamtkostenVerfahrenCashflowPeriod period : container
+				.getPeriods()) {
+			logger.debug("=================================================");
+			logger.debug("Jahr: " + period.getYear());
+			
 
-		for (GesamtkostenVerfahrenCashflowPeriod period : container.getPeriods()) {
-			// Cash-Flow vor Zins und Steuern.
+			// Betriebsergebnis
 			double freeCashFlow = period.getUmsatzerlöse()
-					- period.getUmsatzKosten();
+					+ period.getBestandserhöhung()
+					- period.getBestandsverminderung()
+					- period.getMaterialaufwand() - period.getLöhne()
+					- period.getEinstellungskosten()
+					- period.getPensionsrückstellungen()
+					- period.getSonstigepersonalkosten()
+					- period.getAbschreibungen() + period.getSonstigerertrag()
+					- period.getSonstigeraufwand();
+			logger.debug("Betriebsergebnis: " + freeCashFlow);
+
+			// Ergebnis der gewöhnlichen Geschäftstätigkeit
+			freeCashFlow = freeCashFlow + period.getWertpapiererträge()
+					- period.getZinsenundaufwendungen();
+			logger.debug("Ergebnis der gewöhnlichen Geschäftstätigkeit: "
+					+ freeCashFlow);
+
+			// Außerordentliches Ergebnis
+			freeCashFlow = freeCashFlow + period.getAußerordentlicheerträge()
+					- period.getAußerordentlicheaufwände();
+			logger.debug("Außerordentliches Ergebnis: " + freeCashFlow);
+
+			// Steuersatzberechnung
 			double steuersatz = (scenario.getCorporateAndSolitaryTax() + scenario
 					.getBusinessTax()) / 100;
 			logger.debug("Steuersatz: " + steuersatz);
-			freeCashFlow = freeCashFlow - (period.getEbit() * steuersatz)
-					+ period.getDesinvestitionen() - period.getInvestitionen();
-			logger.debug("FCF: " + freeCashFlow);
 
+			// Periodenüberschuss/-fehlbetrag
+			if (freeCashFlow > 0) {
+				freeCashFlow = freeCashFlow - (freeCashFlow * steuersatz);
+			}
+			logger.debug("Periodenüberschuss/-fehlbetrag: " + freeCashFlow);
+
+			// Cash-Flow nach Steuern
+			freeCashFlow = freeCashFlow + period.getAbschreibungen()
+					+ period.getPensionsrückstellungen();
+			logger.debug("Cash-Flow nach Steuern: " + freeCashFlow);
 			period.setFreeCashFlow(freeCashFlow);
 
-
 		}
-	
 
-	}*/
+	}
 
 	/**
-	 * Indirekte Free-Cash-Flow Ermittlung
+	 * Free-Cash-Flow Ermittlung Umsatzkostenverfahren
 	 * 
 	 * @author Marcel Rosenberger
 	 * 
 	 */
 
-	private static void calculateIndirectCashflows(
+	private static void calculateUKVCashflows(
 			UmsatzkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
+		logger.debug("Cash-Flow-Ermittlung nach Umsatzkostenverfahren");
+		for (UmsatzkostenVerfahrenCashflowPeriod period : container
+				.getPeriods()) {
+			logger.debug("=================================================");
+			logger.debug("Jahr: " + period.getYear());
+			
 
-		/*for (UmsatzkostenVerfahrenCashflowPeriod period : container.getPeriods()) {
+			// Betriebsergebnis
+			double freeCashFlow = period.getUmsatzerlöse()
+					- period.getHerstellungskosten()
+					- period.getVertriebskosten()
+					- period.getForschungskosten()
+					- period.getVerwaltungskosten()
+					+ period.getSonstigerertrag();
+			logger.debug("Betriebsergebnis: " + freeCashFlow);
 
-			double freeCashFlow = period.getJahresÜberschuss()
-					+ period.getZinsaufwand();
-			logger.debug("FreeCashFlow: " + freeCashFlow);
-			double fiktivesteuern = period.getEbit()-period.getZinsaufwand()*0.75;
-			logger.debug("Fiktive Steuern: " + fiktivesteuern);
-			fiktivesteuern = fiktivesteuern*(scenario.getBusinessTax()/100);
-			logger.debug("Fiktive Steuern: " + fiktivesteuern);
-			fiktivesteuern = fiktivesteuern + ((period.getEbit()-period.getZinsaufwand())*(scenario.getCorporateAndSolitaryTax()/100));
-			logger.debug("Fiktive Steuern: " + fiktivesteuern);
-			freeCashFlow = freeCashFlow - fiktivesteuern
-					+ period.getNichtZahlungswirksameAufwendungen()
-					- period.getNichtZahlungswirksameErtraege()
-					- period.getBruttoInvestitionen();
-			logger.debug("FreeCashFlow: " + freeCashFlow);
+			// Ergebnis der gewöhnlichen Geschäftstätigkeit
+			freeCashFlow = freeCashFlow + period.getWertpapiererträge()
+					- period.getZinsenundaufwendungen();
+			logger.debug("Ergebnis der gewöhnlichen Geschäftstätigkeit: "
+					+ freeCashFlow);
+
+			// Außerordentliches Ergebnis
+			freeCashFlow = freeCashFlow + period.getAußerordentlicheerträge()
+					- period.getAußerordentlicheaufwände();
+			logger.debug("Außerordentliches Ergebnis: " + freeCashFlow);
+
+			// Steuersatzberechnung
+			double steuersatz = (scenario.getCorporateAndSolitaryTax() + scenario
+					.getBusinessTax()) / 100;
+			logger.debug("Steuersatz: " + steuersatz);
+
+			// Periodenüberschuss/-fehlbetrag
+			if (freeCashFlow > 0) {
+				freeCashFlow = freeCashFlow - (freeCashFlow * steuersatz);
+			}
+			logger.debug("Periodenüberschuss/-fehlbetrag: " + freeCashFlow);
+
+			// Cash-Flow nach Steuern
+			freeCashFlow = freeCashFlow + period.getAbschreibungen()
+					+ period.getPensionsrückstellungen();
+			logger.debug("Cash-Flow nach Steuern: " + freeCashFlow);
 			period.setFreeCashFlow(freeCashFlow);
 
-		} */
-
+		}
 
 	}
 }
