@@ -68,6 +68,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private boolean periodsToForecastValid;
 	private boolean periodsToForecast_deterministicValid; //Annika Weis
 	private boolean relevantPastPeriodsValid;
+	private boolean specifiedPastPeriodsValid;
 
 	private boolean stochMethod;
 	private boolean randomWalk;
@@ -99,7 +100,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	private String errorMessageBorrowedCapitalProbabilityOfRise;
 	private String errorMessagePeriodsToForecast;
 	private String errorMessagePeriodsToForecast_deterministic; //Annika Weis
-	private String errorMessagePastPeriods;
+	private String errorMessageSpecifiedPastPeriods;
+	private String errorMessageRelevantPastPeriods;
 	private String errorMessageIterations;
 
 	private SortedSet<AbstractStochasticMethod> methods;
@@ -153,6 +155,7 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		
 		iterationsValid = true;
 		relevantPastPeriodsValid = true;
+		specifiedPastPeriodsValid = true;
 
 	}
 
@@ -170,7 +173,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		errorMessageBorrowedCapitalProbabilityOfRise = "Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50";
 		errorMessagePeriodsToForecast = "Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
 		errorMessagePeriodsToForecast_deterministic = "Bitte geben Sie die Anzahl vorherzusehender Perioden (deterministische Verfahren) in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
-		errorMessagePastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 an. Beispiel: 5";
+		errorMessageSpecifiedPastPeriods = "Bitte geben Sie die Anzahl der anzugebenden vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer als 3 und als die Anzahl der einbezogenen vergangenen Perioden.";
+		errorMessageRelevantPastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 und kleiner als die Anzahl der angegebenen vergangenen Perioden an.";
 		errorMessageIterations = "Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen als Ganzzahl zwischen 1000 und 100000 an. Beispiel: 10000";
 	}
 
@@ -209,10 +213,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 					.getProjectInputType().isStochastic();
 		} 
 		
-		//Annika Weis: Wert für Anzahl einbezogener, vergangener Perioden setzen
-		if (projectProxy.getSelectedProject().getRelevantPastPeriods() == 0) {
-			initializePastPeriods();
-		}
 		
 		//Annika Weis
 		detMethod = false;
@@ -281,6 +281,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		}
 		if(this.projectProxy.getSelectedProject().getIterations()!=0){
 			getView().setIterations(""+this.projectProxy.getSelectedProject().getIterations());
+		}
+		if(this.projectProxy.getSelectedProject().getSpecifiedPastPeriods()!=0){
+			getView().setSpecifiedPastPeriods(""+this.projectProxy.getSelectedProject().getSpecifiedPastPeriods());
 		}
 		if(this.projectProxy.getSelectedProject().getRelevantPastPeriods()!=0){
 			getView().setRelevantPastPeriods(""+this.projectProxy.getSelectedProject().getRelevantPastPeriods());
@@ -370,7 +373,16 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 					getView()
 							.setComponentError(
 									true,
-									"pastPeriods", errorMessagePastPeriods);
+									"relevantPastPeriods", errorMessageRelevantPastPeriods);
+				}
+				valid = false;
+			}
+			if(!specifiedPastPeriodsValid){
+				if (showError) {
+					getView()
+							.setComponentError(
+									true,
+									"specifiedPastPeriods", errorMessageSpecifiedPastPeriods);
 				}
 				valid = false;
 			}
@@ -564,13 +576,54 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 	
+	/**
+	 * Methode die sich nach der Auswahl der anzugebenden vergangenen
+	 * Perioden um die davon abhaengigen Objekte kuemmert. Diese muessen laut
+	 * Fachkonzept groesser 3 Perioden betragen und groesser als die Anzahl
+	 * einbezogener Perioden sein
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param specifiedPastPeriods
+	 *            die Anzahl der Perioden der Vergangenheit die angegeben werden müssen
+	 */
+	public void specifiedPastPeriodsChosen(String specifiedPastPeriods) {
+		logger.debug("Anwender-Eingabe zu anzugebenden Perioden der Vergangenheit ");
+
+		int specifiedPastPeriodsInt;
+		int relevantPastPeriodsInt;
+		try {
+			specifiedPastPeriodsInt = Integer.parseInt(specifiedPastPeriods);
+			relevantPastPeriodsInt = this.projectProxy.getSelectedProject().getRelevantPastPeriods();
+			if (specifiedPastPeriodsInt > 3 && specifiedPastPeriodsInt > relevantPastPeriodsInt) {
+				specifiedPastPeriodsValid = true;
+				getView().setComponentError(false, "specifiedPastPeriods", "");
+				this.projectProxy.getSelectedProject().setSpecifiedPastPeriods(
+						specifiedPastPeriodsInt);
+				logger.debug("Anzahl anzugebender Vergangenheits-Perioden sind in das Projekt-Objekten gesetzt");
+			} else {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException nfe) {
+			specifiedPastPeriodsValid = false;
+			getView()
+					.setComponentError(
+							true,
+							"specifiedPastPeriods", errorMessageSpecifiedPastPeriods);
+			getView()
+					.showErrorMessage(errorMessageSpecifiedPastPeriods);
+			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl anzugebender, vergangener Perioden'");
+		}
+
+		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
 	
 	/**
 	 * Methode die sich nach der Auswahl der zu beachtenenden vergangenen
 	 * Perioden um die davon abhaengigen Objekte kuemmert. Diese muessen laut
-	 * Fachkonzept groesser 2 Perioden betragen
+	 * Fachkonzept groesser 2 Perioden betragen und kleiner als die 
+	 * Anzahl anzugebender Perioden sein.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Marcel Rosenberger
 	 * @param relevantPastPeriods
 	 *            die Anzahl der Perioden der Vergangenheit die einbezogen
 	 *            werden sollen
@@ -579,11 +632,13 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		logger.debug("Anwender-Eingabe zu relevanter Perioden der Vergangenheit ");
 
 		int relevantPastPeriodsInt;
+		int specifiedPastPeriodsInt;
 		try {
 			relevantPastPeriodsInt = Integer.parseInt(relevantPastPeriods);
-			if (relevantPastPeriodsInt > 2) {
+			specifiedPastPeriodsInt = this.projectProxy.getSelectedProject().getSpecifiedPastPeriods(); 
+			if (relevantPastPeriodsInt > 2 && specifiedPastPeriodsInt > relevantPastPeriodsInt) {
 				relevantPastPeriodsValid = true;
-				getView().setComponentError(false, "pastPeriods", "");
+				getView().setComponentError(false, "relevantPastPeriods", "");
 				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
 						relevantPastPeriodsInt);
 				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
@@ -595,9 +650,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 			getView()
 					.setComponentError(
 							true,
-							"pastPeriods", errorMessagePastPeriods);
+							"relevantPastPeriods", errorMessageRelevantPastPeriods);
 			getView()
-					.showErrorMessage(errorMessagePastPeriods);
+					.showErrorMessage(errorMessageRelevantPastPeriods);
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
 
@@ -898,9 +953,12 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 		//Zeitreihe nicht aktiv / aktiv
 		if(!stochMethod||!timeSeries){
 			getView().activateRelevantPastPeriods(false);
-			getView().setComponentError(false, "pastPeriods", null);		
+			getView().activateSpecifiedPastPeriods(false);
+			getView().setComponentError(false, "relevantPastPeriods", null);	
+			getView().setComponentError(false, "specifiedPastPeriods", null);	
 		}else {
 			getView().activateRelevantPastPeriods(true);
+			getView().activateSpecifiedPastPeriods(true);
 		}
 		
 		/**
@@ -950,16 +1008,6 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 
 	}
 
-	
-	/**
-	 * Initialisiert Anzahl einbezogener, vergangener Perioden bei der stochastischen Eingabe
-	 * 
-	 * @author Annika Weis
-	 */
-	public void initializePastPeriods(){
-		getView().setRelevantPastPeriods("5");
-	}
-	
 	
 	/**
 	 * 

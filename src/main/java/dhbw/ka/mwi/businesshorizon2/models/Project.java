@@ -89,6 +89,7 @@ public class Project implements Serializable {
 
 	private int periodsToForecast;
 	private int periodsToForecast_deterministic;//Annika Weis
+	private int specifiedPastPeriods;
 	private int relevantPastPeriods;
 	private int iterations;
 	private int basisYear;
@@ -101,9 +102,10 @@ public class Project implements Serializable {
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
 
 	/**
-	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird.
+	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird. 
+	 * Außerdem werden analog zum Fachkonzept die Default-Werte der Parameter gesetzt.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Marcel Rosenberger
 	 * @param Der
 	 *            Name des Projekts
 	 */
@@ -112,6 +114,10 @@ public class Project implements Serializable {
 		this.setDescription(description);
 		this.projectInputType = new ProjectInputType();
 		this.iterations = 10000;
+		this.specifiedPastPeriods = 6;
+		this.relevantPastPeriods = 5;
+		this.periodsToForecast = 3;
+		
 	}
 
 	/**
@@ -380,8 +386,27 @@ public class Project implements Serializable {
 		this.periodsToForecast_deterministic = periodsToForecast_deterministic;
 	}
 	
-	
+	/**
+	 * Setzt die Anzahl der anzugebenden vergangenen Perioden des Projekts.
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param specifiedPastPeriods
+	 *            Anzahl der anzugebenden vergangenen Perioden
+	 */
+	public void setSpecifiedPastPeriods(int specifiedPastPeriods) {
+		this.specifiedPastPeriods = specifiedPastPeriods;
+	}
 
+	/**
+	 * Gibt die Anzahl der anzugebenden vergangenen Perioden des Projekts zurück.
+	 * 
+	 * @author Marcel Rosenberger
+	 * @return Anzahl der anzugebenden vergangenen Perioden
+	 */
+	public int getSpecifiedPastPeriods() {
+		return specifiedPastPeriods;
+	}
+	
 	/**
 	 * Setzt die Anzahl der vergangenen relevanten Perioden des Projekts.
 	 * 

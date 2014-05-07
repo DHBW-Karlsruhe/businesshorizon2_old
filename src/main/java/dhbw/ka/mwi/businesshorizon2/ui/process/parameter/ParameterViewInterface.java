@@ -78,6 +78,16 @@ public interface ParameterViewInterface extends ContentView {
 	void activatePeriodsToForecast_deterministic(boolean enabled);
 
 	/**
+	 * Diese Methode graut das Textfeld 'textfieldNumSpecifiedPastPeriods' aus.
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param enabled
+	 *            true aktiviert die Komponente, false deaktiviert (graut aus)
+	 *            die Komponente
+	 */
+	void activateSpecifiedPastPeriods(boolean enabled);
+	
+	/**
 	 * Diese Methode graut das Textfeld 'textfieldNumPastPeriods' aus.
 	 * 
 	 * @author Christian Scherer
@@ -271,6 +281,15 @@ public interface ParameterViewInterface extends ContentView {
 	 *            Anzahl Wiederholungen
 	 */
 	void setIterations(String iterations);
+	
+	/**
+	 * Setzt den Wert des Texfelds 'Anzahl anzugebender, vergangener Perioden'
+	 * 
+	 * @author Marcel Rosenberger
+	 * @param specifiedPastPeriods
+	 *            Anzahl anzugebender, vergangener Perioden
+	 */
+	void setSpecifiedPastPeriods(String specifiedPastPeriods);
 
 	/**
 	 * Setzt den Wert des Texfelds 'Anzahl einbezogener, vergangener Perioden'
@@ -319,6 +338,9 @@ public interface ParameterViewInterface extends ContentView {
 
 
 	void showParameterView();
+
+	
+
 
 
 }
