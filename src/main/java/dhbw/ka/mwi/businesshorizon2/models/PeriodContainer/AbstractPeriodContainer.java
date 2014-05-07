@@ -22,6 +22,7 @@
 package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
@@ -84,4 +85,20 @@ abstract public class AbstractPeriodContainer implements Comparable<AbstractPeri
 		this.perioden.remove(period);
 	}
 
+	
+	/**
+	 * Gibt zurück, ob alle erforderlichen Parameter in allen Perioden gesetzt sind
+	 * 
+	 * @author Annika Weis
+	 */
+	public boolean isValid() {
+		Boolean valid = true;
+		Iterator<Period> itr=perioden.iterator();
+		while(itr.hasNext()){
+			Period c=itr.next();
+			valid = c.isValid();
+		}
+
+		return valid;
+	}
 }

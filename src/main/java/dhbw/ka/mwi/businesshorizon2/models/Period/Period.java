@@ -175,4 +175,5 @@ public abstract class Period implements Comparable<Period>, Serializable {
 		this.capitalStockSet = capitalStockSet;
 	}
 
+	public abstract boolean isValid();
 }

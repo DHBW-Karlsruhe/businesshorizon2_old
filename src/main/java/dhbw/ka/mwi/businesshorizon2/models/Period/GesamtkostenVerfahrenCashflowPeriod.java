@@ -625,6 +625,24 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
 			this.setAußerordentlicheaufwändeSet(true);
 		}
 
+		/**
+		 * Gibt zurück, ob alle erforderlichen Parameter gesetzt sind
+		 * 
+		 * @author Annika Weis
+		 * TODO: Parameter anpassen
+		 */
+		public boolean isValid() {
+			Boolean valid = true;
+			Double capitalStock = this.getCapitalStock();
+			Double freeCashFlowSet = this.getFreeCashFlow();
+			if (capitalStock.isNaN()) {
+				valid = false;
+			}
+			if (freeCashFlowSet.isNaN()) {
+				valid = false;
+			}
+			return valid;
+		}
 
 
 }
