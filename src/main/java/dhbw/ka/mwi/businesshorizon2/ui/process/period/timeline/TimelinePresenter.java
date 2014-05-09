@@ -1261,9 +1261,16 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (isValid()) {
 			if (deterministic) {
 				logger.debug("Validate det " + pastPeriods.isValid());
-			}
-			if (stochastic) {
+				//TODO
+				if(!pastPeriods.isValid()){
+					getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
+				}
+			} else if (stochastic) {
 				logger.debug("Validate sto " + futurePeriods.isValid());
+				//TODO
+				if(!futurePeriods.isValid()){
+					getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
+				}
 			}
 			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
 		} else {

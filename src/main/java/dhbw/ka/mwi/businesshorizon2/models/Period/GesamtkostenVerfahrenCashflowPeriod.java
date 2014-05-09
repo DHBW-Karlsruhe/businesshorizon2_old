@@ -635,10 +635,10 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
 			Boolean valid = true;
 			Double capitalStock = this.getCapitalStock();
 			Double freeCashFlowSet = this.getFreeCashFlow();
-			if (capitalStock.isNaN()) {
+			if (capitalStock== null) {
 				valid = false;
 			}
-			if (freeCashFlowSet.isNaN()) {
+			if (freeCashFlowSet== null) {
 				valid = false;
 			}
 			return valid;

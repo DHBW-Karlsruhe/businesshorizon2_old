@@ -18,7 +18,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
 import java.io.Serializable;
@@ -36,7 +35,8 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
  * @author Kai Westerholz
  * 
  */
-abstract public class AbstractPeriodContainer implements Comparable<AbstractPeriodContainer>, Serializable {
+abstract public class AbstractPeriodContainer implements
+		Comparable<AbstractPeriodContainer>, Serializable {
 
 	/**
 	 * 
@@ -85,20 +85,11 @@ abstract public class AbstractPeriodContainer implements Comparable<AbstractPeri
 		this.perioden.remove(period);
 	}
 
-	
 	/**
-	 * Gibt zurück, ob alle erforderlichen Parameter in allen Perioden gesetzt sind
+	 * Gibt zurück, ob alle erforderlichen Parameter in allen Perioden gesetzt
+	 * sind
 	 * 
 	 * @author Annika Weis
 	 */
-	public boolean isValid() {
-		Boolean valid = true;
-		Iterator<Period> itr=perioden.iterator();
-		while(itr.hasNext()){
-			Period c=itr.next();
-			valid = c.isValid();
-		}
-
-		return valid;
-	}
+	 public abstract boolean isValid();
 }

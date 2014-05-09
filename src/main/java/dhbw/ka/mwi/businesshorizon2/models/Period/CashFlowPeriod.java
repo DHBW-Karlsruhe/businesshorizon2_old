@@ -46,10 +46,10 @@ public class CashFlowPeriod extends Period {
 		Boolean valid = true;
 		Double capitalStock = this.getCapitalStock();
 		Double freeCashFlowSet = this.getFreeCashFlow();
-		if (capitalStock.isNaN()) {
+		if (capitalStock == 0) {
 			valid = false;
 		}
-		if (freeCashFlowSet.isNaN()) {
+		if (freeCashFlowSet == 0) {
 			valid = false;
 		}
 		return valid;

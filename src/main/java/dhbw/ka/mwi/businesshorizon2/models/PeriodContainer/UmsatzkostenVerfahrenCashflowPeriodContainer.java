@@ -21,7 +21,11 @@
 
 package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
+import java.util.Iterator;
 import java.util.TreeSet;
+
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 
 /**
@@ -50,5 +54,25 @@ public class UmsatzkostenVerfahrenCashflowPeriodContainer extends
         public TreeSet<UmsatzkostenVerfahrenCashflowPeriod> getPeriods() {
                 return (TreeSet<UmsatzkostenVerfahrenCashflowPeriod>) super.getPeriods();
         }
+        
+    	/**
+    	 * Gibt zurück, ob alle erforderlichen Parameter in allen Perioden gesetzt
+    	 * sind
+    	 * 
+    	 * @author Annika Weis
+    	 */
+    	public boolean isValid() {
+    		Boolean valid = true;
+    		Iterator<UmsatzkostenVerfahrenCashflowPeriod> itr = getPeriods().iterator();
+    		System.out.println("prüfen: isValid");
+    		while (itr.hasNext()) {
+    			Period c = itr.next();
+    			System.out.println("isValid (" + c.getYear() +  "): " + c.isValid());
+    			if (c.isValid() == false) {
+    				valid = false;
+    			}
+    		}
+    		return valid;
+    	}
 
 }

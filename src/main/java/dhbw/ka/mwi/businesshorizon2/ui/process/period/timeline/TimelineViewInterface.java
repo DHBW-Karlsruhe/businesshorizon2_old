@@ -49,5 +49,32 @@ public interface TimelineViewInterface extends ContentView {
         void addBasePeriod(Period period);
 
         public void setButtonWrong(int year, boolean isWrong);
+        
+    	/**
+    	 * Setzt eine Fehleranzeige an das Entsprechende Feld bzw. entfernt diese
+    	 * wieder je nach Parametriesierung
+    	 * 
+    	 * @author Christian Scherer, Annika Weis
+    	 * @param setError
+    	 *            true, wenn eine Fehleranzeige gezeigt werden soll und false,
+    	 *            wenn die Fehleranzeige geloescht werden soll
+    	 * @param component
+    	 *            Identifiziert den Componenten, bei dem die Fehleranzeige
+    	 *            angezeigt bzw. entfernt werden soll
+    	 * @param message
+    	 *            Fehlermeldung die neben dem Componenten gezeigt werden soll
+    	 * 
+    	 */
+    	void setComponentError(boolean setError, String component, String message);
+    	
+    	
+    	/**
+    	 * Gibt eine Fehlermeldung an den Benutzer aus.
+    	 * 
+    	 * @author Christian Scherer, Annika Weis
+    	 * @param message
+    	 *            Fehlermeldung die der Methode zur Ausgabe uebergeben wird
+    	 */
+    	void showErrorMessage(String message);
 
 }

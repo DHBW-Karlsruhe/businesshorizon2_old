@@ -21,8 +21,12 @@
 
 package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
 
+import java.util.Iterator;
 import java.util.TreeSet;
+
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.GesamtkostenVerfahrenCashflowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
 * Diese Klasse stellt den Container für die Perioden zur Verfügung. Die
@@ -48,5 +52,24 @@ public class GesamtkostenVerfahrenCashflowPeriodContainer extends AbstractPeriod
                 return (TreeSet<GesamtkostenVerfahrenCashflowPeriod>) super.getPeriods();
         }
 
+    	/**
+    	 * Gibt zurück, ob alle erforderlichen Parameter in allen Perioden gesetzt
+    	 * sind
+    	 * 
+    	 * @author Annika Weis
+    	 */
+    	public boolean isValid() {
+    		Boolean valid = true;
+    		Iterator<GesamtkostenVerfahrenCashflowPeriod> itr = getPeriods().iterator();
+    		System.out.println("prüfen: isValid");
+    		while (itr.hasNext()) {
+    			Period c = itr.next();
+    			System.out.println("isValid (" + c.getYear() +  "): " + c.isValid());
+    			if (c.isValid() == false) {
+    				valid = false;
+    			}
+    		}
+    		return valid;
+    	}
 }
 

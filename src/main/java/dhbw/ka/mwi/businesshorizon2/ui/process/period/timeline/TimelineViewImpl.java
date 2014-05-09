@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.NativeButton;
@@ -277,5 +278,38 @@ public class TimelineViewImpl extends VerticalLayout implements
                         }
                 }
         }
+        
+        /**
+    	 * Setzt eine Fehleranzeige an das Entsprechende Feld bzw. entfernt diese
+    	 * wieder je nach Parametriesierung
+    	 * 
+    	 * @author Christian Scherer
+    	 * @param setError
+    	 *            true, wenn eine Fehleranzeige gezeigt werden soll und false,
+    	 *            wenn die Fehleranzeige geloescht werden soll
+    	 * @param component
+    	 *            Identifiziert den Componenten, bei dem die Fehleranzeige
+    	 *            angezeigt bzw. entfernt werden soll
+    	 * @param message
+    	 *            Fehlermeldung die neben dem Componenten gezeigt werden soll
+    	 */
+    	@Override
+    	public void setComponentError(boolean setError, String component,
+    			String message) {
+    		this.setComponentError(new UserError(message));
+    	}
+    	
+    	/**
+    	 * Gibt eine Fehlermeldung an den Benutzer aus.
+    	 * 
+    	 * @author Christian Scherer, Annika Weis
+    	 * @param message
+    	 *            Fehlermeldung die der Methode zur Ausgabe uebergeben wird
+    	 */
+    	@Override
+    	public void showErrorMessage(String message) {
+    		getWindow().showNotification((String) "", message,
+    				Notification.TYPE_ERROR_MESSAGE);
+    	}
 }
 

@@ -51,5 +51,23 @@ public class CashFlowPeriodContainer extends AbstractPeriodContainer {
 		return (TreeSet<CashFlowPeriod>) super.getPeriods();
 	}
 
-
+	/**
+	 * Gibt zurück, ob alle erforderlichen Parameter in allen Perioden gesetzt
+	 * sind
+	 * 
+	 * @author Annika Weis
+	 */
+	public boolean isValid() {
+		Boolean valid = true;
+		Iterator<CashFlowPeriod> itr = getPeriods().iterator();
+		System.out.println("prüfen: isValid");
+		while (itr.hasNext()) {
+			Period c = itr.next();
+			System.out.println("isValid (" + c.getYear() +  "): " + c.isValid());
+			if (c.isValid() == false) {
+				valid = false;
+			}
+		}
+		return valid;
+	}
 }
