@@ -108,6 +108,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private Label periods;
 	private Label lastChanged;
 	private Label title;
+	private Label projectTyp;
 
 	private TextField tfName;
 	private TextArea taDescription;
@@ -259,23 +260,29 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 
 		periodList = (NavigableSet<Period>) project.getPeriods();
 
+		
 		// String fuer saubere Periodenausgabe erstellen. Bsp:
 		// "3 Perioden (2009-2012)"
+		
 		String periodString;
-		switch (periodList.size()) {
-		case (0):
+		int numbersOfPeriods;
+		numbersOfPeriods = project.getTotalPeriods();
+
+		if (numbersOfPeriods == 0) {
 			periodString = "Noch keine Perioden eingetragen";
-			break;
-		case (1):
-			periodString = "1 Periode (" + periodList.first().getYear() + ")";
-			break;
-		default: // also Anzahl der Perioden groesser 1
-			periodString = "" + periodList.size() + " Perioden ("
-					+ periodList.first().getYear() + "-"
-					+ periodList.last().getYear() + ")";
-			break;
 		}
+		else {	
+			periodString = "" + numbersOfPeriods + " Perioden" ;
+		}
+		
+		
+		
 		periods = new Label(periodString);
+		String typMethod;
+		typMethod = project.getTypMethod();
+		projectTyp = new Label(typMethod);
+			
+		
 
 		// String fuer Ausgabe des letzten Aenderungsdatum
 		String lastChangedString;
@@ -292,12 +299,15 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		//Buttons erstellen
 		final Button removeBtn = new Button("");
 		final Button editBtn = new Button("");
-		
+				
 		//Button formatieren
 		removeBtn.addStyleName("borderless");
 		removeBtn.setIcon(new ThemeResource("images/icons/trash.png"));
 		editBtn.addStyleName("borderless");
 		editBtn.setIcon(new ThemeResource("images/icons/pen.png"));
+		
+		
+		
 		
 		//Button-Listener hinzufügen
 		removeBtn.addListener(new Button.ClickListener() {
@@ -341,7 +351,6 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 			}
 		});
 		
-
 		
 		// Liste für Buttons zur spaeteren Identifikation
 		removeBtnList.add(removeBtn);
@@ -350,16 +359,17 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 
 		//Inhalt dem Panel hinzufügen
 		panelContentLeft.addComponent(periods);
+		panelContentLeft.addComponent(projectTyp);
 		panelContentLeft.addComponent(lastChanged);
 		panelContentRight.addComponent(removeBtnList.get(i));
 		panelContentRight.addComponent(editBtnList.get(i));
+		
+		
 		logger.debug("Edit-Button " + i + " hinzugefuegt");
 		
 		
 		//CLick-Listener für das Panel hinzuüfgen
 		singleProject.addListener(this);
-		
-
 		projectListPanel.addComponent(singleProject);
 		logger.debug("Einzelnes Projektelement erzeugt");
 
@@ -561,5 +571,5 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		notif.setPosition(Window.Notification.POSITION_CENTERED_TOP);
 		getWindow().showNotification(notif);
 	}
-
+	
 }
