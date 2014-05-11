@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 public enum InputType implements Serializable {
 
-        DIRECT("Direkte Eingabe"),GESAMTKOSTENVERFAHREN("Direkte Berechnung des Cashflows"),UMSATZKOSTENVERFAHREN("Indirekte Berechnung des Cashflows");
+        DIRECT("Direkte Eingabe"),GESAMTKOSTENVERFAHREN("Gesamtkostenverfahren"),UMSATZKOSTENVERFAHREN("Umsatzkostenverfahren");
         
         private String caption;
         

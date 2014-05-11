@@ -46,6 +46,7 @@ InputViewInterface  {
 	public void addInputField(String pd) {
 		TextField tf = new TextField(pd);
 		tf.setImmediate(true);
+		tf.setWidth("200px");
 		
 		tf.addListener(new Property.ValueChangeListener() {
 			
@@ -84,6 +85,7 @@ InputViewInterface  {
 		TextField tf = new TextField(pd, df.format(initialContent));
 		df.format(initialContent);
 		tf.setImmediate(true);
+		tf.setWidth("200px");
 
 		tf.addListener(new Property.ValueChangeListener() {
 
@@ -119,6 +121,7 @@ InputViewInterface  {
 		panel.removeAllComponents();
 		panel.setSpacing(true);
 		panel.setMargin(true);
+		panel.setSizeFull();
 	}
 	public void setWrong(int textFieldColumn, int Row, boolean b) {
 		if (b)
