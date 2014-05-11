@@ -1270,14 +1270,38 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void validate(ValidateContentStateEvent event) {
 		logger.debug("Validate d:" + deterministic + " s:" + stochastic);
 		if (isValid()) {
+			/*
+			 * Annika Weis Prüfen, ob alle Werte in allen Perioden gesetzt sind
+			 */
 			if (deterministic) {
-				logger.debug("Validate det " + pastPeriods.isValid());
-
+				logger.debug("Validate det "
+						+ projectProxy.getSelectedProject()
+								.getDeterministicPeriods().isValid());
+				// TODO
+				if (!projectProxy.getSelectedProject()
+						.getDeterministicPeriods().isValid()) {
+					// getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
+					eventBus.fireEvent(new InvalidStateEvent(
+							NavigationSteps.PERIOD, showErrors));
+				} else {
+					eventBus.fireEvent(new ValidStateEvent(
+							NavigationSteps.PERIOD));
+				}
+			} else if (stochastic) {
+				logger.debug("Validate sto "
+						+ projectProxy.getSelectedProject()
+								.getStochasticPeriods().isValid());
+				// TODO
+				if (!projectProxy.getSelectedProject().getStochasticPeriods()
+						.isValid()) {
+					// getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
+					eventBus.fireEvent(new InvalidStateEvent(
+							NavigationSteps.PERIOD, showErrors));
+				} else {
+					eventBus.fireEvent(new ValidStateEvent(
+							NavigationSteps.PERIOD));
+				}
 			}
-			if (stochastic) {
-				logger.debug("Validate sto " + futurePeriods.isValid());
-			}
-			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
 		} else {
 			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PERIOD,
 					showErrors));
