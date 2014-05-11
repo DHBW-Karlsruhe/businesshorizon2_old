@@ -120,8 +120,11 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			for (AbstractDeterministicMethod method_deterministic : project
 					.getMethods_deterministic()) {
 				// alle Szenarios durchlaufen
+				int counter = 0;
 				for (Szenario scenario : project.getIncludedScenarios()) {
 					onProgressChange((float) 0.5);
+					
+					counter++;
 					
 					//Cashflows berechnen falls notwendig
 					for (AbstractPeriodContainer container : drContainer.getPeriodContainers()){
@@ -192,7 +195,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 									drContainer, scenario);
 
 							getView().addDeterministicChartArea(
-									deterministicarea);
+									deterministicarea, counter);
 
 							/*
 							 * Alte Implementierung
@@ -228,7 +231,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 									drContainer, scenario);
 
 							getView().addDeterministicChartArea(
-									deterministicarea);
+									deterministicarea, counter);
 
 							/*
 							 * DeterministicChartArea chart = new
@@ -356,10 +359,12 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 
 			StochasticChartArea stochasticChartArea;
 		
+			int counter = 0;
 			for (Szenario scenario : project.getIncludedScenarios()) {
 			CompanyValueStochastic companyValues = new CompanyValueStochastic();
 			APV apv = new APV();
 
+			counter++;
 			// Bei Verwendung der Zeitreihenanalyse sollen
 			// zusätzlich
 			// die Erwartungswerte der Cashflows berechnet werden
@@ -432,7 +437,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 						validierung, scenario);
 			}
 			getView().changeProgress(1);
-			getView().addStochasticChartArea(stochasticChartArea);
+			getView().addStochasticChartArea(stochasticChartArea, counter);
 		
 		}
 	}

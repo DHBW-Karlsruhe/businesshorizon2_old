@@ -40,7 +40,7 @@ public interface OutputViewInterface extends ContentView {
 	 * @param chartArea
 	 *            Eine ChartArea mit stochastischen Ergebnissen
 	 */
-	void addStochasticChartArea(StochasticChartArea chartArea);
+	void addStochasticChartArea(StochasticChartArea chartArea, int number);
 
 	/**
 	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des
@@ -49,12 +49,21 @@ public interface OutputViewInterface extends ContentView {
 	 * @param chartArea
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
-	void addDeterministicChartArea(DeterministicChartArea chartArea);
 
+	void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
+	
+	void addHeadline(Label head);
+	
+	void addSubline(Label head);
+	
+	void addSubline(Label head, Label abw);
+	
 	void addLabel(Label label);
 	
 	void showErrorMessge(String message);
 
 	void changeProgress(float progress);
+
+
 
 }
