@@ -68,6 +68,7 @@ InputViewInterface  {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				presenter.setzeFehlerstatus();
 			}
 		});
 		panel.addComponent(tf);
