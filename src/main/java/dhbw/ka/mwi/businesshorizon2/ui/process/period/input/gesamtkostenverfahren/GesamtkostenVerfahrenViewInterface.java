@@ -19,34 +19,12 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.models.PeriodContainer;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren;
+        
 
-import java.util.TreeSet;
-import dhbw.ka.mwi.businesshorizon2.models.Period.DirectCalculatedCashflowPeriod;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-/**
-* Diese Klasse stellt den Container für die Perioden zur Verfügung. Die
-* Bilanzinhalte der Perioden sind nach dem Umsazukostenverfahren bewertet.
-*
-* @author Kai Westerholz
-*
-*/
-
-public class DirectCalculatedCashflowPeriodContainer extends AbstractPeriodContainer {
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1780595206691527261L;
-
-        public DirectCalculatedCashflowPeriodContainer() {
-                super();
-        }
-
-        @Override
-        public TreeSet<DirectCalculatedCashflowPeriod> getPeriods() {
-                return (TreeSet<DirectCalculatedCashflowPeriod>) super.getPeriods();
-        }
+public interface GesamtkostenVerfahrenViewInterface extends InputViewInterface {
 
 }
 

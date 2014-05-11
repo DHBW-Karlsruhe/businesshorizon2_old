@@ -156,22 +156,22 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 
 
-	<!-- Periode-DirekteCashflowBerechnung -->
-	<bean name="directCalculationPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationPresenter"
+	<!-- Periode-Gesamtkostenverfahren -->
+	<bean name="gesamtkostenVerfahrenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter"
 		scope="session" />
-	<bean name="directCalculationView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationViewImpl"
+	<bean name="gesamtkostenVerfahrenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenViewImpl"
 		scope="session" />
 
 
 
-	<!-- Periode-DirekteCashflowBerechnung -->
-	<bean name="indirectCalculationPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationPresenter"
+	<!-- Periode-Umsatzkostenverfahren -->
+	<bean name="umsatzkostenVerfahrenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter"
 		scope="session" />
-	<bean name="indirectCalculationView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationViewImpl"
+	<bean name="umsatzkostenVerfahrenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenViewImpl"
 		scope="session" />
 
 

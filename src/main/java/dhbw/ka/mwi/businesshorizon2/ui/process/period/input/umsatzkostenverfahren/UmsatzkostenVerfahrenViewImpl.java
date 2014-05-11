@@ -20,26 +20,39 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren;
 
-import com.mvplite.event.Event;
+import javax.annotation.PostConstruct;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ShowIndirectCalcEvent extends Event implements ShowInputViewEventInterface{
-        
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
+
+/**
+* Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
+* Vaadin.
+*
+* @author Marcel Rosenberger
+*
+*/
+public class UmsatzkostenVerfahrenViewImpl extends AbstractInputView implements UmsatzkostenVerfahrenViewInterface{
+        private static final long serialVersionUID = 1L;
+
+        @Autowired
+        private UmsatzkostenVerfahrenPresenter presenterTemp;
+
         /**
+         * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+         * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+         * einen EventHandler.
          *
+         * @author Marcel Rosenberger
          */
-        private static final long serialVersionUID = -2773797208503072554L;
-        private IndirectCalculatedCashflowPeriod period;
-        
-        public ShowIndirectCalcEvent(IndirectCalculatedCashflowPeriod period){
-                this.period = period;
-        }
 
-        public IndirectCalculatedCashflowPeriod getPeriod() {
-                return period;
+        @PostConstruct
+        public void init() {
+                presenter = presenterTemp;
+                presenter.setView(this);
         }
-
 }

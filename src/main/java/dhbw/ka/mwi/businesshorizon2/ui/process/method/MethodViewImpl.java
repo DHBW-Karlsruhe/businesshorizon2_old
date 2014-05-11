@@ -193,15 +193,15 @@ public class MethodViewImpl extends HorizontalSplitPanel implements MethodViewIn
         private void initOptionGroups() {
                 detInput = new Panel("Zukünftige Perioden (deterministisch):");
                 deterministicInput.addItem(InputType.DIRECT);
-                deterministicInput.addItem(InputType.DIRECTCALCULATION);
-                deterministicInput.addItem(InputType.INDIRECTCALCULATION);
+                deterministicInput.addItem(InputType.GESAMTKOSTENVERFAHREN);
+                deterministicInput.addItem(InputType.UMSATZKOSTENVERFAHREN);
                 detInput.addStyleName(Reindeer.PANEL_LIGHT);
                 detInput.addComponent(deterministicInput);
                 
                 stoInput = new Panel("Vergangene Perioden (stochastisch):");
                 stochasticInput.addItem(InputType.DIRECT);
-                stochasticInput.addItem(InputType.DIRECTCALCULATION);
-                stochasticInput.addItem(InputType.INDIRECTCALCULATION);
+                stochasticInput.addItem(InputType.GESAMTKOSTENVERFAHREN);
+                stochasticInput.addItem(InputType.UMSATZKOSTENVERFAHREN);
                 stoInput.addStyleName(Reindeer.PANEL_LIGHT);
                 stoInput.addComponent(stochasticInput);
         }

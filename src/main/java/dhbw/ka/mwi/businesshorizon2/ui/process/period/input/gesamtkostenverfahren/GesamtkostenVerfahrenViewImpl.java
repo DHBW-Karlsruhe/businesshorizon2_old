@@ -19,7 +19,7 @@
 ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren;
 
 import javax.annotation.PostConstruct;
 
@@ -35,11 +35,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 * @author Marcel Rosenberger
 *
 */
-public class DirectCalculationViewImpl extends AbstractInputView implements DirectCalculationViewInterface {
+public class GesamtkostenVerfahrenViewImpl extends AbstractInputView implements GesamtkostenVerfahrenViewInterface {
         private static final long serialVersionUID = 1L;
 
         @Autowired
-        private DirectCalculationPresenter presenterTemp;
+        private GesamtkostenVerfahrenPresenter presenterTemp;
         
 
         /**
@@ -52,7 +52,7 @@ public class DirectCalculationViewImpl extends AbstractInputView implements Dire
 
         @PostConstruct
         public void init() {
-                logger = Logger.getLogger(DirectCalculationViewImpl.class);
+                logger = Logger.getLogger(GesamtkostenVerfahrenViewImpl.class);
                 presenter = presenterTemp;
                 presenter.setView(this);
                 logger.debug("Umsatz presenter set");
