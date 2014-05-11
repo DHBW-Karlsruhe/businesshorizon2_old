@@ -136,7 +136,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 			WrongPasswordException {
 		if (allUsers != null) {
 			for (User user : allUsers) {
-				if (user.getEmailAdress().equals(emailAdress)) {
+				if (user.getEmailAdress().toUpperCase().equals(emailAdress.toUpperCase())) {
 					if (user.getPassword().equals(password)) {
 						loggedInUsers.put(user.getEmailAdress(), user);
 						logger.debug("User " + emailAdress + " successfully logged in.");
