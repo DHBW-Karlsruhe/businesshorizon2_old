@@ -1,8 +1,13 @@
 /*******************************************************************************
  * BusinessHorizon2
  *
- * Copyright (C) 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+ * Copyright (C) 
+ * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
+ * Volker Meier
+ * 
+ *
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
