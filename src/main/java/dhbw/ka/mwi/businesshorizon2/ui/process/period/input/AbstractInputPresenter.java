@@ -21,9 +21,12 @@ import com.mvplite.event.EventBus;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		extends ScreenPresenter<T> {
@@ -211,4 +214,31 @@ public abstract class AbstractInputPresenter<T extends InputViewInterface>
 		}	
 	}
 
+	/**
+	 * @author Annika Weis
+	 */
+	public void setzeFehlerstatus(){
+		System.out.println("setzeFehlerstatus");
+		if (projectProxy.getSelectedProject().getProjectInputType().isDeterministic()) {
+			logger.debug("Validate det " + projectProxy.getSelectedProject().getDeterministicPeriods().isValid());
+			//TODO
+			if(!projectProxy.getSelectedProject().getDeterministicPeriods().isValid()){
+				//getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
+				eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PERIOD,
+						true));
+			} else {
+				eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));	
+			}
+		} else if (projectProxy.getSelectedProject().getProjectInputType().isStochastic()) {
+			logger.debug("Validate sto " + projectProxy.getSelectedProject().getStochasticPeriods().isValid());
+			//TODO
+			if(!projectProxy.getSelectedProject().getStochasticPeriods().isValid()){
+				//getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
+				eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PERIOD,
+						true));
+			} else {
+				eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));					
+			}
+		}
+	}
 }
