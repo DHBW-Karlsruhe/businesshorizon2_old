@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren;
 
 import javax.annotation.PostConstruct;
 
@@ -28,7 +28,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
@@ -37,8 +37,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
  * 
  */
 
-public class DirectCalculationPresenter extends
-		AbstractInputPresenter<DirectCalculationViewInterface> {
+public class GesamtkostenVerfahrenPresenter extends
+		AbstractInputPresenter<GesamtkostenVerfahrenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -55,14 +55,24 @@ public class DirectCalculationPresenter extends
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "capitalStock", "umsatzErlöse",
-				"umsatzKosten",
-				"investitionen", "desinvestitionen", "ebit"};
-		germanNamesProperties = new String[] {
-				"Fremdkapital",
-				"Umsatzerl\u00f6se",
-				"Umsatzkosten",
-				"Investitionen", "Desinvestitionen", "EBIT" };
+		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
+				"bestandserhöhung", "bestandsverminderung", "materialaufwand",
+				"löhne", "einstellungskosten", "pensionsrückstellungen",
+				"sonstigepersonalkosten", "abschreibungen", "sonstigerertrag",
+				"sonstigeraufwand", "wertpapiererträge",
+				"zinsenundaufwendungen", "außerordentlicheerträge",
+				"außerordentlicheaufwände" };
+		germanNamesProperties = new String[] { "Fremdkapital",
+				"Umsatzerl\u00f6se", "Bestandserh\u00f6hung",
+				"Bestandsverminderung", "Materialaufwand",
+				"L\u00f6hne und Geh\u00e4lter",
+				"Einstellungs-/Entlassungskosten",
+				"Pensionsr\u00fckstellungen", "Sonstige Personalkosten",
+				"Abschreibungen", "Sonstiger Ertrag", "Sonstiger Aufwand",
+				"Ertr\u00e4ge aus Wertpapieren",
+				"Zinsen und \u00e4hnliche Aufwendungen",
+				"Außerordentliche Ertr\u00e4ge",
+				"Außerordentliche Aufwendungen" };
 	}
 
 	/**
@@ -79,9 +89,8 @@ public class DirectCalculationPresenter extends
 	 * @param event
 	 */
 	@EventHandler
-	public void onShowEvent(ShowDirectCalcEvent event) {
+	public void onShowEvent(ShowGKVEvent event) {
 		processEvent(event);
 	}
 
 }
-

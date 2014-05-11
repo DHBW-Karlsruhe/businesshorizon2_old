@@ -36,15 +36,15 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.directcalculation.DirectCalculationViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation.IndirectCalculationViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInterface;
 
@@ -67,25 +67,25 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	private TimelineViewInterface timelineView;
 
 	@Autowired
-	private IndirectCalculationViewInterface indirectCalcView;
+	private UmsatzkostenVerfahrenViewInterface indirectCalcView;
 
 	@Autowired
 	private DirektViewInterface direktView;
 
 	@Autowired
-	private DirectCalculationViewInterface directCalcView;
+	private GesamtkostenVerfahrenViewInterface directCalcView;
 
 	@Autowired
 	private TimelinePresenter timelinePresenter;
 
 	@Autowired
-	private IndirectCalculationPresenter indirectCalculationPresenter;
+	private UmsatzkostenVerfahrenPresenter indirectCalculationPresenter;
 
 	@Autowired
 	private DirektPresenter direktPresenter;
 
 	@Autowired
-	private DirectCalculationPresenter directCalculationPresenter;
+	private GesamtkostenVerfahrenPresenter directCalculationPresenter;
 
 	@Autowired
 	private EventBus eventBus;
@@ -111,7 +111,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	}
 
 	@EventHandler
-	public void onShowEvent(ShowDirectCalcEvent event) {
+	public void onShowEvent(ShowGKVEvent event) {
 		logger.debug("ShowDirectCalcEvent erhalten");
 		currentInput = directCalcView;
 		getView().showView(timelineView, currentInput);
@@ -127,7 +127,7 @@ public class PeriodPresenter extends ScreenPresenter<PeriodViewInterface> {
 	}
 
 	@EventHandler
-	public void onShowEvent(ShowIndirectCalcEvent event) {
+	public void onShowEvent(ShowUKVEvent event) {
 		logger.debug("ShowUmsatzViewEvent erhalten");
 		currentInput = indirectCalcView;
 		getView().showView(timelineView, currentInput);

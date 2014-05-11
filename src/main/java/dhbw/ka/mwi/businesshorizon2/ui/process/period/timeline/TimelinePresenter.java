@@ -34,13 +34,13 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.DirectCalculatedCashflowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.IndirectCalculatedCashflowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.GesamtkostenVerfahrenCashflowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.DirectCalculatedCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.IndirectCalculatedCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -49,9 +49,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirectCalcEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowIndirectCalcEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.WrongFieldsEvent;
 
 /**
@@ -394,13 +394,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				// Inputtype der Periode abgleichen mit angegebenem Typ
 				switch (projectProxy.getSelectedProject().getProjectInputType()
 						.getDeterministicInput()) {
-				case DIRECTCALCULATION:
-					if (periode instanceof DirectCalculatedCashflowPeriod) {
+				case GESAMTKOSTENVERFAHREN:
+					if (periode instanceof GesamtkostenVerfahrenCashflowPeriod) {
 						first_call = false;
 					}
 					break;
-				case INDIRECTCALCULATION:
-					if (periode instanceof IndirectCalculatedCashflowPeriod) {
+				case UMSATZKOSTENVERFAHREN:
+					if (periode instanceof UmsatzkostenVerfahrenCashflowPeriod) {
 						first_call = false;
 					}
 					break;
@@ -436,13 +436,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 				// Inputtype der Periode abgleichen mit angegebenem Typ
 				switch (projectProxy.getSelectedProject().getProjectInputType()
 						.getDeterministicInput()) {
-				case DIRECTCALCULATION:
-					if (periode instanceof DirectCalculatedCashflowPeriod) {
+				case GESAMTKOSTENVERFAHREN:
+					if (periode instanceof GesamtkostenVerfahrenCashflowPeriod) {
 						first_call = false;
 					}
 					break;
-				case INDIRECTCALCULATION:
-					if (periode instanceof IndirectCalculatedCashflowPeriod) {
+				case UMSATZKOSTENVERFAHREN:
+					if (periode instanceof UmsatzkostenVerfahrenCashflowPeriod) {
 						first_call = false;
 					}
 					break;
@@ -512,13 +512,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			}
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getStochasticInput()) {
-			case DIRECTCALCULATION:
-				this.pastPeriods = new DirectCalculatedCashflowPeriodContainer();
-				this.futurePeriods = new DirectCalculatedCashflowPeriodContainer();
+			case GESAMTKOSTENVERFAHREN:
+				this.pastPeriods = new GesamtkostenVerfahrenCashflowPeriodContainer();
+				this.futurePeriods = new GesamtkostenVerfahrenCashflowPeriodContainer();
 				break;
-			case INDIRECTCALCULATION:
-				this.pastPeriods = new IndirectCalculatedCashflowPeriodContainer();
-				this.futurePeriods = new DirectCalculatedCashflowPeriodContainer();
+			case UMSATZKOSTENVERFAHREN:
+				this.pastPeriods = new UmsatzkostenVerfahrenCashflowPeriodContainer();
+				this.futurePeriods = new GesamtkostenVerfahrenCashflowPeriodContainer();
 				break;
 			case DIRECT:
 				this.pastPeriods = new CashFlowPeriodContainer();
@@ -537,13 +537,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			}
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministicInput()) {
-			case DIRECTCALCULATION:
-				this.pastPeriods = new DirectCalculatedCashflowPeriodContainer();
-				this.futurePeriods = new DirectCalculatedCashflowPeriodContainer();
+			case GESAMTKOSTENVERFAHREN:
+				this.pastPeriods = new GesamtkostenVerfahrenCashflowPeriodContainer();
+				this.futurePeriods = new GesamtkostenVerfahrenCashflowPeriodContainer();
 				break;
-			case INDIRECTCALCULATION:
-				this.pastPeriods = new IndirectCalculatedCashflowPeriodContainer();
-				this.futurePeriods = new IndirectCalculatedCashflowPeriodContainer();
+			case UMSATZKOSTENVERFAHREN:
+				this.pastPeriods = new UmsatzkostenVerfahrenCashflowPeriodContainer();
+				this.futurePeriods = new UmsatzkostenVerfahrenCashflowPeriodContainer();
 				break;
 			case DIRECT:
 				this.pastPeriods = new CashFlowPeriodContainer();
@@ -699,11 +699,11 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	private void createContainer(AbstractPeriodContainer container,
 			InputType inputType) {
 		switch (inputType) {
-		case INDIRECTCALCULATION:
-			container = new IndirectCalculatedCashflowPeriodContainer();
+		case UMSATZKOSTENVERFAHREN:
+			container = new UmsatzkostenVerfahrenCashflowPeriodContainer();
 			break;
-		case DIRECTCALCULATION:
-			container = new DirectCalculatedCashflowPeriodContainer();
+		case GESAMTKOSTENVERFAHREN:
+			container = new GesamtkostenVerfahrenCashflowPeriodContainer();
 			break;
 		case DIRECT:
 			container = new CashFlowPeriodContainer();
@@ -724,12 +724,12 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		Period p;
 
 		switch (inputType) {
-		case DIRECTCALCULATION:
-			p = new DirectCalculatedCashflowPeriod(year);
+		case GESAMTKOSTENVERFAHREN:
+			p = new GesamtkostenVerfahrenCashflowPeriod(year);
 			return p;
 
-		case INDIRECTCALCULATION:
-			p = new IndirectCalculatedCashflowPeriod(year);
+		case UMSATZKOSTENVERFAHREN:
+			p = new UmsatzkostenVerfahrenCashflowPeriod(year);
 			return p;
 
 		case DIRECT:
@@ -1183,13 +1183,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (period instanceof CashFlowPeriod) {
 			eventBus.fireEvent(new ShowDirektViewEvent((CashFlowPeriod) period));
 		}
-		if (period instanceof DirectCalculatedCashflowPeriod) {
-			eventBus.fireEvent(new ShowDirectCalcEvent(
-					(DirectCalculatedCashflowPeriod) period));
+		if (period instanceof GesamtkostenVerfahrenCashflowPeriod) {
+			eventBus.fireEvent(new ShowGKVEvent(
+					(GesamtkostenVerfahrenCashflowPeriod) period));
 		}
-		if (period instanceof IndirectCalculatedCashflowPeriod) {
-			eventBus.fireEvent(new ShowIndirectCalcEvent(
-					(IndirectCalculatedCashflowPeriod) period));
+		if (period instanceof UmsatzkostenVerfahrenCashflowPeriod) {
+			eventBus.fireEvent(new ShowUKVEvent(
+					(UmsatzkostenVerfahrenCashflowPeriod) period));
 		}
 	}
 
@@ -1220,13 +1220,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		if (stochastic) {
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getStochasticInput()) {
-			case DIRECTCALCULATION:
-				basePeriod = new DirectCalculatedCashflowPeriod(baseYear);
+			case GESAMTKOSTENVERFAHREN:
+				basePeriod = new GesamtkostenVerfahrenCashflowPeriod(baseYear);
 				getView().addBasePeriod(basePeriod);
 				pastPeriods.addPeriod(basePeriod);
 				break;
-			case INDIRECTCALCULATION:
-				basePeriod = new IndirectCalculatedCashflowPeriod(baseYear);
+			case UMSATZKOSTENVERFAHREN:
+				basePeriod = new UmsatzkostenVerfahrenCashflowPeriod(baseYear);
 				getView().addBasePeriod(basePeriod);
 				pastPeriods.addPeriod(basePeriod);
 
@@ -1240,13 +1240,13 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 		} else {
 			switch (projectProxy.getSelectedProject().getProjectInputType()
 					.getDeterministicInput()) {
-			case DIRECTCALCULATION:
-				basePeriod = new DirectCalculatedCashflowPeriod(baseYear);
+			case GESAMTKOSTENVERFAHREN:
+				basePeriod = new GesamtkostenVerfahrenCashflowPeriod(baseYear);
 				getView().addBasePeriod(basePeriod);
 				futurePeriods.addPeriod(basePeriod);
 				break;
-			case INDIRECTCALCULATION:
-				basePeriod = new IndirectCalculatedCashflowPeriod(baseYear);
+			case UMSATZKOSTENVERFAHREN:
+				basePeriod = new UmsatzkostenVerfahrenCashflowPeriod(baseYear);
 				getView().addBasePeriod(basePeriod);
 				futurePeriods.addPeriod(basePeriod);
 

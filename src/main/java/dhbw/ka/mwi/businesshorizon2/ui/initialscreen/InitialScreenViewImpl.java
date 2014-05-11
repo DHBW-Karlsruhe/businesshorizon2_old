@@ -75,6 +75,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	
 	private VerticalLayout left;
 	
+	private HorizontalLayout middle;
+	
 	private HorizontalLayout right;
 	
 	private Label title;
@@ -119,7 +121,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		header = new VerticalLayout();
 		horizontal = new HorizontalLayout();
 		left = new VerticalLayout();
+		middle = new HorizontalLayout();
 		right = new HorizontalLayout();
+		
 		
 		header.setSizeFull();
 		horizontal.setSizeFull();
@@ -128,7 +132,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		//verschachtelt die Layouts
 		header.addComponent(horizontal);
 		horizontal.addComponent(left);
+		horizontal.addComponent(middle);
 		horizontal.addComponent(right);
+		
 		
 		horizontal.setComponentAlignment(right, Alignment.TOP_RIGHT);
 		
@@ -175,20 +181,20 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		 *  und Prozesssicht gesprungen wird. 
 		 */
 		Label userInfo = new Label("Sie sind angemeldet als: ");
-		right.addComponent(userInfo);
-		right.setComponentAlignment(userInfo, Alignment.TOP_RIGHT);
+		middle.addComponent(userInfo);
+		middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
 		
 		
 		if(userData != null) {
-			right.removeComponent(userData);
-			right.removeComponent(userInfo);
+			middle.removeComponent(userData);
+			middle.removeComponent(userInfo);
 		}
 		
 		userData = new Label(username);
 		userData.setContentMode(Label.CONTENT_XHTML);
 		userData.setVisible(true);
-		right.addComponent(userData);
-		right.setComponentAlignment(userData, Alignment.TOP_RIGHT);;
+		middle.addComponent(userData);
+		middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
 	}
 	
 	/**

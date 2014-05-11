@@ -29,40 +29,39 @@ input.v-textfield[type="text"], .v-filterselect{
 	margin-top: 200px;
 }
 
-/*
 .login_form div.v-button {
-	width: 200px;
+	width: 100px;
 }
 
 .login_form input {
-	width: 194px;
+	width: 100px;
 }
 
 
 .v-panel {
-	background-color: red;
+	background-color: none;
 }
 
 .v-panel:hover {
-	background-color: blue;
+	background-color: #9AFE2E;
 	cursor: pointer;
 }
-*/
 
-/*
+
 .v-app {
     background-image: url("images/background.png");
     background-size:100%;
     height:100%;
-	font-family: Helvetica, Arial, sans-serif;
+
 }
 
 .v-verticallayout-LayoutNavigationsButtons {
-	margin:20px;
+	margin:10px;
 }
 
 .v-button {
 	display:inline-block;
+	font-size:16px;
 }
 
 
@@ -91,4 +90,3 @@ input.v-textfield[type="text"], .v-filterselect{
 	
 }
 
-*/

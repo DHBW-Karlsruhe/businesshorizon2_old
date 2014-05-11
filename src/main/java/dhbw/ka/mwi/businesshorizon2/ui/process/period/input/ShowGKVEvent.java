@@ -20,13 +20,31 @@
  ******************************************************************************/
 
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.indirectcalculation;
+package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
+import com.mvplite.event.Event;
 
-public interface IndirectCalculationViewInterface extends InputViewInterface {
+import dhbw.ka.mwi.businesshorizon2.models.Period.GesamtkostenVerfahrenCashflowPeriod;
+
+public class ShowGKVEvent extends Event implements ShowInputViewEventInterface{
 
         
+        
+        /**
+         *
+         */
+        private static final long serialVersionUID = -3463254158996055840L;
+        private GesamtkostenVerfahrenCashflowPeriod period;
 
+        public ShowGKVEvent(GesamtkostenVerfahrenCashflowPeriod period){
+                this.period = period;
+        }
+
+        public GesamtkostenVerfahrenCashflowPeriod getPeriod() {
+                return period;
+        }
+
+
+        
 }
 

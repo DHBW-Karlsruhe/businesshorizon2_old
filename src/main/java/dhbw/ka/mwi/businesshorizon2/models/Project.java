@@ -30,6 +30,8 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.vaadin.ui.Label;
+
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
@@ -61,6 +63,7 @@ public class Project implements Serializable {
 	private User createdFrom;
 
 	private String name;
+	private String typ;
 	
 	private String description;
 
@@ -524,4 +527,25 @@ public class Project implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public int getTotalPeriods (){
+		if (projectInputType.isDeterministic()==true){
+			return periodsToForecast_deterministic;
+		}
+		return specifiedPastPeriods ;
+	}
+	
+	public String getTypMethod(){
+	
+	if	(projectInputType.isDeterministic()==true){
+		typ = "Deterministische Eingabe";
+	}
+	else
+	{
+		typ = "Stochastische Eingabe";
+	}
+	return typ;
+	}
+	
+	
 }
