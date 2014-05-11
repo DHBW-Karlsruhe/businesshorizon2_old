@@ -2,7 +2,7 @@
 /*******************************************************************************
  * BusinessHorizon2
  * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
+ *     Copyright (C) 2012-2013  Christian Gavlert, Florian Stier, Kai Westerholz,
  *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 
  *     This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
@@ -43,16 +44,14 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * @author Florian Stier, Mirko Göpfrich
  * 
  */
-public class OutputViewImpl extends VerticalLayout implements OutputViewInterface {
+public class OutputViewImpl extends Panel implements OutputViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private OutputPresenter presenter;
-
-	private VerticalLayout headline;
 	
-	private HorizontalLayout outputArea;
-
+	private VerticalLayout vl = new VerticalLayout();
+	
 	private ProgressIndicator progressIndicator;
 
 	/**
@@ -79,16 +78,14 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 		progressIndicator.setIndeterminate(true);
 		progressIndicator.setEnabled(true);
 		progressIndicator.setStyleName("bar");
-		progressIndicator.setCaption("Berechung");
-
-		headline = new VerticalLayout();
+		progressIndicator.setCaption("Berechne..");
 		
-		outputArea = new HorizontalLayout();
-
-		addComponent(progressIndicator);
-		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
-		addComponent(headline);
-		addComponent(outputArea);
+		
+		vl.addComponent(progressIndicator);
+		vl.setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
+		this.setContent(vl);
+		this.setStyleName("borderless light");
+		this.setSizeFull();
 
 	}
 
@@ -101,17 +98,36 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	}
 
 
-	public void addStochasticChartArea(StochasticChartArea chartArea) {
-		headline.addComponent(chartArea.getHeadline());
-		headline.addComponent(chartArea.getModulAbweichung());
+	public void addHeadline(Label head) {
+		vl.addComponent(head);
+	}
+	
+	
+	public void addSubline(Label head) {
+		vl.addComponent(head);
+	}
+	
+	public void addSubline(Label head, Label abw) {
+		vl.addComponent(head);
+		vl.addComponent(abw);
+	}
+	
+	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {
+		this.addSubline(new Label("Szenario " + number));
+		
+		HorizontalLayout outputArea = new HorizontalLayout();
 		outputArea.addComponent(chartArea);
+		vl.addComponent(outputArea);
 	}
 
 
 	@Override
-	public void addDeterministicChartArea(DeterministicChartArea chartArea) {
-		headline.addComponent(chartArea.getHeadline());
+	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
+		this.addSubline(new Label("Szenario " + number));
+		
+		HorizontalLayout outputArea = new HorizontalLayout();
 		outputArea.addComponent(chartArea);
+		vl.addComponent(outputArea);
 	}
 	
 	
@@ -120,7 +136,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	
 	@Override
 	public void showErrorMessge(String message) {
-		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
+		getWindow().showNotification((String) "Berechnung fevlgescvlagen", message, Notification.TYPE_ERROR_MESSAGE);
 
 	}
 
@@ -144,8 +160,7 @@ public class OutputViewImpl extends VerticalLayout implements OutputViewInterfac
 	 * Gibt das angegebene Label aus
 	 */
 	public void addLabel(Label label){
-		headline.addComponent(label);		
+		addComponent(label);		
 	}
-
 
 }
