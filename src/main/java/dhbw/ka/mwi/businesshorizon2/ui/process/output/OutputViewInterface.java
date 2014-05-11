@@ -1,23 +1,27 @@
 /*******************************************************************************
  * BusinessHorizon2
+ *
+ * Copyright (C) 
+ * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
+ * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+ * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
+ * Volker Meier
  * 
- *     Copyright (C) 2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
- *     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- * 
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
@@ -40,7 +44,7 @@ public interface OutputViewInterface extends ContentView {
 	 * @param chartArea
 	 *            Eine ChartArea mit stochastischen Ergebnissen
 	 */
-	void addStochasticChartArea(StochasticChartArea chartArea);
+	void addStochasticChartArea(StochasticChartArea chartArea, int number);
 
 	/**
 	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des
@@ -49,12 +53,21 @@ public interface OutputViewInterface extends ContentView {
 	 * @param chartArea
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
-	void addDeterministicChartArea(DeterministicChartArea chartArea);
 
+	void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
+	
+	void addHeadline(Label head);
+	
+	void addSubline(Label head);
+	
+	void addSubline(Label head, Label abw);
+	
 	void addLabel(Label label);
 	
 	void showErrorMessge(String message);
 
 	void changeProgress(float progress);
+
+
 
 }
