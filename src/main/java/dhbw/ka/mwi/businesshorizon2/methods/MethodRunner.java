@@ -72,7 +72,7 @@ public class MethodRunner extends Thread {
 	 * @author Christian Gahlert
 	 */
 	@Override
-	public void run() {
+	public void run(){
 		try {
 			StochasticResultContainer result = method.calculate(project, callback);
 			callback.onComplete(result, method);
@@ -80,6 +80,6 @@ public class MethodRunner extends Thread {
 			callback.onComplete(null, method);
 		} catch (StochasticMethodException e) {
 			callback.onComplete(null, method);
-		}
+		}		
 	}
 }
