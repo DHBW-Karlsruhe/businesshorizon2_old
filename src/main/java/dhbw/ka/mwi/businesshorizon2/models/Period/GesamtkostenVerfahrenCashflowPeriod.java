@@ -633,14 +633,72 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
 		 */
 		public boolean isValid() {
 			Boolean valid = true;
-			Double capitalStock = this.getCapitalStock();
-			Double freeCashFlowSet = this.getFreeCashFlow();
-			if (capitalStock== null) {
+			
+			Double Abschreibungen = this.getAbschreibungen();
+			Double Außerordentlicheaufwände = this.getAußerordentlicheaufwände();			
+			Double Außerordentlicheerträge = this.getAußerordentlicheerträge();
+			Double Bestandserhöhung = this.getBestandserhöhung();			
+			Double Bestandsverminderung = this.getBestandsverminderung();
+			Double CapitalStock = this.getCapitalStock();			
+			Double Einstellungskosten = this.getEinstellungskosten();			
+			Double Löhne = this.getLöhne();			
+			Double Materialaufwand = this.getMaterialaufwand();
+			Double Pensionsrückstellungen = this.getPensionsrückstellungen();			
+			Double Sonstigepersonalkosten = this.getSonstigepersonalkosten();
+			Double Sonstigeraufwand = this.getSonstigeraufwand();			
+			Double Sonstigerertrag = this.getSonstigerertrag();
+			Double Umsatzerlöse = this.getUmsatzerlöse();			
+			Double Wertpapiererträge = this.getWertpapiererträge();
+			Double Zinsenundaufwendungen = this.getZinsenundaufwendungen();
+			if (Abschreibungen== 0) {
 				valid = false;
 			}
-			if (freeCashFlowSet== null) {
+			if (Außerordentlicheaufwände== 0) {
 				valid = false;
 			}
+			if (Außerordentlicheerträge== 0) {
+				valid = false;
+			}
+			if (Bestandserhöhung== 0) {
+				valid = false;
+			}
+			if (Bestandsverminderung== 0) {
+				valid = false;
+			}
+			if (CapitalStock== 0) {
+				valid = false;
+			}
+			if (Einstellungskosten== 0) {
+				valid = false;
+			}
+			if (Löhne== 0) {
+				valid = false;
+			}
+			if (Materialaufwand== 0) {
+				valid = false;
+			}
+			if (Pensionsrückstellungen== 0) {
+				valid = false;
+			}
+			if (Sonstigepersonalkosten== 0) {
+				valid = false;
+			}
+			if (Sonstigeraufwand== 0) {
+				valid = false;
+			}
+			if (Sonstigerertrag== 0) {
+				valid = false;
+			}
+			if (Umsatzerlöse== 0) {
+				valid = false;
+			}
+			if (Wertpapiererträge== 0) {
+				valid = false;
+			}
+			if (Zinsenundaufwendungen== 0) {
+				valid = false;
+			}
+
 			return valid;
 		}
 

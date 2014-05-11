@@ -556,12 +556,61 @@ public class UmsatzkostenVerfahrenCashflowPeriod extends Period {
 		 */
 		public boolean isValid() {
 			Boolean valid = true;
-			Double capitalStock = this.getCapitalStock();
-			Double freeCashFlowSet = this.getFreeCashFlow();
-			if (capitalStock== null) {
+			
+			Double Abschreibungen = this.getAbschreibungen();
+			Double Außerordentlicheaufwände = this.getAußerordentlicheaufwände();			
+			Double Außerordentlicheerträge = this.getAußerordentlicheerträge();		
+			Double CapitalStock = this.getCapitalStock();
+			Double Forschungskosten = this.getForschungskosten();			
+			Double Herstellungskosten = this.getHerstellungskosten();
+			Double Pensionsrückstellungen = this.getPensionsrückstellungen();	
+			Double Sonstigeraufwand = this.getSonstigeraufwand();			
+			Double Sonstigerertrag = this.getSonstigerertrag();
+			Double Umsatzerlöse = this.getUmsatzerlöse();			
+			Double Vertriebskosten = this.getVertriebskosten();			
+			Double Verwaltungskosten = this.getVerwaltungskosten();			
+			Double Wertpapiererträge = this.getWertpapiererträge();		
+			Double Zinsenundaufwendungen = this.getZinsenundaufwendungen();
+			if (Abschreibungen== 0) {
 				valid = false;
 			}
-			if (freeCashFlowSet== null) {
+			if (Außerordentlicheaufwände== 0) {
+				valid = false;
+			}
+			if (Außerordentlicheerträge== 0) {
+				valid = false;
+			}
+			if (CapitalStock== 0) {
+				valid = false;
+			}
+			if (Forschungskosten== 0) {
+				valid = false;
+			}
+			if (Herstellungskosten== 0) {
+				valid = false;
+			}
+			if (Pensionsrückstellungen== 0) {
+				valid = false;
+			}
+			if (Sonstigeraufwand== 0) {
+				valid = false;
+			}
+			if (Sonstigerertrag== 0) {
+				valid = false;
+			}
+			if (Umsatzerlöse== 0) {
+				valid = false;
+			}
+			if (Vertriebskosten== 0) {
+				valid = false;
+			}
+			if (Verwaltungskosten== 0) {
+				valid = false;
+			}
+			if (Wertpapiererträge== 0) {
+				valid = false;
+			}
+			if (Zinsenundaufwendungen== 0) {
 				valid = false;
 			}
 			return valid;

@@ -60,10 +60,8 @@ public class CashFlowPeriodContainer extends AbstractPeriodContainer {
 	public boolean isValid() {
 		Boolean valid = true;
 		Iterator<CashFlowPeriod> itr = getPeriods().iterator();
-		System.out.println("prüfen: isValid");
 		while (itr.hasNext()) {
 			Period c = itr.next();
-			System.out.println("isValid (" + c.getYear() +  "): " + c.isValid());
 			if (c.isValid() == false) {
 				valid = false;
 			}

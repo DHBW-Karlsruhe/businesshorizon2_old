@@ -1260,15 +1260,15 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 	public void validate(ValidateContentStateEvent event) {
 		if (isValid()) {
 			if (deterministic) {
-				logger.debug("Validate det " + pastPeriods.isValid());
+				logger.debug("Validate det " + projectProxy.getSelectedProject().getDeterministicPeriods().isValid());
 				//TODO
-				if(!pastPeriods.isValid()){
+				if(!projectProxy.getSelectedProject().getDeterministicPeriods().isValid()){
 					getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
 				}
 			} else if (stochastic) {
-				logger.debug("Validate sto " + futurePeriods.isValid());
+				logger.debug("Validate det " + projectProxy.getSelectedProject().getStochasticPeriods().isValid());
 				//TODO
-				if(!futurePeriods.isValid()){
+				if(!projectProxy.getSelectedProject().getStochasticPeriods().isValid()){
 					getView().showErrorMessage("Bitte geben Sie die Werte aller Parameter in allen Perioden an.");
 				}
 			}
