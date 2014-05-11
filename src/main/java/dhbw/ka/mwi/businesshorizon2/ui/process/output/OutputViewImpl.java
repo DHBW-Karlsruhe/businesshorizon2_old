@@ -117,7 +117,7 @@ public class OutputViewImpl extends Panel implements OutputViewInterface {
 	}
 	
 	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {
-		this.addSubline(new Label("Szenario " + number));
+		this.addSubline(new Label("Szenario " + number), chartArea.getModulAbweichung());
 		
 		HorizontalLayout outputArea = new HorizontalLayout();
 		outputArea.addComponent(chartArea);
