@@ -310,7 +310,8 @@ public class LogInScreenViewImpl extends Window implements
 	 */
 	@Override
 	public String getCompany() {
-		return (String) textfieldCompany.getValue();
+		String companyName = (String) textfieldCompany.getValue();
+		return companyName;
 	}
 
 	/**

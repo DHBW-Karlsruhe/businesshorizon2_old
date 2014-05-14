@@ -114,12 +114,14 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		logger.debug("ShowInitialScreenViewEvent empfangen");
 		user = userProxy.getSelectedUser();
 		getView().showUserData(user.getFullName());
+		getView().showUserCompany(user.getCompany());
 		getView().showView(projectListView, infosView);
 		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));
 		logger.debug("ShowProjectListEvent gefeuert");
 		eventBus.fireEvent(new ShowInfosEvent());
 		logger.debug("ShowInfosEvent gefeuert");
+		
 
 	}
 
