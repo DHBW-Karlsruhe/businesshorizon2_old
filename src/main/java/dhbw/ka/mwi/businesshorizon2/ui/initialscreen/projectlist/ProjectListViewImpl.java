@@ -109,10 +109,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private List<Button> removeBtnList;
 	
 	//private Label projectName;
-	private Label periods;
 	private Label lastChanged;
 	private Label title;
-	private Label projectTyp;
+	private Label projectTypAndPeriods;
 
 	private TextField tfName;
 	private TextArea taDescription;
@@ -145,7 +144,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	 * @author Mirko Göpfrich
 	 */
 	private void generateUI() {
-		setMargin(true);
+		//setMargin(true);
 		
 		//Teilt die View vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
 		setSizeFull();
@@ -246,12 +245,13 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		
 		//erzeugt eine Panel für ein Projekt
 		singleProject = new Panel(project.getName());
-		singleProject.setStyleName("light");
+		singleProject.setStyleName("borderless light projectlist");
 		
 		//Legt ein Layout für das Projekt-Panel fest
 		HorizontalLayout panelContent = new HorizontalLayout();
-		panelContent.setSizeFull();
+		//panelContent.setSizeFull();
 		singleProject.setContent(panelContent);
+		singleProject.setSizeFull();
 		panelContent.addStyleName("projectListPanel");
 		
 		//Legt ein linkes und ein rechtes Layout innerhalb des Panels an.
@@ -261,12 +261,12 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		panelContent.addComponent(panelContentRight);
 		panelContent.setComponentAlignment(panelContentLeft, Alignment.BOTTOM_LEFT);
 		panelContent.setComponentAlignment(panelContentRight, Alignment.BOTTOM_RIGHT);
+		panelContentLeft.setWidth("340px");
 
 		periodList = (NavigableSet<Period>) project.getPeriods();
 
 		
-		// String fuer saubere Periodenausgabe erstellen. Bsp:
-		// "3 Perioden (2009-2012)"
+		// String fuer saubere Periodenausgabe erstellen.
 		
 		String periodString;
 		int numbersOfPeriods;
@@ -279,12 +279,10 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 			periodString = "" + numbersOfPeriods + " Perioden" ;
 		}
 		
-		
-		
-		periods = new Label(periodString);
 		String typMethod;
 		typMethod = project.getTypMethod();
-		projectTyp = new Label(typMethod);
+		
+		projectTypAndPeriods = new Label(typMethod + ": " + periodString);
 			
 		
 
@@ -362,8 +360,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		dialogEditBtnList.add(dialogEditBtn);
 
 		//Inhalt dem Panel hinzufügen
-		panelContentLeft.addComponent(periods);
-		panelContentLeft.addComponent(projectTyp);
+		panelContentLeft.addComponent(projectTypAndPeriods);
 		panelContentLeft.addComponent(lastChanged);
 		panelContentRight.addComponent(removeBtnList.get(i));
 		panelContentRight.addComponent(editBtnList.get(i));
@@ -450,7 +447,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		layout.setSpacing(true);
 
 		FormLayout formLayout = new FormLayout();
-		formLayout.setMargin(false);
+		formLayout.setMargin(true);
 		formLayout.setSpacing(true);
 		
 		//TextFeld für Name dem Formular hinzufügen
