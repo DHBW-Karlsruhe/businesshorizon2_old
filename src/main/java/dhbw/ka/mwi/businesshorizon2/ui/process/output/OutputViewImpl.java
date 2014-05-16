@@ -140,7 +140,7 @@ public class OutputViewImpl extends Panel implements OutputViewInterface {
 	
 	@Override
 	public void showErrorMessge(String message) {
-		getWindow().showNotification((String) "Berechnung fevlgescvlagen", message, Notification.TYPE_ERROR_MESSAGE);
+		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
 
 	}
 

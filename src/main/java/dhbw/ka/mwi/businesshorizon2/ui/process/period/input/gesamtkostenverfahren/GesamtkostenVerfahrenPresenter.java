@@ -71,7 +71,7 @@ public class GesamtkostenVerfahrenPresenter extends
 				"Bestandsverminderung", "Materialaufwand",
 				"L\u00f6hne und Geh\u00e4lter",
 				"Einstellungs-/Entlassungskosten",
-				"Pensionsr\u00fckstellungen", "Sonstige Personalkosten",
+				"Pensionsr\u00fcckstellungen", "Sonstige Personalkosten",
 				"Abschreibungen", "Sonstiger Ertrag", "Sonstiger Aufwand",
 				"Ertr\u00e4ge aus Wertpapieren",
 				"Zinsen und \u00e4hnliche Aufwendungen",

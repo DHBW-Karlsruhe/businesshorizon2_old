@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -39,6 +40,8 @@ import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
  * Die DeterministicChartArea komponiert die Ausgabe der Ergebnisse des
@@ -48,26 +51,29 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  * @author Florian Stier, Marcel Rosenberger, Annika Weis, Mirko Göpfrich
  * 
  */
-public class DeterministicChartArea extends HorizontalLayout{
+public class DeterministicChartArea extends HorizontalLayout {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger
 			.getLogger("DeterministicChartArea.class");
 	private Label headline;
-	
-	public Label getHeadline(){
-		return headline;
-	}		
 
-	//APV Ausgabe
+	public Label getHeadline() {
+		return headline;
+	}
+
+	// APV Ausgabe
+	@SuppressWarnings("unchecked")
 	public DeterministicChartArea(double uwsteuerfrei, double steuervorteile,
 			double unternehmenswert, double fremdkapital, String name,
 			DeterministicResultContainer drContainer, Szenario scenario) {
 
+		DecimalFormat df = new DecimalFormat("#0.00");
 		headline = new Label("<h2>Deterministisches Verfahren - APV</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
 
-		// Chart zur Aufschlüsselung des Unternehmenswert
+		// Chart zur Aufschlüsselung des Unternehmenswert, Rundung auf zwei
+		// Nachkommastellen
 		List<String> cvKeyColumns = new ArrayList<String>();
 		cvKeyColumns.add("Unverschuldetes Unternehmen");
 		cvKeyColumns.add("Steuervorteil");
@@ -75,10 +81,15 @@ public class DeterministicChartArea extends HorizontalLayout{
 		cvKeyColumns.add("Fremdkapital");
 
 		Map<String, double[]> cvKeyValues = new LinkedHashMap<String, double[]>();
-		cvKeyValues.put("Unverschuldetes Unternehmen und Steuervorteil",
-				new double[] { Math.round(uwsteuerfrei), Math.round(steuervorteile), 0, 0 });
-		cvKeyValues.put("Unternehmenswert und Fremdkapital", new double[] { 0,
-				0, Math.round(unternehmenswert), Math.round(fremdkapital) });
+		cvKeyValues.put(
+				"Unverschuldetes Unternehmen und Steuervorteil",
+				new double[] { Math.round(100.0 * uwsteuerfrei) / 100.0,
+						Math.round(100.0 * steuervorteile) / 100.0, 0, 0 });
+		cvKeyValues.put(
+				"Unternehmenswert und Fremdkapital",
+				new double[] { 0, 0,
+						Math.round(100.0 * unternehmenswert) / 100.0,
+						Math.round(100.0 * fremdkapital) / 100.0 });
 
 		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart",
 				cvKeyColumns);
@@ -90,37 +101,48 @@ public class DeterministicChartArea extends HorizontalLayout{
 		this.addComponent(cvKeyChart);
 		// Platzhalter
 
+		// Chart zur Anzeige des Cashflow Verlaufs
+		TreeSet<CashFlowPeriod> periods = new TreeSet<CashFlowPeriod>();
 
-		// Chart zu Fremdkapital und Cashflow Verlauf
-		// Beschriftung der Linie hinzufügen
-		List<String> cfKeyColumns = new ArrayList<String>();
-		cfKeyColumns.add("Cashflows");
-		cfKeyColumns.add("Fremdkapital");
-
-		double[] cashflows = new double[drContainer.getJahre().length];
-		double[] fremdkapitalwerte = new double[drContainer.getJahre().length];
-		int[] jahre = new int[drContainer.getJahre().length];
-		cashflows = drContainer.getCashflows();
-		fremdkapitalwerte = drContainer.getFremdkapitl();
-		jahre = drContainer.getJahre();
-		int anzahlWerte = drContainer.getJahre().length;
-
-		// Werte hinzufügen
-		Map<String, double[]> cfKeyValues = new LinkedHashMap<String, double[]>();
-		for (int i = 0; i < anzahlWerte; i++) {
-			cfKeyValues.put(jahre[i] + "", new double[] { Math.round(cashflows[i]),
-					Math.round(fremdkapitalwerte[i]) });
-			logger.debug("DeterministicLineChart: " + cashflows[i] + " &  "
-					+ fremdkapitalwerte[i]);
+		// Das CashFlowPeriod TreeSet befüllen, um ClassCastException bei GKV
+		// oder UKV vorzubeugen
+		for (Period p : drContainer.getPeriodContainers().first().getPeriods()) {
+			CashFlowPeriod cfp = new CashFlowPeriod(p.getYear());
+			cfp.setCapitalStock(p.getCapitalStock());
+			cfp.setFreeCashFlow(p.getFreeCashFlow());
+			periods.add(cfp);
 		}
 
-		BasicLineChart cfKeyChart = new BasicLineChart("Chart", cfKeyColumns);
-		cfKeyChart.addValues(cfKeyValues);
-		cfKeyChart.setHeight("300px");
-		cfKeyChart.setWidth("510px");
-		cfKeyChart.addStyleName("chart2");
-		this.addComponent(cfKeyChart);
+		if (periods != null) {
+			List<String> cfChartLines = new ArrayList<String>();
+			cfChartLines.add("Cashflows");
+			cfChartLines.add("Fremdkapital");
 
+			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
+
+			BasicLineChart cfChart = new BasicLineChart("Zukunftswerte",
+					cfChartLines);
+
+			// Werte hinzufügen und auf zwei Nachkommastellen runden
+			for (CashFlowPeriod period : periods) {
+				cfChartValues
+						.put(Integer.toString(period.getYear()),
+								new double[] {
+										Double.parseDouble((df.format(period
+												.getFreeCashFlow())).replace(
+												",", ".")),
+										Double.parseDouble((df.format(period
+												.getCapitalStock())).replace(
+												",", ".")) });
+
+			}
+
+			cfChart.addValues(cfChartValues);
+			cfChart.setHeight("200px");
+			cfChart.setWidth("510px");
+			cfChart.addStyleName("chart2");
+			this.addComponent(cfChart);
+		}
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
@@ -128,20 +150,23 @@ public class DeterministicChartArea extends HorizontalLayout{
 		this.addComponent(st);
 
 	}
-	
-	//FTE Ausgabe
+
+	// FTE Ausgabe
+	@SuppressWarnings("unchecked")
 	public DeterministicChartArea(double unternehmenswert, String name,
 			DeterministicResultContainer drContainer, Szenario scenario) {
+		DecimalFormat df = new DecimalFormat("#0.00");
+
 		headline = new Label("<h2>Deterministisches Verfahren - FTE</h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
 
 		// Chart zur Aufschlüsselung des Unternehmenswert
 		List<String> cvKeyColumns = new ArrayList<String>();
 		cvKeyColumns.add("Unternehmenswert");
-		
 
 		Map<String, double[]> cvKeyValues = new LinkedHashMap<String, double[]>();
-		cvKeyValues.put("Unternehmenswert", new double[] {Math.round(unternehmenswert)});
+		cvKeyValues.put("Unternehmenswert",
+				new double[] { Math.round(100.0 * unternehmenswert) / 100.0 });
 
 		StackedColumnChart cvKeyChart = new StackedColumnChart("Chart",
 				cvKeyColumns);
@@ -153,33 +178,47 @@ public class DeterministicChartArea extends HorizontalLayout{
 		this.addComponent(cvKeyChart);
 		// Platzhalter
 
-		// Chart zu Cashflow Verlauf
-		// Beschriftung der Linie hinzufügen
-		List<String> cfKeyColumns = new ArrayList<String>();
-		cfKeyColumns.add("Cashflows");
+		// Chart zur Anzeige des Cashflow Verlaufs
+		TreeSet<CashFlowPeriod> periods = new TreeSet<CashFlowPeriod>();
 
-		double[] cashflows = new double[drContainer.getJahre().length];
-		
-		int[] jahre = new int[drContainer.getJahre().length];
-		cashflows = drContainer.getCashflows();
-		
-		jahre = drContainer.getJahre();
-		int anzahlWerte = drContainer.getJahre().length;
-
-		// Werte hinzufügen
-		Map<String, double[]> cfKeyValues = new LinkedHashMap<String, double[]>();
-		for (int i = 0; i < anzahlWerte; i++) {
-			cfKeyValues.put(jahre[i] + "", new double[] { Math.round(cashflows[i])});
-			logger.debug("DeterministicLineChart: " + cashflows[i]);
+		// Das CashFlowPeriod TreeSet befüllen, um ClassCastException bei GKV
+		// oder UKV vorzubeugen
+		for (Period p : drContainer.getPeriodContainers().first().getPeriods()) {
+			CashFlowPeriod cfp = new CashFlowPeriod(p.getYear());
+			cfp.setCapitalStock(p.getCapitalStock());
+			cfp.setFreeCashFlow(p.getFreeCashFlow());
+			periods.add(cfp);
 		}
+		if (periods != null) {
+			List<String> cfChartLines = new ArrayList<String>();
+			cfChartLines.add("Cashflows");
+			cfChartLines.add("Fremdkapital");
 
-		BasicLineChart cfKeyChart = new BasicLineChart("Chart", cfKeyColumns);
-		cfKeyChart.addValues(cfKeyValues);
-		cfKeyChart.setHeight("300px");
-		cfKeyChart.setWidth("510px");
-		cfKeyChart.setStyleName("chart2");
-		this.addComponent(cfKeyChart);
+			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
+			BasicLineChart cfChart = new BasicLineChart("Zukunftswerte",
+					cfChartLines);
+
+			// Werte hinzufügen und auf zwei Nachkommastellen runden
+			for (CashFlowPeriod period : periods) {
+				cfChartValues
+						.put(Integer.toString(period.getYear()),
+								new double[] {
+										Double.parseDouble((df.format(period
+												.getFreeCashFlow())).replace(
+												",", ".")),
+										Double.parseDouble((df.format(period
+												.getCapitalStock())).replace(
+												",", ".")) });
+
+			}
+
+			cfChart.addValues(cfChartValues);
+			cfChart.setHeight("200px");
+			cfChart.setWidth("510px");
+			cfChart.addStyleName("chart2");
+			this.addComponent(cfChart);
+		}
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);

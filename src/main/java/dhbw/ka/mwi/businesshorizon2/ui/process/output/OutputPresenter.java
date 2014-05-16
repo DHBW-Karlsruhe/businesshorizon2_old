@@ -136,11 +136,11 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 						if (container instanceof CashFlowPeriodContainer) {
 							logger.debug("Cashflows wurden direkt eingegeben");
 						} else if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
-							logger.debug("Cashflows werden direkt berechnet");
+							logger.debug("Cashflows werden nach GKV berechnet");
 							CashFlowCalculator.calculateCashflows(drContainer,
 									scenario);
 						} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
-							logger.debug("Cashflows werden indirekt berechnet");
+							logger.debug("Cashflows werden nach UKV berechnet");
 							CashFlowCalculator.calculateCashflows(drContainer,
 									scenario);
 						}
@@ -434,7 +434,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			} catch (NullPointerException e) {
 				getView()
 						.showErrorMessge(
-								"Entweder alle Cashflows oder alle Fremdkapital-Werte sind Null. In diesem Fall ist die Zeitreihenanalyse nicht durchführbar.");
+								"Entweder alle Cashflows oder alle Fremdkapital-Werte sind gleich groß. In diesem Fall ist die Zeitreihenanalyse aus mathematischen Gründen nicht durchführbar.");
 			}
 
 			// Erwartete Cashflows und Fremdkapitalwerte laden (sind nicht im

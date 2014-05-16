@@ -72,7 +72,7 @@ public class UmsatzkostenVerfahrenPresenter extends
 				"Zinsen und \u00e4hnliche Aufwendungen",
 				"Außerordentliche Ertr\u00e4ge",
 				"Außerordentliche Aufwendungen", "Abschreibungen",
-				"Pensionsr\u00fckstellungen" };
+				"Pensionsr\u00fcckstellungen" };
 	}
 
 	/**
