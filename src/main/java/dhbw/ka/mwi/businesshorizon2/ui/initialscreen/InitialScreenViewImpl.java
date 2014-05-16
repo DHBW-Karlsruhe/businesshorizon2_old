@@ -89,7 +89,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private Label userData;
 	
-	private Label userCompany;
+	private Label company;
 	
 
 	
@@ -195,7 +195,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		 */
 		
 		
-		Label userInfo = new Label("Sie sind angemeldet als: <p>");
+		Label userInfo = new Label("Sie sind angemeldet als:");
 		userInfo.setContentMode(Label.CONTENT_XHTML);
 		middle.addComponent(userInfo);
 		middle.setComponentAlignment(userInfo, Alignment.BOTTOM_CENTER);
@@ -218,19 +218,22 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	
 	public void showUserCompany(String company) {
 		/*
-		 *  Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
-		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
+		 *  Wenn schon ein String angezeigt wird, muss dieser zunaechst entfernt werden.
+		 *  Ansonsten werden mehrere Strings angezeigt, wenn zwischen Projektuebersicht
 		 *  und Prozesssicht gesprungen wird. 
 		 */
-		
 		Label userText = new Label("  des Unternehmens " + company + ".");
-		middle.addComponent(userText);
-		middle.setComponentAlignment(userText, Alignment.BOTTOM_CENTER);
 		
 		if(company == null) 
 		{
 			middle.removeComponent(userText);
 		}
+		
+		
+		middle.addComponent(userText);
+		middle.setComponentAlignment(userText, Alignment.BOTTOM_CENTER);
+		
+		
 	}
 		
 		
