@@ -4,7 +4,7 @@
 #     Copyright (C) 
 #	  2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
 #     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
-#	  2013-2014  Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock,
+#	  2013-2014  Marcel Rosenberger, Mirko Gï¿½pfrich, Annika Weis, Katharina Narlock,
 #	  Volker Maier
 # 
 #     This program is free software: you can redistribute it and/or modify
@@ -45,11 +45,14 @@ input.v-textfield[type="text"], .v-filterselect{
 	background-color: none;
 }
 
-.v-panel:hover {
-	background-color: #9AFE2E;
-	cursor: pointer;
+div.projectlist:hover {
+	background: rgba(255, 255, 255, 0.6);
+   	cursor: pointer;
 }
 
+.v-panel-content-projectlist{
+	padding: 10px;
+}
 
 .v-app {
     background-image: url("images/background.png");

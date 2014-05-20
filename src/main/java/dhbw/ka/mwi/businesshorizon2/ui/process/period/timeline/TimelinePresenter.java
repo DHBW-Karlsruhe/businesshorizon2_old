@@ -136,7 +136,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 			throws NullPointerException {
 		// prüfen, ob es sich um das selbe Projekt handelt wie zuvor
 		if (isSameProject()) {
-			logger.debug("=====gleiches Projekt====");
+			logger.debug("=====gleiches Projekt====");			
 			if (isValid() & isValid_Zeitraum()) {
 				// alles wie zuvor, keine Änderung notwendig
 				logger.debug("alles valid");
@@ -813,7 +813,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					futurePeriods.addPeriod(periode);
 					logger.debug("Normalfall " + periode.getYear());
 				}
-				logger.debug(++i + " + " + periode.getYear());
+				logger.debug(++i + " + " + periode.getYear() + " _ " + periode.getFreeCashFlow());
 				projectProxy.getSelectedProject().setDeterministicPeriods(
 						futurePeriods);
 			}
@@ -832,14 +832,16 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 
 		int vorhandene = 0;
 		try {
-			// -1 wegen Basisjahr
 			vorhandene = projectProxy.getSelectedProject()
-					.getDeterministicPeriods().getPeriods().size() - 1;
+					.getDeterministicPeriods().getPeriods().size();
 		} catch (Exception e) {
 		}
 		if (vorhandene == 0) {
+			logger.debug("Basis aufbauen");
 			create_base();
 		}
+			// -1 wegen Basisjahr
+		vorhandene = vorhandene -1;
 		// Wenn weniger Perioden vorhanden sind als geplant
 		if (vorhandene < projectProxy.getSelectedProject()
 				.getPeriodsToForecast_deterministic() + weitere_perioden_future) {
@@ -852,7 +854,7 @@ public class TimelinePresenter extends ScreenPresenter<TimelineViewInterface> {
 					+ weitere_perioden_future - vorhandene, deterministicInput);
 
 		}
-		logger.debug("Periodenanzahl: " + sumFuturePeriods);
+		logger.debug("Periodenanzahl fut: " + sumFuturePeriods);
 		return;
 	}
 

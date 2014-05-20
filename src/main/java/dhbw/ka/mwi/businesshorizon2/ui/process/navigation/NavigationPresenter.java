@@ -57,7 +57,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 public class NavigationPresenter extends Presenter<NavigationViewInterface> {
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger logger = Logger.getLogger("LogInScreenPresenter.class");
+	private static final Logger logger = Logger.getLogger("NavigationPresenter.class");
 	
 	@Autowired
 	private EventBus eventBus;

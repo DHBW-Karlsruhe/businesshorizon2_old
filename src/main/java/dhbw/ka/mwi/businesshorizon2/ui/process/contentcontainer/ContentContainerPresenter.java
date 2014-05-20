@@ -35,6 +35,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
@@ -59,10 +60,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ShowScenarioViewEvent;
  * @author Julius Hacker
  * 
  */
-public class ContentContainerPresenter extends Presenter<ContentContainerViewInterface> {
+public class ContentContainerPresenter extends
+		Presenter<ContentContainerViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ContentContainerPresenter.class");
+	private static final Logger logger = Logger
+			.getLogger("ContentContainerPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -81,6 +84,9 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 
 	@Autowired
 	private MethodViewInterface methodView;
+	
+	@Autowired 
+	private PersistenceServiceInterface persistenceService;
 
 	private int stepNumber;
 
@@ -104,7 +110,7 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 	 * 
 	 * @param event
 	 *            Der ausgeloeste ShowNavigationStepEvent
-	 * @autor Julius Hacker
+	 * @autor Julius Hacker, Marcel Rosenberger
 	 */
 	@EventHandler
 	public void onShowNavigationStep(ShowNavigationStepEvent event) {
@@ -148,7 +154,8 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 		// validieren und dem User gegebenenfalls einen Fehlerhinweis zu geben
 		eventBus.fireEvent(new ValidateContentStateEvent());
 
-		logger.debug("Prozesschritt " + event.getStep().getCaption() + " wird angezeigt");
+		logger.debug("Prozesschritt " + event.getStep().getCaption()
+				+ " wird angezeigt");
 
 		// (De-)Aktiviere je nachdem, ob ein vorheriger bzw. nachfolgender
 		// Prozessschritt existiert die entsprechenden Buttons.
@@ -162,16 +169,23 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 	 * valide sind. Sollte dies nicht der Fall sein, wird auch nicht zum
 	 * naechsten Screen weitergeleitet.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Marcel Rosenberger
 	 */
 	public void showNextStep() {
+		// speichert die Projekte in der externen Datei
+		persistenceService.saveProjects();
+		logger.debug("Projekte gespeichert");
+		
 		if (this.isActualViewValid) {
-			NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
-			NavigationSteps nextScreen = NavigationSteps.getByNumber(this.stepNumber + 1);
+			NavigationSteps actualScreen = NavigationSteps
+					.getByNumber(this.stepNumber);
+			NavigationSteps nextScreen = NavigationSteps
+					.getByNumber(this.stepNumber + 1);
 			this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
 			this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
 
-			logger.debug("Event fuer Anzeige des Prozesschritt " + nextScreen.getCaption() + " wurde getriggert");
+			logger.debug("Event fuer Anzeige des Prozesschritt "
+					+ nextScreen.getCaption() + " wurde getriggert");
 		}
 
 	}
@@ -181,15 +195,22 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 	 * aufgerufen. Sie kuemmert sich darum, den vorherigen Screen zu ermitteln
 	 * und zu ihm weiterzuleiten.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Marcel Rosenberger
 	 */
 	public void showPreviousStep() {
-		NavigationSteps actualScreen = NavigationSteps.getByNumber(this.stepNumber);
-		NavigationSteps previousScreen = NavigationSteps.getByNumber(this.stepNumber - 1);
+		// speichert die Projekte in der externen Datei
+		persistenceService.saveProjects();
+		
+		logger.debug("Projekte gespeichert");
+		NavigationSteps actualScreen = NavigationSteps
+				.getByNumber(this.stepNumber);
+		NavigationSteps previousScreen = NavigationSteps
+				.getByNumber(this.stepNumber - 1);
 		this.eventBus.fireEvent(new ShowNavigationStepEvent(previousScreen));
 		this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
 
-		logger.debug("Event fuer Anzeige des Prozesschritt " + previousScreen.getCaption() + " wurde getriggert");
+		logger.debug("Event fuer Anzeige des Prozesschritt "
+				+ previousScreen.getCaption() + " wurde getriggert");
 	}
 
 	/**
@@ -230,7 +251,8 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 	 */
 	@EventHandler
 	public void handleInvalidState(InvalidStateEvent event) {
-		if (event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
+		if (event.getNavigationStep() == NavigationSteps
+				.getByNumber(this.stepNumber)) {
 			this.isActualViewValid = false;
 		}
 	}
@@ -248,9 +270,10 @@ public class ContentContainerPresenter extends Presenter<ContentContainerViewInt
 	 */
 	@EventHandler
 	public void handleValidState(ValidStateEvent event) {
-		logger.debug("ValidStateEvent fuer Screen " + event.getNavigationStep() + " empfangen. Aktueller Screen: "
-				+ this.stepNumber);
-		if (event.getNavigationStep() == NavigationSteps.getByNumber(this.stepNumber)) {
+		logger.debug("ValidStateEvent fuer Screen " + event.getNavigationStep()
+				+ " empfangen. Aktueller Screen: " + this.stepNumber);
+		if (event.getNavigationStep() == NavigationSteps
+				.getByNumber(this.stepNumber)) {
 			this.isActualViewValid = true;
 		}
 	}

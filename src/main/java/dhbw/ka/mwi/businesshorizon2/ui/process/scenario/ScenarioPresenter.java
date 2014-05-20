@@ -130,14 +130,20 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 				Double.toString(scenario.getBusinessTax()),
 				scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
+		//Szenarioseite aktualisieren
+		eventBus.fireEvent(new ShowScenarioViewEvent());
 		
 	}
 
 	public void removeScenario(int number) {
+		logger.debug("Es gibt " + this.projectProxy.getSelectedProject().getScenarios().size() + " Szenarios");
+		logger.debug("Lösche Szenario Nummer: " + number);
 		this.projectProxy.getSelectedProject().getScenarios()
 				.remove(number - 1);
 		getView().removeScenario(number - 1);
 		getView().updateLabels();
+		//Szenarioseite aktualisieren
+		eventBus.fireEvent(new ShowScenarioViewEvent());
 	}
 
 	/**

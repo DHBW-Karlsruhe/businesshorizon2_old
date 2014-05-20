@@ -59,4 +59,6 @@ public interface InitialScreenViewInterface extends View {
 	 */
 	public void showUserData(String username);
 
+	public void showUserCompany(String company);
+
 }

@@ -57,31 +57,33 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 public class StochasticChartArea extends HorizontalLayout {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Logger logger = Logger
 			.getLogger("StochasticChartArea.class");
 	private Label headline;
-	
+
 	private Label modulAbweichung;
-	
-	public Label getHeadline(){
+
+	public Label getHeadline() {
 		return headline;
-	}		
-	
-	public Label getModulAbweichung(){
+	}
+
+	public Label getModulAbweichung() {
 		return modulAbweichung;
 	}
 
-	public StochasticChartArea(String methodName, TreeSet<CashFlowPeriod> periods, TreeMap<Double, Couple> companyValues, double validierung, Szenario scenario) {
-		
+	public StochasticChartArea(String methodName,
+			TreeSet<CashFlowPeriod> periods,
+			TreeMap<Double, Couple> companyValues, double validierung,
+			Szenario scenario) {
+
 		DecimalFormat df = new DecimalFormat("#0.00");
-		
+
 		// Überschrift anzeigen
-		headline = new Label("<h2>Stochastic Calculation - " + methodName + "<h2>");
+		headline = new Label("<h2>Stochastic Calculation - " + methodName
+				+ "<h2>");
 		headline.setContentMode(Label.CONTENT_XHTML);
 		headline.setHeight("50px");
-
-
 
 		// Chart zur Anzeige der Unternehmenswerte
 		List<String> cvChartColumns = new ArrayList<String>();
@@ -90,7 +92,8 @@ public class StochasticChartArea extends HorizontalLayout {
 
 		Map<String, double[]> cvChartValues = new LinkedHashMap<String, double[]>();
 
-		BasicColumnChart cvChart = new BasicColumnChart("Unternehmenswert", cvChartColumns);
+		BasicColumnChart cvChart = new BasicColumnChart("Unternehmenswert",
+				cvChartColumns);
 
 		logger.debug("Erwartungswert ermitteln");
 		APV apv = new APV();
@@ -98,11 +101,10 @@ public class StochasticChartArea extends HorizontalLayout {
 		double[] fremdkapital = null;
 		int i;
 
-		// für jede Periode wird die Schleife je einmal durchlaufen 
-		for (CashFlowPeriod period : periods) {			
+		// für jede Periode wird die Schleife je einmal durchlaufen
+		for (CashFlowPeriod period : periods) {
 			// ein Iterator zum durchlaufen des TreeSet wird erstellt.
-			Iterator<CashFlowPeriod> periodenIterator = periods
-					.iterator();
+			Iterator<CashFlowPeriod> periodenIterator = periods.iterator();
 			// Zähler, Cashflow- und Fremdkapital-Arrays werden
 			// initialisiert
 			cashflow = new double[periods.size()];
@@ -116,58 +118,57 @@ public class StochasticChartArea extends HorizontalLayout {
 				i++;
 			}
 		}
-			
+
 		double erwartungswert = apv.calculateValues(cashflow, fremdkapital,
 				scenario);
 		double keydrueber = 0;
-		int keydrueberfreq = 0 ; 
+		int keydrueberfreq = 0;
 		double keydrunter = 0;
 		int keydrunterfreq = 0;
-		
-		
+
 		logger.debug("Eigentlicher Erwartungswert: " + erwartungswert);
-        for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
+		for (Entry<Double, Couple> companyValue : companyValues.entrySet()) {
 
-                cvChartValues.put(df.format(companyValue.getKey()),
-                                new double[] { companyValue.getValue().getCount() });
-                
-                if (companyValue.getKey() < erwartungswert){
-                	keydrunter = companyValue.getKey();
-                	keydrunterfreq = companyValue.getValue().getCount();
-                } 
-                
-                if ((companyValue.getKey() > erwartungswert) && (keydrueber != 0)){
-                	keydrueber = companyValue.getKey();
-                	keydrueberfreq = companyValue.getValue().getCount();
-                }
-                
-                /*
-                 * Alte Erwartungswert Ermittlung
-                 * 
-                 * 
-                // Erwartungswert der Unternehmenswerte bestimmen (Wert mit größter
-                // Häufigkeit)
-                if (companyValue.getValue().getCount() >= expectedCompanyValueFreq) {
-                        expectedCompanyValue = Double.toString(companyValue.getKey());
-                        expectedCompanyValueFreq = companyValue.getValue().getCount();
-                        logger.debug("Neuer Erwartungswert: " + expectedCompanyValue);
-                }*/
+			cvChartValues.put(df.format(companyValue.getKey()),
+					new double[] { companyValue.getValue().getCount() });
 
-        }
-		
-        if(Math.abs((keydrunter-erwartungswert)) < Math.abs((keydrueber-erwartungswert))){
-        	cvChartValues.put(df.format(keydrunter), new double[] { 0, keydrunterfreq });
-        } else{
-        	cvChartValues.put(df.format(keydrueber), new double[] { 0, keydrueberfreq });
-        }
+			if (companyValue.getKey() < erwartungswert) {
+				keydrunter = companyValue.getKey();
+				keydrunterfreq = companyValue.getValue().getCount();
+			}
 
-		
+			if ((companyValue.getKey() > erwartungswert) && (keydrueber != 0)) {
+				keydrueber = companyValue.getKey();
+				keydrueberfreq = companyValue.getValue().getCount();
+			}
+
+			/*
+			 * Alte Erwartungswert Ermittlung
+			 * 
+			 * 
+			 * // Erwartungswert der Unternehmenswerte bestimmen (Wert mit
+			 * größter // Häufigkeit) if (companyValue.getValue().getCount() >=
+			 * expectedCompanyValueFreq) { expectedCompanyValue =
+			 * Double.toString(companyValue.getKey()); expectedCompanyValueFreq
+			 * = companyValue.getValue().getCount();
+			 * logger.debug("Neuer Erwartungswert: " + expectedCompanyValue); }
+			 */
+
+		}
+
+		if (Math.abs((keydrunter - erwartungswert)) < Math
+				.abs((keydrueber - erwartungswert))) {
+			cvChartValues.put(df.format(keydrunter), new double[] { 0,
+					keydrunterfreq });
+		} else {
+			cvChartValues.put(df.format(keydrueber), new double[] { 0,
+					keydrueberfreq });
+		}
 
 		cvChart.addValues(cvChartValues);
 		cvChart.setHeight("300px");
 		cvChart.setWidth("410px");
 		cvChart.setStyleName("chart1");
-		
 
 		this.addComponent(cvChart);
 
@@ -179,10 +180,19 @@ public class StochasticChartArea extends HorizontalLayout {
 
 			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
-			BasicLineChart cfChart = new BasicLineChart("Erwartete Werte", cfChartLines);
-
+			BasicLineChart cfChart = new BasicLineChart("Erwartete Werte",
+					cfChartLines);
+			//Werte hinzufügen und auf zwei Nachkommastellen runden
 			for (CashFlowPeriod period : periods) {
-				cfChartValues.put(Integer.toString(period.getYear()), new double[] { Double.parseDouble((df.format(period.getFreeCashFlow())).replace(",", ".")), Double.parseDouble((df.format(period.getCapitalStock())).replace(",", ".")) });
+				cfChartValues
+						.put(Integer.toString(period.getYear()),
+								new double[] {
+										Double.parseDouble((df.format(period
+												.getFreeCashFlow())).replace(
+												",", ".")),
+										Double.parseDouble((df.format(period
+												.getCapitalStock())).replace(
+												",", ".")) });
 
 			}
 
@@ -192,19 +202,20 @@ public class StochasticChartArea extends HorizontalLayout {
 			cfChart.addStyleName("chart2");
 			this.addComponent(cfChart);
 		}
-		
-		//Modellabweichung hinzufügen		
-		
-		modulAbweichung = new Label("Die Modellabweichung beträgt " + df.format(validierung) + "%");
-		
-		//Planungsprämissen des Szenarios hinzufügen
+
+		// Modellabweichung hinzufügen
+
+		modulAbweichung = new Label("Die Modellabweichung beträgt "
+				+ df.format(validierung) + "%");
+
+		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
 		st.setHeight("100px");
 		st.setStyleName("chart3");
 		this.addComponent(st);
-		
-		//this.setHeight("900px");
-		//this.setWidth("1024px");
+
+		// this.setHeight("900px");
+		// this.setWidth("1024px");
 
 	}
 }

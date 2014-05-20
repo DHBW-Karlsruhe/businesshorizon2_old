@@ -48,7 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
  * 
  */
 public class APV extends AbstractDeterministicMethod {
-	
+
 	/**
 	 * 
 	 */
@@ -60,7 +60,7 @@ public class APV extends AbstractDeterministicMethod {
 
 	@Override
 	public String getName() {
-		
+
 		return "Adjusted-Present-Value (APV)";
 	}
 
@@ -87,14 +87,15 @@ public class APV extends AbstractDeterministicMethod {
 
 	/**
 	 * @author Annika Weis
-	 * @param  double[] cashflow
+	 * @param double[] cashflow
 	 * @param double[] fremdkapital,
-	 * @param Szenario szenario
+	 * @param Szenario
+	 *            szenario
 	 * @return double unternehemnswert
 	 */
 	public double calculateValues(double[] cashflow, double[] fremdkapital,
 			Szenario szenario) {
-		
+
 		double gk = 0;
 		double v = 0;
 		double unternehmenswert = 0;
@@ -115,11 +116,7 @@ public class APV extends AbstractDeterministicMethod {
 		sSteuersatz = 0.75 * szenario.getBusinessTax() / 100 + sKS;
 		sEK = szenario.getRateReturnEquity() / 100;
 		sZinsen = szenario.getRateReturnCapitalStock() / 100;
-		
-		
-		
-		
-		
+
 		for (int durchlauf = 0; durchlauf < cashflow.length; durchlauf++) {
 			period_cashflow = cashflow[durchlauf];
 			period_fremdkapital = fremdkapital[durchlauf];
@@ -127,14 +124,18 @@ public class APV extends AbstractDeterministicMethod {
 			if (durchlauf == 0) { // Basisjahr
 				first_period_cashflow = cashflow[durchlauf];
 				first_period_fremdkapital = fremdkapital[durchlauf];
+
 			} else if (durchlauf + 1 == cashflow.length) { // letztes Jahr wird
 															// nach der Schleife
 															// extra berechnet
+
 			} else {
 				gk += abzinsen(cashflow[durchlauf], sEK, durchlauf);
 				v += (sSteuersatz * sZinsen * fremdkapital[durchlauf - 1])
 						/ Math.pow(1 + sZinsen, durchlauf);
+
 			}
+
 			lastPeriod_cashflow = period_cashflow;
 			lastPeriod_fremdkapital = period_fremdkapital;
 
@@ -143,17 +144,18 @@ public class APV extends AbstractDeterministicMethod {
 
 		// Jahr -1, denn im letzten Durchlauf wird von der Schleife 1 addiert
 		jahr = jahr - 1;
-		
+
 		// Berechnung des letzten Jahres
 		gk = gk + lastPeriod_cashflow / (sEK * Math.pow(1 + sEK, jahr));
 		v = v + (sSteuersatz * sZinsen * lastPeriod_fremdkapital)
 				/ (sZinsen * Math.pow(1 + sZinsen, jahr));
-
+		
 		// Unternehmenswert gesamt berechnen
 		unternehmenswert = gk + v - first_period_fremdkapital;
 		this.setUwsteuerfrei(gk);
 		this.setSteuervorteile(v);
 		this.setFremdkapital(first_period_fremdkapital);
+		logger.debug("Unternehmenswert: " + unternehmenswert);
 		return unternehmenswert;
 	}
 
@@ -167,7 +169,7 @@ public class APV extends AbstractDeterministicMethod {
 	private double abzinsen(double wert, double zinssatz, int jahre) {
 		return wert / Math.pow(1 + zinssatz, jahre);
 	}
-	
+
 	/**
 	 * @author Marcel Rosenberger
 	 */
@@ -209,6 +211,5 @@ public class APV extends AbstractDeterministicMethod {
 	public void setFremdkapital(double fremdkapital) {
 		this.fremdkapital = fremdkapital;
 	}
-
 
 }
