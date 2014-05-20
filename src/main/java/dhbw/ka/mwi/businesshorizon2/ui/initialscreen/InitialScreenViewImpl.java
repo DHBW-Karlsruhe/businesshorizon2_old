@@ -27,12 +27,14 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
@@ -87,7 +89,12 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private Label userData;
 	
+	private Label company;
 	
+
+	
+	
+
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -140,6 +147,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		horizontal.addComponent(right);
 		
 		
+		
 		horizontal.setComponentAlignment(right, Alignment.TOP_RIGHT);
 		
 		//fügt dem oberen Panel die Überschrift hinzu
@@ -169,6 +177,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		//ruft die Methode auf, welche den LogoutButton zum Sreen hinzufügt
 		this.addLogoutButton();
 		
+		
 	}
 	
 	/**
@@ -184,9 +193,12 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
 		 *  und Prozesssicht gesprungen wird. 
 		 */
-		Label userInfo = new Label("Sie sind angemeldet als: ");
+		
+		
+		Label userInfo = new Label("Sie sind angemeldet als:");
+		userInfo.setContentMode(Label.CONTENT_XHTML);
 		middle.addComponent(userInfo);
-		middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
+		middle.setComponentAlignment(userInfo, Alignment.BOTTOM_CENTER);
 		
 		
 		if(userData != null) {
@@ -194,13 +206,46 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			middle.removeComponent(userInfo);
 		}
 		
-		userData = new Label(username);
+
+		
+		
+		userData = new Label("</br> " + username + "&nbsp;");
 		userData.setContentMode(Label.CONTENT_XHTML);
 		userData.setVisible(true);
 		middle.addComponent(userData);
-		middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
+		middle.setComponentAlignment(userData, Alignment.BOTTOM_CENTER);;
 	}
 	
+	public void showUserCompany(String company) {
+		/*
+		 *  Wenn schon ein String angezeigt wird, muss dieser zunaechst entfernt werden.
+		 *  Ansonsten werden mehrere Strings angezeigt, wenn zwischen Projektuebersicht
+		 *  und Prozesssicht gesprungen wird. 
+		 */
+		Label userText = new Label("  des Unternehmens " + company + ".");
+		
+		if(company == null) 
+		{
+			middle.removeComponent(userText);
+		}
+		
+		
+		middle.addComponent(userText);
+		middle.setComponentAlignment(userText, Alignment.BOTTOM_CENTER);
+		
+		
+	}
+		
+		
+		
+		/*	
+		
+		userCompany = new Label(company);
+		userCompany.setContentMode(Label.CONTENT_XHTML);
+		userCompany.setVisible(true);
+		middle.addComponent(userCompany);
+		middle.setComponentAlignment(userCompany, Alignment.BOTTOM_LEFT); */
+		
 	/**
 	 * 
 	 */
