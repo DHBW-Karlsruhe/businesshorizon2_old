@@ -98,7 +98,13 @@ public class DeterministicChartArea extends HorizontalLayout {
 		cvKeyChart.setHeight("300px");
 		cvKeyChart.setWidth("410px");
 		cvKeyChart.addStyleName("chart1");
-		this.addComponent(cvKeyChart);
+		
+		VerticalLayout vl = new VerticalLayout();
+		Label hl = new Label("Unternehmenswertaufschlüsselung");
+		vl.addComponent(hl);
+		vl.addComponent(cvKeyChart);
+		
+		this.addComponent(vl);
 		// Platzhalter
 
 		// Chart zur Anzeige des Cashflow Verlaufs
@@ -113,10 +119,12 @@ public class DeterministicChartArea extends HorizontalLayout {
 			periods.add(cfp);
 		}
 
+
 		if (periods != null) {
 			List<String> cfChartLines = new ArrayList<String>();
 			cfChartLines.add("Cashflows");
 			cfChartLines.add("Fremdkapital");
+
 
 			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
@@ -136,18 +144,32 @@ public class DeterministicChartArea extends HorizontalLayout {
 												",", ".")) });
 
 			}
-
+			
+	
 			cfChart.addValues(cfChartValues);
-			cfChart.setHeight("200px");
+			cfChart.setHeight("300px");
 			cfChart.setWidth("510px");
 			cfChart.addStyleName("chart2");
-			this.addComponent(cfChart);
+			
+			VerticalLayout vl2 = new VerticalLayout();
+			Label hl2 = new Label("Free-Cashflow und Fremdkapital");
+			vl2.addComponent(hl2);
+			vl2.addComponent(cfChart);
+			
+			this.addComponent(vl2);
+			
 		}
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
 		st.setHeight("100px");
-		this.addComponent(st);
+		
+		VerticalLayout vl3 = new VerticalLayout();
+		Label hl3 = new Label("Planungsprämissen");
+		vl3.addComponent(hl3);
+		vl3.addComponent(st);
+		
+		this.addComponent(vl3);
 
 	}
 
@@ -175,7 +197,13 @@ public class DeterministicChartArea extends HorizontalLayout {
 		cvKeyChart.setHeight("300px");
 		cvKeyChart.setWidth("410px");
 		cvKeyChart.setStyleName("chart1");
-		this.addComponent(cvKeyChart);
+		
+		VerticalLayout vl = new VerticalLayout();
+		Label hl = new Label("Unternehmenswertaufschlüsselung");
+		vl.addComponent(hl);
+		vl.addComponent(cvKeyChart);
+		
+		this.addComponent(vl);
 		// Platzhalter
 
 		// Chart zur Anzeige des Cashflow Verlaufs
@@ -193,6 +221,7 @@ public class DeterministicChartArea extends HorizontalLayout {
 			List<String> cfChartLines = new ArrayList<String>();
 			cfChartLines.add("Cashflows");
 			cfChartLines.add("Fremdkapital");
+
 
 			Map<String, double[]> cfChartValues = new LinkedHashMap<String, double[]>();
 
@@ -214,17 +243,30 @@ public class DeterministicChartArea extends HorizontalLayout {
 			}
 
 			cfChart.addValues(cfChartValues);
-			cfChart.setHeight("200px");
+			cfChart.setHeight("300px");
 			cfChart.setWidth("510px");
 			cfChart.addStyleName("chart2");
-			this.addComponent(cfChart);
+			
+			VerticalLayout vl2 = new VerticalLayout();
+			Label hl2 = new Label("Free-Cashflow und Fremdkapital");
+			vl2.addComponent(hl2);
+			vl2.addComponent(cfChart);
+			
+			this.addComponent(vl2);
 		}
+
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
 		st.setHeight("100px");
 		st.setStyleName("chart3");
-		this.addComponent(st);
+		
+		VerticalLayout vl3 = new VerticalLayout();
+		Label hl3 = new Label("Planungsprämissen");
+		vl3.addComponent(hl3);
+		vl3.addComponent(st);
+		
+		this.addComponent(vl3);
 	}
 
 }
