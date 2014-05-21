@@ -260,7 +260,7 @@ public class ParameterViewImpl extends HorizontalSplitPanel implements
 		labelHeadingMethDet = new Label("Stochastische Parameter:");
 		gridLayout.addComponent(labelHeadingMethDet, 0, 3);
 
-		labelNumPeriods = new Label("Anzahl anzugebender Perioden");
+		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods, 0, 4);
 
 		textfieldNumPeriodsToForecast = new TextField();

@@ -169,8 +169,15 @@ public class StochasticChartArea extends HorizontalLayout {
 		cvChart.setHeight("300px");
 		cvChart.setWidth("410px");
 		cvChart.setStyleName("chart1");
+		
+		VerticalLayout vl = new VerticalLayout();
+		Label hl = new Label("Verteilung der Unternehmenswerte");
+		vl.addComponent(hl);
+		vl.addComponent(cvChart);
+		
+		this.addComponent(vl);
 
-		this.addComponent(cvChart);
+
 
 		// Chart zur Anzeige des Cashflow Verlaufs
 		if (periods != null) {
@@ -200,7 +207,13 @@ public class StochasticChartArea extends HorizontalLayout {
 			cfChart.setHeight("200px");
 			cfChart.setWidth("510px");
 			cfChart.addStyleName("chart2");
-			this.addComponent(cfChart);
+			
+			VerticalLayout vl2 = new VerticalLayout();
+			Label hl2 = new Label("prognostizierte Free-Cashflows und Fremdkapital");
+			vl2.addComponent(hl2);
+			vl2.addComponent(cfChart);
+			
+			this.addComponent(vl2);
 		}
 
 		// Modellabweichung hinzufügen
@@ -212,7 +225,13 @@ public class StochasticChartArea extends HorizontalLayout {
 		ScenarioTable st = new ScenarioTable(scenario);
 		st.setHeight("100px");
 		st.setStyleName("chart3");
-		this.addComponent(st);
+		
+		VerticalLayout vl3 = new VerticalLayout();
+		Label hl3 = new Label("Planungsprämissen");
+		vl3.addComponent(hl3);
+		vl3.addComponent(st);
+		
+		this.addComponent(vl3);
 
 		// this.setHeight("900px");
 		// this.setWidth("1024px");
