@@ -100,7 +100,7 @@ public class PeriodViewImpl extends HorizontalSplitPanel implements
 		infoText5.setContentMode(Label.CONTENT_XHTML);
 		Label infoText6 = new Label ("Wählen Sie nun bitte die links angezeigten Perioden aus und geben Sie für jede Periode die abgefragten Daten zur Berechnung des Cashflows an. Die benötigten Datensätze entnehmen Sie bitte Ihrer Gewinn- und Verlustrechnung, erstellt nach dem Gesamtkostenverfahren.");
 		Label infoText7 = new Label  ("<h3>Umsatzkostenverfahren:</h3>");
-		infoText5.setContentMode(Label.CONTENT_XHTML);
+		infoText7.setContentMode(Label.CONTENT_XHTML);
 		Label infoText8 = new Label ("Wählen Sie nun bitte die links angezeigten Perioden aus und geben Sie für jede Periode die abgefragten Daten zur Berechnung des Cashflows an. Die benötigten Datensätze entnehmen Sie bitte Ihrer Gewinn- und Verlustrechnung, erstellt nach dem Umsatzkostenverfahren.");
 		
 		infoBox.addComponent(infoText1);

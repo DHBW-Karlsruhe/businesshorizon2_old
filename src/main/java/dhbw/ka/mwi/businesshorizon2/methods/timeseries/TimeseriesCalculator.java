@@ -70,7 +70,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 
         @Override
         public String getName() {
-                return "Zeitreihenanalyse (Berechnung nach APV)";
+                return "Zeitreihenanalyse";
         }
 
         @Override
