@@ -292,7 +292,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 			Date d = new Date();
 			lastChangedString = "Zuletzt geändert: " + d.toString();
 		} else {
-			lastChangedString = "Zuletzt geädert: "
+			lastChangedString = "Zuletzt geändert: "
 					+ project.getLastChanged().toString();
 		}
 		lastChanged = new Label(lastChangedString);

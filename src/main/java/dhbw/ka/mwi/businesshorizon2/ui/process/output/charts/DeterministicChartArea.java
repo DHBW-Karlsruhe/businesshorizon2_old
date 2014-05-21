@@ -87,7 +87,13 @@ public class DeterministicChartArea extends HorizontalLayout{
 		cvKeyChart.setHeight("300px");
 		cvKeyChart.setWidth("410px");
 		cvKeyChart.addStyleName("chart1");
-		this.addComponent(cvKeyChart);
+		
+		VerticalLayout vl = new VerticalLayout();
+		Label hl = new Label("Unternehmenswertaufschlüsselung");
+		vl.addComponent(hl);
+		vl.addComponent(cvKeyChart);
+		
+		this.addComponent(vl);
 		// Platzhalter
 
 
@@ -119,13 +125,25 @@ public class DeterministicChartArea extends HorizontalLayout{
 		cfKeyChart.setHeight("300px");
 		cfKeyChart.setWidth("510px");
 		cfKeyChart.addStyleName("chart2");
-		this.addComponent(cfKeyChart);
+		
+		VerticalLayout vl2 = new VerticalLayout();
+		Label hl2 = new Label("Free-Cashflow und Fremdkapital");
+		vl2.addComponent(hl2);
+		vl2.addComponent(cfKeyChart);
+		
+		this.addComponent(vl2);
 
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
 		st.setHeight("100px");
-		this.addComponent(st);
+		
+		VerticalLayout vl3 = new VerticalLayout();
+		Label hl3 = new Label("Planungsprämissen");
+		vl3.addComponent(hl3);
+		vl3.addComponent(st);
+		
+		this.addComponent(vl3);
 
 	}
 	
@@ -150,7 +168,13 @@ public class DeterministicChartArea extends HorizontalLayout{
 		cvKeyChart.setHeight("300px");
 		cvKeyChart.setWidth("410px");
 		cvKeyChart.setStyleName("chart1");
-		this.addComponent(cvKeyChart);
+		
+		VerticalLayout vl = new VerticalLayout();
+		Label hl = new Label("Unternehmenswertaufschlüsselung");
+		vl.addComponent(hl);
+		vl.addComponent(cvKeyChart);
+		
+		this.addComponent(vl);
 		// Platzhalter
 
 		// Chart zu Cashflow Verlauf
@@ -178,14 +202,25 @@ public class DeterministicChartArea extends HorizontalLayout{
 		cfKeyChart.setHeight("300px");
 		cfKeyChart.setWidth("510px");
 		cfKeyChart.setStyleName("chart2");
-		this.addComponent(cfKeyChart);
-
+		
+		VerticalLayout vl2 = new VerticalLayout();
+		Label hl2 = new Label("Free-Cashflow und Fremdkapital");
+		vl2.addComponent(hl2);
+		vl2.addComponent(cfKeyChart);
+		
+		this.addComponent(vl2);
 
 		// Planungsprämissen des Szenarios hinzufügen
 		ScenarioTable st = new ScenarioTable(scenario);
 		st.setHeight("100px");
 		st.setStyleName("chart3");
-		this.addComponent(st);
+		
+		VerticalLayout vl3 = new VerticalLayout();
+		Label hl3 = new Label("Planungsprämissen");
+		vl3.addComponent(hl3);
+		vl3.addComponent(st);
+		
+		this.addComponent(vl3);
 	}
 
 }
