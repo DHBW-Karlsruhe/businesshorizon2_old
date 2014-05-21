@@ -27,14 +27,12 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import javax.annotation.PostConstruct;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
@@ -54,238 +52,195 @@ import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
 /**
- * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
- * Eingangs-Fenster).
- * 
- * @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich
- * 
- */
+* Dies ist die Vaadin-Implementierung der InitalScreenView (dem
+* Eingangs-Fenster).
+*
+* @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich
+*
+*/
 public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
+private static final Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
 
-	@Autowired
-	private InitialScreenPresenter presenter;
-	
-	@Autowired
-	private UserProxy userProxy;
+@Autowired
+private InitialScreenPresenter presenter;
 
-	private VerticalSplitPanel verticalSplitPanel;
+@Autowired
+private UserProxy userProxy;
 
-	private HorizontalSplitPanel horizontalSplitPanel;
+private VerticalSplitPanel verticalSplitPanel;
 
-	private VerticalLayout header;
-	
-	private HorizontalLayout horizontal;
-	
-	private VerticalLayout left;
-	
-	private HorizontalLayout middle;
-	
-	private HorizontalLayout right;
-	
-	private Label title;
+private HorizontalSplitPanel horizontalSplitPanel;
 
-	private Label userData;
-	
-	private Label company;
-	
+private VerticalLayout header;
 
-	
-	
+private HorizontalLayout horizontal;
+
+private VerticalLayout left;
+
+private HorizontalLayout middle;
+
+private HorizontalLayout right;
+
+private Label title;
+
+private Label userData;
 
 
-	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
-	 * und initialisiert die View-Komponenten.
-	 * 
-	 * @author Christian Scherer, Mirko Göpfrich
-	 */
-	@PostConstruct
-	public void init() {
-		presenter.setView(this);
-		generateUi();
-		logger.debug("Initialisierung beendet");
-	}
 
-	/**
-	 * Diese Methode setzt den Titel (im Browser-Fenster) zu
-	 * "Business Horizon 2.1" und erstellt die Überschrift sowie die zwei
-	 * variablen Komponenten.
-	 * 
-	 * @author Christian Scherer, Mirko Göpfrich
-	 */
-	private void generateUi() {
-		setCaption("Business Horizon 2.1");
-		logger.debug("Ueberschrift fuer Browser erstellt");
+/**
+* Dies ist der Konstruktor, der von Spring nach der Initialierung der
+* Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+* und initialisiert die View-Komponenten.
+*
+* @author Christian Scherer, Mirko Göpfrich
+*/
+@PostConstruct
+public void init() {
+presenter.setView(this);
+generateUi();
+logger.debug("Initialisierung beendet");
+}
 
-		//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
-		verticalSplitPanel = new VerticalSplitPanel();
-		verticalSplitPanel.setSplitPosition(100, Sizeable.UNITS_PIXELS);
-		verticalSplitPanel.setLocked(true);
-		verticalSplitPanel.setStyleName("small");
-		logger.debug("Neues Vertikales SplitPanel erstellt");
+/**
+* Diese Methode setzt den Titel (im Browser-Fenster) zu
+* "Business Horizon 2.1" und erstellt die Überschrift sowie die zwei
+* variablen Komponenten.
+*
+* @author Christian Scherer, Mirko Göpfrich
+*/
+private void generateUi() {
+setCaption("Business Horizon 2.1");
+logger.debug("Ueberschrift fuer Browser erstellt");
 
-		//erzeugt die Layouts
-		header = new VerticalLayout();
-		horizontal = new HorizontalLayout();
-		left = new VerticalLayout();
-		middle = new HorizontalLayout();
-		right = new HorizontalLayout();
-		
-		
-		header.setSizeFull();
-		horizontal.setSizeFull();
-		left.setWidth(50, UNITS_PERCENTAGE);
-		
-		//verschachtelt die Layouts
-		header.addComponent(horizontal);
-		horizontal.addComponent(left);
-		horizontal.addComponent(middle);
-		horizontal.addComponent(right);
-		
-		
-		
-		horizontal.setComponentAlignment(right, Alignment.TOP_RIGHT);
-		
-		//fügt dem oberen Panel die Überschrift hinzu
-		verticalSplitPanel.setFirstComponent(header);
-		title = new Label("<h1>Business Horizon 2.1</h1>");
-		title.setStyleName("ueberschriften");
-		title.setContentMode(Label.CONTENT_XHTML);
-		left.addComponent(title);
-		left.setComponentAlignment(title, Alignment.TOP_LEFT);
-		logger.debug("Überschrift hinzugefügt und dem oberen vertikalen Panel übergeben");
-		
-		//Teilt das Panel horizontal un zwei gleiche Bereiche auf und ertstellt eine vertiakel Trennlinie (nicht verstellbar.)
-		horizontalSplitPanel = new HorizontalSplitPanel();
-		horizontalSplitPanel.setSizeFull();
-		horizontalSplitPanel.setSplitPosition(50, UNITS_PERCENTAGE);
-		horizontalSplitPanel.setLocked(true);
-		horizontalSplitPanel.setStyleName("small");
-		
-		//fügt dem unteren vertikalen Panel ein horizontales SplitPanel hinzu.
-		verticalSplitPanel.setSecondComponent(horizontalSplitPanel);
-		logger.debug("Horizontales SplitPanel für Projekte und Infos erstellt und an das untere vertikale Panel übergeben");
+//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
+verticalSplitPanel = new VerticalSplitPanel();
+verticalSplitPanel.setSplitPosition(100, Sizeable.UNITS_PIXELS);
+verticalSplitPanel.setLocked(true);
+verticalSplitPanel.setStyleName("small");
+logger.debug("Neues Vertikales SplitPanel erstellt");
 
-		// Setzt das vertikale Splitpanel (äußeres Panel) inkl innere Panels als Inhalt für das Fenster.
-		setContent(verticalSplitPanel);
-		logger.debug("Vertikales SplitPanel mit allen Elementen an das Hauptfenster übergeben");
-		
-		//ruft die Methode auf, welche den LogoutButton zum Sreen hinzufügt
-		this.addLogoutButton();
-		
-		
-	}
-	
-	/**
-	 * Methode zum Darstellen der Userdaten im Header
-	 * 
-	 * @param username
-	 *            Der angezeigte Username
-	 * @author Mirko Göpfrich
-	 */
-	public void showUserData(String username) {
-		/*
-		 *  Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
-		 *  Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
-		 *  und Prozesssicht gesprungen wird. 
-		 */
-		
-		
-		Label userInfo = new Label("Sie sind angemeldet als:");
-		userInfo.setContentMode(Label.CONTENT_XHTML);
-		middle.addComponent(userInfo);
-		middle.setComponentAlignment(userInfo, Alignment.BOTTOM_CENTER);
-		
-		
-		if(userData != null) {
-			middle.removeComponent(userData);
-			middle.removeComponent(userInfo);
-		}
-		
-
-		
-		
-		userData = new Label("</br> " + username + "&nbsp;");
-		userData.setContentMode(Label.CONTENT_XHTML);
-		userData.setVisible(true);
-		middle.addComponent(userData);
-		middle.setComponentAlignment(userData, Alignment.BOTTOM_CENTER);;
-	}
-	
-	public void showUserCompany(String company) {
-		/*
-		 *  Wenn schon ein String angezeigt wird, muss dieser zunaechst entfernt werden.
-		 *  Ansonsten werden mehrere Strings angezeigt, wenn zwischen Projektuebersicht
-		 *  und Prozesssicht gesprungen wird. 
-		 */
-		Label userText = new Label("  des Unternehmens " + company + ".");
-		
-		if(company == null) 
-		{
-			middle.removeComponent(userText);
-		}
-		
-		
-		middle.addComponent(userText);
-		middle.setComponentAlignment(userText, Alignment.BOTTOM_CENTER);
-		
-		
-	}
-		
-		
-		
-		/*	
-		
-		userCompany = new Label(company);
-		userCompany.setContentMode(Label.CONTENT_XHTML);
-		userCompany.setVisible(true);
-		middle.addComponent(userCompany);
-		middle.setComponentAlignment(userCompany, Alignment.BOTTOM_LEFT); */
-		
-	/**
-	 * 
-	 */
-	private void addLogoutButton() {
-		Button logoutButton = new Button("Logout");
-		logoutButton.setStyleName("default");
-		logoutButton.addListener(new Button.ClickListener() {
-			
-			private static final long serialVersionUID = 7411091035775152765L;
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
-				presenter.doLogout();
-			}
-		});
-		
-		//LogoutButton hinzufügen und ausrichten
-		logoutButton.setEnabled(true);
-		right.addComponent(logoutButton);
-		right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
-		
-	}
+//erzeugt die Layouts
+header = new VerticalLayout();
+horizontal = new HorizontalLayout();
+left = new VerticalLayout();
+middle = new HorizontalLayout();
+right = new HorizontalLayout();
 
 
-	/**
-	 * Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
-	 * unter der Überschrift.
-	 * 
-	 * @param leftView
-	 *            : Die PeriodenListe
-	 * @param rightView
-	 *            : Die Infoanzeige
-	 * @author Christian Scherer
-	 */
-	@Override
-	public void showView(View leftView, View rightView) {
-		horizontalSplitPanel.setFirstComponent((Component) leftView);
-		horizontalSplitPanel.setSecondComponent((Component) rightView);
-	}
+header.setSizeFull();
+horizontal.setSizeFull();
+left.setWidth(50, UNITS_PERCENTAGE);
+
+//verschachtelt die Layouts
+header.addComponent(horizontal);
+horizontal.addComponent(left);
+horizontal.addComponent(middle);
+horizontal.addComponent(right);
+
+
+horizontal.setComponentAlignment(right, Alignment.TOP_RIGHT);
+
+//fügt dem oberen Panel die Überschrift hinzu
+verticalSplitPanel.setFirstComponent(header);
+title = new Label("<h1>Business Horizon 2.1</h1>");
+title.setStyleName("ueberschriften");
+title.setContentMode(Label.CONTENT_XHTML);
+left.addComponent(title);
+left.setComponentAlignment(title, Alignment.TOP_LEFT);
+logger.debug("Überschrift hinzugefügt und dem oberen vertikalen Panel übergeben");
+
+//Teilt das Panel horizontal un zwei gleiche Bereiche auf und ertstellt eine vertiakel Trennlinie (nicht verstellbar.)
+horizontalSplitPanel = new HorizontalSplitPanel();
+horizontalSplitPanel.setSizeFull();
+horizontalSplitPanel.setSplitPosition(50, UNITS_PERCENTAGE);
+horizontalSplitPanel.setLocked(true);
+horizontalSplitPanel.setStyleName("small");
+
+//fügt dem unteren vertikalen Panel ein horizontales SplitPanel hinzu.
+verticalSplitPanel.setSecondComponent(horizontalSplitPanel);
+logger.debug("Horizontales SplitPanel für Projekte und Infos erstellt und an das untere vertikale Panel übergeben");
+
+// Setzt das vertikale Splitpanel (äußeres Panel) inkl innere Panels als Inhalt für das Fenster.
+setContent(verticalSplitPanel);
+logger.debug("Vertikales SplitPanel mit allen Elementen an das Hauptfenster übergeben");
+
+//ruft die Methode auf, welche den LogoutButton zum Sreen hinzufügt
+this.addLogoutButton();
+
+}
+
+/**
+* Methode zum Darstellen der Userdaten im Header
+*
+* @param username
+* Der angezeigte Username
+* @author Mirko Göpfrich
+*/
+public void showUserData(String username) {
+/*
+* Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
+* Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
+* und Prozesssicht gesprungen wird.
+*/
+Label userInfo = new Label("Sie sind angemeldet als: ");
+middle.addComponent(userInfo);
+middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
+
+
+if(userData != null) {
+middle.removeComponent(userData);
+middle.removeComponent(userInfo);
+}
+
+userData = new Label(username);
+userData.setContentMode(Label.CONTENT_XHTML);
+userData.setVisible(true);
+middle.addComponent(userData);
+middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
+}
+
+/**
+*
+*/
+private void addLogoutButton() {
+Button logoutButton = new Button("Logout");
+logoutButton.setStyleName("default");
+logoutButton.addListener(new Button.ClickListener() {
+
+private static final long serialVersionUID = 7411091035775152765L;
+
+@Override
+public void buttonClick(ClickEvent event) {
+//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
+presenter.doLogout();
+}
+});
+
+//LogoutButton hinzufügen und ausrichten
+logoutButton.setEnabled(true);
+right.addComponent(logoutButton);
+right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+
+}
+
+
+/**
+* Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
+* unter der Überschrift.
+*
+* @param leftView
+* : Die PeriodenListe
+* @param rightView
+* : Die Infoanzeige
+* @author Christian Scherer
+*/
+@Override
+public void showView(View leftView, View rightView) {
+horizontalSplitPanel.setFirstComponent((Component) leftView);
+horizontalSplitPanel.setSecondComponent((Component) rightView);
+}
 
 
 }
