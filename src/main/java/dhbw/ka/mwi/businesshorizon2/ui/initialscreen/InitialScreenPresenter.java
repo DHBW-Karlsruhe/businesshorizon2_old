@@ -47,100 +47,98 @@ import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 
 /**
- * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
- * verantwortlich, die jeweils anzuzeigenden Fenster korrekt in der View zu
- * setzen. Somit ist es notwenig, dass er fuer jedes Anzuzeigende (Teil-)Fenster
- * einen entsprechenden EventHandler fuer den jeweiligen Show*Event registriert.
- * 
- * @author Christian Scherer, Marcel Rosenberger
- * 
- */
+* Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
+* verantwortlich, die jeweils anzuzeigenden Fenster korrekt in der View zu
+* setzen. Somit ist es notwenig, dass er fuer jedes Anzuzeigende (Teil-)Fenster
+* einen entsprechenden EventHandler fuer den jeweiligen Show*Event registriert.
+*
+* @author Christian Scherer, Marcel Rosenberger
+*
+*/
 
 public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface> {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 
-	private User user;
-	
-	@Autowired
-	private UserProxy userProxy;
+private User user;
 
-	private static final Logger logger = Logger.getLogger("InitialScreenPresenter.class");
+@Autowired
+private UserProxy userProxy;
 
-	@Autowired
-	private EventBus eventBus;
+private static final Logger logger = Logger.getLogger("InitialScreenPresenter.class");
 
-	@Autowired
-	private Project project;
+@Autowired
+private EventBus eventBus;
 
-	@Autowired
-	private ProjectListViewInterface projectListView;
+@Autowired
+private Project project;
 
-	@Autowired
-	private InfosViewInterface infosView;
-	
-	@Autowired
-	private AuthenticationServiceInterface authenticationService;
-	
-	@Autowired
-	private PersistenceServiceInterface persistenceService;
+@Autowired
+private ProjectListViewInterface projectListView;
 
-	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
-	 * 
-	 * @author Christian Scherer
-	 */
-	@PostConstruct
-	public void init() {
-		eventBus.addHandler(this);
-		logger.debug("Eventhandler Hinzugefügt");
+@Autowired
+private InfosViewInterface infosView;
 
-	}
+@Autowired
+private AuthenticationServiceInterface authenticationService;
 
-	/**
-	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Einloggen)
-	 * abgesetzt. Dabei wird in auf der linken Seite die Projekt-Liste und auf
-	 * der rechten Seite die Anwenderinformationen dargestellt. Der Projektlsite
-	 * wird dabei das angemeldete User-Objekt übergeben.
-	 * 
-	 * @author Christian Scherer
-	 * @param event
-	 *            das ShowInitialScreenViewEvent, welches das angemeldete
-	 *            User-Objekt beinhaltet
-	 */
-	@EventHandler
-	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
-		logger.debug("ShowInitialScreenViewEvent empfangen");
-		user = userProxy.getSelectedUser();
-		getView().showUserData(user.getFullName());
-		getView().showUserCompany(user.getCompany());
-		getView().showView(projectListView, infosView);
-		logger.debug("Views mit Projekt und Infoview geladen");
-		eventBus.fireEvent(new ShowProjectListEvent(user));
-		logger.debug("ShowProjectListEvent gefeuert");
-		eventBus.fireEvent(new ShowInfosEvent());
-		logger.debug("ShowInfosEvent gefeuert");
-		
+@Autowired
+private PersistenceServiceInterface persistenceService;
 
-	}
+/**
+* Dies ist der Konstruktor, der von Spring nach der Initialierung der
+* Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+* einen EventHandler.
+*
+* @author Christian Scherer
+*/
+@PostConstruct
+public void init() {
+eventBus.addHandler(this);
+logger.debug("Eventhandler Hinzugefügt");
 
-	//wird durch den Click-Listener des Logout-Button in der InitinalScreen-View aufgerufen
-	public void doLogout() {
-		//speichert die Projekte in der externen Datei
-		persistenceService.saveProjects();
-		logger.debug("Projekte gespeichert");
-		try {
-			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
-			authenticationService.doLogout(userProxy.getSelectedUser());
-			logger.debug("LogoutEvent gefeuert");
-			eventBus.fireEvent(new LogoutEvent());	
-		} catch (UserNotLoggedInException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+}
+
+/**
+* Dieser Event wird zu Beginn von der BHApplication (nach dem Einloggen)
+* abgesetzt. Dabei wird in auf der linken Seite die Projekt-Liste und auf
+* der rechten Seite die Anwenderinformationen dargestellt. Der Projektlsite
+* wird dabei das angemeldete User-Objekt übergeben.
+*
+* @author Christian Scherer
+* @param event
+* das ShowInitialScreenViewEvent, welches das angemeldete
+* User-Objekt beinhaltet
+*/
+@EventHandler
+public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
+logger.debug("ShowInitialScreenViewEvent empfangen");
+user = userProxy.getSelectedUser();
+getView().showUserData(user.getFullName());
+getView().showView(projectListView, infosView);
+logger.debug("Views mit Projekt und Infoview geladen");
+eventBus.fireEvent(new ShowProjectListEvent(user));
+logger.debug("ShowProjectListEvent gefeuert");
+eventBus.fireEvent(new ShowInfosEvent());
+logger.debug("ShowInfosEvent gefeuert");
+
+}
+
+//wird durch den Click-Listener des Logout-Button in der InitinalScreen-View aufgerufen
+public void doLogout() {
+//speichert die Projekte in der externen Datei
+persistenceService.saveProjects();
+logger.debug("Projekte gespeichert");
+try {
+//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
+authenticationService.doLogout(userProxy.getSelectedUser());
+logger.debug("LogoutEvent gefeuert");
+eventBus.fireEvent(new LogoutEvent());	
+} catch (UserNotLoggedInException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+}
+
+}
 
 }
 
