@@ -176,7 +176,7 @@
 
 									<includes>
 
-										<include>MVP-Lite-1.0.jar</include>
+										<include>MVP-Lite-1.1.jar</include>
 										<include>gwt-visualization.jar</include>
 
 									</includes>
