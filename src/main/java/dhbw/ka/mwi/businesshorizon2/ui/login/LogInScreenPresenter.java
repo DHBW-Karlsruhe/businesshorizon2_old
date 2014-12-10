@@ -211,11 +211,12 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	/**
 	 * Prueft ob es sich um einen gültigen Vorname handelt. Gibt "true" fuer
 	 * gültig und "false" fuer nicht gültig zurueck. Ein Vorname muss mit einem
-	 * Großbuchstaben beginnen und darf maximal 20 Zeichen lang sein. Weiterhin
+	 * Großbuchstaben beginnen und darf maximal 20 Zeichen lang sein. Beginnt er nicht mit einem Großbuchstabe,
+	 * wird der erste Buchstabe automatisch in einen Großbuchstabe konvertiert. Weiterhin
 	 * ist ein Bindestrich "-" erlaubt. Bei keiner Uebereinstimmung wird zudem
 	 * eine Fehlermeldung an die ViewImpl zur Ausgabe zurueckgegeben.
 	 * 
-	 * @author Marcel Rosenberger, Annika Weis
+	 * @author Marcel Rosenberger, Annika Weis, Marco Glaser
 	 * @return Ob es sich um einen gültigen Vornamen handelt.
 	 */
 	private boolean validateFirstName() {
@@ -245,11 +246,12 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	/**
 	 * Prueft ob es sich um einen gültigen Nachnamen handelt. Gibt "true" fuer
 	 * gültig und "false" fuer nicht gültig zurueck. Ein Nachname muss mit einem
-	 * Großbuchstaben beginnen und darf maximal 20 Zeichen lang sein. Weiterhin
+	 * Großbuchstaben beginnen und darf maximal 20 Zeichen lang sein. Beginnt er nicht mit einem Großbuchstabe,
+	 * wird der erste Buchstabe automatisch in einen Großbuchstabe konvertiert. Weiterhin
 	 * ist ein Bindestrich "-" erlaubt. Bei keiner Uebereinstimmung wird zudem
 	 * eine Fehlermeldung an die ViewImpl zur Ausgabe zurueckgegeben.
 	 * 
-	 * @author Marcel Rosenberger, Annika Weis
+	 * @author Marcel Rosenberger, Annika Weis, Marco Glaser
 	 * @return Ob es sich um einen gültigen Nachnamen handelt.
 	 */
 	private boolean validateLastName() {
