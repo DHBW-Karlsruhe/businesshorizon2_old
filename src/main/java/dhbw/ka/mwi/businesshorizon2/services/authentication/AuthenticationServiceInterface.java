@@ -100,5 +100,5 @@ public interface AuthenticationServiceInterface extends Serializable {
 	 * @param Die
 	 *            Mailadresse, für den das Passwort gelesen werden soll
 	 */
-	public void forgotPassword(String email);
+	public void forgotPassword(String email) throws UserNotFoundException;
 }

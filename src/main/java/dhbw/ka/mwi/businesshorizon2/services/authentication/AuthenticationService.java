@@ -48,7 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
  * Datei durchführt. Die Klasse ist als Singleton implementiert, damit sie nur
  * einmal in der gesamten Applikation existiert.
  * 
- * @author Florian Stier, Marcel Rosenberger, Annika Weis, Mirko Göpfrich
+ * @author Florian Stier, Marcel Rosenberger, Annika Weis, Mirko Göpfrich, Tobias Lindner
  */
 
 public class AuthenticationService implements AuthenticationServiceInterface {
@@ -246,9 +246,27 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 		}
 	}
 
+	/**
+	 * Diese Methode versendet das Passwort per E-Mail.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @throws UserNotFoundException
+	 */
 	@Override
-	public void forgotPassword(String email) {
-		// DUMMY
+	public void forgotPassword(String email) throws UserNotFoundException{
+		if (allUsers != null) {
+			for (User user : allUsers) {
+				if (user.getEmailAdress().toUpperCase().equals(email.toUpperCase())) {
+					//Mail.send(user.getPassword());
+					break;
+				}
+			}
+			throw new UserNotFoundException ("User " + email + "doesn't exit.");
+		}
+		
+		else
+		throw new UserNotFoundException ("User " + email + "doesn't exist.");
 	}
 
 
