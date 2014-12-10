@@ -127,6 +127,7 @@ public class CalculateTide implements CalculateTideInterface {
 	 * Diese Methode berechnet den Paramater b der Trendgerade T(t) = a + b *t.
 	 * b = Summe((Periode - Mittel der Perioden) * (Wert zur Periode - Mittel
 	 * der Werte )) / Summe((periode - Mittel der Perioden)^2)
+	 * Es wird die Methode der kleinsten Quadrate verwendet.
 	 * 
 	 * @author Kai Westerholz
 	 * @return double ParameterB

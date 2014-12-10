@@ -243,7 +243,7 @@ public class AnalysisTimeseries {
 		double[][] prognosewertSammlung = new double[durchlaeufe][zuberechnendeperioden];
 		double prognosewert = 0;
 		double zNull = 0;
-		Random zufall = new Random();
+		Random zufall = new Random(); //stattdessen hier white noise einbauen
 
 		// Erwartete Cashflows ausrechnen
 		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
@@ -274,7 +274,7 @@ public class AnalysisTimeseries {
 				zNull = zufall.nextGaussian() * standardabweichung;
 				prognosewert = prognosewert + zNull;
 				vergangeneUndZukuenftigeWerte.add(prognosewert);
-				prognosewert = prognosewert + mittelwert;
+				prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
 				prognosewertSammlung[i][j] = prognosewert;
 				prognosewert = 0;
 			}
@@ -398,7 +398,7 @@ public class AnalysisTimeseries {
 				prognosewert = prognosewert
 						+ matrixPhi.get(t, 0)
 						* vergangeneUndZukuenftigeWerte
-								.get(vergangeneUndZukuenftigeWerte.size()
+								.get(vergangeneUndZukuenftigeWerte.size() //Weißes Rauschen?
 										- (t + 1));
 			}
 			vergangeneUndZukuenftigeWerte.add(prognosewert);
