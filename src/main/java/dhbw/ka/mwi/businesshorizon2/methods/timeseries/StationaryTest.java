@@ -35,7 +35,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
  * 
  */
 
-public class StationaryTest {
+public class StationaryTest {	//nicht implementiert
 
 	/**
 	 * Diese Methode ueberprueft die Zeitreihe und gibt das Ergebnis zurück.
