@@ -85,7 +85,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	}
 
-	
+
 	/**
 	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Setzen des
 	 * Fensters) abgesetzt. Es müssen derzeit keine Objekte hierbei geladen
@@ -98,7 +98,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	public void onShowLogInScreen(ShowLogInScreenEvent event) {
 		logger.debug("ShowLogInScreenEvent erhalten");
 		logger.debug("LogInScreenPresenter.onShowLogInScreen aufgerufen");
-		
+
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 					&& validateLastName() && validateMailAdress()
 					&& validatePassword() && validatePasswordSafety()) {
 				logger.debug("Alle Eingabefelder wurden vom Anwender gültig befuellt und die Passwoerter stimmen überein.");
-				
+
 				//mit dieser Methode werden die Userdaten in einer Datei abgelegt
 				authenticationService.registerNewUser(emailAdress, password,
 						firstName, lastName, company);
@@ -225,7 +225,14 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		if (Pattern.matches("^[A-ZÄÖÜ][a-zäöüA-ZÄÖÜ\\ \\-]{1,19}$", firstName)) {
 			validFirstName = true;
 			logger.debug("Vorname gültig.");
-		} else {
+		} else if(Pattern.matches("^[a-zäöüA-ZÄÖÜ\\ \\-]{1,19}$", firstName)){
+			validFirstName = true;
+			char firstLetter = firstName.charAt(0);
+			firstLetter = Character.toUpperCase(firstLetter);
+			String upperCaseName = firstLetter + firstName.substring(1);
+			this.firstName = upperCaseName;
+		}
+		else {
 			validFirstName = false;
 			getView().showErrorMessage(
 					"Bitte geben Sie einen gültigen Vornamen ein.");
@@ -252,7 +259,13 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		if (Pattern.matches("^[A-ZÄÖÜ][a-zäöüA-ZÄÖÜ\\ \\-]{1,19}$", lastName)) {
 			validLastName = true;
 			logger.debug("Nachname gültig.");
-		} else {
+		} else if(Pattern.matches("^[a-zäöüA-ZÄÖÜ\\ \\-]{1,19}$", lastName)){
+			validLastName = true;
+			char firstLetter = lastName.charAt(0);
+			firstLetter = Character.toUpperCase(firstLetter);
+			String upperCaseName = firstLetter + lastName.substring(1);
+			this.lastName = upperCaseName;
+		}else {
 			validLastName = false;
 			getView().showErrorMessage(
 					"Bitte geben Sie einen gültigen Nachnamen ein.");
@@ -314,8 +327,8 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		} else {
 			validPassword = false;
 			getView()
-					.showErrorMessage(
-							"Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre Eingabe");
+			.showErrorMessage(
+					"Passwort und dessen Wiederholung stimmen nicht überein. Bitte überprüfen Sie Ihre Eingabe");
 			logger.debug("Passwörter stimmen nicht überein.");
 		}
 		return validPassword;
@@ -355,8 +368,8 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		} else {
 			safePassword = false;
 			getView()
-					.showErrorMessage(
-							"Das Passwort muss zwischen 6-20 Zeichen lang sein, sowie mindestens eine Zahl, Groß- und Kleinbuchstaben und ein Sonderzeichen enthalten.");
+			.showErrorMessage(
+					"Das Passwort muss zwischen 6-20 Zeichen lang sein, sowie mindestens eine Zahl, Groß- und Kleinbuchstaben und ein Sonderzeichen enthalten.");
 			logger.debug("Passwort genügt Sicherheitsbestimmungen nicht.");
 		}
 
