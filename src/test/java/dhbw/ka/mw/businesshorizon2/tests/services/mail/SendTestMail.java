@@ -1,12 +1,13 @@
 package dhbw.ka.mw.businesshorizon2.tests.services.mail;
 
 import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.services.mail.SendMail;
 
-public class SendTestMail {
+public class SendTestMail extends TestCase{
 
 	@Test
 	public void testSendMail() {
