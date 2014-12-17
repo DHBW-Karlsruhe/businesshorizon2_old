@@ -36,6 +36,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImplv2;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
@@ -62,7 +63,7 @@ public class BHApplication extends Application {
 	private InitialScreenViewImpl initialScreenView;
 	
 	@Autowired
-	private LogInScreenViewImpl logInScreenView;
+	private LogInScreenViewImplv2 logInScreenView;
 
 	@Autowired
 	private EventBus eventBus;

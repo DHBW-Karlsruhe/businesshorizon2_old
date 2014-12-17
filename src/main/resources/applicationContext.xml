@@ -68,7 +68,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenPresenter"
 		scope="session" />
 	<bean name="logInScreenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl"
+		class="dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImplv2"
 		scope="session" />
 
 	<!-- Initial-Screen -->
