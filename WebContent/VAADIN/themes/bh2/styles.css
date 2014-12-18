@@ -96,3 +96,47 @@ div.projectlist:hover {
 	
 }
 
+.v-splitpanel-hsplitter-locked {
+	background-color: black;
+	border: none;
+	background-image: none;
+	width: 3px;
+}
+
+.v-splitpanel-vsplitter-locked {
+	background-color: #4A7EBB;
+	border: none;
+	background-image: none;
+	height: 2px;
+}
+
+/* .v-splitpanel-vertical {
+	margin-left: 15px;
+	margin-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+} */
+
+/* .horizontalBottom {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+} */
+
+.horizontalBottom .v-splitpanel-hsplitter-locked {
+	background-color: #4A7EBB;
+	width: 2px;
+}
+
+/* .vLayoutContainerBottom {
+	width: 100%;
+	height: 100%;
+} */
+
+.mainLayout {
+	border-color: black;
+	border-width: 3px;
+	border-style: solid;
+	box-sizing: border-box;
+}
