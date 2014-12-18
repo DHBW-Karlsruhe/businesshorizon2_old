@@ -98,6 +98,14 @@ private Label leftBottomL;
 
 private Label userData;
 
+private VerticalLayout mainLayout = new VerticalLayout();
+private VerticalLayout leftLayout = new VerticalLayout();
+private VerticalLayout rightLayout = new VerticalLayout();
+private HorizontalLayout topRightLayout = new HorizontalLayout();
+private VerticalLayout bottomLeftLayout = new VerticalLayout();
+private VerticalLayout bottomRightLayout = new VerticalLayout();
+private VerticalLayout bottomLayout = new VerticalLayout();
+
 
 
 /**
@@ -105,7 +113,7 @@ private Label userData;
 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
 * und initialisiert die View-Komponenten.
 *
-* @author Christian Scherer, Mirko Göpfrich
+* @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 */
 @PostConstruct
 public void init() {
@@ -115,26 +123,19 @@ logger.debug("Initialisierung beendet");
 }
 
 /**
-* Diese Methode setzt den Titel (im Browser-Fenster) zu
-* "Business Horizon 2.1" und erstellt die Überschrift sowie die zwei
-* variablen Komponenten.
+* Diese Methode setzt das Layout für den Screen fest sowie den Titel der Anwendung.
 *
 * @author Christian Scherer, Mirko Göpfrich
 */
 private void generateUi() {
 	
-	VerticalLayout mainLayout = new VerticalLayout();
-	VerticalLayout leftLayout = new VerticalLayout();
-	VerticalLayout rightLayout = new VerticalLayout();
-	HorizontalLayout topRightLayout = new HorizontalLayout();
-	VerticalLayout bottomLeftLayout = new VerticalLayout();
-	VerticalLayout bottomRightLayout = new VerticalLayout();
-	VerticalLayout bottomLayout = new VerticalLayout();
-//	mainLayout.setSizeFull();
 	mainLayout.setSizeFull();
 	mainLayout.setStyleName("mainLayout");
+	leftLayout.setSizeFull();
+	leftLayout.setStyleName("leftContainer");
 	rightLayout.setSizeFull();
 	bottomLayout.setSizeFull();
+	bottomLeftLayout.setSizeFull();
 
 	horizontalSplitPanel = new HorizontalSplitPanel();
 	horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
@@ -161,7 +162,7 @@ private void generateUi() {
 	rightLayout.addComponent(verticalSplitPanel);
 	topRightLayout.addComponent(rightTopL);
 	bottomRightLayout.addComponent(rightBottomL);
-	bottomLeftLayout.addComponent(leftBottomL);
+//	bottomLeftLayout.addComponent(leftBottomL);
 	bottomLayout.addComponent(horizontalSplitPanelRight);
 	
 	horizontalSplitPanel.addComponent(leftLayout);
@@ -249,7 +250,7 @@ right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 */
 @Override
 public void showView(View leftView, View rightView) {
-//horizontalSplitPanel.setFirstComponent((Component) leftView);
+bottomLeftLayout.addComponent((Component) leftView);
 //horizontalSplitPanel.setSecondComponent((Component) rightView);
 }
 

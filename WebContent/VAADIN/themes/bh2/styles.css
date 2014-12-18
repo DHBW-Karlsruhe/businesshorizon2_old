@@ -55,7 +55,7 @@ div.projectlist:hover {
 }
 
 .v-app {
-    background-image: url("images/background.png");
+/*     background-image: url("images/background.png"); */
     background-size:100%;
     height:100%;
 
@@ -110,29 +110,14 @@ div.projectlist:hover {
 	height: 2px;
 }
 
-/* .v-splitpanel-vertical {
-	margin-left: 15px;
-	margin-right: 15px;
-	padding-left: 15px;
-	padding-right: 15px;
-} */
-
-/* .horizontalBottom {
-	margin-top: 15px;
-	margin-bottom: 15px;
-	padding-top: 20px;
-	padding-bottom: 20px;
-} */
-
 .horizontalBottom .v-splitpanel-hsplitter-locked {
 	background-color: #4A7EBB;
 	width: 2px;
 }
 
-/* .vLayoutContainerBottom {
-	width: 100%;
-	height: 100%;
-} */
+.leftContainer {
+	background-color: #E2FDBD;
+}
 
 .mainLayout {
 	border-color: black;
