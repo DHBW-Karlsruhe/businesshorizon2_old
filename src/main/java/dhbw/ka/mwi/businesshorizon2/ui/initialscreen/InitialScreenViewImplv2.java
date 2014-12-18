@@ -56,7 +56,7 @@ import com.vaadin.ui.Window;
 * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
 * Eingangs-Fenster).
 *
-* @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich
+* @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich, Marco Glaser
 *
 */
 public class InitialScreenViewImplv2 extends Window implements InitialScreenViewInterface {
@@ -125,7 +125,7 @@ logger.debug("Initialisierung beendet");
 /**
 * Diese Methode setzt das Layout für den Screen fest sowie den Titel der Anwendung.
 *
-* @author Christian Scherer, Mirko Göpfrich
+* @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 */
 private void generateUi() {
 	
@@ -246,7 +246,7 @@ right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 * : Die PeriodenListe
 * @param rightView
 * : Die Infoanzeige
-* @author Christian Scherer
+* @author Christian Scherer, Marco Glaser
 */
 @Override
 public void showView(View leftView, View rightView) {
