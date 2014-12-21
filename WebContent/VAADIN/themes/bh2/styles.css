@@ -55,7 +55,7 @@ div.projectlist:hover {
 }
 
 .v-app {
-    background-image: url("images/background.png");
+/*    background-image: url("images/background.png"); */
     background-size:100%;
     height:100%;
 
@@ -93,6 +93,29 @@ div.projectlist:hover {
 	text-align:center;
 	text-shadow:1px 2px 0px #ffffff;
 	margin-bottom:50px
+	
+}
+
+.v-splitpanel-first-container{
+	background-color: rgb(236, 255, 186);
+    background-size:100%;
+    height:100%;
+	
+}
+
+.v-label-welcomeSlogan{
+	font-size: 70px;
+	font-weight: bold; 
+}
+.v-label-welcomeText{
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.v-caption-logo{
+	width: 40%;
+	position: absolute;
+	right: 2%;	
 	
 }
 

@@ -25,19 +25,28 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
+import javafx.scene.image.Image;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.Resource;
 import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout.MarginInfo;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.LoginForm.LoginEvent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -49,8 +58,11 @@ import com.vaadin.ui.Window;
  * allem auf das hinzufügen eines LogIn-Forms von Vaadin welches die Darstellung
  * wie auch Übermittlung der Werte Username und Password sicherstellt.
  * 
- * @author Christian Scherer
+ * Es wird das neue LogIn auf Basis der Implementierung der Vorgänger aufgebaut.
+ * Um die alten Strukture als Fallback-Lösung zu erhalten, wurde die Version2
+ * angelegt.
  * 
+ * @author Felix Schlosser
  */
 
 public class LogInScreenViewImplv2 extends Window implements
@@ -62,7 +74,17 @@ public class LogInScreenViewImplv2 extends Window implements
 	@Autowired
 	private LogInScreenPresenter presenter;
 	
-	private VerticalLayout vertical;
+	private HorizontalLayout horizontal;
+	
+	private HorizontalLayout welcomeLayout, textLayout;
+	
+	private VerticalLayout verticalTop;
+	
+	private VerticalSplitPanel vSplitPanel;
+	
+	
+	private Label welcome, welcomeText, iconLabel;
+	
 	
 	private Window regDialog;
 	private FormLayout fl;
@@ -104,8 +126,49 @@ public class LogInScreenViewImplv2 extends Window implements
 		setCaption("Business Horizon 2");
 		logger.debug("Überschrift für Browser erstellt");
 
-		vertical = new VerticalLayout();
+		horizontal = new HorizontalLayout();
 		
+		vSplitPanel = new VerticalSplitPanel();
+		vSplitPanel.setSplitPosition(70, Sizeable.UNITS_PERCENTAGE);
+		vSplitPanel.setLocked(true);
+		
+		verticalTop = new VerticalLayout();
+		verticalTop.setSizeFull();
+		verticalTop.setMargin(false, false, false, false);
+		
+		//Erzeugt ein Label mit dem Willkommens-Text neben dem Logo
+		welcome = new Label("Willkommen bei");
+		welcome.setStyleName("welcomeSlogan");
+		
+		//Erezeugt ein Label mit dem Beschreibungstext
+		welcomeText = new Label("Hier könnte Ihre Werbung stehen");
+		welcomeText.setStyleName("welcomeText");
+		welcomeText.setSizeFull();
+		
+		textLayout = new HorizontalLayout();
+		textLayout.setSizeFull();
+		textLayout.addComponent(welcomeText);
+		textLayout.setComponentAlignment(welcomeText, Alignment.TOP_RIGHT);
+		
+		iconLabel = new Label();
+		iconLabel.setIcon(new ThemeResource("images/Logo_businesshorizon.png"));
+		iconLabel.setWidth(40, Sizeable.UNITS_PERCENTAGE);
+		iconLabel.setStyleName("logo");
+		
+		welcomeLayout = new HorizontalLayout();
+		welcomeLayout.setSizeFull();
+		welcomeLayout.addComponent(welcome);
+		welcomeLayout.setComponentAlignment(welcome, Alignment.BOTTOM_CENTER);
+		
+		welcomeLayout.addComponent(iconLabel);
+		welcomeLayout.setComponentAlignment(iconLabel, Alignment.BOTTOM_RIGHT);
+		
+		//Fügt den Beschreibungs-Text dem Bildschirm hinzu
+		verticalTop.addComponent(textLayout);
+		verticalTop.setComponentAlignment(textLayout, Alignment.TOP_RIGHT);
+				
+		verticalTop.addComponent(welcomeLayout);
+		verticalTop.setComponentAlignment(welcomeLayout, Alignment.BOTTOM_RIGHT);
 		
 		addStyleName("login_view");
 		
@@ -126,23 +189,32 @@ public class LogInScreenViewImplv2 extends Window implements
 			}
 		});
 
-		vertical.addComponent(login);
-		vertical.setComponentAlignment(login, Alignment.MIDDLE_CENTER);
+		horizontal.addComponent(login);
+		horizontal.setComponentAlignment(login, Alignment.TOP_CENTER);
 
-		registerBtn = new Button("Registrieren", this);
-
+		
+		registerBtn = new Button("", this);
+		registerBtn.setHeight(100, Sizeable.UNITS_PIXELS);
+		registerBtn.setWidth(100, Sizeable.UNITS_PIXELS);
+		registerBtn.setIcon(new ThemeResource("images/icons/pen.png"));
+		
+		
 		passwordForgotBtn = new Button("Passwort vergessen", this);
 		passwordForgotBtn.setEnabled(false);
 
-		vertical.addComponent(registerBtn);
-		vertical.setComponentAlignment(registerBtn, Alignment.MIDDLE_CENTER);
+		horizontal.addComponent(registerBtn);
+		horizontal.setComponentAlignment(registerBtn, Alignment.TOP_RIGHT);
+		horizontal.setMargin(new MarginInfo(true, true, true, true));
+		horizontal.setSizeFull();
 		//vertical.addComponent(passwordForgotBtn);
 		//vertical.setComponentAlignment(passwordForgotBtn, Alignment.MIDDLE_CENTER);
 
 		logger.debug("LogIn UI erstellt und Listener gesetzt");
-
-			
-		addComponent(vertical);
+		
+		vSplitPanel.setFirstComponent(verticalTop);
+		vSplitPanel.setSecondComponent(horizontal);
+		
+		setContent(vSplitPanel);
 	}
 
 	/**
