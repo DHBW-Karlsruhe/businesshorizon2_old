@@ -33,6 +33,7 @@ import com.vaadin.Application;
 import com.vaadin.terminal.ExternalResource;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImplv2;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
@@ -59,7 +60,7 @@ public class BHApplication extends Application {
 	private ProcessViewImpl processView;
 	
 	@Autowired
-	private InitialScreenViewImpl initialScreenView;
+	private InitialScreenViewImplv2 initialScreenView;
 	
 	@Autowired
 	private LogInScreenViewImpl logInScreenView;
