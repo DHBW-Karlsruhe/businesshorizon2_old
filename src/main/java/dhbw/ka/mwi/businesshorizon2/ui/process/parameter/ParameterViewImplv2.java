@@ -207,10 +207,13 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		setStyleName("small");
 
 		// TODO: Zeilenanzahl anpassen
-		verticalLayout = new VerticalLayout();
+		gridLayout = new GridLayout(2,6);
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
 		//gridLayout.setSizeFull();
+		
+		verticalLayout = new VerticalLayout();
+		verticalLayout.setSpacing(true);
 		
 		VerticalLayout infoBox = new VerticalLayout();
 		infoBox.setMargin(true);
@@ -239,10 +242,10 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 
 		// Basisjahr
 
-		labelBasisYear = new Label("Basisjahr");
-		verticalLayout.addComponent(labelBasisYear);
+		//labelBasisYear = new Label("Basisjahr");
+		//gridLayout.addComponent(labelBasisYear, 0, 1);
 
-		textfieldBasisYear = new TextField();
+		textfieldBasisYear = new TextField("Basisjahr");
 		textfieldBasisYear.setImmediate(true);
 		textfieldBasisYear.setDescription(toolTipBasisYear);
 		textfieldBasisYear.addListener(new Property.ValueChangeListener() {
@@ -253,16 +256,18 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 						.getValue());
 			}
 		});
+		//gridLayout.addComponent(textfieldBasisYear, 0, 2);
 		verticalLayout.addComponent(textfieldBasisYear);
-
-		// Heading 2
-		labelHeadingMethDet = new Label("Stochastische Parameter:");
+		
+		// Abstand1
+		labelHeadingMethDet = new Label("");
 		gridLayout.addComponent(labelHeadingMethDet, 0, 3);
 
+		//Anzahl zu prognistizierender Perioden
 		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods, 0, 4);
 
-		textfieldNumPeriodsToForecast = new TextField();
+		textfieldNumPeriodsToForecast = new TextField("Anzahl zu prognotizierender Perioden");
 		textfieldNumPeriodsToForecast.setImmediate(true);
 		textfieldNumPeriodsToForecast
 				.setDescription(toolTipNumPeriodsToForecast);
@@ -276,7 +281,10 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 										.getValue());
 					}
 				});
-		gridLayout.addComponent(textfieldNumPeriodsToForecast, 1, 4);
+		//gridLayout.addComponent(textfieldNumPeriodsToForecast, 0, 5);
+		verticalLayout.addComponent(textfieldNumPeriodsToForecast);
+	}
+		/**
 
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 4);
@@ -349,7 +357,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 6);
 		 */
-		// Heading 3
+		/** Heading 3
 		
 		labelHeadingTimeSeries = new Label("Stochastisch: Zeitreihenanalyse");
 		//gridLayout.addComponent(labelHeadingTimeSeries, 0, 8);
@@ -392,7 +400,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 			 * nicht hinterlegt ist.
 			 * 
 			 * @see init()-Methode dieser Klasse
-			 */
+			 *//**
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -415,7 +423,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 			 * hinterlegt ist.
 			 * 
 			 * @see init()-Methode dieser Klasse
-			 */
+			 *//**
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -457,7 +465,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 27);
 
-	}
+	}*/
 
 	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.

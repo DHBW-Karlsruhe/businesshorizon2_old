@@ -60,7 +60,7 @@ public class BHApplication extends Application {
 	private ProcessViewImpl processView;
 	
 	@Autowired
-	private InitialScreenViewImplv2 initialScreenView;
+	private InitialScreenViewImpl initialScreenView;
 	
 	@Autowired
 	private LogInScreenViewImpl logInScreenView;

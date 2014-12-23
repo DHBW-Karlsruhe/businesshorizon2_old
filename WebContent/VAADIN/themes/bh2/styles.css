@@ -26,6 +26,7 @@
 input.v-textfield[type="text"], .v-filterselect{
 	height: 1em;
 	border-radius: 0px;
+	margin: 15px;
 }
 
 .login_view{
@@ -152,4 +153,13 @@ div.projectlist:hover {
 .topBarButtonLabel {
 /* 	margin-top: 2px; */
 	font-size: 12pt;
+}
+
+.v-vertical > .v-spacing {
+	margin-left: 20px;
+	margin-top: 20px;
+}
+
+.v-textfield {
+	margin-top: 100px;
 }
