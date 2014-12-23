@@ -217,6 +217,12 @@ public class LogInScreenViewImplv2 extends Window implements
 		setContent(vSplitPanel);
 	}
 	
+	/**
+	 * Erzeugt die Felder, die für die Regisitrierung eines neuen Users benötigt werden
+	 * Gibt diese im Richtigen Layout zurück
+	 * @author Felix Schlosser
+	 * @return HorizontalLayout
+	 */
 	private HorizontalLayout generateRegisterLayout() {
 		
 		//Erstellen der LayoutContainer für den Registrierungsdialog
@@ -318,12 +324,12 @@ public class LogInScreenViewImplv2 extends Window implements
 			//presenter.registerUserDialog();
 		} else if (event.getButton() == dialogRegBtn) {
 
-			if (presenter.validateNoNullPointer()){
+			if (presenter.validateAll()){
 				presenter.registerUser();
 				vSplitPanel.removeComponent(regLayout);
 				vSplitPanel.setSecondComponent(horizontal);
 			} else {
-				presenter.registerUser();
+				this.showErrorMessage("Bitte alle Pflichtfelder ausfüllen");
 			}
 			
 
@@ -333,88 +339,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		}
 	}
 
-	/**
-	 * Schließt das übergebene (Dialog)Fensters.
-	 * 
-	 * @author Christian Scherer
-	 * @param window
-	 *            Fenster das zu schliessen ist
-	 */
-	public void closeDialog(Window window) {
-		getWindow().removeWindow(window);
-	}
-
-	/**
-	 * Konkrete Erzeugung des Dialogfensters zur Registrierung eines neuen
-	 * Users.
-	 * 
-	 * @author Christian Scherer, Marcel Rosenberger, Annika Weis
-	 */
-	public void showRegisterUserDialog() {
-
-		regDialog = new Window("Benutzer bei Business Horizon registrieren");
-		regDialog.setModal(true);
-		regDialog.setWidth(400, UNITS_PIXELS);
-		regDialog.setResizable(false);
-		regDialog.setDraggable(false);
-		regDialog.setCaption("Registrierung eines neuen Benutzers");
-		fl = new FormLayout();
-		fl.setSpacing(true);
-		fl.setMargin(true);
-		regDialog.addComponent(fl);
-		
-		//Vorname
-		textfieldFirstName = new TextField();
-		textfieldFirstName.setCaption("Bitte Vornamen angeben: ");
-		textfieldFirstName.setRequired(true);
-		textfieldFirstName.setRequiredError("Pflichtfeld");
-		fl.addComponent(textfieldFirstName);
-		
-		//Nachname
-		textfieldLastName = new TextField();
-		textfieldLastName.setCaption("Bitte Nachnamen angeben: ");
-		textfieldLastName.setRequired(true);
-		textfieldLastName.setRequiredError("Pflichtfeld");
-		fl.addComponent(textfieldLastName);
-
-		//Unternehmen
-		textfieldCompany = new TextField();
-		textfieldCompany.setCaption("Bitte Unternehmen angeben: ");
-		textfieldCompany.setRequired(true);
-		textfieldCompany.setRequiredError("Pflichtfeld");
-		fl.addComponent(textfieldCompany);
-
-		//Mailadresse
-		textfieldEmailAdress = new TextField();
-		textfieldEmailAdress.setCaption("Bitte Mailadresse angeben: ");
-		textfieldEmailAdress.setRequired(true);
-		textfieldEmailAdress.setRequiredError("Pflichtfeld");
-		fl.addComponent(textfieldEmailAdress);
-
-		//Passwort
-		passwordFieldPassword = new PasswordField("Bitte Passwort wählen: ");
-		passwordFieldPassword.setRequired(true);
-		passwordFieldPassword.setRequiredError("Pflichtfeld");
-		fl.addComponent(passwordFieldPassword);
-
-		//Passwort WDH
-		passwordFieldPasswordRep = new PasswordField("Bitte Passwort wiederholen:");
-		passwordFieldPasswordRep.setRequired(true);
-		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");		
-		fl.addComponent(passwordFieldPasswordRep);
-
-		VerticalLayout vl = new VerticalLayout();
-		dialogRegBtn = new Button("Registrierung abschließen", this);
-		vl.addComponent(dialogRegBtn);
-		vl.setComponentAlignment(dialogRegBtn, Alignment.MIDDLE_CENTER);
-		regDialog.addComponent(vl);
-
-		getWindow().addWindow(regDialog);
-
-		logger.debug("Registrier-Dialog erzeugt");
-	}
-
-	/**
+		/**
 	 * Getter Methode für die Mailadresse des Registrierungsdialogs
 	 * 
 	 * @author Christian Scherer
@@ -480,15 +405,5 @@ public class LogInScreenViewImplv2 extends Window implements
 		return (String) textfieldLastName.getValue();
 	}
 
-	/**
-	 * Getter Methode für das Dialogfenster
-	 * 
-	 * @author Christian Scherer
-	 * @return Dialogfenster des Registrierungsdialog
-	 */
-	@Override
-	public Window getRegDialog() {
-		return this.regDialog;
-	}
 
 }

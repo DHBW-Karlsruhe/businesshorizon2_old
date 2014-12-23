@@ -164,20 +164,17 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			this.lastName = getView().getLastName();
 			this.company = getView().getCompany();
 
-			// ruft zuerst sämtliche Prüfmethoden auf
-			if (validateNoNullPointer() && validateFirstName()
-					&& validateLastName() && validateMailAdress()
-					&& validatePassword() && validatePasswordSafety()) {
-				logger.debug("Alle Eingabefelder wurden vom Anwender gültig befuellt und die Passwoerter stimmen überein.");
+			// Prüfungen werden durchgeführt, bevor die Methode ausgeführt wird
+			logger.debug("Alle Eingabefelder wurden vom Anwender gültig befuellt und die Passwoerter stimmen überein.");
 			
 				
 				//mit dieser Methode werden die Userdaten in einer Datei abgelegt
 				authenticationService.registerNewUser(emailAdress, password,
 						firstName, lastName, company);
 				logger.debug("Registrierung abgeschlossen.");
-				getView().closeDialog(getView().getRegDialog());
+				//getView().closeDialog(getView().getRegDialog());
 
-			}
+			
 
 		} catch (UserAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
@@ -194,7 +191,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @return noNullPointer Ist false wenn NullPointer bestehen (leere Strings)
 	 *         und true wenn alle Strings einen Wert enthalten
 	 */
-	protected boolean validateNoNullPointer() {
+	private boolean validateNoNullPointer() {
 		boolean noNullPointer;
 		if (emailAdress.isEmpty() || password.isEmpty() || firstName.isEmpty()
 				|| lastName.isEmpty() || company.isEmpty()) {
@@ -364,6 +361,19 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 		return safePassword;
 
 	}
+	
+	public boolean validateAll() {
+	
+		if ( validateNoNullPointer() && validateMailAdress() && validateFirstName()
+			&& validateLastName() && validateMailAdress()
+			&& validatePassword() && validatePasswordSafety()) {
+			return true;
+		} else {
+			return false;
+		}		
+		
+		
+	}
 
 	/**
 	 * Ruft die Methode des AutehnticationService zur Behandlung eines
@@ -382,9 +392,9 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * 
 	 * @author Christian Scherer
 	 */
-	public void registerUserDialog() {
-		getView().showRegisterUserDialog();
-	}
+	//public void registerUserDialog() {
+	//	getView().showRegisterUserDialog();
+	//}
 
 }
 
