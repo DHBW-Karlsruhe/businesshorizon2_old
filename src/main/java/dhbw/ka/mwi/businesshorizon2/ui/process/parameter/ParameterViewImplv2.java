@@ -58,6 +58,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 			.getLogger("ParameterViewImpl.class");
 	
 	private GridLayout gridLayout;
+	private VerticalLayout verticalLayout;
 
 	private Label labelHeadingCommon;
 	private Label labelHeadingMethDet;
@@ -206,7 +207,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		setStyleName("small");
 
 		// TODO: Zeilenanzahl anpassen
-		gridLayout = new GridLayout(3, 30);
+		verticalLayout = new VerticalLayout();
 		gridLayout.setMargin(true);
 		gridLayout.setSpacing(true);
 		//gridLayout.setSizeFull();
@@ -233,15 +234,13 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		infoBox.addComponent(infoText3);
 		infoBox.addComponent(infoText4);
 		
-		setFirstComponent(gridLayout);
+		setFirstComponent(verticalLayout);
 		setSecondComponent(infoBox);
 
-		// Heading 1
-		labelHeadingCommon = new Label("Allgemein");
-		//gridLayout.addComponent(labelHeadingCommon, 0, 0);
+		// Basisjahr
 
 		labelBasisYear = new Label("Basisjahr");
-		gridLayout.addComponent(labelBasisYear, 0, 1);
+		verticalLayout.addComponent(labelBasisYear);
 
 		textfieldBasisYear = new TextField();
 		textfieldBasisYear.setImmediate(true);
@@ -254,7 +253,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 						.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldBasisYear, 1, 1);
+		verticalLayout.addComponent(textfieldBasisYear);
 
 		// Heading 2
 		labelHeadingMethDet = new Label("Stochastische Parameter:");

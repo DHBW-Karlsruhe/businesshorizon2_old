@@ -180,7 +180,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter"
 		scope="session" />
 	<bean name="parameterView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImpl"
+		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImplv2"
 		scope="session" />
 
 
