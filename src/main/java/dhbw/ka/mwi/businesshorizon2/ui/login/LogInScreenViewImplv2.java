@@ -25,7 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
-import javafx.scene.image.Image;
+
 
 import javax.annotation.PostConstruct;
 
@@ -86,8 +86,6 @@ public class LogInScreenViewImplv2 extends Window implements
 	private Label welcome, welcomeText, iconLabel;
 	
 	
-	private Window regDialog;
-	private FormLayout fl;
 	private TextField textfieldEmailAdress;
 	private TextField textfieldFirstName;
 	private TextField textfieldLastName;
@@ -97,6 +95,7 @@ public class LogInScreenViewImplv2 extends Window implements
 	private Button dialogRegBtn;
 	private Button registerBtn;
 	private Button passwordForgotBtn;
+	private Button registerAbortBtn; 
 	private LoginForm login;
 
 	/**
@@ -231,6 +230,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		registerComponent.setMargin(true, true, true, true);
 		
 		HorizontalLayout registerFields = new HorizontalLayout();
+		HorizontalLayout buttonLayout = new HorizontalLayout();
 		
 		VerticalLayout credentials = new VerticalLayout();
 		VerticalLayout required = new VerticalLayout();
@@ -282,13 +282,25 @@ public class LogInScreenViewImplv2 extends Window implements
 		dialogRegBtn.setWidth(135, Sizeable.UNITS_PIXELS);
 		dialogRegBtn.setHeight(135, Sizeable.UNITS_PIXELS);
 		
+		registerAbortBtn = new Button("", this);
+		registerAbortBtn.setIcon(new ThemeResource("images/iconsNewUI/circleCross.png"));
+		registerAbortBtn.setWidth(135, Sizeable.UNITS_PIXELS);
+		registerAbortBtn.setHeight(135, Sizeable.UNITS_PIXELS);
+		
+		buttonLayout.addComponent(dialogRegBtn);
+		buttonLayout.addComponent(registerAbortBtn);
+		buttonLayout.setMargin(true, true, true, true);
 		
 		registerFields.addComponent(credentials);
 		registerFields.addComponent(required);
 		registerFields.addComponent(optional);
+		registerFields.setMargin(true);
 		
 		registerComponent.addComponent(registerFields);
-		registerComponent.addComponent(dialogRegBtn);
+		
+		registerComponent.addComponent(buttonLayout);
+		registerComponent.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
+		
 		
 		return registerComponent;
 	}
@@ -317,26 +329,32 @@ public class LogInScreenViewImplv2 extends Window implements
 	 */
 	@Override
 	public void buttonClick(ClickEvent event) {
+		
 		if (event.getButton() == registerBtn) {
 			vSplitPanel.removeComponent(horizontal);
 			regLayout = generateRegisterLayout();
 			vSplitPanel.setSecondComponent(regLayout);
-			//presenter.registerUserDialog();
+			
 		} else if (event.getButton() == dialogRegBtn) {
 
-			if (presenter.validateAll()){
-				presenter.registerUser();
+			if (presenter.registerUser()){	
+				//presenter.registerUser();
+				showNotification("Regisitrierung erfolgreich abgeschlossen");
 				vSplitPanel.removeComponent(regLayout);
 				vSplitPanel.setSecondComponent(horizontal);
 			} else {
-				this.showErrorMessage("Bitte alle Pflichtfelder ausfüllen");
+				//this.showErrorMessage("Bitte alle Pflichtfelder ausfüllen");
 			}
 			
-
+			
 		} else if (event.getButton() == passwordForgotBtn) {
 			presenter.passwordForgot();
 			logger.debug("Password vergessen außgelöst.");
+		} else if (event.getButton() == registerAbortBtn) {
+			vSplitPanel.removeComponent(regLayout);
+			vSplitPanel.setSecondComponent(horizontal);
 		}
+			
 	}
 
 		/**

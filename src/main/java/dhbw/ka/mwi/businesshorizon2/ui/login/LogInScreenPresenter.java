@@ -156,7 +156,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * 
 	 * 
 	 */
-	public void registerUser() {
+	public boolean registerUser() {
 		try {
 			this.emailAdress = getView().getEmailAdress();
 			this.password = getView().getPassword();
@@ -167,19 +167,24 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 			// Prüfungen werden durchgeführt, bevor die Methode ausgeführt wird
 			logger.debug("Alle Eingabefelder wurden vom Anwender gültig befuellt und die Passwoerter stimmen überein.");
 			
-				
+				if (validateNoNullPointer() && validateFirstName() &&
+						 validateLastName() && validateMailAdress() &&
+						 validatePassword() && validatePasswordSafety()){
 				//mit dieser Methode werden die Userdaten in einer Datei abgelegt
 				authenticationService.registerNewUser(emailAdress, password,
 						firstName, lastName, company);
 				logger.debug("Registrierung abgeschlossen.");
 				//getView().closeDialog(getView().getRegDialog());
-
+				return true;
+				} else {
+					return false;
+				}
 			
 
 		} catch (UserAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
 			logger.debug("Der Benutzer Existiert bereits.");
-			return;
+			return false;
 		} 
 
 	}
