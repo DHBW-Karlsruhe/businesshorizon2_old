@@ -34,6 +34,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
 import com.mvplite.view.View;
@@ -99,12 +100,14 @@ private Label leftBottomL;
 private Label userData;
 
 private VerticalLayout mainLayout = new VerticalLayout();
-private VerticalLayout leftLayout = new VerticalLayout();
+private HorizontalLayout leftLayout = new HorizontalLayout();
 private VerticalLayout rightLayout = new VerticalLayout();
 private HorizontalLayout topRightLayout = new HorizontalLayout();
+private VerticalLayout leftContentLayout = new VerticalLayout();
 private VerticalLayout bottomLeftLayout = new VerticalLayout();
 private VerticalLayout bottomRightLayout = new VerticalLayout();
 private VerticalLayout bottomLayout = new VerticalLayout();
+private Label logoLabel = new Label();
 
 
 
@@ -136,6 +139,17 @@ private void generateUi() {
 	rightLayout.setSizeFull();
 	bottomLayout.setSizeFull();
 	bottomLeftLayout.setSizeFull();
+	leftContentLayout.setWidth(85, UNITS_PERCENTAGE);
+	leftContentLayout.setHeight(100, UNITS_PERCENTAGE);
+	topRightLayout.setStyleName("topBar");
+//	leftContentLayout.setSizeFull();
+	
+	logoLabel = new Label();
+	logoLabel.setIcon(new ThemeResource("images/Logo_businesshorizon.png"));
+	logoLabel.setWidth(15, UNITS_PERCENTAGE);
+	leftLayout.addComponent(logoLabel);
+	leftLayout.addComponent(leftContentLayout);
+	leftLayout.setComponentAlignment(logoLabel, Alignment.MIDDLE_CENTER);
 
 	horizontalSplitPanel = new HorizontalSplitPanel();
 	horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
@@ -160,7 +174,7 @@ private void generateUi() {
 	
 	leftLayout.addComponent(leftL);
 	rightLayout.addComponent(verticalSplitPanel);
-	topRightLayout.addComponent(rightTopL);
+//	topRightLayout.addComponent(rightTopL);
 	bottomRightLayout.addComponent(rightBottomL);
 //	bottomLeftLayout.addComponent(leftBottomL);
 	bottomLayout.addComponent(horizontalSplitPanelRight);
@@ -180,6 +194,13 @@ private void generateUi() {
 	mainLayout.addComponent(horizontalSplitPanel);
 	
 	setContent(mainLayout);
+	
+	TopBarButton button = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
+	addTopButton(button.getComponent());
+	button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
+	addTopButton(button.getComponent());
+	button = new TopBarButton("deleteProjectButton", "Projekt löschen");
+	addTopButton(button.getComponent());
 
 }
 
@@ -252,6 +273,16 @@ right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 public void showView(View leftView, View rightView) {
 bottomLeftLayout.addComponent((Component) leftView);
 //horizontalSplitPanel.setSecondComponent((Component) rightView);
+}
+
+public void addTopButton(Component button){
+	topRightLayout.addComponent(button);
+}
+
+public void setTopButton(Component button, int index){
+	Component comp = topRightLayout.getComponent(index);
+	topRightLayout.removeComponent(comp);
+	topRightLayout.addComponent(button, index);
 }
 
 

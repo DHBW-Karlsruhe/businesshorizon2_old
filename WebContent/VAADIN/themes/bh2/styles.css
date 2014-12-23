@@ -104,19 +104,19 @@ div.projectlist:hover {
 }
 
 .v-splitpanel-vsplitter-locked {
-	background-color: #4A7EBB;
+	background-color: black;
 	border: none;
 	background-image: none;
 	height: 2px;
 }
 
 .horizontalBottom .v-splitpanel-hsplitter-locked {
-	background-color: #4A7EBB;
+	background-color: black;
 	width: 2px;
 }
 
 .leftContainer {
-	background-color: #E2FDBD;
+	background-color: #D8EFBC;
 }
 
 .mainLayout {
@@ -124,4 +124,32 @@ div.projectlist:hover {
 	border-width: 3px;
 	border-style: solid;
 	box-sizing: border-box;
+}
+
+.addProjectButton {
+	background: url("./images/icons/newIcons/1418766077_circle_add_plus_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.editProjectButton {
+	background: url("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.deleteProjectButton {
+	background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.topBarButtonContainer {
+	margin-top: 10%;
+	margin-right: 5%;
+}
+
+.topBarButtonLabel {
+/* 	margin-top: 2px; */
+	font-size: 12pt;
 }
