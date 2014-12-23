@@ -29,7 +29,7 @@ import com.mvplite.event.Event;
 
 /**
  * Der Event, der zum Auswählen eins Projekts der vom ProjectListPresenter
- * abgesetzt wird. Es aknn danach im Wizard mit den Daten des Projekts
+ * abgesetzt wird. Es kann danach im Wizard mit den Daten des Projekts
  * gearbeitet werden.
  * 
  * 

@@ -33,8 +33,11 @@ import com.mvplite.view.View;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
+
+import dhbw.ka.mwi.businesshorizon2.ui.InitialLayout;
 
 /**
  * Dies ist die Vaadin-Implementierung der ProcessView (dem Prozess-Fenster).
@@ -55,6 +58,9 @@ public class ProcessViewImpl extends Window implements ProcessViewInterface {
 	private VerticalSplitPanel verticalSplitPanel;
 
 	private HorizontalSplitPanel horizontalSplitPanel;
+	
+	private VerticalLayout verticalLayout;
+	
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der Dependencies 
@@ -80,6 +86,7 @@ public class ProcessViewImpl extends Window implements ProcessViewInterface {
 	private void generateUi() {
 		setCaption("Business Horizon 2.1");
 		logger.debug("Ueberschrift fuer Browser erstellt");
+		// Teil von Chris
 		
 		//Teilt das Fenster vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
 		verticalSplitPanel = new VerticalSplitPanel();
