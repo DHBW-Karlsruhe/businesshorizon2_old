@@ -169,6 +169,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 					&& validateLastName() && validateMailAdress()
 					&& validatePassword() && validatePasswordSafety()) {
 				logger.debug("Alle Eingabefelder wurden vom Anwender gültig befuellt und die Passwoerter stimmen überein.");
+			
 				
 				//mit dieser Methode werden die Userdaten in einer Datei abgelegt
 				authenticationService.registerNewUser(emailAdress, password,
@@ -193,7 +194,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @return noNullPointer Ist false wenn NullPointer bestehen (leere Strings)
 	 *         und true wenn alle Strings einen Wert enthalten
 	 */
-	private boolean validateNoNullPointer() {
+	protected boolean validateNoNullPointer() {
 		boolean noNullPointer;
 		if (emailAdress.isEmpty() || password.isEmpty() || firstName.isEmpty()
 				|| lastName.isEmpty() || company.isEmpty()) {

@@ -76,7 +76,7 @@ public class LogInScreenViewImplv2 extends Window implements
 	
 	private HorizontalLayout horizontal;
 	
-	private HorizontalLayout welcomeLayout, textLayout;
+	private HorizontalLayout welcomeLayout, textLayout, regLayout;
 	
 	private VerticalLayout verticalTop;
 	
@@ -97,6 +97,7 @@ public class LogInScreenViewImplv2 extends Window implements
 	private Button dialogRegBtn;
 	private Button registerBtn;
 	private Button passwordForgotBtn;
+	private LoginForm login;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -134,19 +135,19 @@ public class LogInScreenViewImplv2 extends Window implements
 		
 		verticalTop = new VerticalLayout();
 		verticalTop.setSizeFull();
-		verticalTop.setMargin(false, false, false, false);
+		verticalTop.setMargin(true, true, true, true);
 		
 		//Erzeugt ein Label mit dem Willkommens-Text neben dem Logo
 		welcome = new Label("Willkommen bei");
 		welcome.setStyleName("welcomeSlogan");
 		
 		//Erezeugt ein Label mit dem Beschreibungstext
-		welcomeText = new Label("Hier könnte Ihre Werbung stehen");
+		welcomeText = new Label("Mithilfe dieser Software können Sie Ihren zukünftige Unternehmenswerte berechnen lassen. Hierzu stehen Ihnen verschiedene Methoden zur Verfügung, die Ihnen unterschiedliche Herangehensweisen ermöglichen – je nachdem, welche Daten Ihnen zur Verfügung stehen. ");
 		welcomeText.setStyleName("welcomeText");
 		welcomeText.setSizeFull();
 		
 		textLayout = new HorizontalLayout();
-		textLayout.setSizeFull();
+		textLayout.setWidth(50,Sizeable.UNITS_PERCENTAGE);
 		textLayout.addComponent(welcomeText);
 		textLayout.setComponentAlignment(welcomeText, Alignment.TOP_RIGHT);
 		
@@ -172,7 +173,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		
 		addStyleName("login_view");
 		
-		LoginForm login = new LoginForm();
+		login = new LoginForm();
 		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
 		login.setUsernameCaption("Mailadresse");
 		login.setPasswordCaption("Passwort");
@@ -194,10 +195,9 @@ public class LogInScreenViewImplv2 extends Window implements
 
 		
 		registerBtn = new Button("", this);
-		registerBtn.setHeight(100, Sizeable.UNITS_PIXELS);
-		registerBtn.setWidth(100, Sizeable.UNITS_PIXELS);
-		registerBtn.setIcon(new ThemeResource("images/icons/pen.png"));
-		
+		registerBtn.setIcon(new ThemeResource("images/iconsNewUI/head.png"));
+		registerBtn.setHeight(130, Sizeable.UNITS_PIXELS);
+		registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
 		
 		passwordForgotBtn = new Button("Passwort vergessen", this);
 		passwordForgotBtn.setEnabled(false);
@@ -215,6 +215,76 @@ public class LogInScreenViewImplv2 extends Window implements
 		vSplitPanel.setSecondComponent(horizontal);
 		
 		setContent(vSplitPanel);
+	}
+	
+	private HorizontalLayout generateRegisterLayout() {
+		
+		//Erstellen der LayoutContainer für den Registrierungsdialog
+		HorizontalLayout registerComponent = new HorizontalLayout();
+		registerComponent.setSizeFull();
+		registerComponent.setMargin(true, true, true, true);
+		
+		HorizontalLayout registerFields = new HorizontalLayout();
+		
+		VerticalLayout credentials = new VerticalLayout();
+		VerticalLayout required = new VerticalLayout();
+		VerticalLayout optional = new VerticalLayout();
+		
+		//Erstellen des Email-Feld
+		textfieldEmailAdress = new TextField("Emailadresse eingeben");
+		textfieldEmailAdress.setRequired(true);
+		textfieldEmailAdress.setRequiredError("Pflichtfeld");
+		
+		//Erstellen des Passwort-Feld
+		passwordFieldPassword = new PasswordField("Passwort eingeben");
+		passwordFieldPassword.setRequired(true);
+		passwordFieldPassword.setRequiredError("Pflichtfeld");
+		
+		//Erstellen des Passwort-Wiederholen Feld
+		passwordFieldPasswordRep = new PasswordField("Passwort wiederholen");
+		passwordFieldPasswordRep.setRequired(true);
+		passwordFieldPasswordRep.setRequiredError("Pflichtfeld");
+		
+		// Felder zur Layoutkomponente hinzufügen
+		credentials.addComponent(textfieldEmailAdress);
+		credentials.addComponent(passwordFieldPassword);
+		credentials.addComponent(passwordFieldPasswordRep);
+		
+		//Erstellen des Vorname-Feld
+		textfieldFirstName = new TextField("Vorname eingeben");
+		textfieldFirstName.setRequired(true);
+		textfieldFirstName.setRequiredError("Pflichtfeld");
+		
+		//Erstellen des Nachname-Feld
+		textfieldLastName = new TextField("Nachname eingeben");
+		textfieldLastName.setRequired(true);
+		textfieldLastName.setRequiredError("Pflichtfeld");
+		
+		//Felder zur Layoutkomponente hinzufügen
+		required.addComponent(textfieldFirstName);
+		required.addComponent(textfieldLastName);
+				
+		//Erstellen Firmenname-Feld
+		textfieldCompany = new TextField("Firmenname eingeben");
+		
+		//Feld zur Layoutkomponente hinzufügen
+		optional.addComponent(textfieldCompany);
+		
+		//Registrieren-Button erstellen
+		dialogRegBtn = new Button("", this);
+		dialogRegBtn.setIcon(new ThemeResource("images/iconsNewUI/circlePlus.png"));
+		dialogRegBtn.setWidth(135, Sizeable.UNITS_PIXELS);
+		dialogRegBtn.setHeight(135, Sizeable.UNITS_PIXELS);
+		
+		
+		registerFields.addComponent(credentials);
+		registerFields.addComponent(required);
+		registerFields.addComponent(optional);
+		
+		registerComponent.addComponent(registerFields);
+		registerComponent.addComponent(dialogRegBtn);
+		
+		return registerComponent;
 	}
 
 	/**
@@ -242,10 +312,20 @@ public class LogInScreenViewImplv2 extends Window implements
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if (event.getButton() == registerBtn) {
-			presenter.registerUserDialog();
+			vSplitPanel.removeComponent(horizontal);
+			regLayout = generateRegisterLayout();
+			vSplitPanel.setSecondComponent(regLayout);
+			//presenter.registerUserDialog();
 		} else if (event.getButton() == dialogRegBtn) {
 
-			presenter.registerUser() ;
+			if (presenter.validateNoNullPointer()){
+				presenter.registerUser();
+				vSplitPanel.removeComponent(regLayout);
+				vSplitPanel.setSecondComponent(horizontal);
+			} else {
+				presenter.registerUser();
+			}
+			
 
 		} else if (event.getButton() == passwordForgotBtn) {
 			presenter.passwordForgot();
