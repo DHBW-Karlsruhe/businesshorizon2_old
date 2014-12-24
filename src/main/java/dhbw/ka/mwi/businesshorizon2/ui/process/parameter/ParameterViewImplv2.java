@@ -214,6 +214,8 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		
 		verticalLayout = new VerticalLayout();
 		verticalLayout.setSpacing(true);
+		verticalLayout.setStyle("parameter");
+		verticalLayout.setSizeUndefined();
 		
 		VerticalLayout infoBox = new VerticalLayout();
 		infoBox.setMargin(true);
@@ -242,9 +244,6 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 
 		// Basisjahr
 
-		//labelBasisYear = new Label("Basisjahr");
-		//gridLayout.addComponent(labelBasisYear, 0, 1);
-
 		textfieldBasisYear = new TextField("Basisjahr");
 		textfieldBasisYear.setImmediate(true);
 		textfieldBasisYear.setDescription(toolTipBasisYear);
@@ -258,10 +257,6 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		});
 		//gridLayout.addComponent(textfieldBasisYear, 0, 2);
 		verticalLayout.addComponent(textfieldBasisYear);
-		
-		// Abstand1
-		labelHeadingMethDet = new Label("");
-		gridLayout.addComponent(labelHeadingMethDet, 0, 3);
 
 		//Anzahl zu prognistizierender Perioden
 		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
@@ -283,16 +278,11 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 				});
 		//gridLayout.addComponent(textfieldNumPeriodsToForecast, 0, 5);
 		verticalLayout.addComponent(textfieldNumPeriodsToForecast);
-	}
-		/**
-
-		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity, 2, 4);
-
-		labelIterations = new Label("Durchläufe / Iterationen");
-		gridLayout.addComponent(labelIterations, 0, 5);
-
-		textfieldIterations = new TextField();
+	
+		//nur Deterministische Methode:
+		
+		//Anzahl der Iterationen
+		textfieldIterations = new TextField("Anzahl der Iterationen");
 		textfieldIterations.setImmediate(true);
 		// textfieldIterations.setValue(10000);
 		textfieldIterations.setDescription(toolTipIterations);
@@ -305,13 +295,34 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 						.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldIterations, 1, 5);
+		verticalLayout.addComponent(textfieldIterations);
 
-		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity, 2, 5);
+		//Anzahl einbezogener vergangener Perioden
+
+		textfieldNumPastPeriods = new TextField("Anzahl einbezogener, vergangener Perioden");
+		textfieldNumPastPeriods.setImmediate(true);
+		// textfieldNumPastPeriods: Wert darf hier nicht gesetzt werden
+		// -> über Event, sodass der Wert ins Projekt übernommen wird und nicht
+		// nur einfach angezeigt wird ohne ausgewertet werden zu können
+		// textfieldNumPastPeriods.setValue(5);
+		textfieldNumPastPeriods
+				.setDescription(toolTipNumPastPeriods
+						+ " Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.");
+		textfieldNumPastPeriods.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			public void valueChange(ValueChangeEvent event) {
+				presenter
+						.relevantPastPeriodsChosen((String) textfieldNumPastPeriods
+								.getValue());
+			}
+		});
+		//gridLayout.addComponent(textfieldNumPastPeriods, 1, 9);
+		verticalLayout.addComponent(textfieldNumPastPeriods);
 		
+	}	
 		
-		
+		/**
 		labelNumSpecifiedPastPeriods = new Label(
 				"Anzahl anzugebender, vergangener Perioden");
 		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 6);
@@ -362,29 +373,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		labelHeadingTimeSeries = new Label("Stochastisch: Zeitreihenanalyse");
 		//gridLayout.addComponent(labelHeadingTimeSeries, 0, 8);
 
-		labelNumPastPeriods = new Label(
-				"Anzahl einbezogener, vergangener Perioden");
-		gridLayout.addComponent(labelNumPastPeriods, 0, 9);
-
-		textfieldNumPastPeriods = new TextField();
-		textfieldNumPastPeriods.setImmediate(true);
-		// textfieldNumPastPeriods: Wert darf hier nicht gesetzt werden
-		// -> über Event, sodass der Wert ins Projekt übernommen wird und nicht
-		// nur einfach angezeigt wird ohne ausgewertet werden zu können
-		// textfieldNumPastPeriods.setValue(5);
-		textfieldNumPastPeriods
-				.setDescription(toolTipNumPastPeriods
-						+ " Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.");
-		textfieldNumPastPeriods.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
-
-			public void valueChange(ValueChangeEvent event) {
-				presenter
-						.relevantPastPeriodsChosen((String) textfieldNumPastPeriods
-								.getValue());
-			}
-		});
-		gridLayout.addComponent(textfieldNumPastPeriods, 1, 9);
+		
 
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 9);
@@ -436,8 +425,6 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 
 		gridLayout.addComponent(comboBoxRepresentatives, 1, 10);
 
-		// Heading 4
-		
 		// Heading 6
 		labelHeadingMethDet = new Label("Deterministische Parameter:");
 		gridLayout.addComponent(labelHeadingMethDet, 0, 26);
