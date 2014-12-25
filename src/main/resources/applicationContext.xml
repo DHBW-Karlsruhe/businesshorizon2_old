@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- BusinessHorizon2 Copyright (C) 2012-2013 Christian Gahlert, Florian 
+<!-- BusinessHorizon2 Copyright (C) 2012-2014 Christian Gahlert, Florian 
 	Stier, Kai Westerholz, Timo Belz, Daniel Dengler, Katharina Huber, Christian 
-	Scherer, Julius Hacker This program is free software: you can redistribute 
+	Scherer, Julius Hacker, Christian Pawletta This program is free software: you can redistribute 
 	it and/or modify it under the terms of the GNU Affero General Public License 
 	as published by the Free Software Foundation, either version 3 of the License, 
 	or (at your option) any later version. This program is distributed in the 
@@ -94,7 +94,15 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="infosView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewImpl"
 		scope="session" />
-
+		
+	<!-- Step1ScreenPresenter -->
+	<bean name="step1ScreenPresenter"
+			class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.step1.Step1ScreenPresenter"
+			scope="session"/>
+	<bean name="step1ScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.step1.Step1ScreenViewImpl"
+		scope="session"/>
+				
 	<!-- Process -->
 	<bean name="processPresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessPresenter"
