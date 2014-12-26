@@ -87,5 +87,12 @@ public interface PersistenceServiceInterface {
 	 *
 	 */
 	public  void saveProjects();
+	
+	/**
+	 * Methode zum Importieren von Projekten.
+	 * 
+	 * @autor Tobias Lindner
+	 */
+	public void importAllProjects(User user);
 		
 }

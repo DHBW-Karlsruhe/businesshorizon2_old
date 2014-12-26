@@ -41,6 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 
 /**
  * 
@@ -243,6 +244,18 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void editProjectDialog(Project project) {
 		getView().showEditProjectDialog(project);
 		
+	}
+	
+	/**
+	 * Aufruf aus dem ClickListener der Impl. Es soll das Importieren von Projekten angestossen werden.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void importProjects () {
+		persistenceService.importAllProjects(user);
+		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
+		eventBus.fireEvent(new ShowProjectListEvent (user));
+		logger.debug ("ShowProjectListEvent geworfen");
 	}
 
 }

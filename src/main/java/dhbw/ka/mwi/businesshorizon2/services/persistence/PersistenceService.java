@@ -377,9 +377,11 @@ public class PersistenceService implements PersistenceServiceInterface {
 		
 		//Hinzufügen der ArrayList mit Projecten zum aktuellen User
 				
-		for (int i =1; i<= importProjects.size(); i++) {
+		for (Project projectI : importProjects) {
 			try {
-				addProject(user, importProjects.get(i));
+				projectI.setCreatedFrom(user);
+				addProject(user, projectI);
+				logger.debug ("Import: Projekt hinzugefügt.");
 				
 			} catch (ProjectAlreadyExistsException e) {
 				logger.debug ("Import: ProjectAlreadyExistsException");

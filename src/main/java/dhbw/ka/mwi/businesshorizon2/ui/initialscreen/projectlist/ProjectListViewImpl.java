@@ -99,6 +99,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private Button addProjectBtn;
 	private Button dialogAddBtn;
 	
+	//Buttons, um ein Projekt zu importieren
+	private Button importProjectBtn;
+	
 	//Buttons, um ein Projekt zu bearbeiten
 	private Button dialogEditBtn;
 	
@@ -171,6 +174,13 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		title.setContentMode(Label.CONTENT_XHTML);
 		projectListHead.addComponent(title);
 		logger.debug("Ueberschrift erstellt");
+		
+		//Import-Button im oberen Panel hinzufügen
+		
+		importProjectBtn = new Button ("Projekte importieren", this);
+		projectListHead.addComponent(importProjectBtn);
+		logger.debug("Import-Button erzeugt");
+		projectListHead.setComponentAlignment(importProjectBtn, Alignment.MIDDLE_RIGHT);
 		
 		//Hinzufügen-Button im oberen Panel hinzufügen
 		addProjectBtn = new Button("Projekt hinzufügen", this);
@@ -544,6 +554,10 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 								"Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
 								Notification.TYPE_ERROR_MESSAGE);
 			}	
+		} else if (event.getButton() == importProjectBtn) {
+			logger.debug ("Import-Button Click Event aufgerufen");
+			presenter.importProjects();
+			
 		}
 	}
 
