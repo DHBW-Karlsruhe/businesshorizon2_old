@@ -248,6 +248,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	
 	/**
 	 * Aufruf aus dem ClickListener der Impl. Es soll das Importieren von Projekten angestossen werden.
+	 * Nach dem Import wird ddas ShowProjectListEvent geworfen, um die angezeigte Liste zu aktualisieren.
 	 * 
 	 * @author Tobias Lindner
 	 */
