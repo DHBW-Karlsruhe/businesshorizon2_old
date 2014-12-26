@@ -96,5 +96,13 @@ public interface PersistenceServiceInterface {
 	 * @autor Tobias Lindner
 	 */
 	public void importAllProjects(User user);
-		
+	
+	/**
+	 * Methode zum Exportieren der Projekte des aktuellen Users.
+	 *
+	 * @param user
+	 * 			der akutelle User, dessen Projekte exportiert werden sollen.
+	 * @author Tobias Lindner
+	 */
+	public void exportUserProjects (User user);
 }

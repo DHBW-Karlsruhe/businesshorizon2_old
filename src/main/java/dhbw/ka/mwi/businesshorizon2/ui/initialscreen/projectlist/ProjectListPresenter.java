@@ -258,5 +258,15 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		eventBus.fireEvent(new ShowProjectListEvent (user));
 		logger.debug ("ShowProjectListEvent geworfen");
 	}
+	
+	/**
+	 * Aufruf aus dem ClickListener der Impl. Es soll der Export der Projekte des aktuellen Users angestoßen werden.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void exportProjects () {
+		persistenceService.exportUserProjects(user);
+		logger.debug("Presenter: Export abgeschlossen");
+	}
 
 }

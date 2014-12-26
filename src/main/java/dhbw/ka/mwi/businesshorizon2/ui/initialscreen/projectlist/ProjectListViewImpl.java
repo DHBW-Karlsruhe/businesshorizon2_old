@@ -102,6 +102,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	//Buttons, um ein Projekt zu importieren
 	private Button importProjectBtn;
 	
+	//Buttons, um ein Projekt zu exportieren
+	private Button exportProjectBtn;
+	
 	//Buttons, um ein Projekt zu bearbeiten
 	private Button dialogEditBtn;
 	
@@ -181,6 +184,12 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		projectListHead.addComponent(importProjectBtn);
 		logger.debug("Import-Button erzeugt");
 		projectListHead.setComponentAlignment(importProjectBtn, Alignment.MIDDLE_RIGHT);
+		
+		//Export-Button im oberen Panel hinzufügen
+		exportProjectBtn = new Button ("Projekte exportieren", this);
+		projectListHead.addComponent(exportProjectBtn);
+		logger.debug("Export-Button erzeugt");
+		projectListHead.setComponentAlignment(exportProjectBtn, Alignment.MIDDLE_RIGHT);
 		
 		//Hinzufügen-Button im oberen Panel hinzufügen
 		addProjectBtn = new Button("Projekt hinzufügen", this);
@@ -558,6 +567,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 			logger.debug ("Import-Button Click Event aufgerufen");
 			presenter.importProjects();
 			
+		} else if (event.getButton() == exportProjectBtn) {
+			logger.debug("Export-Button Click Event aufgerufen");
+			presenter.exportProjects();
 		}
 	}
 

@@ -60,6 +60,8 @@ public class PersistenceService implements PersistenceServiceInterface {
 	
 	private File importFile;
 	
+	private File exportFile;
+	
 	private static final String separator = System.getProperties().getProperty("file.separator");
 
 	private static final String DIRECTORY = System.getProperty("user.home")
@@ -67,6 +69,8 @@ public class PersistenceService implements PersistenceServiceInterface {
 	private static final String FILENAMESAVEFILE = separator + separator + "projects.dat";
 	
 	private static final String FILENAMEIMPORTFILE = separator + separator + "projectsImport.dat";
+	
+	private static final String FILENAMEEXPORTFILE = separator + separator + "projectsExport.dat";
 
 	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
@@ -92,6 +96,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 		file = new File(DIRECTORY + FILENAMESAVEFILE);
 		
 		importFile = new File (DIRECTORY + FILENAMEIMPORTFILE);
+		exportFile = new File (DIRECTORY + FILENAMEEXPORTFILE);
 
 		if (!file.exists()) {
 			try {
@@ -333,6 +338,8 @@ public class PersistenceService implements PersistenceServiceInterface {
 	
 	/**
 	 * Methode zum Importieren von Projekten aus einer externen Projects.dat. Allen Projekten wird der aktuelle User zugeordnet.
+	 * @param user
+	 		der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
 	 * @author Tobias Lindner
 	 */
 	public synchronized void importAllProjects (User user) {
@@ -389,6 +396,40 @@ public class PersistenceService implements PersistenceServiceInterface {
 			}
 		}
 				
+	}
+	
+	/**
+	 * Methode zum exportieren der Projecte des aktuell angemeldeten Users.
+	 * 
+	 * @param user
+	 * 			der akutelle User, dessen Projekte exportiert werden sollen.
+	 * @author Tobias Lindner
+	 */
+	public synchronized void exportUserProjects(User user) {
+		saveProjects();
+					
+		try {
+			FileOutputStream fileOutput = new FileOutputStream(exportFile);
+			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+			logger.debug("Export: OutputStreams erzeugt.");
+
+			objectOutput.writeInt(user.getProjects().size());
+			for (Project projectToSave : user.getProjects()) {
+				objectOutput.writeObject(projectToSave);
+			}
+			logger.debug("ExportDatei geschrieben");
+
+			fileOutput.close();
+			objectOutput.close();
+			logger.debug("Projekt erfolgreich exportiert.");
+
+		} catch (NotSerializableException e){
+			logger.error("An NotSerializableException occured: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.error("An IOException occured: " + e.getMessage());
+		} 
 	}
 
 }
