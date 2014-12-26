@@ -58,11 +58,15 @@ public class PersistenceService implements PersistenceServiceInterface {
 
 	private File file;
 	
+	private File importFile;
+	
 	private static final String separator = System.getProperties().getProperty("file.separator");
 
 	private static final String DIRECTORY = System.getProperty("user.home")
 			+ separator + separator + "Business Horizon";
-	private static final String FILENAME = separator + separator + "projects.dat";
+	private static final String FILENAMESAVEFILE = separator + separator + "projects.dat";
+	
+	private static final String FILENAMEIMPORTFILE = separator + separator + "projectsImport.dat";
 
 	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
@@ -85,7 +89,9 @@ public class PersistenceService implements PersistenceServiceInterface {
 			logger.debug("New directory created at: " + file.getAbsolutePath());
 		}
 
-		file = new File(DIRECTORY + FILENAME);
+		file = new File(DIRECTORY + FILENAMESAVEFILE);
+		
+		importFile = new File (DIRECTORY + FILENAMEIMPORTFILE);
 
 		if (!file.exists()) {
 			try {
@@ -323,6 +329,64 @@ public class PersistenceService implements PersistenceServiceInterface {
 				} catch (IOException e) {
 					logger.error("An IOException occured: " + e.getMessage());
 				} 
+	}
+	
+	/**
+	 * Methode zum Importieren von Projekten aus einer externen Projects.dat. Allen Projekten wird der aktuelle User zugeordnet.
+	 * @author Tobias Lindner
+	 */
+	public synchronized void importAllProjects (User user) {
+		ArrayList<Project> importProjects = new ArrayList<Project>();
+		FileInputStream fileInput;
+		ObjectInputStream projectInput;
+		
+		//Zu importierende Projektdatei auslesen und in einer ArrayList ablegen
+		try {
+			fileInput = new FileInputStream(importFile);
+			projectInput = new ObjectInputStream(fileInput);
+			logger.debug("Import InputStreams erzeugt.");
+			
+			int nrOfProjects = projectInput.readInt();
+			logger.debug("Anzahl zu importierender Projekte gelesen.");
+			
+			for (int i = 1; i <= nrOfProjects; i++) {
+				Project project = (Project) projectInput.readObject();
+				logger.debug("Projekt eingelesen.");
+				importProjects.add(project);
+			}			
+			projectInput.close();
+			logger.debug("Import: projectInput-Stream closed");
+			fileInput.close();
+			logger.debug("Import: FileInput-Stream closed");
+	
+		} catch (FileNotFoundException e) {
+			logger.error("The specified file could not be found");
+		} catch (NotSerializableException e){
+			logger.error("An NotSerializableException occured: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (EOFException e) {
+			logger.error("Projektdatei ist leer.");
+		} catch (IOException e) {
+			logger.error("Initialization: An IOException occured: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			logger.error("A ClassNotFoundException occured: " + e.getMessage());
+		}
+		
+		//Hinzufügen der ArrayList mit Projecten zum aktuellen User
+				
+		for (int i =1; i<= importProjects.size(); i++) {
+			try {
+				addProject(user, importProjects.get(i));
+				
+			} catch (ProjectAlreadyExistsException e) {
+				logger.debug ("Import: ProjectAlreadyExistsException");
+				e.printStackTrace();
+			}
+		}
+				
 	}
 
 }
