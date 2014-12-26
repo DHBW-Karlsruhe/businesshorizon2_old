@@ -346,12 +346,12 @@ public class PersistenceService implements PersistenceServiceInterface {
 			projectInput = new ObjectInputStream(fileInput);
 			logger.debug("Import InputStreams erzeugt.");
 			
-			int nrOfProjects = projectInput.readInt();
+			int nrOfImportedProjects = projectInput.readInt();
 			logger.debug("Anzahl zu importierender Projekte gelesen.");
 			
-			for (int i = 1; i <= nrOfProjects; i++) {
+			for (int i = 1; i <= nrOfImportedProjects; i++) {
 				Project project = (Project) projectInput.readObject();
-				logger.debug("Projekt eingelesen.");
+				logger.debug("Import: Projekt eingelesen.");
 				importProjects.add(project);
 			}			
 			projectInput.close();

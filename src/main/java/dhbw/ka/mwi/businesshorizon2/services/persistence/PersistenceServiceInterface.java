@@ -91,6 +91,8 @@ public interface PersistenceServiceInterface {
 	/**
 	 * Methode zum Importieren von Projekten.
 	 * 
+	 * @param user
+	 * 			der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
 	 * @autor Tobias Lindner
 	 */
 	public void importAllProjects(User user);
