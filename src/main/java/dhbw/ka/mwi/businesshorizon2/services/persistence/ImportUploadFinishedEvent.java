@@ -36,22 +36,21 @@ public class ImportUploadFinishedEvent extends Event {
 	
 	private String fileName;
 
-		public ImportUploadFinishedEvent(String file) {
-			this.fileName = file;
-		}
+	public ImportUploadFinishedEvent(String file) {
+		this.fileName = file;
+	}
 
-		/**
-		 * Es wird der Filename der Hochgeladenen-Datei übergeben.
-		 * 
-		 * @author Tobias Lindner
-		 * @return fileName
-		 */
-		public String getfileName() {
-			return this.fileName;
+	/**
+	 * Es wird der Filename der Hochgeladenen-Datei übergeben.
+	 * 
+	 * @author Tobias Lindner
+	 * @return fileName
+	 */
+	public String getfileName() {
+		return this.fileName;
+	}
 
-		}
-
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 }
 

@@ -37,6 +37,13 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Upload.SucceededListener;
 
+/**
+ * Reciever Klasse zum Upload von Projektdateien, die importiert werden sollen.
+ * Ist gleichzeitig auch als Listenerklasse für das Upload.SuceededEvent (Abschluss des Uploads) registriert.
+ * 
+ * @author Tobias Lindner
+ *
+ */
 public class UploadReceiver implements Receiver, SucceededListener {
 	
 	private static final long serialVersionUID = 1L;
@@ -67,7 +74,12 @@ public class UploadReceiver implements Receiver, SucceededListener {
 		return fos;
 		
 	}
-	
+	/**
+	 * Methode behandelt das Upload.SucceededEvent.
+	 * Es wirft das für den EventBus geeignete ImportUploadFinishedEvent.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void uploadSucceeded(Upload.SucceededEvent event) {
 		eventBus.fireEvent(new ImportUploadFinishedEvent(event.getFilename()));
 		logger.debug("UploadSucceeded");

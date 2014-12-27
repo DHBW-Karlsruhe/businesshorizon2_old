@@ -249,27 +249,28 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	}
 	
 	/**
-	 * Aufruf aus dem ClickListener der Impl. Es soll das Importieren von Projekten angestossen werden.
-	 * Nach dem Import wird ddas ShowProjectListEvent geworfen, um die angezeigte Liste zu aktualisieren.
+	 * Diese Methode per Event nach dem Upload der zu importierenden Projektdatei aufgerufen. Sie löst das Auslesen der in der Datei enthaltenen Projektdaten und das Importieren aus.
+	 * Nach dem Import wird das ShowProjectListEvent geworfen, um die angezeigte Liste zu aktualisieren.
+	 * 
+	 * @param event
+	 * 		ImportUploadFinishedEvent, dass als Parameter den Dateinamen der hochgeladenen Datei enthält.
 	 * 
 	 * @author Tobias Lindner
 	 */
-	/**public void importProjects () {
-		persistenceService.importAllProjects(user, "projectsImport.dat");
-		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
-		eventBus.fireEvent(new ShowProjectListEvent (user));
-		logger.debug ("ShowProjectListEvent geworfen");
-	}*/
-	
 	@EventHandler
 	public void onUploadFinishedImport (ImportUploadFinishedEvent event) {
-		String notImported = null;
+		String notImported = null; //in diesen String wird der Rückgabewert, der String mit den Projektnamen, die nicht importiert werden konnten gespeichert
 		logger.debug("ImportUploadFinishedEvent empfangen");
+		
 		notImported = persistenceService.importAllProjects(user, event.getfileName());
 		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
+		
+		//Ausgabe der Fehlermeldung, falls nicht alle Projekte importiert werden konnten
 		if (notImported != null) {
 			getView().showErrorMessage(notImported);
 		}
+		
+		//Aktualisieren der Antwort
 		eventBus.fireEvent(new ShowProjectListEvent (user));
 		logger.debug ("ShowProjectListEvent geworfen");
 	}

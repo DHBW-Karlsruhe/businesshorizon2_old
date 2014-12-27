@@ -95,6 +95,8 @@ public interface PersistenceServiceInterface {
 	 * 			der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
 	 * @param fileName
 	 * 			der Dateiname der hochgeladen Datei
+	 * @return String
+	 * 			String mit den Namen der Projekt, die nicht importiert werden konnten
 	 * @autor Tobias Lindner
 	 */
 	public String importAllProjects(User user, String fileName) ;

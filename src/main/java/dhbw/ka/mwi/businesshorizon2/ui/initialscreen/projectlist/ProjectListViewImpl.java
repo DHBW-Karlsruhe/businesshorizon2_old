@@ -102,10 +102,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private Button addProjectBtn;
 	private Button dialogAddBtn;
 	
-	//Buttons, um ein Projekt zu importieren
+	//Upload Button + Receiver, um ein Projekt zu importieren
 	private UploadReceiver receiver;
 	private Upload upload;
-	private Button importProjectBtn;
 	
 	//Buttons, um ein Projekt zu exportieren
 	private Button exportProjectBtn;
@@ -186,7 +185,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		projectListHead.addComponent(title);
 		logger.debug("Ueberschrift erstellt");
 		
-		//Import-Button im oberen Panel hinzufügen
+		//Upload/Import-Button im oberen Panel hinzufügen + intialisieren
 		receiver = new UploadReceiver(eventBus);
 		upload = new Upload (null, receiver);
 		upload.setImmediate(true);
@@ -195,13 +194,6 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		logger.debug("Upload Button erzeugt");
 		projectListHead.setComponentAlignment(upload, Alignment.MIDDLE_RIGHT);
 		upload.addListener(receiver);
-		
-		/**
-		importProjectBtn = new Button ("Projekte importieren", this);
-		projectListHead.addComponent(importProjectBtn);
-		logger.debug("Import-Button erzeugt");
-		projectListHead.setComponentAlignment(importProjectBtn, Alignment.MIDDLE_RIGHT);
-		*/
 		
 		//Export-Button im oberen Panel hinzufügen
 		exportProjectBtn = new Button ("Projekte exportieren", this);

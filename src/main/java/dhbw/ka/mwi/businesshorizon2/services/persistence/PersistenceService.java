@@ -347,10 +347,14 @@ public class PersistenceService implements PersistenceServiceInterface {
 	
 	/**
 	 * Methode zum Importieren von Projekten aus einer externen Projects.dat. Allen Projekten wird der aktuelle User zugeordnet.
+	 * 
 	 * @param user
 	 *		der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
 	 * @param fileName
 	 * 			der Dateiname der hochgeladen Datei
+	 * @return String
+	 * 			String mit den Namen der Projekt, die nicht importiert werden konnten
+	 * 
 	 * @author Tobias Lindner
 	 */
 	public synchronized String importAllProjects (User user, String fileName) {
@@ -358,7 +362,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 		FileInputStream fileInput;
 		ObjectInputStream projectInput;
 		
-		String notImportedProjects = null;
+		String notImportedProjects = null; //Speicher-String mit den Namen der Projekte, die nicht importiert werden konnten.
 		
 		//Zu importierende Projektdatei auslesen und in einer ArrayList ablegen
 		try {
