@@ -35,9 +35,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.vaadin.ui.Upload;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.ImportUploadFinishedEvent;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
@@ -252,9 +254,22 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * 
 	 * @author Tobias Lindner
 	 */
-	public void importProjects () {
-		persistenceService.importAllProjects(user);
+	/**public void importProjects () {
+		persistenceService.importAllProjects(user, "projectsImport.dat");
 		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
+		eventBus.fireEvent(new ShowProjectListEvent (user));
+		logger.debug ("ShowProjectListEvent geworfen");
+	}*/
+	
+	@EventHandler
+	public void onUploadFinishedImport (ImportUploadFinishedEvent event) {
+		String notImported = null;
+		logger.debug("ImportUploadFinishedEvent empfangen");
+		notImported = persistenceService.importAllProjects(user, event.getfileName());
+		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
+		if (notImported != null) {
+			getView().showErrorMessage(notImported);
+		}
 		eventBus.fireEvent(new ShowProjectListEvent (user));
 		logger.debug ("ShowProjectListEvent geworfen");
 	}

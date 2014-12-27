@@ -37,6 +37,7 @@ import java.util.ArrayList;
 
 
 
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -62,7 +63,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	
 	private File exportFile;
 	
-	private static final String separator = System.getProperties().getProperty("file.separator");
+	static final String separator = System.getProperties().getProperty("file.separator");
 
 	private static final String DIRECTORY = System.getProperty("user.home")
 			+ separator + separator + "Business Horizon";
@@ -71,6 +72,8 @@ public class PersistenceService implements PersistenceServiceInterface {
 	private static final String FILENAMEIMPORTFILE = separator + separator + "projectsImport.dat";
 	
 	private static final String FILENAMEEXPORTFILE = separator + separator + "projectsExport.dat";
+	
+	static final String TMPDIRECTORY = DIRECTORY + separator + "tmp";
 
 	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
@@ -87,6 +90,12 @@ public class PersistenceService implements PersistenceServiceInterface {
 	public void init() {
 
 		file = new File(DIRECTORY);
+		File tmpdir = new File (TMPDIRECTORY);
+		
+		if (!tmpdir.exists()) {
+			tmpdir.mkdir();
+			logger.debug("New directory created at: " + file.getAbsolutePath());
+		}
 
 		if (!file.exists()) {
 			file.mkdir();
@@ -339,17 +348,21 @@ public class PersistenceService implements PersistenceServiceInterface {
 	/**
 	 * Methode zum Importieren von Projekten aus einer externen Projects.dat. Allen Projekten wird der aktuelle User zugeordnet.
 	 * @param user
-	 		der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
+	 *		der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
+	 * @param fileName
+	 * 			der Dateiname der hochgeladen Datei
 	 * @author Tobias Lindner
 	 */
-	public synchronized void importAllProjects (User user) {
+	public synchronized String importAllProjects (User user, String fileName) {
 		ArrayList<Project> importProjects = new ArrayList<Project>();
 		FileInputStream fileInput;
 		ObjectInputStream projectInput;
 		
+		String notImportedProjects = null;
+		
 		//Zu importierende Projektdatei auslesen und in einer ArrayList ablegen
 		try {
-			fileInput = new FileInputStream(importFile);
+			fileInput = new FileInputStream(TMPDIRECTORY + separator + fileName);
 			projectInput = new ObjectInputStream(fileInput);
 			logger.debug("Import InputStreams erzeugt.");
 			
@@ -365,6 +378,10 @@ public class PersistenceService implements PersistenceServiceInterface {
 			logger.debug("Import: projectInput-Stream closed");
 			fileInput.close();
 			logger.debug("Import: FileInput-Stream closed");
+			
+			File f = new File (TMPDIRECTORY + fileName);
+			f.delete();
+			logger.debug("Uploaded File deleted");
 	
 		} catch (FileNotFoundException e) {
 			logger.error("The specified file could not be found");
@@ -391,10 +408,18 @@ public class PersistenceService implements PersistenceServiceInterface {
 				logger.debug ("Import: Projekt hinzugefügt.");
 				
 			} catch (ProjectAlreadyExistsException e) {
-				logger.debug ("Import: ProjectAlreadyExistsException");
-				e.printStackTrace();
+				if (notImportedProjects == null) {
+					notImportedProjects = "Folgende Projekte konnten nicht importiert werden: ";
+				}
+				else {
+					notImportedProjects = notImportedProjects + ", ";
+				}
+				logger.debug ("Import: ProjectAlreadyExistsException: Folgendes Projekt existiert bereits: " + projectI.getName());
+				notImportedProjects = notImportedProjects + projectI.getName();
 			}
 		}
+		
+		return notImportedProjects;
 				
 	}
 	
