@@ -90,13 +90,16 @@ public class LogInScreenViewImplv2 extends Window implements
 	private TextField textfieldFirstName;
 	private TextField textfieldLastName;
 	private TextField textfieldCompany;
+	private TextField loginEmail;
+	private PasswordField loginPassword;
 	private PasswordField passwordFieldPassword;
 	private PasswordField passwordFieldPasswordRep;
 	private Button dialogRegBtn;
 	private Button registerBtn;
 	private Button passwordForgotBtn;
 	private Button registerAbortBtn; 
-	private LoginForm login;
+	private Button loginBtn;
+	//private LoginForm login;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -123,7 +126,7 @@ public class LogInScreenViewImplv2 extends Window implements
 	 * @author Christian Scherer
 	 */
 	private void generateUi() {
-		setCaption("Business Horizon 2");
+		setCaption("Business Horizon 3");
 		logger.debug("Überschrift für Browser erstellt");
 
 		horizontal = new HorizontalLayout();
@@ -172,26 +175,35 @@ public class LogInScreenViewImplv2 extends Window implements
 		
 		addStyleName("login_view");
 		
-		login = new LoginForm();
-		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
-		login.setUsernameCaption("Mailadresse");
-		login.setPasswordCaption("Passwort");
-		login.setWidth(null);
-		login.setStyleName("login_form");
-		login.addListener(new LoginForm.LoginListener() {
-			private static final long serialVersionUID = 1L;
+//		login = new LoginForm();
+//		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
+//		login.setUsernameCaption("Mailadresse");
+//		login.setPasswordCaption("Passwort");
+//		login.setWidth(null);
+//		login.setStyleName("login_form");
+//		login.addListener(new LoginForm.LoginListener() {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void onLogin(LoginEvent event) {
+//				presenter.doLogin(event.getLoginParameter("username"),
+//						event.getLoginParameter("password"));
+//
+//			}
+//		});
 
-			@Override
-			public void onLogin(LoginEvent event) {
-				presenter.doLogin(event.getLoginParameter("username"),
-						event.getLoginParameter("password"));
-
-			}
-		});
-
+		VerticalLayout login = generateLogin();
+		
 		horizontal.addComponent(login);
 		horizontal.setComponentAlignment(login, Alignment.TOP_CENTER);
 
+		loginBtn = new Button("", this);
+		loginBtn.setIcon(new ThemeResource("images/iconsNewUI/pencil.png"));
+		loginBtn.setWidth(130, Sizeable.UNITS_PIXELS);
+		loginBtn.setHeight(130, Sizeable.UNITS_PIXELS);
+		
+		horizontal.addComponent(loginBtn);
+		horizontal.setComponentAlignment(loginBtn, Alignment.TOP_RIGHT);
 		
 		registerBtn = new Button("", this);
 		registerBtn.setIcon(new ThemeResource("images/iconsNewUI/head.png"));
@@ -305,6 +317,21 @@ public class LogInScreenViewImplv2 extends Window implements
 		return registerComponent;
 	}
 
+	private VerticalLayout generateLogin() {
+		VerticalLayout loginForm = new VerticalLayout();
+		
+		loginEmail = new TextField();
+		loginEmail.setCaption("Emailadresse");
+				
+		loginPassword = new PasswordField();
+		loginPassword.setCaption("Passwort");
+		
+		loginForm.addComponent(loginEmail);
+		loginForm.addComponent(loginPassword);
+		
+		
+		return loginForm;
+	}
 	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.
 	 * 
@@ -338,7 +365,6 @@ public class LogInScreenViewImplv2 extends Window implements
 		} else if (event.getButton() == dialogRegBtn) {
 
 			if (presenter.registerUser()){	
-				//presenter.registerUser();
 				showNotification("Regisitrierung erfolgreich abgeschlossen");
 				vSplitPanel.removeComponent(regLayout);
 				vSplitPanel.setSecondComponent(horizontal);
@@ -353,6 +379,8 @@ public class LogInScreenViewImplv2 extends Window implements
 		} else if (event.getButton() == registerAbortBtn) {
 			vSplitPanel.removeComponent(regLayout);
 			vSplitPanel.setSecondComponent(horizontal);
+		} else if (event.getButton() == loginBtn) {
+			presenter.doLogin(getLoginEmail(), getLoginPassword());
 		}
 			
 	}
@@ -421,6 +449,16 @@ public class LogInScreenViewImplv2 extends Window implements
 	@Override
 	public String getLastName() {
 		return (String) textfieldLastName.getValue();
+	}
+	
+	@Override
+	public String getLoginEmail() {
+		return (String) loginEmail.getValue();
+	}
+	
+	@Override
+	public String getLoginPassword() {
+		return (String) loginPassword.getValue();
 	}
 
 

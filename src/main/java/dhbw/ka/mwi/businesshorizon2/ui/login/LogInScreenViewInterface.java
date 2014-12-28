@@ -58,6 +58,10 @@ public interface LogInScreenViewInterface extends View {
 
 	String getPasswordRep();
 
+	String getLoginEmail();
+
+	String getLoginPassword();
+
 	//void showRegisterUserDialog();
 
 	//Window getRegDialog();

@@ -43,7 +43,7 @@ public class User implements Serializable {
 	private String lastName;
 	private String company;
 	private String emailAdress;
-	private String password;
+	private int password;
 
 	protected ArrayList<Project> projects = new ArrayList<Project>();
 
@@ -165,7 +165,7 @@ public class User implements Serializable {
 	 * @author Christian Scherer
 	 * @return Passwort des Users
 	 */
-	public String getPassword() {
+	public int getPassword() {
 		return password;
 	}
 
@@ -177,7 +177,7 @@ public class User implements Serializable {
 	 *            Passwort des Users
 	 */
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = password.hashCode();
 	}
 
 	/**
@@ -200,6 +200,5 @@ public class User implements Serializable {
 		this.projects = userProjects;
 	}
 	
-
 
 }

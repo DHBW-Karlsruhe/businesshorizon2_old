@@ -196,7 +196,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @return noNullPointer Ist false wenn NullPointer bestehen (leere Strings)
 	 *         und true wenn alle Strings einen Wert enthalten
 	 */
-	private boolean validateNoNullPointer() {
+	public boolean validateNoNullPointer() {
 		boolean noNullPointer;
 		if (emailAdress.isEmpty() || password.isEmpty() || firstName.isEmpty()
 				|| lastName.isEmpty() || company.isEmpty()) {
@@ -221,7 +221,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @author Marcel Rosenberger, Annika Weis
 	 * @return Ob es sich um einen gültigen Vornamen handelt.
 	 */
-	private boolean validateFirstName() {
+	protected boolean validateFirstName() {
 		boolean validFirstName;
 
 		// hier wird der Vorname überprüft
@@ -248,7 +248,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @author Marcel Rosenberger, Annika Weis
 	 * @return Ob es sich um einen gültigen Nachnamen handelt.
 	 */
-	private boolean validateLastName() {
+	protected boolean validateLastName() {
 		boolean validLastName;
 
 		// hier wird der Nachname überprüft
@@ -276,7 +276,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @author Marcel Rosenberger, Annika Weis
 	 * @return Ob es sich um eine gültige Mailadresse handelt.
 	 */
-	private boolean validateMailAdress() {
+	protected boolean validateMailAdress() {
 		boolean validMailAdress;
 
 		// hier wird die Mailadresse überprüft
@@ -305,7 +305,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @author Christian Scherer, Marcel Rosenberger
 	 * @return Ob die beiden Passwörter gleich sind oder nicht
 	 */
-	private boolean validatePassword() {
+	protected boolean validatePassword() {
 
 		String password = getView().getPassword();
 		String passwordRep = getView().getPasswordRep();
@@ -336,7 +336,7 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 	 * @author Marcel Rosenberger, Annika Weis
 	 * @return Ob die beiden Passwörter gleich sind oder nicht
 	 */
-	private boolean validatePasswordSafety() {
+	protected boolean validatePasswordSafety() {
 
 		boolean safePassword;
 
@@ -367,18 +367,6 @@ public class LogInScreenPresenter extends Presenter<LogInScreenViewInterface> {
 
 	}
 	
-	public boolean validateAll() {
-	
-		if ( validateNoNullPointer() && validateMailAdress() && validateFirstName()
-			&& validateLastName() && validateMailAdress()
-			&& validatePassword() && validatePasswordSafety()) {
-			return true;
-		} else {
-			return false;
-		}		
-		
-		
-	}
 
 	/**
 	 * Ruft die Methode des AutehnticationService zur Behandlung eines

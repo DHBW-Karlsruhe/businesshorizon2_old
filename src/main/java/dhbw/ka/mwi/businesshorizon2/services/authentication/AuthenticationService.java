@@ -141,7 +141,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 		if (allUsers != null) {
 			for (User user : allUsers) {
 				if (user.getEmailAdress().toUpperCase().equals(emailAdress.toUpperCase())) {
-					if (user.getPassword().equals(password)) {
+					if (user.getPassword() == password.hashCode()) {
 						loggedInUsers.put(user.getEmailAdress(), user);
 						logger.debug("User " + emailAdress + " successfully logged in.");
 						return user;
