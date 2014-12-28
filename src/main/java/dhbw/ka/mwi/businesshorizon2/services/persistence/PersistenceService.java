@@ -445,9 +445,21 @@ public class PersistenceService implements PersistenceServiceInterface {
 		saveProjects();
 		String exportFileName = null;
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS");
-					
+		
+		//Bereits vorhandenes Export-File des Users löschen
+		File tmpdir = new File (TMPDIRECTORY);
+		File[] tmpFiles = tmpdir.listFiles();
+		
+		for (int i = 0; i<tmpFiles.length;i++) {
+			if (tmpFiles [i].getName().contains(user.getEmailAdress())) {
+				tmpFiles[i].delete();
+				logger.debug("Bereits vorhandene Export Datei gelöscht.");
+			}
+		}
+		
+		//Export-File generieren			
 		try {
-			exportFileName = TMPDIRECTORY + separator + "ProjectExport_" + df.format(new Date ()) +".dat";
+			exportFileName = TMPDIRECTORY + separator + "ProjectExport_" + user.getEmailAdress() +"_" + df.format(new Date ()) +".dat";
 			FileOutputStream fileOutput = new FileOutputStream(exportFileName);
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 			logger.debug("Export: OutputStreams erzeugt.");
