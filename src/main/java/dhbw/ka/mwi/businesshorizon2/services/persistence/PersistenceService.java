@@ -33,10 +33,14 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
 
+
+
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -432,13 +436,19 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 * 
 	 * @param user
 	 * 			der akutelle User, dessen Projekte exportiert werden sollen.
+	 * @return String
+	 * 			Pfad zur erzeugten Export-Datei. Von diesem Pfad wird die Datei gedownloaded.
+	 * 
 	 * @author Tobias Lindner
 	 */
-	public synchronized void exportUserProjects(User user) {
+	public synchronized String exportUserProjects(User user) {
 		saveProjects();
+		String exportFileName = null;
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 					
 		try {
-			FileOutputStream fileOutput = new FileOutputStream(exportFile);
+			exportFileName = TMPDIRECTORY + separator + "ProjectExport_" + df.format(new Date ()) +".dat";
+			FileOutputStream fileOutput = new FileOutputStream(exportFileName);
 			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
 			logger.debug("Export: OutputStreams erzeugt.");
 
@@ -459,6 +469,8 @@ public class PersistenceService implements PersistenceServiceInterface {
 		} catch (IOException e) {
 			logger.error("An IOException occured: " + e.getMessage());
 		} 
+		
+		return exportFileName;
 	}
 
 }

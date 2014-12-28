@@ -106,7 +106,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private UploadReceiver receiver;
 	private Upload upload;
 	
-	//Buttons, um ein Projekt zu exportieren
+	//Button, um ein Projekt zu exportieren
 	private Button exportProjectBtn;
 	
 	//Buttons, um ein Projekt zu bearbeiten
@@ -145,7 +145,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	public void init() {
 		presenter.setView(this);
 		generateUI();
-		logger.debug("Initialisierung beendet");
+		logger.debug("UI-Initialisierung beendet");
 	}
 
 	/**

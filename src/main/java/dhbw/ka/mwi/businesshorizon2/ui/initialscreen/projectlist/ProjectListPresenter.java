@@ -281,8 +281,11 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 * @author Tobias Lindner
 	 */
 	public void exportProjects () {
-		persistenceService.exportUserProjects(user);
-		logger.debug("Presenter: Export abgeschlossen");
+		String exportFileName;
+		
+		exportFileName = persistenceService.exportUserProjects(user);
+		logger.debug("Presenter: Export-Datei erstellt");
+		
 	}
 
 }

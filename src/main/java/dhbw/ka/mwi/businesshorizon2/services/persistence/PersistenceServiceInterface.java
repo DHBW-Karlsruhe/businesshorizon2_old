@@ -106,7 +106,9 @@ public interface PersistenceServiceInterface {
 	 *
 	 * @param user
 	 * 			der akutelle User, dessen Projekte exportiert werden sollen.
+	 * @return String
+	 * 			Pfad zur erzeugten Export-Datei. Von diesem Pfad wird die Datei gedownloaded.
 	 * @author Tobias Lindner
 	 */
-	public void exportUserProjects (User user);
+	public String exportUserProjects (User user);
 }
