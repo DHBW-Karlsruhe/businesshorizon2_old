@@ -576,6 +576,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 			logger.debug("Export-Button Click Event aufgerufen");
 			File exportFile;
 			exportFile = presenter.exportProjects();
+			//Download-Anforderung
 			event.getButton().getWindow().open(new Downloader (exportFile, getApplication()));
 			logger.debug("Download-Anforderung abgeschlossen");
 		}

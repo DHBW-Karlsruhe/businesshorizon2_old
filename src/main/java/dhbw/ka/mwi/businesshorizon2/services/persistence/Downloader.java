@@ -32,6 +32,12 @@ import com.vaadin.Application;
 import com.vaadin.terminal.DownloadStream;
 import com.vaadin.terminal.FileResource;
 
+/**
+ * Klasse, die der View ermöglich Downloads auf den Clients zu starten.
+ * 
+ * @author Tobias Linder
+ *
+ */
 public class Downloader extends FileResource{
 
 	public Downloader(File sourceFile, Application application) {
