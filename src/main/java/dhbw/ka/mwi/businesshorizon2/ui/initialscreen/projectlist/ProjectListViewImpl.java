@@ -25,6 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -60,6 +61,7 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.Downloader;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.UploadReceiver;
 
 /**
@@ -570,13 +572,10 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 								"Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
 								Notification.TYPE_ERROR_MESSAGE);
 			}	
-		} /**else if (event.getButton() == importProjectBtn) {
-			logger.debug ("Import-Button Click Event aufgerufen");
-			presenter.importProjects();
-			
-		} */else if (event.getButton() == exportProjectBtn) {
+		} else if (event.getButton() == exportProjectBtn) {
 			logger.debug("Export-Button Click Event aufgerufen");
-			presenter.exportProjects();
+			event.getButton().getWindow().open(new Downloader (presenter.exportProjects(), getApplication()));
+			logger.debug("Download abgeschlossen");
 		}
 	}
 

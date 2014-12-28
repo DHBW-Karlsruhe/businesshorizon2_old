@@ -444,7 +444,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	public synchronized String exportUserProjects(User user) {
 		saveProjects();
 		String exportFileName = null;
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS");
 					
 		try {
 			exportFileName = TMPDIRECTORY + separator + "ProjectExport_" + df.format(new Date ()) +".dat";

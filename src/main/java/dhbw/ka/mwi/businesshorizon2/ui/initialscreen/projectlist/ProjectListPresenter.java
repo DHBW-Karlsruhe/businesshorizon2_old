@@ -24,6 +24,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
-
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
@@ -85,6 +86,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private void init() {
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
+		
+		
 	}
 
 	/**
@@ -276,16 +279,21 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	}
 	
 	/**
-	 * Aufruf aus dem ClickListener der Impl. Es soll der Export der Projekte des aktuellen Users angestoßen werden.
+	 * Aufruf aus dem ClickListener der Impl. Es wird die Erstellung der ExportDatei angestoßen.
+	 * Das erzeugte File wird an die View zum Download zurückgeliefert.
+	 * 
+	 * @return exportFile
+	 * 			Das erzeugte ExportFile wird zum Download durch den Client an die View zurückgeliefert.
 	 * 
 	 * @author Tobias Lindner
 	 */
-	public void exportProjects () {
-		String exportFileName;
+	public File exportProjects () {
+		File exportFile;
 		
-		exportFileName = persistenceService.exportUserProjects(user);
+		exportFile = new File (persistenceService.exportUserProjects(user));
 		logger.debug("Presenter: Export-Datei erstellt");
 		
+		return exportFile;
 	}
 
 }
