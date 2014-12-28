@@ -145,11 +145,19 @@ div.projectlist:hover {
 }
 
 .topBarButtonContainer {
-	margin-top: 10%;
+/* 	margin-top: 10%; */
 	margin-right: 5%;
 }
 
 .topBarButtonLabel {
 /* 	margin-top: 2px; */
 	font-size: 12pt;
+}
+
+.seitenLabel {
+	font-size: 20pt;
+}
+
+.descriptionLabel {
+	font-size: 16pt;
 }

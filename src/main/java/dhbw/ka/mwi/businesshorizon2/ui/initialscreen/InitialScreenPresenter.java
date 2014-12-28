@@ -116,7 +116,7 @@ user = userProxy.getSelectedUser();
 //getView().showUserData(user.getFullName());
 //getView().showView(projectListView, infosView);
 logger.debug("Views mit Projekt und Infoview geladen");
-eventBus.fireEvent(new ShowProjectListEvent(user));
+//eventBus.fireEvent(new ShowProjectListEvent(user));
 logger.debug("ShowProjectListEvent gefeuert");
 //eventBus.fireEvent(new ShowInfosEvent());
 logger.debug("ShowInfosEvent gefeuert");

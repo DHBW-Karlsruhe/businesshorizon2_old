@@ -45,6 +45,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -99,15 +100,34 @@ private Label leftBottomL;
 
 private Label userData;
 
-private VerticalLayout mainLayout = new VerticalLayout();
-private HorizontalLayout leftLayout = new HorizontalLayout();
-private VerticalLayout rightLayout = new VerticalLayout();
-private HorizontalLayout topRightLayout = new HorizontalLayout();
-private VerticalLayout leftContentLayout = new VerticalLayout();
-private VerticalLayout bottomLeftLayout = new VerticalLayout();
-private VerticalLayout bottomRightLayout = new VerticalLayout();
-private VerticalLayout bottomLayout = new VerticalLayout();
-private Label logoLabel = new Label();
+private VerticalLayout mainLayout;
+private HorizontalLayout leftLayout;
+private VerticalLayout rightLayout;
+private HorizontalLayout topRightLayout;
+private VerticalLayout leftContentLayout;
+private VerticalLayout bottomLeftLayout;
+private VerticalLayout bottomRightLayout;
+private VerticalLayout bottomLayout;
+
+private Embedded homeIcon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
+
+private Label seitenLabel;
+
+private Label descriptionLabel;
+
+private VerticalLayout leftLogoLayout;
+
+private Embedded logo;
+
+private Label gap;
+
+private VerticalLayout topBarSpacing;
+
+private VerticalLayout leftContainerSpacing;
+
+private Label splitter;
+
+private VerticalLayout pageDescription;
 
 
 
@@ -132,6 +152,19 @@ logger.debug("Initialisierung beendet");
 */
 private void generateUi() {
 	
+	mainLayout = new VerticalLayout();
+	leftLayout = new HorizontalLayout();
+	rightLayout = new VerticalLayout();
+	topRightLayout = new HorizontalLayout();
+	leftContentLayout = new VerticalLayout();
+	bottomLeftLayout = new VerticalLayout();
+	bottomRightLayout = new VerticalLayout();
+	bottomLayout = new VerticalLayout();
+	gap = new Label();
+	leftContainerSpacing = new VerticalLayout();
+	splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
+	splitter.setWidth(98, UNITS_PERCENTAGE);
+	
 	mainLayout.setSizeFull();
 	mainLayout.setStyleName("mainLayout");
 	leftLayout.setSizeFull();
@@ -139,24 +172,33 @@ private void generateUi() {
 	rightLayout.setSizeFull();
 	bottomLayout.setSizeFull();
 	bottomLeftLayout.setSizeFull();
-	leftContentLayout.setWidth(85, UNITS_PERCENTAGE);
-	leftContentLayout.setHeight(100, UNITS_PERCENTAGE);
-	topRightLayout.setStyleName("topBar");
-//	leftContentLayout.setSizeFull();
+//	topRightLayout.setStyleName("topBar");
+	topRightLayout.setSizeFull();
+	leftContentLayout.setSizeFull();
+//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
 	
-	logoLabel = new Label();
-	logoLabel.setIcon(new ThemeResource("images/Logo_businesshorizon.png"));
-	logoLabel.setWidth(15, UNITS_PERCENTAGE);
-	leftLayout.addComponent(logoLabel);
-	leftLayout.addComponent(leftContentLayout);
-	leftLayout.setComponentAlignment(logoLabel, Alignment.MIDDLE_CENTER);
+	leftLogoLayout = new VerticalLayout();
+	logo = new Embedded(null, new ThemeResource("images/Logo_businesshorizon.png"));
+	
+	gap.setHeight("4px");
+	leftContainerSpacing.setSizeFull();
+	
+	homeIcon.setWidth(50, UNITS_PIXELS);
+	homeIcon.setHeight(50, UNITS_PIXELS);
+	
+	seitenLabel = new Label("Startseite");
+	seitenLabel.setStyleName("seitenLabel");
+	seitenLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	descriptionLabel = new Label("Übersicht über alle Projekte");
+	descriptionLabel.setStyleName("descriptionLabel");
+	descriptionLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 
 	horizontalSplitPanel = new HorizontalSplitPanel();
 	horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
 	horizontalSplitPanel.setLocked(true);
 	horizontalSplitPanel.setStyleName("horizontalMain");
 	verticalSplitPanel = new VerticalSplitPanel();
-	verticalSplitPanel.setSplitPosition(15, UNITS_PERCENTAGE);
+	verticalSplitPanel.setSplitPosition(126, UNITS_PIXELS);
 	verticalSplitPanel.setLocked(true);
 	verticalSplitPanel.setWidth(90, UNITS_PERCENTAGE);
 	verticalSplitPanel.setHeight(100, UNITS_PERCENTAGE);
@@ -172,7 +214,27 @@ private void generateUi() {
 	rightBottomL = new Label("rechts Unten");
 	leftBottomL = new Label("links Unten");
 	
-	leftLayout.addComponent(leftL);
+	leftLogoLayout.addComponent(logo);
+	leftContentLayout.addComponent(gap);
+	leftContentLayout.addComponent(homeIcon);
+	leftContentLayout.addComponent(seitenLabel);
+	leftContentLayout.addComponent(descriptionLabel);
+	leftContentLayout.addComponent(splitter);
+	leftContentLayout.addComponent(leftContainerSpacing);
+	leftContentLayout.setExpandRatio(leftContainerSpacing, 1.0f);
+	leftLayout.addComponent(leftLogoLayout);
+	leftLayout.addComponent(leftContentLayout);
+	leftLayout.setExpandRatio(leftContentLayout, 1.0f);
+	leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
+	leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
+	leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
+	leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
+	
+	leftLogoLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	leftLogoLayout.setHeight(100, UNITS_PERCENTAGE);
+	leftContentLayout.setSizeFull();
+	
+//	leftLayout.addComponent(leftL);
 	rightLayout.addComponent(verticalSplitPanel);
 //	topRightLayout.addComponent(rightTopL);
 	bottomRightLayout.addComponent(rightBottomL);
@@ -201,6 +263,11 @@ private void generateUi() {
 	addTopButton(button.getComponent());
 	button = new TopBarButton("deleteProjectButton", "Projekt löschen");
 	addTopButton(button.getComponent());
+	
+	topBarSpacing = new VerticalLayout();
+	topBarSpacing.setSizeFull();
+	topRightLayout.addComponent(topBarSpacing);
+	topRightLayout.setExpandRatio(topBarSpacing, 1.0f);
 
 }
 
@@ -277,6 +344,7 @@ bottomLeftLayout.addComponent((Component) leftView);
 
 public void addTopButton(Component button){
 	topRightLayout.addComponent(button);
+	topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
 }
 
 public void setTopButton(Component button, int index){
