@@ -195,3 +195,16 @@ div.projectlist:hover {
 	box-sizing: border-box;
 	margin-bottom: 20px;
 }
+
+.projectDetailsLayout {
+	margin-left: 5%;
+}
+
+.projectDetailsLabel {
+	font-size: 18pt;
+}
+
+.projectDetailsValue {
+	font-size: 16pt;
+}
+

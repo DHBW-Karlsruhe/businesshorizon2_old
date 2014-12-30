@@ -41,6 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInter
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
@@ -74,6 +75,9 @@ private Project project;
 
 @Autowired
 private ProjectListViewInterface projectListView;
+
+@Autowired
+private ProjectDetailsViewInterface projectDetailsView;
 
 @Autowired
 private InfosViewInterface infosView;
@@ -114,7 +118,7 @@ public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 logger.debug("ShowInitialScreenViewEvent empfangen");
 user = userProxy.getSelectedUser();
 //getView().showUserData(user.getFullName());
-getView().showView(projectListView, infosView);
+getView().showView(projectListView, projectDetailsView);
 logger.debug("Views mit Projekt und Infoview geladen");
 eventBus.fireEvent(new ShowProjectListEvent(user));
 logger.debug("ShowProjectListEvent gefeuert");

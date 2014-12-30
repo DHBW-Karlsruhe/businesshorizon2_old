@@ -86,6 +86,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="projectListView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewImplv2"
 		scope="session" />
+		
+	<!-- Project-Details -->
+	<bean name="projectDetailsPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsPresenter"
+		scope="session"	/>
+	<bean name="projectDetailsView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewImpl"
+		scope="session"	/>
 
 	<!-- Infos -->
 	<bean name="infosViewPresenter"

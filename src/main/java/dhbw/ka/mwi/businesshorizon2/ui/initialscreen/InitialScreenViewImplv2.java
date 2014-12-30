@@ -71,35 +71,11 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 	@Autowired
 	private UserProxy userProxy;
-
 	private VerticalSplitPanel verticalSplitPanel;
-
 	private HorizontalSplitPanel horizontalSplitPanel;
-
 	private HorizontalSplitPanel horizontalSplitPanelRight;
-
-	private VerticalLayout header;
-
-	private HorizontalLayout horizontal;
-
-	private VerticalLayout left;
-
 	private HorizontalLayout middle;
-
 	private HorizontalLayout right;
-
-	private Label title;
-
-	private Label leftL;
-
-	private Label rightTopL;
-
-	private Label rightBottomL;
-
-	private Label leftBottomL;
-
-	private Label userData;
-
 	private VerticalLayout mainLayout;
 	private HorizontalLayout leftLayout;
 	private VerticalLayout rightLayout;
@@ -125,6 +101,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	private Button accountButton;
 	private Label homeButtonLabel;
 	private Label accountButtonLabel;
+	private Label userData;
 
 
 
@@ -176,7 +153,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		rightLayout.setSizeFull();
 		bottomLayout.setSizeFull();
 		bottomLeftLayout.setSizeFull();
-		//	topRightLayout.setStyleName("topBar");
+//		bottomRightLayout.setWidth(90, UNITS_PERCENTAGE);
+//		bottomRightLayout.setStyleName("projectDetailsLayout");
 		topRightLayout.setSizeFull();
 		leftContentLayout.setSizeFull();
 		//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
@@ -229,11 +207,6 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		horizontalSplitPanelRight.setHeight(90, UNITS_PERCENTAGE);
 		horizontalSplitPanelRight.setWidth(100, UNITS_PERCENTAGE);
 
-		leftL = new Label("links");
-		rightTopL = new Label("rechts Oben");
-		rightBottomL = new Label("rechts Unten");
-		leftBottomL = new Label("links Unten");
-
 		leftLogoLayout.addComponent(logo);
 		leftContentLayout.addComponent(gap);
 		leftContentLayout.addComponent(homeIcon);
@@ -267,11 +240,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		leftLogoLayout.setHeight(100, UNITS_PERCENTAGE);
 		leftContentLayout.setSizeFull();
 
-		//	leftLayout.addComponent(leftL);
 		rightLayout.addComponent(verticalSplitPanel);
-		//	topRightLayout.addComponent(rightTopL);
-		bottomRightLayout.addComponent(rightBottomL);
-		//	bottomLeftLayout.addComponent(leftBottomL);
 		bottomLayout.addComponent(horizontalSplitPanelRight);
 
 		horizontalSplitPanel.addComponent(leftLayout);
@@ -280,8 +249,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		verticalSplitPanel.addComponent(topRightLayout);
 		verticalSplitPanel.addComponent(bottomLayout);
 
-		//		horizontalSplitPanelRight.addComponent(bottomLeftLayout);
-		horizontalSplitPanelRight.setSecondComponent(bottomRightLayout);
+//		horizontalSplitPanelRight.setSecondComponent(bottomRightLayout);
 
 		rightLayout.setComponentAlignment(verticalSplitPanel, Alignment.MIDDLE_CENTER);
 		bottomLayout.setComponentAlignment(horizontalSplitPanelRight, Alignment.MIDDLE_CENTER);
@@ -372,7 +340,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	@Override
 	public void showView(View leftView, View rightView) {
 		horizontalSplitPanelRight.setFirstComponent((Component) leftView);
-		//horizontalSplitPanel.setSecondComponent((Component) rightView);
+		horizontalSplitPanelRight.setSecondComponent((Component) rightView);
 	}
 
 	/**
