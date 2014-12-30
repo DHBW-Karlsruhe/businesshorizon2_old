@@ -9,17 +9,15 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-public class TopBarButton{
+public class TopBarButton extends VerticalLayout{
 	
-	private VerticalLayout layout;
 	private Button button;
 	private Label label;
 	
 	public TopBarButton(String styleName, String sLabel){
-		layout = new VerticalLayout();
-		layout.setWidth(150, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
-		layout.setHeight(50, com.vaadin.terminal.Sizeable.UNITS_PERCENTAGE);
-		layout.setStyleName("topBarButtonContainer");
+		setWidth(150, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
+		setHeight(50, com.vaadin.terminal.Sizeable.UNITS_PERCENTAGE);
+		setStyleName("topBarButtonContainer");
 		button = new Button();
 		button.setWidth(30, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
 		button.setHeight(30, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
@@ -27,14 +25,10 @@ public class TopBarButton{
 		label = new Label(sLabel);
 		label.setStyleName("topBarButtonLabel");
 		label.setSizeUndefined();
-		layout.addComponent(button);
-		layout.addComponent(label);
-		layout.setComponentAlignment(button, Alignment.TOP_CENTER);
-		layout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
-	}
-	
-	public Component getComponent(){
-		return layout;
+		addComponent(button);
+		addComponent(label);
+		setComponentAlignment(button, Alignment.TOP_CENTER);
+		setComponentAlignment(label, Alignment.MIDDLE_CENTER);
 	}
 
 }

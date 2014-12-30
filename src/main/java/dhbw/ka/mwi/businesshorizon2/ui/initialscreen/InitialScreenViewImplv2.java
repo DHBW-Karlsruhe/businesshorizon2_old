@@ -55,303 +55,355 @@ import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
 /**
-* Dies ist die Vaadin-Implementierung der InitalScreenView (dem
-* Eingangs-Fenster).
-*
-* @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich, Marco Glaser
-*
-*/
+ * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
+ * Eingangs-Fenster).
+ *
+ * @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich, Marco Glaser
+ *
+ */
 public class InitialScreenViewImplv2 extends Window implements InitialScreenViewInterface {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-private static final Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
+	private static final Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
 
-@Autowired
-private InitialScreenPresenter presenter;
+	@Autowired
+	private InitialScreenPresenter presenter;
 
-@Autowired
-private UserProxy userProxy;
+	@Autowired
+	private UserProxy userProxy;
 
-private VerticalSplitPanel verticalSplitPanel;
+	private VerticalSplitPanel verticalSplitPanel;
 
-private HorizontalSplitPanel horizontalSplitPanel;
+	private HorizontalSplitPanel horizontalSplitPanel;
 
-private HorizontalSplitPanel horizontalSplitPanelRight;
+	private HorizontalSplitPanel horizontalSplitPanelRight;
 
-private VerticalLayout header;
+	private VerticalLayout header;
 
-private HorizontalLayout horizontal;
+	private HorizontalLayout horizontal;
 
-private VerticalLayout left;
+	private VerticalLayout left;
 
-private HorizontalLayout middle;
+	private HorizontalLayout middle;
 
-private HorizontalLayout right;
+	private HorizontalLayout right;
 
-private Label title;
+	private Label title;
 
-private Label leftL;
+	private Label leftL;
 
-private Label rightTopL;
+	private Label rightTopL;
 
-private Label rightBottomL;
+	private Label rightBottomL;
 
-private Label leftBottomL;
+	private Label leftBottomL;
 
-private Label userData;
+	private Label userData;
 
-private VerticalLayout mainLayout;
-private HorizontalLayout leftLayout;
-private VerticalLayout rightLayout;
-private HorizontalLayout topRightLayout;
-private VerticalLayout leftContentLayout;
-private VerticalLayout bottomLeftLayout;
-private VerticalLayout bottomRightLayout;
-private VerticalLayout bottomLayout;
-
-private Embedded homeIcon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
-
-private Label seitenLabel;
-
-private Label descriptionLabel;
-
-private VerticalLayout leftLogoLayout;
-
-private Embedded logo;
-
-private Label gap;
-
-private VerticalLayout topBarSpacing;
-
-private VerticalLayout leftContainerSpacing;
-
-private Label splitter;
-
-private VerticalLayout pageDescription;
+	private VerticalLayout mainLayout;
+	private HorizontalLayout leftLayout;
+	private VerticalLayout rightLayout;
+	private HorizontalLayout topRightLayout;
+	private VerticalLayout leftContentLayout;
+	private VerticalLayout bottomLeftLayout;
+	private VerticalLayout bottomRightLayout;
+	private VerticalLayout bottomLayout;
+	private Embedded homeIcon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
+	private Label seitenLabel;
+	private Label descriptionLabel;
+	private VerticalLayout leftLogoLayout;
+	private Embedded logo;
+	private Label gap;
+	private VerticalLayout topBarSpacing;
+	private VerticalLayout leftContainerSpacing;
+	private Label splitter;
+	private Label splitter2;
+	private HorizontalLayout menuButtonsLayout;
+	private VerticalLayout homeButtonLayout;
+	private VerticalLayout accountButtonLayout;
+	private Button homeButton;
+	private Button accountButton;
+	private Label homeButtonLabel;
+	private Label accountButtonLabel;
 
 
 
-/**
-* Dies ist der Konstruktor, der von Spring nach der Initialierung der
-* Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
-* und initialisiert die View-Komponenten.
-*
-* @author Christian Scherer, Mirko Göpfrich, Marco Glaser
-*/
-@PostConstruct
-public void init() {
-presenter.setView(this);
-generateUi();
-logger.debug("Initialisierung beendet");
-}
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+	 * und initialisiert die View-Komponenten.
+	 *
+	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
+	 */
+	@PostConstruct
+	public void init() {
+		presenter.setView(this);
+		generateUi();
+		logger.debug("Initialisierung beendet");
+	}
 
-/**
-* Diese Methode setzt das Layout für den Screen fest sowie den Titel der Anwendung.
-*
-* @author Christian Scherer, Mirko Göpfrich, Marco Glaser
-*/
-private void generateUi() {
-	
-	mainLayout = new VerticalLayout();
-	leftLayout = new HorizontalLayout();
-	rightLayout = new VerticalLayout();
-	topRightLayout = new HorizontalLayout();
-	leftContentLayout = new VerticalLayout();
-	bottomLeftLayout = new VerticalLayout();
-	bottomRightLayout = new VerticalLayout();
-	bottomLayout = new VerticalLayout();
-	gap = new Label();
-	leftContainerSpacing = new VerticalLayout();
-	splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
-	splitter.setWidth(98, UNITS_PERCENTAGE);
-	
-	mainLayout.setSizeFull();
-	mainLayout.setStyleName("mainLayout");
-	leftLayout.setSizeFull();
-	leftLayout.setStyleName("leftContainer");
-	rightLayout.setSizeFull();
-	bottomLayout.setSizeFull();
-	bottomLeftLayout.setSizeFull();
-//	topRightLayout.setStyleName("topBar");
-	topRightLayout.setSizeFull();
-	leftContentLayout.setSizeFull();
-//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-	
-	leftLogoLayout = new VerticalLayout();
-	logo = new Embedded(null, new ThemeResource("images/Logo_businesshorizon.png"));
-	
-	gap.setHeight("4px");
-	leftContainerSpacing.setSizeFull();
-	
-	homeIcon.setWidth(50, UNITS_PIXELS);
-	homeIcon.setHeight(50, UNITS_PIXELS);
-	
-	seitenLabel = new Label("Startseite");
-	seitenLabel.setStyleName("seitenLabel");
-	seitenLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-	descriptionLabel = new Label("Übersicht über alle Projekte");
-	descriptionLabel.setStyleName("descriptionLabel");
-	descriptionLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	/**
+	 * Diese Methode setzt das Layout für den Screen fest sowie den Titel der Anwendung.
+	 *
+	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
+	 */
+	private void generateUi() {
 
-	horizontalSplitPanel = new HorizontalSplitPanel();
-	horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
-	horizontalSplitPanel.setLocked(true);
-	horizontalSplitPanel.setStyleName("horizontalMain");
-	verticalSplitPanel = new VerticalSplitPanel();
-	verticalSplitPanel.setSplitPosition(126, UNITS_PIXELS);
-	verticalSplitPanel.setLocked(true);
-	verticalSplitPanel.setWidth(90, UNITS_PERCENTAGE);
-	verticalSplitPanel.setHeight(100, UNITS_PERCENTAGE);
-	horizontalSplitPanelRight = new HorizontalSplitPanel();
-	horizontalSplitPanelRight.setSplitPosition(30, UNITS_PERCENTAGE);
-	horizontalSplitPanelRight.setLocked(true);
-	horizontalSplitPanelRight.addStyleName("horizontalBottom");
-	horizontalSplitPanelRight.setHeight(90, UNITS_PERCENTAGE);
-	horizontalSplitPanelRight.setWidth(100, UNITS_PERCENTAGE);
-	
-	leftL = new Label("links");
-	rightTopL = new Label("rechts Oben");
-	rightBottomL = new Label("rechts Unten");
-	leftBottomL = new Label("links Unten");
-	
-	leftLogoLayout.addComponent(logo);
-	leftContentLayout.addComponent(gap);
-	leftContentLayout.addComponent(homeIcon);
-	leftContentLayout.addComponent(seitenLabel);
-	leftContentLayout.addComponent(descriptionLabel);
-	leftContentLayout.addComponent(splitter);
-	leftContentLayout.addComponent(leftContainerSpacing);
-	leftContentLayout.setExpandRatio(leftContainerSpacing, 1.0f);
-	leftLayout.addComponent(leftLogoLayout);
-	leftLayout.addComponent(leftContentLayout);
-	leftLayout.setExpandRatio(leftContentLayout, 1.0f);
-	leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
-	leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
-	leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
-	leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
-	
-	leftLogoLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-	leftLogoLayout.setHeight(100, UNITS_PERCENTAGE);
-	leftContentLayout.setSizeFull();
-	
-//	leftLayout.addComponent(leftL);
-	rightLayout.addComponent(verticalSplitPanel);
-//	topRightLayout.addComponent(rightTopL);
-	bottomRightLayout.addComponent(rightBottomL);
-//	bottomLeftLayout.addComponent(leftBottomL);
-	bottomLayout.addComponent(horizontalSplitPanelRight);
-	
-	horizontalSplitPanel.addComponent(leftLayout);
-	horizontalSplitPanel.addComponent(rightLayout);
-	
-	verticalSplitPanel.addComponent(topRightLayout);
-	verticalSplitPanel.addComponent(bottomLayout);
-	
-	horizontalSplitPanelRight.addComponent(bottomLeftLayout);
-	horizontalSplitPanelRight.addComponent(bottomRightLayout);
-	
-	rightLayout.setComponentAlignment(verticalSplitPanel, Alignment.MIDDLE_CENTER);
-	bottomLayout.setComponentAlignment(horizontalSplitPanelRight, Alignment.MIDDLE_CENTER);
-	
-	mainLayout.addComponent(horizontalSplitPanel);
-	
-	setContent(mainLayout);
-	
-	TopBarButton button = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
-	addTopButton(button.getComponent());
-	button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
-	addTopButton(button.getComponent());
-	button = new TopBarButton("deleteProjectButton", "Projekt löschen");
-	addTopButton(button.getComponent());
-	
-	topBarSpacing = new VerticalLayout();
-	topBarSpacing.setSizeFull();
-	topRightLayout.addComponent(topBarSpacing);
-	topRightLayout.setExpandRatio(topBarSpacing, 1.0f);
+		mainLayout = new VerticalLayout();
+		leftLayout = new HorizontalLayout();
+		rightLayout = new VerticalLayout();
+		topRightLayout = new HorizontalLayout();
+		leftContentLayout = new VerticalLayout();
+		bottomLeftLayout = new VerticalLayout();
+		bottomRightLayout = new VerticalLayout();
+		bottomLayout = new VerticalLayout();
+		gap = new Label();
+		leftContainerSpacing = new VerticalLayout();
+		splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
+		splitter2 = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
+		menuButtonsLayout = new HorizontalLayout();
+		homeButtonLayout = new VerticalLayout();
+		accountButtonLayout = new VerticalLayout();
+		homeButton = new Button();
+		accountButton = new Button();
+		homeButtonLabel = new Label("Startseite");
+		accountButtonLabel = new Label("Mein Konto");
 
-}
+		mainLayout.setSizeFull();
+		mainLayout.setStyleName("mainLayout");
+		leftLayout.setSizeFull();
+		leftLayout.setStyleName("leftContainer");
+		rightLayout.setSizeFull();
+		bottomLayout.setSizeFull();
+		bottomLeftLayout.setSizeFull();
+		//	topRightLayout.setStyleName("topBar");
+		topRightLayout.setSizeFull();
+		leftContentLayout.setSizeFull();
+		//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
 
-/**
-* Methode zum Darstellen der Userdaten im Header
-*
-* @param username
-* Der angezeigte Username
-* @author Mirko Göpfrich
-*/
-public void showUserData(String username) {
-/*
-* Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
-* Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
-* und Prozesssicht gesprungen wird.
-*/
-Label userInfo = new Label("Sie sind angemeldet als: ");
-middle.addComponent(userInfo);
-middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
+		leftLogoLayout = new VerticalLayout();
+		logo = new Embedded(null, new ThemeResource("images/Logo_businesshorizon.png"));
+
+		gap.setHeight("4px");
+		leftContainerSpacing.setSizeFull();
+
+		homeIcon.setWidth(50, UNITS_PIXELS);
+		homeIcon.setHeight(50, UNITS_PIXELS);
+
+		seitenLabel = new Label("Startseite");
+		seitenLabel.setStyleName("seitenLabel");
+		seitenLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		descriptionLabel = new Label("Übersicht über alle Projekte");
+		descriptionLabel.setStyleName("descriptionLabel");
+		descriptionLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		splitter.setWidth(98, UNITS_PERCENTAGE);
+		splitter2.setWidth(98, UNITS_PERCENTAGE);
+		menuButtonsLayout.setWidth(100, UNITS_PERCENTAGE);
+		menuButtonsLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
+		homeButtonLayout.setSizeFull();
+		accountButtonLayout.setSizeFull();
+		homeButton.setHeight(30, UNITS_PIXELS);
+		homeButton.setWidth(30, UNITS_PIXELS);
+		homeButton.setStyleName("homeButton");
+		accountButton.setHeight(30, UNITS_PIXELS);
+		accountButton.setWidth(30, UNITS_PIXELS);
+		accountButton.setStyleName("accountButton");
+		homeButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		homeButtonLabel.setStyleName("topBarButtonLabel");
+		accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		accountButtonLabel.setStyleName("topBarButtonLabel");
+
+		horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
+		horizontalSplitPanel.setLocked(true);
+		horizontalSplitPanel.setStyleName("horizontalMain");
+		verticalSplitPanel = new VerticalSplitPanel();
+		verticalSplitPanel.setSplitPosition(126, UNITS_PIXELS);
+		verticalSplitPanel.setLocked(true);
+		verticalSplitPanel.setWidth(90, UNITS_PERCENTAGE);
+		verticalSplitPanel.setHeight(100, UNITS_PERCENTAGE);
+		horizontalSplitPanelRight = new HorizontalSplitPanel();
+		horizontalSplitPanelRight.setSplitPosition(30, UNITS_PERCENTAGE);
+		horizontalSplitPanelRight.setLocked(true);
+		horizontalSplitPanelRight.addStyleName("horizontalBottom");
+		horizontalSplitPanelRight.setHeight(90, UNITS_PERCENTAGE);
+		horizontalSplitPanelRight.setWidth(100, UNITS_PERCENTAGE);
+
+		leftL = new Label("links");
+		rightTopL = new Label("rechts Oben");
+		rightBottomL = new Label("rechts Unten");
+		leftBottomL = new Label("links Unten");
+
+		leftLogoLayout.addComponent(logo);
+		leftContentLayout.addComponent(gap);
+		leftContentLayout.addComponent(homeIcon);
+		leftContentLayout.addComponent(seitenLabel);
+		leftContentLayout.addComponent(descriptionLabel);
+		leftContentLayout.addComponent(splitter);
+		leftContentLayout.addComponent(menuButtonsLayout);
+		leftContentLayout.addComponent(splitter2);
+		leftContentLayout.addComponent(leftContainerSpacing);
+		leftContentLayout.setExpandRatio(leftContainerSpacing, 1.0f);
+		leftLayout.addComponent(leftLogoLayout);
+		leftLayout.addComponent(leftContentLayout);
+		leftLayout.setExpandRatio(leftContentLayout, 1.0f);
+		leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
+		leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
+		leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
+		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
+		menuButtonsLayout.addComponent(homeButtonLayout);
+		menuButtonsLayout.addComponent(accountButtonLayout);
+		homeButtonLayout.addComponent(homeButton);
+		homeButtonLayout.addComponent(homeButtonLabel);
+		accountButtonLayout.addComponent(accountButton);
+		accountButtonLayout.addComponent(accountButtonLabel);
+
+		homeButtonLayout.setComponentAlignment(homeButton, Alignment.TOP_CENTER);
+		homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
+		accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);
+		accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
+
+		leftLogoLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		leftLogoLayout.setHeight(100, UNITS_PERCENTAGE);
+		leftContentLayout.setSizeFull();
+
+		//	leftLayout.addComponent(leftL);
+		rightLayout.addComponent(verticalSplitPanel);
+		//	topRightLayout.addComponent(rightTopL);
+		bottomRightLayout.addComponent(rightBottomL);
+		//	bottomLeftLayout.addComponent(leftBottomL);
+		bottomLayout.addComponent(horizontalSplitPanelRight);
+
+		horizontalSplitPanel.addComponent(leftLayout);
+		horizontalSplitPanel.addComponent(rightLayout);
+
+		verticalSplitPanel.addComponent(topRightLayout);
+		verticalSplitPanel.addComponent(bottomLayout);
+
+		//		horizontalSplitPanelRight.addComponent(bottomLeftLayout);
+		horizontalSplitPanelRight.setSecondComponent(bottomRightLayout);
+
+		rightLayout.setComponentAlignment(verticalSplitPanel, Alignment.MIDDLE_CENTER);
+		bottomLayout.setComponentAlignment(horizontalSplitPanelRight, Alignment.MIDDLE_CENTER);
+
+		mainLayout.addComponent(horizontalSplitPanel);
+
+		setContent(mainLayout);
+
+		TopBarButton button = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
+		addTopButton(button);
+		button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
+		addTopButton(button);
+		button = new TopBarButton("deleteProjectButton", "Projekt löschen");
+		addTopButton(button);
+
+		topBarSpacing = new VerticalLayout();
+		topBarSpacing.setSizeFull();
+		topRightLayout.addComponent(topBarSpacing);
+		topRightLayout.setExpandRatio(topBarSpacing, 1.0f);
+
+	}
+
+	/**
+	 * Methode zum Darstellen der Userdaten im Header
+	 *
+	 * @param username
+	 * Der angezeigte Username
+	 * @author Mirko Göpfrich
+	 */
+	public void showUserData(String username) {
+		/*
+		 * Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
+		 * Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
+		 * und Prozesssicht gesprungen wird.
+		 */
+		Label userInfo = new Label("Sie sind angemeldet als: ");
+		middle.addComponent(userInfo);
+		middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
 
 
-if(userData != null) {
-middle.removeComponent(userData);
-middle.removeComponent(userInfo);
-}
+		if(userData != null) {
+			middle.removeComponent(userData);
+			middle.removeComponent(userInfo);
+		}
 
-userData = new Label(username);
-userData.setContentMode(Label.CONTENT_XHTML);
-userData.setVisible(true);
-middle.addComponent(userData);
-middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
-}
+		userData = new Label(username);
+		userData.setContentMode(Label.CONTENT_XHTML);
+		userData.setVisible(true);
+		middle.addComponent(userData);
+		middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
+	}
 
-/**
-*
-*/
-private void addLogoutButton() {
-Button logoutButton = new Button("Logout");
-logoutButton.setStyleName("default");
-logoutButton.addListener(new Button.ClickListener() {
+	/**
+	 *
+	 */
+	private void addLogoutButton() {
+		Button logoutButton = new Button("Logout");
+		logoutButton.setStyleName("default");
+		logoutButton.addListener(new Button.ClickListener() {
 
-private static final long serialVersionUID = 7411091035775152765L;
+			private static final long serialVersionUID = 7411091035775152765L;
 
-@Override
-public void buttonClick(ClickEvent event) {
-//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
-presenter.doLogout();
-}
-});
+			@Override
+			public void buttonClick(ClickEvent event) {
+				//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
+				presenter.doLogout();
+			}
+		});
 
-//LogoutButton hinzufügen und ausrichten
-logoutButton.setEnabled(true);
-right.addComponent(logoutButton);
-right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+		//LogoutButton hinzufügen und ausrichten
+		logoutButton.setEnabled(true);
+		right.addComponent(logoutButton);
+		right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 
-}
+	}
 
 
-/**
-* Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
-* unter der Überschrift.
-*
-* @param leftView
-* : Die PeriodenListe
-* @param rightView
-* : Die Infoanzeige
-* @author Christian Scherer, Marco Glaser
-*/
-@Override
-public void showView(View leftView, View rightView) {
-bottomLeftLayout.addComponent((Component) leftView);
-//horizontalSplitPanel.setSecondComponent((Component) rightView);
-}
+	/**
+	 * Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
+	 * unter der Überschrift.
+	 *
+	 * @param leftView
+	 * : Die PeriodenListe
+	 * @param rightView
+	 * : Die Infoanzeige
+	 * @author Christian Scherer, Marco Glaser
+	 */
+	@Override
+	public void showView(View leftView, View rightView) {
+		horizontalSplitPanelRight.setFirstComponent((Component) leftView);
+		//horizontalSplitPanel.setSecondComponent((Component) rightView);
+	}
 
-public void addTopButton(Component button){
-	topRightLayout.addComponent(button);
-	topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
-}
+	/**
+	 * Diese Methode fügt einen Button zur Button-Leiste (topRightLayout) hinzu.
+	 *
+	 * @param button
+	 * : Der Button
+	 * @author Marco Glaser
+	 */
+	public void addTopButton(Component button){
+		topRightLayout.addComponent(button);
+		topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+	}
 
-public void setTopButton(Component button, int index){
-	Component comp = topRightLayout.getComponent(index);
-	topRightLayout.removeComponent(comp);
-	topRightLayout.addComponent(button, index);
-}
+	/**
+	 * Diese Methode fügt einen Button zur Button-Leiste (topRightLayout) an der gewünschten Stelle hinzu
+	 * und löscht den Button der vorher an dieser Stelle war.
+	 *
+	 * @param button
+	 * : Der Button
+	 * @param index
+	 * : Stelle, wo der Button gesetzt werden soll
+	 * @author Marco Glaser
+	 */
+	public void setTopButton(Component button, int index){
+		Component comp = topRightLayout.getComponent(index);
+		if(comp != null){
+			topRightLayout.removeComponent(comp);
+		}
+		topRightLayout.addComponent(button, index);
+	}
 
 
 }

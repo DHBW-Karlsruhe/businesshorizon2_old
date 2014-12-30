@@ -110,6 +110,10 @@ div.projectlist:hover {
 	height: 2px;
 }
 
+.v-button-wrap {
+	background: initial;
+}
+
 .horizontalBottom .v-splitpanel-hsplitter-locked {
 	background-color: black;
 	width: 2px;
@@ -144,6 +148,18 @@ div.projectlist:hover {
 	border: none;
 }
 
+.homeButton{
+	background: url("./images/icons/newIcons/1418766062_house_home-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.accountButton{
+	background: url("./images/icons/newIcons/1418774135_user_male-128.png");
+	background-size: cover;
+	border: none;
+}
+
 .topBarButtonContainer {
 /* 	margin-top: 10%; */
 	margin-right: 5%;
@@ -160,4 +176,22 @@ div.projectlist:hover {
 
 .descriptionLabel {
 	font-size: 16pt;
+}
+
+.projectName {
+	font-size: 20pt;
+}
+
+.singleProject {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+}
+
+.singleProjectSelected {
+	background-color: #92D050;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
 }
