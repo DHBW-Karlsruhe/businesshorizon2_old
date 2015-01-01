@@ -87,5 +87,28 @@ public interface PersistenceServiceInterface {
 	 *
 	 */
 	public  void saveProjects();
-		
+	
+	/**
+	 * Methode zum Importieren von Projekten.
+	 * 
+	 * @param user
+	 * 			der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
+	 * @param fileName
+	 * 			der Dateiname der hochgeladen Datei
+	 * @return String
+	 * 			String mit den Namen der Projekt, die nicht importiert werden konnten
+	 * @autor Tobias Lindner
+	 */
+	public String importAllProjects(User user, String fileName) ;
+	
+	/**
+	 * Methode zum Exportieren der Projekte des aktuellen Users.
+	 *
+	 * @param user
+	 * 			der akutelle User, dessen Projekte exportiert werden sollen.
+	 * @return String
+	 * 			Pfad zur erzeugten Export-Datei. Von diesem Pfad wird die Datei gedownloaded.
+	 * @author Tobias Lindner
+	 */
+	public String exportUserProjects (User user);
 }

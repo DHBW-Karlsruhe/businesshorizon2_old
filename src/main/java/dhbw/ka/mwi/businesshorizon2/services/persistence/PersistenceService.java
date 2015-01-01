@@ -33,9 +33,14 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
+
+
+
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -58,11 +63,21 @@ public class PersistenceService implements PersistenceServiceInterface {
 
 	private File file;
 	
-	private static final String separator = System.getProperties().getProperty("file.separator");
+	private File importFile;
+	
+	private File exportFile;
+	
+	static final String separator = System.getProperties().getProperty("file.separator");
 
 	private static final String DIRECTORY = System.getProperty("user.home")
 			+ separator + separator + "Business Horizon";
-	private static final String FILENAME = separator + separator + "projects.dat";
+	private static final String FILENAMESAVEFILE = separator + separator + "projects.dat";
+	
+	private static final String FILENAMEIMPORTFILE = separator + separator + "projectsImport.dat";
+	
+	private static final String FILENAMEEXPORTFILE = separator + separator + "projectsExport.dat";
+	
+	static final String TMPDIRECTORY = DIRECTORY + separator + "tmp";
 
 	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
@@ -79,13 +94,22 @@ public class PersistenceService implements PersistenceServiceInterface {
 	public void init() {
 
 		file = new File(DIRECTORY);
+		File tmpdir = new File (TMPDIRECTORY);
+		
+		if (!tmpdir.exists()) {
+			tmpdir.mkdir();
+			logger.debug("New directory created at: " + file.getAbsolutePath());
+		}
 
 		if (!file.exists()) {
 			file.mkdir();
 			logger.debug("New directory created at: " + file.getAbsolutePath());
 		}
 
-		file = new File(DIRECTORY + FILENAME);
+		file = new File(DIRECTORY + FILENAMESAVEFILE);
+		
+		importFile = new File (DIRECTORY + FILENAMEIMPORTFILE);
+		exportFile = new File (DIRECTORY + FILENAMEEXPORTFILE);
 
 		if (!file.exists()) {
 			try {
@@ -323,6 +347,142 @@ public class PersistenceService implements PersistenceServiceInterface {
 				} catch (IOException e) {
 					logger.error("An IOException occured: " + e.getMessage());
 				} 
+	}
+	
+	/**
+	 * Methode zum Importieren von Projekten aus einer externen Projects.dat. Allen Projekten wird der aktuelle User zugeordnet.
+	 * 
+	 * @param user
+	 *		der akutelle User, zu dessen Projekte die Projekte importiert werden sollen.
+	 * @param fileName
+	 * 			der Dateiname der hochgeladen Datei
+	 * @return String
+	 * 			String mit den Namen der Projekt, die nicht importiert werden konnten
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public synchronized String importAllProjects (User user, String fileName) {
+		ArrayList<Project> importProjects = new ArrayList<Project>();
+		FileInputStream fileInput;
+		ObjectInputStream projectInput;
+		
+		String notImportedProjects = null; //Speicher-String mit den Namen der Projekte, die nicht importiert werden konnten.
+		
+		//Zu importierende Projektdatei auslesen und in einer ArrayList ablegen
+		try {
+			fileInput = new FileInputStream(TMPDIRECTORY + separator + fileName);
+			projectInput = new ObjectInputStream(fileInput);
+			logger.debug("Import InputStreams erzeugt.");
+			
+			int nrOfImportedProjects = projectInput.readInt();
+			logger.debug("Anzahl zu importierender Projekte gelesen.");
+			
+			for (int i = 1; i <= nrOfImportedProjects; i++) {
+				Project project = (Project) projectInput.readObject();
+				logger.debug("Import: Projekt eingelesen.");
+				importProjects.add(project);
+			}			
+			projectInput.close();
+			logger.debug("Import: projectInput-Stream closed");
+			fileInput.close();
+			logger.debug("Import: FileInput-Stream closed");
+			
+			File f = new File (TMPDIRECTORY + fileName);
+			f.delete();
+			logger.debug("Uploaded File deleted");
+	
+		} catch (FileNotFoundException e) {
+			logger.error("The specified file could not be found");
+		} catch (NotSerializableException e){
+			logger.error("An NotSerializableException occured: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (EOFException e) {
+			logger.error("Projektdatei ist leer.");
+		} catch (IOException e) {
+			logger.error("Initialization: An IOException occured: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			logger.error("A ClassNotFoundException occured: " + e.getMessage());
+		}
+		
+		//Hinzufügen der ArrayList mit Projecten zum aktuellen User
+				
+		for (Project projectI : importProjects) {
+			try {
+				projectI.setCreatedFrom(user);
+				addProject(user, projectI);
+				logger.debug ("Import: Projekt hinzugefügt.");
+				
+			} catch (ProjectAlreadyExistsException e) {
+				if (notImportedProjects == null) {
+					notImportedProjects = "Folgende Projekte konnten nicht importiert werden: ";
+				}
+				else {
+					notImportedProjects = notImportedProjects + ", ";
+				}
+				logger.debug ("Import: ProjectAlreadyExistsException: Folgendes Projekt existiert bereits: " + projectI.getName());
+				notImportedProjects = notImportedProjects + projectI.getName();
+			}
+		}
+		
+		return notImportedProjects;
+				
+	}
+	
+	/**
+	 * Methode zum exportieren der Projecte des aktuell angemeldeten Users.
+	 * 
+	 * @param user
+	 * 			der akutelle User, dessen Projekte exportiert werden sollen.
+	 * @return String
+	 * 			Pfad zur erzeugten Export-Datei. Von diesem Pfad wird die Datei gedownloaded.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public synchronized String exportUserProjects(User user) {
+		saveProjects();
+		String exportFileName = null;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS");
+		
+		//Bereits vorhandenes Export-File des Users löschen
+		File tmpdir = new File (TMPDIRECTORY);
+		File[] tmpFiles = tmpdir.listFiles();
+		
+		for (int i = 0; i<tmpFiles.length;i++) {
+			if (tmpFiles [i].getName().contains(user.getEmailAdress())) {
+				tmpFiles[i].delete();
+				logger.debug("Bereits vorhandene Export Datei gelöscht.");
+			}
+		}
+		
+		//Export-File generieren			
+		try {
+			exportFileName = TMPDIRECTORY + separator + "ProjectExport_" + user.getEmailAdress() +"_" + df.format(new Date ()) +".dat";
+			FileOutputStream fileOutput = new FileOutputStream(exportFileName);
+			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+			logger.debug("Export: OutputStreams erzeugt.");
+
+			objectOutput.writeInt(user.getProjects().size());
+			for (Project projectToSave : user.getProjects()) {
+				objectOutput.writeObject(projectToSave);
+			}
+			logger.debug("ExportDatei geschrieben");
+
+			fileOutput.close();
+			objectOutput.close();
+			logger.debug("Projekt erfolgreich exportiert.");
+
+		} catch (NotSerializableException e){
+			logger.error("An NotSerializableException occured: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.error("An IOException occured: " + e.getMessage());
+		} 
+		
+		return exportFileName;
 	}
 
 }

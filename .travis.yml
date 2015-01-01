@@ -2,3 +2,9 @@ language: java
 jdk: oraclejdk7
 install: "echo"
 script: "mvn test"
+notifications:
+ email:
+  recipients:
+   - Tobias.Lindner@live.de
+ on_success: never
+ on_failure: change

@@ -24,6 +24,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -35,12 +36,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.vaadin.ui.Upload;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.ImportUploadFinishedEvent;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 
 /**
  * 
@@ -69,7 +73,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
-
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
@@ -82,6 +86,8 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	private void init() {
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
+		
+		
 	}
 
 	/**
@@ -244,5 +250,50 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		getView().showEditProjectDialog(project);
 		
 	}
-
+	
+	/**
+	 * Diese Methode per Event nach dem Upload der zu importierenden Projektdatei aufgerufen. Sie löst das Auslesen der in der Datei enthaltenen Projektdaten und das Importieren aus.
+	 * Nach dem Import wird das ShowProjectListEvent geworfen, um die angezeigte Liste zu aktualisieren.
+	 * 
+	 * @param event
+	 * 		ImportUploadFinishedEvent, dass als Parameter den Dateinamen der hochgeladenen Datei enthält.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	@EventHandler
+	public void onUploadFinishedImport (ImportUploadFinishedEvent event) {
+		String notImported = null; //in diesen String wird der Rückgabewert, der String mit den Projektnamen, die nicht importiert werden konnten gespeichert
+		logger.debug("ImportUploadFinishedEvent empfangen");
+		
+		notImported = persistenceService.importAllProjects(user, event.getfileName());
+		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
+		
+		//Ausgabe der Fehlermeldung, falls nicht alle Projekte importiert werden konnten
+		if (notImported != null) {
+			getView().showErrorMessage(notImported);
+		}
+		
+		//Aktualisieren der Antwort
+		eventBus.fireEvent(new ShowProjectListEvent (user));
+		logger.debug ("ShowProjectListEvent geworfen");
+	}
+	
+	/**
+	 * Aufruf aus dem ClickListener der Impl. Es wird die Erstellung der ExportDatei angestoßen.
+	 * Das erzeugte File wird an die View zum Download zurückgeliefert.
+	 * 
+	 * @return exportFile
+	 * 			Das erzeugte ExportFile wird zum Download durch den Client an die View zurückgeliefert.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public File exportProjects () {
+		File exportFile;
+		
+		exportFile = new File (persistenceService.exportUserProjects(user));
+		logger.debug("Presenter: Export-Datei erstellt");
+		
+		return exportFile;
+	}
+	
 }

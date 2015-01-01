@@ -25,6 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 
+import com.mvplite.event.EventBus;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.event.MouseEvents.ClickListener;
@@ -51,6 +53,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
@@ -58,6 +61,8 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.Downloader;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.UploadReceiver;
 
 /**
  * Dies ist die Vaadin-Implementierung der PeriodListView. Die Rahmendarstellung
@@ -99,6 +104,13 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private Button addProjectBtn;
 	private Button dialogAddBtn;
 	
+	//Upload Button + Receiver, um ein Projekt zu importieren
+	private UploadReceiver receiver;
+	private Upload upload;
+	
+	//Button, um ein Projekt zu exportieren
+	private Button exportProjectBtn;
+	
 	//Buttons, um ein Projekt zu bearbeiten
 	private Button dialogEditBtn;
 	
@@ -118,6 +130,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 
 	private Window addDialog;
 	private Window editDialog;
+	
+	@Autowired
+	private EventBus eventBus;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -132,7 +147,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	public void init() {
 		presenter.setView(this);
 		generateUI();
-		logger.debug("Initialisierung beendet");
+		logger.debug("UI-Initialisierung beendet");
 	}
 
 	/**
@@ -171,6 +186,22 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		title.setContentMode(Label.CONTENT_XHTML);
 		projectListHead.addComponent(title);
 		logger.debug("Ueberschrift erstellt");
+		
+		//Upload/Import-Button im oberen Panel hinzufügen + intialisieren
+		receiver = new UploadReceiver(eventBus);
+		upload = new Upload (null, receiver);
+		upload.setImmediate(true);
+		upload.setButtonCaption("Import");
+		projectListHead.addComponent(upload);
+		logger.debug("Upload Button erzeugt");
+		projectListHead.setComponentAlignment(upload, Alignment.MIDDLE_RIGHT);
+		upload.addListener(receiver);
+		
+		//Export-Button im oberen Panel hinzufügen
+		exportProjectBtn = new Button ("Projekte exportieren", this);
+		projectListHead.addComponent(exportProjectBtn);
+		logger.debug("Export-Button erzeugt");
+		projectListHead.setComponentAlignment(exportProjectBtn, Alignment.MIDDLE_RIGHT);
 		
 		//Hinzufügen-Button im oberen Panel hinzufügen
 		addProjectBtn = new Button("Projekt hinzufügen", this);
@@ -307,9 +338,6 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 		removeBtn.setIcon(new ThemeResource("images/icons/trash.png"));
 		editBtn.addStyleName("borderless");
 		editBtn.setIcon(new ThemeResource("images/icons/pen.png"));
-		
-		
-		
 		
 		//Button-Listener hinzufügen
 		removeBtn.addListener(new Button.ClickListener() {
@@ -544,6 +572,13 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 								"Projektname ist ein Pflichtfeld. Bitte geben Sie einen Projektnamen an",
 								Notification.TYPE_ERROR_MESSAGE);
 			}	
+		} else if (event.getButton() == exportProjectBtn) {
+			logger.debug("Export-Button Click Event aufgerufen");
+			File exportFile;
+			exportFile = presenter.exportProjects();
+			//Download-Anforderung
+			event.getButton().getWindow().open(new Downloader (exportFile, getApplication()));
+			logger.debug("Download-Anforderung abgeschlossen");
 		}
 	}
 
