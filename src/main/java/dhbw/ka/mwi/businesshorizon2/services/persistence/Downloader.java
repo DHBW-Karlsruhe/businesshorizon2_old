@@ -33,17 +33,34 @@ import com.vaadin.terminal.DownloadStream;
 import com.vaadin.terminal.FileResource;
 
 /**
- * Klasse, die der View ermöglich Downloads auf den Clients zu starten.
+ * Klasse, die ermöglich Downloads auf den Clients zu starten.
  * 
  * @author Tobias Linder
  *
  */
 public class Downloader extends FileResource{
 
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Konstruktor
+	 * 
+	 * @param sourceFile
+	 * 			File, dass heruntergeladen werden soll.
+	 * @param application
+	 * 			Application Context
+	 */
 	public Downloader(File sourceFile, Application application) {
 		super(sourceFile, application);
 	}
 	
+	/**
+	 * Methode, die einen Stream zu dem File erzeugt.
+	 * 
+	 * @return DownloadStream
+	 * 			Stream zu der zu downloadenden Datei.
+	 */
 	public DownloadStream getStream() {
 		try {
 			final DownloadStream ds = new DownloadStream (new FileInputStream (getSourceFile()), getMIMEType(), getFilename());

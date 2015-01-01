@@ -928,8 +928,8 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 */
 	public void greyOut() {
 		//Branchenvertreter ausgrauen
-		getView().activateCheckboxIndustryRepresentative(false);
-		getView().activateComboBoxRepresentatives(false);
+		//getView().activateCheckboxIndustryRepresentative(false);
+		//getView().activateComboBoxRepresentatives(false);
 		/**
 		//Wienerprozess ausgrauen
 		getView().activateRiseOfPeriods(false);

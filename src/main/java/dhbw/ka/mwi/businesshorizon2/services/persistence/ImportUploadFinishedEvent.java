@@ -27,7 +27,7 @@ package dhbw.ka.mwi.businesshorizon2.services.persistence;
 import com.mvplite.event.Event;
 
 /**
- * Der Event, der während des Import nach dem Upload des Projekt-Files geworfen wird, um den Import der Daten anzustossen.
+ * Der Event, der während des Imports nach dem Upload des Projekt-Files geworfen wird, um den Import der Daten anzustossen.
  * 
  * @author Tobias Lindner
  * 
@@ -41,7 +41,7 @@ public class ImportUploadFinishedEvent extends Event {
 	}
 
 	/**
-	 * Es wird der Filename der Hochgeladenen-Datei übergeben.
+	 * Es wird der Filename der Hochgeladenen-Datei zurückgegeben.
 	 * 
 	 * @author Tobias Lindner
 	 * @return fileName
