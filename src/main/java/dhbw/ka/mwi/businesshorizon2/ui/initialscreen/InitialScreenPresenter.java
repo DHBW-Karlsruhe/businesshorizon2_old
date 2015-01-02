@@ -41,6 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInter
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ShowProjectDetailsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -80,6 +81,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private ProjectDetailsViewInterface projectDetailsView;
+	
+	@Autowired
+	private ProjectCreationViewInterface projectCreationView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -157,6 +161,10 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
 		logger.debug("ProjekteRemove Event gefeuert");
 
+	}
+	
+	public void showProjectCreationScreen(){
+		getView().showProjectCreationScreen(projectCreationView);
 	}
 
 }

@@ -164,8 +164,6 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 		removeBtnList = new ArrayList<Button>();
 		editBtnList = new ArrayList<Button>();
 		dialogEditBtnList = new ArrayList<Button>();
-	
-		removeAllComponents();
 
 		for (int i = 0; i < projects.size(); i++) {
 			project = projects.get(i);
@@ -207,6 +205,7 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 		singleProject = new VerticalLayout();
 		if(i == 0){
 			singleProject.setStyleName("singleProjectSelected");
+			presenter.projectSelected(project);
 		}
 		else{
 			singleProject.setStyleName("singleProject");	

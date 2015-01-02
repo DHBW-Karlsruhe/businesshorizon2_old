@@ -3,6 +3,8 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +38,7 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
 
-	@Autowired
+	@PostConstruct
 	public void init(){
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
@@ -50,8 +52,10 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 		List<Project> projects = user.getProjects();
 		logger.debug("Projekte geladen. Anzahl: " + projects.size());
 
-		Project firstProject = projects.get(0);
-		showProjectDetails(firstProject);
+		if(projects.size() != 0){
+			Project firstProject = projects.get(0);
+			showProjectDetails(firstProject);
+		}
 
 	}
 

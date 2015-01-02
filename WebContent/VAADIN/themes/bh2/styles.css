@@ -208,3 +208,11 @@ div.projectlist:hover {
 	font-size: 16pt;
 }
 
+.projectNameInput {
+	font-size: 14pt;
+}
+
+.projectDescriptionInput {
+	font-size: 14pt;
+}
+

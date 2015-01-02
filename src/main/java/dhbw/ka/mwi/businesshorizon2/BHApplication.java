@@ -32,7 +32,6 @@ import com.mvplite.event.EventHandler;
 import com.vaadin.Application;
 import com.vaadin.terminal.ExternalResource;
 
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImplv2;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;

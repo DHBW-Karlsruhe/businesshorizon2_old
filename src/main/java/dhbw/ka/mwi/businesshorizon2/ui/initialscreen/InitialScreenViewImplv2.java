@@ -269,42 +269,21 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		setContent(mainLayout);
 
 		TopBarButton button = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
+		button.getButtonComponent().addListener(new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.showProjectCreationScreen();
+				
+			}
+			
+		});
 		addTopButton(button);
 		button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
 		addTopButton(button);
 		button = new TopBarButton("deleteProjectButton", "Projekt löschen");
-//		button.addListener(new LayoutClickListener(){
-//
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void layoutClick(LayoutClickEvent event) {
-//				
-//				final Project project = projectProxy.getSelectedProject();
-//				
-//				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen.");
-//
-//				ConfirmDialog.show(getWindow(), project.getName()
-//						+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
-//						"Ja", "Nein", new ConfirmDialog.Listener() {
-//							/**
-//							 * 
-//							 */
-//							private static final long serialVersionUID = 1L;
-//
-//							@Override
-//							public void onClose(ConfirmDialog dialog) {
-//								if (dialog.isConfirmed()) {
-//									presenter.removeProject(project);
-//								} else {
-//
-//								}
-//							}
-//						});
-//				
-//			}
-//			
-//		});
 		button.getButtonComponent().addListener(new ClickListener(){
 
 			private static final long serialVersionUID = 1L;
@@ -412,6 +391,10 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	public void showView(View leftView, View rightView) {
 		horizontalSplitPanelRight.setFirstComponent((Component) leftView);
 		horizontalSplitPanelRight.setSecondComponent((Component) rightView);
+	}
+	
+	public void showProjectCreationScreen(View view){
+		horizontalSplitPanelRight.setSecondComponent((Component) view);
 	}
 
 	/**

@@ -94,6 +94,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="projectDetailsView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewImpl"
 		scope="session"	/>
+		
+	<!-- Project-Creation -->
+	<bean name="projectCreationPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationPresenter"
+		scope="session"	/>
+	<bean name="projectCreationView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewImpl"
+		scope="session"	/>
 
 	<!-- Infos -->
 	<bean name="infosViewPresenter"
