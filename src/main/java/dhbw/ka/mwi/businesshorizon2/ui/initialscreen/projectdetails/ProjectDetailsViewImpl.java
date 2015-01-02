@@ -158,5 +158,12 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		projectDescriptionValue.setValue(projectDescription);
 		lastChangedValue.setValue(lastChanged);
 	}
+	
+	public void clearProjectDetails(){
+		projectNameValue.setValue("");
+		projectDetailsValue.setValue("");
+		projectDescriptionValue.setValue("");
+		lastChangedValue.setValue("");
+	}
 
 }

@@ -27,7 +27,7 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private ProjectProxy projectProxy;
 
@@ -55,6 +55,16 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 
 	}
 
+	@EventHandler
+	public void onShowProjectDetails(ShowProjectDetailsEvent event){
+		if(user.getProjects().size() == 0){
+			getView().clearProjectDetails();
+		}else{
+
+			showProjectDetails(user.getProjects().get(0));
+		}
+	}
+
 	private void showProjectDetails(Project project) {
 		String projectName =  project.getName();
 		String projectDetails;
@@ -71,7 +81,7 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 		String typMethod;
 		typMethod = project.getTypMethod();
 		projectDetails = typMethod + ": " + projectDetails;
-		
+
 		String projectDescription = project.getDescription();
 		String lastChanged;
 
@@ -82,10 +92,10 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 		} else {
 			lastChanged = project.getLastChanged().toString();
 		}
-		
+
 		getView().setProjectDetails(projectName, projectDetails, projectDescription, lastChanged);
 	}
-	
+
 	@EventHandler
 	public void onSelectProject(SelectProjectEvent event){
 		Project project = projectProxy.getSelectedProject();

@@ -29,20 +29,26 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.dialogs.ConfirmDialog;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
 import com.mvplite.view.View;
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
@@ -71,6 +77,10 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 	@Autowired
 	private UserProxy userProxy;
+	
+	@Autowired
+	private ProjectProxy projectProxy;
+	
 	private VerticalSplitPanel verticalSplitPanel;
 	private HorizontalSplitPanel horizontalSplitPanel;
 	private HorizontalSplitPanel horizontalSplitPanelRight;
@@ -263,6 +273,67 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
 		addTopButton(button);
 		button = new TopBarButton("deleteProjectButton", "Projekt löschen");
+//		button.addListener(new LayoutClickListener(){
+//
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void layoutClick(LayoutClickEvent event) {
+//				
+//				final Project project = projectProxy.getSelectedProject();
+//				
+//				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen.");
+//
+//				ConfirmDialog.show(getWindow(), project.getName()
+//						+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
+//						"Ja", "Nein", new ConfirmDialog.Listener() {
+//							/**
+//							 * 
+//							 */
+//							private static final long serialVersionUID = 1L;
+//
+//							@Override
+//							public void onClose(ConfirmDialog dialog) {
+//								if (dialog.isConfirmed()) {
+//									presenter.removeProject(project);
+//								} else {
+//
+//								}
+//							}
+//						});
+//				
+//			}
+//			
+//		});
+		button.getButtonComponent().addListener(new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				final Project project = projectProxy.getSelectedProject();
+
+				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen.");
+
+				ConfirmDialog.show(getWindow(), project.getName()
+						+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
+						"Ja", "Nein", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							presenter.removeProject(project);
+						} else {
+
+						}
+					}
+				});
+
+			}
+
+		});
 		addTopButton(button);
 
 		topBarSpacing = new VerticalLayout();

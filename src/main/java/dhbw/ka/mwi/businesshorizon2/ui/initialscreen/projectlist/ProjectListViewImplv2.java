@@ -165,6 +165,7 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 		editBtnList = new ArrayList<Button>();
 		dialogEditBtnList = new ArrayList<Button>();
 	
+		removeAllComponents();
 
 		for (int i = 0; i < projects.size(); i++) {
 			project = projects.get(i);
