@@ -37,7 +37,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 
+import com.mvplite.event.EventBus;
 import com.vaadin.data.validator.StringLengthValidator;
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.terminal.Sizeable;
@@ -81,6 +84,9 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 
 	@Autowired
 	private ProjectListPresenter presenter;
+	
+	@Autowired
+	private EventBus eventBus;
 
 	private Project project;
 	private List<Project> projects;
@@ -194,6 +200,8 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 	 */
 	private VerticalLayout generateSingleProjectUI(Project project, int i) {
 		
+		final Project proj = project;
+		final int a = i;
 		//erzeugt eine Panel für ein Projekt
 		singleProject = new VerticalLayout();
 		if(i == 0){
@@ -215,12 +223,41 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 		singleProject.setHeight(70, UNITS_PIXELS);
 		singleProject.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
 
+		singleProject.addListener(new LayoutClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.projectSelected(proj);
+				switchProjectsStyle(a);
+				
+				eventBus.fireEvent(new SelectProjectEvent());
+			}
+			
+		});
 
 //		singleProject.addListener(this);
 //		projectListPanel.addComponent(singleProject);
 		logger.debug("Einzelnes Projektelement erzeugt");
 
 		return singleProject;
+	}
+	
+	public void switchProjectsStyle(int i){
+		int counter = 0;
+		Iterator<VerticalLayout> iter = singleProjectList.iterator();
+		VerticalLayout projectLayout;
+		while(iter.hasNext()){
+			projectLayout = iter.next();
+			if(counter == i){
+				projectLayout.setStyleName("singleProjectSelected");
+			}
+			else{
+				projectLayout.setStyleName("singleProject");
+			}
+			counter++;
+		}
 	}
 
 	/**

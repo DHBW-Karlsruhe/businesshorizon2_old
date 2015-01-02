@@ -14,7 +14,9 @@ import com.vaadin.ui.Label;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 
 public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterface>{
@@ -25,6 +27,9 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 
 	@Autowired
 	private EventBus eventBus;
+	
+	@Autowired
+	private ProjectProxy projectProxy;
 
 	private User user;
 
@@ -46,12 +51,17 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 		logger.debug("Projekte geladen. Anzahl: " + projects.size());
 
 		Project firstProject = projects.get(0);
-		String projectName =  firstProject.getName();
+		showProjectDetails(firstProject);
+
+	}
+
+	private void showProjectDetails(Project project) {
+		String projectName =  project.getName();
 		String projectDetails;
 
 		// String fuer saubere Periodenausgabe erstellen.
 		int numbersOfPeriods;
-		numbersOfPeriods = firstProject.getTotalPeriods();
+		numbersOfPeriods = project.getTotalPeriods();
 		if (numbersOfPeriods == 0) {
 			projectDetails = "Noch keine Perioden eingetragen";
 		}
@@ -59,22 +69,27 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 			projectDetails = "" + numbersOfPeriods + " Perioden" ;
 		}
 		String typMethod;
-		typMethod = firstProject.getTypMethod();
+		typMethod = project.getTypMethod();
 		projectDetails = typMethod + ": " + projectDetails;
 		
-		String projectDescription = firstProject.getDescription();
+		String projectDescription = project.getDescription();
 		String lastChanged;
 
 		// String fuer Ausgabe des letzten Aenderungsdatum
-		if (firstProject.getLastChanged() == null) {
+		if (project.getLastChanged() == null) {
 			Date d = new Date();
 			lastChanged = d.toString();
 		} else {
-			lastChanged = firstProject.getLastChanged().toString();
+			lastChanged = project.getLastChanged().toString();
 		}
 		
 		getView().setProjectDetails(projectName, projectDetails, projectDescription, lastChanged);
-
+	}
+	
+	@EventHandler
+	public void onSelectProject(SelectProjectEvent event){
+		Project project = projectProxy.getSelectedProject();
+		showProjectDetails(project);
 	}
 
 }
