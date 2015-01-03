@@ -217,6 +217,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	<bean name="parameterButtonsMiddleView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddleViewImpl"
-		scope="session" />	
+		scope="session" />
+		
+	<!-- Parameter Description-->
+	<bean name="parameterDescriptionPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionPresenter"
+		scope="session" />
+	<bean name="parameterDescriptionView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionPresenter"
+		scope="session" />		
 		
 </beans>
