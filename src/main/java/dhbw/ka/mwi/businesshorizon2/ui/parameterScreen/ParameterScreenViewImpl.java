@@ -197,11 +197,13 @@ private void generateUi() {
 	
 	setContent(mainLayout);
 	
-	TopBarButton button = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
+	TopBarButton button = new TopBarButton("saveButton", "Speichern");
 	addTopButton(button.getComponent());
-	button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
+	button = new TopBarButton("resetInput", "Daten zurücksetzen");
 	addTopButton(button.getComponent());
-	button = new TopBarButton("deleteProjectButton", "Projekt löschen");
+	button = new TopBarButton("back", "Zurück");
+	addTopButton(button.getComponent());
+	button=new TopBarButton("abbort", "Abbrechen");
 	addTopButton(button.getComponent());
 
 }

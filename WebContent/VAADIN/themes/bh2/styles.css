@@ -158,3 +158,30 @@ div.projectlist:hover {
 	margin-left: 5%;
 	margin-top: 5%;
 }
+
+/*
+# TopBar Buttons ParameterScreen
+*/
+.saveButton {
+	background: url("./images/icons/newIcons/1418766240_editor_floopy-dish_save-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.resetInput {
+	background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.back {
+	/*background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");*/
+	background-size: cover;
+	border: none;
+}
+
+.abbort {
+	background: url("./images/icons/newIcons/1418766146_circle_close_delete_-128.png");
+	background-size: cover;
+	border: none;
+}
