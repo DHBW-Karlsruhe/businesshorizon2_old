@@ -175,14 +175,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 
 
-	<!-- Parameter-Maske -->
-	<bean name="parameterPresenter"
+	<!-- Parameter-Input -->
+	<bean name="parameterInputPresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputPresenter"
 		scope="session" />
-	<bean name="parameterView"
+	<bean name="parameterInputView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewImpl"
 		scope="session" />
-
 
 
 
@@ -203,4 +202,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="outputView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl"
 		scope="session" />
+		
+	<!-- Parameter Screen -->
+	<bean name="parameterScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenPresenter"
+		scope="session" />
+	<bean name="parameterScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl"
+		scope="session" />
+		
+		
 </beans>

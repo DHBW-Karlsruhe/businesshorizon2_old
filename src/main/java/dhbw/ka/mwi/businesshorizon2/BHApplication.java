@@ -40,6 +40,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
@@ -64,6 +65,9 @@ public class BHApplication extends Application {
 	
 	@Autowired
 	private LogInScreenViewImpl logInScreenView;
+	
+	@Autowired
+	private ParameterScreenViewImpl ParameterScreenView;
 
 	@Autowired
 	private EventBus eventBus;
@@ -108,9 +112,9 @@ public class BHApplication extends Application {
 		this.removeWindow(processView);
 		this.removeWindow(initialScreenView);
 		initialScreenView.setName("overview");
-		addWindow(initialScreenView);
-		setMainWindow(initialScreenView);
-		logInScreenView.open(new ExternalResource(initialScreenView.getURL()));
+		addWindow(ParameterScreenView);
+		setMainWindow(ParameterScreenView);
+		logInScreenView.open(new ExternalResource(ParameterScreenView.getURL()));
 
 		eventBus.fireEvent(new ShowInitialScreenViewEvent(event.getUser()));
 		logger.debug("ShowInitialScreenViewEvent gefeuert");

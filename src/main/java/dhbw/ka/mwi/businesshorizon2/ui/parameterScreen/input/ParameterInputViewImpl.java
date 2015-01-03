@@ -50,7 +50,7 @@ import com.vaadin.ui.Window.Notification;
  * @author Julius Hacker, Christian Scherer
  * 
  */
-public class ParameterInputViewImpl extends HorizontalSplitPanel implements
+public class ParameterInputViewImpl extends VerticalLayout implements
 		ParameterInputViewInterface {
 	private static final long serialVersionUID = 1L;
 
@@ -203,7 +203,7 @@ public class ParameterInputViewImpl extends HorizontalSplitPanel implements
 
 		setMargin(true);
 		//setSizeFull();
-		setLocked(true);
+		//setLocked(true);
 		setStyleName("small");
 		
 		verticalLayout = new VerticalLayout();
@@ -211,7 +211,7 @@ public class ParameterInputViewImpl extends HorizontalSplitPanel implements
 		verticalLayout.setStyle("parameter");
 		verticalLayout.setSizeUndefined();
 		
-		setFirstComponent(verticalLayout);
+		addComponent(verticalLayout);
 
 		// Basisjahr
 
