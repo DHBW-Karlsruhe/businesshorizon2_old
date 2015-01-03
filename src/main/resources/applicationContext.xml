@@ -177,10 +177,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 	<!-- Parameter-Maske -->
 	<bean name="parameterPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputPresenter"
 		scope="session" />
 	<bean name="parameterView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImplv2"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewImpl"
 		scope="session" />
 
 

@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
+package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input;
 
 import java.util.Calendar;
 import java.util.Iterator;
@@ -39,6 +39,7 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
@@ -46,7 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ShowParameterViewEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
@@ -55,7 +56,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
  * 
  */
 
-public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> {
+public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ParameterPresenter.class");

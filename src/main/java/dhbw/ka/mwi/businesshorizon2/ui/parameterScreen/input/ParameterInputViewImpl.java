@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
+package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input;
 
 import javax.annotation.PostConstruct;
 
@@ -50,8 +50,8 @@ import com.vaadin.ui.Window.Notification;
  * @author Julius Hacker, Christian Scherer
  * 
  */
-public class ParameterViewImplv2 extends HorizontalSplitPanel implements
-		ParameterViewInterface {
+public class ParameterInputViewImpl extends HorizontalSplitPanel implements
+		ParameterInputViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -132,7 +132,7 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 	private String toolTipStepRange;
 
 	@Autowired
-	private ParameterPresenter presenter;
+	private ParameterInputPresenter presenter;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
