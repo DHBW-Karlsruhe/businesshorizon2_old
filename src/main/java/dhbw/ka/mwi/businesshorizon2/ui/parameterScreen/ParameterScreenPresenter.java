@@ -47,6 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListView
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 
 /**
@@ -77,6 +78,9 @@ private Project project;
 
 @Autowired
 private ProjectListViewInterface projectListView;
+
+@Autowired
+private ParameterButtonsMiddleViewInterface parameterButtonsMiddleView;
 
 @Autowired
 private InfosViewInterface infosView;
@@ -120,7 +124,7 @@ public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 logger.debug("ShowInitialScreenViewEvent empfangen");
 user = userProxy.getSelectedUser();
 //getView().showUserData(user.getFullName());
-getView().showView(projectListView, parameterInputView);
+getView().showView(parameterButtonsMiddleView, parameterInputView);
 logger.debug("Views mit Projekt und Infoview geladen");
 eventBus.fireEvent(new ShowProjectListEvent(user));
 logger.debug("ShowProjectListEvent gefeuert");

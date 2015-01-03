@@ -210,6 +210,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="parameterScreenView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl"
 		scope="session" />
-		
+	
+	<!-- Parameter Buttons Middle -->
+	<bean name="parameterButtonsMiddlePresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddlePresenter"
+		scope="session" />
+	<bean name="parameterButtonsMiddleView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddleViewImpl"
+		scope="session" />	
 		
 </beans>
