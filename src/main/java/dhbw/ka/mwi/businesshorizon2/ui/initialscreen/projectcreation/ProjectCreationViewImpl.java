@@ -12,6 +12,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
 
@@ -69,6 +71,19 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 	
 	public void setInitialScreen(InitialScreenViewInterface view){
 		presenter.setInitialScreenView(view);
+	}
+	
+	public void showErrorMessage(String message) {
+		Window.Notification notif = new Notification((String) "",
+				message, Notification.TYPE_WARNING_MESSAGE);
+		notif.setPosition(Window.Notification.POSITION_CENTERED_TOP);
+		getWindow().showNotification(notif);
+	}
+	
+	public void addProject(){
+		String projectName = (String) projectNameInput.getValue();
+		String projectDescription = (String) projectDescriptionInput.getValue();
+		presenter.addProject(projectName, projectDescription);
 	}
 
 }

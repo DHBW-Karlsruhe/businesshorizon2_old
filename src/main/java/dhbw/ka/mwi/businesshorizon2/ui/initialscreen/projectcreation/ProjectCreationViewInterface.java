@@ -8,4 +8,8 @@ public interface ProjectCreationViewInterface extends View {
 	
 	public void setInitialScreen(InitialScreenViewInterface view);
 
+	public void showErrorMessage(String message);
+	
+	public void addProject();
+
 }

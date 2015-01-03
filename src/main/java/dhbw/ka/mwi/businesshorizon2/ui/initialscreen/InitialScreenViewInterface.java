@@ -69,5 +69,7 @@ public interface InitialScreenViewInterface extends View {
 	public void setTopButton(TopBarButton button, int index, ClickListener listener);
 	
 	public void deleteTopButton(int index);
+
+	public void setInitialTopButtons();
 	
 }

@@ -168,6 +168,11 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectCreationButtonsEvent(userProxy.getSelectedUser()));
 	}
+	
+	@EventHandler
+	public void onShowInitialTopButtons(ShowInitialTopButtonsEvent event){
+		getView().setInitialTopButtons();
+	}
 
 }
 

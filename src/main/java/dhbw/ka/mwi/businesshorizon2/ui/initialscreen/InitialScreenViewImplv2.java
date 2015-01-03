@@ -77,10 +77,10 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 	@Autowired
 	private UserProxy userProxy;
-	
+
 	@Autowired
 	private ProjectProxy projectProxy;
-	
+
 	private VerticalSplitPanel verticalSplitPanel;
 	private HorizontalSplitPanel horizontalSplitPanel;
 	private HorizontalSplitPanel horizontalSplitPanelRight;
@@ -113,6 +113,16 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	private Label homeButtonLabel;
 	private Label accountButtonLabel;
 	private Label userData;
+
+	private TopBarButton editProjectButton;
+
+	private TopBarButton deleteProjectButton;
+
+	private TopBarButton addProjectButton;
+
+	private ClickListener addProjectButtonListener;
+
+	private ClickListener deleteProjectButtonListener;
 
 
 
@@ -165,8 +175,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		rightLayout.setSizeFull();
 		bottomLayout.setSizeFull();
 		bottomLeftLayout.setSizeFull();
-//		bottomRightLayout.setWidth(90, UNITS_PERCENTAGE);
-//		bottomRightLayout.setStyleName("projectDetailsLayout");
+		//		bottomRightLayout.setWidth(90, UNITS_PERCENTAGE);
+		//		bottomRightLayout.setStyleName("projectDetailsLayout");
 		topRightLayout.setSizeFull();
 		leftContentLayout.setSizeFull();
 		//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
@@ -239,7 +249,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
 		leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
 		leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
-//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
+		//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
 		menuButtonsLayout.addComponent(homeButtonLayout);
 		menuButtonsLayout.addComponent(accountButtonLayout);
 		homeButtonLayout.addComponent(homeButton);
@@ -265,7 +275,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		verticalSplitPanel.addComponent(topRightLayout);
 		verticalSplitPanel.addComponent(bottomLayout);
 
-//		horizontalSplitPanelRight.setSecondComponent(bottomRightLayout);
+		//		horizontalSplitPanelRight.setSecondComponent(bottomRightLayout);
 
 		rightLayout.setComponentAlignment(verticalSplitPanel, Alignment.MIDDLE_CENTER);
 		bottomLayout.setComponentAlignment(horizontalSplitPanelRight, Alignment.MIDDLE_CENTER);
@@ -274,23 +284,23 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 		setContent(mainLayout);
 
-		TopBarButton button = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
-		button.getButtonComponent().addListener(new ClickListener(){
+		addProjectButton = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
+		addProjectButtonListener = new ClickListener(){
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.showProjectCreationScreen();
-				
+
 			}
-			
-		});
-		addTopButton(button);
-		button = new TopBarButton("editProjectButton", "Projekt bearbeiten");
-		addTopButton(button);
-		button = new TopBarButton("deleteProjectButton", "Projekt löschen");
-		button.getButtonComponent().addListener(new ClickListener(){
+
+		};
+		addTopButton(addProjectButton, addProjectButtonListener);
+		editProjectButton = new TopBarButton("editProjectButton", "Projekt bearbeiten");
+		addTopButton(editProjectButton, null);
+		deleteProjectButton = new TopBarButton("deleteProjectButton", "Projekt löschen");
+		deleteProjectButtonListener = new ClickListener(){
 
 			private static final long serialVersionUID = 1L;
 
@@ -318,8 +328,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 			}
 
-		});
-		addTopButton(button);
+		};
+		addTopButton(deleteProjectButton, deleteProjectButtonListener);
 
 		topBarSpacing = new VerticalLayout();
 		topBarSpacing.setSizeFull();
@@ -398,7 +408,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		horizontalSplitPanelRight.setFirstComponent((Component) leftView);
 		horizontalSplitPanelRight.setSecondComponent((Component) rightView);
 	}
-	
+
 	public void showProjectCreationScreen(View view){
 		horizontalSplitPanelRight.setSecondComponent((Component) view);
 	}
@@ -410,7 +420,10 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	 * : Der Button
 	 * @author Marco Glaser
 	 */
-	public void addTopButton(Component button){
+	public void addTopButton(TopBarButton button, ClickListener listener){
+		if(listener != null){
+			button.getButtonComponent().addListener(listener);
+		}
 		topRightLayout.addComponent(button);
 		topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
 	}
@@ -426,17 +439,34 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	 * @author Marco Glaser
 	 */
 	public void setTopButton(TopBarButton button, int index, ClickListener listener){
-		deleteTopButton(index);
-		button.getButtonComponent().addListener(listener);
-		topRightLayout.addComponent(button, index);
+		if(listener != null){
+			button.getButtonComponent().addListener(listener);
+		}
+		int maxIndex = topRightLayout.getComponentCount() - 1; //1 abziehen wegen dem Spacing rechts
+		if(index < maxIndex){
+			Component comp = topRightLayout.getComponent(index);
+			if(comp != null){
+
+			}
+			topRightLayout.replaceComponent(comp, button);
+		}
+		else{
+			topRightLayout.addComponent(button, index);;
+		}
 		topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
 	}
-	
+
 	public void deleteTopButton(int index){
 		Component comp = topRightLayout.getComponent(index);
 		if(comp != null){
 			topRightLayout.removeComponent(comp);
 		}
+	}
+
+	public void setInitialTopButtons(){
+		setTopButton(addProjectButton, 0, addProjectButtonListener);
+		setTopButton(editProjectButton, 1, null);
+		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
 	}
 
 
