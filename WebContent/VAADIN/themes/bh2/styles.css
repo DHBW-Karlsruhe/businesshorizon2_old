@@ -148,6 +148,18 @@ div.projectlist:hover {
 	border: none;
 }
 
+.saveProjectButton {
+	background: url("./images/icons/newIcons/1418766240_editor_floopy-dish_save-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.cancelButton {
+	background: url("./images/icons/newIcons/1418766146_circle_close_delete_-128.png");
+	background-size: cover;
+	border: none;
+}
+
 .homeButton{
 	background: url("./images/icons/newIcons/1418766062_house_home-128.png");
 	background-size: cover;
@@ -172,6 +184,7 @@ div.projectlist:hover {
 
 .seitenLabel {
 	font-size: 20pt;
+	margin-bottom: 3px;
 }
 
 .descriptionLabel {

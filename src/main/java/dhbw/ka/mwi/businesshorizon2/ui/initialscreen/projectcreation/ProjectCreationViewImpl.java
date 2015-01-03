@@ -13,6 +13,8 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
+
 public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCreationViewInterface{
 
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,8 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 	private TextField projectDescriptionInput;
 
 	private Label gap;
+
+	private Label secondGap;
 	
 	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
 	
@@ -43,6 +47,7 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		projectNameInput = new TextField("Projektname");
 		projectDescriptionInput = new TextField("Projektbeschreibung");
 		gap = new Label();
+		secondGap = new Label();
 		
 		projectNameInput.setWidth(80, UNITS_PERCENTAGE);
 		projectNameInput.setHeight(SIZE_UNDEFINED, 0);
@@ -51,6 +56,7 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		projectDescriptionInput.setHeight(300, UNITS_PIXELS);
 		projectDescriptionInput.setStyleName("projectDescriptionInput");
 		gap.setHeight("10px");
+		secondGap.setHeight("2px");
 		
 		projectNameInput.setValue("Geben sie hier den Projektname ein");
 		projectDescriptionInput.setValue("Geben sie hier eine Beschreibung des Projekts ein");
@@ -58,6 +64,11 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		addComponent(projectNameInput);
 		addComponent(gap);
 		addComponent(projectDescriptionInput);
+		addComponent(secondGap);
+	}
+	
+	public void setInitialScreen(InitialScreenViewInterface view){
+		presenter.setInitialScreenView(view);
 	}
 
 }

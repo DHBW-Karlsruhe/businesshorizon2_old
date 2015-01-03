@@ -65,10 +65,10 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		pDetailsValueVertical = new VerticalLayout();
 		pDescValueVertical = new VerticalLayout();
 		lChangedValueVertical = new VerticalLayout();
-		projectName = new Label("Projektname:");
-		projectDetails = new Label("Projektdetails:");
-		projectDescription = new Label("Projektbeschreibung:");
-		lastChanged = new Label("Zuletzt geändert:");
+		projectName = new Label();
+		projectDetails = new Label();
+		projectDescription = new Label();
+		lastChanged = new Label();
 		projectNameValue = new Label();
 		projectDetailsValue = new Label();
 		projectDescriptionValue = new Label();
@@ -153,6 +153,10 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	}
 	
 	public void setProjectDetails(String projectName, String projectDetails, String projectDescription, String lastChanged){
+		this.projectName.setValue("Projektname:");
+		this.projectDetails.setValue("Projektdetails:");
+		this.projectDescription.setValue("Beschreibung:");
+		this.lastChanged.setValue("Zuletzt geändert:");
 		projectNameValue.setValue(projectName);
 		projectDetailsValue.setValue(projectDetails);
 		projectDescriptionValue.setValue(projectDescription);
@@ -160,6 +164,10 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	}
 	
 	public void clearProjectDetails(){
+		projectName.setValue("");
+		projectDetails.setValue("");
+		projectDescription.setValue("");
+		lastChanged.setValue("");
 		projectNameValue.setValue("");
 		projectDetailsValue.setValue("");
 		projectDescriptionValue.setValue("");

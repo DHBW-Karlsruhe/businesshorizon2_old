@@ -94,6 +94,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	private VerticalLayout bottomLeftLayout;
 	private VerticalLayout bottomRightLayout;
 	private VerticalLayout bottomLayout;
+	private VerticalLayout descriptionLayout;
 	private Embedded homeIcon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
 	private Label seitenLabel;
 	private Label descriptionLabel;
@@ -155,6 +156,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		accountButton = new Button();
 		homeButtonLabel = new Label("Startseite");
 		accountButtonLabel = new Label("Mein Konto");
+		descriptionLayout = new VerticalLayout();
 
 		mainLayout.setSizeFull();
 		mainLayout.setStyleName("mainLayout");
@@ -172,11 +174,11 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		leftLogoLayout = new VerticalLayout();
 		logo = new Embedded(null, new ThemeResource("images/Logo_businesshorizon.png"));
 
-		gap.setHeight("4px");
+		gap.setHeight("10px");
 		leftContainerSpacing.setSizeFull();
 
-		homeIcon.setWidth(50, UNITS_PIXELS);
-		homeIcon.setHeight(50, UNITS_PIXELS);
+		homeIcon.setWidth(70, UNITS_PIXELS);
+		homeIcon.setHeight(70, UNITS_PIXELS);
 
 		seitenLabel = new Label("Startseite");
 		seitenLabel.setStyleName("seitenLabel");
@@ -184,6 +186,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		descriptionLabel = new Label("Übersicht über alle Projekte");
 		descriptionLabel.setStyleName("descriptionLabel");
 		descriptionLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		descriptionLayout.setWidth(100, UNITS_PERCENTAGE);
+		descriptionLayout.setHeight(60, UNITS_PIXELS);
 		splitter.setWidth(98, UNITS_PERCENTAGE);
 		splitter2.setWidth(98, UNITS_PERCENTAGE);
 		menuButtonsLayout.setWidth(100, UNITS_PERCENTAGE);
@@ -217,23 +221,25 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		horizontalSplitPanelRight.setHeight(90, UNITS_PERCENTAGE);
 		horizontalSplitPanelRight.setWidth(100, UNITS_PERCENTAGE);
 
+		descriptionLayout.addComponent(descriptionLabel);
 		leftLogoLayout.addComponent(logo);
 		leftContentLayout.addComponent(gap);
 		leftContentLayout.addComponent(homeIcon);
 		leftContentLayout.addComponent(seitenLabel);
-		leftContentLayout.addComponent(descriptionLabel);
 		leftContentLayout.addComponent(splitter);
-		leftContentLayout.addComponent(menuButtonsLayout);
+		leftContentLayout.addComponent(descriptionLayout);
 		leftContentLayout.addComponent(splitter2);
+		leftContentLayout.addComponent(menuButtonsLayout);
 		leftContentLayout.addComponent(leftContainerSpacing);
 		leftContentLayout.setExpandRatio(leftContainerSpacing, 1.0f);
 		leftLayout.addComponent(leftLogoLayout);
 		leftLayout.addComponent(leftContentLayout);
 		leftLayout.setExpandRatio(leftContentLayout, 1.0f);
+		descriptionLayout.setComponentAlignment(descriptionLabel, Alignment.MIDDLE_CENTER);
 		leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
 		leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
 		leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
-		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
+//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
 		menuButtonsLayout.addComponent(homeButtonLayout);
 		menuButtonsLayout.addComponent(accountButtonLayout);
 		homeButtonLayout.addComponent(homeButton);
@@ -419,12 +425,18 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	 * : Stelle, wo der Button gesetzt werden soll
 	 * @author Marco Glaser
 	 */
-	public void setTopButton(Component button, int index){
+	public void setTopButton(TopBarButton button, int index, ClickListener listener){
+		deleteTopButton(index);
+		button.getButtonComponent().addListener(listener);
+		topRightLayout.addComponent(button, index);
+		topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+	}
+	
+	public void deleteTopButton(int index){
 		Component comp = topRightLayout.getComponent(index);
 		if(comp != null){
 			topRightLayout.removeComponent(comp);
 		}
-		topRightLayout.addComponent(button, index);
 	}
 
 

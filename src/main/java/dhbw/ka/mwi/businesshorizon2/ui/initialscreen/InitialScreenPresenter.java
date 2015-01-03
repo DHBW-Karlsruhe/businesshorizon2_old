@@ -42,6 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectCreationButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ShowProjectDetailsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -105,7 +106,6 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void init() {
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
-
 	}
 
 	/**
@@ -165,6 +165,8 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	public void showProjectCreationScreen(){
 		getView().showProjectCreationScreen(projectCreationView);
+		projectCreationView.setInitialScreen(this.getView());
+		eventBus.fireEvent(new ShowProjectCreationButtonsEvent(userProxy.getSelectedUser()));
 	}
 
 }

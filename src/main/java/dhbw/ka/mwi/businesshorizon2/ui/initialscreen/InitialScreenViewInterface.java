@@ -26,6 +26,10 @@
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import com.mvplite.view.View;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+
+import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
@@ -61,5 +65,9 @@ public interface InitialScreenViewInterface extends View {
 
 
 	public void showProjectCreationScreen(View view);
+	
+	public void setTopButton(TopBarButton button, int index, ClickListener listener);
+	
+	public void deleteTopButton(int index);
 	
 }
