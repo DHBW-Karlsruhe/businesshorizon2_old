@@ -30,6 +30,8 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -47,6 +49,10 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 
 	@Autowired
 	private ParameterButtonsMiddlePresenter presenter;
+	
+	Button detMeth;
+	Button description;
+	Button next;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -68,6 +74,19 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 	 * @author Tobias Lindner
 	 */
 	private void generateUI() {
+		setSpacing(true);
+		
+		detMeth = new Button ("deterministische Methode");
+		addComponent(detMeth);
+		setComponentAlignment(detMeth, Alignment.TOP_CENTER);
+		
+		description = new Button ("Kurzbeschreibung");
+		addComponent(description);
+		setComponentAlignment(description, Alignment.MIDDLE_CENTER);
+		
+		next = new Button ("Weiter zu Schritt 3");
+		addComponent(next);
+		setComponentAlignment(next, Alignment.BOTTOM_CENTER);
 		
 	}
 	
