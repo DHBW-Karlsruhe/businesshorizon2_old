@@ -205,42 +205,13 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		//setSizeFull();
 		setLocked(true);
 		setStyleName("small");
-
-		// TODO: Zeilenanzahl anpassen
-		gridLayout = new GridLayout(2,6);
-		gridLayout.setMargin(true);
-		gridLayout.setSpacing(true);
-		//gridLayout.setSizeFull();
 		
 		verticalLayout = new VerticalLayout();
 		verticalLayout.setSpacing(true);
 		verticalLayout.setStyle("parameter");
 		verticalLayout.setSizeUndefined();
 		
-		VerticalLayout infoBox = new VerticalLayout();
-		infoBox.setMargin(true);
-		Label infoText1 = new Label ("<h3>Deterministische Parameter:</h3>");
-		infoText1.setContentMode(Label.CONTENT_XHTML);
-		Label infoText2 = new Label ("Hier geben Sie das Basisjahr an, auf welches die künftigen Cashflows abgezinst werden. "
-				+ "Zusätzlich müssen Sie auch die Anzahl der einzubeziehenden zukünftigen Perioden ange-ben. "
-				+ "Beachten Sie hierbei, dass Sie nur so viele Perioden angeben, "
-				+ "wie Sie Daten über die Cashflows des Unternehmens haben.");
-		Label infoText3 = new Label  ("<h3>Stochastische Parameter:</h3>");
-		infoText3.setContentMode(Label.CONTENT_XHTML);
-		Label infoText4 = new Label ("Hier geben Sie das Basisjahr an, auf welches die künftigen Cashflows abgezinst werden. "
-				+ "Zusätzlich müssen Sie auch die Anzahl der zu prognostizierenden Perioden angeben. "
-				+ "Die Prognose erfolgt auf Basis vergangener Werte, daher müssen Sie auch die Anzahl der ver-gangenen Perioden angeben. "
-				+ "Beachten Sie hierbei, dass Sie nur so viele Perioden angeben, wie Sie Daten über die Cashflows des Unternehmens haben. "
-				+ "Des Weiteren haben Sie die Möglichkeit die Anzahl der Wiederholungen anzugeben. "
-				+ "Info: Je mehr Iterationen Sie durchführen lassen, desto genauer werden die Prognosewerte, aber desto länger dauert die Berechnung.");
-		
-		infoBox.addComponent(infoText1);
-		infoBox.addComponent(infoText2);
-		infoBox.addComponent(infoText3);
-		infoBox.addComponent(infoText4);
-		
 		setFirstComponent(verticalLayout);
-		setSecondComponent(infoBox);
 
 		// Basisjahr
 
@@ -255,12 +226,9 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 						.getValue());
 			}
 		});
-		//gridLayout.addComponent(textfieldBasisYear, 0, 2);
 		verticalLayout.addComponent(textfieldBasisYear);
 
 		//Anzahl zu prognistizierender Perioden
-		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
-		gridLayout.addComponent(labelNumPeriods, 0, 4);
 
 		textfieldNumPeriodsToForecast = new TextField("Anzahl zu prognotizierender Perioden");
 		textfieldNumPeriodsToForecast.setImmediate(true);
@@ -276,7 +244,6 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 										.getValue());
 					}
 				});
-		//gridLayout.addComponent(textfieldNumPeriodsToForecast, 0, 5);
 		verticalLayout.addComponent(textfieldNumPeriodsToForecast);
 	
 		//nur Deterministische Methode:
@@ -317,22 +284,18 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 								.getValue());
 			}
 		});
-		//gridLayout.addComponent(textfieldNumPastPeriods, 1, 9);
 		verticalLayout.addComponent(textfieldNumPastPeriods);
 		
-	}	
 		
-		/**
-		labelNumSpecifiedPastPeriods = new Label(
-				"Anzahl anzugebender, vergangener Perioden");
-		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 6);
 		
-		textfieldNumSpecifiedPastPeriods = new TextField();
+		// Anzahl anzugebender, vergangener Perioden
+	
+		textfieldNumSpecifiedPastPeriods = new TextField("Anzahl anzugebender, vergangener Perioden");
 		textfieldNumSpecifiedPastPeriods.setImmediate(true);
 		// textfieldIterations.setValue(10000);
 		textfieldNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
 		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID1 = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
 				logger.debug(textfieldNumSpecifiedPastPeriods.getValue());
@@ -340,11 +303,9 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 						.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 6);
-
-		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity, 2, 6);
 		
+		verticalLayout.addComponent(textfieldNumSpecifiedPastPeriods);
+
 		/**
 		 * Auskommentiert, da nicht für Zeitreihenanalyse benötigt
 		 * 
@@ -368,15 +329,8 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 		labelUnitQuantity = new Label("Anzahl");
 		gridLayout.addComponent(labelUnitQuantity, 2, 6);
 		 */
-		/** Heading 3
 		
-		labelHeadingTimeSeries = new Label("Stochastisch: Zeitreihenanalyse");
-		//gridLayout.addComponent(labelHeadingTimeSeries, 0, 8);
-
-		
-
-		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity, 2, 9);
+		/**Heading 3
 
 		checkboxIndustryRepresentative = new CheckBox();
 		checkboxIndustryRepresentative
@@ -423,16 +377,12 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 			}
 		});
 
-		gridLayout.addComponent(comboBoxRepresentatives, 1, 10);
+		verticalLayout.addComponent(comboBoxRepresentatives);
+		*/
 
-		// Heading 6
-		labelHeadingMethDet = new Label("Deterministische Parameter:");
-		gridLayout.addComponent(labelHeadingMethDet, 0, 26);
-		labelNumPeriods_deterministic = new Label(
-				"Anzahl anzugebender Perioden");
-		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 27);
+		// Deterministische Parameter: Anzahl anzugebender Perioden
 
-		textfieldNumPeriodsToForecast_deterministic = new TextField();
+		textfieldNumPeriodsToForecast_deterministic = new TextField("Deterministische Parameter: Anzahl anzugebender Perioden");
 		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
 		textfieldNumPeriodsToForecast_deterministic
 				.setDescription(toolTipNumPeriodsToForecast_deterministic);
@@ -446,13 +396,9 @@ public class ParameterViewImplv2 extends HorizontalSplitPanel implements
 										.getValue());
 					}
 				});
-		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1,
-				27);
+		verticalLayout.addComponent(textfieldNumPeriodsToForecast_deterministic);
 
-		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity, 2, 27);
-
-	}*/
+	}
 
 	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.

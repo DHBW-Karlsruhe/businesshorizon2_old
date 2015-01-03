@@ -927,9 +927,9 @@ public class ParameterPresenter extends ScreenPresenter<ParameterViewInterface> 
 	 * 
 	 */
 	public void greyOut() {
-		//Branchenvertreter ausgrauen
-		getView().activateCheckboxIndustryRepresentative(false);
-		getView().activateComboBoxRepresentatives(false);
+		//Branchenvertreter ausgrauen: Boxen in der View auskommentiert
+		//getView().activateCheckboxIndustryRepresentative(false);
+		//getView().activateComboBoxRepresentatives(false);
 		/**
 		//Wienerprozess ausgrauen
 		getView().activateRiseOfPeriods(false);
