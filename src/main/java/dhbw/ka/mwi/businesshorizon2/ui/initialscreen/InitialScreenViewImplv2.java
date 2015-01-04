@@ -126,6 +126,30 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 	private ClickListener editProjectButtonListener;
 
+	private Label bottomGap;
+
+	private HorizontalLayout faqLayout;
+
+	private VerticalLayout faqManualLayout;
+
+	private HorizontalLayout manualLayout;
+
+	private Label faqLabel;
+
+	private Label manualLabel;
+
+	private Button faqButton;
+
+	private Button manualButton;
+
+	private VerticalLayout faqLayoutVertical;
+
+	private VerticalLayout manualLayoutVertical;
+
+	private Label faqGap;
+
+	private Label manualGap;
+
 
 
 	/**
@@ -169,6 +193,18 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		homeButtonLabel = new Label("Startseite");
 		accountButtonLabel = new Label("Mein Konto");
 		descriptionLayout = new VerticalLayout();
+		bottomGap = new Label();
+		faqManualLayout = new VerticalLayout();
+		faqLayout = new HorizontalLayout();
+		faqLayoutVertical = new VerticalLayout();
+		manualLayout = new HorizontalLayout();
+		manualLayoutVertical = new VerticalLayout();
+		faqLabel = new Label("FAQ");
+		manualLabel = new Label("User Manual");
+		faqButton = new Button();
+		manualButton = new Button();
+		faqGap = new Label();
+		manualGap = new Label();
 
 		mainLayout.setSizeFull();
 		mainLayout.setStyleName("mainLayout");
@@ -187,6 +223,9 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		logo = new Embedded(null, new ThemeResource("images/Logo_businesshorizon.png"));
 
 		gap.setHeight("10px");
+		bottomGap.setHeight("40px");
+		faqGap.setWidth("40px");
+		manualGap.setWidth("40px");
 		leftContainerSpacing.setSizeFull();
 
 		homeIcon.setWidth(70, UNITS_PIXELS);
@@ -216,6 +255,25 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		homeButtonLabel.setStyleName("topBarButtonLabel");
 		accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		accountButtonLabel.setStyleName("topBarButtonLabel");
+		faqManualLayout.setWidth(85, UNITS_PERCENTAGE);
+		faqManualLayout.setHeight(SIZE_UNDEFINED, 0);
+		faqManualLayout.setStyleName("faqManualLayout");
+		manualLayout.setWidth(100, UNITS_PERCENTAGE);
+		manualLayout.setHeight(50, UNITS_PIXELS);
+		manualLayoutVertical.setSizeFull();
+		faqLayout.setWidth(100, UNITS_PERCENTAGE);
+		faqLayout.setHeight(50, UNITS_PIXELS);
+		faqLayoutVertical.setSizeFull();
+		faqButton.setWidth(30, UNITS_PIXELS);
+		faqButton.setHeight(30, UNITS_PIXELS);
+		faqButton.setStyleName("faqButton");
+		manualButton.setWidth(30, UNITS_PIXELS);
+		manualButton.setHeight(30, UNITS_PIXELS);
+		manualButton.setStyleName("manualButton");
+		faqLabel.setWidth(SIZE_UNDEFINED, 0);
+		faqLabel.setStyleName("faqLabel");
+		manualLabel.setWidth(SIZE_UNDEFINED, 0);
+		manualLabel.setStyleName("faqLabel");
 
 		horizontalSplitPanel = new HorizontalSplitPanel();
 		horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
@@ -243,6 +301,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		leftContentLayout.addComponent(splitter2);
 		leftContentLayout.addComponent(menuButtonsLayout);
 		leftContentLayout.addComponent(leftContainerSpacing);
+		leftContentLayout.addComponent(faqManualLayout);
+		leftContentLayout.addComponent(bottomGap);
 		leftContentLayout.setExpandRatio(leftContainerSpacing, 1.0f);
 		leftLayout.addComponent(leftLogoLayout);
 		leftLayout.addComponent(leftContentLayout);
@@ -251,6 +311,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
 		leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
 		leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
+		leftContentLayout.setComponentAlignment(faqManualLayout, Alignment.BOTTOM_CENTER);
 		//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
 		menuButtonsLayout.addComponent(homeButtonLayout);
 		menuButtonsLayout.addComponent(accountButtonLayout);
@@ -258,11 +319,27 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		homeButtonLayout.addComponent(homeButtonLabel);
 		accountButtonLayout.addComponent(accountButton);
 		accountButtonLayout.addComponent(accountButtonLabel);
+		faqManualLayout.addComponent(manualLayout);
+		faqManualLayout.addComponent(faqLayout);
+		manualLayout.addComponent(manualLayoutVertical);
+		manualLayout.addComponent(manualButton);
+		manualLayout.addComponent(manualGap);
+		faqLayout.addComponent(faqLayoutVertical);
+		faqLayout.addComponent(faqButton);
+		faqLayout.addComponent(faqGap);
+		manualLayoutVertical.addComponent(manualLabel);
+		faqLayoutVertical.addComponent(faqLabel);
+		faqLayout.setExpandRatio(faqLayoutVertical, 1.0f);
+		manualLayout.setExpandRatio(manualLayoutVertical, 1.0f);
 
 		homeButtonLayout.setComponentAlignment(homeButton, Alignment.TOP_CENTER);
 		homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
 		accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);
 		accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
+		manualLayoutVertical.setComponentAlignment(manualLabel, Alignment.MIDDLE_RIGHT);
+		manualLayout.setComponentAlignment(manualButton, Alignment.MIDDLE_CENTER);
+		faqLayoutVertical.setComponentAlignment(faqLabel, Alignment.MIDDLE_RIGHT);
+		faqLayout.setComponentAlignment(faqButton, Alignment.MIDDLE_CENTER);
 
 		leftLogoLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		leftLogoLayout.setHeight(100, UNITS_PERCENTAGE);

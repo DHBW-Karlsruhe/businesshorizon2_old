@@ -131,7 +131,7 @@ div.projectlist:hover {
 }
 
 .addProjectButton {
-	background: url("./images/icons/newIcons/1418766077_circle_add_plus_-128.png");
+	background: url("./images/icons/newIcons/1418831401_circle_add_plus-128.png");
 	background-size: cover;
 	border: none;
 }
@@ -143,9 +143,10 @@ div.projectlist:hover {
 }
 
 .deleteProjectButton {
-	background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");
+	background: url("./images/icons/newIcons/1418831322_editor_trash_delete_recycle_bin-128.png");
 	background-size: cover;
 	border: none;
+	width: 25px;
 }
 
 .saveProjectButton {
@@ -229,3 +230,27 @@ div.projectlist:hover {
 	font-size: 14pt;
 }
 
+.faqManualLayout {
+	box-sizing: border-box;
+	border: 2px solid black;
+	background-color: white;
+}
+
+.faqButton {
+	background: url("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png");
+	background-size: cover;
+	border: none;
+	margin-left: 5px;
+}
+
+.manualButton {
+	background: url("./images/icons/newIcons/1418831533_circle_info_more-information_detail-128.png");
+	background-size: cover;
+	border: none;
+	margin-left: 5px;
+}
+
+.faqLabel {
+	font-size: 14pt;
+	color: #5995D9;
+}
