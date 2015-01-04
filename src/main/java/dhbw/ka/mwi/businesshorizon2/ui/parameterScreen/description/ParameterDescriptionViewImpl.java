@@ -72,7 +72,24 @@ public class ParameterDescriptionViewImpl extends VerticalLayout implements
 	 * @author Tobias Lindner
 	 */
 	private void generateUI() {
-		addComponent(new Label ("Description"));
+		Label infoText0 = new Label ("<h2>Methode zur Parametereingabe</h2>");
+		infoText0.setContentMode(Label.CONTENT_XHTML);
+		
+		setMargin(true);
+		Label infoText1 = new Label ("<h3>Stochastische Eingabe</h3>");
+		infoText1.setContentMode(Label.CONTENT_XHTML);
+		Label infoText2 = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der vergangenen Jahre zur berechnen. "
+				+ "Dabei werden die Werte der vergangenen Jahre von Ihnen angegeben und die Cashflows für die nächsten Jahre mit dem AR(p) Verfahren berechnet.");
+		Label infoText3 = new Label  ("<h3>Deterministische Eingabe</h3>");
+		infoText3.setContentMode(Label.CONTENT_XHTML);
+		Label infoText4 = new Label ("Bei der deterministischen Berechnung werden die von Ihnen angegebenen Cashflows der nächsten Perioden verwendet.");
+		
+		addComponent(infoText0);
+		addComponent(infoText1);
+		addComponent(infoText2);
+		addComponent(infoText3);
+		addComponent(infoText4);
+
 	}
 	
 }

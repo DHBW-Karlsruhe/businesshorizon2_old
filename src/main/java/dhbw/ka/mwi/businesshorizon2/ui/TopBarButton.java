@@ -34,5 +34,9 @@ public class TopBarButton{
 	public Component getComponent(){
 		return layout;
 	}
+	
+	public Button getButton() {
+		return button;
+	}
 
 }

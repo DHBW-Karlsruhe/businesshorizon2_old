@@ -194,6 +194,14 @@ div.projectlist:hover {
 	/*padding: 50px;*/
 }
 
+.paramButtonActivated .v-icon {
+	width: 30%;
+}
+
+.paramButton .v-icon {
+	width: 30%;
+}
+
 .paramButtonActivated {
 	background-color: #92D050;
 	border: 2px solid black;

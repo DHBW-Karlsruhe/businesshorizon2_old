@@ -39,6 +39,7 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -204,7 +205,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 * @author Julius Hacker, Christian Scherer
 	 */
 	@EventHandler
-	public void onShowParameterScreen(ShowParameterViewEvent event) {
+	public void onShowParameterScreen(ShowParameterScreenViewEvent event) {
 		
 		getView().showParameterView();
 

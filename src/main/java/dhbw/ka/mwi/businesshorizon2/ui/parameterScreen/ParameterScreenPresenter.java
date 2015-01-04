@@ -47,6 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListView
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
@@ -144,6 +145,11 @@ public class ParameterScreenPresenter extends Presenter<ParameterScreenViewInter
 	public void onShowParameterInput (ShowParameterInputViewEvent event) {
 		getView().showView(parameterButtonsMiddleView, parameterInputView);
 		logger.debug("parameterInputView gesetzt");
+	}
+	
+	public void abbrechen () {
+		eventBus.fireEvent(new ShowUserEvent());
+		logger.debug("abbrechen: ShowUserEvent gefeuert");
 	}
 
 	//wird durch den Click-Listener des Logout-Button in der InitinalScreen-View aufgerufen

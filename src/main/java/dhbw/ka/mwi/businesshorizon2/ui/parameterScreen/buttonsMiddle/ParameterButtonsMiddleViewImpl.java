@@ -25,11 +25,15 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle;
 
+import java.io.File;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.terminal.FileResource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -79,10 +83,10 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		setSpacing(true);
 		
 		float hoehe = 95;
-		float breite = 240;		
+		float breite = 260;		
 		
 		detMeth = new Button ("deterministische Methode");
-		detMeth.setStyleName("paramButton");
+		detMeth.setStyleName("paramButtonActivated");
 		detMeth.setHeight(hoehe, UNITS_PIXELS);
 		detMeth.setWidth(breite, UNITS_PIXELS);
 		detMeth.addListener(new ClickListener() {
@@ -93,6 +97,7 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 			}
 			
 		});
+		detMeth.setIcon(new ThemeResource ("images/icons/newIcons/1418831298_common_calendar_month-128.png"));
 		addComponent(detMeth);
 		setComponentAlignment(detMeth, Alignment.TOP_CENTER);
 
@@ -108,6 +113,7 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 			}
 			
 		});
+		description.setIcon(new ThemeResource ("images/icons/newIcons/1418766020_editor_documents_files-128.png"));
 		addComponent(description);
 		setComponentAlignment(description, Alignment.MIDDLE_CENTER);
 		
@@ -123,6 +129,7 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 			}
 			
 		});
+		next.setIcon(new ThemeResource ("images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png"));
 		addComponent(next);
 		setComponentAlignment(next, Alignment.BOTTOM_CENTER);
 

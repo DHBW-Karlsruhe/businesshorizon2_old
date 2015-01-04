@@ -45,6 +45,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -122,9 +123,9 @@ private Label logoLabel = new Label();
 */
 @PostConstruct
 public void init() {
-presenter.setView(this);
-generateUi();
-logger.debug("Initialisierung beendet");
+	presenter.setView(this);
+	generateUi();
+	logger.debug("Initialisierung beendet");
 }
 
 /**
@@ -205,6 +206,14 @@ private void generateUi() {
 	addTopButton(button.getComponent());
 	button=new TopBarButton("abbort", "Abbrechen");
 	addTopButton(button.getComponent());
+	button.getButton().addListener(new Button.ClickListener () {
+
+		@Override
+		public void buttonClick(ClickEvent event) {
+			presenter.abbrechen();			
+		}
+		
+	});
 
 }
 
