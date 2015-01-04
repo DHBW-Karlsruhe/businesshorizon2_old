@@ -33,8 +33,13 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ShowParameterInputViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
 
 /**
  * 
@@ -80,7 +85,13 @@ public class ParameterButtonsMiddlePresenter extends Presenter<ParameterButtonsM
 		logger.debug("ShowParameterInputViewEvent geworfen");
 		getView().setMethodButtonActivated();
 		logger.debug("Button aktualisiert");
-
+	}
+	
+	public void showStep3 () {
+		eventBus.fireEvent(new ShowProjectEvent());
+		logger.debug("ShowProcessViewEvent geworfen");
+		eventBus.fireEvent(new ShowNavigationStepEvent(NavigationSteps.getByNumber(3)));
+		logger.debug("ShowPeriodViewEvent geworfen");
 	}
 
 

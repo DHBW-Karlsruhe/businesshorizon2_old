@@ -149,6 +149,10 @@ public class BHApplication extends Application {
 	 */
 	@EventHandler
 	public void showProcessView(ShowProjectEvent event) {
+		//
+			this.removeWindow(parameterScreenView);
+		//
+		
 		processView.setName("process");
 		addWindow(processView);
 		setMainWindow(processView);

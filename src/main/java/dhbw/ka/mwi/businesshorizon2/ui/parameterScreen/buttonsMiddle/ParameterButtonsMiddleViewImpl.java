@@ -115,6 +115,14 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		next.setStyleName("paramButton");
 		next.setHeight(hoehe, UNITS_PIXELS);
 		next.setWidth(breite, UNITS_PIXELS);
+		next.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.showStep3();
+			}
+			
+		});
 		addComponent(next);
 		setComponentAlignment(next, Alignment.BOTTOM_CENTER);
 
