@@ -36,6 +36,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
@@ -181,11 +182,20 @@ public class ContentContainerPresenter extends
 					.getByNumber(this.stepNumber);
 			NavigationSteps nextScreen = NavigationSteps
 					.getByNumber(this.stepNumber + 1);
-			this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
-			this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
+			
+			//Hier wird des neue ParameterScreen angezeigt (für Testzwecke) //Tobias Lindner
+			if (nextScreen.getNumber() == 2) {
+				this.eventBus.fireEvent(new ShowParameterScreenViewEvent());
+				logger.debug("ShowParameterScreenViewEvent gefeuert");
+			}
+			
+			else {	
+				this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
+				this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
+				logger.debug("Event fuer Anzeige des Prozesschritt "
+						+ nextScreen.getCaption() + " wurde getriggert");
+			}
 
-			logger.debug("Event fuer Anzeige des Prozesschritt "
-					+ nextScreen.getCaption() + " wurde getriggert");
 		}
 
 	}
