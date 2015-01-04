@@ -15,6 +15,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
 
 public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCreationViewInterface{
@@ -23,6 +25,9 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 	
 	@Autowired
 	private ProjectCreationPresenter presenter;
+	
+	@Autowired
+	private ProjectProxy projectProxy;
 
 	private TextField projectNameInput;
 
@@ -84,6 +89,19 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		String projectName = (String) projectNameInput.getValue();
 		String projectDescription = (String) projectDescriptionInput.getValue();
 		presenter.addProject(projectName, projectDescription);
+	}
+	
+	public void editProject(){
+		String projectName = (String) projectNameInput.getValue();
+		String projectDescription = (String) projectDescriptionInput.getValue();
+		Project project = projectProxy.getSelectedProject();
+		presenter.editProject(project, projectName, projectDescription);
+	}
+	
+	public void setProjectData(){
+		Project project = projectProxy.getSelectedProject();
+		projectNameInput.setValue(project.getName());
+		projectDescriptionInput.setValue(project.getDescription());
 	}
 
 }

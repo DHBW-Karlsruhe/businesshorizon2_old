@@ -124,6 +124,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 	private ClickListener deleteProjectButtonListener;
 
+	private ClickListener editProjectButtonListener;
+
 
 
 	/**
@@ -298,7 +300,18 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		};
 		addTopButton(addProjectButton, addProjectButtonListener);
 		editProjectButton = new TopBarButton("editProjectButton", "Projekt bearbeiten");
-		addTopButton(editProjectButton, null);
+		editProjectButtonListener = new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.showProjectEditScreen();
+
+			}
+
+		};
+		addTopButton(editProjectButton, editProjectButtonListener);
 		deleteProjectButton = new TopBarButton("deleteProjectButton", "Projekt löschen");
 		deleteProjectButtonListener = new ClickListener(){
 

@@ -60,9 +60,50 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		
 	}
 	
+	@EventHandler
+	public void onShowEditScreen(ShowProjectEditButtonsEvent event){
+		final User user = event.getUser();
+		theUser = user;
+		getView().setProjectData();
+		TopBarButton saveButton = new TopBarButton("saveProjectButton", "Projekt speichern");
+		TopBarButton cancelButton = new TopBarButton("cancelButton", "Abbrechen");
+		initialScreenView.setTopButton(saveButton, 0, new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				getView().editProject();
+				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+			}
+			
+		});
+		initialScreenView.setTopButton(cancelButton, 1, new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+				
+			}
+			
+		});
+		initialScreenView.deleteTopButton(2);
+	}
 	
 	@EventHandler
-	public void onShowScreen(ShowProjectCreationButtonsEvent event){
+	public void onShowCreationScreen(ShowProjectCreationButtonsEvent event){
 		final User user = event.getUser();
 		theUser = user;
 		TopBarButton saveButton = new TopBarButton("saveProjectButton", "Projekt speichern");
@@ -127,6 +168,48 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
 //		eventBus.fireEvent(new ProjectAddEvent(project));
 		logger.debug("ShowAddEvent gefeuert");
+
+	}
+	
+	public boolean editProject(Project project, String name, String description) {
+
+
+		try {
+			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
+			if (project.getName().equals(name)) {
+				logger.debug("nur Projekt-Beschreibung geändert");
+			}
+			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
+			else {
+				for (Project projektName : theUser.getProjects()) {
+					if (projektName.getCreatedFrom().getEmailAdress()
+							.equals(theUser.getEmailAdress())) {
+						if (projektName.getName().equals(name)) {
+							throw new ProjectAlreadyExistsException(
+									"Projekt mit dem Namen " + name
+									+ " existiert bereits.");
+						}
+					}
+				}
+			}
+			project.setName(name);
+			project.setDescription(description);
+			project.setLastChanged(new Date());
+			persistenceService.saveProjects();
+			projectListView.setProjects(theUser.getProjects());
+			eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
+			return true;
+		} catch (ProjectAlreadyExistsException e) {
+			getView().showErrorMessage(e.getMessage());
+			logger.debug("Projektname bereits vorhanden.");
+			return false;
+		}
+
+
+		//eventBus.fireEvent(new ProjectEditEvent(project));
+		//logger.debug("ShowEdditEvent gefeuert");
+
+
 
 	}
 
