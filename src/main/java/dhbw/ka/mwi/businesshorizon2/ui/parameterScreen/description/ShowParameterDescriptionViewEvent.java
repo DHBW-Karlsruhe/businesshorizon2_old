@@ -23,22 +23,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle;
 
-import com.mvplite.view.View;
+package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description;
+
+import com.mvplite.event.Event;
 
 /**
- * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
- * mit denen der Presenter mit der View kommunizieren kann.
+ * Der Event, der zum Anzeigen der Kurzbeschreibung geworfen.
  * 
  * @author Tobias Lindner
  * 
  */
-public interface ParameterButtonsMiddleViewInterface extends View {
-	
-	public void setMethodButtonActivated();
-	
-	public void setDescriptionButtonActivated();
+public class ShowParameterDescriptionViewEvent extends Event {
+	private static final long serialVersionUID = 1L;
 
 }
-

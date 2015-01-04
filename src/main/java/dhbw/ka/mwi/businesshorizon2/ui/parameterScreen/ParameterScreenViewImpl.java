@@ -208,87 +208,88 @@ private void generateUi() {
 
 }
 
-/**
-* Methode zum Darstellen der Userdaten im Header
-*
-* @param username
-* Der angezeigte Username
-* @author Mirko Göpfrich
-*/
-public void showUserData(String username) {
-/*
-* Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
-* Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
-* und Prozesssicht gesprungen wird.
-*/
-Label userInfo = new Label("Sie sind angemeldet als: ");
-middle.addComponent(userInfo);
-middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
-
-
-if(userData != null) {
-middle.removeComponent(userData);
-middle.removeComponent(userInfo);
-}
-
-userData = new Label(username);
-userData.setContentMode(Label.CONTENT_XHTML);
-userData.setVisible(true);
-middle.addComponent(userData);
-middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
-}
-
-/**
-*
-*/
-private void addLogoutButton() {
-Button logoutButton = new Button("Logout");
-logoutButton.setStyleName("default");
-logoutButton.addListener(new Button.ClickListener() {
-
-private static final long serialVersionUID = 7411091035775152765L;
-
-@Override
-public void buttonClick(ClickEvent event) {
-//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
-presenter.doLogout();
-}
-});
-
-//LogoutButton hinzufügen und ausrichten
-logoutButton.setEnabled(true);
-right.addComponent(logoutButton);
-right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
-
-}
-
-
-/**
-* Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
-* unter der Überschrift.
-*
-* @param leftView
-* : Die PeriodenListe
-* @param rightView
-* : Die Infoanzeige
-* @author Christian Scherer, Marco Glaser
-*/
-@Override
-public void showView(View leftView, View rightView) {
-bottomLeftLayout.addComponent((Component) leftView);
-//horizontalSplitPanel.setSecondComponent((Component) rightView);
-bottomRightLayout.addComponent((Component) rightView);
-}
-
-public void addTopButton(Component button){
-	topRightLayout.addComponent(button);
-}
-
-public void setTopButton(Component button, int index){
-	Component comp = topRightLayout.getComponent(index);
-	topRightLayout.removeComponent(comp);
-	topRightLayout.addComponent(button, index);
-}
-
-
-}
+	/**
+	* Methode zum Darstellen der Userdaten im Header
+	*
+	* @param username
+	* Der angezeigte Username
+	* @author Mirko Göpfrich
+	*/
+	public void showUserData(String username) {
+	/*
+	* Wenn schon ein UserData-String angezeigt wird, muss dieser zunaechst entfernt werden.
+	* Ansonsten werden mehrere UserData-Strings angezeigt, wenn zwischen Projektuebersicht
+	* und Prozesssicht gesprungen wird.
+	*/
+	Label userInfo = new Label("Sie sind angemeldet als: ");
+	middle.addComponent(userInfo);
+	middle.setComponentAlignment(userInfo, Alignment.BOTTOM_LEFT);
+	
+	
+	if(userData != null) {
+	middle.removeComponent(userData);
+	middle.removeComponent(userInfo);
+	}
+	
+	userData = new Label(username);
+	userData.setContentMode(Label.CONTENT_XHTML);
+	userData.setVisible(true);
+	middle.addComponent(userData);
+	middle.setComponentAlignment(userData, Alignment.BOTTOM_LEFT);;
+	}
+	
+	/**
+	*
+	*/
+	private void addLogoutButton() {
+	Button logoutButton = new Button("Logout");
+	logoutButton.setStyleName("default");
+	logoutButton.addListener(new Button.ClickListener() {
+	
+	private static final long serialVersionUID = 7411091035775152765L;
+	
+	@Override
+	public void buttonClick(ClickEvent event) {
+	//Callback-Methode, ruft die eigentliche Logout-Methode im Presenter auf
+	presenter.doLogout();
+	}
+	});
+	
+	//LogoutButton hinzufügen und ausrichten
+	logoutButton.setEnabled(true);
+	right.addComponent(logoutButton);
+	right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+	
+	}
+	
+	
+	/**
+	* Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
+	* unter der Überschrift.
+	*
+	* @param leftView
+	* : Die PeriodenListe
+	* @param rightView
+	* : Die Infoanzeige
+	* @author Christian Scherer, Marco Glaser
+	*/
+	@Override
+	public void showView(View leftView, View rightView) {
+	bottomLeftLayout.addComponent((Component) leftView);
+	//horizontalSplitPanel.setSecondComponent((Component) rightView);
+	bottomRightLayout.removeAllComponents();
+	bottomRightLayout.addComponent((Component) rightView);
+	}
+	
+	public void addTopButton(Component button){
+		topRightLayout.addComponent(button);
+	}
+	
+	public void setTopButton(Component button, int index){
+		Component comp = topRightLayout.getComponent(index);
+		topRightLayout.removeComponent(comp);
+		topRightLayout.addComponent(button, index);
+	}
+	
+	
+	}

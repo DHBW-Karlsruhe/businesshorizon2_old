@@ -185,3 +185,19 @@ div.projectlist:hover {
 	background-size: cover;
 	border: none;
 }
+
+.paramButton {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	/*padding: 50px;*/
+}
+
+.paramButtonActivated {
+	background-color: #92D050;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	/*padding: 50px;*/
+}

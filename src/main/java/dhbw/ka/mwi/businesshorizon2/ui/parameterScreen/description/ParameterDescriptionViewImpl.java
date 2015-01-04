@@ -30,6 +30,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddlePresenter;
@@ -71,7 +72,7 @@ public class ParameterDescriptionViewImpl extends VerticalLayout implements
 	 * @author Tobias Lindner
 	 */
 	private void generateUI() {
-		
+		addComponent(new Label ("Description"));
 	}
 	
 }

@@ -224,7 +224,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionPresenter"
 		scope="session" />
 	<bean name="parameterDescriptionView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewImpl"
 		scope="session" />		
 		
 </beans>

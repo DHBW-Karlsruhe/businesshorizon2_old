@@ -32,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -76,18 +78,60 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 	private void generateUI() {
 		setSpacing(true);
 		
+		float hoehe = 95;
+		float breite = 240;		
+		
 		detMeth = new Button ("deterministische Methode");
+		detMeth.setStyleName("paramButton");
+		detMeth.setHeight(hoehe, UNITS_PIXELS);
+		detMeth.setWidth(breite, UNITS_PIXELS);
+		detMeth.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.showInput();
+			}
+			
+		});
 		addComponent(detMeth);
 		setComponentAlignment(detMeth, Alignment.TOP_CENTER);
-		
+
 		description = new Button ("Kurzbeschreibung");
+		description.setStyleName("paramButton");
+		description.setHeight(hoehe, UNITS_PIXELS);
+		description.setWidth(breite, UNITS_PIXELS);
+		description.addListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.showDescription();
+			}
+			
+		});
 		addComponent(description);
 		setComponentAlignment(description, Alignment.MIDDLE_CENTER);
 		
 		next = new Button ("Weiter zu Schritt 3");
+		next.setStyleName("paramButton");
+		next.setHeight(hoehe, UNITS_PIXELS);
+		next.setWidth(breite, UNITS_PIXELS);
 		addComponent(next);
 		setComponentAlignment(next, Alignment.BOTTOM_CENTER);
-		
+
+	}
+	
+	public void setMethodButtonActivated () {
+		detMeth.setStyleName("paramButtonActivated");
+		description.setStyleName("paramButton");
+		detMeth.requestRepaint();
+		description.requestRepaint();
+	}
+	
+	public void setDescriptionButtonActivated () {
+		detMeth.setStyleName("paramButton");
+		description.setStyleName("paramButtonActivated");
+		detMeth.requestRepaint();
+		description.requestRepaint();
 	}
 	
 }

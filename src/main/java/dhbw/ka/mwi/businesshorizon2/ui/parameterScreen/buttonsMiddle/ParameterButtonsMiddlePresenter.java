@@ -33,6 +33,9 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ShowParameterInputViewEvent;
+
 /**
  * 
  * Dies ist der Presenter zur Auflistung, dem Hinzufuegen und dem Loeschen von
@@ -63,6 +66,21 @@ public class ParameterButtonsMiddlePresenter extends Presenter<ParameterButtonsM
 	private void init() {
 		//eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
+	}
+	
+	public void showDescription () {
+		eventBus.fireEvent(new ShowParameterDescriptionViewEvent());
+		logger.debug("ShowParameterDescriptionViewEvent geworfen");
+		getView().setDescriptionButtonActivated();
+		logger.debug ("Button aktualisiert");
+	}
+	
+	public void showInput () {
+		eventBus.fireEvent(new ShowParameterInputViewEvent());
+		logger.debug("ShowParameterInputViewEvent geworfen");
+		getView().setMethodButtonActivated();
+		logger.debug("Button aktualisiert");
+
 	}
 
 
