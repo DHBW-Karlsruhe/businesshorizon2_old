@@ -15,5 +15,7 @@ public interface ProjectCreationViewInterface extends View {
 	public void editProject();
 	
 	public void setProjectData();
+	
+	public void clearProjectData();
 
 }

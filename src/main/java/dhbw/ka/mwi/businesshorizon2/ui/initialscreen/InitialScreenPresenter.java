@@ -179,6 +179,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	@EventHandler
 	public void onShowInitialTopButtons(ShowInitialTopButtonsEvent event){
 		getView().setInitialTopButtons();
+		getView().setInitialPageDescription();
 	}
 
 }

@@ -71,5 +71,7 @@ public interface InitialScreenViewInterface extends View {
 	public void deleteTopButton(int index);
 
 	public void setInitialTopButtons();
+
+	public void setInitialPageDescription();
 	
 }

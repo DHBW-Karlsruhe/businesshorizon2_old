@@ -95,7 +95,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	private VerticalLayout bottomRightLayout;
 	private VerticalLayout bottomLayout;
 	private VerticalLayout descriptionLayout;
-	private Embedded homeIcon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
+	private Embedded homeIcon;
 	private Label seitenLabel;
 	private Label descriptionLabel;
 	private VerticalLayout leftLogoLayout;
@@ -149,6 +149,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	private Label faqGap;
 
 	private Label manualGap;
+
+	private Label middleGap;
 
 
 
@@ -205,6 +207,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		manualButton = new Button();
 		faqGap = new Label();
 		manualGap = new Label();
+		homeIcon  = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
+		middleGap = new Label();
 
 		mainLayout.setSizeFull();
 		mainLayout.setStyleName("mainLayout");
@@ -224,8 +228,9 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 		gap.setHeight("10px");
 		bottomGap.setHeight("40px");
-		faqGap.setWidth("40px");
-		manualGap.setWidth("40px");
+		faqGap.setWidth("50px");
+		manualGap.setWidth("50px");
+		middleGap.setHeight("10px");
 		leftContainerSpacing.setSizeFull();
 
 		homeIcon.setWidth(70, UNITS_PIXELS);
@@ -299,6 +304,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		leftContentLayout.addComponent(splitter);
 		leftContentLayout.addComponent(descriptionLayout);
 		leftContentLayout.addComponent(splitter2);
+		leftContentLayout.addComponent(middleGap);
 		leftContentLayout.addComponent(menuButtonsLayout);
 		leftContentLayout.addComponent(leftContainerSpacing);
 		leftContentLayout.addComponent(faqManualLayout);
@@ -371,7 +377,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.showProjectCreationScreen();
-
+				setPageDescription("./images/icons/newIcons/1418831401_circle_add_plus-128.png", "Neues Projekt anlegen", "Geben Sie hier den Namen und eine Beschreibung ein");
 			}
 
 		};
@@ -384,12 +390,13 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.showProjectEditScreen();
-
+				setPageDescription("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png", "Projekt bearbeiten", "Ändern Sie hier Name oder Beschreibung");
 			}
 
 		};
 		addTopButton(editProjectButton, editProjectButtonListener);
 		deleteProjectButton = new TopBarButton("deleteProjectButton", "Projekt löschen");
+		deleteProjectButton.setButtonWidth(25);
 		deleteProjectButtonListener = new ClickListener(){
 
 			private static final long serialVersionUID = 1L;
@@ -557,6 +564,16 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		setTopButton(addProjectButton, 0, addProjectButtonListener);
 		setTopButton(editProjectButton, 1, null);
 		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
+	}
+	
+	public void setPageDescription(String source, String page, String description){
+		homeIcon.setSource(new ThemeResource(source));
+		seitenLabel.setValue(page);
+		descriptionLabel.setValue(description);
+	}
+	
+	public void setInitialPageDescription(){
+		setPageDescription("./images/icons/newIcons/1418766062_house_home-128.png", "Startseite", "Übersicht über alle Projekte");
 	}
 
 

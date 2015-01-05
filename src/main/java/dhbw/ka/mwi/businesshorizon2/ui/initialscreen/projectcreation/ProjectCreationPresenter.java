@@ -106,6 +106,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	public void onShowCreationScreen(ShowProjectCreationButtonsEvent event){
 		final User user = event.getUser();
 		theUser = user;
+		getView().clearProjectData();
 		TopBarButton saveButton = new TopBarButton("saveProjectButton", "Projekt speichern");
 		TopBarButton cancelButton = new TopBarButton("cancelButton", "Abbrechen");
 		initialScreenView.setTopButton(saveButton, 0, new ClickListener(){

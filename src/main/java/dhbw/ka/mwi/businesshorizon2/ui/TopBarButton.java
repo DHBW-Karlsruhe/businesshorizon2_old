@@ -43,6 +43,10 @@ public class TopBarButton extends VerticalLayout{
 		setComponentAlignment(label, Alignment.MIDDLE_CENTER);
 	}
 	
+	public void setButtonWidth(float width){
+		button.setWidth(width, UNITS_PIXELS);
+	}
+	
 	public Button getButtonComponent(){
 		return button;
 	}

@@ -103,5 +103,10 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		projectNameInput.setValue(project.getName());
 		projectDescriptionInput.setValue(project.getDescription());
 	}
+	
+	public void clearProjectData(){
+		projectNameInput.setValue("Geben sie hier den Projektname ein");
+		projectDescriptionInput.setValue("Geben sie hier eine Beschreibung des Projekts ein");
+	}
 
 }

@@ -240,14 +240,14 @@ div.projectlist:hover {
 	background: url("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png");
 	background-size: cover;
 	border: none;
-	margin-left: 5px;
+	margin-left: 9px;
 }
 
 .manualButton {
 	background: url("./images/icons/newIcons/1418831533_circle_info_more-information_detail-128.png");
 	background-size: cover;
 	border: none;
-	margin-left: 5px;
+	margin-left: 9px;
 }
 
 .faqLabel {
