@@ -48,6 +48,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -84,7 +85,25 @@ private VerticalLayout header;
 
 private HorizontalLayout horizontal;
 
+//linke Seite
+private Embedded logo;
+private Embedded titleIcon;
+
+private Label homeButtonLabel;
+private Label accountButtonLabel;
+private Label gap;
+private Label middleGap;
+private Label bottomGap;
+
 private VerticalLayout left;
+private VerticalLayout descriptionLayout;
+private VerticalLayout leftLogolayout;
+private VerticalLayout homeButtonLayout;
+private VerticalLayout accountButtonLayout;
+private HorizontalLayout menuButtonsLayout;
+
+private Button homeButton;
+private Button accountButton;
 
 private HorizontalLayout middle;
 
@@ -101,6 +120,14 @@ private Label rightBottomL;
 private Label leftBottomL;
 
 private Label userData;
+
+private Label seitenLabel;
+private Label seitenProjectName;
+private Label descriptionLabel;
+private Label descriptionLabel2;
+private Label splitter;
+private Label splitter2;
+//Ende Linke Seite
 
 private VerticalLayout mainLayout = new VerticalLayout();
 private HorizontalLayout leftLayout = new HorizontalLayout();
@@ -142,18 +169,11 @@ private void generateUi() {
 	rightLayout.setSizeFull();
 	bottomLayout.setSizeFull();
 	bottomLeftLayout.setSizeFull();
-	leftContentLayout.setWidth(85, UNITS_PERCENTAGE);
-	leftContentLayout.setHeight(100, UNITS_PERCENTAGE);
+	//leftContentLayout.setWidth(85, UNITS_PERCENTAGE);
+	//leftContentLayout.setHeight(100, UNITS_PERCENTAGE);
 	topRightLayout.setStyleName("topBar");
-//	leftContentLayout.setSizeFull();
+	leftContentLayout.setSizeFull();
 	
-	logoLabel = new Label();
-	logoLabel.setIcon(new ThemeResource("images/Logo_businesshorizon.png"));
-	logoLabel.setWidth(15, UNITS_PERCENTAGE);
-	leftLayout.addComponent(logoLabel);
-	leftLayout.addComponent(leftContentLayout);
-	leftLayout.setComponentAlignment(logoLabel, Alignment.MIDDLE_CENTER);
-
 	horizontalSplitPanel = new HorizontalSplitPanel();
 	horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
 	horizontalSplitPanel.setLocked(true);
@@ -175,7 +195,6 @@ private void generateUi() {
 	rightBottomL = new Label("rechts Unten");
 	leftBottomL = new Label("links Unten");
 	
-	leftLayout.addComponent(leftL);
 	rightLayout.addComponent(verticalSplitPanel);
 //	topRightLayout.addComponent(rightTopL);
 //	bottomRightLayout.addComponent(rightBottomL);
@@ -197,6 +216,118 @@ private void generateUi() {
 	mainLayout.addComponent(horizontalSplitPanel);
 	
 	setContent(mainLayout);
+	
+	//linke Seite Logo
+	leftLogolayout = new VerticalLayout();
+	leftLogolayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	leftLogolayout.setHeight(100, UNITS_PERCENTAGE);
+	
+	logo = new Embedded (null, new ThemeResource ("images/Logo_businesshorizon.png"));
+	
+	leftLogolayout.addComponent(logo);
+	leftLogolayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
+	
+	//linke Seite Infos
+	gap = new Label();
+	gap.setHeight("10px");
+	
+	titleIcon  = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png"));
+	titleIcon.setWidth(70, UNITS_PIXELS);
+	titleIcon.setHeight(70, UNITS_PIXELS);
+	
+	seitenLabel = new Label("Schritt 2");
+	seitenLabel.setStyleName("seitenLabel");
+	seitenLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	
+	splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
+	splitter.setWidth(98, UNITS_PERCENTAGE);
+	
+	descriptionLabel = new Label("Stochastische Methode:");
+	descriptionLabel.setStyleName("descriptionLabel");
+	descriptionLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	
+	descriptionLabel2 = new Label("Bitte geben Sie die Parameter ein");
+	descriptionLabel2.setStyleName("descriptionLabel");
+	descriptionLabel2.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	
+	descriptionLayout = new VerticalLayout();
+	descriptionLayout.addComponent(descriptionLabel);
+	descriptionLayout.addComponent(descriptionLabel2);
+	descriptionLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
+	descriptionLayout.setComponentAlignment(descriptionLabel2, Alignment.MIDDLE_CENTER);	
+	descriptionLayout.setWidth(100, UNITS_PERCENTAGE);
+	descriptionLayout.setHeight(60, UNITS_PIXELS);
+	
+	splitter2 = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
+	splitter2.setWidth(98, UNITS_PERCENTAGE);
+	
+	middleGap = new Label ();
+	middleGap.setHeight("10px");
+	
+	menuButtonsLayout = new HorizontalLayout();
+	menuButtonsLayout.setWidth(100, UNITS_PERCENTAGE);
+	menuButtonsLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
+	
+	homeButtonLayout = new VerticalLayout();
+	homeButtonLayout.setSizeFull();
+	
+	homeButton = new Button();
+	homeButton.setHeight(30, UNITS_PIXELS);
+	homeButton.setWidth(30, UNITS_PIXELS);
+	homeButton.setStyleName("homeButton");
+	
+	homeButtonLabel = new Label("Startseite");
+	homeButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	homeButtonLabel.setStyleName("topBarButtonLabel");
+	
+	homeButtonLayout.addComponent(homeButton);
+	homeButtonLayout.addComponent(homeButtonLabel);
+	homeButtonLayout.setComponentAlignment(homeButton, Alignment.TOP_CENTER);
+	homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
+	
+	menuButtonsLayout.addComponent(homeButtonLayout);
+
+	accountButtonLayout = new VerticalLayout();
+	accountButtonLayout.setSizeFull();
+	
+	accountButton = new Button();
+	accountButton.setHeight(30, UNITS_PIXELS);
+	accountButton.setWidth(30, UNITS_PIXELS);
+	accountButton.setStyleName("accountButton");
+	
+	accountButtonLabel = new Label("Mein Konto");
+	accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+	accountButtonLabel.setStyleName("topBarButtonLabel");
+	
+	accountButtonLayout.addComponent(accountButton);
+	accountButtonLayout.addComponent(accountButtonLabel);
+	accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);;
+	accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
+	
+	menuButtonsLayout.addComponent(accountButtonLayout);
+	
+	bottomGap = new Label();
+	bottomGap.setHeight("380px");
+
+	leftContentLayout.addComponent(gap);
+	leftContentLayout.addComponent(titleIcon);
+	leftContentLayout.addComponent(seitenLabel);
+	leftContentLayout.addComponent(splitter);
+	leftContentLayout.addComponent(descriptionLayout);
+	leftContentLayout.addComponent(splitter2);
+	leftContentLayout.addComponent(middleGap);
+	leftContentLayout.addComponent(menuButtonsLayout);
+	leftContentLayout.addComponent(bottomGap);
+	
+	leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
+	leftContentLayout.setComponentAlignment(titleIcon, Alignment.TOP_CENTER);
+	
+	leftLayout.addComponent(leftLogolayout);
+	leftLayout.addComponent(leftContentLayout);	
+	leftLayout.setExpandRatio(leftContentLayout, 1.0f);
+	
+	
+	//Buttonleiste
 	
 	TopBarButton button = new TopBarButton("saveButton", "Speichern");
 	addTopButton(button.getComponent());

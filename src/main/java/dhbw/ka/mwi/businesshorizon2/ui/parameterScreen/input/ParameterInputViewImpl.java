@@ -206,16 +206,23 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		//setLocked(true);
 		setStyleName("small");
 		
+		gridLayout = new GridLayout(3, 30);
+		gridLayout.setSpacing(true);
+		gridLayout.setSizeUndefined();
+		gridLayout.setStyleName("parameter");
 		verticalLayout = new VerticalLayout();
 		verticalLayout.setSpacing(true);
-		verticalLayout.setStyle("parameter");
+		verticalLayout.setStyleName("parameter");
 		verticalLayout.setSizeUndefined();
 		
-		addComponent(verticalLayout);
+		//addComponent(verticalLayout);
+		addComponent(gridLayout);
 
 		// Basisjahr
 
-		textfieldBasisYear = new TextField("Basisjahr");
+		labelBasisYear = new Label("Basisjahr");
+		gridLayout.addComponent(labelBasisYear, 0, 1);
+		textfieldBasisYear = new TextField();
 		textfieldBasisYear.setImmediate(true);
 		textfieldBasisYear.setDescription(toolTipBasisYear);
 		textfieldBasisYear.addListener(new Property.ValueChangeListener() {
@@ -226,11 +233,15 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 						.getValue());
 			}
 		});
-		verticalLayout.addComponent(textfieldBasisYear);
+		//verticalLayout.addComponent(textfieldBasisYear);
+		gridLayout.addComponent(textfieldBasisYear, 1, 1);
+		labelBasisYear.setStyleName("parameter");
+		textfieldBasisYear.setStyleName("parameter");
 
 		//Anzahl zu prognistizierender Perioden
-
-		textfieldNumPeriodsToForecast = new TextField("Anzahl zu prognotizierender Perioden");
+		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
+		gridLayout.addComponent(labelNumPeriods, 0, 2);
+		textfieldNumPeriodsToForecast = new TextField();
 		textfieldNumPeriodsToForecast.setImmediate(true);
 		textfieldNumPeriodsToForecast
 				.setDescription(toolTipNumPeriodsToForecast);
@@ -244,12 +255,17 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 										.getValue());
 					}
 				});
-		verticalLayout.addComponent(textfieldNumPeriodsToForecast);
-	
+		//verticalLayout.addComponent(textfieldNumPeriodsToForecast);
+		gridLayout.addComponent(textfieldNumPeriodsToForecast, 1, 2);
+		labelNumPeriods.setStyleName("parameter");
+		textfieldNumPeriodsToForecast.setStyleName("parameter");
+		
 		//nur Deterministische Methode:
 		
 		//Anzahl der Iterationen
-		textfieldIterations = new TextField("Anzahl der Iterationen");
+		labelIterations = new Label("Durchläufe / Iterationen");
+		gridLayout.addComponent(labelIterations, 0, 3);
+		textfieldIterations = new TextField();
 		textfieldIterations.setImmediate(true);
 		// textfieldIterations.setValue(10000);
 		textfieldIterations.setDescription(toolTipIterations);
@@ -262,11 +278,16 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 						.getValue());
 			}
 		});
-		verticalLayout.addComponent(textfieldIterations);
-
+		//verticalLayout.addComponent(textfieldIterations);
+		gridLayout.addComponent(textfieldIterations, 1, 3);
+		labelIterations.setStyleName("parameter");
+		textfieldIterations.setStyleName("parameter");
+		
 		//Anzahl einbezogener vergangener Perioden
-
-		textfieldNumPastPeriods = new TextField("Anzahl einbezogener, vergangener Perioden");
+		labelNumPastPeriods = new Label(
+				"Anzahl einbezogener, vergangener Perioden");
+		gridLayout.addComponent(labelNumPastPeriods, 0, 4);
+		textfieldNumPastPeriods = new TextField();
 		textfieldNumPastPeriods.setImmediate(true);
 		// textfieldNumPastPeriods: Wert darf hier nicht gesetzt werden
 		// -> über Event, sodass der Wert ins Projekt übernommen wird und nicht
@@ -284,13 +305,17 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 								.getValue());
 			}
 		});
-		verticalLayout.addComponent(textfieldNumPastPeriods);
-		
+		//verticalLayout.addComponent(textfieldNumPastPeriods);
+		gridLayout.addComponent(textfieldNumPastPeriods, 1, 4);
+		labelNumPastPeriods.setStyleName("parameter");
+		textfieldNumPastPeriods.setStyleName("parameter");
 		
 		
 		// Anzahl anzugebender, vergangener Perioden
-	
-		textfieldNumSpecifiedPastPeriods = new TextField("Anzahl anzugebender, vergangener Perioden");
+		labelNumSpecifiedPastPeriods = new Label(
+				"Anzahl anzugebender, vergangener Perioden");
+		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 5);
+		textfieldNumSpecifiedPastPeriods = new TextField();
 		textfieldNumSpecifiedPastPeriods.setImmediate(true);
 		// textfieldIterations.setValue(10000);
 		textfieldNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
@@ -304,8 +329,11 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 			}
 		});
 		
-		verticalLayout.addComponent(textfieldNumSpecifiedPastPeriods);
-
+		//verticalLayout.addComponent(textfieldNumSpecifiedPastPeriods);
+		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 5);
+		labelNumSpecifiedPastPeriods.setStyleName("parameter");
+		textfieldNumSpecifiedPastPeriods.setStyleName("parameter");
+		
 		/**
 		 * Auskommentiert, da nicht für Zeitreihenanalyse benötigt
 		 * 
@@ -381,8 +409,12 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		*/
 
 		// Deterministische Parameter: Anzahl anzugebender Perioden
-
-		textfieldNumPeriodsToForecast_deterministic = new TextField("Deterministische Parameter: Anzahl anzugebender Perioden");
+		labelHeadingDeterministicCommon = new Label ("Deterministische Parameter:");
+		gridLayout.addComponent(labelHeadingDeterministicCommon, 0, 6);
+		labelNumPeriods_deterministic = new Label(
+				"Anzahl anzugebender Perioden");
+		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 7);
+		textfieldNumPeriodsToForecast_deterministic = new TextField();
 		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
 		textfieldNumPeriodsToForecast_deterministic
 				.setDescription(toolTipNumPeriodsToForecast_deterministic);
@@ -396,7 +428,11 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 										.getValue());
 					}
 				});
-		verticalLayout.addComponent(textfieldNumPeriodsToForecast_deterministic);
+		//verticalLayout.addComponent(textfieldNumPeriodsToForecast_deterministic);
+		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1, 7);
+		labelHeadingDeterministicCommon.setStyleName("parameter");
+		labelNumPeriods_deterministic.setStyleName("parameter");
+		textfieldNumPeriodsToForecast_deterministic.setStyleName("parameter");
 
 	}
 

@@ -32,12 +32,18 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.FileResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -56,10 +62,18 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 	@Autowired
 	private ParameterButtonsMiddlePresenter presenter;
 	
-	Button detMeth;
-	Button description;
-	Button next;
-
+	private HorizontalLayout layoutButton1;
+	private HorizontalLayout layoutButton2;
+	private HorizontalLayout layoutButton3;
+	
+	private Embedded methodIcon;
+	
+	private Label methodLabel;
+	private Button method;
+	private Button description;
+	private Button next;
+	private Label gap;
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -83,13 +97,35 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		setSpacing(true);
 		
 		float hoehe = 95;
-		float breite = 260;		
+		float breite = 260;	
 		
-		detMeth = new Button ("deterministische Methode");
-		detMeth.setStyleName("paramButtonActivated");
-		detMeth.setHeight(hoehe, UNITS_PIXELS);
-		detMeth.setWidth(breite, UNITS_PIXELS);
-		detMeth.addListener(new ClickListener() {
+		/**String hoehe2 = "95px";
+		String breite2 = "260px";
+		
+		layoutButton1 = new HorizontalLayout();
+		layoutButton1.setHeight(hoehe2);
+		layoutButton1.setWidth(breite2);
+		layoutButton1.setStyleName("paramButtonActivated");
+		
+		methodIcon  = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418831298_common_calendar_month-128.png"));
+		
+		layoutButton1.addComponent(methodIcon);
+		
+		methodLabel = new Label ("deterministische Methode");
+		layoutButton1.addComponent(methodLabel);
+		
+		layoutButton1.setComponentAlignment(methodIcon, Alignment.MIDDLE_LEFT);
+		layoutButton1.setComponentAlignment(methodLabel, Alignment.BOTTOM_CENTER);
+		
+		addComponent(layoutButton1);
+		setComponentAlignment(layoutButton1, Alignment.TOP_CENTER);
+		*/
+		
+		method = new Button ("deterministische Methode");
+		method.setStyleName("paramButtonActivated");
+		method.setHeight(hoehe, UNITS_PIXELS);
+		method.setWidth(breite, UNITS_PIXELS);
+		method.addListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -97,9 +133,9 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 			}
 			
 		});
-		detMeth.setIcon(new ThemeResource ("images/icons/newIcons/1418831298_common_calendar_month-128.png"));
-		addComponent(detMeth);
-		setComponentAlignment(detMeth, Alignment.TOP_CENTER);
+		method.setIcon(new ThemeResource ("images/icons/newIcons/1418831298_common_calendar_month-128.png"));
+		addComponent(method);
+		setComponentAlignment(method, Alignment.TOP_CENTER);
 
 		description = new Button ("Kurzbeschreibung");
 		description.setStyleName("paramButton");
@@ -116,6 +152,10 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		description.setIcon(new ThemeResource ("images/icons/newIcons/1418766020_editor_documents_files-128.png"));
 		addComponent(description);
 		setComponentAlignment(description, Alignment.MIDDLE_CENTER);
+		
+		gap = new Label();
+		gap.setHeight("200px");
+		addComponent(gap);
 		
 		next = new Button ("Weiter zu Schritt 3");
 		next.setStyleName("paramButton");
@@ -136,16 +176,16 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 	}
 	
 	public void setMethodButtonActivated () {
-		detMeth.setStyleName("paramButtonActivated");
+		method.setStyleName("paramButtonActivated");
 		description.setStyleName("paramButton");
-		detMeth.requestRepaint();
+		method.requestRepaint();
 		description.requestRepaint();
 	}
 	
 	public void setDescriptionButtonActivated () {
-		detMeth.setStyleName("paramButton");
+		method.setStyleName("paramButton");
 		description.setStyleName("paramButtonActivated");
-		detMeth.requestRepaint();
+		method.requestRepaint();
 		description.requestRepaint();
 	}
 	

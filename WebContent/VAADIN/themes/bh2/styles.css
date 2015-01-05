@@ -209,3 +209,36 @@ div.projectlist:hover {
 	margin-bottom: 20px;
 	/*padding: 50px;*/
 }
+
+.parameter {
+	font-size: 12pt;
+	font-weight: bold;
+	margin: 5px;
+}
+
+.parameter input[type="text"] {
+    font-size:12pt;
+    margin: 5px;
+  }
+
+.seitenLabel {
+	font-size: 20pt;
+	margin-bottom: 3px;
+}
+
+.descriptionLabel {
+	font-size: 16pt;
+}
+
+.homeButton{
+	background: url("./images/icons/newIcons/1418766062_house_home-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.accountButton{
+	background: url("./images/icons/newIcons/1418774135_user_male-128.png");
+	background-size: cover;
+	border: none;
+}
+
