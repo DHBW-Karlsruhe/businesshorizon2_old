@@ -52,6 +52,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.BaseTheme;
 
 /**
  * Dies ist die Vaadin-Implementierung des LogIn Screens. Diese stützt sich vor
@@ -99,7 +100,8 @@ public class LogInScreenViewImplv2 extends Window implements
 	private Button passwordForgotBtn;
 	private Button registerAbortBtn; 
 	private Button loginBtn;
-	//private LoginForm login;
+	private LoginForm login;
+	private Label loginLabel;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -175,44 +177,47 @@ public class LogInScreenViewImplv2 extends Window implements
 		
 		addStyleName("login_view");
 		
-//		login = new LoginForm();
-//		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
-//		login.setUsernameCaption("Mailadresse");
-//		login.setPasswordCaption("Passwort");
-//		login.setWidth(null);
-//		login.setStyleName("login_form");
-//		login.addListener(new LoginForm.LoginListener() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void onLogin(LoginEvent event) {
-//				presenter.doLogin(event.getLoginParameter("username"),
-//						event.getLoginParameter("password"));
-//
-//			}
-//		});
+		login = new LoginForm();
+		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
+		login.setUsernameCaption("Mailadresse");
+		login.setPasswordCaption("Passwort");
+		login.setWidth(null);
+		login.setStyleName("login_form");
+		login.addListener(new LoginForm.LoginListener() {
+			private static final long serialVersionUID = 1L;
 
-		VerticalLayout login = generateLogin();
+			@Override
+			public void onLogin(LoginEvent event) {
+				presenter.doLogin(event.getLoginParameter("username"),
+						event.getLoginParameter("password"));
+
+			}
+		});
+
+		//VerticalLayout login = generateLogin();
 		
 		horizontal.addComponent(login);
 		horizontal.setComponentAlignment(login, Alignment.TOP_CENTER);
 
-		loginBtn = new Button("", this);
-		loginBtn.setIcon(new ThemeResource("images/iconsNewUI/pencil.png"));
-		loginBtn.setWidth(130, Sizeable.UNITS_PIXELS);
-		loginBtn.setHeight(130, Sizeable.UNITS_PIXELS);
+		//loginBtn = new Button("", this);
+		//loginBtn.setIcon(new ThemeResource("images/iconsNewUI/pencil.png"));
+		//loginBtn.setWidth(130, Sizeable.UNITS_PIXELS);
+		//loginBtn.setHeight(130, Sizeable.UNITS_PIXELS);
 		
-		horizontal.addComponent(loginBtn);
-		horizontal.setComponentAlignment(loginBtn, Alignment.TOP_RIGHT);
+		//horizontal.addComponent(loginBtn);
+		//horizontal.setComponentAlignment(loginBtn, Alignment.TOP_RIGHT);
 		
-		registerBtn = new Button("", this);
-		registerBtn.setIcon(new ThemeResource("images/iconsNewUI/head.png"));
-		registerBtn.setHeight(130, Sizeable.UNITS_PIXELS);
-		registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
+		registerBtn = new Button("Registrieren", this);
+		registerBtn.setIcon(new ThemeResource("images/icons/key.png"));
+		//registerBtn.setCaption("Registrieren");
+		registerBtn.setSizeUndefined();
+		addStyleName(BaseTheme.BUTTON_LINK);
+		//registerBtn.setHeight(130, Sizeable.UNITS_PIXELS);
+		//registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
 		
 		passwordForgotBtn = new Button("Passwort vergessen", this);
 		passwordForgotBtn.setEnabled(false);
-
+		
 		horizontal.addComponent(registerBtn);
 		horizontal.setComponentAlignment(registerBtn, Alignment.TOP_RIGHT);
 		horizontal.setMargin(new MarginInfo(true, true, true, true));
@@ -284,6 +289,8 @@ public class LogInScreenViewImplv2 extends Window implements
 				
 		//Erstellen Firmenname-Feld
 		textfieldCompany = new TextField("Firmenname eingeben");
+		textfieldCompany.setRequired(true);
+		textfieldCompany.setRequiredError("Pflichtfeld");
 		
 		//Feld zur Layoutkomponente hinzufügen
 		optional.addComponent(textfieldCompany);
