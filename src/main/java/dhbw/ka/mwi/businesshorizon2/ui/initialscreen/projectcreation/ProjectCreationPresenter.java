@@ -32,6 +32,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListView
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 
+/**
+ * Dieser Presenter ist für die Darstellung des Projekterstellungs Screens zuständig.
+ * Der Projekterstellungs Screen wird auch für das Bearbeiten eines Projektes verwendet.
+ *
+ * @author Marco Glaser
+ */
 public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInterface>{
 
 	private static final long serialVersionUID = 1L;
@@ -53,6 +59,13 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	
 	private User theUser;
 
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 *
+	 * @author Marco Glaser
+	 */
 	@PostConstruct
 	public void init(){
 		eventBus.addHandler(this);
@@ -60,6 +73,17 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		
 	}
 	
+	/**
+	 * Wenn das Event ShowProjectEditButtonsEvent ausgelöst wird, werden in dieser Methode
+	 * die zwei Buttons zum Speichern und zum Abbrechen gesetzt.
+	 * Außerdem wird eine Methode aufgerufen, die in der View die aktuellen Daten des Projektes
+	 * in die Felder setzt.
+	 *
+	 * @param event
+	 * : ShowProjectEditButtonsEvent
+	 *
+	 * @author Marco Glaser
+	 */
 	@EventHandler
 	public void onShowEditScreen(ShowProjectEditButtonsEvent event){
 		final User user = event.getUser();
@@ -102,6 +126,16 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		initialScreenView.deleteTopButton(2);
 	}
 	
+	/**
+	 * Wenn das Event ShowProjectCreationButtonsEvent ausgelöst wird, werden in dieser Methode
+	 * die zwei Buttons zum Speichern und zum Abbrechen gesetzt.
+	 * Nur die Listener der Buttons unterscheiden sich zu denen der obigen Methode.
+	 *
+	 * @param event
+	 * : ShowProjectCreationButtonsEvent
+	 *
+	 * @author Marco Glaser
+	 */
 	@EventHandler
 	public void onShowCreationScreen(ShowProjectCreationButtonsEvent event){
 		final User user = event.getUser();
@@ -144,10 +178,31 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		initialScreenView.deleteTopButton(2);
 	}
 	
+	/**
+	 * Wird von der View aufgerufen, um diesem Presenter das initialScreenView Objekt
+	 * zu übergeben. Wird in den beiden EventHandlern benötigt, um die Buttons in der View zu ändern.
+	 * ?Könnte auch durch Events ersetzt werden?
+	 *
+	 * @param view
+	 * : Die InitialsScreenView der Anwendung
+	 *
+	 * @author Marco Glaser
+	 */
 	public void setInitialScreenView(InitialScreenViewInterface view){
 		this.initialScreenView = view;
 	}
 	
+	/**
+	 * Diese Methode fügt das neu erstellte Projekt hinzu und feuert das Event,
+	 * um die View wieder in den initialen Zustand mit der Projektliste anzuzeigen.
+	 *
+	 * @param name
+	 * : Projektname
+	 * @param description
+	 * : Projektbeschreibung
+	 *
+	 * @author Marco Glaser
+	 */
 	public void addProject(String name, String description) {
 
 		Project project = new Project(name, description);
@@ -172,6 +227,19 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 	}
 	
+	/**
+	 * Diese Methode führt die Änderungen der Projektbeschreibung und des Namens durch
+	 * und feuert das Event, um den initialen Zustand der View anzuzeigen.
+	 *
+	 * @param project
+	 * : Projektobjekt
+	 * @param name
+	 * : Projektname
+	 * @param description
+	 * : Projektbeschreibung
+	 *
+	 * @author Marco Glaser
+	 */
 	public boolean editProject(Project project, String name, String description) {
 
 
@@ -205,12 +273,6 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 			logger.debug("Projektname bereits vorhanden.");
 			return false;
 		}
-
-
-		//eventBus.fireEvent(new ProjectEditEvent(project));
-		//logger.debug("ShowEdditEvent gefeuert");
-
-
 
 	}
 

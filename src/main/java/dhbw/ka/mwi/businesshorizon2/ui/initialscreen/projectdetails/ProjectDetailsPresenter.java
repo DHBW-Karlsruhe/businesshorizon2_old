@@ -21,6 +21,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetai
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 
+/**
+ * Dieser Presenter ist für die Darstellung der Projektdetails zuständig.
+ *
+ * @author Marco Glaser
+ */
 public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterface>{
 
 	private static final long serialVersionUID = 1L;
@@ -38,12 +43,28 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
 
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 *
+	 * @author Marco Glaser
+	 */
 	@PostConstruct
 	public void init(){
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
 	}
 
+	/**
+	 * Eventhandler für das ShowProjectListEvent. Dieses wird gefeuert, wenn die Projektliste angezeigt werden soll.
+	 * Die Methode zeigt die Projektdetails des ersten Projekts in der Liste an. 
+	 *
+	 * @param event
+	 * : ShowProjectListEvent
+	 *
+	 * @author Marco Glaser
+	 */
 	@EventHandler
 	public void onShowProjectList(ShowProjectListEvent event) {
 
@@ -59,6 +80,15 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 
 	}
 
+	/**
+	 * Eventhandler für das ShowProjectDetailsEvent. Dieses wird gefeuert, wenn Details zu einem Projekt angezeigt
+	 * werden sollen. Die Methode zeigt die Projektdetails zu diesem Projekt an. 
+	 *
+	 * @param event
+	 * : ShowProjectDetailsEvent
+	 *
+	 * @author Marco Glaser
+	 */
 	@EventHandler
 	public void onShowProjectDetails(ShowProjectDetailsEvent event){
 		if(user.getProjects().size() == 0){
@@ -69,6 +99,16 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 		}
 	}
 
+	/**
+	 * Diese Methode baut die Strings für die Projektdetails zusammen. Die notwendigen Infos
+	 * bekommt sie aus dem übergebenen Projektobjekt.
+	 * Sie ruft dann die Methode in der View auf, um die Details anzuzeigen.
+	 *
+	 * @param project
+	 * Das Projekt, von dem die Details angezeigt werden sollen
+	 *
+	 * @author Marco Glaser
+	 */
 	private void showProjectDetails(Project project) {
 		String projectName =  project.getName();
 		String projectDetails;
@@ -100,6 +140,15 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 		getView().setProjectDetails(projectName, projectDetails, projectDescription, lastChanged);
 	}
 
+	/**
+	 * Eventhandler für das SelectProjectEvent. Dieses wird gefeuert, wenn ein Projekt aus der Liste
+	 * ausgewählt wird. Die Methode zeigt die Projektdetails zu diesem Projekt an. 
+	 *
+	 * @param event
+	 * : SelectProjectEvent
+	 *
+	 * @author Marco Glaser
+	 */
 	@EventHandler
 	public void onSelectProject(SelectProjectEvent event){
 		Project project = projectProxy.getSelectedProject();

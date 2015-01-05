@@ -19,6 +19,13 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
 
+/**
+ * Diese View ist zuständig für das Erstellen eines Projektes und das Bearbeiten eines Projektes,
+ * da sich diese beiden Prozesse im UI nicht unterscheiden.
+ * Sie wird in den rechten Teil des horizontalen SplitPanels der InitialScreenView eingefügt.
+ *
+ * @author Marco Glaser
+ */
 public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCreationViewInterface{
 
 	private static final long serialVersionUID = 1L;
@@ -39,6 +46,13 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 	
 	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
 	
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+	 * und initialisiert die View-Komponenten.
+	 *
+	 * @author Marco Glaser
+	 */
 	@PostConstruct
 	public void init(){
 		presenter.setView(this);
@@ -46,6 +60,12 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		logger.debug("Initialisierung beendet");
 	}
 	
+	/**
+	 * Diese Methode erstellt das UI, bestehend aus Inputfeld für Projektname und
+	 * Projektbeschreibung.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void generateUi(){
 		setWidth(95, UNITS_PERCENTAGE);
 		setHeight(Sizeable.SIZE_UNDEFINED, 0);
@@ -74,6 +94,16 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		addComponent(secondGap);
 	}
 	
+	/**
+	 * wird von einer anderen View aufgerufen, um dieser View das initialScreenView Objekt
+	 * zu übergeben. Die View übergibt es an den Presenter.
+	 * ?Könnte auch durch Events ersetzt werden?
+	 *
+	 * @param view
+	 * : Die InitialsScreenView der Anwendung
+	 *
+	 * @author Marco Glaser
+	 */
 	public void setInitialScreen(InitialScreenViewInterface view){
 		presenter.setInitialScreenView(view);
 	}
@@ -85,12 +115,24 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		getWindow().showNotification(notif);
 	}
 	
+	/**
+	 * Diese Methode zieht die Werte aus den Inputfeldern und übergibt sie an den Presenter,
+	 * um dort das Projekt anlegen zu lassen.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void addProject(){
 		String projectName = (String) projectNameInput.getValue();
 		String projectDescription = (String) projectDescriptionInput.getValue();
 		presenter.addProject(projectName, projectDescription);
 	}
 	
+	/**
+	 * Diese Methode zieht die Werte aus den Inputfeldern und übergibt sie an den Presenter,
+	 * um dort das Projekt bearbeiten zu lassen.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void editProject(){
 		String projectName = (String) projectNameInput.getValue();
 		String projectDescription = (String) projectDescriptionInput.getValue();
@@ -98,12 +140,25 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		presenter.editProject(project, projectName, projectDescription);
 	}
 	
+	/**
+	 * Diese Methode setzt Name und Beschreibung, des aktuell in der Projektliste ausgewählten
+	 * Projektes in die Inputfelder. Wird aufgerufen wenn die View zum Bearbeiten eines Projektes
+	 * verwendet wird.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void setProjectData(){
 		Project project = projectProxy.getSelectedProject();
 		projectNameInput.setValue(project.getName());
 		projectDescriptionInput.setValue(project.getDescription());
 	}
 	
+	/**
+	 * Diese Methode setzt Initialwerte in die Inputfelder. Wird aufgerufen wenn die View
+	 * zum Erstellen eines neuen Projektes verwendet wird.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void clearProjectData(){
 		projectNameInput.setValue("Geben sie hier den Projektname ein");
 		projectDescriptionInput.setValue("Geben sie hier eine Beschreibung des Projekts ein");

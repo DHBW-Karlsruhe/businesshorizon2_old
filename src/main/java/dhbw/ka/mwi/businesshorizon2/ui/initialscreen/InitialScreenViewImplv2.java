@@ -62,7 +62,8 @@ import com.vaadin.ui.Window;
 
 /**
  * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
- * Eingangs-Fenster).
+ * Eingangs-Fenster). Die View dient als Container für den gesamten Inhalt der Anwendung.
+ * Die einzelnen Views werden in das Layout dieser View eingefügt.
  *
  * @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich, Marco Glaser
  *
@@ -170,6 +171,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 	/**
 	 * Diese Methode setzt das Layout für den Screen fest sowie den Titel der Anwendung.
+	 * Zusätzlich wird hier noch das Menü erzeugt und die Buttons, um ein Projekt zu bearbeiten,
+	 * ein neues anzulegen oder ein bestehendes zu löschen.
 	 *
 	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 	 */
@@ -491,13 +494,16 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 
 	/**
-	 * Diese Methode setzt nun die übergebenen zwei Views das Horizontale Layout
-	 * unter der Überschrift.
+	 * Diese Methode setzt die zweit übergebenen Views in den unteren rechten Bereich
+	 * des Layouts. Also sozusagen den aktuellen Content der Anwendung.
+	 * Der rechte Bereich dieses SplitPanels dient als Detailbereich zum linken Bereich.
+	 * Beispielsweise beim Aufrufen der Anwendung links die Projektliste und rechts
+	 * die Details zum jeweils ausgewählten Projekt.
 	 *
 	 * @param leftView
-	 * : Die PeriodenListe
+	 * : linker Bereich
 	 * @param rightView
-	 * : Die Infoanzeige
+	 * : rechter Bereich (Details zum linken Bereich)
 	 * @author Christian Scherer, Marco Glaser
 	 */
 	@Override
@@ -506,15 +512,28 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		horizontalSplitPanelRight.setSecondComponent((Component) rightView);
 	}
 
+	/**
+	 * Diese Methode setzt die übergebene View in den rechten Bereich des
+	 * horizontalen SplitPanels.
+	 * Kann aufgerufen werden um nur den rechten Bereich zu ändern aber nicht
+	 * den linken Bereich.
+	 *
+	 * @param view
+	 * : rechter Bereich (Details zum linken Bereich)
+	 * @author Marco Glaser
+	 */
 	public void showProjectCreationScreen(View view){
 		horizontalSplitPanelRight.setSecondComponent((Component) view);
 	}
 
 	/**
-	 * Diese Methode fügt einen Button zur Button-Leiste (topRightLayout) hinzu.
+	 * Diese Methode fügt einen Button zur Button-Leiste (topRightLayout) zusammen 
+	 * mit einem ClickListener hinzu.
 	 *
 	 * @param button
 	 * : Der Button
+	 * @param listener
+	 * : Der ClickListener
 	 * @author Marco Glaser
 	 */
 	public void addTopButton(TopBarButton button, ClickListener listener){
@@ -533,6 +552,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	 * : Der Button
 	 * @param index
 	 * : Stelle, wo der Button gesetzt werden soll
+	 * @param listener
+	 * : Der ClickListener
 	 * @author Marco Glaser
 	 */
 	public void setTopButton(TopBarButton button, int index, ClickListener listener){
@@ -553,6 +574,14 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
 	}
 
+	/**
+	 * Diese Methode löscht einen Button aus der Buttonleiste.
+	 * Es wird der Button gelöscht, der sich an der Stelle index befindet.
+	 *
+	 * @param index
+	 * : Die Stelle von dem Button, der gelöscht werden soll
+	 * @author Marco Glaser
+	 */
 	public void deleteTopButton(int index){
 		Component comp = topRightLayout.getComponent(index);
 		if(comp != null){
@@ -560,18 +589,42 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		}
 	}
 
+	/**
+	 * Diese Methode setzt die ursprünglichen 3 Buttons Projekt-hinzufügen,
+	 * Projekt-bearbeiten und Projekt-löschen in die Button leiste.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void setInitialTopButtons(){
 		setTopButton(addProjectButton, 0, addProjectButtonListener);
 		setTopButton(editProjectButton, 1, null);
 		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
 	}
 	
+	/**
+	 * Diese Methode ändert den oberen Teil im Menü: Das Icon, von der Seite die aktuell
+	 * rechts als Content angezeigt wird, sowie die zugehörige Beschreibung dazu.
+	 *
+	 * @param source
+	 * : Quelle des Icons als String
+	 * @param page
+	 * : Name der Seite
+	 * @param description
+	 * : Beschreibung der Seite
+	 * 
+	 * @author Marco Glaser
+	 */
 	public void setPageDescription(String source, String page, String description){
 		homeIcon.setSource(new ThemeResource(source));
 		seitenLabel.setValue(page);
 		descriptionLabel.setValue(description);
 	}
 	
+	/**
+	 * Diese Methode setzt den oberen Teil im Menp auf den initalien Stand zurück (Startseite).
+	 *
+	 * @author Marco Glaser
+	 */
 	public void setInitialPageDescription(){
 		setPageDescription("./images/icons/newIcons/1418766062_house_home-128.png", "Startseite", "Übersicht über alle Projekte");
 	}

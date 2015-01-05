@@ -58,7 +58,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
  * setzen. Somit ist es notwenig, dass er fuer jedes Anzuzeigende (Teil-)Fenster
  * einen entsprechenden EventHandler fuer den jeweiligen Show*Event registriert.
  *
- * @author Christian Scherer, Marcel Rosenberger
+ * @author Christian Scherer, Marcel Rosenberger, Marco Glaser
  *
  */
 
@@ -111,14 +111,15 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	/**
 	 * Dieser Event wird zu Beginn von der BHApplication (nach dem Einloggen)
-	 * abgesetzt. Dabei wird in auf der linken Seite die Projekt-Liste und auf
-	 * der rechten Seite die Anwenderinformationen dargestellt. Der Projektlsite
-	 * wird dabei das angemeldete User-Objekt übergeben.
+	 * abgesetzt. Dabei wird auf der linken Seite die Projekt-Liste und auf
+	 * der rechten Seite der Detailscreen für die Projekte eingefügt
 	 *
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Marco Glaser
+	 * 
 	 * @param event
-	 * das ShowInitialScreenViewEvent, welches das angemeldete
+	 * :das ShowInitialScreenViewEvent, welches das angemeldete
 	 * User-Objekt beinhaltet
+	 * 
 	 */
 	@EventHandler
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
@@ -153,6 +154,13 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	}
 	
+	/**
+	 * Diese Methode löscht das übergeben Projekt und aktualisiert die View.
+	 *
+	 * @param project
+	 * : Das zu entfernende Projekt
+	 * @author Marco Glaser
+	 */
 	public void removeProject(Project project) {
 		persistenceService.removeProject(this.user, project);
 		logger.debug("Projekt aus User entfernt");
@@ -164,18 +172,42 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	}
 	
+	/**
+	 * Diese Methode setzt die View zum Erstellen eines neuen Projektes
+	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
+	 * anzupassen.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void showProjectCreationScreen(){
 		getView().showProjectCreationScreen(projectCreationView);
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectCreationButtonsEvent(userProxy.getSelectedUser()));
 	}
 	
+	/**
+	 * Diese Methode setzt die View zum Bearbeiten eines neuen Projektes
+	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
+	 * anzupassen.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void showProjectEditScreen(){
 		getView().showProjectCreationScreen(projectCreationView);
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectEditButtonsEvent(userProxy.getSelectedUser()));
 	}
 	
+	/**
+	 * Diese Methode behandelt das Event die initialen Buttons in der Leiste wiederherzustellen
+	 * und ruft die entsprechende Methode in der View auf. Außerdem wird auch die
+	 * Seitenbeschreibung auf den initialen Stand zurückgesetzt.
+	 * 
+	 * @param event
+	 * : ShowInitialTopButtonsEvent
+	 *
+	 * @author Marco Glaser
+	 */
 	@EventHandler
 	public void onShowInitialTopButtons(ShowInitialTopButtonsEvent event){
 		getView().setInitialTopButtons();

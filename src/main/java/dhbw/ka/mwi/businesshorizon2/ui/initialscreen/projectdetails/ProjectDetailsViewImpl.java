@@ -11,6 +11,13 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * Diese View ist zuständig für das Anzeigen der Details zu einem Projekt.
+ * Sie wird in den rechten Bereich des horizontalen SplitPanels der
+ * initialScreenView eingefügt.
+ *
+ * @author Marco Glaser
+ */
 public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDetailsViewInterface{
 
 	private static final long serialVersionUID = 1L;
@@ -41,6 +48,13 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	private Label projectDescriptionValue;
 	private Label lastChangedValue;
 	
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
+	 * und initialisiert die View-Komponenten.
+	 *
+	 * @author Marco Glaser
+	 */
 	@PostConstruct
 	public void init(){
 		presenter.setView(this);
@@ -48,6 +62,12 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		logger.debug("Initialisierung beendet");
 	}
 	
+	/**
+	 * Diese Methode erstellt das UI, bestehend aus den Labels für die Details zum Projekt:
+	 * Name, Details, Beschreibung und zuletzt geändert.
+	 *
+	 * @author Marco Glaser
+	 */
 	private void generateUi(){
 		setWidth(95, UNITS_PERCENTAGE);
 		setHeight(Sizeable.SIZE_UNDEFINED, 0);
@@ -152,6 +172,21 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		addComponent(lastChangedLayout);
 	}
 	
+	/**
+	 * Diese Methode setzt die Details zu einem Projekt, welche als Parameter übergeben werden,
+	 * als Werte der Labels.
+	 * 
+	 * @param projectName
+	 * : Projektname
+	 * @param projectDetails
+	 * : Projektdetails
+	 * @param projectDescription
+	 * : Projektbeschreibung
+	 * @param lastChanged
+	 * : Datum, wann das Projekt zuletzt geändert wurde
+	 *
+	 * @author Marco Glaser
+	 */
 	public void setProjectDetails(String projectName, String projectDetails, String projectDescription, String lastChanged){
 		this.projectName.setValue("Projektname:");
 		this.projectDetails.setValue("Projektdetails:");
@@ -163,6 +198,12 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		lastChangedValue.setValue(lastChanged);
 	}
 	
+	/**
+	 * Diese Methode löscht die Werte aller Labels.
+	 * Wird benötigt, wenn keine Projekte vorhanden sind.
+	 *
+	 * @author Marco Glaser
+	 */
 	public void clearProjectDetails(){
 		projectName.setValue("");
 		projectDetails.setValue("");
