@@ -81,7 +81,7 @@ public class LogInScreenViewImplv2 extends Window implements
 	
 	private VerticalLayout verticalTop;
 	
-	private VerticalLayout registerBtnLayout;
+	private VerticalLayout registerBtnLayout, dialogRegBtnLayout, registerAbortBtnLayout, loginBtnLayout;
 	
 	private VerticalSplitPanel vSplitPanel;
 	
@@ -103,8 +103,12 @@ public class LogInScreenViewImplv2 extends Window implements
 	private Button registerAbortBtn; 
 	private Button loginBtn;
 	private LoginForm login;
-	private Label registerLabel;
-
+	private Label registerBtnLabel;
+	private Label dialogRegBtnLabel;
+	private Label registerAbortBtnLabel;
+	private Label loginBtnLabel;
+	
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -186,14 +190,14 @@ public class LogInScreenViewImplv2 extends Window implements
 		login.setWidth(null);
 		login.setStyleName("login_form");
 		login.addListener(new LoginForm.LoginListener() {
-			private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onLogin(LoginEvent event) {
 				presenter.doLogin(event.getLoginParameter("username"),
 						event.getLoginParameter("password"));
 
-			}
+					}
 		});
 
 		//VerticalLayout login = generateLogin();
@@ -201,36 +205,50 @@ public class LogInScreenViewImplv2 extends Window implements
 		horizontal.addComponent(login);
 		horizontal.setComponentAlignment(login, Alignment.TOP_CENTER);
 
-		//loginBtn = new Button("", this);
-		//loginBtn.setIcon(new ThemeResource("images/iconsNewUI/pencil.png"));
-		//loginBtn.setWidth(130, Sizeable.UNITS_PIXELS);
-		//loginBtn.setHeight(130, Sizeable.UNITS_PIXELS);
+		HorizontalLayout landingBtnLayout = new HorizontalLayout();
 		
-		//horizontal.addComponent(loginBtn);
-		//horizontal.setComponentAlignment(loginBtn, Alignment.TOP_RIGHT);
+		loginBtnLayout = new VerticalLayout();
+		loginBtn = new Button("", this);
+		loginBtn.setWidth(100, Sizeable.UNITS_PIXELS);
+		loginBtn.setHeight(100, Sizeable.UNITS_PIXELS);
+		loginBtn.addStyleName("loginBtn");
+		
+		loginBtnLabel = new Label("Login");
+		loginBtnLabel.setWidth(100, Sizeable.UNITS_PIXELS);
+		loginBtnLabel.addStyleName("loginBtnLabel");
+		
+		loginBtnLayout.addComponent(loginBtn);
+		loginBtnLayout.addComponent(loginBtnLabel);
+		
+		landingBtnLayout.addComponent(loginBtnLayout);
+		
+		//horizontal.addComponent(loginBtnLayout);
+		//horizontal.setComponentAlignment(loginBtnLayout, Alignment.TOP_RIGHT);
 		
 		registerBtnLayout = new VerticalLayout();
 		registerBtnLayout.setSizeUndefined();
-		addStyleName("registerBtn");
 		
 		registerBtn = new Button("", this);
-		registerBtn.setIcon(new ThemeResource("images/iconsNewUI/head.png"));
 		registerBtn.setSizeUndefined();
-		registerBtn.setHeight(130, Sizeable.UNITS_PIXELS);
-		registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
+		registerBtn.setHeight(100, Sizeable.UNITS_PIXELS);
+		registerBtn.setWidth(100, Sizeable.UNITS_PIXELS);
+		registerBtn.addStyleName("registerBtn");
 		
-		registerLabel = new Label("Registrieren");
+		registerBtnLabel = new Label("Registrieren");
+		registerBtnLabel.setWidth(100, Sizeable.UNITS_PIXELS);
 		addStyleName("registerBtnLabel");
 		
 		registerBtnLayout.addComponent(registerBtn);
-		registerBtnLayout.addComponent(registerLabel);
+		registerBtnLayout.addComponent(registerBtnLabel);
+		
+		landingBtnLayout.addComponent(registerBtnLayout);
 		
 		
 		passwordForgotBtn = new Button("Passwort vergessen", this);
 		passwordForgotBtn.setEnabled(false);
 		
-		horizontal.addComponent(registerBtnLayout);
-		horizontal.setComponentAlignment(registerBtnLayout, Alignment.TOP_RIGHT);
+		horizontal.addComponent(landingBtnLayout);
+		horizontal.setComponentAlignment(landingBtnLayout, Alignment.TOP_RIGHT);
 		horizontal.setMargin(new MarginInfo(true, true, true, true));
 		horizontal.setSizeFull();
 		//vertical.addComponent(passwordForgotBtn);
@@ -273,6 +291,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		passwordFieldPassword = new PasswordField("Passwort eingeben");
 		passwordFieldPassword.setRequired(true);
 		passwordFieldPassword.setRequiredError("Pflichtfeld");
+		passwordFieldPassword.setDescription("Geben Sie bitte ein Passwort (8-12 Zeichen) ein, das folgende Kriterien erfüllt: Mindestens ein Groß- und ein Kleinbuchstabe, Zahl, Sonderzeichen.");
 		
 		//Erstellen des Passwort-Wiederholen Feld
 		passwordFieldPasswordRep = new PasswordField("Passwort wiederholen");
@@ -307,18 +326,38 @@ public class LogInScreenViewImplv2 extends Window implements
 		optional.addComponent(textfieldCompany);
 		
 		//Registrieren-Button erstellen
+		
+		dialogRegBtnLayout = new VerticalLayout();
+		
 		dialogRegBtn = new Button("", this);
-		dialogRegBtn.setIcon(new ThemeResource("images/iconsNewUI/circlePlus.png"));
-		dialogRegBtn.setWidth(135, Sizeable.UNITS_PIXELS);
-		dialogRegBtn.setHeight(135, Sizeable.UNITS_PIXELS);
+		dialogRegBtn.setWidth(100, Sizeable.UNITS_PIXELS);
+		dialogRegBtn.setHeight(100, Sizeable.UNITS_PIXELS);
+		dialogRegBtn.addStyleName("dialogRegBtn");
 		
+		dialogRegBtnLabel = new Label("Registrieren");
+		dialogRegBtnLabel.setWidth(100, Sizeable.UNITS_PIXELS);
+		dialogRegBtnLabel.addStyleName("dialogRegBtnLabel");
+		
+		dialogRegBtnLayout.addComponent(dialogRegBtn);
+		dialogRegBtnLayout.addComponent(dialogRegBtnLabel);
+		dialogRegBtnLayout.setSizeUndefined();
+		//Abbrechen-Button erstellen
+
+		registerAbortBtnLayout = new VerticalLayout();
+	
 		registerAbortBtn = new Button("", this);
-		registerAbortBtn.setIcon(new ThemeResource("images/iconsNewUI/circleCross.png"));
-		registerAbortBtn.setWidth(135, Sizeable.UNITS_PIXELS);
-		registerAbortBtn.setHeight(135, Sizeable.UNITS_PIXELS);
+		registerAbortBtn.setWidth(100, Sizeable.UNITS_PIXELS);
+		registerAbortBtn.setHeight(100, Sizeable.UNITS_PIXELS);
+		registerAbortBtn.addStyleName("registerAbortBtn");
 		
-		buttonLayout.addComponent(dialogRegBtn);
-		buttonLayout.addComponent(registerAbortBtn);
+		registerAbortBtnLabel = new Label("Abbrechen");
+		registerAbortBtnLabel.setWidth(100, Sizeable.UNITS_PIXELS);
+		
+		registerAbortBtnLayout.addComponent(registerAbortBtn);
+		registerAbortBtnLayout.addComponent(registerAbortBtnLabel);
+		
+		buttonLayout.addComponent(dialogRegBtnLayout);
+		buttonLayout.addComponent(registerAbortBtnLayout);
 		buttonLayout.setMargin(true, true, true, true);
 		
 		registerFields.addComponent(credentials);

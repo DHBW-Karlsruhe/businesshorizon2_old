@@ -120,7 +120,7 @@ div.projectlist:hover {
 	
 }
 
-.v-button-registerBtn {
+.registerBtn {
 	background: url("./images/iconsNewUI/head.png");
 	background-size: cover;
 	border: none;
@@ -128,5 +128,37 @@ div.projectlist:hover {
 
 .registerBtnLabel{
 	font-size: 18px;
+	text-align: center;
+}
+.registerAbortBtn {
+	background: url("./images/iconsNewUI/circleCross.png");
+	background-size: cover;
+	border: none;
 }
 
+.registerBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
+
+.dialogRegBtn {
+	background: url("./images/iconsNewUI/head.png");
+	background-size: cover;
+	border: none;
+}
+
+.dialogRegBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
+
+.loginBtn {
+	background: url("./images/iconsNewUI/unlock.png");
+	background-size: cover;
+	border: none;
+}
+
+.loginBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
