@@ -94,13 +94,13 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		projectDescriptionValue = new Label();
 		lastChangedValue = new Label();
 		
-		pNameVertical.setWidth(250, UNITS_PIXELS);
+		pNameVertical.setWidth(200, UNITS_PIXELS);
 		pNameVertical.setHeight(100, UNITS_PERCENTAGE);
-		pDetailsVertical.setWidth(250, UNITS_PIXELS);
+		pDetailsVertical.setWidth(200, UNITS_PIXELS);
 		pDetailsVertical.setHeight(100, UNITS_PERCENTAGE);
-		pDescVertical.setWidth(250, UNITS_PIXELS);
+		pDescVertical.setWidth(200, UNITS_PIXELS);
 		pDescVertical.setHeight(100, UNITS_PERCENTAGE);
-		lChangedVertical.setWidth(250, UNITS_PIXELS);
+		lChangedVertical.setWidth(200, UNITS_PIXELS);
 		lChangedVertical.setHeight(100, UNITS_PERCENTAGE);
 		pNameValueVertical.setHeight(100, UNITS_PERCENTAGE);
 		pDetailsValueVertical.setHeight(100, UNITS_PERCENTAGE);

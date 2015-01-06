@@ -246,7 +246,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		descriptionLabel.setStyleName("descriptionLabel");
 		descriptionLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		descriptionLayout.setWidth(100, UNITS_PERCENTAGE);
-		descriptionLayout.setHeight(60, UNITS_PIXELS);
+		descriptionLayout.setHeight(80, UNITS_PIXELS);
 		splitter.setWidth(98, UNITS_PERCENTAGE);
 		splitter2.setWidth(98, UNITS_PERCENTAGE);
 		menuButtonsLayout.setWidth(100, UNITS_PERCENTAGE);
@@ -372,7 +372,8 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 
 		setContent(mainLayout);
 
-		addProjectButton = new TopBarButton("addProjectButton", "Neues Projekt hinzufügen");
+		addProjectButton = new TopBarButton("addProjectButton", "Neues Projekt");
+		addProjectButton.addLabel("hinzufügen");
 		addProjectButtonListener = new ClickListener(){
 
 			private static final long serialVersionUID = 1L;
@@ -380,7 +381,10 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.showProjectCreationScreen();
-				setPageDescription("./images/icons/newIcons/1418831401_circle_add_plus-128.png", "Neues Projekt anlegen", "Geben Sie hier den Namen und eine Beschreibung ein");
+				String[] desc = new String[2];
+				desc[0] = "Geben Sie hier den Namen und";
+				desc[1] = "eine Beschreibung ein";
+				setPageDescription("./images/icons/newIcons/1418831401_circle_add_plus-128.png", "Neues Projekt anlegen", desc);
 			}
 
 		};
@@ -393,7 +397,10 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.showProjectEditScreen();
-				setPageDescription("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png", "Projekt bearbeiten", "Ändern Sie hier Name oder Beschreibung");
+				String[] desc = new String[2];
+				desc[0] = "Ändern Sie hier Name oder";
+				desc[1] = "Beschreibung des Projekts";
+				setPageDescription("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png", "Projekt bearbeiten", desc);
 			}
 
 		};
@@ -600,7 +607,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		setTopButton(editProjectButton, 1, null);
 		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
 	}
-	
+
 	/**
 	 * Diese Methode ändert den oberen Teil im Menü: Das Icon, von der Seite die aktuell
 	 * rechts als Content angezeigt wird, sowie die zugehörige Beschreibung dazu.
@@ -615,11 +622,45 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 	 * @author Marco Glaser
 	 */
 	public void setPageDescription(String source, String page, String description){
+		int labelCount = descriptionLayout.getComponentCount();
 		homeIcon.setSource(new ThemeResource(source));
 		seitenLabel.setValue(page);
 		descriptionLabel.setValue(description);
+		descriptionLayout.setComponentAlignment(descriptionLabel, Alignment.MIDDLE_CENTER);
+		for(int i = 1; i < labelCount; i++){
+			descriptionLayout.removeComponent(descriptionLayout.getComponent(i));
+		}
 	}
-	
+
+	public void setPageDescription(String source, String page, String[] description){
+		int labelCount = descriptionLayout.getComponentCount();
+		Label oldLabel;
+		int i;
+		homeIcon.setSource(new ThemeResource(source));
+		seitenLabel.setValue(page);
+		for(i = 0; i < labelCount && i < description.length; i++){
+			oldLabel = (Label) descriptionLayout.getComponent(i);
+			oldLabel.setValue(description[i]);
+			if(i == 0){
+				descriptionLayout.setComponentAlignment(oldLabel, Alignment.BOTTOM_CENTER);
+			}
+			else{
+				descriptionLayout.setComponentAlignment(oldLabel, Alignment.TOP_CENTER);
+			}
+		}
+		//		descriptionLabel.setValue(description[0]);
+		for(int a = i; a < description.length; a++){
+			Label newLabel = new Label(description[a]);
+			newLabel.setStyleName("descriptionLabel");
+			newLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+			descriptionLayout.addComponent(newLabel);
+			descriptionLayout.setComponentAlignment(newLabel, Alignment.TOP_CENTER);
+		}
+		for(int b = i; b < labelCount; b++){
+			descriptionLayout.removeComponent(descriptionLayout.getComponent(b));
+		}
+	}
+
 	/**
 	 * Diese Methode setzt den oberen Teil im Menp auf den initalien Stand zurück (Startseite).
 	 *

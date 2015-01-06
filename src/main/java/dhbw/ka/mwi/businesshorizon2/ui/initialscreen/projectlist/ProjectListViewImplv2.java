@@ -63,16 +63,12 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
- * Dies ist die Vaadin-Implementierung der PeriodListView. Die Rahmendarstellung
- * wird in der generateUi Methode visuell dargestellt. Die einzelnen Projekte
- * mit Namen, Perioden, Aenderungsdatum und Loeschmethode werde in den Methoden
- * setProjects und generateSingleProject erzeugt. Die Click-Events verschiedener
- * werden gesammelt in der Methode buttonClick verwertet und falls Logik von
- * noeten ist vom Presenter weiter ausgefuehrt. Die Auswahl eines Projekts wird
- * hier mittels der layoutClick Methode realisiert und fuehrt zum
- * Projekt-Wizard.
+ * Dies ist die Vaadin-Implementierung der Projektliste.
+ * Sie erweitert ein VerticalLayout und beinhaltet alle Projekte als Komponenten.
+ * Die View wird in den linken Bereich des horizontalen SplitPanel in der initialScreenView
+ * eingefügt. Die Projektdetails sind nicht Bestandteil dieser View.
  * 
- * @author Christian Scherer, Mirko Göpfrich
+ * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
  * 
  */
 public class ProjectListViewImplv2 extends VerticalLayout implements
@@ -142,13 +138,12 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 	 * 
 	 * Aufruf durch den Presenter (bei Ersterstellung oder Aenderungen durch
 	 * Buttonclicks) - wobei zunächst die Projektliste aktualisiert wird.
-	 * Zunaechst werden - falls vorhanden - die derzeitg existenten Elemente des
-	 * projectListPanel geloescht und die Liste der Projekt Layouts und
-	 * Loeschbuttons neu erstellt. Darauf folgt dann in der Schleife die
-	 * Erzeugung der einzelnen VadinKomponenten fuer jedes Projekt durch die
+	 * Zunaechst werden - falls vorhanden - die derzeitg existenten der View gelöscht. 
+	 * Darauf folgt dann in der Schleife die Erzeugung der einzelnen VadinKomponenten 
+	 * fuer jedes Projekt durch die
 	 * Methode generateSingleProjectUi.
 	 * 
-	 * @author Christian Scherer, Mirko Göpfrich
+	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 	 */
 	@Override
 	public void setProjects(List<Project> projects) {
@@ -178,18 +173,13 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 	}
 
 	/**
-	 * Konkrete Ausprogrammierung der der Darstellung eines einzlenen Projekts
-	 * (Name, Anzahl Perioden mit Jahren, Aenderungsdatum, Loeschbutton). Diese
-	 * wird sowohl bei der ersten Erstellung des UIs fuer jedes Projekt
-	 * ausgefuehrt. Die Loeschbuttons werden einer Liste an Loeschbuttons
-	 * hinzufgefuegt umd spaeter eine identifikation der Buttons in der Methode
-	 * buttonClick zu gewaehrleisten. Zum Schluss wird dem Layout noch ein
-	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
-	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
-	 * Projekts wechselt und das VerticalLayout dem projectListPanel
-	 * hinzgefuegt.
+	 * Konkrete Ausprogrammierung der Darstellung eines einzelnen Projekts.
+	 * Ein Projekt wird durch ein VerticalLayout dargestellt, das ein Label
+	 * mit dem Projektname enthält. Außerdem bekommt es einen ClickListener,
+	 * um ein Projekt als selektiert zu kennzeichnen und die Details zum Projekt
+	 * anzuzeigen.
 	 * 
-	 * @author Christian Scherer, Mirko Göpfrich
+	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 	 * @param project
 	 *            das darzustellende Projekt und der aktuelle Index der Liste
 	 * @param i
@@ -244,6 +234,15 @@ public class ProjectListViewImplv2 extends VerticalLayout implements
 		return singleProject;
 	}
 	
+	/**
+	 * Diese Methode ändert die Hintergrundfarben der Projekte.
+	 * Das selektierte Projekt wird hervorgehoben.
+	 * 
+	 * @param i
+	 * : index des selektierten Projekts
+	 * 
+	 * @author Marco Glaser
+	 */
 	public void switchProjectsStyle(int i){
 		int counter = 0;
 		Iterator<VerticalLayout> iter = singleProjectList.iterator();
