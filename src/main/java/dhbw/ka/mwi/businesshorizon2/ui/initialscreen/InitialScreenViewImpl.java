@@ -242,5 +242,11 @@ horizontalSplitPanel.setFirstComponent((Component) leftView);
 horizontalSplitPanel.setSecondComponent((Component) rightView);
 }
 
+@Override
+public void showView() {
+	// TODO Auto-generated method stub
+	
+}
+
 
 }

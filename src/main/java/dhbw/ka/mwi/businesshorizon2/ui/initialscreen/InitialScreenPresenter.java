@@ -41,8 +41,11 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInter
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.step1.ShowStep1ScreenViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.step1.choice.ChoiceViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 
@@ -74,6 +77,12 @@ private Project project;
 
 @Autowired
 private ProjectListViewInterface projectListView;
+
+@Autowired
+private ProjectDetailsViewInterface projectDetailsView;
+
+@Autowired
+private ChoiceViewInterface choiceView; 
 
 @Autowired
 private InfosViewInterface infosView;
@@ -110,19 +119,37 @@ logger.debug("Eventhandler Hinzugefügt");
 * User-Objekt beinhaltet
 */
 @EventHandler
-public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
+/*public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 logger.debug("ShowInitialScreenViewEvent empfangen");
 user = userProxy.getSelectedUser();
 //getView().showUserData(user.getFullName());
-getView().showView(projectListView, infosView);
+getView().showView(projectListView, projectDetailsView);
 logger.debug("Views mit Projekt und Infoview geladen");
 eventBus.fireEvent(new ShowProjectListEvent(user));
 logger.debug("ShowProjectListEvent gefeuert");
 //eventBus.fireEvent(new ShowInfosEvent());
 logger.debug("ShowInfosEvent gefeuert");
 
+}*/
+public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
+	getView().showView();
+	eventBus.fireEvent(new ShowStep1ScreenViewEvent());
+	logger.debug("Step1");
 }
-
+/**
+ * Diese Methode ruft den ersten Schritt zum erstellen eines Projekt auf
+ * @author Christian Pawletta
+ * @param event
+ * Das event zum Aufrufen der View für den ersten Schritt eines neuen Projekts.
+ */
+public void doStep1(){
+	try{
+		eventBus.fireEvent(new ShowStep1ScreenViewEvent());
+	}
+	catch(Exception e){
+		e.printStackTrace();
+	}
+}
 //wird durch den Click-Listener des Logout-Button in der InitinalScreen-View aufgerufen
 public void doLogout() {
 //speichert die Projekte in der externen Datei

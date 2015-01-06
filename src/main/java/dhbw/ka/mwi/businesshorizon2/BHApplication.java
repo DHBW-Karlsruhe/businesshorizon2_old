@@ -36,7 +36,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImplv2;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.step1.ShowStep1ScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.step1.Step1ScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
@@ -62,13 +61,10 @@ public class BHApplication extends Application {
 	private ProcessViewImpl processView;
 	
 	@Autowired
-	private InitialScreenViewImplv2 initialScreenView;
-	
+	//private InitialScreenViewImplv2 initialScreenView;
+	private Step1ScreenViewImpl initialScreenView;
 	@Autowired
 	private LogInScreenViewImpl logInScreenView;
-	
-	@Autowired
-	private Step1ScreenViewImpl step1ScreenView;
 
 	@Autowired
 	private EventBus eventBus;
@@ -129,7 +125,7 @@ public class BHApplication extends Application {
 	 * @param event
 	 *            Der ausgeloeste ShowProjectEvent
 	 */
-	/*@EventHandler
+	@EventHandler
 	public void showProcessView(ShowProjectEvent event) {
 		processView.setName("process");
 		addWindow(processView);
@@ -138,23 +134,6 @@ public class BHApplication extends Application {
 
 		eventBus.fireEvent(new ShowProcessViewEvent());
 		logger.debug("ShowProzessViewEvent gefeuert");
-	}*/
-	/**
-	 * Die Methode triggert die Anzeige des ersten Schrittes eine Prozessablaufs,
-	 * sobald an einer Stelle ein Projekt angezeigt wird.
-	 * @author Christian Pawletta
-	 * @param event
-	 * 				Der ausgelöste ShowProjectEvent
-	 */
-	@EventHandler
-	public void showStep1View(ShowProjectEvent event){
-		step1ScreenView.setName("stepOne");
-		addWindow(step1ScreenView);
-		setMainWindow(step1ScreenView);
-		initialScreenView.open(new ExternalResource(step1ScreenView.getURL()));
-		
-		eventBus.fireEvent(new ShowStep1ScreenViewEvent());
-		logger.debug("ShowStep1ScreenViewEvent gefeuert");
 	}
 	
 	/**

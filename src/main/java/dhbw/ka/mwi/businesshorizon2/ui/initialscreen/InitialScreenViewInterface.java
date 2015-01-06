@@ -59,4 +59,6 @@ public void showView(View leftView, View rightView);
 */
 public void showUserData(String username);
 
+public void showView();
+
 }
