@@ -220,6 +220,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
 		
 		registerLabel = new Label("Registrieren");
+		addStyleName("registerBtnLabel");
 		
 		registerBtnLayout.addComponent(registerBtn);
 		registerBtnLayout.addComponent(registerLabel);
