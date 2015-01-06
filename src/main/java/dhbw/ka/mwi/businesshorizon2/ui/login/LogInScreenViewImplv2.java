@@ -81,6 +81,8 @@ public class LogInScreenViewImplv2 extends Window implements
 	
 	private VerticalLayout verticalTop;
 	
+	private VerticalLayout registerBtnLayout;
+	
 	private VerticalSplitPanel vSplitPanel;
 	
 	
@@ -101,7 +103,7 @@ public class LogInScreenViewImplv2 extends Window implements
 	private Button registerAbortBtn; 
 	private Button loginBtn;
 	private LoginForm login;
-	private Label loginLabel;
+	private Label registerLabel;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -207,19 +209,27 @@ public class LogInScreenViewImplv2 extends Window implements
 		//horizontal.addComponent(loginBtn);
 		//horizontal.setComponentAlignment(loginBtn, Alignment.TOP_RIGHT);
 		
-		registerBtn = new Button("Registrieren", this);
-		registerBtn.setIcon(new ThemeResource("images/icons/key.png"));
-		//registerBtn.setCaption("Registrieren");
+		registerBtnLayout = new VerticalLayout();
+		registerBtnLayout.setSizeUndefined();
+		addStyleName("registerBtn");
+		
+		registerBtn = new Button("", this);
+		registerBtn.setIcon(new ThemeResource("images/iconsNewUI/head.png"));
 		registerBtn.setSizeUndefined();
-		addStyleName(BaseTheme.BUTTON_LINK);
-		//registerBtn.setHeight(130, Sizeable.UNITS_PIXELS);
-		//registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
+		registerBtn.setHeight(130, Sizeable.UNITS_PIXELS);
+		registerBtn.setWidth(130, Sizeable.UNITS_PIXELS);	
+		
+		registerLabel = new Label("Registrieren");
+		
+		registerBtnLayout.addComponent(registerBtn);
+		registerBtnLayout.addComponent(registerLabel);
+		
 		
 		passwordForgotBtn = new Button("Passwort vergessen", this);
 		passwordForgotBtn.setEnabled(false);
 		
-		horizontal.addComponent(registerBtn);
-		horizontal.setComponentAlignment(registerBtn, Alignment.TOP_RIGHT);
+		horizontal.addComponent(registerBtnLayout);
+		horizontal.setComponentAlignment(registerBtnLayout, Alignment.TOP_RIGHT);
 		horizontal.setMargin(new MarginInfo(true, true, true, true));
 		horizontal.setSizeFull();
 		//vertical.addComponent(passwordForgotBtn);
