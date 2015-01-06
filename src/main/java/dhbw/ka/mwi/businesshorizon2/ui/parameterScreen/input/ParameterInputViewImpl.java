@@ -31,10 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -88,6 +90,13 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	private Label labelUnitMonetaryUnit;
 	private Label labelUnitPercentage;
 	private Label labelUnitQuantity;
+	
+	private Embedded questionIconBasisYear;	
+	private Embedded questionIconNumPeriods;
+	private Embedded questionIconIterations;
+	private Embedded questionIconNumPastPeriods;
+	private Embedded questionIconNumSpecifiedPastPeriods;
+	private Embedded questionIconNumPeriods_deterministic;
 
 	private TextField textfieldNumPeriodsToForecast;
 	private TextField textfieldNumPeriodsToForecast_deterministic;
@@ -166,7 +175,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		toolTipIterations = "Hier k\u00f6nnen Sie sich entscheiden, wie oft sie die Berechnung der Prognosewerte durchf\u00fchren wollen. Info: Je mehr Wiederholungen Sie durchf\u00fchren lassen, desto genauer werden die Prognosewerte, aber desto l\u00e4nger wird die Berechnung.";
 		toolTipNumPeriodsToForecast = "Hier tragen Sie die Anzahl der zu prognostizierenden Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
 		toolTipNumPeriodsToForecast_deterministic = "Hier tragen Sie die Anzahl der zu prognostizierenden deterministischen Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
-		toolTipNumPastPeriods = "Hier geben Sie an, wie viele vergangene Perioden für die Berechnung des Prognosewert gewichtet werden sollen. Info: Für die Berechnung m\u00fcssen Sie im n\u00e4chsten Prozessschritt immer eine Periode mehr angeben, als Sie hier eingeben.";
+		toolTipNumPastPeriods = "Hier geben Sie an, wie viele vergangene Perioden für die Berechnung des Prognosewert gewichtet werden sollen. Info: Für die Berechnung m\u00fcssen Sie im n\u00e4chsten Prozessschritt immer eine Periode mehr angeben, als Sie hier eingeben. Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.";
 		toolTipNumSpecifiedPastPeriods ="Bitte beachten Sie, dass die Anzahl anzugebender Perioden immer um mindestens eins größer sein muss als die Anzahl der einbezogenen Perioden. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.";
 		toolTipStepsPerPeriod = "";
 		toolTipIndustryRepresentatives = "Als Vergleichswert zu den prognostizierten Cashflows k\u00f6nnen Sie branchenspezifischen Vertreter mit einbeziehen. Dazu müssen Sie die Checkbox aktivieren und in der Dropdown-Liste die gew\u00fcnschte Branche ausw\u00e4hlen.";
@@ -217,6 +226,11 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		
 		//addComponent(verticalLayout);
 		addComponent(gridLayout);
+		
+		//
+		String heightQuestionIcon = "20px";
+		
+
 
 		// Basisjahr
 
@@ -224,7 +238,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(labelBasisYear, 0, 1);
 		textfieldBasisYear = new TextField();
 		textfieldBasisYear.setImmediate(true);
-		textfieldBasisYear.setDescription(toolTipBasisYear);
+		//textfieldBasisYear.setDescription(toolTipBasisYear);
 		textfieldBasisYear.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -237,14 +251,21 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(textfieldBasisYear, 1, 1);
 		labelBasisYear.setStyleName("parameter");
 		textfieldBasisYear.setStyleName("parameter");
+		
+		questionIconBasisYear = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+		questionIconBasisYear.setHeight(heightQuestionIcon);
+		questionIconBasisYear.setStyleName("questionIcon");
+		questionIconBasisYear.setDescription(toolTipBasisYear);
+		
+		gridLayout.addComponent(questionIconBasisYear, 2, 1);
 
 		//Anzahl zu prognistizierender Perioden
 		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods, 0, 2);
 		textfieldNumPeriodsToForecast = new TextField();
 		textfieldNumPeriodsToForecast.setImmediate(true);
-		textfieldNumPeriodsToForecast
-				.setDescription(toolTipNumPeriodsToForecast);
+		//textfieldNumPeriodsToForecast
+		//		.setDescription(toolTipNumPeriodsToForecast);
 		textfieldNumPeriodsToForecast
 				.addListener(new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
@@ -260,6 +281,13 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		labelNumPeriods.setStyleName("parameter");
 		textfieldNumPeriodsToForecast.setStyleName("parameter");
 		
+		questionIconNumPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+		questionIconNumPeriods.setHeight(heightQuestionIcon);
+		questionIconNumPeriods.setStyleName("questionIcon");
+		questionIconNumPeriods.setDescription(toolTipNumPeriodsToForecast);
+		
+		gridLayout.addComponent(questionIconNumPeriods, 2,2);
+		
 		//nur Deterministische Methode:
 		
 		//Anzahl der Iterationen
@@ -268,7 +296,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		textfieldIterations = new TextField();
 		textfieldIterations.setImmediate(true);
 		// textfieldIterations.setValue(10000);
-		textfieldIterations.setDescription(toolTipIterations);
+		//textfieldIterations.setDescription(toolTipIterations);
 		textfieldIterations.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -283,6 +311,13 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		labelIterations.setStyleName("parameter");
 		textfieldIterations.setStyleName("parameter");
 		
+		questionIconIterations = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+		questionIconIterations.setHeight(heightQuestionIcon);
+		questionIconIterations.setStyleName("questionIcon");
+		questionIconIterations.setDescription(toolTipIterations);
+		
+		gridLayout.addComponent(questionIconIterations, 2, 3);
+		
 		//Anzahl einbezogener vergangener Perioden
 		labelNumPastPeriods = new Label(
 				"Anzahl einbezogener, vergangener Perioden");
@@ -293,9 +328,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		// -> über Event, sodass der Wert ins Projekt übernommen wird und nicht
 		// nur einfach angezeigt wird ohne ausgewertet werden zu können
 		// textfieldNumPastPeriods.setValue(5);
-		textfieldNumPastPeriods
-				.setDescription(toolTipNumPastPeriods
-						+ " Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.");
+		//textfieldNumPastPeriods.setDescription(toolTipNumPastPeriods);
 		textfieldNumPastPeriods.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -310,6 +343,14 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		labelNumPastPeriods.setStyleName("parameter");
 		textfieldNumPastPeriods.setStyleName("parameter");
 		
+		questionIconNumPastPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+		questionIconNumPastPeriods.setHeight(heightQuestionIcon);
+		questionIconNumPastPeriods.setStyleName("questionIcon");
+		
+		questionIconNumPastPeriods.setDescription(toolTipNumPastPeriods);
+		
+		gridLayout.addComponent(questionIconNumPastPeriods, 2, 4);
+		
 		
 		// Anzahl anzugebender, vergangener Perioden
 		labelNumSpecifiedPastPeriods = new Label(
@@ -318,7 +359,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		textfieldNumSpecifiedPastPeriods = new TextField();
 		textfieldNumSpecifiedPastPeriods.setImmediate(true);
 		// textfieldIterations.setValue(10000);
-		textfieldNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
+		//textfieldNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
 		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID1 = 1L;
 
@@ -333,6 +374,14 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 5);
 		labelNumSpecifiedPastPeriods.setStyleName("parameter");
 		textfieldNumSpecifiedPastPeriods.setStyleName("parameter");
+		
+		questionIconNumSpecifiedPastPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+		questionIconNumSpecifiedPastPeriods.setHeight(heightQuestionIcon);
+		questionIconNumSpecifiedPastPeriods.setStyleName("questionIcon");
+		
+		questionIconNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
+		
+		gridLayout.addComponent(questionIconNumSpecifiedPastPeriods, 2, 5);
 		
 		/**
 		 * Auskommentiert, da nicht für Zeitreihenanalyse benötigt
@@ -416,8 +465,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 7);
 		textfieldNumPeriodsToForecast_deterministic = new TextField();
 		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
-		textfieldNumPeriodsToForecast_deterministic
-				.setDescription(toolTipNumPeriodsToForecast_deterministic);
+		//textfieldNumPeriodsToForecast_deterministic.setDescription(toolTipNumPeriodsToForecast_deterministic);
 		textfieldNumPeriodsToForecast_deterministic
 				.addListener(new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
@@ -433,6 +481,14 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		labelHeadingDeterministicCommon.setStyleName("parameter");
 		labelNumPeriods_deterministic.setStyleName("parameter");
 		textfieldNumPeriodsToForecast_deterministic.setStyleName("parameter");
+		
+		questionIconNumPeriods_deterministic = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+		questionIconNumPeriods_deterministic.setHeight(heightQuestionIcon);
+		questionIconNumPeriods_deterministic.setStyleName("questionIcon");
+		
+		questionIconNumPeriods_deterministic.setDescription(toolTipNumPeriodsToForecast_deterministic);
+		
+		gridLayout.addComponent(questionIconNumPeriods_deterministic, 2, 7);
 
 	}
 

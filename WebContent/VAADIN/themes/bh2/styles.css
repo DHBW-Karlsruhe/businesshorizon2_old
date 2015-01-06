@@ -220,6 +220,10 @@ div.projectlist:hover {
     font-size:12pt;
     margin: 5px;
   }
+  
+.questionIcon {
+	margin: 5px;
+}
 
 .seitenLabel {
 	font-size: 20pt;

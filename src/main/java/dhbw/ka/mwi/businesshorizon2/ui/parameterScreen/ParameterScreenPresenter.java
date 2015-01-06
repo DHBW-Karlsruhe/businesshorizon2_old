@@ -81,13 +81,7 @@ public class ParameterScreenPresenter extends Presenter<ParameterScreenViewInter
 	private Project project;
 	
 	@Autowired
-	private ProjectListViewInterface projectListView;
-	
-	@Autowired
 	private ParameterButtonsMiddleViewInterface parameterButtonsMiddleView;
-	
-	@Autowired
-	private InfosViewInterface infosView;
 	
 	@Autowired
 	private ParameterInputViewInterface parameterInputView;
