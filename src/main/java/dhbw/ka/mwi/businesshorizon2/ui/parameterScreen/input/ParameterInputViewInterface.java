@@ -39,29 +39,6 @@ public interface ParameterInputViewInterface extends ContentView {
 	void showErrorMessage(String message);
 
 	/**
-	 * Diese Methode graut die ComboBox (DropDown-Liste) fuer die
-	 * Branchenstellvertreter aus, da diese Funktionalitaet noch nicht gegeben
-	 * ist.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateComboBoxRepresentatives(boolean enabled);
-
-	/**
-	 * Diese Methode graut die Checkbox fuer die Branchenstellvertreter aus, da
-	 * diese Funktionalitaet noch nicht gegeben ist.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateCheckboxIndustryRepresentative(boolean enabled);
-
-	/**
 	 * Diese Methode graut das Textfeld 'textfieldNumPeriods' aus.
 	 * 
 	 * @author Christian Scherer
@@ -129,127 +106,6 @@ public interface ParameterInputViewInterface extends ContentView {
 	void setComponentError(boolean setError, String component, String message);
 
 	/**
-	 * Diese Methode graut das Textfeld 'textfieldCashFlowStepRange' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateCashFlowStepRang(boolean enabled);
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldCashFlowProbabilityOfRise' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateCashFlowProbabilityOfRise(boolean enabled);
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalProbabilityOfRise' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateBorrowedCapitalProbabilityOfRise(boolean enabled);
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalStepRange' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateBorrowedCapitalStepRange(boolean enabled);
-	
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldRiseOfPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	public void activateRiseOfPeriods(boolean enabled);
-	
-	/**
-	 * Diese Methode graut die Checkbox 'checkboxRiseOfPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	public void activateRiseOfPeriodsCheckbox(boolean enabled);
-	
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldDeviaton' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	public void activateDeviation(boolean enabled);
-	
-
-	/**
-	 * Diese Methode graut die Checkbox 'checkboxDeviationOfPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	public void activateDeviationCheckbox(boolean enabled);
-	
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldStepsPerPeriod' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateStepsPerPeriod(boolean enabled);
-	
-	/**
-	 * Diese Methode graut das Textfeld 'Schrittweite' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateStepRange(boolean enabled);
-
-	/**
-	 * Diese Methode graut das Textfeld 'Wahrscheinlichkeit' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateProbability(boolean enabled);
-
-	/**
-	 * Diese Methode graut das Textfeld 'Steigung aus angegebenen Perioden ermitteln' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Komponenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	void activateCalculateStepRange(boolean enabled);
-
-	/**
 	 * Setzt den Wert des Texfelds 'Wahl des Basisjahr'
 	 * 
 	 * @author Christian Scherer
@@ -303,43 +159,6 @@ public interface ParameterInputViewInterface extends ContentView {
 	 *            Anzahl einbezogener, vergangener Perioden
 	 */
 	void setRelevantPastPeriods(String relevantPastPeriods);
-
-	/**
-	 * Setzt den Wert des Texfelds 'Schrittweite Cashflows'
-	 * 
-	 * @author Christian Scherer
-	 * @param cashFlowStepRange
-	 *            Schrittweite der Cashflows
-	 */
-	void setCashFlowStepRange(String cashFlowStepRange);
-
-	/**
-	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Cashflowentwicklung'
-	 * 
-	 * @author Christian Scherer
-	 * @param cashFlowProbabilityOfRise
-	 *            Wahrscheinlichkeit für steigende Cashflowentwicklung
-	 */
-	void setCashFlowProbabilityOfRise(String cashFlowProbabilityOfRise);
-
-	/**
-	 * Setzt den Wert des Texfelds 'Schrittweite Fremdkapital'
-	 * 
-	 * @author Christian Scherer
-	 * @param borrowedCapitalStepRange
-	 *            Schrittweite Fremdkapital
-	 */
-	void setBorrowedCapitalStepRange(String borrowedCapitalStepRange);
-
-	/**
-	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende Fremdkaptialentwicklung'
-	 * 
-	 * @author Christian Scherer
-	 * @param borrowedCapitalProbabilityOfRise
-	 *            Wahrscheinlichkeit für steigende Fremdkaptialentwicklung
-	 */
-	void setBorrowedCapitalProbabilityOfRise(String borrowedCapitalProbabilityOfRise);
-
 
 	void showParameterView();
 

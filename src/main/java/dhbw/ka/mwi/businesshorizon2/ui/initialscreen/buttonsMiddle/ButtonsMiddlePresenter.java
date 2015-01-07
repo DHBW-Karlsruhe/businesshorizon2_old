@@ -82,15 +82,15 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 	public void onShowParameterScreen (ShowParameterScreenViewEvent event) {
 		logger.debug("Project TypMethod: " + project.getTypMethod());
 		
-		/**if (project.getProjectInputType().isStochastic()) {
-			getView().setStochastic();
+		if (project.getProjectInputType().isStochastic()) {
+			getView().setStochasticParameter();
 			logger.debug("Stochastische Buttons gesetzt");
 		}
 		
 		else {
-			getView().setDeterministic();
+			getView().setDeterministicParameter();
 			logger.debug ("Deterministische Buttons gesetzt");
-		}*/
+		}
 	}
 
 }

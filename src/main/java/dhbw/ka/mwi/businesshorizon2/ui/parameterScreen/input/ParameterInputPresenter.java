@@ -294,22 +294,22 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		if(this.projectProxy.getSelectedProject().getRelevantPastPeriods()!=0){
 			getView().setRelevantPastPeriods(""+this.projectProxy.getSelectedProject().getRelevantPastPeriods());
 		}
-		if(this.projectProxy.getSelectedProject().getCashFlowStepRange()!=0){
-			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
-			getView().setCashFlowStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getCashFlowStepRange())))/10000));
-		}
-		if(this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise()!=0){
-			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
-			getView().setCashFlowProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise())))/10000));
-		}
-		if(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange()!=0){
-			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
-			getView().setBorrowedCapitalStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange())))/10000));
-		}
-		if(this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise()!=0){
-			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
-			getView().setBorrowedCapitalProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise())))/10000));
-		}
+//		if(this.projectProxy.getSelectedProject().getCashFlowStepRange()!=0){
+//			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+//			getView().setCashFlowStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getCashFlowStepRange())))/10000));
+//		}
+//		if(this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise()!=0){
+//			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+//			getView().setCashFlowProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getCashFlowProbabilityOfRise())))/10000));
+//		}
+//		if(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange()!=0){
+//			//Verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+//			getView().setBorrowedCapitalStepRange(""+(((double)Math.round(10000*(this.projectProxy.getSelectedProject().getBorrowedCapitalStepRange())))/10000));
+//		}
+//		if(this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise()!=0){
+//			//Rueckumwandlung des 0-1 Werts zu einem 0-100 % Wert und verhindern einer fehlerhaften Double-Konvertierung auf 4 Nachkommastellen genau
+//			getView().setBorrowedCapitalProbabilityOfRise(""+(((double)Math.round(10000*(100*this.projectProxy.getSelectedProject().getBorrowedCapitalProbabilityOfRise())))/10000));
+//		}
 		if(this.projectProxy.getSelectedProject().getPeriodsToForecast_deterministic()!=0){
 			getView().setPeriodsToForecast_deterministic(""+this.projectProxy.getSelectedProject().getPeriodsToForecast_deterministic());
 		}
@@ -929,21 +929,6 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 * 
 	 */
 	public void greyOut() {
-		//Branchenvertreter ausgrauen: Boxen in der View auskommentiert
-		//getView().activateCheckboxIndustryRepresentative(false);
-		//getView().activateComboBoxRepresentatives(false);
-		/**
-		//Wienerprozess ausgrauen
-		getView().activateRiseOfPeriods(false);
-		getView().activateRiseOfPeriodsCheckbox(false);
-		getView().activateDeviation(false);
-		getView().activateDeviationCheckbox(false);
-		//Bisher nicht verwendetes Feld
-		getView().activateStepsPerPeriod(false);
-		getView().activateStepRange(false);
-		getView().activateProbability(false);
-		getView().activateCalculateStepRange(false);
-		*/
 		
 		//Keine Stochastische Methode aktiv / mindestens eine aktiv
 		if(!stochMethod){

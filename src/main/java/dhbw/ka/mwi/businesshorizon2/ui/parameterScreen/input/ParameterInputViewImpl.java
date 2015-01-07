@@ -49,18 +49,15 @@ import com.vaadin.ui.Window.Notification;
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Parameter" in
  * Vaadin.
  * 
- * @author Julius Hacker, Christian Scherer
+ * @author Julius Hacker, Christian Scherer, Tobias Lindner
  * 
  */
-public class ParameterInputViewImpl extends VerticalLayout implements
-		ParameterInputViewInterface {
+public class ParameterInputViewImpl extends VerticalLayout implements ParameterInputViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger
-			.getLogger("ParameterViewImpl.class");
+	private static final Logger logger = Logger.getLogger("ParameterViewImpl.class");
 	
 	private GridLayout gridLayout;
-	private VerticalLayout verticalLayout;
 
 	private Label labelHeadingCommon;
 	private Label labelHeadingMethDet;
@@ -77,19 +74,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	private Label labelNumPastPeriods;
 	private Label labelNumSpecifiedPastPeriods;
 	private Label labelBasisYear;
-	private Label labelProbability;
-	private Label labelCashFlowStepRange;
-	private Label labelStepRange;
-	private Label labelCashFlowProbabilityOfRise;
-	private Label labelBorrowedCapitalProbabilityOfRise;
-	private Label labelBorrowedCapitalStepRange;
-	private Label labelStepsPerPeriod;
-	private Label labelRiseOfPeriods;
-	private Label labelDeviation;
-
-	private Label labelUnitMonetaryUnit;
-	private Label labelUnitPercentage;
-	private Label labelUnitQuantity;
 	
 	private Embedded questionIconBasisYear;	
 	private Embedded questionIconNumPeriods;
@@ -104,21 +88,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	private TextField textfieldNumSpecifiedPastPeriods;
 	private TextField textfieldBasisYear;
 	private TextField textfieldIterations;
-	private TextField textfieldProbability;
-	private TextField textfieldStepRange;
-	private TextField textfieldCashFlowStepRange;
-	private TextField textfieldCashFlowProbabilityOfRise;
-	private TextField textfieldBorrowedCapitalProbabilityOfRise;
-	private TextField textfieldBorrowedCapitalStepRange;
-	private TextField textfieldStepsPerPeriod;
-	private TextField textfieldRiseOfPeriods;
-	private TextField textfieldDeviation;
-
-	private ComboBox comboBoxRepresentatives;
-	private CheckBox checkboxIndustryRepresentative;
-	private CheckBox checkboxCalculateStepRange;
-	private CheckBox checkboxRiseOfPeriods;
-	private CheckBox checkboxDeviationOfPeriods;
 
 	private String toolTipBasisYear;
 	private String toolTipIterations;
@@ -126,19 +95,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	private String toolTipNumPeriodsToForecast_deterministic;
 	private String toolTipNumPastPeriods;
 	private String toolTipNumSpecifiedPastPeriods;
-	private String toolTipStepsPerPeriod;
-	private String toolTipIndustryRepresentatives;
-	private String toolTipCashFlowStepRange;
-	private String toolTipCashFlowProbabilityOfRise;
-	private String toolTipBorrowedCapitalProbabilityOfRise;
-	private String toolTipBorrowedCapitalStepRange;
-	private String toolTipCheckBoxRiseOfPeriods;
-	private String toolTipRiseOfPeriods;
-	private String toolTipDeviationCheckbox;
-	private String toolTipDeviation;
-	private String toolTipProbability;
-	private String toolTipCheckBoxCalculateStepRange;
-	private String toolTipStepRange;
 
 	@Autowired
 	private ParameterInputPresenter presenter;
@@ -168,7 +124,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	 * Befuellt die Strings der Tooltips fuer die einzelnen Eingabefelder,
 	 * welche dann in generateUi() verwendet werden.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Tobias Lindner
 	 */
 	private void setTooltips() {
 		toolTipBasisYear = "Hier wird das Basisjahr angegeben, auf welches die k\u00fcnftigen Cashflows abgezinst werden. Der Unternehmenswert wird zu dem hier angegebenen Zeitpunkt bestimmt.";
@@ -177,68 +133,43 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		toolTipNumPeriodsToForecast_deterministic = "Hier tragen Sie die Anzahl der zu prognostizierenden deterministischen Methoden ein. Info: Haben Sie sich zus\u00e4tzlich für die deterministische Angabe entschieden, entspricht die hier eingetragene Zahl auch der Anzahl der Perioden, die sie deterministisch angeben m\u00fcssen.";
 		toolTipNumPastPeriods = "Hier geben Sie an, wie viele vergangene Perioden für die Berechnung des Prognosewert gewichtet werden sollen. Info: Für die Berechnung m\u00fcssen Sie im n\u00e4chsten Prozessschritt immer eine Periode mehr angeben, als Sie hier eingeben. Bitte beachten Sie, dass in dem Reiter Perioden immer eine Periode mehr angegeben werden muss. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.";
 		toolTipNumSpecifiedPastPeriods ="Bitte beachten Sie, dass die Anzahl anzugebender Perioden immer um mindestens eins größer sein muss als die Anzahl der einbezogenen Perioden. Diese zusätzliche Periode wird bei einem Berechnungsverfahren der Zeitreihenanalyse benötigt.";
-		toolTipStepsPerPeriod = "";
-		toolTipIndustryRepresentatives = "Als Vergleichswert zu den prognostizierten Cashflows k\u00f6nnen Sie branchenspezifischen Vertreter mit einbeziehen. Dazu müssen Sie die Checkbox aktivieren und in der Dropdown-Liste die gew\u00fcnschte Branche ausw\u00e4hlen.";
-		toolTipCashFlowStepRange = "";
-		toolTipCashFlowProbabilityOfRise = "";
-		toolTipBorrowedCapitalProbabilityOfRise = "";
-		toolTipBorrowedCapitalStepRange = "";
-		toolTipCheckBoxRiseOfPeriods = "";
-		toolTipRiseOfPeriods = "";
-		toolTipDeviationCheckbox = "";
-		toolTipDeviation = "";
-		toolTipProbability = "";
-		toolTipCheckBoxCalculateStepRange = "";
-		toolTipStepRange = "";
-
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Parameter". Der Aufbau des Screens
+	 * Erstelle das GUI zum Prozessschritt "Parameter". Der Aufbau der View
 	 * findet mit dem Gridlayout statt um zu garantieren, dass die Eingabefelder
-	 * alle auf einer Hoeher auftauchen. branchendaten
+	 * alle auf einer Hoeher auftauchen. 
 	 * 
-	 * @author Julius Hacker, Christian Scherer
+	 * @author Julius Hacker, Christian Scherer, Tobias Lindner
 	 */
 
 	@Override
 	public void showParameterView() {
 		this.removeAllComponents();
 		generateUi();
-
 	}
 
 	private void generateUi() {
-
 		setMargin(true);
 		//setSizeFull();
-		//setLocked(true);
-		setStyleName("small");
 		
 		gridLayout = new GridLayout(3, 30);
 		gridLayout.setSpacing(true);
 		gridLayout.setSizeUndefined();
 		gridLayout.setStyleName("parameter");
-		verticalLayout = new VerticalLayout();
-		verticalLayout.setSpacing(true);
-		verticalLayout.setStyleName("parameter");
-		verticalLayout.setSizeUndefined();
-		
-		//addComponent(verticalLayout);
+
 		addComponent(gridLayout);
 		
-		//
+		//Höhe des FragezeichenIcons
 		String heightQuestionIcon = "20px";
-		
-
 
 		// Basisjahr
 
 		labelBasisYear = new Label("Basisjahr");
 		gridLayout.addComponent(labelBasisYear, 0, 1);
+		
 		textfieldBasisYear = new TextField();
 		textfieldBasisYear.setImmediate(true);
-		//textfieldBasisYear.setDescription(toolTipBasisYear);
 		textfieldBasisYear.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -247,8 +178,8 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 						.getValue());
 			}
 		});
-		//verticalLayout.addComponent(textfieldBasisYear);
 		gridLayout.addComponent(textfieldBasisYear, 1, 1);
+		
 		labelBasisYear.setStyleName("parameter");
 		textfieldBasisYear.setStyleName("parameter");
 		
@@ -259,13 +190,13 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		
 		gridLayout.addComponent(questionIconBasisYear, 2, 1);
 
+		
 		//Anzahl zu prognistizierender Perioden
 		labelNumPeriods = new Label("Anzahl zu prognostizierender Perioden");
 		gridLayout.addComponent(labelNumPeriods, 0, 2);
+		
 		textfieldNumPeriodsToForecast = new TextField();
 		textfieldNumPeriodsToForecast.setImmediate(true);
-		//textfieldNumPeriodsToForecast
-		//		.setDescription(toolTipNumPeriodsToForecast);
 		textfieldNumPeriodsToForecast
 				.addListener(new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
@@ -276,8 +207,9 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 										.getValue());
 					}
 				});
-		//verticalLayout.addComponent(textfieldNumPeriodsToForecast);
+
 		gridLayout.addComponent(textfieldNumPeriodsToForecast, 1, 2);
+		
 		labelNumPeriods.setStyleName("parameter");
 		textfieldNumPeriodsToForecast.setStyleName("parameter");
 		
@@ -288,15 +220,14 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		
 		gridLayout.addComponent(questionIconNumPeriods, 2,2);
 		
-		//nur Deterministische Methode:
+		//nur Deterministische Methode?:
 		
 		//Anzahl der Iterationen
 		labelIterations = new Label("Durchläufe / Iterationen");
 		gridLayout.addComponent(labelIterations, 0, 3);
+		
 		textfieldIterations = new TextField();
 		textfieldIterations.setImmediate(true);
-		// textfieldIterations.setValue(10000);
-		//textfieldIterations.setDescription(toolTipIterations);
 		textfieldIterations.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -306,8 +237,8 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 						.getValue());
 			}
 		});
-		//verticalLayout.addComponent(textfieldIterations);
 		gridLayout.addComponent(textfieldIterations, 1, 3);
+		
 		labelIterations.setStyleName("parameter");
 		textfieldIterations.setStyleName("parameter");
 		
@@ -318,17 +249,17 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 		
 		gridLayout.addComponent(questionIconIterations, 2, 3);
 		
+		
 		//Anzahl einbezogener vergangener Perioden
-		labelNumPastPeriods = new Label(
-				"Anzahl einbezogener, vergangener Perioden");
+		labelNumPastPeriods = new Label("Anzahl einbezogener, vergangener Perioden");
 		gridLayout.addComponent(labelNumPastPeriods, 0, 4);
+		
 		textfieldNumPastPeriods = new TextField();
 		textfieldNumPastPeriods.setImmediate(true);
 		// textfieldNumPastPeriods: Wert darf hier nicht gesetzt werden
 		// -> über Event, sodass der Wert ins Projekt übernommen wird und nicht
 		// nur einfach angezeigt wird ohne ausgewertet werden zu können
 		// textfieldNumPastPeriods.setValue(5);
-		//textfieldNumPastPeriods.setDescription(toolTipNumPastPeriods);
 		textfieldNumPastPeriods.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -338,28 +269,26 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 								.getValue());
 			}
 		});
-		//verticalLayout.addComponent(textfieldNumPastPeriods);
+
 		gridLayout.addComponent(textfieldNumPastPeriods, 1, 4);
+		
 		labelNumPastPeriods.setStyleName("parameter");
 		textfieldNumPastPeriods.setStyleName("parameter");
 		
 		questionIconNumPastPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
 		questionIconNumPastPeriods.setHeight(heightQuestionIcon);
 		questionIconNumPastPeriods.setStyleName("questionIcon");
-		
 		questionIconNumPastPeriods.setDescription(toolTipNumPastPeriods);
 		
 		gridLayout.addComponent(questionIconNumPastPeriods, 2, 4);
 		
 		
 		// Anzahl anzugebender, vergangener Perioden
-		labelNumSpecifiedPastPeriods = new Label(
-				"Anzahl anzugebender, vergangener Perioden");
+		labelNumSpecifiedPastPeriods = new Label("Anzahl anzugebender, vergangener Perioden");
 		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 5);
+		
 		textfieldNumSpecifiedPastPeriods = new TextField();
 		textfieldNumSpecifiedPastPeriods.setImmediate(true);
-		// textfieldIterations.setValue(10000);
-		//textfieldNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
 		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID1 = 1L;
 
@@ -370,126 +299,52 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 			}
 		});
 		
-		//verticalLayout.addComponent(textfieldNumSpecifiedPastPeriods);
 		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 5);
+		
 		labelNumSpecifiedPastPeriods.setStyleName("parameter");
 		textfieldNumSpecifiedPastPeriods.setStyleName("parameter");
 		
 		questionIconNumSpecifiedPastPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
 		questionIconNumSpecifiedPastPeriods.setHeight(heightQuestionIcon);
 		questionIconNumSpecifiedPastPeriods.setStyleName("questionIcon");
-		
 		questionIconNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
 		
 		gridLayout.addComponent(questionIconNumSpecifiedPastPeriods, 2, 5);
 		
-		/**
-		 * Auskommentiert, da nicht für Zeitreihenanalyse benötigt
-		 * 
-		labelStepsPerPeriod = new Label("Schritte pro Periode");
-		gridLayout.addComponent(labelStepsPerPeriod, 0, 6);
-
 		
-		textfieldStepsPerPeriod = new TextField();
-		textfieldStepsPerPeriod.setImmediate(true);
-		textfieldStepsPerPeriod.setDescription(toolTipStepsPerPeriod);
-		textfieldStepsPerPeriod.addListener(new Property.ValueChangeListener() {
+		// Deterministische Parameter
+		labelHeadingDeterministicCommon = new Label ("Deterministische Parameter:");
+		gridLayout.addComponent(labelHeadingDeterministicCommon, 0, 6);
+		
+		
+		//Anzahl anzugebender Perioden
+		labelNumPeriods_deterministic = new Label("Anzahl anzugebender Perioden");
+		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 7);
+		
+		textfieldNumPeriodsToForecast_deterministic = new TextField();
+		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
+		textfieldNumPeriodsToForecast_deterministic.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
-				presenter.stepsPerPeriodChosen((String) textfieldStepsPerPeriod
+				presenter.numberPeriodsToForecastChosen_deterministic((String) textfieldNumPeriodsToForecast_deterministic
 						.getValue());
 			}
 		});
-		gridLayout.addComponent(textfieldStepsPerPeriod, 1, 6);
-		
-		labelUnitQuantity = new Label("Anzahl");
-		gridLayout.addComponent(labelUnitQuantity, 2, 6);
-		 */
-		
-		/**Heading 3
 
-		checkboxIndustryRepresentative = new CheckBox();
-		checkboxIndustryRepresentative
-				.setCaption("Branchenstellvertreter einbeziehen");
-		checkboxIndustryRepresentative
-				.setDescription(toolTipIndustryRepresentatives);
-		checkboxIndustryRepresentative.addListener(new ClickListener() {
-			/**
-			 * Derzeit unbenutzt, da die Funkionalitaet in der Berechnung noch
-			 * nicht hinterlegt ist.
-			 * 
-			 * @see init()-Methode dieser Klasse
-			 *//**
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter
-						.industryRepresentativeCheckBoxSelected(checkboxIndustryRepresentative
-								.booleanValue());
-			}
-		});
-		gridLayout.addComponent(checkboxIndustryRepresentative, 0, 10);
-
-		comboBoxRepresentatives = new ComboBox();
-		comboBoxRepresentatives.setImmediate(true);
-		comboBoxRepresentatives.setInputPrompt("Branche ausw\u00e4hlen");
-		comboBoxRepresentatives.setNullSelectionAllowed(false);
-		comboBoxRepresentatives.addListener(new Property.ValueChangeListener() {
-			/**
-			 * Derzeit unbenutzt, da die Funkionalitaet in der Berechnung auf
-			 * Basis von Branchenverreter in dieser Softareversion noch nicht
-			 * hinterlegt ist.
-			 * 
-			 * @see init()-Methode dieser Klasse
-			 *//**
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				presenter.industryRepresentativeListItemChosen((String) event
-						.getProperty().getValue());
-				logger.debug("Branche " + event + " gewaehlt");
-			}
-		});
-
-		verticalLayout.addComponent(comboBoxRepresentatives);
-		*/
-
-		// Deterministische Parameter: Anzahl anzugebender Perioden
-		labelHeadingDeterministicCommon = new Label ("Deterministische Parameter:");
-		gridLayout.addComponent(labelHeadingDeterministicCommon, 0, 6);
-		labelNumPeriods_deterministic = new Label(
-				"Anzahl anzugebender Perioden");
-		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 7);
-		textfieldNumPeriodsToForecast_deterministic = new TextField();
-		textfieldNumPeriodsToForecast_deterministic.setImmediate(true);
-		//textfieldNumPeriodsToForecast_deterministic.setDescription(toolTipNumPeriodsToForecast_deterministic);
-		textfieldNumPeriodsToForecast_deterministic
-				.addListener(new Property.ValueChangeListener() {
-					private static final long serialVersionUID = 1L;
-
-					public void valueChange(ValueChangeEvent event) {
-						presenter
-								.numberPeriodsToForecastChosen_deterministic((String) textfieldNumPeriodsToForecast_deterministic
-										.getValue());
-					}
-				});
-		//verticalLayout.addComponent(textfieldNumPeriodsToForecast_deterministic);
 		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1, 7);
+		
 		labelHeadingDeterministicCommon.setStyleName("parameter");
 		labelNumPeriods_deterministic.setStyleName("parameter");
 		textfieldNumPeriodsToForecast_deterministic.setStyleName("parameter");
-		
+				
 		questionIconNumPeriods_deterministic = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
 		questionIconNumPeriods_deterministic.setHeight(heightQuestionIcon);
-		questionIconNumPeriods_deterministic.setStyleName("questionIcon");
-		
+		questionIconNumPeriods_deterministic.setStyleName("questionIcon");	
 		questionIconNumPeriods_deterministic.setDescription(toolTipNumPeriodsToForecast_deterministic);
-		
+				
 		gridLayout.addComponent(questionIconNumPeriods_deterministic, 2, 7);
-
+		
 	}
 
 	/**
@@ -575,35 +430,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Diese Methode graut die Checkbox fuer die Branchenstellvertreter aus, da
-	 * diese Funktionalitaet noch nicht gegeben ist.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateCheckboxIndustryRepresentative(boolean enabled) {
-		this.checkboxIndustryRepresentative.setEnabled(enabled);
-	}
-
-	/**
-	 * Diese Methode graut die ComboBox (DropDown-Liste) fuer die
-	 * Branchenstellvertreter aus, da diese Funktionalitaet noch nicht gegeben
-	 * ist.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateComboBoxRepresentatives(boolean enabled) {
-		this.comboBoxRepresentatives.setEnabled(enabled);
-	}
-
-	/**
 	 * Setzt eine Fehleranzeige an das Entsprechende Feld bzw. entfernt diese
 	 * wieder je nach Parametriesierung
 	 * 
@@ -618,8 +444,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	 *            Fehlermeldung die neben dem Componenten gezeigt werden soll
 	 */
 	@Override
-	public void setComponentError(boolean setError, String component,
-			String message) {
+	public void setComponentError(boolean setError, String component, String message) {
 		if (component.equals("periodsToForecast")) {
 			if (setError) {
 				this.textfieldNumPeriodsToForecast
@@ -657,39 +482,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 				this.textfieldIterations.setComponentError(null);
 			}
 
-		} else if (component.equals("cashFlowStepRange")) {
-			if (setError) {
-				this.textfieldCashFlowStepRange
-						.setComponentError(new UserError(message));
-			} else {
-				this.textfieldCashFlowStepRange.setComponentError(null);
-			}
-
-		} else if (component.equals("cashFlowProbabilityOfRise")) {
-			if (setError) {
-				this.textfieldCashFlowProbabilityOfRise
-						.setComponentError(new UserError(message));
-			} else {
-				this.textfieldCashFlowProbabilityOfRise.setComponentError(null);
-			}
-
-		} else if (component.equals("borrowedCapitalStepRange")) {
-			if (setError) {
-				this.textfieldBorrowedCapitalStepRange
-						.setComponentError(new UserError(message));
-			} else {
-				this.textfieldBorrowedCapitalStepRange.setComponentError(null);
-			}
-
-		} else if (component.equals("borrowedCapitalProbabilityOfRise")) {
-			if (setError) {
-				this.textfieldBorrowedCapitalProbabilityOfRise
-						.setComponentError(new UserError(message));
-			} else {
-				this.textfieldBorrowedCapitalProbabilityOfRise
-						.setComponentError(null);
-			}
-			// Annika Weis
 		} else if (component.equals("periodsToForecast_deterministic")) {
 			if (setError) {
 				this.textfieldNumPeriodsToForecast_deterministic
@@ -700,173 +492,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 			}
 		}
 
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldCashFlowStepRange' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateCashFlowStepRang(boolean enabled) {
-		this.textfieldCashFlowStepRange.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldCashFlowProbabilityOfRise'
-	 * aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateCashFlowProbabilityOfRise(boolean enabled) {
-		this.textfieldCashFlowProbabilityOfRise.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld
-	 * 'textfieldBorrowedCapitalProbabilityOfRise' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateBorrowedCapitalProbabilityOfRise(boolean enabled) {
-		this.textfieldBorrowedCapitalProbabilityOfRise.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldBorrowedCapitalStepRange' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateBorrowedCapitalStepRange(boolean enabled) {
-		this.textfieldBorrowedCapitalStepRange.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldRiseOfPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateRiseOfPeriods(boolean enabled) {
-		this.textfieldRiseOfPeriods.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut die Checkbox 'checkboxRiseOfPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateRiseOfPeriodsCheckbox(boolean enabled) {
-		this.checkboxRiseOfPeriods.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldDeviaton' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateDeviation(boolean enabled) {
-		this.textfieldDeviation.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut die Checkbos 'checkboxDeviationOfPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateDeviationCheckbox(boolean enabled) {
-		this.checkboxDeviationOfPeriods.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldStepsPerPeriod' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateStepsPerPeriod(boolean enabled) {
-		this.textfieldStepsPerPeriod.setEnabled(false);
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'Schrittweite' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateStepRange(boolean enabled) {
-		this.textfieldStepRange.setEnabled(enabled);
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'Wahrscheinlichkeit' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateProbability(boolean enabled) {
-		this.textfieldProbability.setEnabled(enabled);
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'Steigung aus angegebenen Perioden
-	 * ermitteln' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateCalculateStepRange(boolean enabled) {
-		this.checkboxCalculateStepRange.setEnabled(enabled);
 	}
 
 	/**
@@ -944,60 +569,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements
 	@Override
 	public void setRelevantPastPeriods(String relevantPastPeriods) {
 		this.textfieldNumPastPeriods.setValue(relevantPastPeriods);
-	}
-
-	/**
-	 * Setzt den Wert des Texfelds 'Schrittweite Cashflows'
-	 * 
-	 * @author Christian Scherer
-	 * @param cashFlowStepRange
-	 *            Schrittweite der Cashflows
-	 */
-	@Override
-	public void setCashFlowStepRange(String cashFlowStepRange) {
-		this.textfieldCashFlowStepRange.setValue(cashFlowStepRange);
-	}
-
-	/**
-	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende
-	 * Fremdkaptialentwicklung'
-	 * 
-	 * @author Christian Scherer
-	 * @param borrowedCapitalProbabilityOfRise
-	 *            Wahrscheinlichkeit für steigende Fremdkaptialentwicklung
-	 */
-	@Override
-	public void setBorrowedCapitalProbabilityOfRise(
-			String borrowedCapitalProbabilityOfRise) {
-		this.textfieldBorrowedCapitalProbabilityOfRise
-				.setValue(borrowedCapitalProbabilityOfRise);
-	}
-
-	/**
-	 * Setzt den Wert des Texfelds 'Schrittweite Fremdkapital'
-	 * 
-	 * @author Christian Scherer
-	 * @param borrowedCapitalStepRange
-	 *            Schrittweite Fremdkapital
-	 */
-	@Override
-	public void setBorrowedCapitalStepRange(String borrowedCapitalStepRange) {
-		this.textfieldBorrowedCapitalStepRange
-				.setValue(borrowedCapitalStepRange);
-	}
-
-	/**
-	 * Setzt den Wert des Texfelds 'Wahrscheinlichkeit für steigende
-	 * Cashflowentwicklung'
-	 * 
-	 * @author Christian Scherer
-	 * @param cashFlowProbabilityOfRise
-	 *            Wahrscheinlichkeit für steigende Cashflowentwicklung
-	 */
-	@Override
-	public void setCashFlowProbabilityOfRise(String cashFlowProbabilityOfRise) {
-		this.textfieldCashFlowProbabilityOfRise
-				.setValue(cashFlowProbabilityOfRise);
 	}
 
 }

@@ -36,9 +36,9 @@ import com.mvplite.view.View;
  */
 public interface ButtonsMiddleViewInterface extends View {
 	
-	//public void setMethodButtonActivated();
+	public void setStochasticParameter ();
 	
-	//public void setDescriptionButtonActivated();
+	public void setDeterministicParameter ();
 
 }
 

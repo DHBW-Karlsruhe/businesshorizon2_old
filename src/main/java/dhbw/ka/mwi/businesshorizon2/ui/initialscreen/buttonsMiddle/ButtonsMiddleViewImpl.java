@@ -60,26 +60,16 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ParameterButtonsMiddleViewImpl.class");
+	private static final Logger logger = Logger.getLogger("ButtonsMiddleViewImpl.class");
 
 	@Autowired
 	private ButtonsMiddlePresenter presenter;
 	
-	private HorizontalLayout layoutButton1;
-	private HorizontalLayout layoutButton2;
-	private HorizontalLayout layoutButton3;
-	
-	private Embedded methodIcon;
-	
-	private Label methodLabel;
-	private Button method;
-	private Button description;
-	private Button next;
-	private Label gap;
-	
 	private ButtonMiddle button1;
 	private ButtonMiddle button2;
 	private ButtonMiddle button3;
+	
+	private Label gap;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -96,7 +86,7 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 	}
 
 	/**
-	 * Konkrete Ausprogrammierung der UI-Elemente.
+	 * Konkrete Ausprogrammierung der UI-Elemente. Erzeugung der drei Buttons.
 	 * 
 	 * @author Tobias Lindner
 	 */
@@ -116,6 +106,7 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 			
 		});
 		addComponent(button1);
+		button1.setActivated();
 		
 		button2 = new ButtonMiddle ("./images/icons/newIcons/1418766020_editor_documents_files-128.png", "Beschreibung", new LayoutClickListener() {
 
@@ -145,7 +136,11 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 		addComponent(button3);
 
 	}
-	
+	/**
+	 * Ändert die Buttons für die Eingabe der Stochastischen Parameter.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setStochasticParameter () {
 		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", new LayoutClickListener() {
 
@@ -167,6 +162,13 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 		logger.debug("View: setStochasticParameter");
 	}
 	
+	
+	/**
+	 * Ändert die Buttons für die Eingabe der Deterministischen Parameter.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 */
 	public void setDeterministicParameter () {
 		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", new LayoutClickListener () {
 
@@ -177,7 +179,6 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 			
 		});
 		
-
 		logger.debug ("View: setDeterministicParameter");
 	}
 	
