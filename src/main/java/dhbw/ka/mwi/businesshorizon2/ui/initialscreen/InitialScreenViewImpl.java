@@ -68,7 +68,7 @@ import com.vaadin.ui.Window;
  * @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich, Marco Glaser
  *
  */
-public class InitialScreenViewImplv2 extends Window implements InitialScreenViewInterface {
+public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("InitialScreenViewImpl.class");
@@ -227,7 +227,7 @@ public class InitialScreenViewImplv2 extends Window implements InitialScreenView
 		//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
 
 		leftLogoLayout = new VerticalLayout();
-		logo = new Embedded(null, new ThemeResource("images/Logo_businesshorizon.png"));
+		logo = new Embedded(null, new ThemeResource("images/logo_businesshorizon_vertical.png"));
 
 		gap.setHeight("10px");
 		bottomGap.setHeight("40px");

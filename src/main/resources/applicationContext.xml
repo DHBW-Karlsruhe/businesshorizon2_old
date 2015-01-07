@@ -76,7 +76,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenPresenter"
 		scope="session" />
 	<bean name="initialScreenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImplv2"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl"
 		scope="session" />
 
 	<!-- Project-List -->
@@ -84,7 +84,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListPresenter"
 		scope="session" />
 	<bean name="projectListView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewImplv2"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewImpl"
 		scope="session" />
 		
 	<!-- Project-Details -->

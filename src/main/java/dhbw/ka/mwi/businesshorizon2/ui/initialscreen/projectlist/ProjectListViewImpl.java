@@ -37,7 +37,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 
+import com.mvplite.event.EventBus;
 import com.vaadin.data.validator.StringLengthValidator;
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.terminal.Sizeable;
@@ -60,19 +63,15 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 
 /**
- * Dies ist die Vaadin-Implementierung der PeriodListView. Die Rahmendarstellung
- * wird in der generateUi Methode visuell dargestellt. Die einzelnen Projekte
- * mit Namen, Perioden, Aenderungsdatum und Loeschmethode werde in den Methoden
- * setProjects und generateSingleProject erzeugt. Die Click-Events verschiedener
- * werden gesammelt in der Methode buttonClick verwertet und falls Logik von
- * noeten ist vom Presenter weiter ausgefuehrt. Die Auswahl eines Projekts wird
- * hier mittels der layoutClick Methode realisiert und fuehrt zum
- * Projekt-Wizard.
+ * Dies ist die Vaadin-Implementierung der Projektliste.
+ * Sie erweitert ein VerticalLayout und beinhaltet alle Projekte als Komponenten.
+ * Die View wird in den linken Bereich des horizontalen SplitPanel in der initialScreenView
+ * eingefügt. Die Projektdetails sind nicht Bestandteil dieser View.
  * 
- * @author Christian Scherer, Mirko Göpfrich
+ * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
  * 
  */
-public class ProjectListViewImpl extends VerticalSplitPanel implements
+public class ProjectListViewImpl extends VerticalLayout implements
 		ProjectListViewInterface, Button.ClickListener, ClickListener {
 
 	private static final long serialVersionUID = 1L;
@@ -81,6 +80,9 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 
 	@Autowired
 	private ProjectListPresenter presenter;
+	
+	@Autowired
+	private EventBus eventBus;
 
 	private Project project;
 	private List<Project> projects;
@@ -89,11 +91,8 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 
 	Iterator<Project> iterator;
 	
-	private HorizontalLayout projectListHead;
-	private VerticalLayout projectListPanel;
-	
-	private Panel singleProject;
-	private List<Panel> singleProjectPanelList;
+	private VerticalLayout singleProject;
+	private List<VerticalLayout> singleProjectList;
 	
 	//Buttons, um ein Projekt hinzuzufügen
 	private Button addProjectBtn;
@@ -107,11 +106,6 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	private List<Button> dialogEditBtnList;
 	
 	private List<Button> removeBtnList;
-	
-	//private Label projectName;
-	private Label lastChanged;
-	private Label title;
-	private Label projectTypAndPeriods;
 
 	private TextField tfName;
 	private TextArea taDescription;
@@ -131,89 +125,46 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-		generateUI();
+		generateUi();
 		logger.debug("Initialisierung beendet");
 	}
-
-	/**
-	 * Konkrete Ausprogrammierung der festen UI Elemente (Ueberschrift, leeres
-	 * ProjectListPanel und Hinzufuegebutton). Erst spaeter wird durch die
-	 * Methode setProjects das ProjectListPanel mit konkreten Projekten
-	 * gefuellt.
-	 * 
-	 * @author Mirko Göpfrich
-	 */
-	private void generateUI() {
-		//setMargin(true);
-		
-		//Teilt die View vertikal in zwei Bereiche auf und erstellt eine horizontale Trennlinie (nicht verstellbar).
-		setSizeFull();
-		setSplitPosition(60, Sizeable.UNITS_PIXELS);
-		setLocked(true);
-		setStyleName("small");
-		logger.debug("Neues Vertikales SplitPanel erstellt");
-		
-		
-		//Layout für oberes Panel erstellen
-		projectListHead = new HorizontalLayout();
-		projectListHead.setSizeFull();
-		setFirstComponent(projectListHead);
-		
-		//Layout für unteres Panel erstellen
-		projectListPanel = new VerticalLayout();
-		setSecondComponent(projectListPanel);
-		projectListPanel.setSpacing(false);
-
-		logger.debug("Leeres ProjektList Panel erstellt");
-
-		//Überschrift im oberen Panel hinzufügen
-		title = new Label("<h1>Meine Projekte</h1>");
-		title.setContentMode(Label.CONTENT_XHTML);
-		projectListHead.addComponent(title);
-		logger.debug("Ueberschrift erstellt");
-		
-		//Hinzufügen-Button im oberen Panel hinzufügen
-		addProjectBtn = new Button("Projekt hinzufügen", this);
-		projectListHead.addComponent(addProjectBtn);
-		logger.debug("Hinzufuege-Button erzeugt");
-		projectListHead.setComponentAlignment(addProjectBtn, Alignment.MIDDLE_RIGHT);
-
-		logger.debug("Feste UI Elemente dem Fenster hinzugefuegt");
+	
+	public void generateUi() {
+		setWidth(85, UNITS_PERCENTAGE);
+		setHeight(Sizeable.SIZE_UNDEFINED, 0);
 	}
 
 	/**
 	 * 
 	 * Aufruf durch den Presenter (bei Ersterstellung oder Aenderungen durch
 	 * Buttonclicks) - wobei zunächst die Projektliste aktualisiert wird.
-	 * Zunaechst werden - falls vorhanden - die derzeitg existenten Elemente des
-	 * projectListPanel geloescht und die Liste der Projekt Layouts und
-	 * Loeschbuttons neu erstellt. Darauf folgt dann in der Schleife die
-	 * Erzeugung der einzelnen VadinKomponenten fuer jedes Projekt durch die
+	 * Zunaechst werden - falls vorhanden - die derzeitg existenten der View gelöscht. 
+	 * Darauf folgt dann in der Schleife die Erzeugung der einzelnen VadinKomponenten 
+	 * fuer jedes Projekt durch die
 	 * Methode generateSingleProjectUi.
 	 * 
-	 * @author Christian Scherer, Mirko Göpfrich
+	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 	 */
 	@Override
 	public void setProjects(List<Project> projects) {
 
 		this.projects = projects;
 		logger.debug("Projektliste aktualisiert");
-		projectListPanel.removeAllComponents();
+		removeAllComponents();
 		logger.debug("Projekt-Element-Liste geleert");
 
-		singleProjectPanelList = new ArrayList<Panel>();
+		singleProjectList = new ArrayList<VerticalLayout>();
 		
 		//?
 		removeBtnList = new ArrayList<Button>();
 		editBtnList = new ArrayList<Button>();
 		dialogEditBtnList = new ArrayList<Button>();
-	
 
 		for (int i = 0; i < projects.size(); i++) {
 			project = projects.get(i);
 			
-			singleProjectPanelList.add(generateSingleProjectUI(project, i));
-			projectListPanel.addComponent(singleProjectPanelList.get(i));
+			singleProjectList.add(generateSingleProjectUI(project, i));
+			addComponent(singleProjectList.get(i));
 			//projectListPanel.setComponentAlignment(singleProjectPanelList.get(i), Alignment.MIDDLE_CENTER);
 
 		}
@@ -222,18 +173,13 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	}
 
 	/**
-	 * Konkrete Ausprogrammierung der der Darstellung eines einzlenen Projekts
-	 * (Name, Anzahl Perioden mit Jahren, Aenderungsdatum, Loeschbutton). Diese
-	 * wird sowohl bei der ersten Erstellung des UIs fuer jedes Projekt
-	 * ausgefuehrt. Die Loeschbuttons werden einer Liste an Loeschbuttons
-	 * hinzufgefuegt umd spaeter eine identifikation der Buttons in der Methode
-	 * buttonClick zu gewaehrleisten. Zum Schluss wird dem Layout noch ein
-	 * Listener hinzugefuegt, der durch die Methode LayoutClick auf Klicks auf
-	 * ein jeweiliges Projekt reagiert und in die Prozesssicht des einzelnen
-	 * Projekts wechselt und das VerticalLayout dem projectListPanel
-	 * hinzgefuegt.
+	 * Konkrete Ausprogrammierung der Darstellung eines einzelnen Projekts.
+	 * Ein Projekt wird durch ein VerticalLayout dargestellt, das ein Label
+	 * mit dem Projektname enthält. Außerdem bekommt es einen ClickListener,
+	 * um ein Projekt als selektiert zu kennzeichnen und die Details zum Projekt
+	 * anzuzeigen.
 	 * 
-	 * @author Christian Scherer, Mirko Göpfrich
+	 * @author Christian Scherer, Mirko Göpfrich, Marco Glaser
 	 * @param project
 	 *            das darzustellende Projekt und der aktuelle Index der Liste
 	 * @param i
@@ -241,140 +187,76 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 	 *            Loeschbutton relevant)
 	 * @return ein VerticalLayout Objekt, das zur Eingliederung in das UI dient
 	 */
-	private Panel generateSingleProjectUI(Project project, int i) {
+	private VerticalLayout generateSingleProjectUI(Project project, int i) {
 		
+		final Project proj = project;
+		final int a = i;
 		//erzeugt eine Panel für ein Projekt
-		singleProject = new Panel(project.getName());
-		singleProject.setStyleName("borderless light projectlist");
+		singleProject = new VerticalLayout();
+		if(i == 0){
+			singleProject.setStyleName("singleProjectSelected");
+			presenter.projectSelected(project);
+		}
+		else{
+			singleProject.setStyleName("singleProject");	
+		}
+		
+		Label projectName = new Label(project.getName());
+		projectName.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		projectName.setHeight(Sizeable.SIZE_UNDEFINED, 0);
+		projectName.setStyleName("projectName");
 		
 		//Legt ein Layout für das Projekt-Panel fest
-		HorizontalLayout panelContent = new HorizontalLayout();
 		//panelContent.setSizeFull();
-		singleProject.setContent(panelContent);
-		singleProject.setSizeFull();
-		panelContent.addStyleName("projectListPanel");
-		
-		//Legt ein linkes und ein rechtes Layout innerhalb des Panels an.
-		VerticalLayout panelContentLeft = new VerticalLayout();
-		HorizontalLayout panelContentRight = new HorizontalLayout();
-		panelContent.addComponent(panelContentLeft);
-		panelContent.addComponent(panelContentRight);
-		panelContent.setComponentAlignment(panelContentLeft, Alignment.BOTTOM_LEFT);
-		panelContent.setComponentAlignment(panelContentRight, Alignment.BOTTOM_RIGHT);
-		panelContentLeft.setWidth("340px");
+		singleProject.addComponent(projectName);
+		singleProject.setWidth(100, UNITS_PERCENTAGE);
+		singleProject.setHeight(70, UNITS_PIXELS);
+		singleProject.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
 
-		periodList = (NavigableSet<Period>) project.getPeriods();
+		singleProject.addListener(new LayoutClickListener(){
 
-		
-		// String fuer saubere Periodenausgabe erstellen.
-		
-		String periodString;
-		int numbersOfPeriods;
-		numbersOfPeriods = project.getTotalPeriods();
-
-		if (numbersOfPeriods == 0) {
-			periodString = "Noch keine Perioden eingetragen";
-		}
-		else {	
-			periodString = "" + numbersOfPeriods + " Perioden" ;
-		}
-		
-		String typMethod;
-		typMethod = project.getTypMethod();
-		
-		projectTypAndPeriods = new Label(typMethod + ": " + periodString);
-			
-		
-
-		// String fuer Ausgabe des letzten Aenderungsdatum
-		String lastChangedString;
-		if (project.getLastChanged() == null) {
-			Date d = new Date();
-			lastChangedString = "Zuletzt geändert: " + d.toString();
-		} else {
-			lastChangedString = "Zuletzt geändert: "
-					+ project.getLastChanged().toString();
-		}
-		lastChanged = new Label(lastChangedString);
-
-
-		//Buttons erstellen
-		final Button removeBtn = new Button("");
-		final Button editBtn = new Button("");
-				
-		//Button formatieren
-		removeBtn.addStyleName("borderless");
-		removeBtn.setIcon(new ThemeResource("images/icons/trash.png"));
-		editBtn.addStyleName("borderless");
-		editBtn.setIcon(new ThemeResource("images/icons/pen.png"));
-		
-		
-		
-		
-		//Button-Listener hinzufügen
-		removeBtn.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
 
-			public void buttonClick(ClickEvent event) {
-				final int index3 = removeBtnList.indexOf(event.getButton());
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.projectSelected(proj);
+				switchProjectsStyle(a);
 				
-				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen. Projektnummer: "
-						+ (index3 + 1));
-
-				ConfirmDialog.show(getWindow(), projects.get(index3).getName()
-						+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
-						"Ja", "Nein", new ConfirmDialog.Listener() {
-							/**
-							 * 
-							 */
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public void onClose(ConfirmDialog dialog) {
-								if (dialog.isConfirmed()) {
-									presenter.removeProject(projects.get(index3));
-								} else {
-
-								}
-							}
-						});
-		    }
-		});
-		
-		editBtn.addListener(new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			public void buttonClick(ClickEvent event) {
-				indexEditBtn = editBtnList.indexOf(event.getButton());
-				
-				logger.debug("Projekt-bearbeiten Button aus dem Hauptfenster aufgerufen. Projektnummer: "
-						+ (indexEditBtn + 1));
-				presenter.editProjectDialog(projects.get(indexEditBtn));		
+				eventBus.fireEvent(new SelectProjectEvent());
 			}
+			
 		});
-		
-		
-		// Liste für Buttons zur spaeteren Identifikation
-		removeBtnList.add(removeBtn);
-		editBtnList.add(editBtn);
-		dialogEditBtnList.add(dialogEditBtn);
 
-		//Inhalt dem Panel hinzufügen
-		panelContentLeft.addComponent(projectTypAndPeriods);
-		panelContentLeft.addComponent(lastChanged);
-		panelContentRight.addComponent(removeBtnList.get(i));
-		panelContentRight.addComponent(editBtnList.get(i));
-		
-		
-		logger.debug("Edit-Button " + i + " hinzugefuegt");
-		
-		
-		//CLick-Listener für das Panel hinzuüfgen
-		singleProject.addListener(this);
-		projectListPanel.addComponent(singleProject);
+//		singleProject.addListener(this);
+//		projectListPanel.addComponent(singleProject);
 		logger.debug("Einzelnes Projektelement erzeugt");
 
 		return singleProject;
+	}
+	
+	/**
+	 * Diese Methode ändert die Hintergrundfarben der Projekte.
+	 * Das selektierte Projekt wird hervorgehoben.
+	 * 
+	 * @param i
+	 * : index des selektierten Projekts
+	 * 
+	 * @author Marco Glaser
+	 */
+	public void switchProjectsStyle(int i){
+		int counter = 0;
+		Iterator<VerticalLayout> iter = singleProjectList.iterator();
+		VerticalLayout projectLayout;
+		while(iter.hasNext()){
+			projectLayout = iter.next();
+			if(counter == i){
+				projectLayout.setStyleName("singleProjectSelected");
+			}
+			else{
+				projectLayout.setStyleName("singleProject");
+			}
+			counter++;
+		}
 	}
 
 	/**
@@ -561,7 +443,7 @@ public class ProjectListViewImpl extends VerticalSplitPanel implements
 
 	@Override
 	public void click(MouseEvents.ClickEvent event) {
-		int index = singleProjectPanelList.indexOf(event.getComponent());
+		int index = singleProjectList.indexOf(event.getComponent());
 		logger.debug("Projekt ausgewaehlt. Projektnummer: " + (index + 1));
 		presenter.projectSelected(projects.get(index));
 	}
