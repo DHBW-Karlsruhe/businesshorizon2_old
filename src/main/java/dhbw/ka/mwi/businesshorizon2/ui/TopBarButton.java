@@ -114,5 +114,9 @@ public class TopBarButton extends VerticalLayout{
 		labelLayout.addComponent(secondLabel);
 		labelLayout.setComponentAlignment(secondLabel, Alignment.MIDDLE_CENTER);
 	}
+	
+	public Button getButton() {
+		return button;
+	}
 
 }

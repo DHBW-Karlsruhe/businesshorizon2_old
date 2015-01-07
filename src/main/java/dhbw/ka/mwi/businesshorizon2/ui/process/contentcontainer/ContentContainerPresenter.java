@@ -36,6 +36,8 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
@@ -46,7 +48,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.method.ShowMethodViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.ShowOutputViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ShowParameterViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
@@ -77,7 +78,7 @@ public class ContentContainerPresenter extends
 	private OutputViewInterface outputView;
 
 	@Autowired
-	private ParameterViewInterface parameterView;
+	private ParameterInputViewInterface parameterView;
 
 	@Autowired
 	private ScenarioViewInterface processingView;
@@ -181,11 +182,20 @@ public class ContentContainerPresenter extends
 					.getByNumber(this.stepNumber);
 			NavigationSteps nextScreen = NavigationSteps
 					.getByNumber(this.stepNumber + 1);
-			this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
-			this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
+			
+			//Hier wird des neue ParameterScreen angezeigt (für Testzwecke) //Tobias Lindner
+			if (nextScreen.getNumber() == 2) {
+				this.eventBus.fireEvent(new ShowParameterScreenViewEvent());
+				logger.debug("ShowParameterScreenViewEvent gefeuert");
+			}
+			
+			else {	
+				this.eventBus.fireEvent(new ShowNavigationStepEvent(nextScreen));
+				this.eventBus.fireEvent(new ShowErrorsOnScreenEvent(actualScreen));
+				logger.debug("Event fuer Anzeige des Prozesschritt "
+						+ nextScreen.getCaption() + " wurde getriggert");
+			}
 
-			logger.debug("Event fuer Anzeige des Prozesschritt "
-					+ nextScreen.getCaption() + " wurde getriggert");
 		}
 
 	}

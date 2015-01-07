@@ -197,14 +197,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 
 
-	<!-- Parameter-Maske -->
-	<bean name="parameterPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter"
+	<!-- Parameter-Input -->
+	<bean name="parameterInputPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputPresenter"
 		scope="session" />
-	<bean name="parameterView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImpl"
+	<bean name="parameterInputView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewImpl"
 		scope="session" />
-
 
 
 
@@ -225,4 +224,29 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="outputView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl"
 		scope="session" />
+		
+	<!-- Parameter Screen -->
+	<bean name="parameterScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenPresenter"
+		scope="session" />
+	<bean name="parameterScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl"
+		scope="session" />
+	
+	<!-- Parameter Buttons Middle -->
+	<bean name="ButtonsMiddlePresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddlePresenter"
+		scope="session" />
+	<bean name="ButtonsMiddleView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddleViewImpl"
+		scope="session" />
+		
+	<!-- Parameter Description-->
+	<bean name="parameterDescriptionPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionPresenter"
+		scope="session" />
+	<bean name="parameterDescriptionView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewImpl"
+		scope="session" />		
+		
 </beans>

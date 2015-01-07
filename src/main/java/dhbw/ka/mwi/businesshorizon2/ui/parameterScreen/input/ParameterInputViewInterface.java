@@ -23,11 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.parameter;
+package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
-public interface ParameterViewInterface extends ContentView {
+public interface ParameterInputViewInterface extends ContentView {
 
 	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.
