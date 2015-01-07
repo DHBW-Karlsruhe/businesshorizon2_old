@@ -33,16 +33,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.UserError;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
 /**
@@ -58,15 +53,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 	private static final Logger logger = Logger.getLogger("ParameterViewImpl.class");
 	
 	private GridLayout gridLayout;
-
-	private Label labelHeadingCommon;
-	private Label labelHeadingMethDet;
-	private Label labelHeadingTimeSeries;
-	private Label labelHeadingRandomWalk;
-	private Label labelHeadingWienerProcess;
-	private Label labelHeadingDeterministicCommon; // Annika Weis
-	private Label labelHeadingDCF; // Annika Weis
-	private Label labelHeadingAPV; // Annika Weis
 
 	private Label labelNumPeriods;
 	private Label labelNumPeriods_deterministic; // Annika Weis
@@ -220,10 +206,8 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		
 		gridLayout.addComponent(questionIconNumPeriods, 2,2);
 		
-		//nur Deterministische Methode?:
-		
 		//Anzahl der Iterationen
-		labelIterations = new Label("Durchläufe / Iterationen");
+		labelIterations = new Label("Anzahl der Iterationen");
 		gridLayout.addComponent(labelIterations, 0, 3);
 		
 		textfieldIterations = new TextField();
@@ -251,7 +235,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		
 		
 		//Anzahl einbezogener vergangener Perioden
-		labelNumPastPeriods = new Label("Anzahl einbezogener, vergangener Perioden");
+		labelNumPastPeriods = new Label("Anzahl einbezogener vergangener Perioden");
 		gridLayout.addComponent(labelNumPastPeriods, 0, 4);
 		
 		textfieldNumPastPeriods = new TextField();
@@ -290,7 +274,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		textfieldNumSpecifiedPastPeriods = new TextField();
 		textfieldNumSpecifiedPastPeriods.setImmediate(true);
 		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID1 = 1L;
+			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
 				logger.debug(textfieldNumSpecifiedPastPeriods.getValue());
@@ -313,12 +297,9 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		
 		
 		// Deterministische Parameter
-		labelHeadingDeterministicCommon = new Label ("Deterministische Parameter:");
-		gridLayout.addComponent(labelHeadingDeterministicCommon, 0, 6);
-		
 		
 		//Anzahl anzugebender Perioden
-		labelNumPeriods_deterministic = new Label("Anzahl anzugebender Perioden");
+		labelNumPeriods_deterministic = new Label("Anzahl zukünftiger Perioden");
 		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 7);
 		
 		textfieldNumPeriodsToForecast_deterministic = new TextField();
@@ -334,7 +315,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 
 		gridLayout.addComponent(textfieldNumPeriodsToForecast_deterministic, 1, 7);
 		
-		labelHeadingDeterministicCommon.setStyleName("parameter");
 		labelNumPeriods_deterministic.setStyleName("parameter");
 		textfieldNumPeriodsToForecast_deterministic.setStyleName("parameter");
 				
@@ -346,6 +326,40 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		gridLayout.addComponent(questionIconNumPeriods_deterministic, 2, 7);
 		
 	}
+	
+	
+	/**
+	 * Die Methode entfernt die Felder, die bei einer deterministischen Berechnung nicht benötigt werden.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setDeterministicParameters () {
+		gridLayout.removeComponent(labelNumPeriods);
+		gridLayout.removeComponent(textfieldNumPeriodsToForecast);
+		gridLayout.removeComponent(questionIconNumPeriods);
+		
+		gridLayout.removeComponent(labelIterations);
+		gridLayout.removeComponent(textfieldIterations);
+		gridLayout.removeComponent(questionIconIterations);
+		
+		gridLayout.removeComponent(labelNumPastPeriods);
+		gridLayout.removeComponent(textfieldNumPastPeriods);
+		gridLayout.removeComponent(questionIconNumPastPeriods);
+	}
+	
+	
+	/**
+	 * Die Methode entfernt die Felder, die einer stochastischen Berechnung nicht benötigt werden.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setStochasticParameters () {
+		gridLayout.removeComponent(labelNumPeriods_deterministic);
+		gridLayout.removeComponent(textfieldNumPeriodsToForecast_deterministic);
+		gridLayout.removeComponent(questionIconNumPeriods_deterministic);
+	}
+	
+	
 
 	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.
