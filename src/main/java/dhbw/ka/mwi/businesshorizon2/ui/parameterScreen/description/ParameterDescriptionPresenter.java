@@ -33,7 +33,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddleViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 
 /**
  * 

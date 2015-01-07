@@ -235,10 +235,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	
 	<!-- Parameter Buttons Middle -->
 	<bean name="ButtonsMiddlePresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddlePresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddlePresenter"
 		scope="session" />
 	<bean name="ButtonsMiddleView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddleViewImpl"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewImpl"
 		scope="session" />
 		
 	<!-- Parameter Description-->

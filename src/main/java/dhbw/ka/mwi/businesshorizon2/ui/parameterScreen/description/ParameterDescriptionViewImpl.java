@@ -33,8 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddlePresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddleViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddlePresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 
 /**
  * Dies ist die Vaadin-Implementierung der ParameterDescrition Bereicht. Sie stellt den rechten Bereich mit der Beschreibung dar.

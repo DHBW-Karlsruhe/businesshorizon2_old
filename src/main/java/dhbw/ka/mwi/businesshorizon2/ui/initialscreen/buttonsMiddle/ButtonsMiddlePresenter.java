@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle;
+package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle;
 
 import javax.annotation.PostConstruct;
 

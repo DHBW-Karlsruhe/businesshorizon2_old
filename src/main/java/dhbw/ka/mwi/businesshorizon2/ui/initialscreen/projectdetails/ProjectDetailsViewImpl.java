@@ -55,6 +55,8 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	private Label lastChangedValue;
 
 	private Label expandingGap;
+
+	private VerticalLayout button;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -186,7 +188,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	}
 	
 	private VerticalLayout generateStartCalculatingButton(){
-		VerticalLayout button = new VerticalLayout();
+		button = new VerticalLayout();
 		HorizontalLayout container = new HorizontalLayout();
 		Embedded icon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png"));
 		Label gap1 = new Label();
@@ -257,6 +259,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		projectDetailsValue.setValue(projectDetails);
 		projectDescriptionValue.setValue(projectDescription);
 		lastChangedValue.setValue(lastChanged);
+		button.setVisible(true);
 	}
 	
 	/**
@@ -274,6 +277,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		projectDetailsValue.setValue("");
 		projectDescriptionValue.setValue("");
 		lastChangedValue.setValue("");
+		button.setVisible(false);
 	}
 
 }
