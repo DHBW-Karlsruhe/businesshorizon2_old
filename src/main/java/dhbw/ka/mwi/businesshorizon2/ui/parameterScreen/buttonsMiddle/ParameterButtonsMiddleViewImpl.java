@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.FileResource;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -45,6 +46,8 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+
+import dhbw.ka.mwi.businesshorizon2.ui.ButtonMiddle;
 
 /**
  * Dies ist die Vaadin-Implementierung der ParameterButtonsMiddleView. Sie stellt das mittlere Layout des Parameterscreens dar.
@@ -74,6 +77,10 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 	private Button next;
 	private Label gap;
 	
+	private ButtonMiddle button1;
+	private ButtonMiddle button2;
+	private ButtonMiddle button3;
+	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -96,8 +103,33 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 	private void generateUI() {
 		setSpacing(true);
 		
+		setWidth(85, UNITS_PERCENTAGE);
+		setHeight(Sizeable.SIZE_UNDEFINED, 0);
 		float hoehe = 95;
 		float breite = 260;	
+		
+		button1 = new ButtonMiddle ("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Parameter", new LayoutClickListener() {
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.showInput();
+			}
+			
+		});
+		addComponent(button1);
+		
+		button2 = new ButtonMiddle ("./images/icons/newIcons/1418766020_editor_documents_files-128.png", "Beschreibung", new LayoutClickListener() {
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.showDescription();	
+			}
+			
+		});
+		addComponent(button2);
+		
+		//button3 = new ButtonMiddle ("", "Weiter zu Schritt 3", new LayoutClickListener)
+		
 		
 		/**String hoehe2 = "95px";
 		String breite2 = "260px";
@@ -121,7 +153,7 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		setComponentAlignment(layoutButton1, Alignment.TOP_CENTER);
 		*/
 		
-		method = new Button ("deterministische Methode");
+		/**method = new Button ("Parameter");
 		method.setStyleName("paramButtonActivated");
 		method.setHeight(hoehe, UNITS_PIXELS);
 		method.setWidth(breite, UNITS_PIXELS);
@@ -171,7 +203,7 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		});
 		next.setIcon(new ThemeResource ("images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png"));
 		addComponent(next);
-		setComponentAlignment(next, Alignment.BOTTOM_CENTER);
+		setComponentAlignment(next, Alignment.BOTTOM_CENTER);*/
 
 	}
 	
@@ -187,6 +219,16 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		description.setStyleName("paramButtonActivated");
 		method.requestRepaint();
 		description.requestRepaint();
+	}
+	
+	public void setStochastic () {
+		//method = new Button ("Stochastische Methode");
+		logger.debug("View: setStochastic");
+	}
+	
+	public void setDeterministic () {
+		//method.setDescription("Deterministische Methode");
+		logger.debug ("View: setDeterministic");
 	}
 	
 }

@@ -33,7 +33,9 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ShowParameterInputViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
@@ -59,6 +61,9 @@ public class ParameterButtonsMiddlePresenter extends Presenter<ParameterButtonsM
 
 	@Autowired
 	private EventBus eventBus;
+	
+	@Autowired
+	private Project project;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -69,8 +74,23 @@ public class ParameterButtonsMiddlePresenter extends Presenter<ParameterButtonsM
 	 */
 	@PostConstruct
 	private void init() {
-		//eventBus.addHandler(this);
+		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
+	}
+	
+	@EventHandler
+	public void onShowParameterScreen (ShowParameterScreenViewEvent event) {
+		logger.debug("Project TypMethod: " + project.getTypMethod());
+		
+		/**if (project.getProjectInputType().isStochastic()) {
+			getView().setStochastic();
+			logger.debug("Stochastische Buttons gesetzt");
+		}
+		
+		else {
+			getView().setDeterministic();
+			logger.debug ("Deterministische Buttons gesetzt");
+		}*/
 	}
 	
 	public void showDescription () {

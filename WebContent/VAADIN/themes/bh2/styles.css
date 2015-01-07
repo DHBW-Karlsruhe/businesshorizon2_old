@@ -186,6 +186,14 @@ div.projectlist:hover {
 	border: none;
 }
 
+.buttonMiddle {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	font-size: 16pt;
+}
+
 .paramButton {
 	background-color: #D8EFBC;
 	border: 2px solid black;
@@ -196,10 +204,20 @@ div.projectlist:hover {
 
 .paramButtonActivated .v-icon {
 	width: 30%;
+	text-align: left;
 }
 
 .paramButton .v-icon {
 	width: 30%;
+	text-align: left;
+}
+
+.paramButton .v-button-caption {
+	text-align: left;
+}
+
+.paramButtonActivated .v-button-caption {
+	text-align: left;
 }
 
 .paramButtonActivated {

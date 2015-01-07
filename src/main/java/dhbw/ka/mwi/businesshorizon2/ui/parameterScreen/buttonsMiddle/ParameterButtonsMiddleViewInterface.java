@@ -39,6 +39,10 @@ public interface ParameterButtonsMiddleViewInterface extends View {
 	public void setMethodButtonActivated();
 	
 	public void setDescriptionButtonActivated();
+	
+	public void setStochastic ();
+	
+	public void setDeterministic ();
 
 }
 
