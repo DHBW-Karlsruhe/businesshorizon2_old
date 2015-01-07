@@ -66,7 +66,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 	@Autowired
 	private ProjectProxy projectProxy;
-	
+
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
 
@@ -98,9 +98,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	public void projectSelected(Project project) {
 		projectProxy.setSelectedProject(project);
-		
-		eventBus.fireEvent(new ShowProjectEvent());
-		logger.debug("ShowProjectEvent gefeuert");
+
+		//		eventBus.fireEvent(new ShowProjectEvent());
+		//		logger.debug("ShowProjectEvent gefeuert");
 	}
 
 	/**
@@ -121,7 +121,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		List<Project> projects = user.getProjects();
 		logger.debug("Projekte geladen. Anzahl: " + projects.size());
 
-		getView().setProjects(projects);
+		if(projects.size() != 0){
+			getView().setProjects(projects);
+		}
 
 	}
 
@@ -180,14 +182,14 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		logger.debug("ShowAddEvent gefeuert");
 
 	}
-	
+
 	public boolean editProject(Project project, String name, String description) {
-		
+
 
 		try {
 			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
 			if (project.getName().equals(name)) {
-			logger.debug("nur Projekt-Beschreibung geändert");
+				logger.debug("nur Projekt-Beschreibung geändert");
 			}
 			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
 			else {
@@ -197,7 +199,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 						if (projektName.getName().equals(name)) {
 							throw new ProjectAlreadyExistsException(
 									"Projekt mit dem Namen " + name
-											+ " existiert bereits.");
+									+ " existiert bereits.");
 						}
 					}
 				}
@@ -218,7 +220,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		//eventBus.fireEvent(new ProjectEditEvent(project));
 		//logger.debug("ShowEdditEvent gefeuert");
 
-		
+
 
 	}
 
@@ -242,7 +244,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	 */
 	public void editProjectDialog(Project project) {
 		getView().showEditProjectDialog(project);
-		
+
 	}
 
 }

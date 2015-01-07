@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * BusinessHorizon2
  *
@@ -131,7 +132,6 @@ public class BHApplication extends Application {
 		initialScreenView.open(new ExternalResource(processView.getURL()));
 
 		eventBus.fireEvent(new ShowProcessViewEvent());
-		logger.debug("ShowProzessViewEvent gefeuert");
 	}
 	
 	/**
@@ -157,5 +157,4 @@ public class BHApplication extends Application {
 		eventBus.fireEvent(new ShowLogInScreenEvent());
 		logger.debug("ShowLogInScreenEvent gefeuert");
 	}
-	
 }

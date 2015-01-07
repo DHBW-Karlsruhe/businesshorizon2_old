@@ -146,6 +146,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		verticalTop = new VerticalLayout();
 		verticalTop.setSizeFull();
 		verticalTop.setMargin(true, true, true, true);
+		verticalTop.setStyleName("loginTop");
 		
 		//Erzeugt ein Label mit dem Willkommens-Text neben dem Logo
 		welcome = new Label("Willkommen bei");
