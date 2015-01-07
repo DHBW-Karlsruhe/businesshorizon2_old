@@ -221,7 +221,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		loginBtnLayout.addComponent(loginBtn);
 		loginBtnLayout.addComponent(loginBtnLabel);
 		
-		landingBtnLayout.addComponent(loginBtnLayout);
+//		landingBtnLayout.addComponent(loginBtnLayout);
 		
 		//horizontal.addComponent(loginBtnLayout);
 		//horizontal.setComponentAlignment(loginBtnLayout, Alignment.TOP_RIGHT);
