@@ -48,7 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddleViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
@@ -81,7 +81,7 @@ public class ParameterScreenPresenter extends Presenter<ParameterScreenViewInter
 	private Project project;
 	
 	@Autowired
-	private ParameterButtonsMiddleViewInterface parameterButtonsMiddleView;
+	private ButtonsMiddleViewInterface parameterButtonsMiddleView;
 	
 	@Autowired
 	private ParameterInputViewInterface parameterInputView;

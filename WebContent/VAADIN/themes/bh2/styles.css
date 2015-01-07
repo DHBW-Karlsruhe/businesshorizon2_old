@@ -194,6 +194,10 @@ div.projectlist:hover {
 	font-size: 16pt;
 }
 
+.buttonActivated {
+	background-color: #92D050;
+}
+
 .paramButton {
 	background-color: #D8EFBC;
 	border: 2px solid black;

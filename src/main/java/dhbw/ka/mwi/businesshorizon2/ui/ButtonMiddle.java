@@ -16,11 +16,11 @@ public class ButtonMiddle extends HorizontalLayout{
 	private Label gap1;
 	private Label gap2;
 	private Label gap3;
-	
-	private String hoehe = "50px";
-	private String breite = "340px";	
+
+	LayoutClickListener lcl;
 	
 	public ButtonMiddle (String iconPfad, String text, LayoutClickListener lcl) {
+		this.lcl = lcl;
 		setHeight(95, UNITS_PIXELS);
 		setWidth(100, UNITS_PERCENTAGE);
 		setStyleName("buttonMiddle");
@@ -32,7 +32,7 @@ public class ButtonMiddle extends HorizontalLayout{
 		icon.setStyleName("buttonIconMiddle");
 		
 		gap2 = new Label();
-		gap2.setWidth(15, UNITS_PIXELS);
+		gap2.setWidth(10, UNITS_PIXELS);
 		
 		label = new Label (text);
 		label.setStyleName("buttonLabelMiddle");
@@ -56,5 +56,26 @@ public class ButtonMiddle extends HorizontalLayout{
 		
 		addListener(lcl);
 	}
+	
+	public void setDetails (String iconPfad, String text, LayoutClickListener lcl) {
+		this.icon.setIcon(new ThemeResource(iconPfad));
+		this.label.setValue(text);
+		this.removeListener(this.lcl);
+		this.addListener(lcl);
+	}
+	
+	public void setListener (LayoutClickListener lcl) {
+		this.removeListener(this.lcl);
+		this.addListener(lcl);
+	}
+	
+	public void setActivated () {
+		addStyleName("buttonActivated");
+	}
+	
+	public void setDeactivated () {
+		removeStyleName("buttonActivated");
+	}
+	
 
 }

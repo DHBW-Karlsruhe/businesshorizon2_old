@@ -34,15 +34,11 @@ import com.mvplite.view.View;
  * @author Tobias Lindner
  * 
  */
-public interface ParameterButtonsMiddleViewInterface extends View {
+public interface ButtonsMiddleViewInterface extends View {
 	
-	public void setMethodButtonActivated();
+	//public void setMethodButtonActivated();
 	
-	public void setDescriptionButtonActivated();
-	
-	public void setStochastic ();
-	
-	public void setDeterministic ();
+	//public void setDescriptionButtonActivated();
 
 }
 

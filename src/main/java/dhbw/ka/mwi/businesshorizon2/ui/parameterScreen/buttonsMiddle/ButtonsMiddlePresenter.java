@@ -54,7 +54,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
  * @author Christian Scherer
  * 
  */
-public class ParameterButtonsMiddlePresenter extends Presenter<ParameterButtonsMiddleViewInterface> {
+public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ParameterButtonsMiddlePresenter.class");
@@ -92,27 +92,5 @@ public class ParameterButtonsMiddlePresenter extends Presenter<ParameterButtonsM
 			logger.debug ("Deterministische Buttons gesetzt");
 		}*/
 	}
-	
-	public void showDescription () {
-		eventBus.fireEvent(new ShowParameterDescriptionViewEvent());
-		logger.debug("ShowParameterDescriptionViewEvent geworfen");
-		getView().setDescriptionButtonActivated();
-		logger.debug ("Button aktualisiert");
-	}
-	
-	public void showInput () {
-		eventBus.fireEvent(new ShowParameterInputViewEvent());
-		logger.debug("ShowParameterInputViewEvent geworfen");
-		getView().setMethodButtonActivated();
-		logger.debug("Button aktualisiert");
-	}
-	
-	public void showStep3 () {
-		eventBus.fireEvent(new ShowProjectEvent());
-		logger.debug("ShowProcessViewEvent geworfen");
-		eventBus.fireEvent(new ShowNavigationStepEvent(NavigationSteps.getByNumber(3)));
-		logger.debug("ShowPeriodViewEvent geworfen");
-	}
-
 
 }

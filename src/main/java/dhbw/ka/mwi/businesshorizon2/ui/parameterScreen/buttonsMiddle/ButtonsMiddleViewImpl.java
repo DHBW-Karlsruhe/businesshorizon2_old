@@ -55,15 +55,15 @@ import dhbw.ka.mwi.businesshorizon2.ui.ButtonMiddle;
  * @author Tobias Lindner
  * 
  */
-public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
-		ParameterButtonsMiddleViewInterface {
+public class ButtonsMiddleViewImpl extends VerticalLayout implements
+		ButtonsMiddleViewInterface {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ParameterButtonsMiddleViewImpl.class");
 
 	@Autowired
-	private ParameterButtonsMiddlePresenter presenter;
+	private ButtonsMiddlePresenter presenter;
 	
 	private HorizontalLayout layoutButton1;
 	private HorizontalLayout layoutButton2;
@@ -104,15 +104,14 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 		setSpacing(true);
 		
 		setWidth(85, UNITS_PERCENTAGE);
-		setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		float hoehe = 95;
-		float breite = 260;	
+		setHeight(100, UNITS_PERCENTAGE);
 		
 		button1 = new ButtonMiddle ("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Parameter", new LayoutClickListener() {
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				presenter.showInput();
+				button2.setDeactivated();
+				button1.setActivated();
 			}
 			
 		});
@@ -122,113 +121,64 @@ public class ParameterButtonsMiddleViewImpl extends VerticalLayout implements
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				presenter.showDescription();	
+				button1.setDeactivated();
+				button2.setActivated();
 			}
 			
 		});
 		addComponent(button2);
 		
-		//button3 = new ButtonMiddle ("", "Weiter zu Schritt 3", new LayoutClickListener)
-		
-		
-		/**String hoehe2 = "95px";
-		String breite2 = "260px";
-		
-		layoutButton1 = new HorizontalLayout();
-		layoutButton1.setHeight(hoehe2);
-		layoutButton1.setWidth(breite2);
-		layoutButton1.setStyleName("paramButtonActivated");
-		
-		methodIcon  = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418831298_common_calendar_month-128.png"));
-		
-		layoutButton1.addComponent(methodIcon);
-		
-		methodLabel = new Label ("deterministische Methode");
-		layoutButton1.addComponent(methodLabel);
-		
-		layoutButton1.setComponentAlignment(methodIcon, Alignment.MIDDLE_LEFT);
-		layoutButton1.setComponentAlignment(methodLabel, Alignment.BOTTOM_CENTER);
-		
-		addComponent(layoutButton1);
-		setComponentAlignment(layoutButton1, Alignment.TOP_CENTER);
-		*/
-		
-		/**method = new Button ("Parameter");
-		method.setStyleName("paramButtonActivated");
-		method.setHeight(hoehe, UNITS_PIXELS);
-		method.setWidth(breite, UNITS_PIXELS);
-		method.addListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter.showInput();
-			}
-			
-		});
-		method.setIcon(new ThemeResource ("images/icons/newIcons/1418831298_common_calendar_month-128.png"));
-		addComponent(method);
-		setComponentAlignment(method, Alignment.TOP_CENTER);
-
-		description = new Button ("Kurzbeschreibung");
-		description.setStyleName("paramButton");
-		description.setHeight(hoehe, UNITS_PIXELS);
-		description.setWidth(breite, UNITS_PIXELS);
-		description.addListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter.showDescription();
-			}
-			
-		});
-		description.setIcon(new ThemeResource ("images/icons/newIcons/1418766020_editor_documents_files-128.png"));
-		addComponent(description);
-		setComponentAlignment(description, Alignment.MIDDLE_CENTER);
-		
-		gap = new Label();
-		gap.setHeight("200px");
+		gap = new Label ();
+		gap.setSizeFull();
 		addComponent(gap);
+		setExpandRatio(gap, 1.0f);
 		
-		next = new Button ("Weiter zu Schritt 3");
-		next.setStyleName("paramButton");
-		next.setHeight(hoehe, UNITS_PIXELS);
-		next.setWidth(breite, UNITS_PIXELS);
-		next.addListener(new ClickListener() {
+		button3 = new ButtonMiddle ("./images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png", "Weiter zu Schritt 3", new LayoutClickListener () {
 
 			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter.showStep3();
+			public void layoutClick(LayoutClickEvent event) {
+
 			}
 			
 		});
-		next.setIcon(new ThemeResource ("images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png"));
-		addComponent(next);
-		setComponentAlignment(next, Alignment.BOTTOM_CENTER);*/
+		
+		addComponent(button3);
 
 	}
 	
-	public void setMethodButtonActivated () {
-		method.setStyleName("paramButtonActivated");
-		description.setStyleName("paramButton");
-		method.requestRepaint();
-		description.requestRepaint();
+	public void setStochasticParameter () {
+		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", new LayoutClickListener() {
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				// TODO Auto-generated method stub
+			}
+			
+		});
+		
+		button2.setListener(new LayoutClickListener() {
+			
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		logger.debug("View: setStochasticParameter");
 	}
 	
-	public void setDescriptionButtonActivated () {
-		method.setStyleName("paramButton");
-		description.setStyleName("paramButtonActivated");
-		method.requestRepaint();
-		description.requestRepaint();
-	}
-	
-	public void setStochastic () {
-		//method = new Button ("Stochastische Methode");
-		logger.debug("View: setStochastic");
-	}
-	
-	public void setDeterministic () {
-		//method.setDescription("Deterministische Methode");
-		logger.debug ("View: setDeterministic");
+	public void setDeterministicParameter () {
+		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", new LayoutClickListener () {
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				
+			}
+			
+		});
+		
+
+		logger.debug ("View: setDeterministicParameter");
 	}
 	
 }

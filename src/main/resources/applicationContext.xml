@@ -212,11 +212,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	
 	<!-- Parameter Buttons Middle -->
-	<bean name="parameterButtonsMiddlePresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddlePresenter"
+	<bean name="ButtonsMiddlePresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddlePresenter"
 		scope="session" />
-	<bean name="parameterButtonsMiddleView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ParameterButtonsMiddleViewImpl"
+	<bean name="ButtonsMiddleView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.buttonsMiddle.ButtonsMiddleViewImpl"
 		scope="session" />
 		
 	<!-- Parameter Description-->
