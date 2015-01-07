@@ -102,6 +102,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="projectCreationView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewImpl"
 		scope="session"	/>
+	<bean name="startCalculationButtonPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonPresenter"
+		scope="session"	/>
+	<bean name="startCalculationButtonView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonViewImpl"
+		scope="session"	/>
 
 	<!-- Infos -->
 	<bean name="infosViewPresenter"

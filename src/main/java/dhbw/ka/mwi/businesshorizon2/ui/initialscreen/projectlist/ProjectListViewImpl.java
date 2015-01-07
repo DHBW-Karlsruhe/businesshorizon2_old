@@ -48,6 +48,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -193,6 +194,8 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		final int a = i;
 		//erzeugt eine Panel für ein Projekt
 		singleProject = new VerticalLayout();
+		HorizontalLayout container = new HorizontalLayout();
+		container.setSizeFull();
 		if(i == 0){
 			singleProject.setStyleName("singleProjectSelected");
 			presenter.projectSelected(project);
@@ -200,7 +203,15 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		else{
 			singleProject.setStyleName("singleProject");	
 		}
-		
+		Embedded icon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418828714_editor_open_folder-128.png"));
+		icon.setHeight(40, UNITS_PIXELS);
+		icon.setWidth(40, UNITS_PIXELS);
+		Label gap1 = new Label();
+		Label gap2 = new Label();
+		Label gap3 = new Label();
+		gap1.setWidth("15px");
+		gap2.setWidth("15px");
+		gap3.setSizeFull();
 		Label projectName = new Label(project.getName());
 		projectName.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		projectName.setHeight(Sizeable.SIZE_UNDEFINED, 0);
@@ -208,10 +219,18 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		
 		//Legt ein Layout für das Projekt-Panel fest
 		//panelContent.setSizeFull();
-		singleProject.addComponent(projectName);
+		container.addComponent(gap1);
+		container.addComponent(icon);
+		container.addComponent(gap2);
+		container.addComponent(projectName);
+		container.addComponent(gap3);
+		container.setExpandRatio(gap3, 1.0f);
+		
+		singleProject.addComponent(container);
 		singleProject.setWidth(100, UNITS_PERCENTAGE);
 		singleProject.setHeight(70, UNITS_PIXELS);
-		singleProject.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
+		container.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
+		container.setComponentAlignment(projectName, Alignment.MIDDLE_CENTER);
 
 		singleProject.addListener(new LayoutClickListener(){
 

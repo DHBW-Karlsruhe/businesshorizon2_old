@@ -55,11 +55,6 @@ div.projectlist:hover {
 }
 
 .v-app {
-<<<<<<< HEAD
-/*    background-image: url("images/background.png"); */
-=======
-/*     background-image: url("images/background.png"); */
->>>>>>> refs/remotes/origin/UIUmstellungMarco
     background-size:100%;
     height:100%;
 
@@ -263,7 +258,7 @@ div.projectlist:hover {
 }
 
 .projectName {
-	font-size: 20pt;
+	font-size: 16pt;
 }
 
 .singleProject {
@@ -284,20 +279,27 @@ div.projectlist:hover {
 	margin-left: 5%;
 }
 
+.projectCreationLayout {
+	margin-left: 5%;
+	padding-bottom: 5px;
+}
+
 .projectDetailsLabel {
-	font-size: 18pt;
+	font-size: 16pt;
+	font-weight: bold;
 }
 
 .projectDetailsValue {
 	font-size: 16pt;
 }
 
-.projectNameInput {
+.v-caption-projectNameInput {
 	font-size: 14pt;
 }
 
-.projectDescriptionInput {
-	font-size: 14pt;
+.projectNameInput input[type="text"]{
+	border: 2px solid black;
+	font-size: 12pt;
 }
 
 .faqManualLayout {
@@ -324,4 +326,28 @@ div.projectlist:hover {
 	font-size: 14pt;
 	color: #5995D9;
 }
->>>>>>> refs/remotes/origin/UIUmstellungMarco
+
+.gotoCalculationLabel {
+	font-size: 16pt;
+}
+
+.gotoCalculationButton {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+}
+
+.buttonMiddle {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	font-size: 16pt;
+}
+
+.buttonBottom {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	font-size: 16pt;
+}

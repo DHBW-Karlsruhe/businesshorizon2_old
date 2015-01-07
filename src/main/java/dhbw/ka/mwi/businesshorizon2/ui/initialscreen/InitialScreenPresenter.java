@@ -44,6 +44,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectCreationButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectEditButtonsEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ShowProjectDetailsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -86,6 +87,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@Autowired
 	private ProjectCreationViewInterface projectCreationView;
+	
+	@Autowired
+	private StartCalculationButtonViewInterface startCalculationButtonView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -180,7 +184,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 * @author Marco Glaser
 	 */
 	public void showProjectCreationScreen(){
-		getView().showProjectCreationScreen(projectCreationView);
+		getView().showView(startCalculationButtonView, projectCreationView);
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectCreationButtonsEvent(userProxy.getSelectedUser()));
 	}
@@ -193,7 +197,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 * @author Marco Glaser
 	 */
 	public void showProjectEditScreen(){
-		getView().showProjectCreationScreen(projectCreationView);
+		getView().showView(startCalculationButtonView, projectCreationView);
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectEditButtonsEvent(userProxy.getSelectedUser()));
 	}

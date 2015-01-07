@@ -5,11 +5,17 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 
 /**
  * Diese View ist zuständig für das Anzeigen der Details zu einem Projekt.
@@ -47,6 +53,8 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	private Label projectDetailsValue;
 	private Label projectDescriptionValue;
 	private Label lastChangedValue;
+
+	private Label expandingGap;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -70,7 +78,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	 */
 	private void generateUi(){
 		setWidth(95, UNITS_PERCENTAGE);
-		setHeight(Sizeable.SIZE_UNDEFINED, 0);
+		setHeight(100, UNITS_PERCENTAGE);
 		setStyleName("projectDetailsLayout");
 		
 		projectNameLayout = new HorizontalLayout();
@@ -93,6 +101,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		projectDetailsValue = new Label();
 		projectDescriptionValue = new Label();
 		lastChangedValue = new Label();
+		expandingGap = new Label();
 		
 		pNameVertical.setWidth(200, UNITS_PIXELS);
 		pNameVertical.setHeight(100, UNITS_PERCENTAGE);
@@ -106,6 +115,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		pDetailsValueVertical.setHeight(100, UNITS_PERCENTAGE);
 		pDescValueVertical.setHeight(100, UNITS_PERCENTAGE);
 		lChangedValueVertical.setHeight(100, UNITS_PERCENTAGE);
+		expandingGap.setSizeFull();
 		
 		projectNameLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		projectNameLayout.setHeight(50, UNITS_PIXELS);
@@ -170,6 +180,57 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		addComponent(projectDetailsLayout);
 		addComponent(projectDescriptionLayout);
 		addComponent(lastChangedLayout);
+		addComponent(expandingGap);
+		addComponent(generateStartCalculatingButton());
+		setExpandRatio(expandingGap, 1.0f);
+	}
+	
+	private VerticalLayout generateStartCalculatingButton(){
+		VerticalLayout button = new VerticalLayout();
+		HorizontalLayout container = new HorizontalLayout();
+		Embedded icon = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png"));
+		Label gap1 = new Label();
+		Label gap2 = new Label();
+		Label gap3 = new Label();
+		icon.setHeight(40, UNITS_PIXELS);
+		icon.setWidth(40, UNITS_PIXELS);
+		gap1.setWidth("30px");
+		gap2.setWidth("15px");
+		gap3.setWidth("15px");
+		container.setSizeFull();
+		
+		Label label = new Label("Zur Berechnung");
+		label.setWidth(160, UNITS_PIXELS);
+		label.setHeight(Sizeable.SIZE_UNDEFINED, 0);
+		label.setStyleName("gotoCalculationLabel");
+		
+		container.addComponent(gap1);
+		container.addComponent(label);
+		container.addComponent(gap2);
+		container.addComponent(icon);
+		container.addComponent(gap3);
+		container.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
+		container.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+		
+		button.addComponent(container);
+		button.setWidth(260, UNITS_PIXELS);
+		button.setHeight(70, UNITS_PIXELS);
+		button.setStyleName("gotoCalculationButton");
+//		button.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+		button.addListener(new LayoutClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+//				presenter.projectSelected(proj);
+//				switchProjectsStyle(a);
+//				
+//				eventBus.fireEvent(new SelectProjectEvent());
+			}
+			
+		});
+		return button;
 	}
 	
 	/**

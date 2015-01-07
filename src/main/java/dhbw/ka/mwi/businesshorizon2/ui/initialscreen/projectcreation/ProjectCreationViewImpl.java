@@ -38,7 +38,7 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 
 	private TextField projectNameInput;
 
-	private TextField projectDescriptionInput;
+	private TextArea projectDescriptionInput;
 
 	private Label gap;
 
@@ -68,22 +68,22 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 	 */
 	public void generateUi(){
 		setWidth(95, UNITS_PERCENTAGE);
-		setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		setStyleName("projectDetailsLayout");
+		setHeight(SIZE_UNDEFINED, 0);
+		setStyleName("projectCreationLayout");
 		
-		projectNameInput = new TextField("Projektname");
-		projectDescriptionInput = new TextField("Projektbeschreibung");
+		projectNameInput = new TextField();
+		projectDescriptionInput = new TextArea();
 		gap = new Label();
 		secondGap = new Label();
 		
 		projectNameInput.setWidth(80, UNITS_PERCENTAGE);
-		projectNameInput.setHeight(SIZE_UNDEFINED, 0);
+//		projectNameInput.setHeight(SIZE_UNDEFINED, 0);
 		projectNameInput.setStyleName("projectNameInput");
 		projectDescriptionInput.setWidth(80, UNITS_PERCENTAGE);
 		projectDescriptionInput.setHeight(300, UNITS_PIXELS);
-		projectDescriptionInput.setStyleName("projectDescriptionInput");
-		gap.setHeight("10px");
-		secondGap.setHeight("2px");
+		projectDescriptionInput.setStyleName("projectNameInput");
+		gap.setHeight("20px");
+		secondGap.setSizeFull();
 		
 		projectNameInput.setValue("Geben sie hier den Projektname ein");
 		projectDescriptionInput.setValue("Geben sie hier eine Beschreibung des Projekts ein");
@@ -91,7 +91,13 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		addComponent(projectNameInput);
 		addComponent(gap);
 		addComponent(projectDescriptionInput);
-		addComponent(secondGap);
+		
+		projectNameInput.setCaption("Projektname");
+		projectNameInput.setValue("Geben Sie hier den Projektname ein");
+		projectDescriptionInput.setCaption("Projektbeschreibung");
+		projectDescriptionInput.setValue("Geben Sie hier eine Projektbeschreibung ein");
+//		addComponent(secondGap);
+//		setExpandRatio(secondGap, 1.0f);
 	}
 	
 	/**
