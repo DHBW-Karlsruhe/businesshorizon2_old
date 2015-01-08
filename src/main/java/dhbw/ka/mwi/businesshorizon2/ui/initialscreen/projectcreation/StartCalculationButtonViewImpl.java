@@ -73,7 +73,7 @@ public class StartCalculationButtonViewImpl extends VerticalLayout implements St
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				
+				presenter.showMethodselectionScreen();
 				
 			}
 			

@@ -84,8 +84,9 @@ public class TopBarButton extends VerticalLayout{
 	 * 
 	 * @author Marco Glaser
 	 */
-	public void setButtonWidth(float width){
+	public TopBarButton setButtonWidth(float width){
 		button.setWidth(width, UNITS_PIXELS);
+		return this;
 	}
 	
 	/**

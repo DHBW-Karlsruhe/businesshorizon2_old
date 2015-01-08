@@ -28,6 +28,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 import com.mvplite.view.View;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 
@@ -73,5 +74,11 @@ public interface InitialScreenViewInterface extends View {
 	public void setInitialTopButtons();
 
 	public void setInitialPageDescription();
+	
+	public void setPageDescription(String source, String page, String description);
+	
+	public void setPageDescription(String source, String page, String[] description);
+	
+	public void clearUnusedButtons();
 	
 }

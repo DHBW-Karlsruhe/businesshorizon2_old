@@ -34,6 +34,8 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
@@ -91,6 +93,11 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 			getView().setDeterministicParameter();
 			logger.debug ("Deterministische Buttons gesetzt");
 		}
+	}
+
+	public void showParameterScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));
+		
 	}
 
 }

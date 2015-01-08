@@ -4,8 +4,12 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.mvplite.event.EventBus;
 import com.mvplite.presenter.Presenter;
+
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 
 /**
  * Dieser Presenter ist für die Darstellung des Projekterstellungs Screens zuständig.
@@ -33,6 +37,11 @@ public class StartCalculationButtonPresenter extends Presenter<StartCalculationB
 	public void init(){
 //		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
+		
+	}
+
+	public void showMethodselectionScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
 		
 	}
 

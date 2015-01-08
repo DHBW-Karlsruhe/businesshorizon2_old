@@ -96,7 +96,9 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 		setWidth(85, UNITS_PERCENTAGE);
 		setHeight(100, UNITS_PERCENTAGE);
 		
-		button1 = new ButtonMiddle ("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Parameter", new LayoutClickListener() {
+		button1 = new ButtonMiddle ("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Methodenauswahl", new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
@@ -109,6 +111,8 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 		button1.setActivated();
 		
 		button2 = new ButtonMiddle ("./images/icons/newIcons/1418766020_editor_documents_files-128.png", "Beschreibung", new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
@@ -124,15 +128,19 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 		addComponent(gap);
 		setExpandRatio(gap, 1.0f);
 		
-		button3 = new ButtonMiddle ("./images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png", "Weiter zu Schritt 3", new LayoutClickListener () {
+		button3 = new ButtonMiddle ("./images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png", "Weiter zu Schritt 2", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-
+				presenter.showParameterScreen();
 			}
 			
 		});
 		
+		button3.changeStyleClass("buttonBottom");
+		button3.changeDirection();
 		addComponent(button3);
 
 	}
@@ -144,6 +152,8 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 	public void setStochasticParameter () {
 		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", new LayoutClickListener() {
 
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				// TODO Auto-generated method stub
@@ -153,6 +163,8 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 		
 		button2.setListener(new LayoutClickListener() {
 			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				// TODO Auto-generated method stub
@@ -171,6 +183,8 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 	 */
 	public void setDeterministicParameter () {
 		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {

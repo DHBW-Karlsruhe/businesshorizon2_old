@@ -176,10 +176,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-//				presenter.projectSelected(proj);
-//				switchProjectsStyle(a);
-//				
-//				eventBus.fireEvent(new SelectProjectEvent());
+				presenter.showMethodselectionScreen();
 			}
 			
 		});

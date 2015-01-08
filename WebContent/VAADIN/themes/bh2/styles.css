@@ -337,6 +337,10 @@ div.projectlist:hover {
 	box-sizing: border-box;
 }
 
+.gotoCalculationButton:HOVER{
+	background-color: #92D050;
+}
+
 .buttonMiddle {
 	background-color: #D8EFBC;
 	border: 2px solid black;
@@ -345,11 +349,19 @@ div.projectlist:hover {
 	font-size: 16pt;
 }
 
+.buttonMiddle:HOVER{
+	background-color: #92D050;
+}
+
 .buttonBottom {
 	background-color: #D8EFBC;
 	border: 2px solid black;
 	box-sizing: border-box;
 	font-size: 16pt;
+}
+
+.buttonBottom:HOVER {
+	background-color: #92D050;
 }
 
 .v-verticallayout-parameter {

@@ -606,6 +606,15 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setTopButton(addProjectButton, 0, addProjectButtonListener);
 		setTopButton(editProjectButton, 1, null);
 		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
+		clearUnusedButtons();
+	}
+	
+	public void clearUnusedButtons(){
+		if(topRightLayout.getComponentCount() > 4){
+			for(int i = 3; i < (topRightLayout.getComponentCount() - 1); i++){
+				topRightLayout.removeComponent(topRightLayout.getComponent(i));
+			}
+		}
 	}
 
 	/**
@@ -670,5 +679,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setPageDescription("./images/icons/newIcons/1418766062_house_home-128.png", "Startseite", "Übersicht über alle Projekte");
 	}
 
+	public HorizontalLayout getButtonBarLayout(){
+		return this.topRightLayout;
+	}
 
 }

@@ -32,6 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.mvplite.view.View;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
@@ -39,6 +43,8 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServic
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
@@ -52,6 +58,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectRemoveEv
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
 
 /**
  * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
@@ -90,6 +97,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@Autowired
 	private StartCalculationButtonViewInterface startCalculationButtonView;
+	
+	@Autowired
+	private ButtonsMiddleViewInterface buttonsMiddleView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -99,6 +109,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
+
+	@Autowired
+	private ParameterScreenViewInterface parameterScreenView;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -216,6 +229,75 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void onShowInitialTopButtons(ShowInitialTopButtonsEvent event){
 		getView().setInitialTopButtons();
 		getView().setInitialPageDescription();
+	}
+	
+	@EventHandler
+	public void onShowMethodSelectionView(ShowProcessStepEvent event){
+		switch (event.getScreen()) {
+		case METHODSELECTION:
+			getView().showView(buttonsMiddleView, projectDetailsView);
+			getView().setPageDescription("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Schritt 1", new String[] {"Wählen Sie die Methoden", "zur Berechnung"});
+			setScreen1Buttons();
+			break;
+
+		case PARAMETER:
+//			getView().showView(buttonsMiddleView, parameterScreenView);
+			break;
+		
+		case PERIODS:
+			
+			break;
+			
+		case SCENARIOS:
+			
+			break;
+			
+		case RESULT:
+			
+			break;
+			
+		default:
+			break;
+		}
+	}
+
+	private void setScreen1Buttons() {
+		getView().setTopButton(new TopBarButton("saveProjectButton", "Speichern"), 0, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				
+			}
+			
+		});
+		getView().setTopButton(new TopBarButton("deleteProjectButton", "Daten zurücksetzen").setButtonWidth(25), 1, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				
+			}
+			
+		});
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				
+			}
+			
+		});
+		
+		getView().clearUnusedButtons();
+		
 	}
 
 }
