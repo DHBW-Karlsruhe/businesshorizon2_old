@@ -11,6 +11,7 @@ import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -57,6 +58,8 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	private Label expandingGap;
 
 	private VerticalLayout button;
+
+	private GridLayout gridLayout;
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -83,18 +86,10 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		setHeight(100, UNITS_PERCENTAGE);
 		setStyleName("projectDetailsLayout");
 		
-		projectNameLayout = new HorizontalLayout();
-		projectDetailsLayout = new HorizontalLayout();
-		projectDescriptionLayout = new HorizontalLayout();
-		lastChangedLayout = new HorizontalLayout();
-		pNameVertical = new VerticalLayout();
-		pDetailsVertical = new VerticalLayout();
-		pDescVertical = new VerticalLayout();
-		lChangedVertical = new VerticalLayout();
-		pNameValueVertical = new VerticalLayout();
-		pDetailsValueVertical = new VerticalLayout();
-		pDescValueVertical = new VerticalLayout();
-		lChangedValueVertical = new VerticalLayout();
+		gridLayout = new GridLayout(2, 10);
+		gridLayout.setSpacing(true);
+		gridLayout.setWidth(100, UNITS_PERCENTAGE);
+//		gridLayout.setStyleName("parameter");
 		projectName = new Label();
 		projectDetails = new Label();
 		projectDescription = new Label();
@@ -105,88 +100,44 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 		lastChangedValue = new Label();
 		expandingGap = new Label();
 		
-		pNameVertical.setWidth(200, UNITS_PIXELS);
-		pNameVertical.setHeight(100, UNITS_PERCENTAGE);
-		pDetailsVertical.setWidth(200, UNITS_PIXELS);
-		pDetailsVertical.setHeight(100, UNITS_PERCENTAGE);
-		pDescVertical.setWidth(200, UNITS_PIXELS);
-		pDescVertical.setHeight(100, UNITS_PERCENTAGE);
-		lChangedVertical.setWidth(200, UNITS_PIXELS);
-		lChangedVertical.setHeight(100, UNITS_PERCENTAGE);
-		pNameValueVertical.setHeight(100, UNITS_PERCENTAGE);
-		pDetailsValueVertical.setHeight(100, UNITS_PERCENTAGE);
-		pDescValueVertical.setHeight(100, UNITS_PERCENTAGE);
-		lChangedValueVertical.setHeight(100, UNITS_PERCENTAGE);
 		expandingGap.setSizeFull();
-		
-		projectNameLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		projectNameLayout.setHeight(50, UNITS_PIXELS);
-		projectDetailsLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		projectDetailsLayout.setHeight(50, UNITS_PIXELS);
-		projectDescriptionLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		projectDescriptionLayout.setHeight(50, UNITS_PIXELS);
-		lastChangedLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		lastChangedLayout.setHeight(50, UNITS_PIXELS);
-//		projectName.setWidth(100, UNITS_PERCENTAGE);
-//		projectName.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		projectName.setSizeUndefined();
+
 		projectName.setStyleName("projectDetailsLabel");
-//		projectDetails.setWidth(30, UNITS_PERCENTAGE);
-//		projectDetails.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		projectDetails.setSizeUndefined();
 		projectDetails.setStyleName("projectDetailsLabel");
-//		projectDescription.setWidth(30, UNITS_PERCENTAGE);
-//		projectDescription.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		projectDescription.setSizeUndefined();
 		projectDescription.setStyleName("projectDetailsLabel");
-//		lastChanged.setWidth(30, UNITS_PERCENTAGE);
-//		lastChanged.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		lastChanged.setSizeUndefined();
 		lastChanged.setStyleName("projectDetailsLabel");
-		projectNameValue.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		projectDetailsValue.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		projectDescriptionValue.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		lastChangedValue.setHeight(Sizeable.SIZE_UNDEFINED, 0);
 		projectNameValue.setStyleName("projectDetailsValue");
 		projectDetailsValue.setStyleName("projectDetailsValue");
 		projectDescriptionValue.setStyleName("projectDetailsValue");
 		lastChangedValue.setStyleName("projectDetailsValue");
+		projectName.setWidth(180, UNITS_PIXELS);
+		projectDetails.setWidth(180, UNITS_PIXELS);
+		projectDescription.setWidth(180, UNITS_PIXELS);
+		lastChanged.setWidth(180, UNITS_PIXELS);
 		
-		projectNameLayout.addComponent(pNameVertical);
-		projectNameLayout.addComponent(pNameValueVertical);
-		pNameVertical.addComponent(projectName);
-		pNameValueVertical.addComponent(projectNameValue);
-		projectDetailsLayout.addComponent(pDetailsVertical);
-		projectDetailsLayout.addComponent(pDetailsValueVertical);
-		pDetailsVertical.addComponent(projectDetails);
-		pDetailsValueVertical.addComponent(projectDetailsValue);
-		projectDescriptionLayout.addComponent(pDescVertical);
-		projectDescriptionLayout.addComponent(pDescValueVertical);
-		pDescVertical.addComponent(projectDescription);
-		pDescValueVertical.addComponent(projectDescriptionValue);
-		lastChangedLayout.addComponent(lChangedVertical);
-		lastChangedLayout.addComponent(lChangedValueVertical);
-		lChangedVertical.addComponent(lastChanged);
-		lChangedValueVertical.addComponent(lastChangedValue);
+		gridLayout.addComponent(projectName, 0, 1);
+		gridLayout.addComponent(projectNameValue, 1, 1);
+		gridLayout.addComponent(projectDetails, 0, 2);
+		gridLayout.addComponent(projectDetailsValue, 1, 2);
+		gridLayout.addComponent(projectDescription, 0, 3);
+		gridLayout.addComponent(projectDescriptionValue, 1, 3);
+		gridLayout.addComponent(lastChanged, 0, 4);
+		gridLayout.addComponent(lastChangedValue, 1, 4);
 		
-		pNameVertical.setComponentAlignment(projectName, Alignment.MIDDLE_LEFT);
-		pDetailsVertical.setComponentAlignment(projectDetails, Alignment.MIDDLE_LEFT);
-		pDescVertical.setComponentAlignment(projectDescription, Alignment.MIDDLE_LEFT);
-		lChangedVertical.setComponentAlignment(lastChanged, Alignment.MIDDLE_LEFT);
-		pNameValueVertical.setComponentAlignment(projectNameValue, Alignment.MIDDLE_LEFT);
-		pDetailsValueVertical.setComponentAlignment(projectDetailsValue, Alignment.MIDDLE_LEFT);
-		pDescValueVertical.setComponentAlignment(projectDescriptionValue, Alignment.MIDDLE_LEFT);
-		lChangedValueVertical.setComponentAlignment(lastChangedValue, Alignment.MIDDLE_LEFT);
+		gridLayout.setColumnExpandRatio(1, 5);
 		
-		addComponent(projectNameLayout);
-		addComponent(projectDetailsLayout);
-		addComponent(projectDescriptionLayout);
-		addComponent(lastChangedLayout);
+		addComponent(gridLayout);
 		addComponent(expandingGap);
 		addComponent(generateStartCalculatingButton());
 		setExpandRatio(expandingGap, 1.0f);
 	}
 	
+	/**
+	 * Diese Methode generiert einen Button, der zum Berechnungsprozess führt.
+	 * Der Button wird ganz unten links in dieser View hinzugefügt.
+	 *
+	 * @author Marco Glaser
+	 */
 	private VerticalLayout generateStartCalculatingButton(){
 		button = new VerticalLayout();
 		HorizontalLayout container = new HorizontalLayout();
@@ -237,7 +188,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	
 	/**
 	 * Diese Methode setzt die Details zu einem Projekt, welche als Parameter übergeben werden,
-	 * als Werte der Labels.
+	 * als Werte der Labels und blendet den Button ein.
 	 * 
 	 * @param projectName
 	 * : Projektname
@@ -263,7 +214,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 	}
 	
 	/**
-	 * Diese Methode löscht die Werte aller Labels.
+	 * Diese Methode löscht die Werte aller Labels und blendet den Button aus.
 	 * Wird benötigt, wenn keine Projekte vorhanden sind.
 	 *
 	 * @author Marco Glaser
