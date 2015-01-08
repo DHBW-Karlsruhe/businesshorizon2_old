@@ -56,7 +56,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.ButtonMiddle;
  * 
  */
 public class ButtonsMiddleViewImpl extends VerticalLayout implements
-		ButtonsMiddleViewInterface {
+ButtonsMiddleViewInterface {
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,13 +64,13 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 
 	@Autowired
 	private ButtonsMiddlePresenter presenter;
-	
+
 	private ButtonMiddle button1;
 	private ButtonMiddle button2;
 	private ButtonMiddle button3;
-	
+
 	private Label gap;
-	
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -92,10 +92,10 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 	 */
 	private void generateUI() {
 		setSpacing(true);
-		
+
 		setWidth(85, UNITS_PERCENTAGE);
 		setHeight(100, UNITS_PERCENTAGE);
-		
+
 		button1 = new ButtonMiddle ("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Methodenauswahl", new LayoutClickListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -105,11 +105,11 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 				button2.setDeactivated();
 				button1.setActivated();
 			}
-			
+
 		});
 		addComponent(button1);
 		button1.setActivated();
-		
+
 		button2 = new ButtonMiddle ("./images/icons/newIcons/1418766020_editor_documents_files-128.png", "Beschreibung", new LayoutClickListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -119,15 +119,15 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 				button1.setDeactivated();
 				button2.setActivated();
 			}
-			
+
 		});
 		addComponent(button2);
-		
+
 		gap = new Label ();
 		gap.setSizeFull();
 		addComponent(gap);
 		setExpandRatio(gap, 1.0f);
-		
+
 		button3 = new ButtonMiddle ("./images/icons/newIcons/1418766041_circle_arrow-forward_next-128.png", "Weiter zu Schritt 2", new LayoutClickListener () {
 
 			private static final long serialVersionUID = 1L;
@@ -136,9 +136,9 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 			public void layoutClick(LayoutClickEvent event) {
 				presenter.showParameterScreen();
 			}
-			
+
 		});
-		
+
 		button3.changeStyleClass("buttonBottom");
 		button3.changeDirection();
 		addComponent(button3);
@@ -158,11 +158,11 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 			public void layoutClick(LayoutClickEvent event) {
 				// TODO Auto-generated method stub
 			}
-			
+
 		});
-		
+
 		button2.setListener(new LayoutClickListener() {
-			
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -170,11 +170,11 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 				// TODO Auto-generated method stub
 			}
 		});
-		
+
 		logger.debug("View: setStochasticParameter");
 	}
-	
-	
+
+
 	/**
 	 * Ändert die Buttons für die Eingabe der Deterministischen Parameter.
 	 * 
@@ -188,12 +188,95 @@ public class ButtonsMiddleViewImpl extends VerticalLayout implements
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				
+
 			}
-			
+
 		});
-		
+
 		logger.debug ("View: setDeterministicParameter");
 	}
+
+	public void setGoToStep(int step){
+		LayoutClickListener lcl;
+		switch (step) {
+		case 2:
+			lcl = generateListener2();
+			break;
+		case 3:
+			lcl = generateListener3();
+			break;
+		case 4:
+			lcl = generateListener4();
+			break;
+		case 5:
+			lcl = generateListener5();
+			break;
+
+		default:
+			lcl = null;
+			break;
+		}
+		button3.setDetails("Weiter zu Schritt "+step, lcl);
+	}
+
+	private LayoutClickListener generateListener2() {
+		LayoutClickListener lcl = new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.showParameterScreen();
+
+			}
+
+		};
+		return lcl;
+	}
 	
+	private LayoutClickListener generateListener3() {
+		LayoutClickListener lcl = new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.showPeriodScreen();
+
+			}
+
+		};
+		return lcl;
+	}
+	
+	private LayoutClickListener generateListener4() {
+		LayoutClickListener lcl = new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.showScenarioScreen();
+
+			}
+
+		};
+		return lcl;
+	}
+	
+	private LayoutClickListener generateListener5() {
+		LayoutClickListener lcl = new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				presenter.showResultScreen();
+
+			}
+
+		};
+		return lcl;
+	}
+
 }

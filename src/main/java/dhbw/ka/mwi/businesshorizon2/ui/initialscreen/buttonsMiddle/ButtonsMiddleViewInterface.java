@@ -39,6 +39,8 @@ public interface ButtonsMiddleViewInterface extends View {
 	public void setStochasticParameter ();
 	
 	public void setDeterministicParameter ();
+	
+	public void setGoToStep(int step);
 
 }
 

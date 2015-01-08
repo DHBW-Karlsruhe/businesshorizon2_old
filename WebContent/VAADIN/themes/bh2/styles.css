@@ -478,3 +478,16 @@ div.projectlist:hover {
 	border: none;
 }
 
+.v-form fieldset{
+	border: 2px solid black;
+}
+
+.v-form legend{
+	margin-left: 5px;
+	font-weight: bold;
+}
+
+.v-radiobutton label{
+	font-size: 14pt;
+}
+

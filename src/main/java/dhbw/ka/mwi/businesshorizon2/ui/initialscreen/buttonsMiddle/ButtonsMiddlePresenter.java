@@ -99,5 +99,21 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));
 		
 	}
+	
+	public void showMethodScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
+	}
+	
+	public void showPeriodScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.PERIODS));
+	}
+	
+	public void showScenarioScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.SCENARIOS));
+	}
+	
+	public void showResultScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.RESULT));
+	}
 
 }

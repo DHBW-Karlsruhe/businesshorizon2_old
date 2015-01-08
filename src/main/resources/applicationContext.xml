@@ -247,6 +247,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	<bean name="parameterDescriptionView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewImpl"
+		scope="session" />	
+		
+	<!-- Method Screen-->
+	<bean name="methodScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenPresenter"
+		scope="session" />
+	<bean name="methodScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewImpl"
 		scope="session" />		
 		
 </beans>

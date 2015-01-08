@@ -59,9 +59,16 @@ public class ButtonMiddle extends HorizontalLayout{
 	
 	public void setDetails (String iconPfad, String text, LayoutClickListener lcl) {
 		this.icon.setIcon(new ThemeResource(iconPfad));
+		setDetails(text, lcl);
+	}
+
+	public void setDetails(String text, LayoutClickListener lcl) {
+		this.setText(text);
+		this.setListener(lcl);
+	}
+	
+	public void setText(String text){
 		this.label.setValue(text);
-		this.removeListener(this.lcl);
-		this.addListener(lcl);
 	}
 	
 	public void setListener (LayoutClickListener lcl) {

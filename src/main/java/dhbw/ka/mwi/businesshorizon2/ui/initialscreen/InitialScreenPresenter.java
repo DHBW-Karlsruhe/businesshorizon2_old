@@ -58,7 +58,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectRemoveEv
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 
 /**
  * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
@@ -100,6 +102,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@Autowired
 	private ButtonsMiddleViewInterface buttonsMiddleView;
+	
+	@Autowired
+	private MethodScreenViewInterface methodScreenView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -111,7 +116,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	private PersistenceServiceInterface persistenceService;
 
 	@Autowired
-	private ParameterScreenViewInterface parameterScreenView;
+	private ParameterInputViewInterface parameterInputView;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -235,13 +240,16 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void onShowMethodSelectionView(ShowProcessStepEvent event){
 		switch (event.getScreen()) {
 		case METHODSELECTION:
-			getView().showView(buttonsMiddleView, projectDetailsView);
+			getView().showView(buttonsMiddleView, methodScreenView);
 			getView().setPageDescription("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Schritt 1", new String[] {"Wählen Sie die Methoden", "zur Berechnung"});
 			setScreen1Buttons();
 			break;
 
 		case PARAMETER:
-//			getView().showView(buttonsMiddleView, parameterScreenView);
+			buttonsMiddleView.setGoToStep(3);
+			buttonsMiddleView.setDeterministicParameter();
+			getView().showView(buttonsMiddleView, parameterInputView);
+			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
 			break;
 		
 		case PERIODS:
