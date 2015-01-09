@@ -100,7 +100,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void projectSelected(Project project) {
 		projectProxy.setSelectedProject(project);
 
-		//		eventBus.fireEvent(new ShowProjectEvent());
+		eventBus.fireEvent(new SelectProjectEvent());
 		//		logger.debug("ShowProjectEvent gefeuert");
 	}
 

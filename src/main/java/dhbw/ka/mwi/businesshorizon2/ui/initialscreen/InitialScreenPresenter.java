@@ -260,6 +260,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		switch (event.getScreen()) {
 		case METHODSELECTION:
 			buttonsMiddleView.setInitialButtons();
+			methodScreenView.setRadioValues();
 			getView().showView(buttonsMiddleView, methodScreenView);
 			getView().setPageDescription("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Schritt 1", new String[] {"Wählen Sie die Methoden", "zur Berechnung"});
 			setScreen1Buttons();
@@ -267,7 +268,15 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 		case PARAMETER:
 			buttonsMiddleView.setGoToStep(3);
-			buttonsMiddleView.setDeterministicParameter();
+			if (project.getProjectInputType().isStochastic()) {
+				buttonsMiddleView.setStochasticParameter();
+				logger.debug("Stochastische Buttons gesetzt");
+			}
+			
+			else {
+				buttonsMiddleView.setDeterministicParameter();
+				logger.debug ("Deterministische Buttons gesetzt");
+			}
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
 			break;

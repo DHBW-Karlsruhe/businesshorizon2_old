@@ -77,7 +77,7 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		secondGap = new Label();
 		
 		projectNameInput.setWidth(80, UNITS_PERCENTAGE);
-//		projectNameInput.setHeight(SIZE_UNDEFINED, 0);
+//		projectNameInput.setHeight(30, UNITS_PIXELS);
 		projectNameInput.setStyleName("projectNameInput");
 		projectDescriptionInput.setWidth(80, UNITS_PERCENTAGE);
 		projectDescriptionInput.setHeight(300, UNITS_PIXELS);

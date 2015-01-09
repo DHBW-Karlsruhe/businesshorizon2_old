@@ -74,6 +74,8 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 	 * @author Tobias Lindner
 	 */
 	private void generateUI() {
+		setWidth(95, UNITS_PERCENTAGE);
+		setStyleName("projectDetailsLayout");
 		info = new Label ("setTexts nicht ausgeführt");
 		addComponent(info);
 
@@ -87,27 +89,49 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 	 * 		der aktuelle Schritt
 	 */
 	public void setTexts (screen e) {
+		Label info;
+		Label infoText0;
+		Label infoText1;
+		Label infoText2;
+		Label infoText3;
+		Label infoText4;
 		switch (e) {
 		case METHODSELECTION:
 			removeAllComponents();
-			Label info = new Label ("Für diesen Schritt ist noch keine Beschreibung hinterlegt.");
+			info = new Label ("<h1>Prognosemethode</h1>");
 			info.setContentMode(Label.CONTENT_XHTML);
+			infoText0 = new Label ("<h2>Methode zur Parametereingabe</h2>");
+			infoText0.setContentMode(Label.CONTENT_XHTML);
+			
+			setMargin(true);
+			infoText1 = new Label ("<h3>Stochastische Eingabe</h3>");
+			infoText1.setContentMode(Label.CONTENT_XHTML);
+			infoText2 = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der vergangenen Jahre zur berechnen. "
+					+ "Dabei werden die Werte der vergangenen Jahre von Ihnen angegeben und die Cashflows für die nächsten Jahre mit dem AR(p) Verfahren berechnet.");
+			infoText3 = new Label  ("<h3>Deterministische Eingabe</h3>");
+			infoText3.setContentMode(Label.CONTENT_XHTML);
+			infoText4 = new Label ("Bei der deterministischen Berechnung werden die von Ihnen angegebenen Cashflows der nächsten Perioden verwendet.");
 			addComponent(info);
+			addComponent(infoText0);
+			addComponent(infoText1);
+			addComponent(infoText2);
+			addComponent(infoText3);
+			addComponent(infoText4);
 			break;
 			
 		case PARAMETER:
 			removeAllComponents();
-			Label infoText0 = new Label ("<h2>Methode zur Parametereingabe</h2>");
+			infoText0 = new Label ("<h2>Methode zur Parametereingabe</h2>");
 			infoText0.setContentMode(Label.CONTENT_XHTML);
 			
 			setMargin(true);
-			Label infoText1 = new Label ("<h3>Stochastische Eingabe</h3>");
+			infoText1 = new Label ("<h3>Stochastische Eingabe</h3>");
 			infoText1.setContentMode(Label.CONTENT_XHTML);
-			Label infoText2 = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der vergangenen Jahre zur berechnen. "
+			infoText2 = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der vergangenen Jahre zur berechnen. "
 					+ "Dabei werden die Werte der vergangenen Jahre von Ihnen angegeben und die Cashflows für die nächsten Jahre mit dem AR(p) Verfahren berechnet.");
-			Label infoText3 = new Label  ("<h3>Deterministische Eingabe</h3>");
+			infoText3 = new Label  ("<h3>Deterministische Eingabe</h3>");
 			infoText3.setContentMode(Label.CONTENT_XHTML);
-			Label infoText4 = new Label ("Bei der deterministischen Berechnung werden die von Ihnen angegebenen Cashflows der nächsten Perioden verwendet.");
+			infoText4 = new Label ("Bei der deterministischen Berechnung werden die von Ihnen angegebenen Cashflows der nächsten Perioden verwendet.");
 			
 			addComponent(infoText0);
 			addComponent(infoText1);

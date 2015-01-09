@@ -148,6 +148,24 @@ ButtonsMiddleViewInterface {
 		addComponent(button3);
 
 	}
+	
+	public void setInitialButtons() {
+		this.button1.setDetails("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Methodenauswahl", new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showMethodScreen();
+			}
+
+		});
+		
+		setGoToStep(2);
+	}
+	
 	/**
 	 * Ändert die Buttons für die Eingabe der Stochastischen Parameter.
 	 * 
@@ -167,34 +185,17 @@ ButtonsMiddleViewInterface {
 
 		});
 
-		button2.setListener(new LayoutClickListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void layoutClick(LayoutClickEvent event) {
-				// TODO Auto-generated method stub
-			}
-		});
+//		button2.setListener(new LayoutClickListener() {
+//
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void layoutClick(LayoutClickEvent event) {
+//				// TODO Auto-generated method stub
+//			}
+//		});
 
 		logger.debug("View: setStochasticParameter");
-	}
-	
-	public void setInitialButtons() {
-		this.button1.setDetails("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Methodenauswahl", new LayoutClickListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void layoutClick(LayoutClickEvent event) {
-				button2.setDeactivated();
-				button1.setActivated();
-				presenter.showMethodScreen();
-			}
-
-		});
-		
-		setGoToStep(2);
 	}
 
 

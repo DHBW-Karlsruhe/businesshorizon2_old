@@ -24,8 +24,10 @@
 
 
 input.v-textfield[type="text"], .v-filterselect{
-	height: 1em;
+ 	height: 1em;
 	border-radius: 0px;
+/* 	border: 2px solid black;
+	font-size: 12pt; */
 }
 
 .login_view{
@@ -295,11 +297,22 @@ div.projectlist:hover {
 
 .v-caption-projectNameInput {
 	font-size: 14pt;
+	font-weight: bold;
 }
 
-.projectNameInput input[type="text"]{
+input.projectNameInput[type="text"]{
+	border-radius: 0px;
 	border: 2px solid black;
 	font-size: 12pt;
+	box-sizing: border-box;
+	height: 30px;
+}
+
+textarea.projectNameInput{
+	border-radius: 0px;
+	border: 2px solid black;
+	font-size: 12pt;
+	box-sizing: border-box;
 }
 
 .faqManualLayout {
