@@ -102,6 +102,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="projectCreationView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewImpl"
 		scope="session"	/>
+	<bean name="startCalculationButtonPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonPresenter"
+		scope="session"	/>
+	<bean name="startCalculationButtonView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonViewImpl"
+		scope="session"	/>
 
 	<!-- Infos -->
 	<bean name="infosViewPresenter"
@@ -191,14 +197,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 
 
-	<!-- Parameter-Maske -->
-	<bean name="parameterPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterPresenter"
+	<!-- Parameter-Input -->
+	<bean name="parameterInputPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputPresenter"
 		scope="session" />
-	<bean name="parameterView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ParameterViewImpl"
+	<bean name="parameterInputView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewImpl"
 		scope="session" />
-
 
 
 
@@ -219,4 +224,37 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="outputView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl"
 		scope="session" />
+		
+	<!-- Parameter Screen -->
+	<bean name="parameterScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenPresenter"
+		scope="session" />
+	<bean name="parameterScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl"
+		scope="session" />
+	
+	<!-- Buttons Middle -->
+	<bean name="ButtonsMiddlePresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddlePresenter"
+		scope="session" />
+	<bean name="ButtonsMiddleView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewImpl"
+		scope="session" />
+		
+	<!-- Description-->
+	<bean name="DescriptionPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionPresenter"
+		scope="session" />
+	<bean name="DescriptionView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewImpl"
+		scope="session" />	
+		
+	<!-- Method Screen-->
+	<bean name="methodScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenPresenter"
+		scope="session" />
+	<bean name="methodScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewImpl"
+		scope="session" />		
+		
 </beans>

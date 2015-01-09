@@ -41,6 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 
 /**
  * 
@@ -99,7 +100,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 	public void projectSelected(Project project) {
 		projectProxy.setSelectedProject(project);
 
-		//		eventBus.fireEvent(new ShowProjectEvent());
+		eventBus.fireEvent(new SelectProjectEvent());
 		//		logger.debug("ShowProjectEvent gefeuert");
 	}
 

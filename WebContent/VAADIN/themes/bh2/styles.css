@@ -24,8 +24,10 @@
 
 
 input.v-textfield[type="text"], .v-filterselect{
-	height: 1em;
+ 	height: 1em;
 	border-radius: 0px;
+/* 	border: 2px solid black;
+	font-size: 12pt; */
 }
 
 .login_view{
@@ -55,11 +57,6 @@ div.projectlist:hover {
 }
 
 .v-app {
-<<<<<<< HEAD
-/*    background-image: url("images/background.png"); */
-=======
-/*     background-image: url("images/background.png"); */
->>>>>>> refs/remotes/origin/UIUmstellungMarco
     background-size:100%;
     height:100%;
 
@@ -263,7 +260,7 @@ div.projectlist:hover {
 }
 
 .projectName {
-	font-size: 20pt;
+	font-size: 16pt;
 }
 
 .singleProject {
@@ -284,20 +281,38 @@ div.projectlist:hover {
 	margin-left: 5%;
 }
 
+.projectCreationLayout {
+	margin-left: 5%;
+	padding-bottom: 5px;
+}
+
 .projectDetailsLabel {
-	font-size: 18pt;
+	font-size: 16pt;
+	font-weight: bold;
 }
 
 .projectDetailsValue {
 	font-size: 16pt;
 }
 
-.projectNameInput {
+.v-caption-projectNameInput {
 	font-size: 14pt;
+	font-weight: bold;
 }
 
-.projectDescriptionInput {
-	font-size: 14pt;
+input.projectNameInput[type="text"]{
+	border-radius: 0px;
+	border: 2px solid black;
+	font-size: 12pt;
+	box-sizing: border-box;
+	height: 30px;
+}
+
+textarea.projectNameInput{
+	border-radius: 0px;
+	border: 2px solid black;
+	font-size: 12pt;
+	box-sizing: border-box;
 }
 
 .faqManualLayout {
@@ -324,4 +339,168 @@ div.projectlist:hover {
 	font-size: 14pt;
 	color: #5995D9;
 }
->>>>>>> refs/remotes/origin/UIUmstellungMarco
+
+.gotoCalculationLabel {
+	font-size: 16pt;
+}
+
+.gotoCalculationButton {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+}
+
+.gotoCalculationButton:HOVER{
+	background-color: #92D050;
+}
+
+.buttonMiddle {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	font-size: 16pt;
+}
+
+.buttonMiddle:HOVER{
+	background-color: #92D050;
+}
+
+.buttonBottom {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	font-size: 16pt;
+}
+
+.buttonBottom:HOVER {
+	background-color: #92D050;
+}
+
+.v-verticallayout-parameter {
+	margin-left: 5%;
+	margin-top: 5%;
+}
+
+/*
+# TopBar Buttons ParameterScreen
+*/
+.saveButton {
+	background: url("./images/icons/newIcons/1418766240_editor_floopy-dish_save-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.resetInput {
+	background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.back {
+	/*background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");*/
+	background-size: cover;
+	border: none;
+}
+
+.abbort {
+	background: url("./images/icons/newIcons/1418766146_circle_close_delete_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.buttonMiddle {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	font-size: 16pt;
+}
+
+.buttonActivated {
+	background-color: #92D050;
+}
+
+.paramButton {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	/*padding: 50px;*/
+}
+
+.paramButtonActivated .v-icon {
+	width: 30%;
+	text-align: left;
+}
+
+.paramButton .v-icon {
+	width: 30%;
+	text-align: left;
+}
+
+.paramButton .v-button-caption {
+	text-align: left;
+}
+
+.paramButtonActivated .v-button-caption {
+	text-align: left;
+}
+
+.paramButtonActivated {
+	background-color: #92D050;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	/*padding: 50px;*/
+}
+
+.parameter {
+	font-size: 12pt;
+	font-weight: bold;
+	margin: 5px;
+}
+
+.parameter input[type="text"] {
+    font-size:12pt;
+    margin: 5px;
+  }
+  
+.questionIcon {
+	margin: 5px;
+}
+
+.seitenLabel {
+	font-size: 20pt;
+	margin-bottom: 3px;
+}
+
+.descriptionLabel {
+	font-size: 16pt;
+}
+
+.homeButton{
+	background: url("./images/icons/newIcons/1418766062_house_home-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.accountButton{
+	background: url("./images/icons/newIcons/1418774135_user_male-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.v-form fieldset{
+	border: 2px solid black;
+}
+
+.v-form legend{
+	margin-left: 5px;
+	font-weight: bold;
+}
+
+.v-radiobutton label{
+	font-size: 14pt;
+}
+

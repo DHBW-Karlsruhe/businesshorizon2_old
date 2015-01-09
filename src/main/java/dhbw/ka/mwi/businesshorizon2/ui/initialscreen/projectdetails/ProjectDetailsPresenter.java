@@ -17,6 +17,8 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
@@ -153,6 +155,10 @@ public class ProjectDetailsPresenter extends Presenter<ProjectDetailsViewInterfa
 	public void onSelectProject(SelectProjectEvent event){
 		Project project = projectProxy.getSelectedProject();
 		showProjectDetails(project);
+	}
+
+	public void showMethodselectionScreen() {
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
 	}
 
 }

@@ -28,10 +28,15 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.mvplite.view.View;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
@@ -39,11 +44,16 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServic
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectCreationButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectEditButtonsEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ShowProjectDetailsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -51,6 +61,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectRemoveEv
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 
 /**
  * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
@@ -83,9 +96,18 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private ProjectDetailsViewInterface projectDetailsView;
-	
+
 	@Autowired
 	private ProjectCreationViewInterface projectCreationView;
+
+	@Autowired
+	private StartCalculationButtonViewInterface startCalculationButtonView;
+
+	@Autowired
+	private ButtonsMiddleViewInterface buttonsMiddleView;
+
+	@Autowired
+	private MethodScreenViewInterface methodScreenView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -95,6 +117,12 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
+
+	@Autowired
+	private ParameterInputViewInterface parameterInputView;
+	
+	@Autowired
+	private DescriptionViewInterface descriptionView;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -153,7 +181,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 
 	}
-	
+
 	/**
 	 * Diese Methode löscht das übergeben Projekt und aktualisiert die View.
 	 *
@@ -165,13 +193,13 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		persistenceService.removeProject(this.user, project);
 		logger.debug("Projekt aus User entfernt");
 		projectListView.setProjects(user.getProjects());
-//		eventBus.fireEvent(new ProjectRemoveEvent(project));
+		//		eventBus.fireEvent(new ProjectRemoveEvent(project));
 		getView().showView(projectListView, projectDetailsView);
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
 		logger.debug("ProjekteRemove Event gefeuert");
 
 	}
-	
+
 	/**
 	 * Diese Methode setzt die View zum Erstellen eines neuen Projektes
 	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
@@ -180,11 +208,11 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 * @author Marco Glaser
 	 */
 	public void showProjectCreationScreen(){
-		getView().showProjectCreationScreen(projectCreationView);
+		getView().showView(startCalculationButtonView, projectCreationView);
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectCreationButtonsEvent(userProxy.getSelectedUser()));
 	}
-	
+
 	/**
 	 * Diese Methode setzt die View zum Bearbeiten eines neuen Projektes
 	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
@@ -193,11 +221,11 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 * @author Marco Glaser
 	 */
 	public void showProjectEditScreen(){
-		getView().showProjectCreationScreen(projectCreationView);
+		getView().showView(startCalculationButtonView, projectCreationView);
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectEditButtonsEvent(userProxy.getSelectedUser()));
 	}
-	
+
 	/**
 	 * Diese Methode behandelt das Event die initialen Buttons in der Leiste wiederherzustellen
 	 * und ruft die entsprechende Methode in der View auf. Außerdem wird auch die
@@ -212,6 +240,122 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void onShowInitialTopButtons(ShowInitialTopButtonsEvent event){
 		getView().setInitialTopButtons();
 		getView().setInitialPageDescription();
+	}
+	/**
+	 * Diese Methode setzt die Description auf die rechte Seite.
+	 * 
+	 * @author Tobias Lindner
+	 * @param event
+	 * 		ShowDescriptionEvent
+	 */
+	@EventHandler
+	public void onShowDescription (ShowDescriptionEvent event) {
+		getView().showProjectCreationScreen(descriptionView);
+	}
+	
+
+	
+	@EventHandler
+	public void onShowMethodSelectionView(ShowProcessStepEvent event){
+		switch (event.getScreen()) {
+		case METHODSELECTION:
+			buttonsMiddleView.setInitialButtons();
+			methodScreenView.setRadioValues();
+			getView().showView(buttonsMiddleView, methodScreenView);
+			getView().setPageDescription("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Schritt 1", new String[] {"Wählen Sie die Methoden", "zur Berechnung"});
+			setScreen1Buttons();
+			break;
+
+		case PARAMETER:
+			buttonsMiddleView.setGoToStep(3);
+			if (project.getProjectInputType().isStochastic()) {
+				buttonsMiddleView.setStochasticParameter();
+				logger.debug("Stochastische Buttons gesetzt");
+			}
+			
+			else {
+				buttonsMiddleView.setDeterministicParameter();
+				logger.debug ("Deterministische Buttons gesetzt");
+			}
+			getView().showView(buttonsMiddleView, parameterInputView);
+			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
+			break;
+
+		case PERIODS:
+
+			break;
+
+		case SCENARIOS:
+
+			break;
+
+		case RESULT:
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void setScreen1Buttons() {
+		getView().setTopButton(new TopBarButton("saveProjectButton", "Speichern"), 0, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+
+
+			}
+
+		});
+		getView().setTopButton(new TopBarButton("deleteProjectButton", "Daten zurücksetzen").setButtonWidth(25), 1, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+
+
+			}
+
+		});
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+
+			}
+
+		});
+
+		getView().clearUnusedButtons();
+
+	}
+
+	public void showInitialScreen() {
+
+		eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+		eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+
 	}
 
 }

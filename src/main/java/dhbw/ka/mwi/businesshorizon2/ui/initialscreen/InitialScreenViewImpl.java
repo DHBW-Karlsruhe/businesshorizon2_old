@@ -370,7 +370,33 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		mainLayout.addComponent(horizontalSplitPanel);
 
+		homeButton.addListener(new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren! Möchten Sie zur Startseite zurückkehren?",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							presenter.showInitialScreen();
+						} else {
+
+						}
+					}
+				});
+				
+			}
+			
+		});
+		
 		setContent(mainLayout);
+		
 
 		addProjectButton = new TopBarButton("addProjectButton", "Neues Projekt");
 		addProjectButton.addLabel("hinzufügen");
@@ -606,6 +632,15 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setTopButton(addProjectButton, 0, addProjectButtonListener);
 		setTopButton(editProjectButton, 1, null);
 		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
+		clearUnusedButtons();
+	}
+	
+	public void clearUnusedButtons(){
+		if(topRightLayout.getComponentCount() > 4){
+			for(int i = 3; i < (topRightLayout.getComponentCount() - 1); i++){
+				topRightLayout.removeComponent(topRightLayout.getComponent(i));
+			}
+		}
 	}
 
 	/**
@@ -670,5 +705,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		setPageDescription("./images/icons/newIcons/1418766062_house_home-128.png", "Startseite", "Übersicht über alle Projekte");
 	}
 
+	public HorizontalLayout getButtonBarLayout(){
+		return this.topRightLayout;
+	}
 
 }
