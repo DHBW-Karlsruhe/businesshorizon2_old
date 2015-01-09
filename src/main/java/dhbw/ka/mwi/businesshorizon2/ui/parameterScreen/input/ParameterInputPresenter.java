@@ -269,10 +269,26 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			*/
 			
 			this.setValues();
+			this.setType();
 			//this.greyOut();
 			firstCall = false;
 			//eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,true));
 		}	
+	}
+	
+	/**
+	 * Diese Methode ersetzt die greyOut() Methode und entfernt nicht benötigte Felder aus der View.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	private void setType () {
+		if (stochMethod) {
+			getView().setStochasticParameters();
+		}
+		
+		else {
+			getView().setDeterministicParameters();
+		}
 	}
 
 	/**
