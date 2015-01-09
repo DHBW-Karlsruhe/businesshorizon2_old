@@ -162,6 +162,9 @@ public interface ParameterInputViewInterface extends ContentView {
 
 	void showParameterView();
 
+	public void setDeterministicParameters();
+	
+	public void setStochasticParameters();
 	
 
 
