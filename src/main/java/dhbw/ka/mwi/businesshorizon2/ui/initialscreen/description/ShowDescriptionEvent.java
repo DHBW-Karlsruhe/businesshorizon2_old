@@ -22,45 +22,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description;
+package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.mvplite.event.EventBus;
-import com.mvplite.event.EventHandler;
-import com.mvplite.presenter.Presenter;
-
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
+import com.mvplite.event.Event;
 
 /**
+ * Der Event, der zum Anzeigen des DescriptionScreen geworfen.
  * 
- *  
  * @author Tobias Lindner
  * 
  */
-public class ParameterDescriptionPresenter extends Presenter<ParameterDescriptionViewInterface> {
+
+public class ShowDescriptionEvent extends Event{
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger logger = Logger.getLogger("ParameterDescriptionPresenter.class");
-
-	@Autowired
-	private EventBus eventBus;
-
-	/**
-	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert sich selbst als einen
-	 * EventHandler.
-	 * 
-	 * @author Tobias Lindner
-	 */
-	@PostConstruct
-	private void init() {
-		//eventBus.addHandler(this);
-		logger.debug("Eventhandler Hinzugefügt");
-	}
-
 
 }

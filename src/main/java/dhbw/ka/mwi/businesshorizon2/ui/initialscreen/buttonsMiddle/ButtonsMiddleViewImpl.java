@@ -104,6 +104,7 @@ ButtonsMiddleViewInterface {
 			public void layoutClick(LayoutClickEvent event) {
 				button2.setDeactivated();
 				button1.setActivated();
+				presenter.showMethodScreen();
 			}
 
 		});
@@ -118,6 +119,7 @@ ButtonsMiddleViewInterface {
 			public void layoutClick(LayoutClickEvent event) {
 				button1.setDeactivated();
 				button2.setActivated();
+				presenter.showDescription();
 			}
 
 		});
@@ -135,6 +137,8 @@ ButtonsMiddleViewInterface {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				presenter.showParameterScreen();
+				button2.setDeactivated();
+				button1.setActivated();
 			}
 
 		});
@@ -150,13 +154,15 @@ ButtonsMiddleViewInterface {
 	 * @author Tobias Lindner
 	 */
 	public void setStochasticParameter () {
-		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", new LayoutClickListener() {
+		this.button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", new LayoutClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				// TODO Auto-generated method stub
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showParameterScreen();
 			}
 
 		});
@@ -173,6 +179,23 @@ ButtonsMiddleViewInterface {
 
 		logger.debug("View: setStochasticParameter");
 	}
+	
+	public void setInitialButtons() {
+		this.button1.setDetails("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Methodenauswahl", new LayoutClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showMethodScreen();
+			}
+
+		});
+		
+		setGoToStep(2);
+	}
 
 
 	/**
@@ -182,12 +205,15 @@ ButtonsMiddleViewInterface {
 	 * 
 	 */
 	public void setDeterministicParameter () {
-		button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", new LayoutClickListener () {
+		this.button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", new LayoutClickListener () {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showParameterScreen();
 
 			}
 
@@ -227,7 +253,8 @@ ButtonsMiddleViewInterface {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				presenter.showParameterScreen();
-
+				button2.setDeactivated();
+				button1.setActivated();
 			}
 
 		};
@@ -242,7 +269,8 @@ ButtonsMiddleViewInterface {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				presenter.showPeriodScreen();
-
+				button2.setDeactivated();
+				button1.setActivated();
 			}
 
 		};
@@ -257,7 +285,8 @@ ButtonsMiddleViewInterface {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				presenter.showScenarioScreen();
-
+				button2.setDeactivated();
+				button1.setActivated();
 			}
 
 		};
@@ -272,7 +301,8 @@ ButtonsMiddleViewInterface {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				presenter.showResultScreen();
-
+				button2.setDeactivated();
+				button1.setActivated();
 			}
 
 		};

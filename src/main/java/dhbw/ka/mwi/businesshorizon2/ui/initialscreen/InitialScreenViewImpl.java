@@ -370,7 +370,33 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		mainLayout.addComponent(horizontalSplitPanel);
 
+		homeButton.addListener(new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren! Möchten Sie zur Startseite zurückkehren?",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							presenter.showInitialScreen();
+						} else {
+
+						}
+					}
+				});
+				
+			}
+			
+		});
+		
 		setContent(mainLayout);
+		
 
 		addProjectButton = new TopBarButton("addProjectButton", "Neues Projekt");
 		addProjectButton.addLabel("hinzufügen");

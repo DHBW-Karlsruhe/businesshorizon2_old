@@ -23,9 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description;
+package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description;
 
 import com.mvplite.view.View;
+
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,
@@ -34,7 +36,16 @@ import com.mvplite.view.View;
  * @author Tobias Lindner
  * 
  */
-public interface ParameterDescriptionViewInterface extends View {
+public interface DescriptionViewInterface extends View {
+	
+	/**
+	 * Diese Methode wird vom Presenter aufgerufen und ändert die Anzeige Texte.
+	 * 
+	 * @author Tobias Lindner
+	 * @param screen
+	 * 		der aktuelle Schritt
+	 */
+	public void setTexts(screen e);
 
 }
 

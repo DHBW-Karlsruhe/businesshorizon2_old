@@ -41,6 +41,8 @@ public interface ButtonsMiddleViewInterface extends View {
 	public void setDeterministicParameter ();
 	
 	public void setGoToStep(int step);
+	
+	public void setInitialButtons();
 
 }
 

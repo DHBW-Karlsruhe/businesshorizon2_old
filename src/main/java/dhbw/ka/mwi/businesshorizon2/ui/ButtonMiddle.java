@@ -1,5 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
@@ -9,17 +11,29 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * Die ist die Klasse eines ButtonsLayouts in der Mitte der Anwendung.
+ * Außerdem werden verschiedene Methoden zum Ändern bestimmter Aspekte zur Verfügung gestellt.
+ * 
+ * @author Tobias Lindner, Marco Glaser
+ *
+ */
 public class ButtonMiddle extends HorizontalLayout{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = Logger.getLogger("ButtonMiddle.class");
 	
 	private Embedded icon;
 	private Label label;
 	private Label gap1;
 	private Label gap2;
 	private Label gap3;
-
+	
 	LayoutClickListener lcl;
 	
 	public ButtonMiddle (String iconPfad, String text, LayoutClickListener lcl) {
+
 		this.lcl = lcl;
 		setHeight(95, UNITS_PIXELS);
 		setWidth(100, UNITS_PERCENTAGE);
@@ -41,9 +55,7 @@ public class ButtonMiddle extends HorizontalLayout{
 		
 		gap3 = new Label();
 		gap3.setSizeFull();
-
-		
-		
+	
 		addComponent(gap1);
 		addComponent(icon);
 		addComponent(gap2);
@@ -58,8 +70,9 @@ public class ButtonMiddle extends HorizontalLayout{
 	}
 	
 	public void setDetails (String iconPfad, String text, LayoutClickListener lcl) {
-		this.icon.setIcon(new ThemeResource(iconPfad));
+		this.icon.setSource(new ThemeResource(iconPfad));
 		setDetails(text, lcl);
+		logger.debug ("ButtonDetails geändert");
 	}
 
 	public void setDetails(String text, LayoutClickListener lcl) {
@@ -71,15 +84,29 @@ public class ButtonMiddle extends HorizontalLayout{
 		this.label.setValue(text);
 	}
 	
+	public void addSecondLine (String text) {
+		
+	}
+	
 	public void setListener (LayoutClickListener lcl) {
 		this.removeListener(this.lcl);
 		this.addListener(lcl);
 	}
 	
+	/**
+	 * Die Methode setzt den ButtonMiddle auf aktiviert (=dunkle Hintergrundfarbe).
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setActivated () {
 		addStyleName("buttonActivated");
 	}
 	
+	/**
+	 * Die Methode setzt den ButtonMIddle auf deaktiviert (=hellere Hintergrundfarbe)
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setDeactivated () {
 		removeStyleName("buttonActivated");
 	}

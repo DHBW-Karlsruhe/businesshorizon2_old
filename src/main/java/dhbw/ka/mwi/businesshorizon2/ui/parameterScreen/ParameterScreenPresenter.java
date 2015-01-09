@@ -42,6 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -49,7 +50,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ShowParameterInputViewEvent;
@@ -87,7 +87,7 @@ public class ParameterScreenPresenter extends Presenter<ParameterScreenViewInter
 	private ParameterInputViewInterface parameterInputView;
 	
 	@Autowired
-	private ParameterDescriptionViewInterface parameterDescriptionView;
+	private DescriptionViewInterface parameterDescriptionView;
 	
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;

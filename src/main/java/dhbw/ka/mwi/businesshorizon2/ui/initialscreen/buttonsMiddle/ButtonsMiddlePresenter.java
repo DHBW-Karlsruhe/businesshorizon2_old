@@ -36,6 +36,7 @@ import com.mvplite.presenter.Presenter;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
@@ -46,20 +47,15 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.ShowPeriodViewEvent;
 
 /**
+ * Dies ist der Presenter der mittleren View. Er ist für die Anpassung der ButtonLayouts, sowie der TopBarButtons zuständig.
  * 
- * Dies ist der Presenter zur Auflistung, dem Hinzufuegen und dem Loeschen von
- * Perioden. Die Liste der Perioden wird dabei der Spring-Injected Project- Bean
- * entnommen, die lediglich einmal pro Session existiert, und in dem
- * project-Property gespeichert wird.
- * 
- * 
- * @author Christian Scherer
+ * @author Tobias Lindner, Marco Glaser
  * 
  */
 public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ParameterButtonsMiddlePresenter.class");
+	private static final Logger logger = Logger.getLogger("ButtonsMiddlePresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -97,7 +93,6 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 
 	public void showParameterScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));
-		
 	}
 	
 	public void showMethodScreen() {
@@ -114,6 +109,10 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 	
 	public void showResultScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.RESULT));
+	}
+	
+	public void showDescription () {
+		eventBus.fireEvent(new ShowDescriptionEvent());
 	}
 
 }

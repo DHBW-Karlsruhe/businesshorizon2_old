@@ -28,6 +28,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
@@ -45,6 +46,8 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInter
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
@@ -93,16 +96,16 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private ProjectDetailsViewInterface projectDetailsView;
-	
+
 	@Autowired
 	private ProjectCreationViewInterface projectCreationView;
-	
+
 	@Autowired
 	private StartCalculationButtonViewInterface startCalculationButtonView;
-	
+
 	@Autowired
 	private ButtonsMiddleViewInterface buttonsMiddleView;
-	
+
 	@Autowired
 	private MethodScreenViewInterface methodScreenView;
 
@@ -117,6 +120,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private ParameterInputViewInterface parameterInputView;
+	
+	@Autowired
+	private DescriptionViewInterface descriptionView;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -175,7 +181,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 
 	}
-	
+
 	/**
 	 * Diese Methode löscht das übergeben Projekt und aktualisiert die View.
 	 *
@@ -187,13 +193,13 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		persistenceService.removeProject(this.user, project);
 		logger.debug("Projekt aus User entfernt");
 		projectListView.setProjects(user.getProjects());
-//		eventBus.fireEvent(new ProjectRemoveEvent(project));
+		//		eventBus.fireEvent(new ProjectRemoveEvent(project));
 		getView().showView(projectListView, projectDetailsView);
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
 		logger.debug("ProjekteRemove Event gefeuert");
 
 	}
-	
+
 	/**
 	 * Diese Methode setzt die View zum Erstellen eines neuen Projektes
 	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
@@ -206,7 +212,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectCreationButtonsEvent(userProxy.getSelectedUser()));
 	}
-	
+
 	/**
 	 * Diese Methode setzt die View zum Bearbeiten eines neuen Projektes
 	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
@@ -219,7 +225,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		projectCreationView.setInitialScreen(this.getView());
 		eventBus.fireEvent(new ShowProjectEditButtonsEvent(userProxy.getSelectedUser()));
 	}
-	
+
 	/**
 	 * Diese Methode behandelt das Event die initialen Buttons in der Leiste wiederherzustellen
 	 * und ruft die entsprechende Methode in der View auf. Außerdem wird auch die
@@ -235,11 +241,25 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		getView().setInitialTopButtons();
 		getView().setInitialPageDescription();
 	}
+	/**
+	 * Diese Methode setzt die Description auf die rechte Seite.
+	 * 
+	 * @author Tobias Lindner
+	 * @param event
+	 * 		ShowDescriptionEvent
+	 */
+	@EventHandler
+	public void onShowDescription (ShowDescriptionEvent event) {
+		getView().showProjectCreationScreen(descriptionView);
+	}
+	
+
 	
 	@EventHandler
 	public void onShowMethodSelectionView(ShowProcessStepEvent event){
 		switch (event.getScreen()) {
 		case METHODSELECTION:
+			buttonsMiddleView.setInitialButtons();
 			getView().showView(buttonsMiddleView, methodScreenView);
 			getView().setPageDescription("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Schritt 1", new String[] {"Wählen Sie die Methoden", "zur Berechnung"});
 			setScreen1Buttons();
@@ -251,19 +271,19 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
 			break;
-		
+
 		case PERIODS:
-			
+
 			break;
-			
+
 		case SCENARIOS:
-			
+
 			break;
-			
+
 		case RESULT:
-			
+
 			break;
-			
+
 		default:
 			break;
 		}
@@ -276,10 +296,10 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
-				
+
+
 			}
-			
+
 		});
 		getView().setTopButton(new TopBarButton("deleteProjectButton", "Daten zurücksetzen").setButtonWidth(25), 1, new ClickListener(){
 
@@ -287,10 +307,10 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
-				
+
+
 			}
-			
+
 		});
 		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 2, new ClickListener(){
 
@@ -298,14 +318,35 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
-				
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+
 			}
-			
+
 		});
-		
+
 		getView().clearUnusedButtons();
-		
+
+	}
+
+	public void showInitialScreen() {
+
+		eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+		eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+
 	}
 
 }

@@ -39,12 +39,15 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
@@ -205,70 +208,71 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 * @author Julius Hacker, Christian Scherer
 	 */
 	@EventHandler
-	public void onShowParameterScreen(ShowParameterScreenViewEvent event) {
-		
-		getView().showParameterView();
-
-		if (projectProxy.getSelectedProject().getBasisYear() == 0) {
-			initializeBasisYear();
-		}
-
-		stochMethod = false;
-		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			stochMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().isStochastic();
-		} 
-		
-		
-		//Annika Weis
-		detMethod = false;
-		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			detMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().isDeterministic();
-		} 
-
-		randomWalk = false;
-		wienerProcess = false;
-		timeSeries = false;
-		methods = this.projectProxy.getSelectedProject().getMethods();
-		methodIterator = methods.iterator();
-		while (methodIterator.hasNext()) {
-			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
-					.next();
-			if (m.getName().equals("Random Walk") && m.getSelected()) {
-				randomWalk = true;
-			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
-				wienerProcess = true;
-			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
-				timeSeries = true;
+	public void onShowParameterScreen(ShowProcessStepEvent event) {
+		if (event.getScreen() == screen.PARAMETER) {
+			
+			getView().showParameterView();
+	
+			if (projectProxy.getSelectedProject().getBasisYear() == 0) {
+				initializeBasisYear();
 			}
-		}
-		
-		/* 
-		 * Annika Weis
-		 * ausgewählte deterministische Methoden überprüfen
-		 */
-		dcf=false;
-		apv=false;
-		methods_deterministic = this.projectProxy.getSelectedProject().getMethods_deterministic();
-		method_deterministicIterator = methods_deterministic.iterator();
-		while (method_deterministicIterator.hasNext()) {
-			AbstractDeterministicMethod m_d = (AbstractDeterministicMethod) method_deterministicIterator
-					.next();
-			if (m_d.getName().equals("Flow-to-Equity (FTE)") && m_d.getSelected()) {
-				dcf = true;
-			} else if (m_d.getName().equals("Adjusted-Present-Value (APV)") && m_d.getSelected()){
-				apv = true;
+	
+			stochMethod = false;
+			if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+				stochMethod = this.projectProxy.getSelectedProject()
+						.getProjectInputType().isStochastic();
+			} 
+			
+			
+			//Annika Weis
+			detMethod = false;
+			if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+				detMethod = this.projectProxy.getSelectedProject()
+						.getProjectInputType().isDeterministic();
+			} 
+	
+			/**randomWalk = false;
+			wienerProcess = false;
+			timeSeries = false;
+			methods = this.projectProxy.getSelectedProject().getMethods();
+			methodIterator = methods.iterator();
+			while (methodIterator.hasNext()) {
+				AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
+						.next();
+				if (m.getName().equals("Random Walk") && m.getSelected()) {
+					randomWalk = true;
+				} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
+					wienerProcess = true;
+				} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
+					timeSeries = true;
+				}
 			}
-		}
-		
-		
-		this.setValues();
-		this.greyOut();
-		firstCall = false;
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,
-				true));
-
+			
+			/* 
+			 * Annika Weis
+			 * ausgewählte deterministische Methoden überprüfen
+			 */
+			/**
+			dcf=false;
+			apv=false;
+			methods_deterministic = this.projectProxy.getSelectedProject().getMethods_deterministic();
+			method_deterministicIterator = methods_deterministic.iterator();
+			while (method_deterministicIterator.hasNext()) {
+				AbstractDeterministicMethod m_d = (AbstractDeterministicMethod) method_deterministicIterator
+						.next();
+				if (m_d.getName().equals("Flow-to-Equity (FTE)") && m_d.getSelected()) {
+					dcf = true;
+				} else if (m_d.getName().equals("Adjusted-Present-Value (APV)") && m_d.getSelected()){
+					apv = true;
+				}
+			}
+			*/
+			
+			this.setValues();
+			//this.greyOut();
+			firstCall = false;
+			//eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PARAMETER,true));
+		}	
 	}
 
 	/**
@@ -493,7 +497,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Wiederholungen'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -535,7 +539,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	
@@ -579,7 +583,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		////eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 	
 	/**
@@ -620,7 +624,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl anzugebender, vergangener Perioden'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		////eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 	
 	/**
@@ -662,7 +666,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		////eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -701,7 +705,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		////eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -724,7 +728,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			// Liste deaktivieren
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		////eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -737,7 +741,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 *            String mit Namen des gewaehlten Branchenvertreters
 	 */
 	public void industryRepresentativeListItemChosen(String selected) {
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		////eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -776,7 +780,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Cashflows'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -824,7 +828,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -868,7 +872,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Fremdkapital'");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -916,7 +920,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
 		}
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**
@@ -1101,7 +1105,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 //			logger.debug("Keine gueltige Eingabe in Feld 'Schritte pro Periode'");
 //		}
 //
-//		eventBus.fireEvent(new ValidateContentStateEvent());
+//		//eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	/**

@@ -241,12 +241,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewImpl"
 		scope="session" />
 		
-	<!-- Parameter Description-->
-	<bean name="parameterDescriptionPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionPresenter"
+	<!-- Description-->
+	<bean name="DescriptionPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionPresenter"
 		scope="session" />
-	<bean name="parameterDescriptionView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ParameterDescriptionViewImpl"
+	<bean name="DescriptionView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewImpl"
 		scope="session" />	
 		
 	<!-- Method Screen-->
