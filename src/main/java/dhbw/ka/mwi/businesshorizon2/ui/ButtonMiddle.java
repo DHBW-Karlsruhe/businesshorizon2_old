@@ -26,12 +26,27 @@ public class ButtonMiddle extends HorizontalLayout{
 	
 	private Embedded icon;
 	private Label label;
+	private Label label2;
 	private Label gap1;
 	private Label gap2;
 	private Label gap3;
 	
+	private VerticalLayout vl;
+	
 	LayoutClickListener lcl;
 	
+	/**
+	 * Konstruktor für einen Button mit einzeiligem Label
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @param iconPfad
+	 * 		String: Pfad zum Icon Image
+	 * @param text
+	 * 		String: Text für den Button
+	 * @param lcl
+	 * 		LayoutClickListener: Listener, der Aktionen bei Klick auf den ButtonMiddle ausführt.
+	 */
 	public ButtonMiddle (String iconPfad, String text, LayoutClickListener lcl) {
 
 		this.lcl = lcl;
@@ -52,24 +67,81 @@ public class ButtonMiddle extends HorizontalLayout{
 		label.setStyleName("buttonLabelMiddle");
 		label.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		label.setHeight(Sizeable.SIZE_UNDEFINED, 0);
-		
+
+		vl = new VerticalLayout();
+		vl.addComponent(label);
+		vl.setSizeUndefined();
 		gap3 = new Label();
 		gap3.setSizeFull();
-	
+		
 		addComponent(gap1);
 		addComponent(icon);
 		addComponent(gap2);
-		addComponent(label);
+		addComponent(vl);
 		addComponent(gap3);
 		setExpandRatio(gap3, 1.0f);
 		
 		setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
-		setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+		setComponentAlignment(vl, Alignment.MIDDLE_CENTER);
 		
 		addListener(lcl);
 	}
+
+	/**
+	 * Konstruktor für einen Button mit zweizeiliger Beschriftung
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @param iconPfad
+	 * 		String: Pfad zum Icon Image
+	 * @param text
+	 * 		String: Text für die erste Zeilei
+	 * @param text2
+	 * 		String: Text für die zweite Zeile
+	 * @param lcl
+	 * 		LayoutClickListener: Listener, der Aktionen bei Klick auf den ButtonMiddle ausführt.	 
+	 */
+	public ButtonMiddle (String iconPfad, String text, String text2, LayoutClickListener lcl) {
+		this (iconPfad, text, lcl);
+
+		label2 = new Label (text2);
+		
+		vl.addComponent(label2);
+		vl.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+		vl.setComponentAlignment(label2, Alignment.MIDDLE_LEFT);
+		vl.setSizeUndefined();
+		
+	}
 	
+	/**
+	 * Anpassung an einem Button mit Möglichkeit zur zweizeiligen Textangabe.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setDetails (String iconPfad, String text, String text2, LayoutClickListener lcl) {
+		setDetails(iconPfad, text, lcl);
+		
+		label2 = new Label (text2);
+		
+		vl.removeAllComponents();
+		vl.addComponent(label);
+		vl.addComponent(label2);
+		vl.setComponentAlignment(label, Alignment.TOP_LEFT);
+		vl.setComponentAlignment(label2, Alignment.BOTTOM_LEFT);
+		vl.setSizeUndefined();
+		
+	}
+	
+	/**
+	 * Anpassung an einem Button mit einzeiliger Textangabe.
+	 * @param iconPfad
+	 * @param text
+	 * @param lcl
+	 */
 	public void setDetails (String iconPfad, String text, LayoutClickListener lcl) {
+		if (vl.getComponentIndex(label2)!= -1 ){
+			vl.removeComponent(label2);
+		}
 		this.icon.setSource(new ThemeResource(iconPfad));
 		setDetails(text, lcl);
 		logger.debug ("ButtonDetails geändert");
@@ -115,6 +187,9 @@ public class ButtonMiddle extends HorizontalLayout{
 		setStyleName(styleName);
 	}
 	
+	/**
+	 * @author Marco Glaser
+	 */
 	public void changeDirection(){
 		removeAllComponents();
 		
