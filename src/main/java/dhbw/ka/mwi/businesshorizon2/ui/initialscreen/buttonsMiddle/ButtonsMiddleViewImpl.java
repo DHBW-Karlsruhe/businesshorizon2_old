@@ -163,6 +163,9 @@ ButtonsMiddleViewInterface {
 
 		});
 		
+		button1.setActivated();
+		button2.setDeactivated();
+		
 		setGoToStep(2);
 	}
 	

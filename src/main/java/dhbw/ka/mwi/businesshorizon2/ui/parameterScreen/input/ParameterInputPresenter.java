@@ -308,9 +308,9 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		if(this.projectProxy.getSelectedProject().getIterations()!=0){
 			getView().setIterations(""+this.projectProxy.getSelectedProject().getIterations());
 		}
-		if(this.projectProxy.getSelectedProject().getSpecifiedPastPeriods()!=0){
-			getView().setSpecifiedPastPeriods(""+this.projectProxy.getSelectedProject().getSpecifiedPastPeriods());
-		}
+//		if(this.projectProxy.getSelectedProject().getSpecifiedPastPeriods()!=0){
+//			getView().setSpecifiedPastPeriods(""+this.projectProxy.getSelectedProject().getSpecifiedPastPeriods());
+//		}
 		if(this.projectProxy.getSelectedProject().getRelevantPastPeriods()!=0){
 			getView().setRelevantPastPeriods(""+this.projectProxy.getSelectedProject().getRelevantPastPeriods());
 		}

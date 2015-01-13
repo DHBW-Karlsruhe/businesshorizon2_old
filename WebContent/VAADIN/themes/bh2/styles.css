@@ -504,3 +504,15 @@ textarea.projectNameInput{
 	font-size: 14pt;
 }
 
+.v-label-wrap {
+	white-space: normal;
+}
+
+.descriptionText {
+	font-size: 12pt;
+}
+
+.descriptionHeadline {
+	font-size: 13pt;
+}
+
