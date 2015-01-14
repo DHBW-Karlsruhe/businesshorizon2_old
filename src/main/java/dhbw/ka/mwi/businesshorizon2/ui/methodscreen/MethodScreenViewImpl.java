@@ -149,7 +149,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		eingabeGroup.setItemCaption(InputType.DIRECT, "FCF (Free Cash Flow)");
 		eingabeGroup.setItemCaption(InputType.UMSATZKOSTENVERFAHREN, "UKV (Umsatzkostenverfahren)");
 		eingabeGroup.setItemCaption(InputType.GESAMTKOSTENVERFAHREN, "GKV (Gesamtkostenverfahren)");
-		eingabeGroup.setValue("fcf");
+		eingabeGroup.setValue(InputType.DIRECT);
 		eingabeGroup.addListener(new Property.ValueChangeListener() {
 			
 			private static final long serialVersionUID = 1L;

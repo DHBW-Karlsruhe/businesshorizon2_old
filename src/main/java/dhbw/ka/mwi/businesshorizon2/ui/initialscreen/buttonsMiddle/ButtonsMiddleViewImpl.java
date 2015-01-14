@@ -189,16 +189,6 @@ ButtonsMiddleViewInterface {
 
 		});
 
-		button2.setListener(new LayoutClickListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void layoutClick(LayoutClickEvent event) {
-				// TODO Auto-generated method stub
-			}
-		});
-
 		logger.debug("View: setStochasticParameter");
 	}
 

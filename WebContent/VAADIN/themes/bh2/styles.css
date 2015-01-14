@@ -240,6 +240,12 @@ div.projectlist:hover {
 	border: none;
 }
 
+.backButton{
+	background: url("./images/icons/newIcons/1418766041_circle_arrow-backward_previous-128.png");
+	background-size: cover;
+	border: none;
+}
+
 .topBarButtonContainer {
 /* 	margin-top: 10%; */
 	margin-right: 5%;

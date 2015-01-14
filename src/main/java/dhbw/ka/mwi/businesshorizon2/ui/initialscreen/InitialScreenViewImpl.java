@@ -621,6 +621,23 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			topRightLayout.removeComponent(comp);
 		}
 	}
+	
+//	public void setImportButton(){
+//		UploadReceiver receiver = new UploadReceiver(eventBus);
+//		int index = 1;
+//		int maxIndex = topRightLayout.getComponentCount() - 1; //1 abziehen wegen dem Spacing rechts
+//		if(index < maxIndex){
+//			Component comp = topRightLayout.getComponent(index);
+//			if(comp != null){
+//
+//			}
+//			topRightLayout.replaceComponent(comp, button);
+//		}
+//		else{
+//			topRightLayout.addComponent(button, index);;
+//		}
+//		topRightLayout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+//	}
 
 	/**
 	 * Diese Methode setzt die ursprünglichen 3 Buttons Projekt-hinzufügen,

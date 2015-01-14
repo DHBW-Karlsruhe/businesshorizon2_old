@@ -45,6 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInExcep
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
@@ -251,6 +252,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	@EventHandler
 	public void onShowDescription (ShowDescriptionEvent event) {
 		getView().showProjectCreationScreen(descriptionView);
+		getView().deleteTopButton(1);
 	}
 	
 
@@ -279,6 +281,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
+			setScreen2Buttons();
 			break;
 
 		case PERIODS:
@@ -296,6 +299,47 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		default:
 			break;
 		}
+	}
+
+	private void setScreen2Buttons() {
+		setScreen1Buttons();
+		getView().setTopButton(new TopBarButton("backButton", "Zurück"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
+
+			}
+
+		});
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 3, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+
+			}
+
+		});
+		
 	}
 
 	private void setScreen1Buttons() {
