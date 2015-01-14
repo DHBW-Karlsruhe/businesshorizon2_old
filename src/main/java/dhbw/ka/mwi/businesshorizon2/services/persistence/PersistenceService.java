@@ -235,11 +235,11 @@ public class PersistenceService implements PersistenceServiceInterface {
 		}
 		logger.debug("Projektname wird noch nicht genutzt.");
 		//Projekt zu temporärer Liste hinzufügen
-		userProjects.add(project);
+		userProjects.add(0, project);
 		//Mit Temporärer Liste die Projekte des Nutzers überschreiben
 		user.setProjects(userProjects);
 		logger.debug("Projekt zu Nutzerprojekten hinzufügen.");
-		allProjects.add(project);
+		allProjects.add(0, project);
 		logger.debug("Projekt zu allen Projekten hinzugefügt.");
 		
 		//Projektdatei aktualisieren
