@@ -62,7 +62,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
 	
 	private static final String separator = System.getProperties().getProperty("file.separator");
 
-	private static final String DIRECTORY = System.getProperty("user.home") + separator + separator + "Business Horizon";
+	private static final String DIRECTORY = System.getProperty("user.home") + separator + separator + "Business Horizon 3";
 	private static final String FILENAME = separator + separator + "users.dat";
 
 	private List<User> allUsers;
