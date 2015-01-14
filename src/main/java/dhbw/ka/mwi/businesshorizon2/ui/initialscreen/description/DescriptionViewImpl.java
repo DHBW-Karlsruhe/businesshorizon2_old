@@ -278,7 +278,11 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 			
 		case SCENARIOS:
 			removeAllComponents();
-			info = new Label ("Für diesen Schritt ist noch keine Beschreibung hinterlegt.");
+			info = new Label ("Sie können verschiedene Szenarien für die Berechnung erstellen. Über die Checkbox „Berechnung einbeziehen“, können Sie selbst festlegen, für welche Szenarien eine Berechnung durchgeführt werden soll. "
+				+ " Über den Button 'Weiteres Szenario' kann man beliebig viele weitere Szenarien anlegen. Für jedes Szenario können Sie unterschiedliche Berechnungswerte für die Eigen- und Fremdkapitalrendite, sowie die einzelnen Steuersätze angeben. "
+				+ " Info: Bei dem Flow-to-Equity Verfahren beschränken sich die geforderten Werte auf die Eigenkapitalkosten."
+				+ " Sie müssen mindestens ein Szenario in die Berechnung einbeziehen. Des Weiteren können Sie jedes Szenario über den 'Szenario entfernen'-Button löschen. Dabei muss jedoch mindestens ein Szenario angelegt bleiben. "
+				+ "Über den Button 'Nächster Schritt' können Sie die Berechnung starten.");
 			info.setContentMode(Label.CONTENT_XHTML);
 			addComponent(info);
 			

@@ -53,12 +53,12 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in Vaadin.
+ * Diese Klasse implementiert das GUI fuer den Prozessschritt "Szenario" in Vaadin.
  * 
- * @author Julius Hacker
+ * @author Julius Hacker, Tobias Lindner
  *
  */
-public class ScenarioViewImpl extends HorizontalSplitPanel implements ScenarioViewInterface {
+public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
@@ -86,14 +86,11 @@ public class ScenarioViewImpl extends HorizontalSplitPanel implements ScenarioVi
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Szenarien"
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Tobias Lindner
 	 */
 	private void generateUi() {
-		VerticalLayout content = new VerticalLayout();
-		
 		
 		this.vlScenarios = new VerticalLayout();
-		this.setLocked(true);
 		this.setStyleName("small");
 		this.setMargin(true);
 		
@@ -107,23 +104,8 @@ public class ScenarioViewImpl extends HorizontalSplitPanel implements ScenarioVi
 				presenter.addScenario();
 			}
 		});
-		content.addComponent(this.vlScenarios);
-		content.addComponent(newScenario);
-		setFirstComponent(content);
-		
-		VerticalLayout infoBox = new VerticalLayout();
-		infoBox.setMargin(true);
-		Label infoText1 = new Label ("<h3>Eingabe der Szenarien</h3>");
-		infoText1.setContentMode(Label.CONTENT_XHTML);
-		Label infoText2 = new Label("Sie können verschiedene Szenarien für die Berechnung erstellen. Über die Checkbox „Berechnung einbeziehen“, können Sie selbst festlegen, für welche Szenarien eine Berechnung durchgeführt werden soll. "
-				+ " Über den Button 'Weiteres Szenario' kann man beliebig viele weitere Szenarien anlegen. Für jedes Szenario können Sie unterschiedliche Berechnungswerte für die Eigen- und Fremdkapitalrendite, sowie die einzelnen Steuersätze angeben. "
-				+ " Info: Bei dem Flow-to-Equity Verfahren beschränken sich die geforderten Werte auf die Eigenkapitalkosten."
-				+ " Sie müssen mindestens ein Szenario in die Berechnung einbeziehen. Des Weiteren können Sie jedes Szenario über den 'Szenario entfernen'-Button löschen. Dabei muss jedoch mindestens ein Szenario angelegt bleiben. "
-				+ "Über den Button 'Nächster Schritt' können Sie die Berechnung starten.");
-		infoBox.addComponent(infoText1);
-		infoBox.addComponent(infoText2);
-		setSecondComponent(infoBox);
-		
+		addComponent(this.vlScenarios);
+		addComponent(newScenario);
 		
 	}
 	
