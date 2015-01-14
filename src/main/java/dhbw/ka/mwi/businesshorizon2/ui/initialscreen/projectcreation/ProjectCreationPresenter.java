@@ -46,18 +46,20 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	private Window window;
-	
+
 	private InitialScreenViewInterface initialScreenView;
-	
+
 	@Autowired
 	private ProjectListViewInterface projectListView;
 
 	@Autowired
 	private PersistenceServiceInterface persistenceService;
-	
+
 	private User theUser;
+
+	private boolean edit;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -70,9 +72,9 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	public void init(){
 		eventBus.addHandler(this);
 		logger.debug("Eventhandler Hinzugefügt");
-		
+
 	}
-	
+
 	/**
 	 * Wenn das Event ShowProjectEditButtonsEvent ausgelöst wird, werden in dieser Methode
 	 * die zwei Buttons zum Speichern und zum Abbrechen gesetzt.
@@ -88,6 +90,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	public void onShowEditScreen(ShowProjectEditButtonsEvent event){
 		final User user = event.getUser();
 		theUser = user;
+		edit = true;
 		getView().setProjectData();
 		TopBarButton saveButton = new TopBarButton("saveProjectButton", "Projekt speichern");
 		TopBarButton cancelButton = new TopBarButton("cancelButton", "Abbrechen");
@@ -98,7 +101,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 				getView().editProject();
 				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
 			}
-			
+
 		});
 		initialScreenView.setTopButton(cancelButton, 1, new ClickListener(){
 
@@ -119,13 +122,23 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 						}
 					}
 				});
-				
+
 			}
-			
+
 		});
-		initialScreenView.deleteTopButton(2);
+		initialScreenView.clearUnusedButtons(2);
 	}
-	
+
+	@EventHandler
+	public void onSaveProject(SaveProjectEvent event){
+		if(edit == true){
+			getView().editProject();
+		}
+		else{
+			getView().addProject();
+		}
+	}
+
 	/**
 	 * Wenn das Event ShowProjectCreationButtonsEvent ausgelöst wird, werden in dieser Methode
 	 * die zwei Buttons zum Speichern und zum Abbrechen gesetzt.
@@ -141,6 +154,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		final User user = event.getUser();
 		theUser = user;
 		getView().clearProjectData();
+		edit = false;
 		TopBarButton saveButton = new TopBarButton("saveProjectButton", "Projekt speichern");
 		TopBarButton cancelButton = new TopBarButton("cancelButton", "Abbrechen");
 		initialScreenView.setTopButton(saveButton, 0, new ClickListener(){
@@ -150,7 +164,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 				getView().addProject();
 				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
 			}
-			
+
 		});
 		initialScreenView.setTopButton(cancelButton, 1, new ClickListener(){
 
@@ -171,13 +185,13 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 						}
 					}
 				});
-				
+
 			}
-			
+
 		});
-		initialScreenView.deleteTopButton(2);
+		initialScreenView.clearUnusedButtons(2);
 	}
-	
+
 	/**
 	 * Wird von der View aufgerufen, um diesem Presenter das initialScreenView Objekt
 	 * zu übergeben. Wird in den beiden EventHandlern benötigt, um die Buttons in der View zu ändern.
@@ -191,7 +205,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	public void setInitialScreenView(InitialScreenViewInterface view){
 		this.initialScreenView = view;
 	}
-	
+
 	/**
 	 * Diese Methode fügt das neu erstellte Projekt hinzu und feuert das Event,
 	 * um die View wieder in den initialen Zustand mit der Projektliste anzuzeigen.
@@ -222,11 +236,11 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
 
 		eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
-//		eventBus.fireEvent(new ProjectAddEvent(project));
+		//		eventBus.fireEvent(new ProjectAddEvent(project));
 		logger.debug("ShowAddEvent gefeuert");
 
 	}
-	
+
 	/**
 	 * Diese Methode führt die Änderungen der Projektbeschreibung und des Namens durch
 	 * und feuert das Event, um den initialen Zustand der View anzuzeigen.

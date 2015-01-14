@@ -180,6 +180,7 @@ public class ProjectDetailsViewImpl extends VerticalLayout implements ProjectDet
 			}
 			
 		});
+		button.setVisible(false);
 		return button;
 	}
 	

@@ -394,7 +394,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 		});
 
-		getView().clearUnusedButtons();
+		getView().clearUnusedButtons(3);
 
 	}
 
