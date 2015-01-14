@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.szenarioScreen;
+package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -55,7 +55,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
  * 
  */
 
-public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
+public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger

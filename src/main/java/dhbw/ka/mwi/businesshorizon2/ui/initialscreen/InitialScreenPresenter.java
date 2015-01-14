@@ -66,8 +66,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.outputscreen.OutputScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterface;
 
 /**
  * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
@@ -112,6 +115,15 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private MethodScreenViewInterface methodScreenView;
+	
+	@Autowired
+	private PeriodScreenViewInterface periodScreenView;
+	
+	@Autowired
+	private ScenarioScreenViewInterface scenarioScreenView;
+	
+	@Autowired
+	private OutputScreenViewInterface outputScreenView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -288,14 +300,24 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			break;
 
 		case PERIODS:
+			buttonsMiddleView.setGoToStep(4);
+			getView().showView(buttonsMiddleView, periodScreenView);
+			getView().setPageDescription("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "Schritt 3", "");
+//			setScreen3Buttons();
 
 			break;
 
 		case SCENARIOS:
-
+			buttonsMiddleView.setGoToStep(5);
+			getView().showView(buttonsMiddleView, scenarioScreenView);
+			getView().setPageDescription("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Schritt 4", new String[] {"Bitte geben Sie Szenarien an", "falls erwünscht"});
+//			setScreen4Buttons();
 			break;
 
 		case RESULT:
+			getView().showView(buttonsMiddleView, outputScreenView);
+			getView().setPageDescription("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Schritt 5", "Ergebnisausgabe");
+//			setScreen5Buttons();
 
 			break;
 

@@ -23,11 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.szenarioScreen;
+package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
-public interface ScenarioViewInterface extends ContentView {
+public interface ScenarioScreenViewInterface extends ContentView {
 
 	/**
 	 * Diese Methode entfernt alle GUI-Elemente aus der View. Diese Methode kann so zur Vorbereitung

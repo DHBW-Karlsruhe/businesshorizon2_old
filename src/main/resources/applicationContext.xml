@@ -255,6 +255,30 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	<bean name="methodScreenView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewImpl"
-		scope="session" />		
+		scope="session" />
+
+	<!-- Period Screen -->
+	<bean name="periodScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenPresenter"
+		scope="session" />
+	<bean name="periodScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewImpl"
+		scope="session" />	
+
+	<!-- Scenario Screen -->
+	<bean name="scenarioScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenPresenter"
+		scope="session" />
+	<bean name="scenarioScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewImpl"
+		scope="session" />
+
+	<!-- Output Screen -->
+	<bean name="outputScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.outputscreen.OutputScreenPresenter"
+		scope="session" />
+	<bean name="outputScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.outputscreen.OutputScreenViewImpl"
+		scope="session" />			
 		
 </beans>

@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.szenarioScreen;
+package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,13 +58,13 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker, Tobias Lindner
  *
  */
-public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInterface {
+public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
 
 	@Autowired
-	private ScenarioPresenter presenter;
+	private ScenarioScreenPresenter presenter;
 	
 	private VerticalLayout vlScenarios;
 	
