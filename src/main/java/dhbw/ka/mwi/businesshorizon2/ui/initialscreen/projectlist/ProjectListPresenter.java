@@ -179,7 +179,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 
 		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
 
-		eventBus.fireEvent(new ProjectAddEvent(project));
+//		eventBus.fireEvent(new ProjectAddEvent(project));
 		logger.debug("ShowAddEvent gefeuert");
 
 	}

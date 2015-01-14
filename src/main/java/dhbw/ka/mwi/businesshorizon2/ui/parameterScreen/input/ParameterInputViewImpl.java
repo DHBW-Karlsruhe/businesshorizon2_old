@@ -268,32 +268,32 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		
 		
 		// Anzahl anzugebender, vergangener Perioden
-		labelNumSpecifiedPastPeriods = new Label("Anzahl anzugebender, vergangener Perioden");
-		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 5);
-		
-		textfieldNumSpecifiedPastPeriods = new TextField();
-		textfieldNumSpecifiedPastPeriods.setImmediate(true);
-		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
-
-			public void valueChange(ValueChangeEvent event) {
-				logger.debug(textfieldNumSpecifiedPastPeriods.getValue());
-				presenter.specifiedPastPeriodsChosen((String) textfieldNumSpecifiedPastPeriods
-						.getValue());
-			}
-		});
-		
-		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 5);
-		
-		labelNumSpecifiedPastPeriods.setStyleName("parameter");
-		textfieldNumSpecifiedPastPeriods.setStyleName("parameter");
-		
-		questionIconNumSpecifiedPastPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
-		questionIconNumSpecifiedPastPeriods.setHeight(heightQuestionIcon);
-		questionIconNumSpecifiedPastPeriods.setStyleName("questionIcon");
-		questionIconNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
-		
-		gridLayout.addComponent(questionIconNumSpecifiedPastPeriods, 2, 5);
+//		labelNumSpecifiedPastPeriods = new Label("Anzahl anzugebender, vergangener Perioden");
+//		gridLayout.addComponent(labelNumSpecifiedPastPeriods, 0, 5);
+//		
+//		textfieldNumSpecifiedPastPeriods = new TextField();
+//		textfieldNumSpecifiedPastPeriods.setImmediate(true);
+//		textfieldNumSpecifiedPastPeriods.addListener(new Property.ValueChangeListener() {
+//			private static final long serialVersionUID = 1L;
+//
+//			public void valueChange(ValueChangeEvent event) {
+//				logger.debug(textfieldNumSpecifiedPastPeriods.getValue());
+//				presenter.specifiedPastPeriodsChosen((String) textfieldNumSpecifiedPastPeriods
+//						.getValue());
+//			}
+//		});
+//		
+//		gridLayout.addComponent(textfieldNumSpecifiedPastPeriods, 1, 5);
+//		
+//		labelNumSpecifiedPastPeriods.setStyleName("parameter");
+//		textfieldNumSpecifiedPastPeriods.setStyleName("parameter");
+//		
+//		questionIconNumSpecifiedPastPeriods = new Embedded (null, new ThemeResource("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png"));
+//		questionIconNumSpecifiedPastPeriods.setHeight(heightQuestionIcon);
+//		questionIconNumSpecifiedPastPeriods.setStyleName("questionIcon");
+//		questionIconNumSpecifiedPastPeriods.setDescription(toolTipNumSpecifiedPastPeriods);
+//		
+//		gridLayout.addComponent(questionIconNumSpecifiedPastPeriods, 2, 5);
 		
 		
 		// Deterministische Parameter
@@ -345,6 +345,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		gridLayout.removeComponent(labelNumPastPeriods);
 		gridLayout.removeComponent(textfieldNumPastPeriods);
 		gridLayout.removeComponent(questionIconNumPastPeriods);
+		
 	}
 	
 	

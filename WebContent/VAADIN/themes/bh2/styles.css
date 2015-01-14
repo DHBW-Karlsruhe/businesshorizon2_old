@@ -203,6 +203,12 @@ div.projectlist:hover {
 	border: none;
 }
 
+.addProjectButton:hover{
+	background: url("./images/icons/newIcons/1418766077_circle_add_plus_-128.png");
+	background-size: cover;
+	border: none;
+}
+
 .editProjectButton {
 	background: url("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png");
 	background-size: cover;
@@ -236,6 +242,56 @@ div.projectlist:hover {
 
 .accountButton{
 	background: url("./images/icons/newIcons/1418774135_user_male-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.logoutButton{
+	background: url("./images/icons/newIcons/1418766009_common_logout_signout_exit-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.backButton{
+	background: url("./images/icons/newIcons/1418766041_circle_arrow-backward_previous-128.png");
+	background-size: cover;
+	border: none;
+}
+
+/* .importButton{
+	background: url("./images/icons/newIcons/1421250200_upload-128.png");
+	background-size: cover;
+	border: none;
+} */
+
+form.importButton > div:first-child{
+	width: 100%;
+	height: 100%;
+}
+
+form.importButton .v-button{
+	border: none;
+	opacity: 1;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: initial;
+}
+
+form.importButton .v-button .v-button-wrap{
+	background: url("./images/icons/newIcons/1421250200_upload-128.png");
+	background-size: cover;
+	border: none;
+	opacity: 1;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.exportButton{
+	background: url("./images/icons/newIcons/1421250180_download-128.png");
 	background-size: cover;
 	border: none;
 }
@@ -502,5 +558,17 @@ textarea.projectNameInput{
 
 .v-radiobutton label{
 	font-size: 14pt;
+}
+
+.v-label-wrap {
+	white-space: normal;
+}
+
+.descriptionText {
+	font-size: 12pt;
+}
+
+.descriptionHeadline {
+	font-size: 13pt;
 }
 

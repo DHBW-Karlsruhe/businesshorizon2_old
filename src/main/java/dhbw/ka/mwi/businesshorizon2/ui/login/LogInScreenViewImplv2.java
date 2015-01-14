@@ -177,8 +177,6 @@ public class LogInScreenViewImplv2 extends Window implements
 		verticalTop.addComponent(welcomeLayout);
 		verticalTop.setComponentAlignment(welcomeLayout, Alignment.BOTTOM_RIGHT);
 		
-		addStyleName("login_view");
-		
 		login = new LoginForm();
 		//Zur Anmeldung muss die Mailadresse als Benutzername angegeben werden
 		login.setUsernameCaption("Mailadresse");

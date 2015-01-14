@@ -24,6 +24,8 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
+import java.io.File;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -42,9 +44,11 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.ImportUploadFinishedEvent;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
@@ -251,6 +255,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	@EventHandler
 	public void onShowDescription (ShowDescriptionEvent event) {
 		getView().showProjectCreationScreen(descriptionView);
+		getView().deleteTopButton(1);
 	}
 	
 
@@ -279,6 +284,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
+			setScreen2Buttons();
 			break;
 
 		case PERIODS:
@@ -296,6 +302,47 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		default:
 			break;
 		}
+	}
+
+	private void setScreen2Buttons() {
+		setScreen1Buttons();
+		getView().setTopButton(new TopBarButton("backButton", "Zurück"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
+
+			}
+
+		});
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 3, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+
+			}
+
+		});
+		
 	}
 
 	private void setScreen1Buttons() {
@@ -347,7 +394,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 		});
 
-		getView().clearUnusedButtons();
+		getView().clearUnusedButtons(3);
 
 	}
 
@@ -356,6 +403,51 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
 		eventBus.fireEvent(new ShowInitialTopButtonsEvent());
 
+	}
+	
+	/**
+	 * Diese Methode per Event nach dem Upload der zu importierenden Projektdatei aufgerufen. Sie löst das Auslesen der in der Datei enthaltenen Projektdaten und das Importieren aus.
+	 * Nach dem Import wird das ShowProjectListEvent geworfen, um die angezeigte Liste zu aktualisieren.
+	 * 
+	 * @param event
+	 * 		ImportUploadFinishedEvent, dass als Parameter den Dateinamen der hochgeladenen Datei enthält.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	@EventHandler
+	public void onUploadFinishedImport (ImportUploadFinishedEvent event) {
+		String notImported = null; //in diesen String wird der Rückgabewert, der String mit den Projektnamen, die nicht importiert werden konnten gespeichert
+		logger.debug("ImportUploadFinishedEvent empfangen");
+		
+		notImported = persistenceService.importAllProjects(user, event.getfileName());
+		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
+		
+//		//Ausgabe der Fehlermeldung, falls nicht alle Projekte importiert werden konnten
+//		if (notImported != null) {
+//			getView().showErrorMessage(notImported);
+//		}
+		
+		//Aktualisieren der Antwort
+		eventBus.fireEvent(new ShowProjectListEvent (user));
+		logger.debug ("ShowProjectListEvent geworfen");
+	}
+	
+	/**
+	 * Aufruf aus dem ClickListener der Impl. Es wird die Erstellung der ExportDatei angestoßen.
+	 * Das erzeugte File wird an die View zum Download zurückgeliefert.
+	 * 
+	 * @return exportFile
+	 * 			Das erzeugte ExportFile wird zum Download durch den Client an die View zurückgeliefert.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public File exportProjects () {
+		File exportFile;
+		
+		exportFile = new File (persistenceService.exportUserProjects(user));
+		logger.debug("Presenter: Export-Datei erstellt");
+		
+		return exportFile;
 	}
 
 }

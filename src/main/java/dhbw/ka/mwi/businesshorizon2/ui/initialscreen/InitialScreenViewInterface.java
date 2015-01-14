@@ -79,6 +79,6 @@ public interface InitialScreenViewInterface extends View {
 	
 	public void setPageDescription(String source, String page, String[] description);
 	
-	public void clearUnusedButtons();
+	public void clearUnusedButtons(int count);
 	
 }

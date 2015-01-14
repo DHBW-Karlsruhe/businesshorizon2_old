@@ -25,6 +25,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
+import java.io.File;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -35,11 +37,14 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.Downloader;
+import dhbw.ka.mwi.businesshorizon2.services.persistence.UploadReceiver;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
+import com.mvplite.event.EventBus;
 import com.mvplite.view.View;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -56,6 +61,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
@@ -78,6 +84,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	@Autowired
 	private UserProxy userProxy;
+	
+	@Autowired
+	private EventBus eventBus;
 
 	@Autowired
 	private ProjectProxy projectProxy;
@@ -153,6 +162,18 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private Label middleGap;
 
+	private VerticalLayout importButton;
+
+	private TopBarButton exportButton;
+
+	private ClickListener exportButtonListener;
+
+	private VerticalLayout logoutButtonLayout;
+
+	private Button logoutButton;
+
+	private Label logoutButtonLabel;
+
 
 
 	/**
@@ -193,10 +214,13 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		menuButtonsLayout = new HorizontalLayout();
 		homeButtonLayout = new VerticalLayout();
 		accountButtonLayout = new VerticalLayout();
+		logoutButtonLayout = new VerticalLayout();
 		homeButton = new Button();
 		accountButton = new Button();
+		logoutButton = new Button();
 		homeButtonLabel = new Label("Startseite");
 		accountButtonLabel = new Label("Mein Konto");
+		logoutButtonLabel = new Label("Ausloggen");
 		descriptionLayout = new VerticalLayout();
 		bottomGap = new Label();
 		faqManualLayout = new VerticalLayout();
@@ -253,16 +277,22 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		menuButtonsLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
 		homeButtonLayout.setSizeFull();
 		accountButtonLayout.setSizeFull();
+		logoutButtonLayout.setSizeFull();
 		homeButton.setHeight(30, UNITS_PIXELS);
 		homeButton.setWidth(30, UNITS_PIXELS);
 		homeButton.setStyleName("homeButton");
 		accountButton.setHeight(30, UNITS_PIXELS);
 		accountButton.setWidth(30, UNITS_PIXELS);
 		accountButton.setStyleName("accountButton");
+		logoutButton.setHeight(30, UNITS_PIXELS);
+		logoutButton.setWidth(30, UNITS_PIXELS);
+		logoutButton.setStyleName("logoutButton");
 		homeButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		homeButtonLabel.setStyleName("topBarButtonLabel");
 		accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		accountButtonLabel.setStyleName("topBarButtonLabel");
+		logoutButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		logoutButtonLabel.setStyleName("topBarButtonLabel");
 		faqManualLayout.setWidth(85, UNITS_PERCENTAGE);
 		faqManualLayout.setHeight(SIZE_UNDEFINED, 0);
 		faqManualLayout.setStyleName("faqManualLayout");
@@ -324,10 +354,13 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
 		menuButtonsLayout.addComponent(homeButtonLayout);
 		menuButtonsLayout.addComponent(accountButtonLayout);
+		menuButtonsLayout.addComponent(logoutButtonLayout);
 		homeButtonLayout.addComponent(homeButton);
 		homeButtonLayout.addComponent(homeButtonLabel);
 		accountButtonLayout.addComponent(accountButton);
 		accountButtonLayout.addComponent(accountButtonLabel);
+		logoutButtonLayout.addComponent(logoutButton);
+		logoutButtonLayout.addComponent(logoutButtonLabel);
 		faqManualLayout.addComponent(manualLayout);
 		faqManualLayout.addComponent(faqLayout);
 		manualLayout.addComponent(manualLayoutVertical);
@@ -345,6 +378,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
 		accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);
 		accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
+		logoutButtonLayout.setComponentAlignment(logoutButton, Alignment.TOP_CENTER);
+		logoutButtonLayout.setComponentAlignment(logoutButtonLabel, Alignment.MIDDLE_CENTER);
 		manualLayoutVertical.setComponentAlignment(manualLabel, Alignment.MIDDLE_RIGHT);
 		manualLayout.setComponentAlignment(manualButton, Alignment.MIDDLE_CENTER);
 		faqLayoutVertical.setComponentAlignment(faqLabel, Alignment.MIDDLE_RIGHT);
@@ -395,6 +430,30 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			
 		});
 		
+		logoutButton.addListener(new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Möchten Sie sich wirklich ausloggen?",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							presenter.doLogout();
+						} else {
+
+						}
+					}
+				});
+			}
+			
+		});
+		
 		setContent(mainLayout);
 		
 
@@ -415,6 +474,25 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		};
 		addTopButton(addProjectButton, addProjectButtonListener);
+		
+		createImportButton();
+		topRightLayout.addComponent(importButton);
+		topRightLayout.setComponentAlignment(importButton, Alignment.MIDDLE_CENTER);
+		
+		exportButton = new TopBarButton("exportButton", "Projekte exportieren");
+		exportButtonListener = new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				File exportFile = presenter.exportProjects();
+				event.getButton().getWindow().open(new Downloader(exportFile, getApplication()));
+			}
+			
+		};
+		addTopButton(exportButton, exportButtonListener);
+		
 		editProjectButton = new TopBarButton("editProjectButton", "Projekt bearbeiten");
 		editProjectButtonListener = new ClickListener(){
 
@@ -597,9 +675,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		if(index < maxIndex){
 			Component comp = topRightLayout.getComponent(index);
 			if(comp != null){
-
+				topRightLayout.replaceComponent(comp, button);
 			}
-			topRightLayout.replaceComponent(comp, button);
+			
 		}
 		else{
 			topRightLayout.addComponent(button, index);;
@@ -621,6 +699,51 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			topRightLayout.removeComponent(comp);
 		}
 	}
+	
+	public void createImportButton(){
+		importButton = new VerticalLayout();
+		importButton.setWidth(150, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
+		importButton.setHeight(80, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
+		importButton.setStyleName("topBarButtonContainer");
+		UploadReceiver receiver = new UploadReceiver(eventBus);
+		Upload upload = new Upload(null, receiver);
+		upload.setButtonCaption("");
+		upload.setImmediate(true);
+		upload.addListener(receiver);
+		upload.setStyleName("importButton");
+		upload.setWidth(30, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
+		upload.setHeight(30, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
+		Label gap = new Label();
+		gap.setHeight("5px");
+		Label label = new Label("Projekte importieren");
+		label.setStyleName("topBarButtonLabel");
+		label.setSizeUndefined();
+		VerticalLayout labelLayout = new VerticalLayout();
+		labelLayout.setHeight(45, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
+		labelLayout.setWidth(100, UNITS_PERCENTAGE);
+		importButton.addComponent(upload);
+		labelLayout.addComponent(label);
+		importButton.addComponent(gap);
+		importButton.addComponent(labelLayout);
+		importButton.setComponentAlignment(upload, Alignment.TOP_CENTER);
+		labelLayout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+	}
+	
+	public void setImportButton(){
+		int index = 1;
+		int maxIndex = topRightLayout.getComponentCount() - 1; //1 abziehen wegen dem Spacing rechts
+		if(index < maxIndex){
+			Component comp = topRightLayout.getComponent(index);
+			if(comp != null){
+
+			}
+			topRightLayout.replaceComponent(comp, importButton);
+		}
+		else{
+			topRightLayout.addComponent(importButton, index);;
+		}
+		topRightLayout.setComponentAlignment(importButton, Alignment.MIDDLE_CENTER);
+	}
 
 	/**
 	 * Diese Methode setzt die ursprünglichen 3 Buttons Projekt-hinzufügen,
@@ -630,15 +753,19 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 */
 	public void setInitialTopButtons(){
 		setTopButton(addProjectButton, 0, addProjectButtonListener);
-		setTopButton(editProjectButton, 1, null);
-		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
-		clearUnusedButtons();
+		setImportButton();
+		setTopButton(exportButton, 2, exportButtonListener);
+		setTopButton(editProjectButton, 3, editProjectButtonListener);
+		setTopButton(deleteProjectButton, 4, deleteProjectButtonListener);
+		clearUnusedButtons(5);
 	}
 	
-	public void clearUnusedButtons(){
-		if(topRightLayout.getComponentCount() > 4){
-			for(int i = 3; i < (topRightLayout.getComponentCount() - 1); i++){
-				topRightLayout.removeComponent(topRightLayout.getComponent(i));
+	public void clearUnusedButtons(int count){
+		int componentCount = topRightLayout.getComponentCount();
+		if(componentCount > (count + 1)){
+			for(int i = count; i < (componentCount - 1); i++){
+				topRightLayout.removeComponent(topRightLayout.getComponent(count));
+				logger.debug("Komponente an Stelle "+i+" gelöscht");
 			}
 		}
 	}

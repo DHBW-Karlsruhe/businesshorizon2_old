@@ -5,9 +5,11 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mvplite.event.EventBus;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.Sizeable;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -21,6 +23,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.ButtonMiddle;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialTopButtonsEvent;
 
 /**
  * Diese View ist zuständig für das Erstellen eines Projektes und das Bearbeiten eines Projektes,
@@ -37,6 +40,9 @@ public class StartCalculationButtonViewImpl extends VerticalLayout implements St
 
 	@Autowired
 	private StartCalculationButtonPresenter presenter;
+	
+	@Autowired
+	private EventBus eventBus;
 
 	private Label gap;
 
@@ -73,6 +79,7 @@ public class StartCalculationButtonViewImpl extends VerticalLayout implements St
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
+				eventBus.fireEvent(new SaveProjectEvent());
 				presenter.showMethodselectionScreen();
 				
 			}

@@ -90,6 +90,15 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 			logger.debug ("Deterministische Buttons gesetzt");
 		}
 	}
+	
+	@EventHandler
+	public void onShowMethodScreen (ShowProcessStepEvent event) {
+		if (event.getScreen().equals(screen.METHODSELECTION)) {
+			getView().setInitialButtons();
+			logger.debug("Initial Buttons gesetzt");
+		}
+		
+	}
 
 	public void showParameterScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));

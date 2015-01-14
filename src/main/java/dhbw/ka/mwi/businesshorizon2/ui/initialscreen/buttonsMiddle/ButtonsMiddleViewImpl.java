@@ -163,6 +163,9 @@ ButtonsMiddleViewInterface {
 
 		});
 		
+		button1.setActivated();
+		button2.setDeactivated();
+		
 		setGoToStep(2);
 	}
 	
@@ -172,7 +175,8 @@ ButtonsMiddleViewInterface {
 	 * @author Tobias Lindner
 	 */
 	public void setStochasticParameter () {
-		this.button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", new LayoutClickListener() {
+
+		this.button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Stochastische", "Methode", new LayoutClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -185,16 +189,6 @@ ButtonsMiddleViewInterface {
 
 		});
 
-//		button2.setListener(new LayoutClickListener() {
-//
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void layoutClick(LayoutClickEvent event) {
-//				// TODO Auto-generated method stub
-//			}
-//		});
-
 		logger.debug("View: setStochasticParameter");
 	}
 
@@ -206,7 +200,9 @@ ButtonsMiddleViewInterface {
 	 * 
 	 */
 	public void setDeterministicParameter () {
-		this.button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", new LayoutClickListener () {
+
+		
+		this.button1.setDetails("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Deterministische", "Methode", new LayoutClickListener () {
 
 			private static final long serialVersionUID = 1L;
 
