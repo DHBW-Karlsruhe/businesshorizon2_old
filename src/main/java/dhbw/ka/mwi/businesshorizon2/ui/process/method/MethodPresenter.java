@@ -38,13 +38,12 @@ import com.mvplite.event.EventHandler;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
-
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
 import dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.methods.wiener.Wiener;
-
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.ProjectInputType;
@@ -243,6 +242,7 @@ public class MethodPresenter extends ScreenPresenter<MethodViewInterface> {
 		if (project.getMethods_deterministic() == null) {
 			methods_determinisict.add(new FTE());
 			methods_determinisict.add(new APV());
+			methods_determinisict.add(new WACC());
 			project.setMethods_deterministic(methods_determinisict);
 		} else {
 			methods_determinisict = project.getMethods_deterministic();

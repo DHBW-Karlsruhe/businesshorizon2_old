@@ -43,6 +43,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -256,6 +257,46 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 								 * 
 								 * }
 								 */
+
+							}
+							
+						//Kopie von FTE, zum Test ob über WACC ausgabe erzeugt werden kann
+						// Author Felix Schlosser
+						if (method_deterministic.getName() == "Weighted-Average-Cost-of-Capital (WACC)") {
+							WACC wacc_2 = new WACC();
+							logger.debug("Cashflows: " + drContainer.getCashflows().length);
+							logger.debug("Fremdkapital: " + drContainer.getFremdkapitl().length);
+							logger.debug("Szenrio: " + scenario.toString());
+							
+							unternehmenswert = wacc_2.calculateValues(drContainer.getCashflows(),
+																	  drContainer.getFremdkapitl(), 
+																	  scenario);
+
+							DeterministicChartArea deterministicarea = new DeterministicChartArea(
+									unternehmenswert,
+									method_deterministic.getName(),
+									drContainer, scenario);
+
+							getView().addDeterministicChartArea(
+									deterministicarea, counter);
+
+							
+							
+							
+							
+							
+							
+							/*
+							 * DeterministicChartArea chart = new
+							 * DeterministicChartArea(
+							 * method_deterministic.getName(),
+							 * unternehmenswert, "Cashflows",
+							 * drContainer.getJahre(),
+							 * drContainer.getCashflows());
+							 * getView().addDeterministicChartArea(chart);								 * // chart
+							 * 
+							 * }
+							 */
 
 							}
 						}
