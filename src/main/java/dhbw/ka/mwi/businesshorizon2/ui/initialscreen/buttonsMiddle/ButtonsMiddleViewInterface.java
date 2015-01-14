@@ -43,6 +43,41 @@ public interface ButtonsMiddleViewInterface extends View {
 	public void setGoToStep(int step);
 	
 	public void setInitialButtons();
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons an FCF an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setFCFButton();
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons an GKV an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setGKVButton();
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons an UKV an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setUKVButton();
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons für den ScenarioScreen an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setScenarioButton();
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons für den Result an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setResultButton();
 
 }
 

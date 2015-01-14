@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import javax.annotation.PostConstruct;
 
@@ -48,11 +48,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * @author Florian Stier, Mirko Göpfrich
  * 
  */
-public class OutputScreenViewImpl extends Panel implements OutputScreenViewInterface {
+public class ResultScreenViewImpl extends Panel implements ResultScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private OutputScreenPresenter presenter;
+	private ResultScreenPresenter presenter;
 	
 	private VerticalLayout vl = new VerticalLayout();
 	

@@ -66,10 +66,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.outputscreen.OutputScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterface;
 
 /**
@@ -123,7 +123,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	private ScenarioScreenViewInterface scenarioScreenView;
 	
 	@Autowired
-	private OutputScreenViewInterface outputScreenView;
+	private ResultScreenViewInterface resultScreenView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -315,7 +315,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			break;
 
 		case RESULT:
-			getView().showView(buttonsMiddleView, outputScreenView);
+			getView().showView(buttonsMiddleView, resultScreenView);
 			getView().setPageDescription("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Schritt 5", "Ergebnisausgabe");
 //			setScreen5Buttons();
 

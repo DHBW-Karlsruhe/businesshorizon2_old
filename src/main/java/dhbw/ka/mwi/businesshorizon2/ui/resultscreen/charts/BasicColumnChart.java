@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen.charts;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
 import java.util.List;
 import java.util.Map;
@@ -31,22 +31,17 @@ import java.util.Map;
 import org.vaadin.vaadinvisualizations.ColumnChart;
 
 /**
- * Balkendiagramm zur Anzeige des Unternehmenswertes im deterministischen
- * Verfahren
+ * Balkendiagramm zur Anzeige der Häufigkeitsverteilung der Unternehmenswerte im
+ * stochastischen Verfahren
  * 
  * @author Florian Stier
  * 
  */
-public class StackedColumnChart extends ColumnChart {
+public class BasicColumnChart extends ColumnChart {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	public StackedColumnChart(String xAxisLabel, List<String> columns) {
-
-		setOption("isStacked", true);
+	public BasicColumnChart(String xAxisLabel, List<String> columns) {
 
 		addXAxisLabel(xAxisLabel);
 
@@ -65,6 +60,7 @@ public class StackedColumnChart extends ColumnChart {
 		for (Map.Entry<String, double[]> value : values.entrySet()) {
 			add(value.getKey(), value.getValue());
 		}
+
 	}
 
 }

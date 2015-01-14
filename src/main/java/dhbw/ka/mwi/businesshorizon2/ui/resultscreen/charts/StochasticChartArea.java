@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen.charts;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

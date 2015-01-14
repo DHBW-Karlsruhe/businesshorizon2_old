@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import java.text.DecimalFormat;
 import java.util.Iterator;
@@ -73,7 +73,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * 
  */
 
-public class OutputScreenPresenter extends ScreenPresenter<OutputScreenViewInterface>
+public class ResultScreenPresenter extends ScreenPresenter<ResultScreenViewInterface>
 		implements CallbackInterface {
 	private static final long serialVersionUID = 1L;
 

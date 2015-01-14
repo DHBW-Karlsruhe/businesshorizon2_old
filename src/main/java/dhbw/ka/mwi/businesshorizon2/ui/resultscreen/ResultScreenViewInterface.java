@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import com.vaadin.ui.Label;
 
@@ -32,7 +32,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
-public interface OutputScreenViewInterface extends ContentView {
+public interface ResultScreenViewInterface extends ContentView {
 
 
 	void showOutputView();

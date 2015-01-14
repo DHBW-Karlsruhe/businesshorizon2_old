@@ -22,36 +22,48 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen.charts;
+
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
 import java.util.List;
 import java.util.Map;
 
-import org.vaadin.vaadinvisualizations.Table;
+import org.vaadin.vaadinvisualizations.ColumnChart;
 
 /**
- * Tabelle zur Anzeige des Eigen- sowie Fremdkapital und des Unternehmenswertes
- * im APV
+ * Balkendiagramm zur Anzeige des Unternehmenswertes im deterministischen
+ * Verfahren
  * 
  * @author Florian Stier
  * 
  */
-public class BasicTable extends Table {
+public class StackedColumnChart extends ColumnChart {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
-	public BasicTable(Map<String, String> columns) {
-		setOption("allowHTML", true);
-		setOption("width", 500);
+	public StackedColumnChart(String xAxisLabel, List<String> columns) {
 
-		for (Map.Entry<String, String> column : columns.entrySet()) {
-			addTableColumn(column.getKey(), column.getValue());
+		setOption("isStacked", true);
+
+		addXAxisLabel(xAxisLabel);
+
+		for (String column : columns) {
+			addColumn(column);
 		}
+
+		// setOption("width", 500);
+		// setOption("height", 200);
+		setOption("legend", "bottom");
+
 	}
 
-	public void addValues(List<String[]> values) {
-		for (String[] value : values) {
-			add(value);
+	public void addValues(Map<String, double[]> values) {
+
+		for (Map.Entry<String, double[]> value : values.entrySet()) {
+			add(value.getKey(), value.getValue());
 		}
 	}
 

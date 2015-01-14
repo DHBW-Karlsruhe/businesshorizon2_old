@@ -22,45 +22,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen.charts;
 
-import java.util.List;
-import java.util.Map;
 
-import org.vaadin.vaadinvisualizations.LineChart;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+
+import com.mvplite.event.Event;
 
 /**
- * Liniendiagramm zur Anzeige des Verlaufs der vergangenen bzw. vorhergesagten
- * Cashflows
+ * Der Event, der zum Anzeigen des Output Views z.B. in der BHApplication-Klasse
+ * abgesetzt wird.
  * 
  * @author Florian Stier
  * 
  */
-public class BasicLineChart extends LineChart {
-
+public class ShowOutputViewEvent extends Event {
 	private static final long serialVersionUID = 1L;
-
-	public BasicLineChart(String xAxisLabel, List<String> lines) {
-
-		addXAxisLabel(xAxisLabel);
-
-		for (String line : lines) {
-			addLine(line);
-		}
-
-		setOption("width", 500);
-		setOption("height", 200);
-		setOption("legend", "bottom");
-
-		setOption("lineSize", 3);
-		setOption("pointSize", 7);
-
-	}
-
-	public void addValues(Map<String, double[]> values) {
-		for (Map.Entry<String, double[]> value : values.entrySet()) {
-			add(value.getKey(), value.getValue());
-		}
-	}
 
 }

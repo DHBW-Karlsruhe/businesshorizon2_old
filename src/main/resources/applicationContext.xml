@@ -273,12 +273,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewImpl"
 		scope="session" />
 
-	<!-- Output Screen -->
-	<bean name="outputScreenPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.outputscreen.OutputScreenPresenter"
+	<!-- Result Screen -->
+	<bean name="resultScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenPresenter"
 		scope="session" />
-	<bean name="outputScreenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.outputscreen.OutputScreenViewImpl"
+	<bean name="resultScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewImpl"
 		scope="session" />			
 		
 </beans>

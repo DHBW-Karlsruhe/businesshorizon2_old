@@ -22,45 +22,45 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-package dhbw.ka.mwi.businesshorizon2.ui.outputscreen.charts;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
 import java.util.List;
 import java.util.Map;
 
-import org.vaadin.vaadinvisualizations.ColumnChart;
+import org.vaadin.vaadinvisualizations.LineChart;
 
 /**
- * Balkendiagramm zur Anzeige der Häufigkeitsverteilung der Unternehmenswerte im
- * stochastischen Verfahren
+ * Liniendiagramm zur Anzeige des Verlaufs der vergangenen bzw. vorhergesagten
+ * Cashflows
  * 
  * @author Florian Stier
  * 
  */
-public class BasicColumnChart extends ColumnChart {
+public class BasicLineChart extends LineChart {
 
 	private static final long serialVersionUID = 1L;
 
-	public BasicColumnChart(String xAxisLabel, List<String> columns) {
+	public BasicLineChart(String xAxisLabel, List<String> lines) {
 
 		addXAxisLabel(xAxisLabel);
 
-		for (String column : columns) {
-			addColumn(column);
+		for (String line : lines) {
+			addLine(line);
 		}
 
-		// setOption("width", 500);
-		// setOption("height", 200);
+		setOption("width", 500);
+		setOption("height", 200);
 		setOption("legend", "bottom");
+
+		setOption("lineSize", 3);
+		setOption("pointSize", 7);
 
 	}
 
 	public void addValues(Map<String, double[]> values) {
-
 		for (Map.Entry<String, double[]> value : values.entrySet()) {
 			add(value.getKey(), value.getValue());
 		}
-
 	}
 
 }

@@ -33,7 +33,9 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
@@ -61,7 +63,11 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 	private EventBus eventBus;
 	
 	@Autowired
+	private ProjectProxy projectProxy;
+	
 	private Project project;
+	
+	private InputType inputType;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -78,6 +84,7 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 	
 	@EventHandler
 	public void onShowParameterScreen (ShowParameterScreenViewEvent event) {
+		project = projectProxy.getSelectedProject();
 		logger.debug("Project TypMethod: " + project.getTypMethod());
 		
 		if (project.getProjectInputType().isStochastic()) {
@@ -98,6 +105,50 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 			logger.debug("Initial Buttons gesetzt");
 		}
 		
+	}
+	
+	@EventHandler
+	public void onShowPeriodScreen (ShowProcessStepEvent event) {
+		if (event.getScreen().equals(screen.PERIODS)) {
+			project = projectProxy.getSelectedProject();
+			
+			if (project.getProjectInputType().isDeterministic()) {
+				inputType = project.getProjectInputType().getDeterministicInput();
+			}
+			
+			else if(project.getProjectInputType().isStochastic()) {
+				inputType = project.getProjectInputType().getStochasticInput();
+			}
+			
+			switch (inputType) {
+				case DIRECT:
+					getView().setFCFButton();
+					break;
+				
+				case GESAMTKOSTENVERFAHREN:
+					getView().setGKVButton();
+					break;
+					
+				case UMSATZKOSTENVERFAHREN:
+					getView().setUKVButton();
+					break;
+			}
+			
+		}
+	}
+	
+	@EventHandler
+	public void onShowScenarioScreen (ShowProcessStepEvent event) {
+		if (event.getScreen().equals(screen.SCENARIOS)) {
+			getView().setScenarioButton();
+		}
+	}
+	
+	@EventHandler
+	public void onShowResultScreen (ShowProcessStepEvent event) {
+		if (event.getScreen().equals(screen.RESULT)) {
+			getView().setResultButton();
+		}
 	}
 
 	public void showParameterScreen() {

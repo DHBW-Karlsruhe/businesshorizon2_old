@@ -166,6 +166,8 @@ ButtonsMiddleViewInterface {
 		button1.setActivated();
 		button2.setDeactivated();
 		
+		this.button2.setVisible(true);
+		
 		setGoToStep(2);
 	}
 	
@@ -188,6 +190,8 @@ ButtonsMiddleViewInterface {
 			}
 
 		});
+		
+		this.button2.setVisible(true);
 
 		logger.debug("View: setStochasticParameter");
 	}
@@ -215,8 +219,127 @@ ButtonsMiddleViewInterface {
 			}
 
 		});
+		
+		this.button2.setVisible(true);
 
 		logger.debug ("View: setDeterministicParameter");
+	}
+	
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons an FCF an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setFCFButton() {	
+		this.button1.setDetails("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "FCF", "Free Cash Flow", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showPeriodScreen();
+			}
+		});
+
+		this.button2.setVisible(true);	
+		
+		logger.debug ("View: setFCFButton");
+		
+	}
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons an GKV an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setGKVButton() {
+		this.button1.setDetails("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "GKV", "Gesamtkostenverfahren", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showPeriodScreen();
+			}
+		});
+
+		this.button2.setVisible(true);
+		
+		logger.debug ("View: setGKVButton");
+	}
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons an UKV an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setUKVButton() {
+		this.button1.setDetails("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "UKV", "Umsatzkostenverfahren", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showPeriodScreen();
+			}
+		});
+
+		this.button2.setVisible(true);
+		
+		logger.debug ("View: setUKVButton");
+	}
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons für den ScenarioScreen an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setScenarioButton() {
+		this.button1.setDetails("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Szenarien", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showScenarioScreen();
+			}
+		});
+		
+		this.button2.setVisible(true);
+
+		logger.debug ("View: setScenarioButton");
+	}
+	
+	/**
+	 * Diese Methode passt die Beschriftung des mittleren Buttons für den Result an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setResultButton() {
+		this.button1.setDetails("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Ergebnis", new LayoutClickListener () {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				button2.setDeactivated();
+				button1.setActivated();
+				presenter.showResultScreen();;
+			}
+		});
+		
+		this.button2.setVisible(false);
+
+		logger.debug ("View: setResultButton");
 	}
 
 	public void setGoToStep(int step){
