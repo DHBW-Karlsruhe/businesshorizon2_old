@@ -30,6 +30,9 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.VerticalLayout;
+
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
@@ -39,11 +42,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 * @author Marcel Rosenberger
 *
 */
-public class UmsatzkostenVerfahrenViewImpl extends AbstractInputView implements UmsatzkostenVerfahrenViewInterface{
+public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements UmsatzkostenVerfahrenViewInterface{
         private static final long serialVersionUID = 1L;
 
         @Autowired
-        private UmsatzkostenVerfahrenPresenter presenterTemp;
+        private UmsatzkostenVerfahrenPresenter presenter;
+        
+        private static final Logger logger = Logger.getLogger("DirektViewImpl.class");
 
         /**
          * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -55,7 +60,12 @@ public class UmsatzkostenVerfahrenViewImpl extends AbstractInputView implements 
 
         @PostConstruct
         public void init() {
-                presenter = presenterTemp;
                 presenter.setView(this);
         }
+
+		@Override
+		public void setProject(Project project) {
+			// TODO Auto-generated method stub
+			
+		}
 }

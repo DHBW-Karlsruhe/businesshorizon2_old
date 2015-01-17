@@ -175,7 +175,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	<bean name="direktView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewImpl"
-		scope="session" />
+		scope="session" /> 
 
 
 	<!-- Periode-Gesamtkostenverfahren -->
@@ -194,7 +194,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	<bean name="umsatzkostenVerfahrenView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenViewImpl"
-		scope="session" />
+		scope="session" /> 
 
 
 	<!-- Parameter-Input -->
@@ -264,6 +264,24 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="periodScreenView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewImpl"
 		scope="session" />	
+	<bean name="direktScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe.DirektViewImpl"
+		scope="session" />
+	<bean name="direktScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe.DirektPresenter"
+		scope="session" />
+	<bean name="gesamtkostenVerfahrenScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren.GesamtkostenVerfahrenViewImpl"
+		scope="session" />
+	<bean name="gesamtkostenVerfahrenScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter"
+		scope="session" />
+	<bean name="umsatzkostenVerfahrenScreenView"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.UmsatzkostenVerfahrenViewImpl"
+		scope="session" />
+	<bean name="umsatzkostenVerfahrenScreenPresenter"
+		class="dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter"
+		scope="session" />
 
 	<!-- Scenario Screen -->
 	<bean name="scenarioScreenPresenter"

@@ -44,18 +44,14 @@ import com.vaadin.ui.themes.Reindeer;
  * @author Julius Hacker
  * 
  */
-public class PeriodScreenViewImpl extends HorizontalSplitPanel implements
+public class PeriodScreenViewImpl extends VerticalLayout implements
 		PeriodScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private PeriodScreenPresenter presenter;
 
-
-	HorizontalSplitPanel horizontalPanel;
-
-	private static final Logger logger = Logger
-			.getLogger("PeriodViewImpl.class");
+	private static final Logger logger = Logger.getLogger("PeriodScreenViewImpl.class");
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -67,6 +63,7 @@ public class PeriodScreenViewImpl extends HorizontalSplitPanel implements
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		generateUi();
 	}
 
 	/**
@@ -75,68 +72,25 @@ public class PeriodScreenViewImpl extends HorizontalSplitPanel implements
 	 * @author Daniel Dengler
 	 */
 	private void generateUi() {
-		setSizeFull();
-		setSplitPosition(60, UNITS_PERCENTAGE);
-		setSizeFull();
-		setLocked(true);
-		setStyleName("small");
-		setMargin(true);
-		horizontalPanel = new HorizontalSplitPanel();
-		horizontalPanel.setSplitPosition(35, UNITS_PERCENTAGE);
-		horizontalPanel.setSizeFull();
-		horizontalPanel.setLocked(true);
-		horizontalPanel.setStyleName("small");
-		setFirstComponent(horizontalPanel);
-		
-		VerticalLayout infoBox = new VerticalLayout();
-		infoBox.setMargin(true);
-		Label infoText1 = new Label ("<h3>Eingabe der Perioden</h3>");
-		infoText1.setContentMode(Label.CONTENT_XHTML);
-		Label infoText2 = new Label("Der Zeitstrahl ist gemäß Ihren getätigten Eingaben vorgegeben. Mit einem Klick auf den „Jahresbutton“ können Sie die entsprechenden Werte eintragen.");
-		Label infoText3 = new Label  ("<h3>Direkte Eingabe der Cashflows:</h3>");
-		infoText3.setContentMode(Label.CONTENT_XHTML);
-		Label infoText4 = new Label ("Wählen Sie nun bitte die links angezeigten Perioden aus und geben Sie für jede Periode sowohl den Cashflow als auch das Fremdkapital der jeweiligen Periode an.");
-		Label infoText5 = new Label  ("<h3>Gesamtkostenverfahren:</h3>");
-		infoText5.setContentMode(Label.CONTENT_XHTML);
-		Label infoText6 = new Label ("Wählen Sie nun bitte die links angezeigten Perioden aus und geben Sie für jede Periode die abgefragten Daten zur Berechnung des Cashflows an. Die benötigten Datensätze entnehmen Sie bitte Ihrer Gewinn- und Verlustrechnung, erstellt nach dem Gesamtkostenverfahren.");
-		Label infoText7 = new Label  ("<h3>Umsatzkostenverfahren:</h3>");
-		infoText7.setContentMode(Label.CONTENT_XHTML);
-		Label infoText8 = new Label ("Wählen Sie nun bitte die links angezeigten Perioden aus und geben Sie für jede Periode die abgefragten Daten zur Berechnung des Cashflows an. Die benötigten Datensätze entnehmen Sie bitte Ihrer Gewinn- und Verlustrechnung, erstellt nach dem Umsatzkostenverfahren.");
-		
-		infoBox.addComponent(infoText1);
-		infoBox.addComponent(infoText2);
-		infoBox.addComponent(infoText3);
-		infoBox.addComponent(infoText4);
-		infoBox.addComponent(infoText5);
-		infoBox.addComponent(infoText6);
-		infoBox.addComponent(infoText7);
-		infoBox.addComponent(infoText8);
-		
-		
-		setSecondComponent(infoBox);
-	
+		setWidth(95, UNITS_PERCENTAGE);
+		setHeight(100, UNITS_PERCENTAGE);
+		setStyleName("projectDetailsLayout");
 		
 	}
 
 	@Override
-	public void showView(View leftView, View rightView) {
+	public void showView(View view) {
 		removeAllComponents();
-		generateUi();
-		horizontalPanel.setFirstComponent((Component) leftView);
-		horizontalPanel.setSecondComponent((Component) rightView);
-		this.setSizeFull();
-		((Component) leftView).setSizeFull();
-		if (rightView != null)
-			((Component) rightView).setSizeFull();
-		horizontalPanel.setSizeFull();
-		this.setSizeFull();
+		addComponent((Component)view);
 		logger.debug("Alle Komponenten neu angelegt");
 	}
-
-	@Override
-	public void setSize(float max, int heightUnits) {
-		logger.debug("Setting size to " + (max) + " " + heightUnits);
-		this.setHeight(max, heightUnits);
-
+	
+	public void setMethod() {
+		presenter.setMethod();
 	}
+	
+	public String getPageDescription(){
+		return presenter.getPageDescription();
+	}
+
 }

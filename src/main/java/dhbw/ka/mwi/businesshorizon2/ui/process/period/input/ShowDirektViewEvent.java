@@ -37,6 +37,9 @@ public class ShowDirektViewEvent extends Event implements ShowInputViewEventInte
 	public ShowDirektViewEvent(CashFlowPeriod period){
 		this.period = period;
 	}
+	public ShowDirektViewEvent(){
+		super();
+	};
 	public CashFlowPeriod getPeriod() {
 		return period;
 	}

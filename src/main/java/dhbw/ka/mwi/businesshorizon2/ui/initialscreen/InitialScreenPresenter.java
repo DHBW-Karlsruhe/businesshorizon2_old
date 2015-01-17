@@ -302,8 +302,11 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		case PERIODS:
 			buttonsMiddleView.setGoToStep(4);
 			getView().showView(buttonsMiddleView, periodScreenView);
-			getView().setPageDescription("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "Schritt 3", "");
-//			setScreen3Buttons();
+			periodScreenView.setMethod();
+			String text = periodScreenView.getPageDescription();
+			getView().setPageDescription("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "Schritt 3", new String[] {text, "Bitte geben Sie die Parameter ein"});
+			
+			setScreen3Buttons();
 
 			break;
 
@@ -324,6 +327,20 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		default:
 			break;
 		}
+	}
+	
+	private void setScreen3Buttons(){
+		getView().setTopButton(new TopBarButton("backButton", "Zurück"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));
+
+			}
+
+		});
 	}
 
 	private void setScreen2Buttons() {

@@ -30,6 +30,9 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.ui.VerticalLayout;
+
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
@@ -39,11 +42,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 * @author Marcel Rosenberger
 *
 */
-public class GesamtkostenVerfahrenViewImpl extends AbstractInputView implements GesamtkostenVerfahrenViewInterface {
+public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements GesamtkostenVerfahrenViewInterface {
         private static final long serialVersionUID = 1L;
 
         @Autowired
-        private GesamtkostenVerfahrenPresenter presenterTemp;
+        private GesamtkostenVerfahrenPresenter presenter;
+        
+        private static final Logger logger = Logger.getLogger("GesamtkostenVerfahrenViewImpl.class");
         
 
         /**
@@ -56,11 +61,16 @@ public class GesamtkostenVerfahrenViewImpl extends AbstractInputView implements 
 
         @PostConstruct
         public void init() {
-                logger = Logger.getLogger(GesamtkostenVerfahrenViewImpl.class);
-                presenter = presenterTemp;
                 presenter.setView(this);
                 logger.debug("Umsatz presenter set");
                 
         }
+
+
+		@Override
+		public void setProject(Project project) {
+			// TODO Auto-generated method stub
+			
+		}
 }
 

@@ -29,10 +29,12 @@ import com.mvplite.view.View;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
-public interface PeriodScreenViewInterface extends ContentView {
+public interface PeriodScreenViewInterface extends View{
 	
-	public void showView(View leftView, View rightView);
+	public void showView(View view);
+	
+	public void setMethod();
 
-	public void setSize(float max, int heightUnits);
+	public String getPageDescription();
 
 }

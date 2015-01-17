@@ -82,7 +82,7 @@ public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface>
          */
         @EventHandler
         public void onShowEvent(ShowDirektViewEvent event) {
-                processEvent(event);
+//                processEvent(event);
 
         }
         }

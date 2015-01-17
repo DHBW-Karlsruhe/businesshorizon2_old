@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
@@ -41,8 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
  * 
  */
 
-public class GesamtkostenVerfahrenPresenter extends
-		AbstractInputPresenter<GesamtkostenVerfahrenViewInterface> {
+public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfahrenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -59,24 +59,24 @@ public class GesamtkostenVerfahrenPresenter extends
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
-				"bestandserhöhung", "bestandsverminderung", "materialaufwand",
-				"löhne", "einstellungskosten", "pensionsrückstellungen",
-				"sonstigepersonalkosten", "abschreibungen", "sonstigerertrag",
-				"sonstigeraufwand", "wertpapiererträge",
-				"zinsenundaufwendungen", "außerordentlicheerträge",
-				"außerordentlicheaufwände" };
-		germanNamesProperties = new String[] { "Fremdkapital",
-				"Umsatzerl\u00f6se", "Bestandserh\u00f6hung",
-				"Bestandsverminderung", "Materialaufwand",
-				"L\u00f6hne und Geh\u00e4lter",
-				"Einstellungs-/Entlassungskosten",
-				"Pensionsr\u00fcckstellungen", "Sonstige Personalkosten",
-				"Abschreibungen", "Sonstiger Ertrag", "Sonstiger Aufwand",
-				"Ertr\u00e4ge aus Wertpapieren",
-				"Zinsen und \u00e4hnliche Aufwendungen",
-				"Außerordentliche Ertr\u00e4ge",
-				"Außerordentliche Aufwendungen" };
+//		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
+//				"bestandserhöhung", "bestandsverminderung", "materialaufwand",
+//				"löhne", "einstellungskosten", "pensionsrückstellungen",
+//				"sonstigepersonalkosten", "abschreibungen", "sonstigerertrag",
+//				"sonstigeraufwand", "wertpapiererträge",
+//				"zinsenundaufwendungen", "außerordentlicheerträge",
+//				"außerordentlicheaufwände" };
+//		germanNamesProperties = new String[] { "Fremdkapital",
+//				"Umsatzerl\u00f6se", "Bestandserh\u00f6hung",
+//				"Bestandsverminderung", "Materialaufwand",
+//				"L\u00f6hne und Geh\u00e4lter",
+//				"Einstellungs-/Entlassungskosten",
+//				"Pensionsr\u00fcckstellungen", "Sonstige Personalkosten",
+//				"Abschreibungen", "Sonstiger Ertrag", "Sonstiger Aufwand",
+//				"Ertr\u00e4ge aus Wertpapieren",
+//				"Zinsen und \u00e4hnliche Aufwendungen",
+//				"Außerordentliche Ertr\u00e4ge",
+//				"Außerordentliche Aufwendungen" };
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class GesamtkostenVerfahrenPresenter extends
 	 */
 	@EventHandler
 	public void onShowEvent(ShowGKVEvent event) {
-		processEvent(event);
+//		processEvent(event);
 	}
 
 }

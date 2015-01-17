@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
@@ -41,8 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
  * 
  */
 
-public class UmsatzkostenVerfahrenPresenter extends
-		AbstractInputPresenter<UmsatzkostenVerfahrenViewInterface> {
+public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfahrenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -58,21 +58,21 @@ public class UmsatzkostenVerfahrenPresenter extends
 
 	public void init() {
 		eventBus.addHandler(this);
-		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
-				"herstellungskosten", "vertriebskosten", "forschungskosten",
-				"verwaltungskosten", "sonstigerertrag", "sonstigeraufwand",
-				"wertpapiererträge", "zinsenundaufwendungen",
-				"außerordentlicheerträge", "außerordentlicheaufwände",
-				"abschreibungen", "pensionsrückstellungen" };
-		germanNamesProperties = new String[] { "Fremdkapital",
-				"Umsatzerl\u00f6se", "Herstellungskosten des Umsatzes",
-				"Vertriebskosten", "Kosten F und E", "Verwaltungskosten",
-				"Sonstiger Ertrag", "Sonstiger Aufwand",
-				"Ertr\u00e4ge aus Wertpapieren",
-				"Zinsen und \u00e4hnliche Aufwendungen",
-				"Außerordentliche Ertr\u00e4ge",
-				"Außerordentliche Aufwendungen", "Abschreibungen",
-				"Pensionsr\u00fcckstellungen" };
+//		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
+//				"herstellungskosten", "vertriebskosten", "forschungskosten",
+//				"verwaltungskosten", "sonstigerertrag", "sonstigeraufwand",
+//				"wertpapiererträge", "zinsenundaufwendungen",
+//				"außerordentlicheerträge", "außerordentlicheaufwände",
+//				"abschreibungen", "pensionsrückstellungen" };
+//		germanNamesProperties = new String[] { "Fremdkapital",
+//				"Umsatzerl\u00f6se", "Herstellungskosten des Umsatzes",
+//				"Vertriebskosten", "Kosten F und E", "Verwaltungskosten",
+//				"Sonstiger Ertrag", "Sonstiger Aufwand",
+//				"Ertr\u00e4ge aus Wertpapieren",
+//				"Zinsen und \u00e4hnliche Aufwendungen",
+//				"Außerordentliche Ertr\u00e4ge",
+//				"Außerordentliche Aufwendungen", "Abschreibungen",
+//				"Pensionsr\u00fcckstellungen" };
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class UmsatzkostenVerfahrenPresenter extends
 
 	@EventHandler
 	public void onShowEvent(ShowUKVEvent event) {
-		processEvent(event);
+//		processEvent(event);
 	}
 
 }

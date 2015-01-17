@@ -31,9 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.presenter.Presenter;
 import com.mvplite.view.View;
 
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
@@ -43,12 +46,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe.DirektPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe.DirektViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren.GesamtkostenVerfahrenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.UmsatzkostenVerfahrenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInterface;
 
@@ -59,25 +62,24 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewInter
  * @author Daniel Dengler, Marcel Rosenberger
  */
 
-public class PeriodScreenPresenter extends ScreenPresenter<PeriodScreenViewInterface> {
+public class PeriodScreenPresenter extends Presenter<PeriodScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private View currentInput = null;
 
-	private static final Logger logger = Logger
-			.getLogger("PeriodPresenter.class");
+	private static final Logger logger = Logger.getLogger("PeriodScreenPresenter.class");
 
 	@Autowired
 	private TimelineViewInterface timelineView;
 
 	@Autowired
-	private UmsatzkostenVerfahrenViewInterface indirectCalcView;
+	private UmsatzkostenVerfahrenViewInterface ukvView;
 
 	@Autowired
 	private DirektViewInterface direktView;
 
 	@Autowired
-	private GesamtkostenVerfahrenViewInterface directCalcView;
+	private GesamtkostenVerfahrenViewInterface gkvView;
 
 	@Autowired
 	private TimelinePresenter timelinePresenter;
@@ -94,6 +96,17 @@ public class PeriodScreenPresenter extends ScreenPresenter<PeriodScreenViewInter
 	@Autowired
 	private EventBus eventBus;
 
+	@Autowired
+	private ProjectProxy projectProxy;
+
+	private Project project;
+
+	private InputType inputType;
+
+	private InputType type;
+
+	private boolean stoch;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
@@ -109,7 +122,7 @@ public class PeriodScreenPresenter extends ScreenPresenter<PeriodScreenViewInter
 	@EventHandler
 	public void onShowEvent(ShowPeriodViewEvent event) {
 		logger.debug("DirektViewEvent gefeuert");
-		getView().showView(timelineView, currentInput);
+		getView().showView(currentInput);
 		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.PERIOD,
 				true));
 	}
@@ -117,8 +130,8 @@ public class PeriodScreenPresenter extends ScreenPresenter<PeriodScreenViewInter
 	@EventHandler
 	public void onShowEvent(ShowGKVEvent event) {
 		logger.debug("ShowDirectCalcEvent erhalten");
-		currentInput = directCalcView;
-		getView().showView(timelineView, currentInput);
+		currentInput = gkvView;
+		getView().showView(gkvView);
 
 	}
 
@@ -126,33 +139,101 @@ public class PeriodScreenPresenter extends ScreenPresenter<PeriodScreenViewInter
 	public void onShowEvent(ShowDirektViewEvent event) {
 		logger.debug("ShowDirektViewEvent erhalten");
 		currentInput = direktView;
-		getView().showView(timelineView, currentInput);
+		getView().showView(direktView);
 
 	}
 
 	@EventHandler
 	public void onShowEvent(ShowUKVEvent event) {
 		logger.debug("ShowUmsatzViewEvent erhalten");
-		currentInput = indirectCalcView;
-		getView().showView(timelineView, currentInput);
+		currentInput = ukvView;
+		getView().showView(ukvView);
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
+	//	@Override
+	//	public boolean isValid() {
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	@EventHandler
+	//	public void validate(ValidateContentStateEvent event) {
+	//		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
+	//		logger.debug("Presenter valid, ValidStateEvent fired");
+	//	}
+	//
+	//	@Override
+	//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+	//		// TODO Auto-generated method stub
+	//
+	//	}
+
+	public void setMethod() {
+		project = projectProxy.getSelectedProject();
+		if(project.getProjectInputType().isStochastic()){
+			inputType = project.getProjectInputType().getStochasticInput();
+			stoch = true;
+		}else if(project.getProjectInputType().isDeterministic()){
+			inputType = project.getProjectInputType().getDeterministicInput();
+			stoch = false;
+		}
+		logger.debug("inputType: "+inputType.toString());
+		type = inputType;
+		switch (inputType) {
+		case DIRECT:
+			logger.debug("showView aufgerufen");
+			getView().showView(direktView);
+			direktView.setProject(project);
+			eventBus.fireEvent(new ShowDirektViewEvent());
+			break;
+		case GESAMTKOSTENVERFAHREN:
+			getView().showView(gkvView);
+//			gkvView.setProject(project);
+			break;
+		case UMSATZKOSTENVERFAHREN:
+			getView().showView(ukvView);
+//			ukvView.setProject(project);
+			break;
+
+		default:
+			break;
+		}
+		
+
 	}
 
-	@Override
-	@EventHandler
-	public void validate(ValidateContentStateEvent event) {
-		eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PERIOD));
-		logger.debug("Presenter valid, ValidStateEvent fired");
-	}
+	public String getPageDescription() {
+		String text = "";
+		switch (type) {
+		case DIRECT:
+			if(stoch == true){
+				text = "Stochastische Methode - FCF";
+			}
+			else{
+				text = "Deterministische Methode - FCF";
+			}
+			break;
+		case GESAMTKOSTENVERFAHREN:
+			if(stoch == true){
+				text = "Stochastische Methode - GKV";
+			}
+			else{
+				text = "Deterministische Methode - GKV";
+			}
+			break;
+		case UMSATZKOSTENVERFAHREN:
+			if(stoch == true){
+				text = "Stochastische Methode - UKV";
+			}
+			else{
+				text = "Deterministische Methode - UKV";
+			}
+			break;
 
-	@Override
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
-
+		default:
+			break;
+		}
+		return text;
 	}
 
 }

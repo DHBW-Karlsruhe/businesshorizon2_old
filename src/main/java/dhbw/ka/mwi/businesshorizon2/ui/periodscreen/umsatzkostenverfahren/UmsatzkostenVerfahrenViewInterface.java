@@ -25,9 +25,14 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren;
 
+import com.mvplite.view.View;
+
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-public interface UmsatzkostenVerfahrenViewInterface extends InputViewInterface {
+public interface UmsatzkostenVerfahrenViewInterface extends View {
+
+	void setProject(Project project);
 
         
 

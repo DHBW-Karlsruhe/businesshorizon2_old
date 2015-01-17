@@ -32,62 +32,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 
 /**
-* Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
-*
-* @author Daniel Dengler
-*
-*/
+ * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
+ *
+ * @author Daniel Dengler
+ *
+ */
 
-public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface> {
-        private static final long serialVersionUID = 1L;
-
-        
-        @Autowired
-        EventBus eventBus;
+public class DirektPresenter extends Presenter<DirektViewInterface> {
+	private static final long serialVersionUID = 1L;
 
 
-        /**
-         * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-         * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-         * einen EventHandler.
-         *
-         * @author Daniel Dengler
-         */
-
-        @PostConstruct
-        public void init() {
-                eventBus.addHandler(this);
-                shownProperties = new String[] { "freeCashFlow", "capitalStock" };
-                germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
-        }
+	@Autowired
+	EventBus eventBus;
 
 
-        /**
-         * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
-         * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
-         * <p>
-         * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
-         * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
-         * Eingabefelder zur verfuegung gestellt.
-         * <p>
-         * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
-         * der anzuzeigenden Felder.
-         *
-         * @param event
-         */
-        @EventHandler
-        public void onShowEvent(ShowDirektViewEvent event) {
-                processEvent(event);
+	/**
+	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
+	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
+	 * einen EventHandler.
+	 *
+	 * @author Daniel Dengler
+	 */
 
-        }
-        }
-        
+	@PostConstruct
+	public void init() {
+		eventBus.addHandler(this);
+		//                shownProperties = new String[] { "freeCashFlow", "capitalStock" };
+		//                germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
+	}
 
-        
+
+	/**
+	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
+	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
+	 * <p>
+	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
+	 * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
+	 * Eingabefelder zur verfuegung gestellt.
+	 * <p>
+	 * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
+	 * der anzuzeigenden Felder.
+	 *
+	 * @param event
+	 */
+	@EventHandler
+	public void onShowEvent(ShowDirektViewEvent event) {
+		//                processEvent(event);
+		getView().generateTable();
+	}
+}
+
+
+
 
 

@@ -26,9 +26,14 @@
 package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren;
         
 
+import com.mvplite.view.View;
+
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
-public interface GesamtkostenVerfahrenViewInterface extends InputViewInterface {
+public interface GesamtkostenVerfahrenViewInterface extends View {
+
+	void setProject(Project project);
 
 }
 
