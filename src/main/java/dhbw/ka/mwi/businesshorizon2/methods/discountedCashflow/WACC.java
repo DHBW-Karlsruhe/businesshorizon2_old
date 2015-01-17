@@ -20,6 +20,10 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
  */
 public class WACC extends AbstractDeterministicMethod {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger("WACC.class");
 	private double unternehmenswert;
 	private double fremdkapital;
@@ -32,7 +36,7 @@ public class WACC extends AbstractDeterministicMethod {
 	// ToDo anderen Rückgabewert angeben
 	@Override
 	public int getOrderKey() {
-		return 6;
+		return 5;
 	}
 
 	@Override
@@ -107,7 +111,7 @@ public class WACC extends AbstractDeterministicMethod {
 	 * @param double[] cashflow
 	 * @param double[] fremdkapital,
 	 * @param Szenario szenario
-	 * @return double[] unternehmenswert
+	 * @return double unternehmenswert
 	 */
 	public double calculateValues(double[] cashflow, double[] fremdkapital,	Szenario szenario) {
 
@@ -118,7 +122,7 @@ public class WACC extends AbstractDeterministicMethod {
 		double fremdkapitalIndexT = fremdkapital[fremdkapital.length-2];
 		double gesamtkapitalIndextPlusEins;
 		double[] eigenkapitalwerte = new double[cashflow.length];
-		int indexT = eigenkapitalwerte.length-1;
+		int indexT = eigenkapitalwerte.length-2;
 		
 		eigenkapitalwerte[indexT] = berechneEkVorletztePeriode(cashflow[indexT+1], eigenkapitalRenditeUnverschuldet, steuersatz, fremdkapitalIndexT);
 		eigenkapitalwerte[indexT+1] = eigenkapitalwerte[indexT];
