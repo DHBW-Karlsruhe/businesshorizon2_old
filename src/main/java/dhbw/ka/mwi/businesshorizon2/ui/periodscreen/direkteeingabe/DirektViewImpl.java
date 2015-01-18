@@ -31,6 +31,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -119,6 +122,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		inputTable.addContainerProperty("", String.class, null);
 		for(int i = 0; i < pastPeriods; i++){
 			inputTable.addContainerProperty(currYear, TextField.class, null);
+			inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 			currYear++;
 		}
 		inputTable.addContainerProperty(baseYear, TextField.class, null);
@@ -131,8 +135,22 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		Item row2 = inputTable.getItem(itemId);
 		row2.getItemProperty("").setValue("Bilanzwert Fremdkapital");
 		for(int i = 0; i < (pastPeriods + 1); i++){
-			row1.getItemProperty(currYear).setValue(new TextField());
-			row2.getItemProperty(currYear).setValue(new TextField());
+			TextField field1 = new TextField();
+			field1.setWidth(50, UNITS_PIXELS);
+			field1.setImmediate(true);
+			field1.addListener(new Property.ValueChangeListener(){
+
+				@Override
+				public void valueChange(ValueChangeEvent event) {
+					presenter.setInputValues(event.getProperty().getValue());
+					
+				}
+				
+			});
+			TextField field2 = new TextField();
+			field2.setWidth(50, UNITS_PIXELS);
+			row1.getItemProperty(currYear).setValue(field1);
+			row2.getItemProperty(currYear).setValue(field2);
 			currYear++;
 		}
 	}

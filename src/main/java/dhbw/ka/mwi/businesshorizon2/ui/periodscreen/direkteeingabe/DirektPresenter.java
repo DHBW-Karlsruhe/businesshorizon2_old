@@ -34,6 +34,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 
@@ -49,7 +50,10 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 
 
 	@Autowired
-	EventBus eventBus;
+	private EventBus eventBus;
+	
+	@Autowired
+	private ProjectProxy projectProxy;
 
 
 	/**
@@ -85,6 +89,12 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 	public void onShowEvent(ShowDirektViewEvent event) {
 		//                processEvent(event);
 		getView().generateTable();
+	}
+
+
+	public void setInputValues(Object value) {
+		projectProxy.getSelectedProject();
+		
 	}
 }
 
