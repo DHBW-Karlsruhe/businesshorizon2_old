@@ -38,6 +38,8 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -153,28 +155,30 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Standardszenario an und baut den Screen danach komplett neu auf.
 	 */
 	@EventHandler
-	public void handleShowView(ShowScenarioViewEvent event) {
-		List<Szenario> scenarios = this.projectProxy.getSelectedProject()
-				.getScenarios();
-		if (scenarios.size() < 1) {
-			scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
+	public void handleShowView(ShowProcessStepEvent event) {
+		if (event.getScreen().equals(screen.SCENARIOS)) {
+			List<Szenario> scenarios = this.projectProxy.getSelectedProject()
+					.getScenarios();
+			if (scenarios.size() < 1) {
+				scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
+			}
+	
+			getView().clear();
+	
+			int numberOfScenario = 1;
+			for (Szenario scenario : scenarios) {
+				getView().addScenario(
+						Double.toString(scenario.getRateReturnEquity()),
+						Double.toString(scenario.getRateReturnCapitalStock()),
+						Double.toString(scenario.getCorporateAndSolitaryTax()),
+						Double.toString(scenario.getBusinessTax()),
+						scenario.isIncludeInCalculation(), numberOfScenario);
+				numberOfScenario++;
+			}
 		}
-
-		getView().clear();
-
-		int numberOfScenario = 1;
-		for (Szenario scenario : scenarios) {
-			getView().addScenario(
-					Double.toString(scenario.getRateReturnEquity()),
-					Double.toString(scenario.getRateReturnCapitalStock()),
-					Double.toString(scenario.getCorporateAndSolitaryTax()),
-					Double.toString(scenario.getBusinessTax()),
-					scenario.isIncludeInCalculation(), numberOfScenario);
-			numberOfScenario++;
-		}
-
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO,
-				true));
+		
+//		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO,
+//				true));
 	}
 
 	/**
