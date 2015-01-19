@@ -145,6 +145,7 @@ ButtonsMiddleViewInterface {
 
 		button3.changeStyleClass("buttonBottom");
 		button3.changeDirection();
+		button3.setVisible(true);
 		addComponent(button3);
 
 	}
@@ -325,7 +326,7 @@ ButtonsMiddleViewInterface {
 	 * @author Tobias Lindner
 	 */
 	public void setResultButton() {
-		this.button1.setDetails("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Ergebnis", new LayoutClickListener () {
+		this.button1.setDetails("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png", "Ergebnis", new LayoutClickListener () {
 
 			private static final long serialVersionUID = 1L;
 
@@ -340,6 +341,10 @@ ButtonsMiddleViewInterface {
 		this.button2.setVisible(false);
 
 		logger.debug ("View: setResultButton");
+	}
+	
+	public void hideStepButtton(){
+		button3.setVisible(false);
 	}
 
 	public void setGoToStep(int step){
@@ -362,6 +367,7 @@ ButtonsMiddleViewInterface {
 			lcl = null;
 			break;
 		}
+		button3.setVisible(true);
 		button3.setDetails("Weiter zu Schritt "+step, lcl);
 	}
 

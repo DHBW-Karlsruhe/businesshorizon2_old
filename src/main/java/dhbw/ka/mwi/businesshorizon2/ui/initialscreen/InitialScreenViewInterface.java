@@ -81,4 +81,8 @@ public interface InitialScreenViewInterface extends View {
 	
 	public void clearUnusedButtons(int count);
 	
+	public void setProgress(String resource);
+	
+	public void clearProgressBar();
+	
 }
