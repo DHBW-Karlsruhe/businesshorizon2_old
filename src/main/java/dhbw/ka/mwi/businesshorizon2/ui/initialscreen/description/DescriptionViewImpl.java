@@ -64,13 +64,37 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 	
 	private Label infoText0;
 	private Label infoText1;
-	private Label infoText2;
-	private Label infoText3;
-	private Label infoText4;
-	private Label infoText5;
 	
-	private Embedded icon1;
-	private Embedded icon2;
+	private Label headline0;
+	private Label headline1;
+	private Label stochasticHeadline;
+	private Label stochasticText;
+	private Label deterministicHeadline;
+	private Label deterministicText;
+	private Label fcfHeadline;
+	private Label fcfText;
+	private Label ukvHeadline;
+	private Label ukvText;
+	private Label gkvHeadline;
+	private Label gkvText;
+	private Label apvHeadline;
+	private Label apvText;
+	private Label fteHeadline;
+	private Label fteText;
+	private Label waccHeadline;
+	private Label waccText;
+	
+	private Label scenarioHeadline;
+	private Label scenarioText;
+	
+	private Embedded iconStochastic;
+	private Embedded iconDeterministic;
+	private Embedded iconFCF;
+	private Embedded iconGKV;
+	private Embedded iconUKV;
+	private Embedded iconAPV;
+	private Embedded iconFTE;
+	private Embedded iconWACC;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -92,12 +116,14 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 	 * @author Tobias Lindner
 	 */
 	private void generateUI() {
+		initializeTextsHeadlinesAndIcons();
 		setWidth(95, UNITS_PERCENTAGE);
 		setStyleName("projectDetailsLayout");
 		info = new Label ("setTexts nicht ausgeführt");
 		addComponent(info);
 
 	}
+	
 	
 	/**
 	 * Diese Methode wird vom Presenter aufgerufen und ändert die Anzeige Texte.
@@ -111,195 +137,368 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		switch (e) {
 		case METHODSELECTION:
 			removeAllComponents();
-			infoText0 = new Label ("<h2>Prognosemethode</h2>");
-			infoText0.setContentMode(Label.CONTENT_XHTML);
-			infoText1 = new Label ("<h2>Methode zur Parametereingabe</h2>");
-			infoText1.setContentMode(Label.CONTENT_XHTML);
 			
-			gl = new GridLayout(2,4);
-			gl.setSizeFull();
-			gl.setColumnExpandRatio(1, 1.0f);
+			addComponent(getPrognoseMethodenInfos());
+			Label gap = new Label ();
+			gap.setHeight(10, UNITS_PIXELS);
+			addComponent(gap);
+			addComponent(getEingabeMethodeInfo());
+			Label gap2 = new Label();
+			gap2.setHeight(10, UNITS_PIXELS);
+			addComponent(getBerechnungsMethodeInfo());
 			
-			//Absatz 1
-			icon1 = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-			icon1.setWidth(30, UNITS_PIXELS);
-			icon1.addListener(new ClickListener() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void click(ClickEvent event) {
-					if (infoText3.isVisible()) {
-						infoText3.setVisible(false);
-						icon1.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
-					}
-					else {
-						infoText3.setVisible(true);
-						icon1.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-					}
-				}
-			});
-			
-			setMargin(true);
-			infoText2 = new Label ("<h3>Stochastische Eingabe</h3>");
-			infoText2.setContentMode(Label.CONTENT_XHTML);
-			infoText2.addStyleName("descriptionHeadline");
-			infoText3 = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der vergangenen Jahre zur berechnen. "
-					+ "Dabei werden die Werte der vergangenen Jahre von Ihnen angegeben und die Cashflows für die nächsten Jahre mit dem AR(p) Verfahren berechnet.");
-			infoText3.addStyleName("wrap");
-			infoText3.addStyleName("descriptionText");
-			
-			gl.addComponent(icon1, 0, 0);
-			gl.setComponentAlignment(icon1, Alignment.MIDDLE_CENTER);
-			gl.addComponent(infoText2, 1, 0);
-			gl.addComponent(infoText3, 1,1);
-			
-			//Absatz 2
-			icon2 = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-			icon2.setWidth(30, UNITS_PIXELS);
-			icon2.addListener(new ClickListener() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void click(ClickEvent event) {
-					if (infoText5.isVisible()) {
-						infoText5.setVisible(false);
-						icon2.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
-					}
-					else {
-						infoText5.setVisible(true);
-						icon2.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-					}
-				}
-			});
-			infoText4 = new Label  ("<h3>Deterministische Eingabe</h3>");
-			infoText4.setContentMode(Label.CONTENT_XHTML);
-			infoText4.addStyleName("descriptionHeadline");
-			infoText5 = new Label ("Bei der deterministischen Berechnung werden die von Ihnen angegebenen Cashflows der nächsten Perioden verwendet.");
-			infoText5.addStyleName("wrap");
-			infoText5.addStyleName("descriptionText");
-			
-			gl.addComponent(icon2,0, 2);
-			gl.setComponentAlignment(icon2, Alignment.MIDDLE_CENTER);
-			gl.addComponent(infoText4, 1,2);
-			gl.addComponent(infoText5, 1, 3);
-			
-			addComponent(infoText0);
-			addComponent(infoText1);
-			addComponent(gl);
 			break;
 			
 		case PARAMETER:
 			removeAllComponents();
-			infoText0 = new Label ("<h2>Prognosemethode</h2>");
-			infoText0.setContentMode(Label.CONTENT_XHTML);
-			infoText1 = new Label ("<h2>Methode zur Parametereingabe</h2>");
-			infoText1.setContentMode(Label.CONTENT_XHTML);
-			
-			gl = new GridLayout(2,4);
-			gl.setSizeFull();
-			gl.setColumnExpandRatio(1, 1.0f);
-			
-			//Absatz 1
-			icon1 = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-			icon1.setWidth(30, UNITS_PIXELS);
-			icon1.addListener(new ClickListener() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void click(ClickEvent event) {
-					if (infoText3.isVisible()) {
-						infoText3.setVisible(false);
-						icon1.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
-					}
-					else {
-						infoText3.setVisible(true);
-						icon1.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-					}
-				}
-			});
-			
-			setMargin(true);
-			infoText2 = new Label ("<h3>Stochastische Eingabe</h3>");
-			infoText2.setContentMode(Label.CONTENT_XHTML);
-			infoText2.addStyleName("descriptionHeadline");
-			infoText3 = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der vergangenen Jahre zur berechnen. "
-					+ "Dabei werden die Werte der vergangenen Jahre von Ihnen angegeben und die Cashflows für die nächsten Jahre mit dem AR(p) Verfahren berechnet.");
-			infoText3.addStyleName("wrap");
-			infoText3.addStyleName("descriptionText");
-			
-			gl.addComponent(icon1, 0, 0);
-			gl.setComponentAlignment(icon1, Alignment.MIDDLE_CENTER);
-			gl.addComponent(infoText2, 1, 0);
-			gl.addComponent(infoText3, 1,1);
-			
-			//Absatz 2
-			icon2 = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-			icon2.setWidth(30, UNITS_PIXELS);
-			icon2.addListener(new ClickListener() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void click(ClickEvent event) {
-					if (infoText5.isVisible()) {
-						infoText5.setVisible(false);
-						icon2.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
-					}
-					else {
-						infoText5.setVisible(true);
-						icon2.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
-					}
-				}
-			});
-			infoText4 = new Label  ("<h3>Deterministische Eingabe</h3>");
-			infoText4.setContentMode(Label.CONTENT_XHTML);
-			infoText4.addStyleName("descriptionHeadline");
-			infoText5 = new Label ("Bei der deterministischen Berechnung werden die von Ihnen angegebenen Cashflows der nächsten Perioden verwendet.");
-			infoText5.addStyleName("wrap");
-			infoText5.addStyleName("descriptionText");
-			
-			gl.addComponent(icon2,0, 2);
-			gl.setComponentAlignment(icon2, Alignment.MIDDLE_CENTER);
-			gl.addComponent(infoText4, 1,2);
-			gl.addComponent(infoText5, 1, 3);
-			
-			addComponent(infoText0);
-			addComponent(infoText1);
-			addComponent(gl);
-			
+			addComponent(getPrognoseMethodenInfos());	
 			break;
 			
 		case PERIODS:
 			removeAllComponents();
-			info = new Label ("Für diesen Schritt ist noch keine Beschreibung hinterlegt.");
-			info.setContentMode(Label.CONTENT_XHTML);
-			addComponent(info);
-			
+			addComponent(getEingabeMethodeInfo());
 			break;
 			
 		case SCENARIOS:
 			removeAllComponents();
-			info = new Label ("Sie können verschiedene Szenarien für die Berechnung erstellen. Über die Checkbox „Berechnung einbeziehen“, können Sie selbst festlegen, für welche Szenarien eine Berechnung durchgeführt werden soll. "
-				+ " Über den Button 'Weiteres Szenario' kann man beliebig viele weitere Szenarien anlegen. Für jedes Szenario können Sie unterschiedliche Berechnungswerte für die Eigen- und Fremdkapitalrendite, sowie die einzelnen Steuersätze angeben. "
-				+ " Info: Bei dem Flow-to-Equity Verfahren beschränken sich die geforderten Werte auf die Eigenkapitalkosten."
-				+ " Sie müssen mindestens ein Szenario in die Berechnung einbeziehen. Des Weiteren können Sie jedes Szenario über den 'Szenario entfernen'-Button löschen. Dabei muss jedoch mindestens ein Szenario angelegt bleiben. "
-				+ "Über den Button 'Nächster Schritt' können Sie die Berechnung starten.");
-			info.setContentMode(Label.CONTENT_XHTML);
-			addComponent(info);
-			
-			break;
-			
-		case RESULT:
-			removeAllComponents();
-			info = new Label ("Für diesen Schritt ist noch keine Beschreibung hinterlegt.");
-			info.setContentMode(Label.CONTENT_XHTML);
-			addComponent(info);
-			
+			addComponent(scenarioHeadline);
+			addComponent(scenarioText);
 			break;
 			
 		default:
+			logger.debug("keine Case-Übereinstimmung in setTexts");
 			break;
 			
 		}
 	}
+	
+	private VerticalLayout getPrognoseMethodenInfos () {
+		VerticalLayout vl = new VerticalLayout();
+		infoText0 = new Label ("<h1>Prognosemethode</h1>");
+		infoText0.setContentMode(Label.CONTENT_XHTML);
+		infoText1 = new Label ("<h2>Methode zur Parametereingabe</h2>");
+		infoText1.setContentMode(Label.CONTENT_XHTML);
+		
+		gl = new GridLayout(2,4);
+		gl.setSizeFull();
+		gl.setColumnExpandRatio(1, 1.0f);
+					
+		gl.addComponent(iconStochastic, 0, 0);
+		gl.setComponentAlignment(iconStochastic, Alignment.MIDDLE_CENTER);
+		gl.addComponent(stochasticHeadline, 1, 0);
+		gl.addComponent(stochasticText, 1,1);
+					
+		gl.addComponent(iconDeterministic,0, 2);
+		gl.setComponentAlignment(iconDeterministic, Alignment.MIDDLE_CENTER);
+		gl.addComponent(deterministicHeadline, 1,2);
+		gl.addComponent(deterministicText, 1, 3);
+		
+		vl.addComponent(infoText0);
+		vl.addComponent(infoText1);
+		vl.addComponent(gl);
+		
+		return vl;
+	}
+	
+	private VerticalLayout getEingabeMethodeInfo () {
+		VerticalLayout vl = new VerticalLayout();
+		headline0 = new Label ("<h1>Eingabemethode</h1>");
+		headline0.setContentMode(Label.CONTENT_XHTML);
+		headline1 = new Label ("<h2>Methode zur Berechnung des Unternehmenswertes</h2>");
+		headline1.setContentMode(Label.CONTENT_XHTML);
+		
+		gl = new GridLayout (2,6);
+		gl.setSizeFull();
+		gl.setColumnExpandRatio(1,  1.0f);
+		
+		gl.addComponent(iconFCF, 0, 0);
+		gl.setComponentAlignment(iconFCF, Alignment.MIDDLE_CENTER);
+		gl.addComponent(fcfHeadline, 1, 0);
+		gl.addComponent(fcfText, 1, 1);
+		
+		gl.addComponent(iconUKV, 0, 2);
+		gl.setComponentAlignment(iconUKV, Alignment.MIDDLE_CENTER);
+		gl.addComponent(ukvHeadline, 1, 2);
+		gl.addComponent(ukvText, 1, 3);
+		
+		gl.addComponent(iconGKV, 0 , 4);
+		gl.setComponentAlignment(iconGKV, Alignment.MIDDLE_CENTER);
+		gl.addComponent(gkvHeadline, 1, 4);
+		gl.addComponent(gkvText, 1, 5);
+		
+		vl.addComponent(headline0);
+		vl.addComponent(headline1);
+		vl.addComponent(gl);
+		
+		return vl;
+	}
+	
+	private VerticalLayout getBerechnungsMethodeInfo () {
+		VerticalLayout vl = new VerticalLayout();
+		headline0 = new Label ("<h1>Berechnungsmethoden</h1>");
+		headline0.setContentMode(Label.CONTENT_XHTML);
+		headline1 = new Label ("<h2>Methode zur Prognoseerstellung</h2>");
+		headline1.setContentMode(Label.CONTENT_XHTML);
+		
+		gl = new GridLayout (2,6);
+		gl.setSizeFull();
+		gl.setColumnExpandRatio(1,  1.0f);
+		
+		gl.addComponent(iconAPV, 0, 0);
+		gl.setComponentAlignment(iconAPV, Alignment.MIDDLE_CENTER);
+		gl.addComponent(apvHeadline, 1, 0);
+		gl.addComponent(apvText, 1, 1);
+		
+		gl.addComponent(iconFTE, 0, 2);
+		gl.setComponentAlignment(iconFTE, Alignment.MIDDLE_CENTER);
+		gl.addComponent(fteHeadline, 1, 2);
+		gl.addComponent(fteText, 1, 3);
+		
+		gl.addComponent(iconWACC, 0 , 4);
+		gl.setComponentAlignment(iconWACC, Alignment.MIDDLE_CENTER);
+		gl.addComponent(waccHeadline, 1, 4);
+		gl.addComponent(waccText, 1, 5);
+		
+		vl.addComponent(headline0);
+		vl.addComponent(headline1);
+		vl.addComponent(gl);
+		
+		return vl;
+	}
+
+
+	/**
+	 * Die Methode initialisiert alle benötigten Labels, und Icons.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	private void initializeTextsHeadlinesAndIcons () {
+		int anzPixelIcon = 27;
+
+		//Stochastische Eingabe Beschreibung
+		stochasticHeadline = new Label ("<h3>Stochastische Eingabe</h3>");
+		stochasticHeadline.setContentMode(Label.CONTENT_XHTML);
+		stochasticHeadline.addStyleName("descriptionHeadline");
+		stochasticText = new Label ("Diese Methode hat zum Ziel den zukünftigen Cashflow auf Basis der Werte aus vergangenen Methoden zu berechnen. "
+				+ "Dabei werden die Werte der vergangenen Methoden von Ihnen angegeben und die potenziellen Cashflows für die nächsten Jahre mit dem AR(p) Modell berechnet.");
+		stochasticText.addStyleName("wrap");
+		stochasticText.addStyleName("descriptionText");
+		iconStochastic = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconStochastic.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconStochastic.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (stochasticText.isVisible()) {
+					stochasticText.setVisible(false);
+					iconStochastic.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					stochasticText.setVisible(true);
+					iconStochastic.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+		
+		//Deterministische Eingabe Beschreibung
+		deterministicHeadline = new Label  ("<h3>Deterministische Eingabe</h3>");
+		deterministicHeadline.setContentMode(Label.CONTENT_XHTML);
+		deterministicHeadline.addStyleName("descriptionHeadline");
+		deterministicText = new Label ("Bei der deterministischen Berechnung werden die von Ihnen geschätzten Cashflows der nächsten Perioden angegeben.");
+		deterministicText.addStyleName("wrap");
+		deterministicText.addStyleName("descriptionText");
+		iconDeterministic = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconDeterministic.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconDeterministic.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (deterministicText.isVisible()) {
+					deterministicText.setVisible(false);
+					iconDeterministic.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					deterministicText.setVisible(true);
+					iconDeterministic.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+
+		//FCF Beschreibung
+		fcfHeadline = new Label ("<h3>FCF</h3>");
+		fcfHeadline.setContentMode(Label.CONTENT_XHTML);
+		fcfHeadline.addStyleName ("descriptionHeadline");
+		fcfText = new Label ("Beim FCF Verfahren wird der freie Cash Flow aus dem operativen Cash-Flow abzüglich des Saldos aus Investitionstätigkeiten errechnet.");
+		fcfText.addStyleName("wrap");
+		fcfText.addStyleName("descriptionText");
+		iconFCF = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconFCF.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconFCF.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (fcfText.isVisible()) {
+					fcfText.setVisible(false);
+					iconFCF.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					fcfText.setVisible(true);
+					iconFCF.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+		//UKV Beschreibung
+		ukvHeadline = new Label ("<h3>UKV</h3>");
+		ukvHeadline.setContentMode (Label.CONTENT_XHTML);
+		ukvHeadline.addStyleName ("descriptionHeadline");
+		ukvText = new Label ("Beim Umsatz-Kosten-Verfahren wird der Cashflow aus Werten aus GuV und Bilanz berechnet. Die dafür notwendigen Posten sind: "
+				+ "Umsatzerlöse, Herstellkosten des Umsatzes, Kosten F&E, Verwaltungskosten, Sonstiger Aufwand, Ertrag, Erträge aus Wertpapieren, Zinsen und ähnliche Aufwendungen, Außerordentliche Erträge & Aufwendungen, Abschreibungen, Pensionsrückstellungen");
+		ukvText.addStyleName ("wrap");
+		ukvText.addStyleName ("descriptionText");
+		iconUKV = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconUKV.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconUKV.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (ukvText.isVisible()) {
+					ukvText.setVisible(false);
+					iconUKV.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					ukvText.setVisible(true);
+					iconUKV.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+		//GKV Beschreibung
+		gkvHeadline = new Label ("<h3>GKV</h3>");
+		gkvHeadline.setContentMode(Label.CONTENT_XHTML);
+		gkvHeadline.setStyleName("descriptionHeadline");
+		gkvText = new Label ("Beim Gesamt-Kosten-Verfahren wird der Cashflow aus Werten aus GuV und Bilanz berechnet. Die dafür notwendigen Posten sind: "
+				+ "Umsatzerlöse, Erhöhung des Bestandes an fertigen Erzeugnissen, Verminderung des Bestandes an fertigen Erzeugnissen, Materialaufwand, Personalaufwand mit Löhne/Gehälter, "
+				+ "Einstellungs-/Entlassungskosten, Pensionsrückstellungen, Sonstige Personalkosten, Abschreibungen, Sonstiger Aufwand, Ertrag, Erträge aus Wertpapieren, Zinsen und ähnliche Aufwendungen, "
+				+ "Außerordentliche Erträge, Außerordentliche Aufwendungen, Ertragssteuern, Abschreibungen, Pensionsrückstellungen");
+		gkvText.addStyleName("wrap");
+		gkvText.addStyleName("descriptionText");
+		iconGKV = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconGKV.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconGKV.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (gkvText.isVisible()) {
+					gkvText.setVisible(false);
+					iconGKV.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					gkvText.setVisible(true);
+					iconGKV.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+
+		//APV Beschreibung
+		apvHeadline = new Label ("<h3>APV</h3>");
+		apvHeadline.setContentMode(Label.CONTENT_XHTML);
+		apvHeadline.setStyleName("descriptionHeadline");	
+		apvText = new Label ("Nach dieser Methode berechnet sich der Unternehmenswert aus dem Wert des rein eigenfinanzierten Unternehmens "
+				+ "zuzüglich der Steuervorteile durch das verzinsliche Fremdkapital, abzüglich des verzinslichen Fremdkapitals.");
+		apvText.addStyleName("wrap");
+		apvText.addStyleName("descriptionText");
+		iconAPV = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconAPV.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconAPV.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (apvText.isVisible()) {
+					apvText.setVisible(false);
+					iconAPV.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					apvText.setVisible(true);
+					iconAPV.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+		//FTE Beschreibung
+		fteHeadline = new Label ("<h3>FTE</h3>");
+		fteHeadline.setContentMode(Label.CONTENT_XHTML);
+		fteHeadline.addStyleName("descriptionHeadline");
+		fteText = new Label("Die Flow-to-Equity Methode diskontiert alle zukünftigen Cashflows auf einen Stichtag und addiert den diskontierten Restwert. "
+				+ "Folglich betrachtet dieses Verfahren für die Berechnung des Unternehmenswertes ausschließlich das Eigenkapital.");
+		fteText.addStyleName("wrap");
+		fteText.addStyleName("descriptionText");
+		iconFTE = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconFTE.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconFTE.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (fteText.isVisible()) {
+					fteText.setVisible(false);
+					iconFTE.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					fteText.setVisible(true);
+					iconFTE.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+		//WACC Beschreibung
+		waccHeadline = new Label ("<h3>WACC</h3>");
+		waccHeadline.setContentMode(Label.CONTENT_XHTML);
+		waccHeadline.setStyleName("descriptionHeadline");		
+		waccText = new Label ("WACC sind gewichtete Kapitalkosten. Sie werden durch das gewichtete Mittel der Eigen- und Fremdkapitalkosten berechnet, "
+				+ "wobei die Fremdkapitalkosten um den Steuervorteil zu reduzieren sind: Mit Hilfe der nach WACC berechneten Kapitalkosten lässt sich der Unternehmenswert durch das Free-Cash-Flow-Verfahren (FCF) ermitteln. "
+				+ "Dabei wird der Marktwert des Fremdkapitals von den diskontierten FCF-Werten subtrahiert.");
+		waccText.addStyleName("wrap");
+		waccText.addStyleName("descriptionText");
+		iconWACC = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+		iconWACC.setWidth(anzPixelIcon, UNITS_PIXELS);
+		iconWACC.addListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(ClickEvent event) {
+				if (waccText.isVisible()) {
+					waccText.setVisible(false);
+					iconWACC.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128.png"));
+				}
+				else {
+					waccText.setVisible(true);
+					iconWACC.setSource(new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
+				}
+			}
+		});
+
+
+		//Szenario Beschreibung
+		scenarioHeadline = new Label ("<h1>Szenarien</h1>");
+		scenarioHeadline.setContentMode(Label.CONTENT_XHTML);
+		scenarioHeadline.setStyleName("descriptionHeadline");
+		
+		scenarioText = new Label ("Für jedes Szenario können Sie unterschiedliche Berechnungswerte für die Eigen- und Fremdkapitalrendite, sowie die einzelnen Steuersätze angeben. "
+				+ "Bei dem Flow-to-Equity Verfahren beschränken sich die geforderten Werte auf die Eigenkapitalkosten. Sie müssen mindestens ein Szenario in die Berechnung einbeziehen.");
+		scenarioText.addStyleName("wrap");
+		scenarioText.addStyleName("descriptionText");
+	
+		
+	}
+
 	
 }

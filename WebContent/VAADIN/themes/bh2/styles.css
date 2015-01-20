@@ -566,10 +566,12 @@ textarea.projectNameInput{
 
 .descriptionText {
 	font-size: 12pt;
+	margin-left: 5px;
 }
 
 .descriptionHeadline {
 	font-size: 13pt;
+	margin-left: 5px;
 }
 
 .periodHeaderLabel {
