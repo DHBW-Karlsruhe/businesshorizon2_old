@@ -344,7 +344,7 @@ ButtonsMiddleViewInterface {
 		logger.debug ("View: setResultButton");
 	}
 	
-	public void hideStepButtton(){
+	public void hideStepButton(){
 		button3.setVisible(false);
 	}
 

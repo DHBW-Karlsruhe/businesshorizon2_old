@@ -78,6 +78,8 @@ public interface ButtonsMiddleViewInterface extends View {
 	 * @author Tobias Lindner
 	 */
 	public void setResultButton();
+	
+	public void hideStepButton();
 
 }
 

@@ -25,6 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
+import com.mvplite.view.View;
 import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
@@ -32,10 +33,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
-public interface ResultScreenViewInterface extends ContentView {
+public interface ResultScreenViewInterface extends View {
 
 
-	void showOutputView();
+	public void showOutputView();
 
 	/**
 	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des stochastischen
@@ -44,7 +45,7 @@ public interface ResultScreenViewInterface extends ContentView {
 	 * @param chartArea
 	 *            Eine ChartArea mit stochastischen Ergebnissen
 	 */
-	void addStochasticChartArea(StochasticChartArea chartArea, int number);
+	public void addStochasticChartArea(StochasticChartArea chartArea, int number);
 
 	/**
 	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des
@@ -54,19 +55,21 @@ public interface ResultScreenViewInterface extends ContentView {
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
 
-	void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
+	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
 	
-	void addHeadline(Label head);
+	public void addHeadline(Label head);
 	
-	void addSubline(Label head);
+	public void addSubline(Label head);
 	
-	void addSubline(Label head, Label abw);
+	public void addSubline(Label head, Label abw);
 	
-	void addLabel(Label label);
+	public void addLabel(Label label);
 	
-	void showErrorMessge(String message);
+	public void showErrorMessge(String message);
 
-	void changeProgress(float progress);
+	public void changeProgress(float progress);
+
+	public void createLayout();
 
 
 

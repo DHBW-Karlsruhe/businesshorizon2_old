@@ -323,11 +323,12 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			break;
 
 		case RESULT:
+			buttonsMiddleView.hideStepButton();
 			getView().showView(buttonsMiddleView, resultScreenView);
 			getView().setPageDescription("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png", "Schritt 5", "Ergebnisausgabe");
 			getView().setProgress("./images/progressBar/progress_5.png");
 			setScreen5Buttons();
-//			eventBus.fireEvent(new ShowOutputViewEvent());
+			eventBus.fireEvent(new ShowOutputViewEvent());
 
 			break;
 

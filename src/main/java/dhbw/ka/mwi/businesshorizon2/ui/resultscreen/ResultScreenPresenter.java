@@ -105,233 +105,239 @@ public class ResultScreenPresenter extends ScreenPresenter<ResultScreenViewInter
 		eventBus.addHandler(this);
 	}
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
+//	@EventHandler
+//	public void onShowOutputView(ShowOutputViewEvent event) {
+//
+//		getView().showOutputView();
+//
+//		project = projectProxy.getSelectedProject();
+//
+//		if (project.getProjectInputType().isDeterministic()) {
+//			TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
+//			AbstractPeriodContainer apc = project.getDeterministicPeriods();
+//			periodContainer.add(apc);
+//			DeterministicResultContainer drContainer = new DeterministicResultContainer(
+//					periodContainer);
+//
+//			// Annika Weis
+//			for (AbstractDeterministicMethod method_deterministic : project
+//					.getMethods_deterministic()) {
+//				// alle Szenarios durchlaufen
+//				int counter = 0;
+//				for (Szenario scenario : project.getIncludedScenarios()) {
+//					onProgressChange((float) 0.5);
+//
+//					counter++;
+//
+//					// Cashflows berechnen falls notwendig
+//					for (AbstractPeriodContainer container : drContainer
+//							.getPeriodContainers()) {
+//						if (container instanceof CashFlowPeriodContainer) {
+//							logger.debug("Cashflows wurden direkt eingegeben");
+//						} else if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
+//							logger.debug("Cashflows werden nach GKV berechnet");
+//							CashFlowCalculator.calculateCashflows(drContainer,
+//									scenario);
+//						} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
+//							logger.debug("Cashflows werden nach UKV berechnet");
+//							CashFlowCalculator.calculateCashflows(drContainer,
+//									scenario);
+//						}
+//					}
+//
+//					if (method_deterministic.getSelected()) {
+//						double unternehmenswert = 0;
+//						double[] cashflow;
+//						double[] fremdkapital;
+//						int i;
+//						Period period;
+//
+//						// für jedenPeriod-Container, der im
+//						// Deterministic-Result-Container enthalten ist,
+//						// wird die Schleife je einmal durchlaufen
+//						// dadurch werden zuerst die Cashflow und Fremdkapital
+//						// Arrays befüllt
+//						for (AbstractPeriodContainer abstractPeriodContainer : drContainer
+//								.getPeriodContainers()) {
+//							// holt pro Cashflow-Period-Container die
+//							// enthaltenen Perioden
+//							// und legt sie in einem TreeSet ab
+//							TreeSet<? extends Period> periods = abstractPeriodContainer
+//									.getPeriods();
+//							// ein Iterator zum durchlaufen des TreeSet wird
+//							// erstellt.
+//							Iterator<? extends Period> periodenIterator = periods
+//									.iterator();
+//							// Zähler, Cashflow- und Fremdkapital-Arrays werden
+//							// zurückgesetzt
+//							cashflow = new double[periods.size()];
+//							fremdkapital = new double[periods.size()];
+//							i = 0;
+//							// pro Periode sollen nun die Werte ausgelesen und
+//							// ein
+//							// Unternehmenswert berechnet werden
+//							while (periodenIterator.hasNext()) {
+//								period = periodenIterator.next();
+//								cashflow[i] = period.getFreeCashFlow();
+//								fremdkapital[i] = period.getCapitalStock();
+//								i++;
+//							}
+//
+//							if (method_deterministic.getName() == "Adjusted-Present-Value (APV)") {
+//								double steuervorteile = 0;
+//								double fremdkapitalout = 0;
+//								double uwsteuerfrei = 0;
+//
+//								APV apv_2 = new APV();
+//								// berechnet den Unternehmenswert des
+//								// betrachteten
+//								// Period-Container
+//								unternehmenswert = apv_2.calculateValues(
+//										cashflow, fremdkapital, scenario);
+//								uwsteuerfrei = apv_2.getUwsteuerfrei();
+//								steuervorteile = apv_2.getSteuervorteile();
+//								fremdkapitalout = apv_2.getFremdkapital();
+//
+//								DeterministicChartArea deterministicarea = new DeterministicChartArea(
+//										uwsteuerfrei, steuervorteile,
+//										unternehmenswert, fremdkapitalout,
+//										method_deterministic.getName(),
+//										drContainer, scenario);
+//
+//								getView().addDeterministicChartArea(
+//										deterministicarea, counter);
+//
+//								/*
+//								 * Alte Implementierung
+//								 * 
+//								 * 
+//								 * CompanyValueDeterministic
+//								 * companyValueDeterministic =
+//								 * (CompanyValueDeterministic) apv
+//								 * .calculateCompanyValue(); for (Entry<Integer,
+//								 * Couple> companyValue :
+//								 * companyValueDeterministic.getCompanyValues
+//								 * ().entrySet()) { DeterministicChartArea
+//								 * deterministicChartArea = new
+//								 * DeterministicChartArea
+//								 * (companyValue.getValue()
+//								 * .getDebitFreeCompany(),
+//								 * companyValue.getValue().getTaxBenefits(),
+//								 * companyValue.getValue() .getCompanyValue(),
+//								 * companyValue.getValue().getCapitalStock());
+//								 * getView ().addDeterministicChartArea(
+//								 * deterministicChartArea ); }
+//								 */
+//
+//							}
+//							if (method_deterministic.getName() == "Flow-to-Equity (FTE)") {
+//								FTE dcf_2 = new FTE();
+//								unternehmenswert = dcf_2.calculateValues(
+//										drContainer.getCashflows(), scenario);
+//
+//								DeterministicChartArea deterministicarea = new DeterministicChartArea(
+//										unternehmenswert,
+//										method_deterministic.getName(),
+//										drContainer, scenario);
+//
+//								getView().addDeterministicChartArea(
+//										deterministicarea, counter);
+//
+//								/*
+//								 * DeterministicChartArea chart = new
+//								 * DeterministicChartArea(
+//								 * method_deterministic.getName(),
+//								 * unternehmenswert, "Cashflows",
+//								 * drContainer.getJahre(),
+//								 * drContainer.getCashflows());
+//								 * getView().addDeterministicChartArea(chart);
+//								 * // chart
+//								 * 
+//								 * }
+//								 */
+//
+//							}
+//						}
+//					}
+//					onProgressChange((float) 1);
+//
+//					/*
+//					 * for (Szenario scenario : project.getScenarios()) {
+//					 * onProgressChange((float) 0.5); CashFlowPeriodContainer
+//					 * cfPeriodContainer = (CashFlowPeriodContainer) project
+//					 * .getDeterministicPeriods();
+//					 * 
+//					 * TreeSet<AbstractPeriodContainer> periodContainer = new
+//					 * TreeSet<>(); periodContainer.add(cfPeriodContainer);
+//					 * StochasticResultContainer srContainer = new
+//					 * StochasticResultContainer( periodContainer);
+//					 * 
+//					 * APV apv = new APV(srContainer, scenario); // Annika Weis
+//					 * APV_2 apv_2 = new APV_2(); apv_2.calculateValues(new
+//					 * DeterministicResultContainer( periodContainer),
+//					 * scenario);// project, scenario DCF_2 dcf_2 = new DCF_2();
+//					 * dcf_2.calculateValues(new DeterministicResultContainer(
+//					 * periodContainer), scenario);// srContainer
+//					 * CompanyValueDeterministic companyValueDeterministic =
+//					 * (CompanyValueDeterministic) apv .calculateCompanyValue();
+//					 * for (Entry<Integer, Couple> companyValue :
+//					 * companyValueDeterministic .getCompanyValues().entrySet())
+//					 * { DeterministicChartArea deterministicChartArea = new
+//					 * DeterministicChartArea(
+//					 * companyValue.getValue().getDebitFreeCompany(),
+//					 * companyValue.getValue().getTaxBenefits(),
+//					 * companyValue.getValue().getCompanyValue(),
+//					 * companyValue.getValue().getCapitalStock());
+//					 * getView().addDeterministicChartArea
+//					 * (deterministicChartArea); } onProgressChange((float) 1);
+//					 * }
+//					 */
+//
+//				}
+//			}
+//		}
+//
+//		if (project.getProjectInputType().isStochastic()) {
+//			TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
+//			AbstractPeriodContainer apc = project.getStochasticPeriods();
+//			periodContainer.add(apc);
+//			StochasticResultContainer srContainer = new StochasticResultContainer(
+//					periodContainer);
+//
+//			// pro Szenario werden die Cashflows berechnet
+//			for (Szenario scenario : project.getIncludedScenarios()) {
+//
+//				// Cashflows berechnen falls notwendig
+//				for (AbstractPeriodContainer container : srContainer
+//						.getPeriodContainers()) {
+//					if (container instanceof CashFlowPeriodContainer) {
+//						logger.debug("Cashflows wurden direkt eingegeben");
+//					} else if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
+//						logger.debug("Cashflows werden direkt berechnet");
+//						CashFlowCalculator.calculateCashflows(srContainer,
+//								scenario);
+//					} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
+//						logger.debug("Cashflows werden indirekt berechnet");
+//						CashFlowCalculator.calculateCashflows(srContainer,
+//								scenario);
+//					}
+//				}
+//			}
+//			for (AbstractStochasticMethod method : project.getMethods()) {
+//				if (method.getSelected()) {
+//					methodRunner = new MethodRunner(method, project, this);
+//					methodRunner.start();
+//				}
+//			}
+//		}
+//
+//	}
+	
 	@EventHandler
-	public void onShowOutputView(ShowOutputViewEvent event) {
-
-		getView().showOutputView();
-
-		project = projectProxy.getSelectedProject();
-
-		if (project.getProjectInputType().isDeterministic()) {
-			TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
-			AbstractPeriodContainer apc = project.getDeterministicPeriods();
-			periodContainer.add(apc);
-			DeterministicResultContainer drContainer = new DeterministicResultContainer(
-					periodContainer);
-
-			// Annika Weis
-			for (AbstractDeterministicMethod method_deterministic : project
-					.getMethods_deterministic()) {
-				// alle Szenarios durchlaufen
-				int counter = 0;
-				for (Szenario scenario : project.getIncludedScenarios()) {
-					onProgressChange((float) 0.5);
-
-					counter++;
-
-					// Cashflows berechnen falls notwendig
-					for (AbstractPeriodContainer container : drContainer
-							.getPeriodContainers()) {
-						if (container instanceof CashFlowPeriodContainer) {
-							logger.debug("Cashflows wurden direkt eingegeben");
-						} else if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
-							logger.debug("Cashflows werden nach GKV berechnet");
-							CashFlowCalculator.calculateCashflows(drContainer,
-									scenario);
-						} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
-							logger.debug("Cashflows werden nach UKV berechnet");
-							CashFlowCalculator.calculateCashflows(drContainer,
-									scenario);
-						}
-					}
-
-					if (method_deterministic.getSelected()) {
-						double unternehmenswert = 0;
-						double[] cashflow;
-						double[] fremdkapital;
-						int i;
-						Period period;
-
-						// für jedenPeriod-Container, der im
-						// Deterministic-Result-Container enthalten ist,
-						// wird die Schleife je einmal durchlaufen
-						// dadurch werden zuerst die Cashflow und Fremdkapital
-						// Arrays befüllt
-						for (AbstractPeriodContainer abstractPeriodContainer : drContainer
-								.getPeriodContainers()) {
-							// holt pro Cashflow-Period-Container die
-							// enthaltenen Perioden
-							// und legt sie in einem TreeSet ab
-							TreeSet<? extends Period> periods = abstractPeriodContainer
-									.getPeriods();
-							// ein Iterator zum durchlaufen des TreeSet wird
-							// erstellt.
-							Iterator<? extends Period> periodenIterator = periods
-									.iterator();
-							// Zähler, Cashflow- und Fremdkapital-Arrays werden
-							// zurückgesetzt
-							cashflow = new double[periods.size()];
-							fremdkapital = new double[periods.size()];
-							i = 0;
-							// pro Periode sollen nun die Werte ausgelesen und
-							// ein
-							// Unternehmenswert berechnet werden
-							while (periodenIterator.hasNext()) {
-								period = periodenIterator.next();
-								cashflow[i] = period.getFreeCashFlow();
-								fremdkapital[i] = period.getCapitalStock();
-								i++;
-							}
-
-							if (method_deterministic.getName() == "Adjusted-Present-Value (APV)") {
-								double steuervorteile = 0;
-								double fremdkapitalout = 0;
-								double uwsteuerfrei = 0;
-
-								APV apv_2 = new APV();
-								// berechnet den Unternehmenswert des
-								// betrachteten
-								// Period-Container
-								unternehmenswert = apv_2.calculateValues(
-										cashflow, fremdkapital, scenario);
-								uwsteuerfrei = apv_2.getUwsteuerfrei();
-								steuervorteile = apv_2.getSteuervorteile();
-								fremdkapitalout = apv_2.getFremdkapital();
-
-								DeterministicChartArea deterministicarea = new DeterministicChartArea(
-										uwsteuerfrei, steuervorteile,
-										unternehmenswert, fremdkapitalout,
-										method_deterministic.getName(),
-										drContainer, scenario);
-
-								getView().addDeterministicChartArea(
-										deterministicarea, counter);
-
-								/*
-								 * Alte Implementierung
-								 * 
-								 * 
-								 * CompanyValueDeterministic
-								 * companyValueDeterministic =
-								 * (CompanyValueDeterministic) apv
-								 * .calculateCompanyValue(); for (Entry<Integer,
-								 * Couple> companyValue :
-								 * companyValueDeterministic.getCompanyValues
-								 * ().entrySet()) { DeterministicChartArea
-								 * deterministicChartArea = new
-								 * DeterministicChartArea
-								 * (companyValue.getValue()
-								 * .getDebitFreeCompany(),
-								 * companyValue.getValue().getTaxBenefits(),
-								 * companyValue.getValue() .getCompanyValue(),
-								 * companyValue.getValue().getCapitalStock());
-								 * getView ().addDeterministicChartArea(
-								 * deterministicChartArea ); }
-								 */
-
-							}
-							if (method_deterministic.getName() == "Flow-to-Equity (FTE)") {
-								FTE dcf_2 = new FTE();
-								unternehmenswert = dcf_2.calculateValues(
-										drContainer.getCashflows(), scenario);
-
-								DeterministicChartArea deterministicarea = new DeterministicChartArea(
-										unternehmenswert,
-										method_deterministic.getName(),
-										drContainer, scenario);
-
-								getView().addDeterministicChartArea(
-										deterministicarea, counter);
-
-								/*
-								 * DeterministicChartArea chart = new
-								 * DeterministicChartArea(
-								 * method_deterministic.getName(),
-								 * unternehmenswert, "Cashflows",
-								 * drContainer.getJahre(),
-								 * drContainer.getCashflows());
-								 * getView().addDeterministicChartArea(chart);
-								 * // chart
-								 * 
-								 * }
-								 */
-
-							}
-						}
-					}
-					onProgressChange((float) 1);
-
-					/*
-					 * for (Szenario scenario : project.getScenarios()) {
-					 * onProgressChange((float) 0.5); CashFlowPeriodContainer
-					 * cfPeriodContainer = (CashFlowPeriodContainer) project
-					 * .getDeterministicPeriods();
-					 * 
-					 * TreeSet<AbstractPeriodContainer> periodContainer = new
-					 * TreeSet<>(); periodContainer.add(cfPeriodContainer);
-					 * StochasticResultContainer srContainer = new
-					 * StochasticResultContainer( periodContainer);
-					 * 
-					 * APV apv = new APV(srContainer, scenario); // Annika Weis
-					 * APV_2 apv_2 = new APV_2(); apv_2.calculateValues(new
-					 * DeterministicResultContainer( periodContainer),
-					 * scenario);// project, scenario DCF_2 dcf_2 = new DCF_2();
-					 * dcf_2.calculateValues(new DeterministicResultContainer(
-					 * periodContainer), scenario);// srContainer
-					 * CompanyValueDeterministic companyValueDeterministic =
-					 * (CompanyValueDeterministic) apv .calculateCompanyValue();
-					 * for (Entry<Integer, Couple> companyValue :
-					 * companyValueDeterministic .getCompanyValues().entrySet())
-					 * { DeterministicChartArea deterministicChartArea = new
-					 * DeterministicChartArea(
-					 * companyValue.getValue().getDebitFreeCompany(),
-					 * companyValue.getValue().getTaxBenefits(),
-					 * companyValue.getValue().getCompanyValue(),
-					 * companyValue.getValue().getCapitalStock());
-					 * getView().addDeterministicChartArea
-					 * (deterministicChartArea); } onProgressChange((float) 1);
-					 * }
-					 */
-
-				}
-			}
-		}
-
-		if (project.getProjectInputType().isStochastic()) {
-			TreeSet<AbstractPeriodContainer> periodContainer = new TreeSet<AbstractPeriodContainer>();
-			AbstractPeriodContainer apc = project.getStochasticPeriods();
-			periodContainer.add(apc);
-			StochasticResultContainer srContainer = new StochasticResultContainer(
-					periodContainer);
-
-			// pro Szenario werden die Cashflows berechnet
-			for (Szenario scenario : project.getIncludedScenarios()) {
-
-				// Cashflows berechnen falls notwendig
-				for (AbstractPeriodContainer container : srContainer
-						.getPeriodContainers()) {
-					if (container instanceof CashFlowPeriodContainer) {
-						logger.debug("Cashflows wurden direkt eingegeben");
-					} else if (container instanceof GesamtkostenVerfahrenCashflowPeriodContainer) {
-						logger.debug("Cashflows werden direkt berechnet");
-						CashFlowCalculator.calculateCashflows(srContainer,
-								scenario);
-					} else if (container instanceof UmsatzkostenVerfahrenCashflowPeriodContainer) {
-						logger.debug("Cashflows werden indirekt berechnet");
-						CashFlowCalculator.calculateCashflows(srContainer,
-								scenario);
-					}
-				}
-			}
-			for (AbstractStochasticMethod method : project.getMethods()) {
-				if (method.getSelected()) {
-					methodRunner = new MethodRunner(method, project, this);
-					methodRunner.start();
-				}
-			}
-		}
-
+	public void onShowResult(ShowOutputViewEvent event){
+		getView().changeProgress(1);
+		getView().createLayout();
 	}
 
 	@Override
