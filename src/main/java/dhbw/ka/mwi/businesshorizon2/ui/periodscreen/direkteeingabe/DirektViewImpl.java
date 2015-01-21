@@ -97,6 +97,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		headerLabel.setStyleName("periodHeaderLabel");
 		gap.setHeight("15px");
 		inputTable.setWidth(100, UNITS_PERCENTAGE);
+		inputTable.setPageLength(3);
 		expandingGap.setHeight(100, UNITS_PERCENTAGE);
 
 		addComponent(headerLabel);
@@ -113,13 +114,14 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	}
 
 	public void generateTable(){
-		
+
 		logger.debug("generateTable aufgerufen");
 		int pastPeriods = project.getRelevantPastPeriods();
 		int baseYear = project.getBasisYear();
+		int periodsToForecast = project.getPeriodsToForecast_deterministic();
 		int pastYear = baseYear - pastPeriods;
 		int currYear = pastYear;
-		
+
 		Collection properties = inputTable.getContainerPropertyIds();
 		Iterator it = properties.iterator();
 		Object[] tempProp = new Object[properties.size()];
@@ -132,11 +134,71 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 			logger.debug("Property "+o+" wurde entfernt");
 			inputTable.removeContainerProperty(o);
 		}
-		
+
 		inputTable.removeAllItems();
 
 		inputTable.addContainerProperty("first", String.class, null);
 		inputTable.setColumnHeader("first", "");
+		if(project.getProjectInputType().isStochastic()){
+			createStochasticTable(pastPeriods, baseYear, pastYear);
+		}else if(project.getProjectInputType().isDeterministic()){
+			createDeterministicTable(periodsToForecast, baseYear);
+		}
+
+		Object itemId = inputTable.addItem();
+		Item row1 = inputTable.getItem(itemId);
+		row1.getItemProperty("first").setValue("Cashflow");
+		itemId = inputTable.addItem();
+		Item row2 = inputTable.getItem(itemId);
+		row2.getItemProperty("first").setValue("Bilanzwert Fremdkapital");
+		if(project.getProjectInputType().isStochastic()){
+			currYear = pastYear;
+			currYear = createTextFields((pastPeriods+1), currYear, row1, row2);
+		}else if(project.getProjectInputType().isDeterministic()){
+			currYear = baseYear;
+			createTextFields(periodsToForecast, currYear, row1, row2);
+		}
+	}
+
+	private int createTextFields(int pastPeriods, int currYear, Item row1, Item row2) {
+		for(int i = 0; i < pastPeriods; i++){
+			TextField field1 = new TextField();
+			field1.setWidth(50, UNITS_PIXELS);
+			field1.setImmediate(true);
+			field1.addListener(new Property.ValueChangeListener(){
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void valueChange(ValueChangeEvent event) {
+					presenter.setInputValues(event.getProperty().getValue());
+
+				}
+
+			});
+			TextField field2 = new TextField();
+			field2.setWidth(50, UNITS_PIXELS);
+			row1.getItemProperty(currYear).setValue(field1);
+			row2.getItemProperty(currYear).setValue(field2);
+			currYear++;
+		}
+		return currYear;
+	}
+
+	private void createDeterministicTable(int periodsToForecast, int baseYear){
+		int currYear = baseYear;
+
+		for(int i = 0; i < periodsToForecast; i++){
+			inputTable.addContainerProperty(currYear, TextField.class, null);
+			inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
+			currYear++;
+			logger.debug("Property "+currYear+" wurde hinzugefügt");
+		}
+
+	}
+
+	private void createStochasticTable(int pastPeriods, int baseYear, int pastYear){
+		int currYear = pastYear;
 		for(int i = 0; i < pastPeriods; i++){
 			inputTable.addContainerProperty(currYear, TextField.class, null);
 			inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
@@ -145,33 +207,6 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		}
 		inputTable.addContainerProperty(baseYear, TextField.class, null);
 		inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
-		
-		currYear = pastYear;
-		Object itemId = inputTable.addItem();
-		Item row1 = inputTable.getItem(itemId);
-		row1.getItemProperty("first").setValue("Cashflow");
-		itemId = inputTable.addItem();
-		Item row2 = inputTable.getItem(itemId);
-		row2.getItemProperty("first").setValue("Bilanzwert Fremdkapital");
-		for(int i = 0; i < (pastPeriods + 1); i++){
-			TextField field1 = new TextField();
-			field1.setWidth(50, UNITS_PIXELS);
-			field1.setImmediate(true);
-			field1.addListener(new Property.ValueChangeListener(){
-
-				@Override
-				public void valueChange(ValueChangeEvent event) {
-					presenter.setInputValues(event.getProperty().getValue());
-					
-				}
-				
-			});
-			TextField field2 = new TextField();
-			field2.setWidth(50, UNITS_PIXELS);
-			row1.getItemProperty(currYear).setValue(field1);
-			row2.getItemProperty(currYear).setValue(field2);
-			currYear++;
-		}
 	}
 
 
