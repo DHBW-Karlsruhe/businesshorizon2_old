@@ -36,7 +36,7 @@ public class WACC extends AbstractDeterministicMethod {
 	// ToDo anderen Rückgabewert angeben
 	@Override
 	public int getOrderKey() {
-		return 5;
+		return 7;
 	}
 
 	@Override

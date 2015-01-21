@@ -235,7 +235,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							if (method_deterministic.getName() == "Flow-to-Equity (FTE)") {
 								FTE dcf_2 = new FTE();
 								unternehmenswert = dcf_2.calculateValues(
-										drContainer.getCashflows(), scenario);
+										//Übergabewerte prüfen
+										drContainer.getCashflows(), fremdkapital, scenario);
 
 								DeterministicChartArea deterministicarea = new DeterministicChartArea(
 										unternehmenswert,
