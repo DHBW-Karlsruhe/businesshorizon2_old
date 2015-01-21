@@ -23,24 +23,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.periodscreen;
 
 import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
+public class ShowUKVEvent extends Event implements ShowInputViewEventInterface{
+        
+        /**
+         *
+         */
+        private static final long serialVersionUID = -2773797208503072554L;
+        private UmsatzkostenVerfahrenCashflowPeriod period;
+        
+        public ShowUKVEvent(UmsatzkostenVerfahrenCashflowPeriod period){
+                this.period = period;
+        }
 
+        public UmsatzkostenVerfahrenCashflowPeriod getPeriod() {
+                return period;
+        }
 
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
-	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
-	}
 }

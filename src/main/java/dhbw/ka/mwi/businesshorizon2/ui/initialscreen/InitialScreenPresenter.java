@@ -68,6 +68,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterface;
 
 /**
  * Dieser Presenter stellt die Eingangseite der Applikation darf. Er ist dafuer
@@ -112,6 +115,15 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 	@Autowired
 	private MethodScreenViewInterface methodScreenView;
+	
+	@Autowired
+	private PeriodScreenViewInterface periodScreenView;
+	
+	@Autowired
+	private ScenarioScreenViewInterface scenarioScreenView;
+	
+	@Autowired
+	private ResultScreenViewInterface resultScreenView;
 
 	@Autowired
 	private InfosViewInterface infosView;
@@ -159,6 +171,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		user = userProxy.getSelectedUser();
 		//getView().showUserData(user.getFullName());
 		getView().showView(projectListView, projectDetailsView);
+		getView().clearProgressBar();
 		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));
 		logger.debug("ShowProjectListEvent gefeuert");
@@ -268,6 +281,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			methodScreenView.setRadioValues();
 			getView().showView(buttonsMiddleView, methodScreenView);
 			getView().setPageDescription("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Schritt 1", new String[] {"Wählen Sie die Methoden", "zur Berechnung"});
+			getView().setProgress("./images/progressBar/progress_1.png");
 			setScreen1Buttons();
 			break;
 
@@ -284,24 +298,82 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
+			getView().setProgress("./images/progressBar/progress_2.png");
 			setScreen2Buttons();
 			break;
 
 		case PERIODS:
+			buttonsMiddleView.setGoToStep(4);
+			getView().showView(buttonsMiddleView, periodScreenView);
+			periodScreenView.setMethod();
+			String text = periodScreenView.getPageDescription();
+			getView().setPageDescription("./images/icons/newIcons/1418831563_circle_backup_time_history_recent_time-machine_-128.png", "Schritt 3", new String[] {text, "Bitte geben Sie die Parameter ein"});
+			getView().setProgress("./images/progressBar/progress_3.png");
+			setScreen3Buttons();
 
 			break;
 
 		case SCENARIOS:
-
+			buttonsMiddleView.setGoToStep(5);
+			getView().showView(buttonsMiddleView, scenarioScreenView);
+			getView().setPageDescription("./images/icons/newIcons/1418831239_editor_attachment_paper_clip_2-128.png", "Schritt 4", new String[] {"Bitte geben Sie Szenarien an", "falls erwünscht"});
+			getView().setProgress("./images/progressBar/progress_4.png");
+			setScreen4Buttons();
 			break;
 
 		case RESULT:
+			getView().showView(buttonsMiddleView, resultScreenView);
+			getView().setPageDescription("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png", "Schritt 5", "Ergebnisausgabe");
+			getView().setProgress("./images/progressBar/progress_5.png");
+			setScreen5Buttons();
 
 			break;
 
 		default:
 			break;
 		}
+	}
+	
+	private void setScreen5Buttons(){
+		getView().setTopButton(new TopBarButton("backButton", "Zurück"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.SCENARIOS));
+
+			}
+
+		});
+	}
+	
+	private void setScreen4Buttons(){
+		getView().setTopButton(new TopBarButton("backButton", "Zurück"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.PERIODS));
+
+			}
+
+		});
+	}
+	
+	private void setScreen3Buttons(){
+		getView().setTopButton(new TopBarButton("backButton", "Zurück"), 2, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));
+
+			}
+
+		});
 	}
 
 	private void setScreen2Buttons() {

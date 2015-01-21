@@ -566,9 +566,47 @@ textarea.projectNameInput{
 
 .descriptionText {
 	font-size: 12pt;
+	margin-left: 5px;
 }
 
 .descriptionHeadline {
 	font-size: 13pt;
+	margin-left: 5px;
+}
+
+.periodHeaderLabel {
+	font-size: 16pt;
+}
+
+.v-table-row-odd {
+	background-color: #92D050;
+	height: 30px;
+}
+
+.v-table-row {
+	background-color: #D8EFBC;
+	height: 30px;
+}
+
+.v-table-header {
+	background-color: #92D050;
+	font-weight: bold;
+}
+
+.v-table-header-wrap {
+	border: none;
+}
+
+.v-table-caption-container {
+	text-shadow: none;
+}
+
+.v-table-body {
+	border: none;
+	font-weight: bold;
+}
+
+.v-table {
+	font-size: 12pt;
 }
 

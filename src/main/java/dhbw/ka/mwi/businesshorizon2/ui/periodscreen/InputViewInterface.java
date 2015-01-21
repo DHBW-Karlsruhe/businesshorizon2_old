@@ -23,24 +23,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.periodscreen;
 
-import com.mvplite.event.Event;
+import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+public interface InputViewInterface extends ContentView {
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
+	void addHeader(int year);
+	public void addInputField(String string);
+
+	public void addInputField(String string, double initialContent);
 
 
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
-	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
-	}
+	public void initForm();
+
+	public void setWrong(int column,int row, boolean b);
+
 }

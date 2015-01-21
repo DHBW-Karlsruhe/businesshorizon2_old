@@ -23,24 +23,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.periodscreen;
+
+import java.util.ArrayList;
 
 import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+public class WrongFieldsEvent extends Event {
+	ArrayList<String> wrongFields;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
-
-
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
+	public WrongFieldsEvent(ArrayList<String> wrongFields) {
+		this.wrongFields = wrongFields;
 	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
+	/**
+	 * @return the wrongFields
+	 */
+	public ArrayList<String> getWrongFields() {
+		return wrongFields;
 	}
+
+	/**
+	 * @param wrongFields the wrongFields to set
+	 */
+	public void setWrongFields(ArrayList<String> wrongFields) {
+		this.wrongFields = wrongFields;
+	}
+
 }

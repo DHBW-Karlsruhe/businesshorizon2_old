@@ -22,25 +22,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+import com.vaadin.ui.Table;
 
-import com.mvplite.event.Event;
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+/**
+ * Tabelle zur Anzeige der jeweiligen Szenariowerte
+ * 
+ * @author Marcel Rosenberger
+ * 
+ */
+public class ScenarioTable extends Table {
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
-
-
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
+	public ScenarioTable(Szenario scenario) {
+		addContainerProperty("Eingegebene Werte", String.class, null);
+		addContainerProperty("Wert", Double.class, null);
+		addItem(new Object[] {
+				"Gewerbesteuer (in %)",new Double(scenario.getBusinessTax())}, null);
+		addItem(new Object[] {
+				"Kst. Incl. SoliZu.(in %)",new Double(scenario.getCorporateAndSolitaryTax())}, null);
+		addItem(new Object[] {
+				"EK Kosten(in %) ",new Double(scenario.getRateReturnEquity())}, null);
+		addItem(new Object[] {
+				"FK Kosten(in %) ",new Double(scenario.getRateReturnCapitalStock())}, null);
 	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
-	}
+
 }

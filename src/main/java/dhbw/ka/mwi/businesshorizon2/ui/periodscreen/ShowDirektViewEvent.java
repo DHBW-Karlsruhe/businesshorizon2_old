@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.periodscreen;
 
 import com.mvplite.event.Event;
 
@@ -37,9 +37,6 @@ public class ShowDirektViewEvent extends Event implements ShowInputViewEventInte
 	public ShowDirektViewEvent(CashFlowPeriod period){
 		this.period = period;
 	}
-	public ShowDirektViewEvent(){
-		super();
-	};
 	public CashFlowPeriod getPeriod() {
 		return period;
 	}

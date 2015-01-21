@@ -23,71 +23,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe;
+package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mvplite.event.EventBus;
-import com.mvplite.event.EventHandler;
+import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
-* Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
+* Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
+* Vaadin.
 *
-* @author Daniel Dengler
+* @author Marcel Rosenberger
 *
 */
-
-public class DirektPresenter extends AbstractInputPresenter<DirektViewInterface> {
+public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements UmsatzkostenVerfahrenViewInterface{
         private static final long serialVersionUID = 1L;
 
-        
         @Autowired
-        EventBus eventBus;
-
+        private UmsatzkostenVerfahrenPresenter presenter;
+        
+        private static final Logger logger = Logger.getLogger("DirektViewImpl.class");
 
         /**
          * Dies ist der Konstruktor, der von Spring nach der Initialierung der
          * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
          * einen EventHandler.
          *
-         * @author Daniel Dengler
+         * @author Marcel Rosenberger
          */
 
         @PostConstruct
         public void init() {
-                eventBus.addHandler(this);
-                shownProperties = new String[] { "freeCashFlow", "capitalStock" };
-                germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
+                presenter.setView(this);
         }
 
-
-        /**
-         * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
-         * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
-         * <p>
-         * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
-         * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
-         * Eingabefelder zur verfuegung gestellt.
-         * <p>
-         * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
-         * der anzuzeigenden Felder.
-         *
-         * @param event
-         */
-        @EventHandler
-        public void onShowEvent(ShowDirektViewEvent event) {
-//                processEvent(event);
-
-        }
-        }
-        
-
-        
-
-
+		@Override
+		public void setProject(Project project) {
+			// TODO Auto-generated method stub
+			
+		}
+}

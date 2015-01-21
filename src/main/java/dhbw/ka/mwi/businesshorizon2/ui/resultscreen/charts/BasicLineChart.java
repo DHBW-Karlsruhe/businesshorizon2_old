@@ -22,25 +22,45 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+import java.util.List;
+import java.util.Map;
 
-import com.mvplite.event.Event;
+import org.vaadin.vaadinvisualizations.LineChart;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+/**
+ * Liniendiagramm zur Anzeige des Verlaufs der vergangenen bzw. vorhergesagten
+ * Cashflows
+ * 
+ * @author Florian Stier
+ * 
+ */
+public class BasicLineChart extends LineChart {
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
+	private static final long serialVersionUID = 1L;
 
+	public BasicLineChart(String xAxisLabel, List<String> lines) {
 
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
+		addXAxisLabel(xAxisLabel);
+
+		for (String line : lines) {
+			addLine(line);
+		}
+
+		setOption("width", 500);
+		setOption("height", 200);
+		setOption("legend", "bottom");
+
+		setOption("lineSize", 3);
+		setOption("pointSize", 7);
+
 	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
+
+	public void addValues(Map<String, double[]> values) {
+		for (Map.Entry<String, double[]> value : values.entrySet()) {
+			add(value.getKey(), value.getValue());
+		}
 	}
+
 }

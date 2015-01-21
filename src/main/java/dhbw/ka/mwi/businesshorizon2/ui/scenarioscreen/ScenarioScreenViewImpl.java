@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.szenarioScreen;
+package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,10 +45,12 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Form;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -58,13 +60,19 @@ import com.vaadin.ui.VerticalLayout;
  * @author Julius Hacker, Tobias Lindner
  *
  */
-public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInterface {
+public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
 
 	@Autowired
-	private ScenarioPresenter presenter;
+	private ScenarioScreenPresenter presenter;
+	
+	private Form berechnungForm;
+	
+	private OptionGroup berechnungGroup;
+	
+	private Label gap1;
 	
 	private VerticalLayout vlScenarios;
 	
@@ -90,6 +98,24 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 	 */
 	private void generateUi() {
 		
+		berechnungForm = new Form();
+		berechnungGroup = new OptionGroup();
+		
+		berechnungForm.setWidth(90, UNITS_PERCENTAGE);
+		berechnungForm.setCaption("Berechnungsmethode");
+		
+		berechnungGroup.addItem("apv");
+		berechnungGroup.addItem("fte");
+		berechnungGroup.addItem("wac");
+		berechnungGroup.setItemCaption("apv", "APV (Adjusted Present Value)");
+		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
+		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
+		
+		berechnungForm.addField("berechnungGroup", berechnungGroup);
+		
+		gap1 = new Label();
+		gap1.setHeight(80, UNITS_PIXELS);
+		
 		this.vlScenarios = new VerticalLayout();
 		this.setStyleName("small");
 		this.setMargin(true);
@@ -104,6 +130,10 @@ public class ScenarioViewImpl extends VerticalLayout implements ScenarioViewInte
 				presenter.addScenario();
 			}
 		});
+		
+		addComponent(berechnungForm);
+		setComponentAlignment(berechnungForm, Alignment.MIDDLE_CENTER);
+		addComponent(gap1);
 		addComponent(this.vlScenarios);
 		addComponent(newScenario);
 		

@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.szenarioScreen;
+package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -38,6 +38,8 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
@@ -55,7 +57,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
  * 
  */
 
-public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
+public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -153,28 +155,30 @@ public class ScenarioPresenter extends ScreenPresenter<ScenarioViewInterface> {
 	 * Standardszenario an und baut den Screen danach komplett neu auf.
 	 */
 	@EventHandler
-	public void handleShowView(ShowScenarioViewEvent event) {
-		List<Szenario> scenarios = this.projectProxy.getSelectedProject()
-				.getScenarios();
-		if (scenarios.size() < 1) {
-			scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
+	public void handleShowView(ShowProcessStepEvent event) {
+		if (event.getScreen().equals(screen.SCENARIOS)) {
+			List<Szenario> scenarios = this.projectProxy.getSelectedProject()
+					.getScenarios();
+			if (scenarios.size() < 1) {
+				scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
+			}
+	
+			getView().clear();
+	
+			int numberOfScenario = 1;
+			for (Szenario scenario : scenarios) {
+				getView().addScenario(
+						Double.toString(scenario.getRateReturnEquity()),
+						Double.toString(scenario.getRateReturnCapitalStock()),
+						Double.toString(scenario.getCorporateAndSolitaryTax()),
+						Double.toString(scenario.getBusinessTax()),
+						scenario.isIncludeInCalculation(), numberOfScenario);
+				numberOfScenario++;
+			}
 		}
-
-		getView().clear();
-
-		int numberOfScenario = 1;
-		for (Szenario scenario : scenarios) {
-			getView().addScenario(
-					Double.toString(scenario.getRateReturnEquity()),
-					Double.toString(scenario.getRateReturnCapitalStock()),
-					Double.toString(scenario.getCorporateAndSolitaryTax()),
-					Double.toString(scenario.getBusinessTax()),
-					scenario.isIncludeInCalculation(), numberOfScenario);
-			numberOfScenario++;
-		}
-
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO,
-				true));
+		
+//		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO,
+//				true));
 	}
 
 	/**

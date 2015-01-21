@@ -22,25 +22,37 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+import java.util.List;
+import java.util.Map;
 
-import com.mvplite.event.Event;
+import org.vaadin.vaadinvisualizations.Table;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+/**
+ * Tabelle zur Anzeige des Eigen- sowie Fremdkapital und des Unternehmenswertes
+ * im APV
+ * 
+ * @author Florian Stier
+ * 
+ */
+public class BasicTable extends Table {
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
+	private static final long serialVersionUID = 1L;
 
+	public BasicTable(Map<String, String> columns) {
+		setOption("allowHTML", true);
+		setOption("width", 500);
 
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
+		for (Map.Entry<String, String> column : columns.entrySet()) {
+			addTableColumn(column.getKey(), column.getValue());
+		}
 	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
+
+	public void addValues(List<String[]> values) {
+		for (String[] value : values) {
+			add(value);
+		}
 	}
+
 }

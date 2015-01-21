@@ -174,6 +174,10 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private Label logoutButtonLabel;
 
+	private Embedded progressBar;
+
+	private Label progressBarGap;
+
 
 
 	/**
@@ -209,6 +213,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		bottomLayout = new VerticalLayout();
 		gap = new Label();
 		leftContainerSpacing = new VerticalLayout();
+		progressBar = new Embedded(null);
+		progressBarGap = new Label();
 		splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
 		splitter2 = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
 		menuButtonsLayout = new HorizontalLayout();
@@ -248,6 +254,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		//		bottomRightLayout.setStyleName("projectDetailsLayout");
 		topRightLayout.setSizeFull();
 		leftContentLayout.setSizeFull();
+		progressBar.setSizeUndefined();
+		progressBar.setVisible(false);
 		//	leftContentLayout.setHeight(Sizeable.SIZE_UNDEFINED, 0);
 
 		leftLogoLayout = new VerticalLayout();
@@ -258,6 +266,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		faqGap.setWidth("50px");
 		manualGap.setWidth("50px");
 		middleGap.setHeight("10px");
+		progressBarGap.setHeight("15px");
 		leftContainerSpacing.setSizeFull();
 
 		homeIcon.setWidth(70, UNITS_PIXELS);
@@ -339,6 +348,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		leftContentLayout.addComponent(splitter2);
 		leftContentLayout.addComponent(middleGap);
 		leftContentLayout.addComponent(menuButtonsLayout);
+		leftContentLayout.addComponent(progressBarGap);
+		leftContentLayout.addComponent(progressBar);
 		leftContentLayout.addComponent(leftContainerSpacing);
 		leftContentLayout.addComponent(faqManualLayout);
 		leftContentLayout.addComponent(bottomGap);
@@ -351,6 +362,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
 		leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
 		leftContentLayout.setComponentAlignment(faqManualLayout, Alignment.BOTTOM_CENTER);
+		leftContentLayout.setComponentAlignment(progressBar, Alignment.MIDDLE_CENTER);
 		//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
 		menuButtonsLayout.addComponent(homeButtonLayout);
 		menuButtonsLayout.addComponent(accountButtonLayout);
@@ -479,7 +491,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		topRightLayout.addComponent(importButton);
 		topRightLayout.setComponentAlignment(importButton, Alignment.MIDDLE_CENTER);
 		
-		exportButton = new TopBarButton("exportButton", "Projekte exportieren");
+		exportButton = new TopBarButton("exportButton", "Projekte");
+		exportButton.addLabel("exportieren");
 		exportButtonListener = new ClickListener(){
 
 			private static final long serialVersionUID = 1L;
@@ -715,18 +728,23 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		upload.setHeight(30, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
 		Label gap = new Label();
 		gap.setHeight("5px");
-		Label label = new Label("Projekte importieren");
+		Label label = new Label("Projekte");
 		label.setStyleName("topBarButtonLabel");
 		label.setSizeUndefined();
+		Label label2 = new Label("importieren");
+		label2.setStyleName("topBarButtonLabel");
+		label2.setSizeUndefined();
 		VerticalLayout labelLayout = new VerticalLayout();
 		labelLayout.setHeight(45, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
 		labelLayout.setWidth(100, UNITS_PERCENTAGE);
 		importButton.addComponent(upload);
 		labelLayout.addComponent(label);
+		labelLayout.addComponent(label2);
 		importButton.addComponent(gap);
 		importButton.addComponent(labelLayout);
 		importButton.setComponentAlignment(upload, Alignment.TOP_CENTER);
 		labelLayout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+		labelLayout.setComponentAlignment(label2, Alignment.MIDDLE_CENTER);
 	}
 	
 	public void setImportButton(){
@@ -836,4 +854,13 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		return this.topRightLayout;
 	}
 
+	public void setProgress(String resource){
+		progressBar.setSource(new ThemeResource(resource));
+		progressBar.setVisible(true);
+	}
+	
+	public void clearProgressBar(){
+		progressBar.setSource(null);
+		progressBar.setVisible(false);
+	}
 }

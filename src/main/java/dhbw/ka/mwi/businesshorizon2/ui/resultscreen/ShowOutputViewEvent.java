@@ -23,24 +23,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import com.mvplite.event.Event;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+/**
+ * Der Event, der zum Anzeigen des Output Views z.B. in der BHApplication-Klasse
+ * abgesetzt wird.
+ * 
+ * @author Florian Stier
+ * 
+ */
+public class ShowOutputViewEvent extends Event {
+	private static final long serialVersionUID = 1L;
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
-
-
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
-	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
-	}
 }

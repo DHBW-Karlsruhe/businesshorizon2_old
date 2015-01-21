@@ -44,7 +44,7 @@ public class ProjectInputType implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5922498137882142059L;
-	private Boolean stochastic = false;
+	private Boolean stochastic = true;
 	private Boolean deterministic = false;
 	private InputType stochasticInput = InputType.DIRECT;
 	private InputType deterministicInput = InputType.DIRECT;

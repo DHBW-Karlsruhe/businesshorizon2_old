@@ -23,24 +23,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.input;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.charts;
 
-import com.mvplite.event.Event;
+import java.util.List;
+import java.util.Map;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import org.vaadin.vaadinvisualizations.ColumnChart;
 
-public class ShowDirektViewEvent extends Event implements ShowInputViewEventInterface{
-	
-	private CashFlowPeriod period;
+/**
+ * Balkendiagramm zur Anzeige der Häufigkeitsverteilung der Unternehmenswerte im
+ * stochastischen Verfahren
+ * 
+ * @author Florian Stier
+ * 
+ */
+public class BasicColumnChart extends ColumnChart {
 
+	private static final long serialVersionUID = 1L;
 
-	public ShowDirektViewEvent(CashFlowPeriod period){
-		this.period = period;
+	public BasicColumnChart(String xAxisLabel, List<String> columns) {
+
+		addXAxisLabel(xAxisLabel);
+
+		for (String column : columns) {
+			addColumn(column);
+		}
+
+		// setOption("width", 500);
+		// setOption("height", 200);
+		setOption("legend", "bottom");
+
 	}
-	public ShowDirektViewEvent(){
-		super();
-	};
-	public CashFlowPeriod getPeriod() {
-		return period;
+
+	public void addValues(Map<String, double[]> values) {
+
+		for (Map.Entry<String, double[]> value : values.entrySet()) {
+			add(value.getKey(), value.getValue());
+		}
+
 	}
+
 }
