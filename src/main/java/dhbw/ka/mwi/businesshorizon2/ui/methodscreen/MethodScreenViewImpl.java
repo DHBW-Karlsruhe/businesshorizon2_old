@@ -36,7 +36,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ProjectDetailsViewImpl.class");
+	private static final Logger logger = Logger.getLogger("MethodScreenViewImpl.class");
 
 	@Autowired
 	private MethodScreenPresenter presenter;
@@ -125,12 +125,14 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		prognoseGroup.setItemCaption("sto", "Stochastische Eingabe");
 		prognoseGroup.setItemCaption("det", "Deterministische Eingabe");
 		prognoseGroup.setValue("sto");
+		prognoseGroup.setImmediate(true);
 		prognoseGroup.addListener(new Property.ValueChangeListener() {
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
+				logger.debug("ValueChangeEvent in Prognosemethode geworfen");
 				String method = (String) event.getProperty().getValue();
 				if(method.equals("sto")){
 					stochastic = true;
@@ -150,12 +152,14 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		eingabeGroup.setItemCaption(InputType.UMSATZKOSTENVERFAHREN, "UKV (Umsatzkostenverfahren)");
 		eingabeGroup.setItemCaption(InputType.GESAMTKOSTENVERFAHREN, "GKV (Gesamtkostenverfahren)");
 		eingabeGroup.setValue(InputType.DIRECT);
+		eingabeGroup.setImmediate(true);
 		eingabeGroup.addListener(new Property.ValueChangeListener() {
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
+				logger.debug("ValueChangeEvent in Eingabemethode geworfen");
 				presenter.setInputMethod((InputType)event.getProperty().getValue(), deterministic);
 				
 			}
@@ -168,6 +172,18 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
 		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
 		berechnungGroup.setValue("apv");
+		berechnungGroup.setImmediate(true);
+		berechnungGroup.addListener(new Property.ValueChangeListener() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				logger.debug("ValueChangeEvent in Berechnungsmethode geworfen");
+				switchRadiobuttonEnablement(event);
+				
+			}
+		});
 
 		prognoseForm.addField("prognoseGroup", prognoseGroup);
 		eingabeForm.addField("eingabeGroup", eingabeGroup);
@@ -175,9 +191,9 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 		addComponent(prognoseForm);
 		addComponent(gap1);
-		addComponent(eingabeForm);
-		addComponent(gap2);
 		addComponent(berechnungForm);
+		addComponent(gap2);
+		addComponent(eingabeForm);
 		addComponent(gap3);
 		setExpandRatio(gap3, 1.0f);
 	}
@@ -228,6 +244,17 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		setEingabe();
 		setPrognose();
 		setBerechnung();
+	}
+
+	public void switchRadiobuttonEnablement(ValueChangeEvent event) {
+		if(event.getProperty().getValue().equals("fte")){
+			eingabeGroup.setItemEnabled(InputType.UMSATZKOSTENVERFAHREN, false);
+			eingabeGroup.setItemEnabled(InputType.GESAMTKOSTENVERFAHREN, false);
+			eingabeGroup.setValue(InputType.DIRECT);
+		}else{
+			eingabeGroup.setItemEnabled(InputType.UMSATZKOSTENVERFAHREN, true);
+			eingabeGroup.setItemEnabled(InputType.GESAMTKOSTENVERFAHREN, true);
+		}
 	}
 
 }

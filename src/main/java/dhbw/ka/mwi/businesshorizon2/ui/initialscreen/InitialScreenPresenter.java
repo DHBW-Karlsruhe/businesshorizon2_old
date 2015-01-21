@@ -70,6 +70,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterf
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ShowOutputViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterface;
 
 /**
@@ -326,6 +327,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			getView().setPageDescription("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png", "Schritt 5", "Ergebnisausgabe");
 			getView().setProgress("./images/progressBar/progress_5.png");
 			setScreen5Buttons();
+//			eventBus.fireEvent(new ShowOutputViewEvent());
 
 			break;
 

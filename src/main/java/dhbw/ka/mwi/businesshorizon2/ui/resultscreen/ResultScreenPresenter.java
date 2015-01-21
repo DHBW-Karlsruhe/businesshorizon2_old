@@ -348,8 +348,8 @@ public class ResultScreenPresenter extends ScreenPresenter<ResultScreenViewInter
 
 	@EventHandler
 	public void handleShowView(ShowOutputViewEvent event) {
-		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT,
-				true));
+//		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT,
+//				true));
 		logger.debug("ShowOutputViewEvent handled");
 	}
 

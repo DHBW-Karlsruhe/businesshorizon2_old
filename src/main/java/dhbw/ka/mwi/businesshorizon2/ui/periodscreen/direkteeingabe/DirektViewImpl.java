@@ -25,6 +25,9 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -112,28 +115,44 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	public void generateTable(){
 		
 		logger.debug("generateTable aufgerufen");
-		int pastPeriods = project.getSpecifiedPastPeriods();
+		int pastPeriods = project.getRelevantPastPeriods();
 		int baseYear = project.getBasisYear();
 		int pastYear = baseYear - pastPeriods;
 		int currYear = pastYear;
 		
+		Collection properties = inputTable.getContainerPropertyIds();
+		Iterator it = properties.iterator();
+		Object[] tempProp = new Object[properties.size()];
+		int a = 0;
+		while(it.hasNext()){
+			tempProp[a] = it.next();
+			a++;
+		}
+		for(Object o : tempProp){
+			logger.debug("Property "+o+" wurde entfernt");
+			inputTable.removeContainerProperty(o);
+		}
+		
 		inputTable.removeAllItems();
 
-		inputTable.addContainerProperty("", String.class, null);
+		inputTable.addContainerProperty("first", String.class, null);
+		inputTable.setColumnHeader("first", "");
 		for(int i = 0; i < pastPeriods; i++){
 			inputTable.addContainerProperty(currYear, TextField.class, null);
 			inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 			currYear++;
+			logger.debug("Property "+currYear+" wurde hinzugefügt");
 		}
 		inputTable.addContainerProperty(baseYear, TextField.class, null);
+		inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
 		
 		currYear = pastYear;
 		Object itemId = inputTable.addItem();
 		Item row1 = inputTable.getItem(itemId);
-		row1.getItemProperty("").setValue("Cashflow");
+		row1.getItemProperty("first").setValue("Cashflow");
 		itemId = inputTable.addItem();
 		Item row2 = inputTable.getItem(itemId);
-		row2.getItemProperty("").setValue("Bilanzwert Fremdkapital");
+		row2.getItemProperty("first").setValue("Bilanzwert Fremdkapital");
 		for(int i = 0; i < (pastPeriods + 1); i++){
 			TextField field1 = new TextField();
 			field1.setWidth(50, UNITS_PIXELS);
