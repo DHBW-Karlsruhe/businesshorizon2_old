@@ -23,13 +23,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mvplite.view.View;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -50,11 +49,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * @author Florian Stier, Mirko Göpfrich
  * 
  */
-public class ResultScreenViewImpl extends VerticalLayout implements ResultScreenViewInterface {
+public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreScenarioResultViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private ResultScreenPresenter presenter;
+	private MoreScenarioResultPresenter presenter;
 	
 	private VerticalLayout vl = new VerticalLayout();
 	
@@ -131,10 +130,7 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 		generateUi();
 		
 	}
-	
-	public void showView(View view){
-		
-	}
+
 
 	public void addHeadline(Label head) {
 		vl.addComponent(head);

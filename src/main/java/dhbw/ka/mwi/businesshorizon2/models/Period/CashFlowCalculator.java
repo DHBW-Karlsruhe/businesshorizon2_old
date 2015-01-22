@@ -108,7 +108,7 @@ public class CashFlowCalculator {
 	 * 
 	 */
 
-	private static void calculateGKVCashflows(
+	public static void calculateGKVCashflows(
 			GesamtkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
 		logger.debug("Cash-Flow-Ermittlung nach Gesamtkostenverfahren");
@@ -169,7 +169,7 @@ public class CashFlowCalculator {
 	 * 
 	 */
 
-	private static void calculateUKVCashflows(
+	public static void calculateUKVCashflows(
 			UmsatzkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
 		logger.debug("Cash-Flow-Ermittlung nach Umsatzkostenverfahren");

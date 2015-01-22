@@ -20,6 +20,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
@@ -181,6 +182,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 			public void valueChange(ValueChangeEvent event) {
 				logger.debug("ValueChangeEvent in Berechnungsmethode geworfen");
 				switchRadiobuttonEnablement(event);
+				presenter.setCalcMethod((String)event.getProperty().getValue());
 				
 			}
 		});
@@ -237,7 +239,14 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 	}
 
 	public void setBerechnung(){
-		
+		AbstractDeterministicMethod method = project.getCalculationMethod();
+		if(method.getName().equals("Flow-to-Equity (FTE)")){
+			berechnungGroup.setValue("fte");
+		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
+			berechnungGroup.setValue("apv");
+		}else{	//method.getName().equals("WACC")
+			berechnungGroup.setValue("wac");
+		}
 	}
 	
 	public void setRadioValues(){
