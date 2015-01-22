@@ -84,4 +84,10 @@ public interface ScenarioScreenViewInterface extends ContentView {
 	public void setValid(int scenarioNumber, String identifier);
 
 	public Boolean getIncludeInCalculation(int scenarioNumber);
+	
+	public void setAPVSelected ();
+	
+	public void setFTESelected ();
+	
+	public void setWACCSelected ();
 }

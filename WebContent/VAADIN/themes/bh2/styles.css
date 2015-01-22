@@ -610,3 +610,21 @@ textarea.projectNameInput{
 	font-size: 12pt;
 }
 
+.scenarios {
+	font-size: 12pt;
+	margin-left: 5px;
+}
+
+.addScenario {
+	font-weight: bold;
+}
+
+.scenarios input[type="text"] {
+    font-size:12pt;
+    margin: 5px;
+  }
+  
+.deleteScenario:hover + gridLayoutScenarios{
+	background-color: red;
+	
+}
