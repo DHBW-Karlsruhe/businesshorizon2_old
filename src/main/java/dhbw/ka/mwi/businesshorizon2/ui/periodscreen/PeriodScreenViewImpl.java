@@ -37,6 +37,8 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
+
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
  * Vaadin.

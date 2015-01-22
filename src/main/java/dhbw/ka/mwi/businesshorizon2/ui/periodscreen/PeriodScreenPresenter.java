@@ -198,7 +198,6 @@ public class PeriodScreenPresenter extends Presenter<PeriodScreenViewInterface> 
 		default:
 			break;
 		}
-		
 
 	}
 
