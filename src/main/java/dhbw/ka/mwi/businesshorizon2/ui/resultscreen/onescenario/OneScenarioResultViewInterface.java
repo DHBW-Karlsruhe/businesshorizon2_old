@@ -54,6 +54,11 @@ public interface OneScenarioResultViewInterface extends View {
 
 	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
 
+	public void setCompanyValue(String valueOf);
+
+	public void setScenarioValue(String valueOf, String valueOf2,
+			String valueOf3, String valueOf4);
+
 
 
 }

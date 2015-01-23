@@ -36,19 +36,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickEvent;
+import com.vaadin.event.LayoutEvents.LayoutClickListener;
+import com.vaadin.event.MouseEvents.ClickEvent;
+import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
@@ -73,8 +77,17 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	private OptionGroup berechnungGroup;
 	
 	private Label gap1;
+	private Label gap2;
+	private Label gap3;
+	private Label gap4;
+	private Label splitter;
+	private Label addLabel;
+	
+	private Embedded addIcon;
+	private Embedded deleteIcon; 
 	
 	private VerticalLayout vlScenarios;
+	private HorizontalLayout addScenarioLayout;
 	
 	private List<HashMap<String, AbstractComponent>> scenarios = new ArrayList<HashMap<String, AbstractComponent>>();
 	
@@ -114,36 +127,93 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		berechnungForm.addField("berechnungGroup", berechnungGroup);
 		
 		gap1 = new Label();
-		gap1.setHeight(80, UNITS_PIXELS);
+		gap1.setHeight(35, UNITS_PIXELS);
 		
-		this.vlScenarios = new VerticalLayout();
-		this.setStyleName("small");
-		this.setMargin(true);
+		splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
 		
-		Button newScenario = new Button("Weiteres Szenario");
+		gap2 = new Label();
+		gap2.setHeight(20, UNITS_PIXELS);
 		
-		newScenario.addListener(new Button.ClickListener() {
+		addScenarioLayout = new HorizontalLayout();
+		
+		addIcon = new Embedded (null, new ThemeResource ("./images/icons/newIcons/1418766077_circle_add_plus_-128_green.png"));
+		addIcon.setHeight(30, UNITS_PIXELS);
+		
+		addLabel = new Label ("Szenario hinzufügen");
+		addLabel.addStyleName("scenarios");
+		addLabel.addStyleName("addScenario");
+		
+		addScenarioLayout.addComponent(addIcon);
+		gap3 = new Label();
+		gap3.setWidth(10, UNITS_PIXELS);
+		addScenarioLayout.addComponent(gap3);
+		addScenarioLayout.addComponent(addLabel);
+		addScenarioLayout.setComponentAlignment(addLabel, Alignment.MIDDLE_CENTER);
+		addScenarioLayout.addListener(new LayoutClickListener () {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void layoutClick(LayoutClickEvent event) {
 				presenter.addScenario();
 			}
 		});
 		
+		gap4 = new Label ();
+		gap4.setHeight(15, UNITS_PIXELS);
+		
+		this.vlScenarios = new VerticalLayout();
+		this.vlScenarios.setSizeFull();
+//		this.setStyleName("small");
+		this.setMargin(true);
+		
 		addComponent(berechnungForm);
 		setComponentAlignment(berechnungForm, Alignment.MIDDLE_CENTER);
 		addComponent(gap1);
+		addComponent(splitter);
+		addComponent(gap2);
+		addComponent(addScenarioLayout);
+		setComponentAlignment(addScenarioLayout, Alignment.MIDDLE_LEFT);
+		addComponent(gap4);
 		addComponent(this.vlScenarios);
-		addComponent(newScenario);
+		
+		vlScenarios.addStyleName("scenarios");
+	}
+	
+	/**
+	 * Setzt den Radio-Button auf APV
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setAPVSelected () {
+		berechnungGroup.setValue("apv");
+	}
+	
+	/**
+	 * Setzt den Radio-Button auf FTE
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setFTESelected () {
+		berechnungGroup.setValue("fte");
 		
 	}
 	
 	/**
-	 * Die Methode fuegt der View ein Szenario hinzu. Sie baut hierzu saemtliche
-	 * notwendigen GUI-Elemente und entsprecheenden Listener hinzu.
+	 * Setzt den Radio-Button auf WACC
 	 * 
-	 * @author Julius Hacker
+	 * @author Tobias Lindner
+	 */
+	public void setWACCSelected () {
+		berechnungGroup.setValue("wacc");
+	}
+	
+	/**
+	 * Die Methode fuegt der View ein Szenario hinzu. Sie baut hierzu saemtliche
+	 * notwendigen GUI-Elemente und entsprechenden Listener hinzu.
+	 * 
+	 * Auf ein GridLayout umgestellt.
+	 * 
+	 * @author Julius Hacker, Tobias Lindner
 	 * @param rateReturnEquity Standardwert fuer die Renditeforderung Eigenkapital
 	 * @param rateReturnCapitalStock Standardwert fuer die Renditeforderung Fremdkapital
 	 * @param businessTax Standardwert fuer die Gewerbesteuer
@@ -166,91 +236,129 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 			}
 		};
 		
-		HorizontalLayout hlScenario = new HorizontalLayout();
-		hlScenario.setSizeFull();
-		
-		FormLayout formLeft = new FormLayout();
-		FormLayout formRight = new FormLayout();
-		hlScenario.addComponent(formLeft);
-		//hlScenario.addComponent(formRight);
-		
+		final GridLayout gl = new GridLayout(3, 6);
+		gl.addStyleName("gridLayoutScenarios");
+		gl.setSizeFull();
+				
 		final Label scenarioName = new Label("<strong>Szenario " + number + "</strong>");
 		scenarioName.setContentMode(Label.CONTENT_XHTML);
 		scenarioComponents.put("label", scenarioName);
-		formLeft.addComponent(scenarioName);
-		scenarioName.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		
-		final CheckBox cbBerechnungEinbezug = new CheckBox("In Berechnung einbeziehen");
-		cbBerechnungEinbezug.setValue(isIncludeInCalculation);
-		cbBerechnungEinbezug.setImmediate(true);
-		cbBerechnungEinbezug.addListener(new ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				presenter.updateScenario(number);
-				logger.debug("ChangeListener " + System.identityHashCode(this));
-			}
-			
-		});
-		scenarioComponents.put("isIncludeInCalculation", cbBerechnungEinbezug);
-		formLeft.addComponent(cbBerechnungEinbezug);
+		logger.debug("SzenarioName: " + scenarioName);
+		gl.addComponent(scenarioName, 0, 0);
 		
-		final TextField tfEigenkapital = new TextField("Renditeforderung Eigenkapital: ");
+//		formLeft.addComponent(scenarioName);
+//		scenarioName.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+		
+//		final CheckBox cbBerechnungEinbezug = new CheckBox("In Berechnung einbeziehen");
+//		cbBerechnungEinbezug.setValue(isIncludeInCalculation);
+//		cbBerechnungEinbezug.setImmediate(true);
+//		cbBerechnungEinbezug.addListener(new ClickListener() {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void buttonClick(ClickEvent event) {
+//				presenter.updateScenario(number);
+//				logger.debug("ChangeListener " + System.identityHashCode(this));
+//			}
+//			
+//		});
+//		scenarioComponents.put("isIncludeInCalculation", cbBerechnungEinbezug);
+//		formLeft.addComponent(cbBerechnungEinbezug);
+		
+		final Label textEigenkapital = new Label ("Renditeforderung Eigenkapital: ");
+		textEigenkapital.setSizeFull();
+		
+		final TextField tfEigenkapital = new TextField();
 		if(!"0.0".equals(rateReturnEquity)) {
 			tfEigenkapital.setValue(rateReturnEquity);
 		}
 		tfEigenkapital.setImmediate(true);
+		tfEigenkapital.addStyleName("scenario");
 		tfEigenkapital.addListener(changeListener);
-		scenarioComponents.put("rateReturnEquity", tfEigenkapital);
-		formLeft.addComponent(tfEigenkapital);
 		
-		final TextField tfFremdkapital = new TextField("Renditeforderung Fremdkapital: ");
+		gl.addComponent(textEigenkapital, 0, 1);
+		gl.addComponent(tfEigenkapital, 1, 1);
+		
+		scenarioComponents.put("rateReturnEquity", tfEigenkapital);
+		
+		final Label textFremdkapitel = new Label ("Renditeforderung FK: ");
+		
+		final TextField tfFremdkapital = new TextField();
 		if(!"0.0".equals(rateReturnCapitalStock)) {
 			tfFremdkapital.setValue(rateReturnCapitalStock);
 		}
 		tfFremdkapital.setImmediate(true);
+		tfFremdkapital.addStyleName("scenario");
 		tfFremdkapital.addListener(changeListener);
-		scenarioComponents.put("rateReturnCapitalStock", tfFremdkapital);
-		formLeft.addComponent(tfFremdkapital);
 		
-		final TextField tfGewerbesteuer = new TextField("Gewerbesteuer: ");
+		gl.addComponent(textFremdkapitel, 0, 2);
+		gl.addComponent(tfFremdkapital, 1, 2);
+		
+		scenarioComponents.put("rateReturnCapitalStock", tfFremdkapital);
+		
+		final Label textGewerbesteuer = new Label ("Gewerbesteuer:");
+		final TextField tfGewerbesteuer = new TextField();
 		if(!"0.0".equals(businessTax)) {
 			tfGewerbesteuer.setValue(businessTax);
 		}
 		tfGewerbesteuer.setImmediate(true);
+		tfGewerbesteuer.addStyleName("scenario");
 		tfGewerbesteuer.addListener(changeListener);
-		scenarioComponents.put("businessTax", tfGewerbesteuer);
-		formLeft.addComponent(tfGewerbesteuer);
 		
-		final TextField tfKoerperschaftssteuer = new TextField("K\u00F6rperschaftssteuer mit Solidarit\u00E4tszuschlag: ");
+		gl.addComponent(textGewerbesteuer, 0, 3);
+		gl.addComponent(tfGewerbesteuer, 1, 3);
+		
+		scenarioComponents.put("businessTax", tfGewerbesteuer);
+		
+		final Label textKoerperschaftssteuer = new Label ("Körperschaftssteuer mit Solidaritätszuschlag: ");
+		
+		final TextField tfKoerperschaftssteuer = new TextField();
 		if(!"0.0".equals(corporateAndSolitaryTax)) {
 			tfKoerperschaftssteuer.setValue(corporateAndSolitaryTax);
 		}
 		tfKoerperschaftssteuer.setImmediate(true);
+		tfKoerperschaftssteuer.addStyleName("scenario");
 		tfKoerperschaftssteuer.addListener(changeListener);
-		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
-		formLeft.addComponent(tfKoerperschaftssteuer);
 		
-		final Button removeScenario = new Button("Szenario entfernen");
-		removeScenario.addListener(new ClickListener() {
+		gl.addComponent(textKoerperschaftssteuer, 0, 4);
+		gl.addComponent(tfKoerperschaftssteuer, 1, 4);
+		
+		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
+		
+//		final Button removeScenario = new Button("Szenario entfernen");
+//		removeScenario.addListener(new ClickListener() {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void buttonClick(ClickEvent event) {
+//				presenter.removeScenario(number);
+//			}
+//			
+//		});
+//		formLeft.addComponent(removeScenario);
+//		gl.addComponent(removeScenario, 0, 5);
+		
+		deleteIcon = new Embedded (null, new ThemeResource ("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png"));
+		deleteIcon.setHeight(60, UNITS_PIXELS);
+		deleteIcon.addStyleName("deleteScenario");
+		deleteIcon.addListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void click(ClickEvent event) {
 				presenter.removeScenario(number);
 			}
 			
 		});
-		formLeft.addComponent(removeScenario);
 		
-		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		formLeft.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		
-		scenarioComponents.put("scenario", hlScenario);
+		gl.addComponent(deleteIcon, 2, 0, 2, 5);
+		gl.setComponentAlignment(deleteIcon, Alignment.MIDDLE_CENTER);
+				
+		scenarioComponents.put("scenario", gl);
 		
 		this.scenarios.add(scenarioComponents);
-		this.vlScenarios.addComponent(hlScenario);
+		this.vlScenarios.addComponent(gl);
 	}
 	
 	public void updateLabels() {

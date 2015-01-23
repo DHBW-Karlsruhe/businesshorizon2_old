@@ -70,7 +70,7 @@ public interface ResultScreenViewInterface extends View {
 
 	public void changeProgress(float progress);
 
-	public void createLayout();
+//	public void createLayout();
 
 	public void showView(View oneScenarioView);
 

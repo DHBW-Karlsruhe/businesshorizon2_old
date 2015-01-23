@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
+import dhbw.ka.mwi.businesshorizon2.models.InputType;
+import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
@@ -68,6 +70,8 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 	@Autowired
 	private ProjectProxy projectProxy;
+	
+	private Project project;
 
 	private boolean showErrors = false;
 
@@ -81,6 +85,10 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+	}
+	
+	public void getBerechnungMethod () {
+//		project = projectProxy.getSelectedProject();
 	}
 
 	/**
@@ -145,7 +153,8 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		getView().removeScenario(number - 1);
 		getView().updateLabels();
 		//Szenarioseite aktualisieren
-		eventBus.fireEvent(new ShowScenarioViewEvent());
+		//eventBus.fireEvent(new ShowScenarioViewEvent());
+		eventBus.fireEvent(new ShowProcessStepEvent(screen.SCENARIOS));
 	}
 
 	/**

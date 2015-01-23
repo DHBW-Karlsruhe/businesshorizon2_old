@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -98,31 +99,32 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 		
 		addComponent(progressIndicator);
 		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
-		addComponent(vl);
+//		addComponent(vl);
 		setStyleName("borderless light");
-		setSizeFull();
+		setWidth(95, UNITS_PERCENTAGE);
+		setHeight(100, UNITS_PERCENTAGE);
 
 	}
 	
-	public void createLayout() {
-		
-		grid = new GridLayout(2, 4);
-		planningLabel = new Label("Planungsprämissen:");
-		companyValueLabel = new Label("Unternehmenswert:");
-		planningLayout = new GridLayout();
-		companyValue = new Label("30.000.000€");
-		
-		grid.setSizeFull();
-		grid.setColumnExpandRatio(1, 5);
-		
-		grid.addComponent(planningLabel, 0, 0);
-		grid.addComponent(planningLayout, 1, 0);
-		grid.addComponent(companyValueLabel, 0, 1);
-		grid.addComponent(companyValue, 1, 1);
-		
-		addComponent(grid);
-		
-	}
+//	public void createLayout() {
+//		
+//		grid = new GridLayout(2, 4);
+//		planningLabel = new Label("Planungsprämissen:");
+//		companyValueLabel = new Label("Unternehmenswert:");
+//		planningLayout = new GridLayout();
+//		companyValue = new Label("30.000.000€");
+//		
+//		grid.setSizeFull();
+//		grid.setColumnExpandRatio(1, 5);
+//		
+//		grid.addComponent(planningLabel, 0, 0);
+//		grid.addComponent(planningLayout, 1, 0);
+//		grid.addComponent(companyValueLabel, 0, 1);
+//		grid.addComponent(companyValue, 1, 1);
+//		
+//		addComponent(grid);
+//		
+//	}
 
 	@Override
 
@@ -133,7 +135,7 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 	}
 	
 	public void showView(View view){
-		
+		addComponent((Component)view);
 	}
 
 	public void addHeadline(Label head) {

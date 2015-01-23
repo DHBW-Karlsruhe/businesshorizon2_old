@@ -80,7 +80,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
-			.getLogger("OutputPresenter.class");
+			.getLogger("ResultScreenPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -350,6 +350,8 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 			
 			onProgressChange(0.5f);
 			if(project.getIncludedScenarios().size() == 1){
+				logger.debug("scenarios: "+project.getIncludedScenarios().size());
+				logger.debug("OneScenarioCalculationEvent gefeuert");
 				eventBus.fireEvent(new OneScenarioCalculationEvent(project));
 				getView().showView(oneScenarioView);
 			}else{

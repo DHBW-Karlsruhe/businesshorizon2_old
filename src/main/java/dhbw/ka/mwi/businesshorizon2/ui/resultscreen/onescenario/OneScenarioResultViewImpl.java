@@ -27,6 +27,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Alignment;
@@ -52,18 +53,39 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
 public class OneScenarioResultViewImpl extends VerticalLayout implements OneScenarioResultViewInterface {
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger logger = Logger
+			.getLogger("OneScenarioResultViewImpl.class");
+	
 	@Autowired
 	private OneScenarioResultPresenter presenter;
-
-	private GridLayout grid;
 
 	private Label planningLabel;
 
 	private Label companyValueLabel;
 
-	private GridLayout planningLayout;
+	private HorizontalLayout planningLayout;
 
 	private Label companyValue;
+
+	private GridLayout scenarioLayout;
+
+	private Label renditeEKLabel;
+
+	private Label renditeFKLabel;
+
+	private Label gewerbeStLabel;
+
+	private Label koerperStLabel;
+
+	private HorizontalLayout companyValueLayout;
+
+	private Label renditeEK;
+
+	private Label renditeFK;
+
+	private Label gewerbeSt;
+
+	private Label koerperSt;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -75,6 +97,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		generateUi();
 	}
 
 	/**
@@ -85,7 +108,48 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	private void generateUi() {
 
 		setSizeFull();
-
+		planningLayout = new HorizontalLayout();
+		planningLabel = new Label("Planungsprämissen:");
+		scenarioLayout = new GridLayout(2, 4);
+		renditeEKLabel = new Label("Renditeforderung EK:");
+		renditeFKLabel = new Label("Renditeforderung FK:");
+		gewerbeStLabel = new Label("Gewerbesteuer:");
+		koerperStLabel = new Label("Körperschaftssteuer inkl. Solidaritätszuschlag:");
+		renditeEK = new Label();
+		renditeFK = new Label();
+		gewerbeSt = new Label();
+		koerperSt = new Label();
+		companyValueLayout = new HorizontalLayout();
+		companyValueLabel = new Label("Unternehmenswert:");
+		companyValue = new Label();
+		
+		planningLabel.setStyleName("font12bold");
+		renditeEKLabel.setStyleName("font12bold");
+		renditeFKLabel.setStyleName("font12bold");
+		gewerbeStLabel.setStyleName("font12bold");
+		koerperStLabel.setStyleName("font12bold");
+		renditeEK.setStyleName("font12bold");
+		renditeFK.setStyleName("font12bold");
+		gewerbeSt.setStyleName("font12bold");
+		koerperSt.setStyleName("font12bold");
+		companyValueLabel.setStyleName("font12bold");
+		companyValue.setStyleName("font12bold");
+		
+		planningLayout.addComponent(planningLabel);
+		planningLayout.addComponent(scenarioLayout);
+		scenarioLayout.addComponent(renditeEKLabel, 0, 0);
+		scenarioLayout.addComponent(renditeEK, 1, 0);
+		scenarioLayout.addComponent(renditeFKLabel, 0, 1);
+		scenarioLayout.addComponent(renditeFK, 1, 1);
+		scenarioLayout.addComponent(gewerbeStLabel, 0, 2);
+		scenarioLayout.addComponent(gewerbeSt, 1, 2);
+		scenarioLayout.addComponent(koerperStLabel, 0, 3);
+		scenarioLayout.addComponent(koerperSt, 1, 3);
+		companyValueLayout.addComponent(companyValueLabel);
+		companyValueLayout.addComponent(companyValue);
+		
+		addComponent(planningLayout);
+		addComponent(companyValueLayout);
 	}
 	
 	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {
@@ -106,9 +170,18 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 //		vl.addComponent(outputArea);
 	}
 	
+	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
+		this.renditeEK.setValue(renditeEK);
+		this.renditeFK.setValue(renditeFK);
+		this.gewerbeSt.setValue(gewerbeSt);
+		this.koerperSt.setValue(koerperSt);		
+		logger.debug("Planungsprämissen im UI gesetzt");
+	}
 	
-	
-
+	public void setCompanyValue(String companyValue){
+		this.companyValue.setValue(companyValue);
+		logger.debug("Unternehmenswert im UI gesetzt");
+	}
 	
 //	@Override
 //	public void showErrorMessge(String message) {

@@ -79,7 +79,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
-			.getLogger("OutputPresenter.class");
+			.getLogger("OneScenarioResultPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -103,11 +103,12 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 	 */
 	@PostConstruct
 	public void init() {
-//		eventBus.addHandler(this);
+		//		eventBus.addHandler(this);
 	}
 
 	@EventHandler
 	public void onCalculateOneScenario(OneScenarioCalculationEvent event){
+		logger.debug("OneScenarioCalculatioEvent abgefangen");
 		project = event.getProject();
 		double[] cashflow;
 		double[] fremdkapital;
@@ -115,40 +116,44 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		Szenario scenario = project.getIncludedScenarios().get(0);
 		AbstractPeriodContainer periodContainer = project.getDeterministicPeriods();
 		if(periodContainer instanceof CashFlowPeriodContainer){
-			
+
 		}else if(periodContainer instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
 			CashFlowCalculator.calculateUKVCashflows((UmsatzkostenVerfahrenCashflowPeriodContainer)periodContainer, scenario);
 		}else if(periodContainer instanceof GesamtkostenVerfahrenCashflowPeriodContainer){
 			CashFlowCalculator.calculateGKVCashflows((GesamtkostenVerfahrenCashflowPeriodContainer)periodContainer, scenario);
 		}
-		
+
 		TreeSet<? extends Period> periods = periodContainer.getPeriods();
 		Iterator<? extends Period> it = periods.iterator();
 		Period period;
 		int counter = 0;
 		cashflow = new double[periods.size()];
 		fremdkapital = new double[periods.size()];
-		
+
 		while(it.hasNext()){
 			period = it.next();
 			cashflow[counter] = period.getFreeCashFlow();
 			fremdkapital[counter] = period.getCapitalStock();
 			counter++;
 		}
-		
+
 		AbstractDeterministicMethod method = project.getCalculationMethod();
+		logger.debug(method.getName());
 		
 		if(method.getName().equals("Flow-to-Equity (FTE)")){
 			FTE fte = new FTE();
 			unternehmenswert = fte.calculateValues(cashflow, scenario);
-			
+			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
 		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
 			APV apv = new APV();
 			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
+			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
 		}else{	//method.getName().equals("WACC")
-			
+
 		}
 		project.setCompanyValue(unternehmenswert);
+		getView().setCompanyValue(String.valueOf(unternehmenswert));
+		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
 	}
 
 }
