@@ -420,7 +420,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(
 				scenarioNumber));
 
-		eventBus.fireEvent(new ValidateContentStateEvent());
+//		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
 
 	public boolean isShowErrors() {

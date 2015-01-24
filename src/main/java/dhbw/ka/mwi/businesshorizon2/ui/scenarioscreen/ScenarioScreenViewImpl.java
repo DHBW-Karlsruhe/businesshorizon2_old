@@ -359,6 +359,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		this.scenarios.add(scenarioComponents);
 		this.vlScenarios.addComponent(gl);
+		
+		//Button bei 3 Scenarios deaktivieren
+		if (number == 3) {
+			deactivatAddScenario();
+		}
 	}
 	
 	public void updateLabels() {
@@ -374,6 +379,8 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		logger.debug("Removing scenario from view");
 		this.vlScenarios.removeComponent(this.scenarios.get(number).get("scenario"));
 		this.scenarios.remove(number);
+		
+		activateAddScenario();
 	}
 	
 	public boolean getIncludedInCalculation(int scenarioNumber) {
@@ -385,7 +392,8 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	}
 	
 	public Boolean getIncludeInCalculation(int scenarioNumber) {
-		return (Boolean) ((CheckBox) this.scenarios.get(scenarioNumber-1).get("isIncludeInCalculation")).getValue();
+//		return (Boolean) ((CheckBox) this.scenarios.get(scenarioNumber-1).get("isIncludeInCalculation")).getValue();
+		return true;
 	}
 	
 	
@@ -441,5 +449,13 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	public void clear() {
 		vlScenarios.removeAllComponents();
 		scenarios.clear();
+	}
+	
+	public void deactivatAddScenario () {
+		addScenarioLayout.setEnabled(false);
+	}
+	
+	public void activateAddScenario () {
+		addScenarioLayout.setEnabled(true);
 	}
 }
