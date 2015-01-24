@@ -87,6 +87,18 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	private Label koerperSt;
 
+	private Label gap;
+
+	private Label gap2;
+
+	private Label expandingGap;
+
+	private Label gap3;
+
+	private Label expandingGap2;
+
+	private Label expandingGap3;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -122,6 +134,25 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		companyValueLayout = new HorizontalLayout();
 		companyValueLabel = new Label("Unternehmenswert:");
 		companyValue = new Label();
+		gap = new Label();
+		gap2 = new Label();
+		gap3 = new Label();
+		expandingGap = new Label();
+		expandingGap2 = new Label();
+		expandingGap3 = new Label();
+		
+		gap.setWidth("20px");
+		gap2.setWidth("20px");
+		gap3.setHeight("20px");
+		expandingGap.setSizeFull();
+		
+		planningLayout.setWidth(100, UNITS_PERCENTAGE);
+		companyValueLayout.setHeight(60, UNITS_PIXELS);
+		companyValueLayout.setWidth(100, UNITS_PERCENTAGE);
+		scenarioLayout.setWidth(100, UNITS_PERCENTAGE);
+		planningLabel.setWidth(SIZE_UNDEFINED, 0);
+		companyValue.setWidth(SIZE_UNDEFINED, 0);
+		companyValueLabel.setWidth(SIZE_UNDEFINED, 0);
 		
 		planningLabel.setStyleName("font12bold");
 		renditeEKLabel.setStyleName("font12bold");
@@ -132,10 +163,14 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		renditeFK.setStyleName("font12bold");
 		gewerbeSt.setStyleName("font12bold");
 		koerperSt.setStyleName("font12bold");
-		companyValueLabel.setStyleName("font12bold");
-		companyValue.setStyleName("font12bold");
+		companyValueLabel.setStyleName("font14bold");
+		companyValue.setStyleName("font14bold");
+		
+		scenarioLayout.setStyleName("resultScenarioLayout");
+		companyValueLayout.setStyleName("companyValueLayout");
 		
 		planningLayout.addComponent(planningLabel);
+		planningLayout.addComponent(gap2);
 		planningLayout.addComponent(scenarioLayout);
 		scenarioLayout.addComponent(renditeEKLabel, 0, 0);
 		scenarioLayout.addComponent(renditeEK, 1, 0);
@@ -145,11 +180,30 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		scenarioLayout.addComponent(gewerbeSt, 1, 2);
 		scenarioLayout.addComponent(koerperStLabel, 0, 3);
 		scenarioLayout.addComponent(koerperSt, 1, 3);
+		companyValueLayout.addComponent(expandingGap2);
 		companyValueLayout.addComponent(companyValueLabel);
+		companyValueLayout.addComponent(gap);
 		companyValueLayout.addComponent(companyValue);
+		companyValueLayout.addComponent(expandingGap3);
+		
+		planningLayout.setComponentAlignment(planningLabel, Alignment.MIDDLE_LEFT);
+		planningLayout.setExpandRatio(scenarioLayout, 1.0f);
+		companyValueLayout.setComponentAlignment(companyValueLabel, Alignment.MIDDLE_CENTER);
+		companyValueLayout.setComponentAlignment(companyValue, Alignment.MIDDLE_CENTER);
+		companyValueLayout.setExpandRatio(expandingGap2, 1.0f);
+		companyValueLayout.setExpandRatio(expandingGap3, 1.0f);
+//		scenarioLayout.setColumnExpandRatio(1, 1.0f);
+//		scenarioLayout.setComponentAlignment(renditeEK, Alignment.MIDDLE_RIGHT);
+//		scenarioLayout.setComponentAlignment(renditeFK, Alignment.MIDDLE_RIGHT);
+//		scenarioLayout.setComponentAlignment(gewerbeSt, Alignment.MIDDLE_RIGHT);
+		scenarioLayout.setComponentAlignment(koerperSt, Alignment.BOTTOM_CENTER);
 		
 		addComponent(planningLayout);
+		addComponent(gap3);
 		addComponent(companyValueLayout);
+		addComponent(expandingGap);
+		
+		setExpandRatio(expandingGap, 1.0f);
 	}
 	
 	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {

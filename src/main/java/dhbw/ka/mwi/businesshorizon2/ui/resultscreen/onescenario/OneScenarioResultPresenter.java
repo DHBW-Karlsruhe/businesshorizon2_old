@@ -25,7 +25,9 @@
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -103,12 +105,11 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 	 */
 	@PostConstruct
 	public void init() {
-		//		eventBus.addHandler(this);
+		eventBus.addHandler(this);
 	}
 
 	@EventHandler
 	public void onCalculateOneScenario(OneScenarioCalculationEvent event){
-		logger.debug("OneScenarioCalculatioEvent abgefangen");
 		project = event.getProject();
 		double[] cashflow;
 		double[] fremdkapital;
@@ -138,7 +139,6 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		}
 
 		AbstractDeterministicMethod method = project.getCalculationMethod();
-		logger.debug(method.getName());
 		
 		if(method.getName().equals("Flow-to-Equity (FTE)")){
 			FTE fte = new FTE();
@@ -151,9 +151,17 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		}else{	//method.getName().equals("WACC")
 
 		}
-		project.setCompanyValue(unternehmenswert);
-		getView().setCompanyValue(String.valueOf(unternehmenswert));
-		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
+		NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
+		nfUS.setMinimumFractionDigits(2);
+		nfUS.setMaximumFractionDigits(2);
+		project.setCompanyValue(Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")));
+		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
+		nfDE.setMaximumFractionDigits(2);
+		nfDE.setMaximumFractionDigits(2);
+//		getView().setCompanyValue(String.valueOf(unternehmenswert));
+//		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
+		getView().setCompanyValue(nfDE.format(unternehmenswert));
+		getView().setScenarioValue(nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()));
 	}
 
 }

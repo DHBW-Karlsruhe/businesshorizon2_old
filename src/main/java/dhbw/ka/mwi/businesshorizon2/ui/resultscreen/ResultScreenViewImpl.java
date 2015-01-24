@@ -103,6 +103,7 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 		setStyleName("borderless light");
 		setWidth(95, UNITS_PERCENTAGE);
 		setHeight(100, UNITS_PERCENTAGE);
+		setStyleName("projectDetailsLayout");
 
 	}
 	
