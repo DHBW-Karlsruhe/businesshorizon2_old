@@ -11,13 +11,23 @@ public class ShowProcessStepEvent extends Event {
 	}
 	
 	private screen screen;
+	private int sumScenarios;
 	
 	public ShowProcessStepEvent(screen screen){
 		this.screen = screen;
 	}
+	
+	public ShowProcessStepEvent (screen screen, int anz) {
+		this(screen);
+		this.sumScenarios = anz;
+	}
 
 	public screen getScreen() {
 		return this.screen;
+	}
+	
+	public int getSumScenarios () {
+		return this.sumScenarios;
 	}
 
 }

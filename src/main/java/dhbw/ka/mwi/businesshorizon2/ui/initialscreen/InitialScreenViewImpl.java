@@ -632,8 +632,16 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 */
 	@Override
 	public void showView(View leftView, View rightView) {
+		if (bottomLayout.getComponentIndex(horizontalSplitPanelRight)==-1) {
+			bottomLayout.replaceComponent(bottomRightLayout, horizontalSplitPanelRight);
+		}
 		horizontalSplitPanelRight.setFirstComponent((Component) leftView);
 		horizontalSplitPanelRight.setSecondComponent((Component) rightView);
+	}
+	
+	public void showExtendedView (View exView) {
+		bottomLayout.replaceComponent(horizontalSplitPanelRight, bottomRightLayout);
+		bottomRightLayout.addComponent((Component)exView);
 	}
 
 	/**

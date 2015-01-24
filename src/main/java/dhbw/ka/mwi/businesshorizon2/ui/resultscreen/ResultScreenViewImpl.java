@@ -27,6 +27,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
@@ -53,6 +54,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  */
 public class ResultScreenViewImpl extends VerticalLayout implements ResultScreenViewInterface {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = Logger.getLogger("ResultScreenViewImpl.class");
 
 	@Autowired
 	private ResultScreenPresenter presenter;
@@ -137,6 +140,7 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 	
 	public void showView(View view){
 		addComponent((Component)view);
+		logger.debug ("ResultScreenview gesetzt: " + view.toString());
 	}
 
 	public void addHeadline(Label head) {

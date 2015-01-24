@@ -27,6 +27,7 @@ package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.ui.Alignment;
@@ -51,6 +52,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  */
 public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreScenarioResultViewInterface {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = Logger.getLogger("MoreScenarioResultViewImpl.class");
 
 	@Autowired
 	private MoreScenarioResultPresenter presenter;
@@ -79,6 +82,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		generateUi();
 	}
 
 	/**
@@ -87,23 +91,29 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	 * @author Florian Stier
 	 */
 	private void generateUi() {
+		logger.debug("generateUI, moreScenarios");
 
-		progressIndicator = new ProgressIndicator();
-		progressIndicator.setIndeterminate(true);
-		progressIndicator.setEnabled(true);
-		progressIndicator.setStyleName("bar");
-		progressIndicator.setCaption("Berechne..");
-		
-		
-		addComponent(progressIndicator);
-		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
-		addComponent(vl);
-		setStyleName("borderless light");
+//		progressIndicator = new ProgressIndicator();
+//		progressIndicator.setIndeterminate(true);
+//		progressIndicator.setEnabled(true);
+//		progressIndicator.setStyleName("bar");
+//		progressIndicator.setCaption("Berechne..");
+//		
+//		
+//		addComponent(progressIndicator);
+//		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
+//		addComponent(vl);
+//		setStyleName("borderless light");
 		setSizeFull();
+		
+		Label lb = new Label ("Test Anzeige");
+		addComponent(lb);
+		createLayout();
 
 	}
 	
 	public void createLayout() {
+		logger.debug ("createLayout");
 		
 		grid = new GridLayout(2, 4);
 		planningLabel = new Label("Planungsprämissen:");

@@ -239,6 +239,9 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		final GridLayout gl = new GridLayout(3, 6);
 		gl.addStyleName("gridLayoutScenarios");
 		gl.setSizeFull();
+		gl.setColumnExpandRatio(0, 2);
+		gl.setColumnExpandRatio(1, 1);
+		gl.setColumnExpandRatio(2, 1);
 				
 		final Label scenarioName = new Label("<strong>Szenario " + number + "</strong>");
 		scenarioName.setContentMode(Label.CONTENT_XHTML);
@@ -354,6 +357,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		gl.addComponent(deleteIcon, 2, 0, 2, 5);
 		gl.setComponentAlignment(deleteIcon, Alignment.MIDDLE_CENTER);
+		
+		final Label gap = new Label();
+		gap.setHeight(20, UNITS_PIXELS);
+		
+		gl.addComponent(gap, 0, 5);
 				
 		scenarioComponents.put("scenario", gl);
 		
@@ -362,7 +370,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		//Button bei 3 Scenarios deaktivieren
 		if (number == 3) {
-			deactivatAddScenario();
+			deactivateAddScenario();
 		}
 	}
 	
@@ -451,7 +459,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		scenarios.clear();
 	}
 	
-	public void deactivatAddScenario () {
+	public void deactivateAddScenario () {
 		addScenarioLayout.setEnabled(false);
 	}
 	

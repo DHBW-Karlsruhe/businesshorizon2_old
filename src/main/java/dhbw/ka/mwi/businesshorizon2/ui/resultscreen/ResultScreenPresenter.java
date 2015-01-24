@@ -66,6 +66,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
 
 /**
@@ -90,6 +91,9 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	
 	@Autowired
 	private OneScenarioResultViewImpl oneScenarioView;
+	
+	@Autowired
+	private MoreScenarioResultViewImpl moreScenarioView;
 
 	private MethodRunner methodRunner;
 
@@ -355,8 +359,9 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 				eventBus.fireEvent(new OneScenarioCalculationEvent(project));
 				getView().showView(oneScenarioView);
 			}else{
-//				eventBus.fireEvent(new MoreScenarioCalculationEvent(project));
-//				getView().showView(moreScenarioView);
+				eventBus.fireEvent(new MoreScenarioCalculationEvent(project));
+				logger.debug("MoreScenarioCalculationEvent fired");
+				getView().showView(moreScenarioView);
 			}
 //			for(Szenario scenario : project.getIncludedScenarios()){
 //				onProgressChange(0.5f);

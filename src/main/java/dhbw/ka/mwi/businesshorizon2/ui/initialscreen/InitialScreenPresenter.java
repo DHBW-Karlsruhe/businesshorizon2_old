@@ -279,6 +279,8 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@EventHandler
 	public void onShowMethodSelectionView(ShowProcessStepEvent event){
+		project = projectProxy.getSelectedProject();
+		
 		switch (event.getScreen()) {
 		case METHODSELECTION:
 			buttonsMiddleView.setInitialButtons();
@@ -328,12 +330,16 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 		case RESULT:
 			buttonsMiddleView.hideStepButton();
-			getView().showView(buttonsMiddleView, resultScreenView);
+			if (project.getScenarios().size()>1) {
+				getView().showExtendedView(resultScreenView);
+			}
+			else {
+				getView().showView(buttonsMiddleView, resultScreenView);				
+			}
 			getView().setPageDescription("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png", "Schritt 5", "Ergebnisausgabe");
 			getView().setProgress("./images/progressBar/progress_5.png");
 			setScreen5Buttons();
 			eventBus.fireEvent(new ShowOutputViewEvent());
-
 			break;
 
 		default:
