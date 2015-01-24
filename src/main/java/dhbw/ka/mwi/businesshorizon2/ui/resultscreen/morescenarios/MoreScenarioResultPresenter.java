@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import java.text.DecimalFormat;
 import java.util.Iterator;
@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
-import com.mvplite.presenter.Presenter;
 import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
@@ -66,7 +65,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
@@ -75,21 +73,18 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResul
  * 
  */
 
-public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
+public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioResultViewInterface>
 		implements CallbackInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
-			.getLogger("ResultScreenPresenter.class");
+			.getLogger("OutputPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
 
 	@Autowired
 	private ProjectProxy projectProxy;
-	
-	@Autowired
-	private OneScenarioResultViewImpl oneScenarioView;
 
 	private MethodRunner methodRunner;
 
@@ -107,7 +102,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	 */
 	@PostConstruct
 	public void init() {
-		eventBus.addHandler(this);
+//		eventBus.addHandler(this);
 	}
 
 //	@SuppressWarnings("unchecked")
@@ -339,25 +334,14 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 //
 //	}
 	
-	@EventHandler
-	public void onShowResult(ShowOutputViewEvent event){
-		getView().showOutputView();
-		project = projectProxy.getSelectedProject();
-		if(project.getProjectInputType().isStochastic()){
-			
-		}
-		if(project.getProjectInputType().isDeterministic()){
-			
-			onProgressChange(0.5f);
-			if(project.getIncludedScenarios().size() == 1){
-				logger.debug("scenarios: "+project.getIncludedScenarios().size());
-				logger.debug("OneScenarioCalculationEvent gefeuert");
-				eventBus.fireEvent(new OneScenarioCalculationEvent(project));
-				getView().showView(oneScenarioView);
-			}else{
-//				eventBus.fireEvent(new MoreScenarioCalculationEvent(project));
-//				getView().showView(moreScenarioView);
-			}
+//	@EventHandler
+//	public void onShowResult(ShowOutputViewEvent event){
+//		getView().showOutputView();
+//		project = projectProxy.getSelectedProject();
+//		if(project.getProjectInputType().isStochastic()){
+//			
+//		}
+//		if(project.getProjectInputType().isDeterministic()){
 //			for(Szenario scenario : project.getIncludedScenarios()){
 //				onProgressChange(0.5f);
 //				
@@ -376,35 +360,34 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 //					
 //				}
 //			}
-			onProgressChange(1f);
-		}
-		
+//		}
+//		
+//	}
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-//	@Override
-//	public boolean isValid() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public void validate(ValidateContentStateEvent event) {
-//		// TODO Auto-generated method stub
-//
-//	}
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
 
-	@EventHandler
-	public void handleShowView(ShowOutputViewEvent event) {
-//		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT,
-//				true));
-		logger.debug("ShowOutputViewEvent handled");
 	}
 
-//	@Override
-//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-//		// TODO Auto-generated method stub
-//
+//	@EventHandler
+//	public void handleShowView(ShowOutputViewEvent event) {
+////		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT,
+////				true));
+//		logger.debug("ShowOutputViewEvent handled");
 //	}
+
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
+
+	}
 
 	/**
 	 * Wenn die Berechnung der stochastisch vorhergesagten Perioden erfolgreich

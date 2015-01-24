@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Label;
@@ -32,12 +32,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
 
-public interface ResultScreenViewInterface extends View {
-
-
-	public void showOutputView();
+public interface OneScenarioResultViewInterface extends View {
 
 	/**
 	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des stochastischen
@@ -57,22 +53,11 @@ public interface ResultScreenViewInterface extends View {
 	 */
 
 	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
-	
-	public void addHeadline(Label head);
-	
-	public void addSubline(Label head);
-	
-	public void addSubline(Label head, Label abw);
-	
-	public void addLabel(Label label);
-	
-	public void showErrorMessge(String message);
 
-	public void changeProgress(float progress);
+	public void setCompanyValue(String valueOf);
 
-//	public void createLayout();
-
-	public void showView(View oneScenarioView);
+	public void setScenarioValue(String valueOf, String valueOf2,
+			String valueOf3, String valueOf4);
 
 
 

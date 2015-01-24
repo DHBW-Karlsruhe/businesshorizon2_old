@@ -610,6 +610,20 @@ textarea.projectNameInput{
 	font-size: 12pt;
 }
 
+.font12bold{
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.font12bold{
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.font12{
+	font-size: 12pt;
+}
+
 .scenarios {
 	font-size: 12pt;
 	margin-left: 5px;
@@ -627,4 +641,19 @@ textarea.projectNameInput{
 .deleteScenario:hover + gridLayoutScenarios{
 	background-color: red;
 	
+}
+
+.resultScenarioLayout{
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.companyValueLayout{
+	background-color: #FFFF00;
+	border: 2px solid black;
+	padding-left: 10px;
+	padding-right: 10px;
+	box-sizing: border-box;
 }

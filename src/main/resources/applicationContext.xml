@@ -297,6 +297,18 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" />
 	<bean name="resultScreenView"
 		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewImpl"
-		scope="session" />			
+		scope="session" />	
+	<bean name="oneScenarioPresenter"		
+		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultPresenter"
+		scope="session" />
+	<bean name="oneScenarioView"		
+		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl"
+		scope="session" />
+	<bean name="moreScenarioPresenter"		
+		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultPresenter"
+		scope="session" />
+	<bean name="moreScenarioView"		
+		class="dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultViewImpl"
+		scope="session" />		
 		
 </beans>

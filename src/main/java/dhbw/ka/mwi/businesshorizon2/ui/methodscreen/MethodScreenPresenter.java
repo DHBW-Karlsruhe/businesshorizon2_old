@@ -9,6 +9,8 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
@@ -106,6 +108,26 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 			project.getProjectInputType().setDeterministic(deterministic);
 			project.getProjectInputType().setStochastic(true);
 		}
+	}
+
+	public void setCalcMethod(String value) {
+		switch (value) {
+		case "fte":
+			project.setCalculationMethod(new FTE());
+			break;
+
+		case "apv":
+			project.setCalculationMethod(new APV());
+			break;
+			
+		case "wac":
+			
+			break;
+			
+		default:
+			break;
+		}
+		
 	}
 
 }

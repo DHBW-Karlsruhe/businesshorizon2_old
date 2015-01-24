@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Label;
@@ -32,9 +32,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
 
-public interface ResultScreenViewInterface extends View {
+public interface MoreScenarioResultViewInterface extends View {
 
 
 	public void showOutputView();
@@ -70,9 +69,7 @@ public interface ResultScreenViewInterface extends View {
 
 	public void changeProgress(float progress);
 
-//	public void createLayout();
-
-	public void showView(View oneScenarioView);
+	public void createLayout();
 
 
 

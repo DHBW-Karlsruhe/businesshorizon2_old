@@ -23,15 +23,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mvplite.view.View;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -51,11 +49,11 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * @author Florian Stier, Mirko Göpfrich
  * 
  */
-public class ResultScreenViewImpl extends VerticalLayout implements ResultScreenViewInterface {
+public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreScenarioResultViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private ResultScreenPresenter presenter;
+	private MoreScenarioResultPresenter presenter;
 	
 	private VerticalLayout vl = new VerticalLayout();
 	
@@ -99,33 +97,31 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 		
 		addComponent(progressIndicator);
 		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
-//		addComponent(vl);
+		addComponent(vl);
 		setStyleName("borderless light");
-		setWidth(95, UNITS_PERCENTAGE);
-		setHeight(100, UNITS_PERCENTAGE);
-		setStyleName("projectDetailsLayout");
+		setSizeFull();
 
 	}
 	
-//	public void createLayout() {
-//		
-//		grid = new GridLayout(2, 4);
-//		planningLabel = new Label("Planungsprämissen:");
-//		companyValueLabel = new Label("Unternehmenswert:");
-//		planningLayout = new GridLayout();
-//		companyValue = new Label("30.000.000€");
-//		
-//		grid.setSizeFull();
-//		grid.setColumnExpandRatio(1, 5);
-//		
-//		grid.addComponent(planningLabel, 0, 0);
-//		grid.addComponent(planningLayout, 1, 0);
-//		grid.addComponent(companyValueLabel, 0, 1);
-//		grid.addComponent(companyValue, 1, 1);
-//		
-//		addComponent(grid);
-//		
-//	}
+	public void createLayout() {
+		
+		grid = new GridLayout(2, 4);
+		planningLabel = new Label("Planungsprämissen:");
+		companyValueLabel = new Label("Unternehmenswert:");
+		planningLayout = new GridLayout();
+		companyValue = new Label("30.000.000€");
+		
+		grid.setSizeFull();
+		grid.setColumnExpandRatio(1, 5);
+		
+		grid.addComponent(planningLabel, 0, 0);
+		grid.addComponent(planningLayout, 1, 0);
+		grid.addComponent(companyValueLabel, 0, 1);
+		grid.addComponent(companyValue, 1, 1);
+		
+		addComponent(grid);
+		
+	}
 
 	@Override
 
@@ -134,10 +130,7 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 		generateUi();
 		
 	}
-	
-	public void showView(View view){
-		addComponent((Component)view);
-	}
+
 
 	public void addHeadline(Label head) {
 		vl.addComponent(head);
