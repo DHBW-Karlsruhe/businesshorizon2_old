@@ -421,7 +421,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		} else if (event.getButton() == dialogRegBtn) {
 
 			if (presenter.registerUser()){	
-				showNotification("Regisitrierung erfolgreich abgeschlossen");
+				showNotification("Registrierung erfolgreich abgeschlossen");
 				vSplitPanel.removeComponent(regLayout);
 				vSplitPanel.setSecondComponent(horizontal);
 			} else {
