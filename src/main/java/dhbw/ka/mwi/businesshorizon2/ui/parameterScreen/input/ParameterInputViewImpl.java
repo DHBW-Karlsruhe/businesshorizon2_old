@@ -372,7 +372,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 	@Override
 	public void showErrorMessage(String message) {
 		getWindow().showNotification((String) "", message,
-				Notification.TYPE_ERROR_MESSAGE);
+				Notification.TYPE_WARNING_MESSAGE);
 	}
 
 	/**

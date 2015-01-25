@@ -435,5 +435,13 @@ ButtonsMiddleViewInterface {
 		};
 		return lcl;
 	}
+	
+	public void enableNext () {
+		button3.setEnabled(true);
+	}
+	
+	public void disableNext() {
+		button3.setEnabled(false);
+	}
 
 }

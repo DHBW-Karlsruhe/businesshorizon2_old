@@ -80,6 +80,10 @@ public interface ButtonsMiddleViewInterface extends View {
 	public void setResultButton();
 	
 	public void hideStepButton();
+	
+	public void enableNext ();
+	
+	public void disableNext();
 
 }
 

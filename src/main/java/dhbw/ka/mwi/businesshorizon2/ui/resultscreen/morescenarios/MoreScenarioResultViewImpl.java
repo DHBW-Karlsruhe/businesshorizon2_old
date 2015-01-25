@@ -49,7 +49,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
  * Vaadin.
  * 
- * @author Florian Stier, Mirko Göpfrich
+ * @author Florian Stier, Mirko Göpfrich, Tobias Lindner
  * 
  */
 public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreScenarioResultViewInterface {
@@ -135,22 +135,9 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	/**
 	 * Erstelle das GUI zum Prozessschritt "Ausgabe"
 	 * 
-	 * @author Florian Stier
+	 * @author Tobias Lindner
 	 */
 	private void generateUi() {
-		logger.debug("generateUI, moreScenarios");
-
-//		progressIndicator = new ProgressIndicator();
-//		progressIndicator.setIndeterminate(true);
-//		progressIndicator.setEnabled(true);
-//		progressIndicator.setStyleName("bar");
-//		progressIndicator.setCaption("Berechne..");
-//		
-//		
-//		addComponent(progressIndicator);
-//		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
-//		addComponent(vl);
-//		setStyleName("borderless light");
 		setSizeFull();
 		
 		planningLayout = new GridLayout (4, 3);
@@ -223,6 +210,11 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 
 	}
 	
+	/**
+	 * Diese Methode fügt die 3. Spalte der Tabelle mit den Daten zum Szenario 3 hinzu.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void addScenario3ToLayout () {
 		planningTable.addContainerProperty("scenario3", GridLayout.class, null);
 		planningTable.setColumnHeader("scenario3", "Szenario 3");
@@ -232,6 +224,12 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 	}
 	
+	
+	/**
+	 * Diese Methode erzeugt die Anzeige der Planungsprämissen für Szenario 1
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void createScenario1Layout() {
 		renditeEKLabel1 = new Label("Renditeforderung EK:");
 		renditeFKLabel1 = new Label("Renditeforderung FK:");
@@ -259,6 +257,11 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 	}
 	
+	/**
+	 * Diese Methode erzeugt die Anzeige der Planungsprämissen für Szenario 2
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void createScenario2Layout() {
 		renditeEKLabel2 = new Label("Renditeforderung EK:");
 		renditeFKLabel2 = new Label("Renditeforderung FK:");
@@ -286,6 +289,11 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 	}
 	
+	/**
+	 * Diese Methode erzeugt die Anzeige der Planungsprämissen für Szenario 3
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void createScenario3Layout() {
 		renditeEKLabel3 = new Label("Renditeforderung EK:");
 		renditeFKLabel3 = new Label("Renditeforderung FK:");
@@ -313,6 +321,11 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 	}
 	
+	/**
+	 * Diese Methode wird vom Presenter dazu genutzt, die Planungswerte, sowie den Unternehmenswert im UI darszustellen
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue){
 		switch (numScenario) {
 		case 0:
