@@ -73,6 +73,8 @@ public interface ResultScreenViewInterface extends View {
 //	public void createLayout();
 
 	public void showView(View oneScenarioView);
+	
+	public void removeStyle ();
 
 
 

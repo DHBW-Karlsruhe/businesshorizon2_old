@@ -110,6 +110,14 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 
 	}
 	
+	/**
+	 * Diese Methode entfernt den Style projectDetailsLayout, damit die volle Breite genutzt werden kann.
+	 * @author Tobias Lindner
+	 */
+	public void removeStyle () {
+		removeStyleName("projectDetailsLayout");
+	}
+	
 //	public void createLayout() {
 //		
 //		grid = new GridLayout(2, 4);

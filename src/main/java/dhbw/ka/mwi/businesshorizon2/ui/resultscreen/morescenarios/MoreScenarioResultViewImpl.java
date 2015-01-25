@@ -30,12 +30,14 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.Item;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.ProgressIndicator;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
@@ -65,12 +67,57 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	private GridLayout grid;
 
 	private Label planningLabel;
+	
+	private Label renditeEKLabel1;
+	private Label renditeFKLabel1;
+	private Label gewerbeStLabel1;
+	private Label koerperStLabel1;
+	private Label renditeEK1;
+	private Label renditeFK1;
+	private Label gewerbeSt1;
+	private Label koerperSt1;
+	private Label companyValue1;
+	
+	private Label renditeEKLabel2;
+	private Label renditeFKLabel2;
+	private Label gewerbeStLabel2;
+	private Label koerperStLabel2;
+	private Label renditeEK2;
+	private Label renditeFK2;
+	private Label gewerbeSt2;
+	private Label koerperSt2;
+	private Label companyValue2;
+	
+	private Label renditeEKLabel3;
+	private Label renditeFKLabel3;
+	private Label gewerbeStLabel3;
+	private Label koerperStLabel3;
+	private Label renditeEK3;
+	private Label renditeFK3;
+	private Label gewerbeSt3;
+	private Label koerperSt3;
+	private Label companyValue3;
 
 	private Label companyValueLabel;
 
 	private GridLayout planningLayout;
+	private GridLayout planningGridScenario1;
+	private GridLayout planningGridScenario2;
+	private GridLayout planningGridScenario3;
+	
+	private GridLayout companyValueLayoutScenario1;
+	private GridLayout companyValueLayoutScenario2;
+	private GridLayout companyValueLayoutScenario3;
 
 	private Label companyValue;
+	
+	private Table planningTable;
+	
+	private Item row1;
+	private Item row2;
+	
+	private Object itemId1;
+	private Object itemId2;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -106,10 +153,196 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 //		setStyleName("borderless light");
 		setSizeFull();
 		
-		Label lb = new Label ("Test Anzeige");
-		addComponent(lb);
-		createLayout();
+		planningLayout = new GridLayout (4, 3);
+		
+		planningTable = new Table();
+		
+		planningTable.setWidth(100, UNITS_PERCENTAGE);
+		planningTable.setPageLength(3);
+		
+		planningTable.addContainerProperty("first", String.class, null);
+		planningTable.setColumnHeader("first", "");
+		
+		planningTable.addContainerProperty("scenario1", GridLayout.class, null);
+		planningTable.setColumnHeader("scenario1", "Szenario 1");
+		
+		planningTable.addContainerProperty("scenario2", GridLayout.class, null);
+		planningTable.setColumnHeader("scenario2", "Szenario 2");
+		
+		itemId1 = planningTable.addItem();
+		row1 = planningTable.getItem(itemId1);
+		row1.getItemProperty("first").setValue("Planungsprämissen");
+		itemId2 = planningTable.addItem();
+		row2 = planningTable.getItem(itemId2);
+		row2.getItemProperty("first").setValue("Unternehmenswert");
+		
+		planningGridScenario1 = new GridLayout(2,4);
+		planningGridScenario2 = new GridLayout(2,4);
+		planningGridScenario3 = new GridLayout(2,4);
+		
+		companyValueLayoutScenario1 = new GridLayout();
+		companyValueLayoutScenario2 = new GridLayout();
+		companyValueLayoutScenario3 = new GridLayout();
+		
+		row1.getItemProperty("scenario1").setValue(planningGridScenario1);
+		row1.getItemProperty("scenario2").setValue(planningGridScenario2);
+		
+		row2.getItemProperty("scenario1").setValue(companyValueLayoutScenario1);
+		row2.getItemProperty("scenario2").setValue(companyValueLayoutScenario2);
+		
+		createScenario1Layout();
+		createScenario2Layout();
+		createScenario3Layout();
+		
+		addComponent(planningTable);
+		
 
+		planningTable.setCellStyleGenerator(new Table.CellStyleGenerator() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getStyle(Object itemId, Object propertyId) {
+				if (propertyId == null) {
+					if (itemId == itemId2) {
+						return "yello-row";
+					}
+					
+					if (itemId == itemId1) {
+						return "table-line";
+					}
+						return null;	
+				}
+				
+				else {
+					return null;
+				}
+			}
+		});
+		
+		planningTable.addStyleName("scenarioTable");
+
+	}
+	
+	public void addScenario3ToLayout () {
+		planningTable.addContainerProperty("scenario3", GridLayout.class, null);
+		planningTable.setColumnHeader("scenario3", "Szenario 3");
+		
+		row1.getItemProperty("scenario3").setValue(planningGridScenario3);
+		row2.getItemProperty("scenario3").setValue(companyValueLayoutScenario3);
+		
+	}
+	
+	public void createScenario1Layout() {
+		renditeEKLabel1 = new Label("Renditeforderung EK:");
+		renditeFKLabel1 = new Label("Renditeforderung FK:");
+		gewerbeStLabel1 = new Label("Gewerbesteuer:");
+		koerperStLabel1 = new Label("Körperschaftssteuer <br> inkl. Solidaritätszuschlag:  ");
+		koerperStLabel1.setContentMode(Label.CONTENT_XHTML);
+		renditeEK1 = new Label();
+		renditeFK1 = new Label();
+		gewerbeSt1 = new Label();
+		koerperSt1 = new Label();
+		
+		companyValue1 = new Label();
+		
+		planningGridScenario1.addComponent(renditeEKLabel1, 0, 0);
+		planningGridScenario1.addComponent(renditeEK1, 1, 0);
+		planningGridScenario1.addComponent(renditeFKLabel1, 0, 1);
+		planningGridScenario1.addComponent(renditeFK1, 1, 1);
+		planningGridScenario1.addComponent(gewerbeStLabel1, 0, 2);
+		planningGridScenario1.addComponent(gewerbeSt1, 1, 2);
+		planningGridScenario1.addComponent(koerperStLabel1, 0, 3);
+		planningGridScenario1.addComponent(koerperSt1, 1, 3);
+		planningGridScenario1.setComponentAlignment(koerperSt1, Alignment.MIDDLE_LEFT);
+		
+		companyValueLayoutScenario1.addComponent(companyValue1);
+		
+	}
+	
+	public void createScenario2Layout() {
+		renditeEKLabel2 = new Label("Renditeforderung EK:");
+		renditeFKLabel2 = new Label("Renditeforderung FK:");
+		gewerbeStLabel2 = new Label("Gewerbesteuer:");
+		koerperStLabel2 = new Label("Körperschaftssteuer <br> inkl. Solidaritätszuschlag:  ");
+		koerperStLabel2.setContentMode(Label.CONTENT_XHTML);
+		renditeEK2 = new Label();
+		renditeFK2 = new Label();
+		gewerbeSt2 = new Label();
+		koerperSt2 = new Label();
+		
+		companyValue2 = new Label();
+		
+		planningGridScenario2.addComponent(renditeEKLabel2, 0, 0);
+		planningGridScenario2.addComponent(renditeEK2, 1, 0);
+		planningGridScenario2.addComponent(renditeFKLabel2, 0, 1);
+		planningGridScenario2.addComponent(renditeFK2, 1, 1);
+		planningGridScenario2.addComponent(gewerbeStLabel2, 0, 2);
+		planningGridScenario2.addComponent(gewerbeSt2, 1, 2);
+		planningGridScenario2.addComponent(koerperStLabel2, 0, 3);
+		planningGridScenario2.addComponent(koerperSt2, 1, 3);
+		planningGridScenario2.setComponentAlignment(koerperSt2, Alignment.MIDDLE_LEFT);
+		
+		companyValueLayoutScenario2.addComponent(companyValue2);
+		
+	}
+	
+	public void createScenario3Layout() {
+		renditeEKLabel3 = new Label("Renditeforderung EK:");
+		renditeFKLabel3 = new Label("Renditeforderung FK:");
+		gewerbeStLabel3 = new Label("Gewerbesteuer:");
+		koerperStLabel3 = new Label("Körperschaftssteuer <br> inkl. Solidaritätszuschlag:  ");
+		koerperStLabel3.setContentMode(Label.CONTENT_XHTML);
+		renditeEK3 = new Label();
+		renditeFK3 = new Label();
+		gewerbeSt3 = new Label();
+		koerperSt3 = new Label();
+		
+		companyValue3 = new Label();
+		
+		planningGridScenario3.addComponent(renditeEKLabel3, 0, 0);
+		planningGridScenario3.addComponent(renditeEK3, 1, 0);
+		planningGridScenario3.addComponent(renditeFKLabel3, 0, 1);
+		planningGridScenario3.addComponent(renditeFK3, 1, 1);
+		planningGridScenario3.addComponent(gewerbeStLabel3, 0, 2);
+		planningGridScenario3.addComponent(gewerbeSt3, 1, 2);
+		planningGridScenario3.addComponent(koerperStLabel3, 0, 3);
+		planningGridScenario3.addComponent(koerperSt3, 1, 3);
+		planningGridScenario3.setComponentAlignment(koerperSt3, Alignment.MIDDLE_LEFT);
+		
+		companyValueLayoutScenario3.addComponent(companyValue3);
+		
+	}
+	
+	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue){
+		switch (numScenario) {
+		case 0:
+			this.renditeEK1.setValue(renditeEK);
+			this.renditeFK1.setValue(renditeFK);
+			this.gewerbeSt1.setValue(gewerbeSt);
+			this.koerperSt1.setValue(koerperSt);
+			this.companyValue1.setValue(companyValue);
+			logger.debug("Values von Szenario 1 gesetzt");
+			break;
+			
+		case 1:
+			this.renditeEK2.setValue(renditeEK);
+			this.renditeFK2.setValue(renditeFK);
+			this.gewerbeSt2.setValue(gewerbeSt);
+			this.koerperSt2.setValue(koerperSt);
+			this.companyValue2.setValue(companyValue);
+			logger.debug("Values von Szenario 2 gesetzt");
+			break;
+			
+		case 2:
+			this.renditeEK3.setValue(renditeEK);
+			this.renditeFK3.setValue(renditeFK);
+			this.gewerbeSt3.setValue(gewerbeSt);
+			this.koerperSt3.setValue(koerperSt);
+			this.companyValue3.setValue(companyValue);
+			logger.debug("Values von Szenario 3 gesetzt");
+			break;			
+
+		}
 	}
 	
 	public void createLayout() {

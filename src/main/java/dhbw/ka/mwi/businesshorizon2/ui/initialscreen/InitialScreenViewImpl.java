@@ -210,6 +210,9 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		leftContentLayout = new VerticalLayout();
 		bottomLeftLayout = new VerticalLayout();
 		bottomRightLayout = new VerticalLayout();
+		bottomRightLayout.setHeight(90, UNITS_PERCENTAGE);
+		bottomRightLayout.setWidth(100, UNITS_PERCENTAGE);
+		bottomRightLayout.addStyleName("horizontalBottom");
 		bottomLayout = new VerticalLayout();
 		gap = new Label();
 		leftContainerSpacing = new VerticalLayout();
@@ -634,13 +637,18 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	public void showView(View leftView, View rightView) {
 		if (bottomLayout.getComponentIndex(horizontalSplitPanelRight)==-1) {
 			bottomLayout.replaceComponent(bottomRightLayout, horizontalSplitPanelRight);
+			bottomLayout.setComponentAlignment(horizontalSplitPanelRight, Alignment.MIDDLE_CENTER);
 		}
 		horizontalSplitPanelRight.setFirstComponent((Component) leftView);
 		horizontalSplitPanelRight.setSecondComponent((Component) rightView);
 	}
 	
+	/**
+	 * @author Tobias Lindner
+	 */
 	public void showExtendedView (View exView) {
 		bottomLayout.replaceComponent(horizontalSplitPanelRight, bottomRightLayout);
+		bottomLayout.setComponentAlignment(bottomRightLayout, Alignment.MIDDLE_CENTER);
 		bottomRightLayout.addComponent((Component)exView);
 	}
 

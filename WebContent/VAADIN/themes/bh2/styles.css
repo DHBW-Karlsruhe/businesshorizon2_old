@@ -638,9 +638,8 @@ textarea.projectNameInput{
     margin: 5px;
   }
   
-.deleteScenario:hover + gridLayoutScenarios{
+.deleteScenario:hover > div > div > div {
 	background-color: red;
-	
 }
 
 .resultScenarioLayout{
@@ -656,4 +655,36 @@ textarea.projectNameInput{
 	padding-left: 10px;
 	padding-right: 10px;
 	box-sizing: border-box;
+}
+
+.v-table-row.v-table-row-yello-row,
+.v-table-row-odd.v-table-row-yello-row {
+  	background-color: #ffff00;
+  	border: 2px solid white;
+}
+
+.v-table-row-yello-row .v-table-cell-content {
+	background-color: #ffff00;
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+	
+}
+
+.v-table-row-table-line .v-table-cell-content {
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+	
+}
+
+.scenarioTable .v-table-cell-content {
+	border-right: 1px solid white;
+}
+
+.scenarioTable .v-table-header {
+	color: white;
+	border-right: 1px solid white;
+}
+
+.scenarioTable .v-table-header .td {
+	border-right: 1px solid white;
 }

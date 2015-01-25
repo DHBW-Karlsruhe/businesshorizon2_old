@@ -70,6 +70,10 @@ public interface MoreScenarioResultViewInterface extends View {
 	public void changeProgress(float progress);
 
 	public void createLayout();
+	
+	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue);
+	
+	public void addScenario3ToLayout ();
 
 
 

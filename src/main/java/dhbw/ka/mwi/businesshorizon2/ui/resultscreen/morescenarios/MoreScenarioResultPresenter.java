@@ -25,7 +25,9 @@
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -65,6 +67,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.MoreScenarioCalculationEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
@@ -102,9 +105,71 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 	 */
 	@PostConstruct
 	public void init() {
-//		eventBus.addHandler(this);
+		eventBus.addHandler(this);
 	}
+	
+	@EventHandler
+	public void onMoreScenarioCalculation (MoreScenarioCalculationEvent event) {
+		
+		calculateScenario (0, event.getProject());
+		calculateScenario (1, event.getProject());
+		
+		if (event.anzScenarios()==3) {
+			getView().addScenario3ToLayout();
+			calculateScenario (2, event.getProject());
+		}
+	}
+	
+	public void calculateScenario (int numScenario, Project project) {
+//		project = event.getProject();
+		double[] cashflow;
+		double[] fremdkapital;
+		double unternehmenswert = 0;
+		Szenario scenario = project.getIncludedScenarios().get(numScenario);
+		AbstractPeriodContainer periodContainer = project.getDeterministicPeriods();
+		if(periodContainer instanceof CashFlowPeriodContainer){
+	
+		}else if(periodContainer instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
+			CashFlowCalculator.calculateUKVCashflows((UmsatzkostenVerfahrenCashflowPeriodContainer)periodContainer, scenario);
+		}else if(periodContainer instanceof GesamtkostenVerfahrenCashflowPeriodContainer){
+			CashFlowCalculator.calculateGKVCashflows((GesamtkostenVerfahrenCashflowPeriodContainer)periodContainer, scenario);
+		}
+	
+		TreeSet<? extends Period> periods = periodContainer.getPeriods();
+		Iterator<? extends Period> it = periods.iterator();
+		Period period;
+		int counter = 0;
+		cashflow = new double[periods.size()];
+		fremdkapital = new double[periods.size()];
+	
+		while(it.hasNext()){
+			period = it.next();
+			cashflow[counter] = period.getFreeCashFlow();
+			fremdkapital[counter] = period.getCapitalStock();
+			counter++;
+		}
+	
+		AbstractDeterministicMethod method = project.getCalculationMethod();
+		
+		if(method.getName().equals("Flow-to-Equity (FTE)")){
+			FTE fte = new FTE();
+			unternehmenswert = fte.calculateValues(cashflow, scenario);
+			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
+		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
+			APV apv = new APV();
+			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
+			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
+		}else{	//method.getName().equals("WACC")
+	
+		}
+		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
+		nfDE.setMaximumFractionDigits(2);
+		nfDE.setMaximumFractionDigits(2);
+		
+		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert));
 
+	}
+	
 //	@SuppressWarnings("unchecked")
 //	@EventHandler
 //	public void onShowOutputView(ShowOutputViewEvent event) {

@@ -8,13 +8,20 @@ public class MoreScenarioCalculationEvent extends Event {
 
 	private static final long serialVersionUID = 1L;
 	private Project project;
+	
+	private int anzScenarios;
 
-	public MoreScenarioCalculationEvent(Project project) {
+	public MoreScenarioCalculationEvent(Project project, int anzScenarios) {
 		this.project = project;
+		this.anzScenarios = anzScenarios;
 	}
 
 	public Project getProject() {
 		return project;
+	}
+	
+	public int anzScenarios () {
+		return anzScenarios;
 	}
 
 }

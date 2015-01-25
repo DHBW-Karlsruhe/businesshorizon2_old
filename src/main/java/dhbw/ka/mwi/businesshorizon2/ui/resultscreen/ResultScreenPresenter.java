@@ -358,10 +358,17 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 				logger.debug("OneScenarioCalculationEvent gefeuert");
 				eventBus.fireEvent(new OneScenarioCalculationEvent(project));
 				getView().showView(oneScenarioView);
-			}else{
-				eventBus.fireEvent(new MoreScenarioCalculationEvent(project));
-				logger.debug("MoreScenarioCalculationEvent fired");
+			}else if (project.getIncludedScenarios().size() == 2){
+				eventBus.fireEvent(new MoreScenarioCalculationEvent(project, 2));
+				logger.debug("MoreScenarioCalculationEvent (2 Scenarios) fired");
 				getView().showView(moreScenarioView);
+				getView().removeStyle();
+			}
+			else {
+				eventBus.fireEvent(new MoreScenarioCalculationEvent(project, 3));
+				logger.debug("MoreScenarioCalculationEvent (3 Scenarios) fired");
+				getView().showView(moreScenarioView);	
+				getView().removeStyle();
 			}
 //			for(Szenario scenario : project.getIncludedScenarios()){
 //				onProgressChange(0.5f);
