@@ -103,10 +103,20 @@ public class Project implements Serializable {
 	private ProjectInputType projectInputType;
 
 	private SortedSet<AbstractStochasticMethod> methods;
+	
+	/**
+	 * Die AbstractStochasticMethod wird benötigt um die zukünftigen CashFlows zu simulieren
+	 * Die AbstractDeterministicMethod wird benötigt, um an Hand von zukünftigen Cashflows den Unternehmenswert zu berechnen, 
+	 * egal ob die CashFlows deterministisch eingegeben werden oder vorher mit der AbstractStochasticMethod berechnet wurden.
+	 */
+	private AbstractStochasticMethod stoMethod;
+	private AbstractDeterministicMethod calcMethod;
 	//Annika Weis
 	private SortedSet<AbstractDeterministicMethod> methods_deterministic;
 
 	protected List<Szenario> scenarios = new ArrayList<Szenario>();
+
+	private double companyValue;
 
 	/**
 	 * Konstruktor des Projekts, mit dessen der Name gesetzt wird. 
@@ -330,6 +340,22 @@ public class Project implements Serializable {
 	public SortedSet<AbstractDeterministicMethod> getMethods_deterministic() {
 		return methods_deterministic;
 	}
+	
+	public void setStochasticMethod(AbstractStochasticMethod method){
+		this.stoMethod = method;
+	}
+	
+	public AbstractStochasticMethod getStochasticMethod(){
+		return this.stoMethod;
+	}
+	
+	public void setCalculationMethod(AbstractDeterministicMethod method){
+		this.calcMethod = method;
+	}
+	
+	public AbstractDeterministicMethod getCalculationMethod(){
+		return this.calcMethod;
+	}
 
 	public ProjectInputType getProjectInputType() {
 		return projectInputType;
@@ -549,6 +575,14 @@ public class Project implements Serializable {
 		typ = "Stochastische Eingabe";
 	}
 	return typ;
+	}
+	
+	public void setCompanyValue(double value){
+		this.companyValue = value;
+	}
+	
+	public double getCompanyValue(){
+		return this.companyValue;
 	}
 	
 	

@@ -22,10 +22,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
+package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
-import com.mvplite.presenter.Presenter;
 import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
@@ -66,8 +67,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultViewImpl;
-import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.MoreScenarioCalculationEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
@@ -76,24 +76,18 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResul
  * 
  */
 
-public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
+public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioResultViewInterface>
 		implements CallbackInterface {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
-			.getLogger("ResultScreenPresenter.class");
+			.getLogger("OutputPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
 
 	@Autowired
 	private ProjectProxy projectProxy;
-	
-	@Autowired
-	private OneScenarioResultViewImpl oneScenarioView;
-	
-	@Autowired
-	private MoreScenarioResultViewImpl moreScenarioView;
 
 	private MethodRunner methodRunner;
 
@@ -113,7 +107,69 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	public void init() {
 		eventBus.addHandler(this);
 	}
+	
+	@EventHandler
+	public void onMoreScenarioCalculation (MoreScenarioCalculationEvent event) {
+		
+		calculateScenario (0, event.getProject());
+		calculateScenario (1, event.getProject());
+		
+		if (event.anzScenarios()==3) {
+			getView().addScenario3ToLayout();
+			calculateScenario (2, event.getProject());
+		}
+	}
+	
+	public void calculateScenario (int numScenario, Project project) {
+//		project = event.getProject();
+		double[] cashflow;
+		double[] fremdkapital;
+		double unternehmenswert = 0;
+		Szenario scenario = project.getIncludedScenarios().get(numScenario);
+		AbstractPeriodContainer periodContainer = project.getDeterministicPeriods();
+		if(periodContainer instanceof CashFlowPeriodContainer){
+	
+		}else if(periodContainer instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
+			CashFlowCalculator.calculateUKVCashflows((UmsatzkostenVerfahrenCashflowPeriodContainer)periodContainer, scenario);
+		}else if(periodContainer instanceof GesamtkostenVerfahrenCashflowPeriodContainer){
+			CashFlowCalculator.calculateGKVCashflows((GesamtkostenVerfahrenCashflowPeriodContainer)periodContainer, scenario);
+		}
+	
+		TreeSet<? extends Period> periods = periodContainer.getPeriods();
+		Iterator<? extends Period> it = periods.iterator();
+		Period period;
+		int counter = 0;
+		cashflow = new double[periods.size()];
+		fremdkapital = new double[periods.size()];
+	
+		while(it.hasNext()){
+			period = it.next();
+			cashflow[counter] = period.getFreeCashFlow();
+			fremdkapital[counter] = period.getCapitalStock();
+			counter++;
+		}
+	
+		AbstractDeterministicMethod method = project.getCalculationMethod();
+		
+		if(method.getName().equals("Flow-to-Equity (FTE)")){
+			FTE fte = new FTE();
+			unternehmenswert = fte.calculateValues(cashflow, scenario);
+			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
+		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
+			APV apv = new APV();
+			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
+			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
+		}else{	//method.getName().equals("WACC")
+	
+		}
+		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
+		nfDE.setMaximumFractionDigits(2);
+		nfDE.setMaximumFractionDigits(2);
+		
+		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert));
 
+	}
+	
 //	@SuppressWarnings("unchecked")
 //	@EventHandler
 //	public void onShowOutputView(ShowOutputViewEvent event) {
@@ -343,33 +399,14 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 //
 //	}
 	
-	@EventHandler
-	public void onShowResult(ShowOutputViewEvent event){
-		getView().showOutputView();
-		project = projectProxy.getSelectedProject();
-		if(project.getProjectInputType().isStochastic()){
-			
-		}
-		if(project.getProjectInputType().isDeterministic()){
-			
-			onProgressChange(0.5f);
-			if(project.getIncludedScenarios().size() == 1){
-				logger.debug("scenarios: "+project.getIncludedScenarios().size());
-				logger.debug("OneScenarioCalculationEvent gefeuert");
-				eventBus.fireEvent(new OneScenarioCalculationEvent(project));
-				getView().showView(oneScenarioView);
-			}else if (project.getIncludedScenarios().size() == 2){
-				eventBus.fireEvent(new MoreScenarioCalculationEvent(project, 2));
-				logger.debug("MoreScenarioCalculationEvent (2 Scenarios) fired");
-				getView().showView(moreScenarioView);
-				getView().removeStyle();
-			}
-			else {
-				eventBus.fireEvent(new MoreScenarioCalculationEvent(project, 3));
-				logger.debug("MoreScenarioCalculationEvent (3 Scenarios) fired");
-				getView().showView(moreScenarioView);	
-				getView().removeStyle();
-			}
+//	@EventHandler
+//	public void onShowResult(ShowOutputViewEvent event){
+//		getView().showOutputView();
+//		project = projectProxy.getSelectedProject();
+//		if(project.getProjectInputType().isStochastic()){
+//			
+//		}
+//		if(project.getProjectInputType().isDeterministic()){
 //			for(Szenario scenario : project.getIncludedScenarios()){
 //				onProgressChange(0.5f);
 //				
@@ -388,35 +425,34 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 //					
 //				}
 //			}
-			onProgressChange(1f);
-		}
-		
+//		}
+//		
+//	}
+
+	@Override
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-//	@Override
-//	public boolean isValid() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public void validate(ValidateContentStateEvent event) {
-//		// TODO Auto-generated method stub
-//
-//	}
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
 
-	@EventHandler
-	public void handleShowView(ShowOutputViewEvent event) {
-//		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT,
-//				true));
-		logger.debug("ShowOutputViewEvent handled");
 	}
 
-//	@Override
-//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-//		// TODO Auto-generated method stub
-//
+//	@EventHandler
+//	public void handleShowView(ShowOutputViewEvent event) {
+////		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.OUTPUT,
+////				true));
+//		logger.debug("ShowOutputViewEvent handled");
 //	}
+
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
+
+	}
 
 	/**
 	 * Wenn die Berechnung der stochastisch vorhergesagten Perioden erfolgreich

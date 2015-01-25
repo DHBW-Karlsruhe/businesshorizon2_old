@@ -24,6 +24,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.SortedSet;
@@ -118,6 +119,8 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 
 	private Iterator<AbstractStochasticMethod> methodIterator;
 	private Iterator<AbstractDeterministicMethod> method_deterministicIterator;//Annika Weis
+	
+	private DecimalFormat df; 
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -140,6 +143,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		initializeErrorStrings();
 		initializeVariableBooleans();
 		
+		df = new DecimalFormat(",##0.00");	
 
 		firstCall = true;
 		showError = false;
@@ -183,7 +187,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		errorMessagePeriodsToForecast = "Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
 		errorMessagePeriodsToForecast_deterministic = "Bitte geben Sie die Anzahl vorherzusehender Perioden (deterministische Verfahren) in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
 		errorMessageSpecifiedPastPeriods = "Bitte geben Sie die Anzahl der anzugebenden vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer als 3 und als die Anzahl der einbezogenen vergangenen Perioden.";
-		errorMessageRelevantPastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 und kleiner als die Anzahl der angegebenen vergangenen Perioden an.";
+		errorMessageRelevantPastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 an.";
 		errorMessageIterations = "Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen als Ganzzahl zwischen 1000 und 100000 an. Beispiel: 10000";
 	}
 
@@ -335,7 +339,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		}
 		
 	}
-
+	
 	/**
 	 * In dieser Methode werden alle Eingabefelder auf Validitaet geprueft. Sie
 	 * wird auch von anderen Screens aufzurufen um sicherzustellen, dass bei
@@ -496,6 +500,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 				iterationsValid = true;
 				getView().setComponentError(false, "iterations", "");
 				this.projectProxy.getSelectedProject().setIterations(iterations);
+				eventBus.fireEvent(new ParameterValidationEvent(true));
 				logger.debug("Iterationen in Objekten gesetzt: "
 						+ this.projectProxy.getSelectedProject().getName());
 
@@ -510,6 +515,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 							"iterations", errorMessageIterations);
 			getView()
 					.showErrorMessage(errorMessageIterations);
+			eventBus.fireEvent(new ParameterValidationEvent(false));
 			logger.debug("Keine gueltige Eingabe in Feld 'Wiederholungen'");
 		}
 
@@ -539,6 +545,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 				getView().setComponentError(false, "periodsToForecast", "");
 				this.projectProxy.getSelectedProject().setPeriodsToForecast(
 						periodsToForecastInt);
+				eventBus.fireEvent(new ParameterValidationEvent(true));
 				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -552,6 +559,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 							errorMessagePeriodsToForecast);
 			getView()
 					.showErrorMessage(errorMessagePeriodsToForecast);
+			eventBus.fireEvent(new ParameterValidationEvent(false));
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
 		}
 
@@ -583,6 +591,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 				getView().setComponentError(false, "periodsToForecast_deterministic", "");
 				this.projectProxy.getSelectedProject().setPeriodsToForecast_deterministic(
 						periodsToForecast_deterministicInt);
+				eventBus.fireEvent(new ParameterValidationEvent(true));
 				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -596,6 +605,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 							errorMessagePeriodsToForecast_deterministic);
 			getView()
 					.showErrorMessage(errorMessagePeriodsToForecast_deterministic);
+			eventBus.fireEvent(new ParameterValidationEvent(false));
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren");
 		}
 
@@ -662,11 +672,12 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		try {
 			relevantPastPeriodsInt = Integer.parseInt(relevantPastPeriods);
 			specifiedPastPeriodsInt = this.projectProxy.getSelectedProject().getSpecifiedPastPeriods(); 
-			if (relevantPastPeriodsInt > 2 && specifiedPastPeriodsInt > relevantPastPeriodsInt) {
+			if (relevantPastPeriodsInt > 2) {
 				relevantPastPeriodsValid = true;
 				getView().setComponentError(false, "relevantPastPeriods", "");
 				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
 						relevantPastPeriodsInt);
+				eventBus.fireEvent(new ParameterValidationEvent(true));
 				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -679,6 +690,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 							"relevantPastPeriods", errorMessageRelevantPastPeriods);
 			getView()
 					.showErrorMessage(errorMessageRelevantPastPeriods);
+			eventBus.fireEvent(new ParameterValidationEvent(false));
 			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
 		}
 
@@ -706,6 +718,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 				getView().setComponentError(false, "basisYear", "");
 				this.projectProxy.getSelectedProject().setBasisYear(
 						basisYearInt);
+				eventBus.fireEvent(new ParameterValidationEvent(true));
 				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
 			} else {
 				throw new NumberFormatException();
@@ -718,6 +731,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 							"basisYear", errorMessageBasisYear);
 			getView()
 					.showErrorMessage(errorMessageBasisYear);
+			eventBus.fireEvent(new ParameterValidationEvent(false));
 			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
 		}
 

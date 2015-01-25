@@ -46,6 +46,7 @@ import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServic
 import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ImportUploadFinishedEvent;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
+import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
@@ -70,6 +71,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterf
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewInterface;
+import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ShowOutputViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterface;
 
 /**
@@ -95,8 +97,10 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	@Autowired
 	private EventBus eventBus;
 
-	@Autowired
 	private Project project;
+	
+	@Autowired
+	private ProjectProxy projectProxy;
 
 	@Autowired
 	private ProjectListViewInterface projectListView;
@@ -275,6 +279,8 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@EventHandler
 	public void onShowMethodSelectionView(ShowProcessStepEvent event){
+		project = projectProxy.getSelectedProject();
+		
 		switch (event.getScreen()) {
 		case METHODSELECTION:
 			buttonsMiddleView.setInitialButtons();
@@ -287,17 +293,18 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 		case PARAMETER:
 			buttonsMiddleView.setGoToStep(3);
-			if (project.getProjectInputType().isStochastic()) {
+			if (projectProxy.getSelectedProject().getProjectInputType().isStochastic()) {
 				buttonsMiddleView.setStochasticParameter();
+				getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
 				logger.debug("Stochastische Buttons gesetzt");
 			}
 			
 			else {
 				buttonsMiddleView.setDeterministicParameter();
+				getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Deterministische Methode", "Bitte geben Sie die Parameter ein"});
 				logger.debug ("Deterministische Buttons gesetzt");
 			}
 			getView().showView(buttonsMiddleView, parameterInputView);
-			getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
 			getView().setProgress("./images/progressBar/progress_2.png");
 			setScreen2Buttons();
 			break;
@@ -322,11 +329,17 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			break;
 
 		case RESULT:
-			getView().showView(buttonsMiddleView, resultScreenView);
+			buttonsMiddleView.hideStepButton();
+			if (project.getScenarios().size()>1) {
+				getView().showExtendedView(resultScreenView);
+			}
+			else {
+				getView().showView(buttonsMiddleView, resultScreenView);				
+			}
 			getView().setPageDescription("./images/icons/newIcons/1418775155_device_board_presentation_content_chart-128.png", "Schritt 5", "Ergebnisausgabe");
 			getView().setProgress("./images/progressBar/progress_5.png");
 			setScreen5Buttons();
-
+			eventBus.fireEvent(new ShowOutputViewEvent());
 			break;
 
 		default:

@@ -27,9 +27,13 @@ package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mvplite.view.View;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -48,8 +52,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * @author Florian Stier, Mirko Göpfrich
  * 
  */
-public class ResultScreenViewImpl extends Panel implements ResultScreenViewInterface {
+public class ResultScreenViewImpl extends VerticalLayout implements ResultScreenViewInterface {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = Logger.getLogger("ResultScreenViewImpl.class");
 
 	@Autowired
 	private ResultScreenPresenter presenter;
@@ -57,6 +63,16 @@ public class ResultScreenViewImpl extends Panel implements ResultScreenViewInter
 	private VerticalLayout vl = new VerticalLayout();
 	
 	private ProgressIndicator progressIndicator;
+
+	private GridLayout grid;
+
+	private Label planningLabel;
+
+	private Label companyValueLabel;
+
+	private GridLayout planningLayout;
+
+	private Label companyValue;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -68,7 +84,6 @@ public class ResultScreenViewImpl extends Panel implements ResultScreenViewInter
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
-
 	}
 
 	/**
@@ -85,13 +100,43 @@ public class ResultScreenViewImpl extends Panel implements ResultScreenViewInter
 		progressIndicator.setCaption("Berechne..");
 		
 		
-		vl.addComponent(progressIndicator);
-		vl.setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
-		this.setContent(vl);
-		this.setStyleName("borderless light");
-		this.setSizeFull();
+		addComponent(progressIndicator);
+		setComponentAlignment(progressIndicator, Alignment.MIDDLE_CENTER);
+//		addComponent(vl);
+		setStyleName("borderless light");
+		setWidth(95, UNITS_PERCENTAGE);
+		setHeight(100, UNITS_PERCENTAGE);
+		setStyleName("projectDetailsLayout");
 
 	}
+	
+	/**
+	 * Diese Methode entfernt den Style projectDetailsLayout, damit die volle Breite genutzt werden kann.
+	 * @author Tobias Lindner
+	 */
+	public void removeStyle () {
+		removeStyleName("projectDetailsLayout");
+	}
+	
+//	public void createLayout() {
+//		
+//		grid = new GridLayout(2, 4);
+//		planningLabel = new Label("Planungsprämissen:");
+//		companyValueLabel = new Label("Unternehmenswert:");
+//		planningLayout = new GridLayout();
+//		companyValue = new Label("30.000.000€");
+//		
+//		grid.setSizeFull();
+//		grid.setColumnExpandRatio(1, 5);
+//		
+//		grid.addComponent(planningLabel, 0, 0);
+//		grid.addComponent(planningLayout, 1, 0);
+//		grid.addComponent(companyValueLabel, 0, 1);
+//		grid.addComponent(companyValue, 1, 1);
+//		
+//		addComponent(grid);
+//		
+//	}
 
 	@Override
 
@@ -100,7 +145,11 @@ public class ResultScreenViewImpl extends Panel implements ResultScreenViewInter
 		generateUi();
 		
 	}
-
+	
+	public void showView(View view){
+		addComponent((Component)view);
+		logger.debug ("ResultScreenview gesetzt: " + view.toString());
+	}
 
 	public void addHeadline(Label head) {
 		vl.addComponent(head);

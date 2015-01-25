@@ -36,6 +36,7 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.methods.random.RandomWalk;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
@@ -166,6 +167,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		Project project = new Project(name, description);
 		project.setLastChanged(new Date());
 		project.setCreatedFrom(this.user);
+		project.setStochasticMethod(new RandomWalk());
 		try {
 			persistenceService.addProject(this.user, project);
 		} catch (ProjectAlreadyExistsException e) {

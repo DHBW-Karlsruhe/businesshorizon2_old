@@ -610,3 +610,81 @@ textarea.projectNameInput{
 	font-size: 12pt;
 }
 
+.font12bold{
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.font12bold{
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.font12{
+	font-size: 12pt;
+}
+
+.scenarios {
+	font-size: 12pt;
+	margin-left: 5px;
+}
+
+.addScenario {
+	font-weight: bold;
+}
+
+.scenarios input[type="text"] {
+    font-size:12pt;
+    margin: 5px;
+  }
+  
+.deleteScenario:hover > div > div > div {
+	background-color: red;
+}
+
+.resultScenarioLayout{
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.companyValueLayout{
+	background-color: #FFFF00;
+	border: 2px solid black;
+	padding-left: 10px;
+	padding-right: 10px;
+	box-sizing: border-box;
+}
+
+.v-table-row.v-table-row-yello-row,
+.v-table-row-odd.v-table-row-yello-row {
+  	background-color: #ffff00;
+  	border: 2px solid white;
+}
+
+.v-table-row-yello-row .v-table-cell-content {
+	background-color: #ffff00;
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+	
+}
+
+.v-table-row-table-line .v-table-cell-content {
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+	
+}
+
+.scenarioTable .v-table-cell-content {
+	border-right: 1px solid white;
+}
+
+.scenarioTable .v-table-header {
+	color: white;
+	border-right: 1px solid white;
+}
+
+.scenarioTable .v-table-header .td {
+	border-right: 1px solid white;
+}

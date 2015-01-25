@@ -85,4 +85,6 @@ public interface InitialScreenViewInterface extends View {
 	
 	public void clearProgressBar();
 	
+	public void showExtendedView(View exView);
+	
 }

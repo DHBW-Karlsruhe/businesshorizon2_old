@@ -25,6 +25,9 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe;
 
+import java.util.Iterator;
+import java.util.TreeSet;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -34,6 +37,9 @@ import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
+import dhbw.ka.mwi.businesshorizon2.models.Project;
+import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
@@ -51,9 +57,18 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 
 	@Autowired
 	private EventBus eventBus;
-	
+
 	@Autowired
 	private ProjectProxy projectProxy;
+
+
+	private CashFlowPeriodContainer periodContainer;
+
+
+	private Project project;
+
+
+	private Boolean stochastic;
 
 
 	/**
@@ -92,10 +107,130 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 	}
 
 
-	public void setInputValues(Object value) {
-		projectProxy.getSelectedProject();
-		
+	public void setCashFlowValue(double value, int year) {
+		if(project == null){
+			project = projectProxy.getSelectedProject();
+			stochastic = project.getProjectInputType().isStochastic();
+		}
+
+		if(periodContainer == null){
+			periodContainer = new CashFlowPeriodContainer();
+		}
+		CashFlowPeriod period = null;
+		boolean isNew = true;
+		TreeSet<CashFlowPeriod> periods = periodContainer.getPeriods();
+		Iterator<CashFlowPeriod> it = periods.iterator();
+		while(it.hasNext()){
+			period = it.next();
+			if(period.getYear() == year){
+				period.setFreeCashFlow(value);
+				periodContainer.removePeriod(period);
+				isNew = false;
+				break;
+			}
+		}
+		if(isNew){
+			period = new CashFlowPeriod(year);
+			period.setFreeCashFlow(value);
+		}
+		periodContainer.addPeriod(period);
+		if(stochastic){
+			project.setStochasticPeriods(periodContainer);
+		}
+		else{
+			project.setDeterministicPeriods(periodContainer);
+		}
 	}
+
+	public void setCapitalStockValue(double value, int year){
+		project = projectProxy.getSelectedProject();
+		stochastic = project.getProjectInputType().isStochastic();
+		if(stochastic){
+			periodContainer = (CashFlowPeriodContainer) project.getStochasticPeriods();
+		}
+		else{
+			periodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
+		}
+		CashFlowPeriod period = null;
+		boolean isNew = true;
+		TreeSet<CashFlowPeriod> periods = periodContainer.getPeriods();
+		Iterator<CashFlowPeriod> it = periods.iterator();
+		while(it.hasNext()){
+			period = it.next();
+			if(period.getYear() == year){
+				period.setCapitalStock(value);
+				periodContainer.removePeriod(period);
+				isNew = false;
+				break;
+			}
+		}
+		if(isNew){
+			period = new CashFlowPeriod(year);
+			period.setCapitalStock(value);
+		}
+		periodContainer.addPeriod(period);
+		if(stochastic){
+			project.setStochasticPeriods(periodContainer);
+		}
+		else{
+			project.setDeterministicPeriods(periodContainer);
+		}
+	}
+
+
+	public String getCashFlow(int year) {
+		double value = 0.0;
+		project = projectProxy.getSelectedProject();
+		stochastic = project.getProjectInputType().isStochastic();
+		if(stochastic){
+			periodContainer = (CashFlowPeriodContainer) project.getStochasticPeriods();
+		}
+		else{
+			periodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
+		}
+
+		if(periodContainer != null){
+			CashFlowPeriod period;
+			TreeSet<CashFlowPeriod> periods = periodContainer.getPeriods();
+			Iterator<CashFlowPeriod> it = periods.iterator();
+			while(it.hasNext()){
+				period = it.next();
+				if(period.getYear() == year){
+					value = period.getFreeCashFlow();
+					break;
+				}
+			}
+		}
+		return String.valueOf(value);
+	}
+
+
+	public String getCapitalStock(int year) {
+		double value = 0.0;
+		project = projectProxy.getSelectedProject();
+		stochastic = project.getProjectInputType().isStochastic();
+		if(stochastic){
+			periodContainer = (CashFlowPeriodContainer) project.getStochasticPeriods();
+		}
+		else{
+			periodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
+		}
+
+		if(periodContainer != null){
+			CashFlowPeriod period;
+			TreeSet<CashFlowPeriod> periods = periodContainer.getPeriods();
+			Iterator<CashFlowPeriod> it = periods.iterator();
+			while(it.hasNext()){
+				period = it.next();
+				if(period.getYear() == year){
+					value = period.getCapitalStock();
+					break;
+				}
+			}
+		}
+		return String.valueOf(value);
+	}
+
 }
 
 

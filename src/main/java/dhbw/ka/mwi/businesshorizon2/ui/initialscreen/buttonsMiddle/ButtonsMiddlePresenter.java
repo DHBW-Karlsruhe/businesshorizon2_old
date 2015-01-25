@@ -42,6 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescription
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.description.ShowParameterDescriptionViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterValidationEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ShowParameterInputViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowNavigationStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
@@ -141,6 +142,17 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 	public void onShowScenarioScreen (ShowProcessStepEvent event) {
 		if (event.getScreen().equals(screen.SCENARIOS)) {
 			getView().setScenarioButton();
+		}
+	}
+	
+	@EventHandler
+	public void onParameterValidation (ParameterValidationEvent event) {
+		if (event.getValid()) {
+			getView().enableNext();
+		}
+		
+		else {
+			getView().disableNext();
 		}
 	}
 	
