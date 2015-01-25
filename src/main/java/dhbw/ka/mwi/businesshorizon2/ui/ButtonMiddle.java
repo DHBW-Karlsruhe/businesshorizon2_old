@@ -104,8 +104,7 @@ public class ButtonMiddle extends HorizontalLayout{
 	public ButtonMiddle (String iconPfad, String text, String text2, LayoutClickListener lcl) {
 		this (iconPfad, text, lcl);
 
-		label2 = new Label (text2);
-		
+		label2.setValue(text2);
 		vl.addComponent(label2);
 		vl.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
 		vl.setComponentAlignment(label2, Alignment.MIDDLE_LEFT);

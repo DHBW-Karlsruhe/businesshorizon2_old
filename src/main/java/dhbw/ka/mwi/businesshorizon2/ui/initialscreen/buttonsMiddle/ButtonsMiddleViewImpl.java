@@ -246,7 +246,7 @@ ButtonsMiddleViewInterface {
 		});
 
 		this.button2.setVisible(true);
-		setExpandRatio(gap, 1.0f);
+//		setExpandRatio(gap, 1.0f);
 		
 		logger.debug ("View: setFCFButton");
 		
