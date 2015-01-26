@@ -173,13 +173,17 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		ColumnChart cc = new ColumnChart();	
 		cc.setOption("is3D", true);	
 		cc.setOption("isStacked", true);	
+		cc.setOption("legend", "bottom");
+		cc.setOption("title", "Kapitalstruktur");
+		cc.setOption("width", 250);
+		cc.setOption("height", 240);
 		cc.addXAxisLabel("Year");	
 //		cc.addColumn("Gesamtkapital");	
 		cc.addColumn("Eigenkapital");	
 		cc.addColumn("Fremdkapital");	
 		// Values in double are Expenses, Sales, Stock	
 //		cc.add(String.valueOf(project.getBasisYear()), new double[]{100,200,320});	
-		cc.add(String.valueOf(periods.last().getYear()), new double[]{unternehmenswert, dFremdkapital});		
+		cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital});		
 //		cc.setSizeFull();
 		getView().setCapitalChart(cc);
 	}

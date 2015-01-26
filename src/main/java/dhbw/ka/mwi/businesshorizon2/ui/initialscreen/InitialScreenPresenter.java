@@ -280,6 +280,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	@EventHandler
 	public void onShowMethodSelectionView(ShowProcessStepEvent event){
 		project = projectProxy.getSelectedProject();
+		persistenceService.saveProjects();
 		
 		switch (event.getScreen()) {
 		case METHODSELECTION:
@@ -437,7 +438,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-
+				persistenceService.saveProjects();
 
 			}
 

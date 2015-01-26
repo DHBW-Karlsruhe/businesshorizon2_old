@@ -30,6 +30,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.vaadinvisualizations.ColumnChart;
+import org.vaadin.vaadinvisualizations.LineChart;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
@@ -102,6 +103,10 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	private VerticalLayout capitalChartLayout;
 
+	private VerticalLayout cashflowChartLayout;
+
+	private Label gap4;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -140,14 +145,17 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		gap = new Label();
 		gap2 = new Label();
 		gap3 = new Label();
+		gap4 = new Label();
 		expandingGap = new Label();
 		expandingGap2 = new Label();
 		expandingGap3 = new Label();
 		capitalChartLayout = new VerticalLayout();
+		cashflowChartLayout = new VerticalLayout();
 
 		gap.setWidth("20px");
 		gap2.setWidth("20px");
 		gap3.setHeight("20px");
+		gap4.setHeight("20px");
 		expandingGap.setSizeFull();
 
 		planningLayout.setWidth(100, UNITS_PERCENTAGE);
@@ -157,8 +165,9 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		planningLabel.setWidth(SIZE_UNDEFINED, 0);
 		companyValue.setWidth(SIZE_UNDEFINED, 0);
 		companyValueLabel.setWidth(SIZE_UNDEFINED, 0);
-		capitalChartLayout.setWidth(300, UNITS_PIXELS);
-		capitalChartLayout.setHeight(200, UNITS_PIXELS);
+		capitalChartLayout.setWidth(250, UNITS_PIXELS);
+		capitalChartLayout.setHeight(250, UNITS_PIXELS);
+		cashflowChartLayout.setSizeUndefined();
 
 		planningLabel.setStyleName("font12bold");
 		renditeEKLabel.setStyleName("font12bold");
@@ -207,7 +216,9 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		addComponent(planningLayout);
 		addComponent(gap3);
 		addComponent(companyValueLayout);
+		addComponent(gap4);
 		addComponent(capitalChartLayout);
+		addComponent(cashflowChartLayout);
 		addComponent(expandingGap);
 
 		setExpandRatio(expandingGap, 1.0f);
@@ -265,13 +276,17 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	@Override
 	public void setCapitalChart(ColumnChart chart) {
 		chart.setSizeFull();
-		if(capitalChartLayout.getComponentCount() < 1){
-			capitalChartLayout.addComponent(chart);
-		}
-		else{
-			capitalChartLayout.replaceComponent(capitalChartLayout.getComponent(0), chart);
-		}
+		capitalChartLayout.removeAllComponents();
+//		Label label = new Label("Kapitalstruktur");
+//		label.setSizeUndefined();
+//		capitalChartLayout.addComponent(label);
+		capitalChartLayout.addComponent(chart);
+		capitalChartLayout.setExpandRatio(chart, 1.0f);
 
+	}
+	
+	public void setCashFlowChart(LineChart chart) {
+		
 	}
 
 }

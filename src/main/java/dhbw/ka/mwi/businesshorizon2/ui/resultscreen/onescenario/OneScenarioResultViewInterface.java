@@ -26,6 +26,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario;
 
 import org.vaadin.vaadinvisualizations.ColumnChart;
+import org.vaadin.vaadinvisualizations.LineChart;
 
 import com.mvplite.view.View;
 import com.vaadin.ui.Label;
@@ -62,5 +63,7 @@ public interface OneScenarioResultViewInterface extends View {
 			String valueOf3, String valueOf4);
 
 	public void setCapitalChart(ColumnChart chart);
+	
+	public void setCashFlowChart(LineChart chart);
 
 }
