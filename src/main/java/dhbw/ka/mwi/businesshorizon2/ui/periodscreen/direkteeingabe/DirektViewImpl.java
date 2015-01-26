@@ -97,6 +97,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		headerLabel.setStyleName("periodHeaderLabel");
 		gap.setHeight("15px");
 		inputTable.setWidth(100, UNITS_PERCENTAGE);
+		inputTable.setStyleName("fcfTable");
 		inputTable.setPageLength(3);
 		expandingGap.setHeight(100, UNITS_PERCENTAGE);
 

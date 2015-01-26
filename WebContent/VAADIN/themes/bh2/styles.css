@@ -688,3 +688,21 @@ textarea.projectNameInput{
 .scenarioTable .v-table-header .td {
 	border-right: 1px solid white;
 }
+
+.fcfTable .v-table-cell-content {
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-header {
+	color: white;
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-header .td {
+	border-right: 1px solid white;
+}
+
+.v-table-row .v-table-cell-content {
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+}

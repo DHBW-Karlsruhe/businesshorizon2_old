@@ -173,6 +173,8 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		ColumnChart cc = new ColumnChart();	
 		cc.setOption("is3D", true);	
 		cc.setOption("isStacked", true);	
+		cc.setOption("legend", "bottom");
+		cc.setOption("title", "Kapitalstruktur");
 		cc.addXAxisLabel("Year");	
 //		cc.addColumn("Gesamtkapital");	
 		cc.addColumn("Eigenkapital");	
