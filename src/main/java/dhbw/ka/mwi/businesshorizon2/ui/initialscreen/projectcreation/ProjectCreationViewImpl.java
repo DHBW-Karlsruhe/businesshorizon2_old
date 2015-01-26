@@ -85,15 +85,15 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 		gap.setHeight("20px");
 		secondGap.setSizeFull();
 		
-		projectNameInput.setValue("Geben sie hier den Projektname ein");
-		projectDescriptionInput.setValue("Geben sie hier eine Beschreibung des Projekts ein");
+		projectNameInput.setValue("Geben Sie hier den Projektnamen ein.");
+		projectDescriptionInput.setValue("Geben Sie hier eine Beschreibung des Projekts ein.");
 		
 		addComponent(projectNameInput);
 		addComponent(gap);
 		addComponent(projectDescriptionInput);
 		
 		projectNameInput.setCaption("Projektname");
-		projectNameInput.setValue("Geben Sie hier den Projektname ein");
+		projectNameInput.setValue("Geben Sie hier den Projektnamen ein.");
 		projectDescriptionInput.setCaption("Projektbeschreibung");
 		projectDescriptionInput.setValue("Geben Sie hier eine Projektbeschreibung ein");
 //		addComponent(secondGap);
