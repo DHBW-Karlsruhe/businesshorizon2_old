@@ -35,6 +35,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.vaadinvisualizations.ColumnChart;
+import org.vaadin.vaadinvisualizations.LineChart;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
@@ -142,7 +143,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		}
 
 		AbstractDeterministicMethod method = project.getCalculationMethod();
-		
+
 		if(method.getName().equals("Flow-to-Equity (FTE)")){
 			FTE fte = new FTE();
 			unternehmenswert = fte.calculateValues(cashflow, scenario);
@@ -163,13 +164,13 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
 		nfDE.setMaximumFractionDigits(2);
 		nfDE.setMaximumFractionDigits(2);
-//		getView().setCompanyValue(String.valueOf(unternehmenswert));
-//		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
+		//		getView().setCompanyValue(String.valueOf(unternehmenswert));
+		//		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
 		getView().setCompanyValue(nfDE.format(unternehmenswert));
 		getView().setScenarioValue(nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()));
-		
+
 		gesamtkapital = unternehmenswert + dFremdkapital;
-		
+
 		ColumnChart cc = new ColumnChart();	
 		cc.setOption("is3D", true);	
 		cc.setOption("isStacked", true);	
@@ -177,15 +178,31 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		cc.setOption("title", "Kapitalstruktur");
 		cc.setOption("width", 250);
 		cc.setOption("height", 240);
+		cc.setColors(new String[]{"#92D050", "#FFFF00"});
 		cc.addXAxisLabel("Year");	
-//		cc.addColumn("Gesamtkapital");	
+		//		cc.addColumn("Gesamtkapital");	
 		cc.addColumn("Eigenkapital");	
 		cc.addColumn("Fremdkapital");	
 		// Values in double are Expenses, Sales, Stock	
-//		cc.add(String.valueOf(project.getBasisYear()), new double[]{100,200,320});	
+		//		cc.add(String.valueOf(project.getBasisYear()), new double[]{100,200,320});	
 		cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital});		
-//		cc.setSizeFull();
+		//		cc.setSizeFull();
+
+		LineChart lc = new LineChart();
+		lc.setOption("legend", "bottom");
+		lc.setOption("title", "Verlauf der Cashflows");
+		lc.setOption("width", 370);
+		lc.setOption("height", 240);
+		lc.setColors("#92D050");
+		lc.addXAxisLabel("Year");
+		lc.addLine("Cashflows");
+		it = periods.iterator();
+		while(it.hasNext()){
+			period = it.next();
+				lc.add(String.valueOf(period.getYear()), new double[]{period.getFreeCashFlow()});
+		}
 		getView().setCapitalChart(cc);
+		getView().setCashFlowChart(lc);
 	}
 
 }

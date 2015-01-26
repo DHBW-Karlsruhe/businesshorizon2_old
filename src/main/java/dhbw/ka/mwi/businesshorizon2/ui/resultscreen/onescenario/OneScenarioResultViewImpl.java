@@ -107,6 +107,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	private Label gap4;
 
+	private HorizontalLayout chartArea;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -151,6 +153,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		expandingGap3 = new Label();
 		capitalChartLayout = new VerticalLayout();
 		cashflowChartLayout = new VerticalLayout();
+		chartArea = new HorizontalLayout();
 
 		gap.setWidth("20px");
 		gap2.setWidth("20px");
@@ -167,7 +170,10 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		companyValueLabel.setWidth(SIZE_UNDEFINED, 0);
 		capitalChartLayout.setWidth(250, UNITS_PIXELS);
 		capitalChartLayout.setHeight(250, UNITS_PIXELS);
-		cashflowChartLayout.setSizeUndefined();
+		cashflowChartLayout.setWidth(350, UNITS_PIXELS);
+		cashflowChartLayout.setHeight(250, UNITS_PIXELS);
+		chartArea.setWidth(100, UNITS_PERCENTAGE);
+		chartArea.setHeight(SIZE_UNDEFINED, 0);
 
 		planningLabel.setStyleName("font12bold");
 		renditeEKLabel.setStyleName("font12bold");
@@ -212,13 +218,15 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		//		scenarioLayout.setComponentAlignment(renditeFK, Alignment.MIDDLE_RIGHT);
 		//		scenarioLayout.setComponentAlignment(gewerbeSt, Alignment.MIDDLE_RIGHT);
 		scenarioLayout.setComponentAlignment(koerperSt, Alignment.BOTTOM_CENTER);
+		
+		chartArea.addComponent(capitalChartLayout);
+		chartArea.addComponent(cashflowChartLayout);
 
 		addComponent(planningLayout);
 		addComponent(gap3);
 		addComponent(companyValueLayout);
 		addComponent(gap4);
-		addComponent(capitalChartLayout);
-		addComponent(cashflowChartLayout);
+		addComponent(chartArea);
 		addComponent(expandingGap);
 
 		setExpandRatio(expandingGap, 1.0f);
@@ -277,16 +285,14 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	public void setCapitalChart(ColumnChart chart) {
 		chart.setSizeFull();
 		capitalChartLayout.removeAllComponents();
-//		Label label = new Label("Kapitalstruktur");
-//		label.setSizeUndefined();
-//		capitalChartLayout.addComponent(label);
 		capitalChartLayout.addComponent(chart);
-		capitalChartLayout.setExpandRatio(chart, 1.0f);
 
 	}
 	
 	public void setCashFlowChart(LineChart chart) {
-		
+		chart.setSizeFull();
+		cashflowChartLayout.removeAllComponents();
+		cashflowChartLayout.addComponent(chart);
 	}
 
 }
