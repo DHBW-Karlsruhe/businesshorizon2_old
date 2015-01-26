@@ -165,7 +165,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		planningLabel.setWidth(SIZE_UNDEFINED, 0);
 		companyValue.setWidth(SIZE_UNDEFINED, 0);
 		companyValueLabel.setWidth(SIZE_UNDEFINED, 0);
-		capitalChartLayout.setWidth(410, UNITS_PIXELS);
+		capitalChartLayout.setWidth(250, UNITS_PIXELS);
 		capitalChartLayout.setHeight(250, UNITS_PIXELS);
 		cashflowChartLayout.setSizeUndefined();
 
@@ -275,8 +275,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	@Override
 	public void setCapitalChart(ColumnChart chart) {
-		chart.setWidth(410, UNITS_PIXELS);
-		chart.setHeight(250, UNITS_PIXELS);
+		chart.setSizeFull();
 		capitalChartLayout.removeAllComponents();
 //		Label label = new Label("Kapitalstruktur");
 //		label.setSizeUndefined();
