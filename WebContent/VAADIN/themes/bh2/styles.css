@@ -615,7 +615,7 @@ textarea.projectNameInput{
 	font-weight: bold;
 }
 
-.font12bold{
+.font14bold{
 	font-size: 14pt;
 	font-weight: bold;
 }
@@ -687,4 +687,29 @@ textarea.projectNameInput{
 
 .scenarioTable .v-table-header .td {
 	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-cell-content {
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-header {
+	color: white;
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-header .td {
+	border-right: 1px solid white;
+}
+
+.v-table-row .v-table-cell-content {
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+}
+
+.v-table-row-table-capital .v-table-cell-content {
+	background-color: #FCFFF6;
+	border-right: 1px solid black;
+    vertical-align: middle;
+    padding-top: 12px;
 }

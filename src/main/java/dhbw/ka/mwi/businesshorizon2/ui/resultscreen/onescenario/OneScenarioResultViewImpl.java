@@ -29,6 +29,8 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.vaadinvisualizations.ColumnChart;
+import org.vaadin.vaadinvisualizations.LineChart;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
@@ -55,7 +57,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	private static final Logger logger = Logger
 			.getLogger("OneScenarioResultViewImpl.class");
-	
+
 	@Autowired
 	private OneScenarioResultPresenter presenter;
 
@@ -99,6 +101,14 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	private Label expandingGap3;
 
+	private VerticalLayout capitalChartLayout;
+
+	private VerticalLayout cashflowChartLayout;
+
+	private Label gap4;
+
+	private HorizontalLayout chartArea;
+
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert sich selbst beim Presenter
@@ -137,15 +147,20 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		gap = new Label();
 		gap2 = new Label();
 		gap3 = new Label();
+		gap4 = new Label();
 		expandingGap = new Label();
 		expandingGap2 = new Label();
 		expandingGap3 = new Label();
-		
+		capitalChartLayout = new VerticalLayout();
+		cashflowChartLayout = new VerticalLayout();
+		chartArea = new HorizontalLayout();
+
 		gap.setWidth("20px");
 		gap2.setWidth("20px");
 		gap3.setHeight("20px");
+		gap4.setHeight("20px");
 		expandingGap.setSizeFull();
-		
+
 		planningLayout.setWidth(100, UNITS_PERCENTAGE);
 		companyValueLayout.setHeight(60, UNITS_PIXELS);
 		companyValueLayout.setWidth(100, UNITS_PERCENTAGE);
@@ -153,7 +168,13 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		planningLabel.setWidth(SIZE_UNDEFINED, 0);
 		companyValue.setWidth(SIZE_UNDEFINED, 0);
 		companyValueLabel.setWidth(SIZE_UNDEFINED, 0);
-		
+		capitalChartLayout.setWidth(250, UNITS_PIXELS);
+		capitalChartLayout.setHeight(250, UNITS_PIXELS);
+		cashflowChartLayout.setWidth(350, UNITS_PIXELS);
+		cashflowChartLayout.setHeight(250, UNITS_PIXELS);
+		chartArea.setWidth(100, UNITS_PERCENTAGE);
+		chartArea.setHeight(SIZE_UNDEFINED, 0);
+
 		planningLabel.setStyleName("font12bold");
 		renditeEKLabel.setStyleName("font12bold");
 		renditeFKLabel.setStyleName("font12bold");
@@ -165,10 +186,10 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		koerperSt.setStyleName("font12bold");
 		companyValueLabel.setStyleName("font14bold");
 		companyValue.setStyleName("font14bold");
-		
+
 		scenarioLayout.setStyleName("resultScenarioLayout");
 		companyValueLayout.setStyleName("companyValueLayout");
-		
+
 		planningLayout.addComponent(planningLabel);
 		planningLayout.addComponent(gap2);
 		planningLayout.addComponent(scenarioLayout);
@@ -185,45 +206,50 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		companyValueLayout.addComponent(gap);
 		companyValueLayout.addComponent(companyValue);
 		companyValueLayout.addComponent(expandingGap3);
-		
+
 		planningLayout.setComponentAlignment(planningLabel, Alignment.MIDDLE_LEFT);
 		planningLayout.setExpandRatio(scenarioLayout, 1.0f);
 		companyValueLayout.setComponentAlignment(companyValueLabel, Alignment.MIDDLE_CENTER);
 		companyValueLayout.setComponentAlignment(companyValue, Alignment.MIDDLE_CENTER);
 		companyValueLayout.setExpandRatio(expandingGap2, 1.0f);
 		companyValueLayout.setExpandRatio(expandingGap3, 1.0f);
-//		scenarioLayout.setColumnExpandRatio(1, 1.0f);
-//		scenarioLayout.setComponentAlignment(renditeEK, Alignment.MIDDLE_RIGHT);
-//		scenarioLayout.setComponentAlignment(renditeFK, Alignment.MIDDLE_RIGHT);
-//		scenarioLayout.setComponentAlignment(gewerbeSt, Alignment.MIDDLE_RIGHT);
+		//		scenarioLayout.setColumnExpandRatio(1, 1.0f);
+		//		scenarioLayout.setComponentAlignment(renditeEK, Alignment.MIDDLE_RIGHT);
+		//		scenarioLayout.setComponentAlignment(renditeFK, Alignment.MIDDLE_RIGHT);
+		//		scenarioLayout.setComponentAlignment(gewerbeSt, Alignment.MIDDLE_RIGHT);
 		scenarioLayout.setComponentAlignment(koerperSt, Alignment.BOTTOM_CENTER);
 		
+		chartArea.addComponent(capitalChartLayout);
+		chartArea.addComponent(cashflowChartLayout);
+
 		addComponent(planningLayout);
 		addComponent(gap3);
 		addComponent(companyValueLayout);
+		addComponent(gap4);
+		addComponent(chartArea);
 		addComponent(expandingGap);
-		
+
 		setExpandRatio(expandingGap, 1.0f);
 	}
-	
+
 	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {
-//		this.addSubline(new Label("Szenario " + number), chartArea.getModulAbweichung());
-//		
-//		HorizontalLayout outputArea = new HorizontalLayout();
-//		outputArea.addComponent(chartArea);
-//		vl.addComponent(outputArea);
+		//		this.addSubline(new Label("Szenario " + number), chartArea.getModulAbweichung());
+		//		
+		//		HorizontalLayout outputArea = new HorizontalLayout();
+		//		outputArea.addComponent(chartArea);
+		//		vl.addComponent(outputArea);
 	}
 
 
 	@Override
 	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
-//		this.addSubline(new Label("Szenario " + number));
-//		
-//		HorizontalLayout outputArea = new HorizontalLayout();
-//		outputArea.addComponent(chartArea);
-//		vl.addComponent(outputArea);
+		//		this.addSubline(new Label("Szenario " + number));
+		//		
+		//		HorizontalLayout outputArea = new HorizontalLayout();
+		//		outputArea.addComponent(chartArea);
+		//		vl.addComponent(outputArea);
 	}
-	
+
 	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
 		this.renditeEK.setValue(renditeEK);
 		this.renditeFK.setValue(renditeFK);
@@ -231,19 +257,19 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		this.koerperSt.setValue(koerperSt);		
 		logger.debug("Planungsprämissen im UI gesetzt");
 	}
-	
+
 	public void setCompanyValue(String companyValue){
 		this.companyValue.setValue(companyValue);
 		logger.debug("Unternehmenswert im UI gesetzt");
 	}
-	
-//	@Override
-//	public void showErrorMessge(String message) {
-//		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
-//
-//	}
 
-	
+	//	@Override
+	//	public void showErrorMessge(String message) {
+	//		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
+	//
+	//	}
+
+
 	/**
 	 * @author Annika Weis
 	 * @param Label
@@ -253,6 +279,20 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	 */
 	public void addLabel(Label label){
 		addComponent(label);		
+	}
+
+	@Override
+	public void setCapitalChart(ColumnChart chart) {
+		chart.setSizeFull();
+		capitalChartLayout.removeAllComponents();
+		capitalChartLayout.addComponent(chart);
+
+	}
+	
+	public void setCashFlowChart(LineChart chart) {
+		chart.setSizeFull();
+		cashflowChartLayout.removeAllComponents();
+		cashflowChartLayout.addComponent(chart);
 	}
 
 }

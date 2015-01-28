@@ -25,6 +25,8 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios;
 
+import org.vaadin.vaadinvisualizations.ColumnChart;
+
 import com.mvplite.view.View;
 import com.vaadin.ui.Label;
 
@@ -74,6 +76,8 @@ public interface MoreScenarioResultViewInterface extends View {
 	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue);
 	
 	public void addScenario3ToLayout ();
+	
+	public void addChartScenario(int numScenario, ColumnChart chart);
 
 
 

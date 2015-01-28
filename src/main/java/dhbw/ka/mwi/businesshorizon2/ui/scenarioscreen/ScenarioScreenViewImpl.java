@@ -166,11 +166,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 //		this.setStyleName("small");
 		this.setMargin(true);
 		
-		addComponent(berechnungForm);
-		setComponentAlignment(berechnungForm, Alignment.MIDDLE_CENTER);
-		addComponent(gap1);
-		addComponent(splitter);
-		addComponent(gap2);
+//		addComponent(berechnungForm);
+//		setComponentAlignment(berechnungForm, Alignment.MIDDLE_CENTER);
+//		addComponent(gap1);
+//		addComponent(splitter);
+//		addComponent(gap2);
 		addComponent(addScenarioLayout);
 		setComponentAlignment(addScenarioLayout, Alignment.MIDDLE_LEFT);
 		addComponent(gap4);
@@ -466,4 +466,5 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	public void activateAddScenario () {
 		addScenarioLayout.setEnabled(true);
 	}
+	
 }
