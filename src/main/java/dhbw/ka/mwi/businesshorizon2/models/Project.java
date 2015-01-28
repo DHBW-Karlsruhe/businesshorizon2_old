@@ -61,7 +61,7 @@ public class Project implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 9199799755347070847L;
-	
+
 	private static final Logger logger = Logger
 			.getLogger("Project.class");
 
@@ -421,17 +421,21 @@ public class Project implements Serializable {
 	 *            Anzahl vorherzusagender Perioden (deterministisch)
 	 */
 	public void setPeriodsToForecast_deterministic(int periodsToForecast_deterministic) {
-		this.periodsToForecast_deterministic = periodsToForecast_deterministic;
-		logger.debug("Perioden Soll: "+periodsToForecast_deterministic+", Perioden Ist: "+this.getDeterministicPeriods().getPeriods().size());
-		if(this.getDeterministicPeriods().getPeriods().size() > (periodsToForecast_deterministic)){
-			int size = this.getDeterministicPeriods().getPeriods().size();
-			TreeSet<Period> _periods = (TreeSet<Period>)this.deterministicPeriods.getPeriods();
-			for(int i = size; i > periodsToForecast_deterministic; i--){
-				logger.debug("Periode gelöscht");
-				logger.debug(""+_periods.last().getYear());
-				_periods.remove(_periods.last());
+		if(this.getDeterministicPeriods() != null){
+			if(this.getDeterministicPeriods().getPeriods() != null){
+				this.periodsToForecast_deterministic = periodsToForecast_deterministic;
+				logger.debug("Perioden Soll: "+periodsToForecast_deterministic+", Perioden Ist: "+this.getDeterministicPeriods().getPeriods().size());
+				if(this.getDeterministicPeriods().getPeriods().size() > (periodsToForecast_deterministic)){
+					int size = this.getDeterministicPeriods().getPeriods().size();
+					TreeSet<Period> _periods = (TreeSet<Period>)this.deterministicPeriods.getPeriods();
+					for(int i = size; i > periodsToForecast_deterministic; i--){
+						logger.debug("Periode gelöscht");
+						logger.debug(""+_periods.last().getYear());
+						_periods.remove(_periods.last());
+					}
+					this.deterministicPeriods.setPeriods(_periods);
+				}
 			}
-			this.deterministicPeriods.setPeriods(_periods);
 		}
 	}
 
@@ -464,14 +468,18 @@ public class Project implements Serializable {
 	 *            Anzahl der vergangenen relevanten Perioden
 	 */
 	public void setRelevantPastPeriods(int relevantPastPeriods) {
-		this.relevantPastPeriods = relevantPastPeriods;
-		if(this.getStochasticPeriods().getPeriods().size() > (relevantPastPeriods + 1)){
-			int size = this.getStochasticPeriods().getPeriods().size();
-			TreeSet<Period> _periods = (TreeSet<Period>) this.stochasticPeriods.getPeriods();
-			for(int i = size; i > (relevantPastPeriods + 1); i--){
-				_periods.remove(_periods.first());
+		if(this.getStochasticPeriods() != null){
+			if(this.getStochasticPeriods().getPeriods() != null){
+				this.relevantPastPeriods = relevantPastPeriods;
+				if(this.getStochasticPeriods().getPeriods().size() > (relevantPastPeriods + 1)){
+					int size = this.getStochasticPeriods().getPeriods().size();
+					TreeSet<Period> _periods = (TreeSet<Period>) this.stochasticPeriods.getPeriods();
+					for(int i = size; i > (relevantPastPeriods + 1); i--){
+						_periods.remove(_periods.first());
+					}
+					this.stochasticPeriods.setPeriods(_periods);
+				}
 			}
-			this.stochasticPeriods.setPeriods(_periods);
 		}
 	}
 

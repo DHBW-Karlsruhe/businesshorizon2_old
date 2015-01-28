@@ -146,39 +146,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		}
 
 		AbstractDeterministicMethod method = project.getCalculationMethod();
-
-		if(method.getName().equals("Flow-to-Equity (FTE)")){
-			FTE fte = new FTE();
-			unternehmenswert = fte.calculateValues(cashflow, fremdkapital, scenario);
-			dFremdkapital = fremdkapital[fremdkapital.length - 1];
-			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
-		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
-			APV apv = new APV();
-			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
-			dFremdkapital = apv.getFremdkapital();
-			steuervorteile = apv.getSteuervorteile();
-			uwSteuerfrei = apv.getUwsteuerfrei();
-			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
-		}else if(method.getName().equals("Weighted-Average-Cost-of-Capital (WACC)")){
-			WACC wacc = new WACC();
-			unternehmenswert = wacc.calculateValues(cashflow, fremdkapital, scenario);
-			dFremdkapital = wacc.getFremdkapital();
-			logger.debug("Unternehmenswert mit WACC berechnet: " + unternehmenswert );
-		}
-		NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
-		nfUS.setMinimumFractionDigits(2);
-		nfUS.setMaximumFractionDigits(2);
-		project.setCompanyValue(Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")));
-		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
-		nfDE.setMaximumFractionDigits(2);
-		nfDE.setMaximumFractionDigits(2);
-		//		getView().setCompanyValue(String.valueOf(unternehmenswert));
-		//		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
-		getView().setCompanyValue(nfDE.format(unternehmenswert));
-		getView().setScenarioValue(nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()));
-
-		gesamtkapital = unternehmenswert + dFremdkapital;
-
+		
 		ColumnChart cc = new ColumnChart();	
 		cc.setOption("is3D", true);	
 		cc.setOption("isStacked", true);	
@@ -190,10 +158,50 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		cc.addXAxisLabel("Year");		
 		cc.addColumn("Eigenkapital");	
 		cc.addColumn("Fremdkapital");
-		cc.addColumn("UW Steuerfrei");
-		cc.addColumn("Steuervorteile");	
-		cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital, 0, 0});
-		cc.add(String.valueOf(periods.last().getYear()), new double[]{0, 0, Double.parseDouble(nfUS.format(uwSteuerfrei).replace(",",  "")), Double.parseDouble(nfUS.format(steuervorteile).replace(",",  ""))});
+		
+		NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
+		nfUS.setMinimumFractionDigits(2);
+		nfUS.setMaximumFractionDigits(2);
+		project.setCompanyValue(Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")));
+		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
+		nfDE.setMaximumFractionDigits(2);
+		nfDE.setMaximumFractionDigits(2);
+
+		if(method.getName().equals("Flow-to-Equity (FTE)")){
+			FTE fte = new FTE();
+			unternehmenswert = fte.calculateValues(cashflow, fremdkapital, scenario);
+			dFremdkapital = fremdkapital[fremdkapital.length - 1];
+			cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital});
+			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
+		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
+			APV apv = new APV();
+			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
+			dFremdkapital = apv.getFremdkapital();
+			steuervorteile = apv.getSteuervorteile();
+			uwSteuerfrei = apv.getUwsteuerfrei();
+			cc.addColumn("UW Steuerfrei");
+			cc.addColumn("Steuervorteile");	
+			cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital, 0, 0});
+			cc.add(String.valueOf(periods.last().getYear()), new double[]{0, 0, Double.parseDouble(nfUS.format(uwSteuerfrei).replace(",",  "")), Double.parseDouble(nfUS.format(steuervorteile).replace(",",  ""))});
+			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
+		}else if(method.getName().equals("Weighted-Average-Cost-of-Capital (WACC)")){
+			WACC wacc = new WACC();
+			unternehmenswert = wacc.calculateValues(cashflow, fremdkapital, scenario);
+			dFremdkapital = wacc.getFremdkapital();
+			cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital});
+			logger.debug("Unternehmenswert mit WACC berechnet: " + unternehmenswert );
+		}
+		
+		//		getView().setCompanyValue(String.valueOf(unternehmenswert));
+		//		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
+		getView().setCompanyValue(nfDE.format(unternehmenswert));
+		getView().setScenarioValue(nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()));
+
+		gesamtkapital = unternehmenswert + dFremdkapital;
+
+		
+		
+		
 
 		LineChart lc = new LineChart();
 		lc.setOption("legend", "bottom");
