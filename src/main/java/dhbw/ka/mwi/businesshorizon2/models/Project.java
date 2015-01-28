@@ -34,6 +34,8 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
@@ -59,16 +61,19 @@ public class Project implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 9199799755347070847L;
+	
+	private static final Logger logger = Logger
+			.getLogger("Project.class");
 
 	protected TreeSet<? extends Period> periods = new TreeSet<>();
 
 	private Date lastChanged;
-	
+
 	private User createdFrom;
 
 	private String name;
 	private String typ;
-	
+
 	private String description;
 
 	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
@@ -103,7 +108,7 @@ public class Project implements Serializable {
 	private ProjectInputType projectInputType;
 
 	private SortedSet<AbstractStochasticMethod> methods;
-	
+
 	/**
 	 * Die AbstractStochasticMethod wird benötigt um die zukünftigen CashFlows zu simulieren
 	 * Die AbstractDeterministicMethod wird benötigt, um an Hand von zukünftigen Cashflows den Unternehmenswert zu berechnen, 
@@ -134,7 +139,7 @@ public class Project implements Serializable {
 		this.specifiedPastPeriods = 6;
 		this.relevantPastPeriods = 5;
 		this.periodsToForecast = 3;
-		
+
 	}
 
 	/**
@@ -330,7 +335,7 @@ public class Project implements Serializable {
 	public SortedSet<AbstractStochasticMethod> getMethods() {
 		return methods;
 	}
-	
+
 	//Annika Weis
 	public void setMethods_deterministic(SortedSet<AbstractDeterministicMethod> methods_deterministic) {
 		this.methods_deterministic = methods_deterministic;
@@ -340,19 +345,19 @@ public class Project implements Serializable {
 	public SortedSet<AbstractDeterministicMethod> getMethods_deterministic() {
 		return methods_deterministic;
 	}
-	
+
 	public void setStochasticMethod(AbstractStochasticMethod method){
 		this.stoMethod = method;
 	}
-	
+
 	public AbstractStochasticMethod getStochasticMethod(){
 		return this.stoMethod;
 	}
-	
+
 	public void setCalculationMethod(AbstractDeterministicMethod method){
 		this.calcMethod = method;
 	}
-	
+
 	public AbstractDeterministicMethod getCalculationMethod(){
 		return this.calcMethod;
 	}
@@ -396,8 +401,8 @@ public class Project implements Serializable {
 	public void setPeriodsToForecast(int periodsToForecast) {
 		this.periodsToForecast = periodsToForecast;
 	}
-	
-	
+
+
 	/**
 	 * Gibt die Anzahl vorherzusagender deterinistischer Perioden des Projekts zurück.
 	 * 
@@ -417,8 +422,19 @@ public class Project implements Serializable {
 	 */
 	public void setPeriodsToForecast_deterministic(int periodsToForecast_deterministic) {
 		this.periodsToForecast_deterministic = periodsToForecast_deterministic;
+		logger.debug("Perioden Soll: "+periodsToForecast_deterministic+", Perioden Ist: "+this.getDeterministicPeriods().getPeriods().size());
+		if(this.getDeterministicPeriods().getPeriods().size() > (periodsToForecast_deterministic)){
+			int size = this.getDeterministicPeriods().getPeriods().size();
+			TreeSet<Period> _periods = (TreeSet<Period>)this.deterministicPeriods.getPeriods();
+			for(int i = size; i > periodsToForecast_deterministic; i--){
+				logger.debug("Periode gelöscht");
+				logger.debug(""+_periods.last().getYear());
+				_periods.remove(_periods.last());
+			}
+			this.deterministicPeriods.setPeriods(_periods);
+		}
 	}
-	
+
 	/**
 	 * Setzt die Anzahl der anzugebenden vergangenen Perioden des Projekts.
 	 * 
@@ -439,7 +455,7 @@ public class Project implements Serializable {
 	public int getSpecifiedPastPeriods() {
 		return specifiedPastPeriods;
 	}
-	
+
 	/**
 	 * Setzt die Anzahl der vergangenen relevanten Perioden des Projekts.
 	 * 
@@ -449,6 +465,14 @@ public class Project implements Serializable {
 	 */
 	public void setRelevantPastPeriods(int relevantPastPeriods) {
 		this.relevantPastPeriods = relevantPastPeriods;
+		if(this.getStochasticPeriods().getPeriods().size() > (relevantPastPeriods + 1)){
+			int size = this.getStochasticPeriods().getPeriods().size();
+			TreeSet<Period> _periods = (TreeSet<Period>) this.stochasticPeriods.getPeriods();
+			for(int i = size; i > (relevantPastPeriods + 1); i--){
+				_periods.remove(_periods.first());
+			}
+			this.stochasticPeriods.setPeriods(_periods);
+		}
 	}
 
 	/**
@@ -512,7 +536,7 @@ public class Project implements Serializable {
 	public List<Szenario> getScenarios() {
 		return this.scenarios;
 	}
-	
+
 	/**
 	 * Gibt nur die einbezogenen Szenarios eines Projektes zurück.
 	 * 
@@ -522,7 +546,7 @@ public class Project implements Serializable {
 	 */
 	public List<Szenario> getIncludedScenarios() {
 		List<Szenario> includedScenarios = new ArrayList<Szenario>();
-		
+
 		for (Szenario szenario : this.scenarios){
 			if(szenario.isIncludeInCalculation()){
 				includedScenarios.add(szenario);
@@ -557,33 +581,33 @@ public class Project implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public int getTotalPeriods (){
 		if (projectInputType.isDeterministic()==true){
 			return periodsToForecast_deterministic;
 		}
 		return specifiedPastPeriods ;
 	}
-	
+
 	public String getTypMethod(){
-	
-	if	(projectInputType.isDeterministic()==true){
-		typ = "Deterministische Eingabe";
+
+		if	(projectInputType.isDeterministic()==true){
+			typ = "Deterministische Eingabe";
+		}
+		else
+		{
+			typ = "Stochastische Eingabe";
+		}
+		return typ;
 	}
-	else
-	{
-		typ = "Stochastische Eingabe";
-	}
-	return typ;
-	}
-	
+
 	public void setCompanyValue(double value){
 		this.companyValue = value;
 	}
-	
+
 	public double getCompanyValue(){
 		return this.companyValue;
 	}
-	
-	
+
+
 }

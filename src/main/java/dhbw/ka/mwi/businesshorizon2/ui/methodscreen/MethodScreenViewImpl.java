@@ -252,9 +252,9 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 	}
 
 	public void setRadioValues(){
-		setEingabe();
 		setPrognose();
 		setBerechnung();
+		setEingabe();
 	}
 
 	public void switchRadiobuttonEnablement(ValueChangeEvent event) {

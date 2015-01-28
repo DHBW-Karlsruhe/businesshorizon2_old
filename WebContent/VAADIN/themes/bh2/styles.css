@@ -71,6 +71,10 @@ div.projectlist:hover {
 	font-size:16px;
 }
 
+.v-button:focus, .v-button:active, .v-disabled.v-button:focus, .v-disabled.v-button:active {
+	background-color: initial;
+}
+
 
 .v-button-caption{
 }
@@ -188,6 +192,10 @@ div.projectlist:hover {
 
 .leftContainer {
 	background-color: #D8EFBC;
+}
+
+.rightContainer {
+	background-color: white;
 }
 
 .mainLayout {
@@ -708,7 +716,7 @@ textarea.projectNameInput{
 }
 
 .v-table-row-table-capital .v-table-cell-content {
-	background-color: #FCFFF6;
+	background-color: white;
 	border-right: 1px solid black;
     vertical-align: middle;
     padding-top: 12px;

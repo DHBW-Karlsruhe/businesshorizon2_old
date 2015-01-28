@@ -118,6 +118,8 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		double unternehmenswert = 0;
 		double dFremdkapital = 0;
 		double gesamtkapital;
+		double steuervorteile = 0;
+		double uwSteuerfrei = 0;
 		Szenario scenario = project.getIncludedScenarios().get(0);
 		AbstractPeriodContainer periodContainer = project.getDeterministicPeriods();
 		if(periodContainer instanceof CashFlowPeriodContainer){
@@ -153,6 +155,8 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 			APV apv = new APV();
 			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
 			dFremdkapital = apv.getFremdkapital();
+			steuervorteile = apv.getSteuervorteile();
+			uwSteuerfrei = apv.getUwsteuerfrei();
 			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
 		}else{	//method.getName().equals("WACC")
 
@@ -178,15 +182,14 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		cc.setOption("title", "Kapitalstruktur");
 		cc.setOption("width", 250);
 		cc.setOption("height", 240);
-		cc.setColors(new String[]{"#92D050", "#FFFF00"});
-		cc.addXAxisLabel("Year");	
-		//		cc.addColumn("Gesamtkapital");	
+		cc.setColors(new String[]{"#92D050", "#D9D9D9", "#FF8533", "#0099FF"});
+		cc.addXAxisLabel("Year");		
 		cc.addColumn("Eigenkapital");	
-		cc.addColumn("Fremdkapital");	
-		// Values in double are Expenses, Sales, Stock	
-		//		cc.add(String.valueOf(project.getBasisYear()), new double[]{100,200,320});	
-		cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital});		
-		//		cc.setSizeFull();
+		cc.addColumn("Fremdkapital");
+		cc.addColumn("UW Steuerfrei");
+		cc.addColumn("Steuervorteile");	
+		cc.add(String.valueOf(periods.last().getYear()), new double[]{Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")), dFremdkapital, 0, 0});
+		cc.add(String.valueOf(periods.last().getYear()), new double[]{0, 0, Double.parseDouble(nfUS.format(uwSteuerfrei).replace(",",  "")), Double.parseDouble(nfUS.format(steuervorteile).replace(",",  ""))});
 
 		LineChart lc = new LineChart();
 		lc.setOption("legend", "bottom");

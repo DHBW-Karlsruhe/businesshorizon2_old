@@ -251,6 +251,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		leftLayout.setSizeFull();
 		leftLayout.setStyleName("leftContainer");
 		rightLayout.setSizeFull();
+		rightLayout.setStyleName("rightContainer");
 		bottomLayout.setSizeFull();
 		bottomLeftLayout.setSizeFull();
 		//		bottomRightLayout.setWidth(90, UNITS_PERCENTAGE);

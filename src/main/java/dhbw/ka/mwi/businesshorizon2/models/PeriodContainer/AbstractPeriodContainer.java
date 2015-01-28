@@ -45,7 +45,7 @@ abstract public class AbstractPeriodContainer implements Comparable<AbstractPeri
 	 * 
 	 */
 	private static final long serialVersionUID = 4351757223322455067L;
-	private final TreeSet<Period> perioden;
+	private TreeSet<Period> perioden;
 	private static int counter = 0;
 	private final int myCount;
 
@@ -57,6 +57,10 @@ abstract public class AbstractPeriodContainer implements Comparable<AbstractPeri
 
 	public void addPeriod(Period period) {
 		this.perioden.add(period);
+	}
+	
+	public void setPeriods(TreeSet<Period> _periods){
+		this.perioden = _periods;
 	}
 
 	/**
