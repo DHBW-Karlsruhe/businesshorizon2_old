@@ -32,27 +32,22 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.terminal.Resource;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout.MarginInfo;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.BaseTheme;
 
 /**
  * Dies ist die Vaadin-Implementierung des LogIn Screens. Diese stützt sich vor

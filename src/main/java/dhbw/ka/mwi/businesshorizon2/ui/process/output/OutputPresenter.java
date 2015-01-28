@@ -24,7 +24,7 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.process.output;
 
-import java.text.DecimalFormat;
+
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
-import com.vaadin.ui.Label;
+
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
@@ -51,7 +51,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
+
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
@@ -234,7 +234,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 							if (method_deterministic.getName() == "Flow-to-Equity (FTE)") {
 								FTE dcf_2 = new FTE();
 								unternehmenswert = dcf_2.calculateValues(
-										drContainer.getCashflows(), scenario);
+										drContainer.getCashflows(), drContainer.getFremdkapitl(), scenario);
 
 								DeterministicChartArea deterministicarea = new DeterministicChartArea(
 										unternehmenswert,

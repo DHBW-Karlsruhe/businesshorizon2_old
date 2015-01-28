@@ -48,6 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -148,7 +149,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 
 		if(method.getName().equals("Flow-to-Equity (FTE)")){
 			FTE fte = new FTE();
-			unternehmenswert = fte.calculateValues(cashflow, scenario);
+			unternehmenswert = fte.calculateValues(cashflow, fremdkapital, scenario);
 			dFremdkapital = fremdkapital[fremdkapital.length - 1];
 			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
 		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
@@ -158,8 +159,11 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 			steuervorteile = apv.getSteuervorteile();
 			uwSteuerfrei = apv.getUwsteuerfrei();
 			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
-		}else{	//method.getName().equals("WACC")
-
+		}else if(method.getName().equals("Weighted-Average-Cost-of-Capital (WACC)")){
+			WACC wacc = new WACC();
+			unternehmenswert = wacc.calculateValues(cashflow, fremdkapital, scenario);
+			dFremdkapital = wacc.getFremdkapital();
+			logger.debug("Unternehmenswert mit WACC berechnet: " + unternehmenswert );
 		}
 		NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
 		nfUS.setMinimumFractionDigits(2);

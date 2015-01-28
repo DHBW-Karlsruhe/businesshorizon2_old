@@ -11,6 +11,7 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
@@ -120,8 +121,8 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 			project.setCalculationMethod(new APV());
 			break;
 			
-		case "wacc":
-			
+		case "wac":
+			project.setCalculationMethod(new WACC());
 			break;
 			
 		default:

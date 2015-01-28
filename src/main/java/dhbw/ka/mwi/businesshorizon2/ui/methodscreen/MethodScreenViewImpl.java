@@ -245,7 +245,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 				berechnungGroup.setValue("fte");
 			}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
 				berechnungGroup.setValue("apv");
-			}else{	//method.getName().equals("WACC")
+			}else if(method.getName().equals("Weighted-Average-Cost-of-Capital (WACC)")){	//method.getName().equals("WACC")
 				berechnungGroup.setValue("wac");
 			}
 		}
