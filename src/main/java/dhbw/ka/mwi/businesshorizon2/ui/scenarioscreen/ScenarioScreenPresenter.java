@@ -35,6 +35,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
@@ -184,12 +187,13 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 						scenario.isIncludeInCalculation(), numberOfScenario);
 				numberOfScenario++;
 			}
+			
 		}
 		
 //		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO,
 //				true));
 	}
-
+	
 	/**
 	 * Diese Methode setzt, sobald der Folgeschritt des Prozesses aufgerufen
 	 * wird, den internen Fehlermarker so, dass Fehler ab sofort angezeigt
@@ -421,6 +425,26 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 				scenarioNumber));
 
 //		eventBus.fireEvent(new ValidateContentStateEvent());
+	}
+	
+	public void changeCalcMethod(String value) {
+		switch (value) {
+		case "fte":
+			project.setCalculationMethod(new FTE());
+			break;
+
+		case "apv":
+			project.setCalculationMethod(new APV());
+			break;
+			
+		case "wacc":
+			
+			break;
+			
+		default:
+			break;
+		}
+		
 	}
 
 	public boolean isShowErrors() {

@@ -708,6 +708,8 @@ textarea.projectNameInput{
 }
 
 .v-table-row-table-capital .v-table-cell-content {
-	background-color: white;
+	background-color: #FCFFF6;
 	border-right: 1px solid black;
+    vertical-align: middle;
+    padding-top: 12px;
 }

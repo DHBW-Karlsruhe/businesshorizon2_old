@@ -152,7 +152,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		planningTable = new Table();
 		
 		planningTable.setWidth(100, UNITS_PERCENTAGE);
-		planningTable.setPageLength(3);
+		planningTable.setPageLength(4);
 		
 		planningTable.addContainerProperty("first", String.class, null);
 		planningTable.setColumnHeader("first", "");

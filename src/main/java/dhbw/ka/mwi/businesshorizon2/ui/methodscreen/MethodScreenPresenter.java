@@ -120,7 +120,7 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 			project.setCalculationMethod(new APV());
 			break;
 			
-		case "wac":
+		case "wacc":
 			
 			break;
 			
