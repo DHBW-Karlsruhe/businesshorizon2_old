@@ -706,3 +706,8 @@ textarea.projectNameInput{
 	border-top: 1px solid white;
 	border-right: 1px solid white;
 }
+
+.v-table-row-table-capital .v-table-cell-content {
+	background-color: white;
+	border-right: 1px solid black;
+}

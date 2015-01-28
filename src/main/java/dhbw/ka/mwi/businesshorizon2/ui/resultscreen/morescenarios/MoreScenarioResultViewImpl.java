@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.vaadinvisualizations.ColumnChart;
 
 import com.vaadin.data.Item;
 import com.vaadin.ui.Alignment;
@@ -108,16 +109,22 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	private GridLayout companyValueLayoutScenario1;
 	private GridLayout companyValueLayoutScenario2;
 	private GridLayout companyValueLayoutScenario3;
-
+	
+	private GridLayout capitalStructureChartScenario1;
+	private GridLayout capitalStructureChartScenario2;
+	private GridLayout capitalStructureChartScenario3;
+	
 	private Label companyValue;
 	
 	private Table planningTable;
 	
 	private Item row1;
 	private Item row2;
+	private Item row3;
 	
 	private Object itemId1;
 	private Object itemId2;
+	private Object itemId3;
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -162,6 +169,9 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		itemId2 = planningTable.addItem();
 		row2 = planningTable.getItem(itemId2);
 		row2.getItemProperty("first").setValue("Unternehmenswert");
+		itemId3 = planningTable.addItem();
+		row3 = planningTable.getItem(itemId3);
+		row3.getItemProperty("first").setValue("Kapitalstruktur");
 		
 		planningGridScenario1 = new GridLayout(2,4);
 		planningGridScenario2 = new GridLayout(2,4);
@@ -171,11 +181,19 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		companyValueLayoutScenario2 = new GridLayout();
 		companyValueLayoutScenario3 = new GridLayout();
 		
+		capitalStructureChartScenario1 = new GridLayout(1, 1);
+//		capitalStructureChartScenario1.setSizeFull();
+		capitalStructureChartScenario2 = new GridLayout();
+		capitalStructureChartScenario3 = new GridLayout();
+		
 		row1.getItemProperty("scenario1").setValue(planningGridScenario1);
 		row1.getItemProperty("scenario2").setValue(planningGridScenario2);
 		
 		row2.getItemProperty("scenario1").setValue(companyValueLayoutScenario1);
 		row2.getItemProperty("scenario2").setValue(companyValueLayoutScenario2);
+		
+		row3.getItemProperty("scenario1").setValue(capitalStructureChartScenario1);
+		row3.getItemProperty("scenario2").setValue(capitalStructureChartScenario2);
 		
 		createScenario1Layout();
 		createScenario2Layout();
@@ -196,6 +214,10 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 					
 					if (itemId == itemId1) {
 						return "table-line";
+					}
+					
+					if (itemId == itemId3) {
+						return "table-capital";
 					}
 						return null;	
 				}
@@ -221,6 +243,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 		row1.getItemProperty("scenario3").setValue(planningGridScenario3);
 		row2.getItemProperty("scenario3").setValue(companyValueLayoutScenario3);
+		row3.getItemProperty("scenario3").setValue(capitalStructureChartScenario3);
 		
 	}
 	
@@ -319,6 +342,36 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 		companyValueLayoutScenario3.addComponent(companyValue3);
 		
+	}
+	
+	public void addChartScenario(int numScenario, ColumnChart chart) {
+		switch (numScenario) {
+		case 0:
+			chart.setSizeFull();
+			capitalStructureChartScenario1.removeAllComponents();
+			capitalStructureChartScenario1.addComponent(chart);
+			capitalStructureChartScenario1.setHeight(240, UNITS_PIXELS);
+			capitalStructureChartScenario1.setWidth(200, UNITS_PIXELS);
+			capitalStructureChartScenario1.setComponentAlignment(chart, Alignment.TOP_CENTER);
+			break;
+			
+		case 1:
+			chart.setSizeFull();
+			capitalStructureChartScenario2.removeAllComponents();
+			capitalStructureChartScenario2.addComponent(chart);
+			capitalStructureChartScenario2.setHeight(240, UNITS_PIXELS);
+			capitalStructureChartScenario2.setWidth(200, UNITS_PIXELS);
+			capitalStructureChartScenario2.setComponentAlignment(chart, Alignment.TOP_CENTER);
+			break;
+			
+		case 2:
+			capitalStructureChartScenario3.removeAllComponents();
+			capitalStructureChartScenario3.addComponent(chart);
+			capitalStructureChartScenario3.setHeight(240, UNITS_PIXELS);
+			capitalStructureChartScenario3.setWidth(200, UNITS_PIXELS);
+			capitalStructureChartScenario3.setComponentAlignment(chart, Alignment.TOP_LEFT);
+			break;
+		}
 	}
 	
 	/**

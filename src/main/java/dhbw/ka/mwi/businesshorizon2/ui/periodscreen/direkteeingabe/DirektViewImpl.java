@@ -42,6 +42,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
@@ -148,7 +149,15 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 
 		Object itemId = inputTable.addItem();
 		Item row1 = inputTable.getItem(itemId);
-		row1.getItemProperty("first").setValue("Cashflow");
+		AbstractDeterministicMethod method = project.getCalculationMethod();
+
+		if(method.getName().equals("Flow-to-Equity (FTE)")) {
+			row1.getItemProperty("first").setValue("Ausschüttung");
+		}
+		else {
+			row1.getItemProperty("first").setValue("Cashflow");
+		}
+		
 		itemId = inputTable.addItem();
 		Item row2 = inputTable.getItem(itemId);
 		row2.getItemProperty("first").setValue("Bilanzwert Fremdkapital");
