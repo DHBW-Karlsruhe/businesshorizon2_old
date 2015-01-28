@@ -48,6 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -154,8 +155,11 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 			unternehmenswert = apv.calculateValues(cashflow, fremdkapital, scenario);
 			dFremdkapital = apv.getFremdkapital();
 			logger.debug("Unternehmenswert mit APV berechnet: "+unternehmenswert);
-		}else{	//method.getName().equals("WACC")
-
+		}else if(method.getName().equals("Weighted-Average-Cost-of-Capital (WACC)")){
+			WACC wacc = new WACC();
+			unternehmenswert = wacc.calculateValues(cashflow, fremdkapital, scenario);
+			dFremdkapital = wacc.getFremdkapital();
+			logger.debug("Unternehmenswert mit WACC berechnet: " + unternehmenswert );
 		}
 		NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
 		nfUS.setMinimumFractionDigits(2);
