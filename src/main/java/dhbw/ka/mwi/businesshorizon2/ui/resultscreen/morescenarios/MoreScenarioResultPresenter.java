@@ -155,7 +155,7 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 		
 		if(method.getName().equals("Flow-to-Equity (FTE)")){
 			FTE fte = new FTE();
-			unternehmenswert = fte.calculateValues(cashflow, scenario);
+			unternehmenswert = fte.calculateValues(cashflow, fremdkapital, scenario);
 			dFremdkapital = fremdkapital[fremdkapital.length - 1];
 			logger.debug("Unternehmenswert mit FTE berechnet: "+unternehmenswert);
 		}else if(method.getName().equals("Adjusted-Present-Value (APV)")){
