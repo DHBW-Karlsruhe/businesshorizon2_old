@@ -49,6 +49,7 @@ public class StationaryTest {	//nicht implementiert
 	 *            Beobachtungswerte
 	 * @return ist stationaer
 	 */
+	//Stationaritätstest ist nicht implementiert und liefert immer zurück das die Zeitreihe nicht stationär ist
 	public static boolean isStationary(double[] timeseries) {
 		return false;
 	}

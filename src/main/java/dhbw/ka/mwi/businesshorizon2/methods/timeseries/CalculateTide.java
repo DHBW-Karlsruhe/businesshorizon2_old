@@ -27,7 +27,9 @@
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 import org.apache.log4j.Logger;
-
+//import java.lang.Object.regression.RegressionMethods;
+import org.jfree.data.statistics.Regression;
+import org.jfree.data.xy.DefaultIntervalXYDataset;
 /**
  * Diese Klasse stellt die Methoden fuer die Trendbereinigung zur Verfuegung.
  * 
@@ -133,18 +135,21 @@ public class CalculateTide implements CalculateTideInterface {
 	 * @return double ParameterB
 	 */
 	private double calculateTideParameterB(double[] timeseries) {
-		double averageTimeseries = this.calculateAverageTimeseries();
-		double averagePeriods = this.calculateAveragePeriods();
-		double numerator = 0;
-		double denominator = 0;
-
-		for (int i = 0; i < timeseries.length; i++) {
-			numerator += (i - averagePeriods)
-					* (timeseries[i] - averageTimeseries);
-			denominator += Math.pow((i - averagePeriods), 2);
+		double[] zeitarray = new double[timeseries.length];
+		for (int i = 0; i < timeseries.length; i++){
+			zeitarray[i] = i+1;
 		}
+		
+		//TODO oben Klasse einbinden
+		//Klasse erzeugen
+		LinearRegression regression = new LinearRegression();
+		
+		//Ergebnis berechnen
+		double[] ergebnisArray = regression.getLinearRegressionParameters(zeitarray, timeseries);
+		
+		//ParameterB zurückgeben
+		return ergebnisArray[1];
 
-		return numerator / denominator;
 	}
 
 	/**
@@ -156,8 +161,19 @@ public class CalculateTide implements CalculateTideInterface {
 	 * @return double ParameterA
 	 */
 	private double calculateTideParameterA(double parameterB) {
-		return reduceTideParameterA = this.calculateAverageTimeseries()
-				- (parameterB * this.calculateAveragePeriods());
+		double[] zeitarray = new double[timeseries.length];
+		for (int i = 0; i < timeseries.length; i++){
+			zeitarray[i] = i+1;
+		}
+		
+		//TODO oben Klasse einbinden
+		//Klasse erzeugen
+		LinearRegression regression = new LinearRegression();
+		
+		//Ergebnis berechnen
+		double[] ergebnisArray = regression.getLinearRegressionParameters(zeitarray, timeseries);
+		//ParameterA zurückgeben
+		return ergebnisArray[0];
 	}
 
 }

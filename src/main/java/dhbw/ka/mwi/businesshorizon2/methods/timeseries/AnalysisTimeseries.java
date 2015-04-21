@@ -233,21 +233,22 @@ public class AnalysisTimeseries {
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */
 
-	public double[][] prognoseBerechnen(
+	public double[] prognoseBerechnen(
 			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
 			double standardabweichung, int zuberechnendeperioden,
 			int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
 
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
 		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
-		double[][] prognosewertSammlung = new double[durchlaeufe][zuberechnendeperioden];
+		double[] erwarteteWerte = new double[zuberechnendeperioden];
 		double prognosewert = 0;
 		double zNull = 0;
 		Random zufall = new Random(); //stattdessen hier white noise einbauen
 
 		// Erwartete Cashflows ausrechnen
-		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
-				zuberechnendeperioden, p, mittelwert, isfremdkapital);
+		//Berechnung Fehlerhaft weil doppelt die prognostizierten Werte angefügt werden (vergangeneUndZukünftigeWerte.add(prognose))
+	//	this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
+	//			zuberechnendeperioden, p, mittelwert, isfremdkapital);
 		
 		//Modellgenauigkeit validieren
 		if(this.tide != null){
@@ -275,13 +276,21 @@ public class AnalysisTimeseries {
 				prognosewert = prognosewert + zNull;
 				vergangeneUndZukuenftigeWerte.add(prognosewert);
 				prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
-				prognosewertSammlung[i][j] = prognosewert;
+				erwarteteWerte[j] = prognosewert;
+
 				prognosewert = 0;
 			}
-			vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
+	
+			if(isfremdkapital){
+				this.erwartetesFremdkapital = erwarteteWerte;
+			}else{
+				this.erwarteteCashFlows = erwarteteWerte;
+			}
+	
+		
 		}
-
-		return prognosewertSammlung;
+		
+		return erwarteteWerte;
 	}
 
 	/**
@@ -306,15 +315,16 @@ public class AnalysisTimeseries {
 	 */
 
 	// @Override
-	public double[][] calculate(double[] zeitreihe, int p,
+	public double[] calculate(double[] zeitreihe, int p,
 			int zuberechnendePerioden, int durchlaeufe,
 			CallbackInterface callback, boolean isfremdkapital) throws InterruptedException,
 			StochasticMethodException {
 
 		// vorbereitende Initialisierung
-		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
+		double[] alteUndPrognosewerte = new double[zuberechnendePerioden];
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
+		//Der Stationaritätstest ist nicht implementiert und liefert zurück dass die Zeitreihe nicht stationär ist
 		tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
@@ -342,33 +352,13 @@ public class AnalysisTimeseries {
 		logger.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
 
 		// Start der Prognose
-		prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
+		alteUndPrognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
 				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
 				mittelwert, isfremdkapital);
 		logger.debug("Berechnung der Prognosewerte abgeschlossen.");
-		// Trendbereinigung wieder draufschlagen
-		// Perioden durchlaufen
-		for (int i = 0; i < prognosewerte[0].length; i++) {
-			// den Trend pro Periode ermitteln
-			double newtide = tide.getTideValue(i + p + 1);
-			
-			if(isfremdkapital){
-				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
-			}else{
-				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
-			}
-			// alle Iterationen durchlaufen
-			for (int j = 0; j < prognosewerte.length; j++) {
-				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
-				// den Trend wieder aufaddieren
-				prognosewerte[j][i] = prognosewerte[j][i] + newtide;
-			}
-			
-		}
+		
 
-		logger.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
-
-		return prognosewerte;
+		return alteUndPrognosewerte;
 	}
 
 	/*

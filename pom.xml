@@ -71,6 +71,11 @@
 			dieser Code ausdokumentiert werden. https://vaadin.com/directory#addon/mvp-lite 
 			<dependency> <groupId>com.mvplite</groupId> <artifactId>mvp-lite</artifactId> 
 			<version>1.0</version> </dependency> -->
+		<dependency>
+   			<groupId>org.jfree</groupId>
+   			<artifactId>jfreechart</artifactId>
+ 			<version>1.0.17</version>
+		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
