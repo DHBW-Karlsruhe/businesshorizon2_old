@@ -200,6 +200,8 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 
 			});
 			field1.setValue(presenter.getCashFlow(year));
+			
+			
 			TextField field2 = new TextField();
 			field2.setWidth(50, UNITS_PIXELS);
 			field2.setImmediate(true);
@@ -213,6 +215,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					double dValue;
 					try {
 						dValue = Double.parseDouble(value);
+						
 					}
 					catch (Exception e) {
 						dValue = 0.0;
