@@ -18,7 +18,10 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
 
 public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 
@@ -51,6 +54,13 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 	public void onProjectSelected(SelectProjectEvent event){
 		project = projectProxy.getSelectedProject();
 		getView().setProject(project);
+	}
+	
+	@EventHandler
+	public void onShowMethodScreen (ShowProcessStepEvent e) {
+		if (e.getScreen().equals(screen.METHODSELECTION)) {
+			eventBus.fireEvent(new ValidationEvent(true));
+		}
 	}
 
 	public void setInputMethod(InputType value, boolean deterministic) {
