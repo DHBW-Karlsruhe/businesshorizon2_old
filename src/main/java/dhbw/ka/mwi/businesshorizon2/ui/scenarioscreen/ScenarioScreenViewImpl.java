@@ -72,15 +72,15 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	@Autowired
 	private ScenarioScreenPresenter presenter;
 	
-	private Form berechnungForm;
+//	private Form berechnungForm;
 	
-	private OptionGroup berechnungGroup;
+//	private OptionGroup berechnungGroup;
 	
-	private Label gap1;
-	private Label gap2;
+//	private Label gap1;
+//	private Label gap2;
 	private Label gap3;
 	private Label gap4;
-	private Label splitter;
+//	private Label splitter;
 	private Label addLabel;
 	
 	private Embedded addIcon;
@@ -111,28 +111,28 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	 */
 	private void generateUi() {
 		
-		berechnungForm = new Form();
-		berechnungGroup = new OptionGroup();
+//		berechnungForm = new Form();
+//		berechnungGroup = new OptionGroup();
+//		
+//		berechnungForm.setWidth(90, UNITS_PERCENTAGE);
+//		berechnungForm.setCaption("Berechnungsmethode");
+//		
+//		berechnungGroup.addItem("apv");
+//		berechnungGroup.addItem("fte");
+//		berechnungGroup.addItem("wac");
+//		berechnungGroup.setItemCaption("apv", "APV (Adjusted Present Value)");
+//		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
+//		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
+//		
+//		berechnungForm.addField("berechnungGroup", berechnungGroup);
 		
-		berechnungForm.setWidth(90, UNITS_PERCENTAGE);
-		berechnungForm.setCaption("Berechnungsmethode");
-		
-		berechnungGroup.addItem("apv");
-		berechnungGroup.addItem("fte");
-		berechnungGroup.addItem("wac");
-		berechnungGroup.setItemCaption("apv", "APV (Adjusted Present Value)");
-		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
-		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
-		
-		berechnungForm.addField("berechnungGroup", berechnungGroup);
-		
-		gap1 = new Label();
-		gap1.setHeight(35, UNITS_PIXELS);
-		
-		splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
-		
-		gap2 = new Label();
-		gap2.setHeight(20, UNITS_PIXELS);
+//		gap1 = new Label();
+//		gap1.setHeight(35, UNITS_PIXELS);
+//		
+//		splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
+//		
+//		gap2 = new Label();
+//		gap2.setHeight(20, UNITS_PIXELS);
 		
 		addScenarioLayout = new HorizontalLayout();
 		
@@ -179,33 +179,33 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		vlScenarios.addStyleName("scenarios");
 	}
 	
-	/**
-	 * Setzt den Radio-Button auf APV
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setAPVSelected () {
-		berechnungGroup.setValue("apv");
-	}
-	
-	/**
-	 * Setzt den Radio-Button auf FTE
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setFTESelected () {
-		berechnungGroup.setValue("fte");
-		
-	}
-	
-	/**
-	 * Setzt den Radio-Button auf WACC
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setWACCSelected () {
-		berechnungGroup.setValue("wacc");
-	}
+//	/**
+//	 * Setzt den Radio-Button auf APV
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void setAPVSelected () {
+//		berechnungGroup.setValue("apv");
+//	}
+//	
+//	/**
+//	 * Setzt den Radio-Button auf FTE
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void setFTESelected () {
+//		berechnungGroup.setValue("fte");
+//		
+//	}
+//	
+//	/**
+//	 * Setzt den Radio-Button auf WACC
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void setWACCSelected () {
+//		berechnungGroup.setValue("wacc");
+//	}
 	
 	/**
 	 * Die Methode fuegt der View ein Szenario hinzu. Sie baut hierzu saemtliche
