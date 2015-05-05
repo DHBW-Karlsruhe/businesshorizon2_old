@@ -85,9 +85,9 @@ public interface ScenarioScreenViewInterface extends ContentView {
 
 	public Boolean getIncludeInCalculation(int scenarioNumber);
 	
-	public void setAPVSelected ();
-	
-	public void setFTESelected ();
-	
-	public void setWACCSelected ();
+//	public void setAPVSelected ();
+//	
+//	public void setFTESelected ();
+//	
+//	public void setWACCSelected ();
 }

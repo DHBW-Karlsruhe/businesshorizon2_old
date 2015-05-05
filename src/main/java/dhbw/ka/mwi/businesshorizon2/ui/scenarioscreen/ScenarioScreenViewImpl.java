@@ -233,6 +233,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 				presenter.updateScenario(number);
 				logger.debug("TextChange ausgeloest");
 				logger.debug("ChangeListener " + System.identityHashCode(this));
+				presenter.isValid();
 			}
 		};
 		
