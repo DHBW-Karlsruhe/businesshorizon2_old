@@ -139,6 +139,7 @@ public class Project implements Serializable {
 		this.specifiedPastPeriods = 6;
 		this.relevantPastPeriods = 5;
 		this.periodsToForecast = 3;
+		this.periodsToForecast_deterministic = 3;
 
 	}
 
