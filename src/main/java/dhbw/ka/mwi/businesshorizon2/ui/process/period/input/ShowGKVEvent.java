@@ -43,7 +43,11 @@ public class ShowGKVEvent extends Event implements ShowInputViewEventInterface{
                 this.period = period;
         }
 
-        public GesamtkostenVerfahrenCashflowPeriod getPeriod() {
+        public ShowGKVEvent() {
+			// TODO Auto-generated constructor stub
+		}
+
+		public GesamtkostenVerfahrenCashflowPeriod getPeriod() {
                 return period;
         }
 

@@ -44,9 +44,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowGKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowUKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe.DirektPresenter;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowGKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe.DirektViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.gesamtkostenverfahren.GesamtkostenVerfahrenViewInterface;
@@ -188,7 +188,8 @@ public class PeriodScreenPresenter extends Presenter<PeriodScreenViewInterface> 
 			break;
 		case GESAMTKOSTENVERFAHREN:
 			getView().showView(gkvView);
-//			gkvView.setProject(project);
+			gkvView.setProject(project);
+			eventBus.fireEvent(new ShowGKVEvent());
 			break;
 		case UMSATZKOSTENVERFAHREN:
 			getView().showView(ukvView);

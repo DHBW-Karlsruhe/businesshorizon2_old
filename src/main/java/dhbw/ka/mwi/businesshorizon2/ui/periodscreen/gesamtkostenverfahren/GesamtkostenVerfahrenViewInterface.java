@@ -35,5 +35,7 @@ public interface GesamtkostenVerfahrenViewInterface extends View {
 
 	void setProject(Project project);
 
+	void generateTable();
+
 }
 
