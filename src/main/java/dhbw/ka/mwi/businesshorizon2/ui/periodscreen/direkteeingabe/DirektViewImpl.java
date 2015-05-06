@@ -187,14 +187,17 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					double dValue;
 					try {
 						dValue = Double.parseDouble(value);
+						presenter.setValid();
 					}
 					catch (Exception e){
 						dValue = 0.0;
 						getWindow().showNotification((String) "", "Ihre Eingabe des Cashlflows/der Ausschüttung für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.",
 								Notification.TYPE_WARNING_MESSAGE);
+						presenter.setInvalid();	
 					}
+						
 					presenter.setCashFlowValue(dValue, year);
-					presenter.checkValid();
+//					presenter.checkValid();
 
 				}
 
@@ -215,15 +218,16 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					double dValue;
 					try {
 						dValue = Double.parseDouble(value);
-						
+						presenter.setValid();						
 					}
 					catch (Exception e) {
 						dValue = 0.0;
 						getWindow().showNotification((String) "", "Ihre Eingabe des Bilanzwertes für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.",
 								Notification.TYPE_WARNING_MESSAGE);
+						presenter.setInvalid();
 					}
 					presenter.setCapitalStockValue(dValue, year);
-					presenter.checkValid();
+//					presenter.checkValid();
 					
 				}
 			});
