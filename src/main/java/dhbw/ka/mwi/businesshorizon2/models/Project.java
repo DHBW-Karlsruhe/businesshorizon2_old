@@ -40,8 +40,10 @@ import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 
 /**
@@ -140,6 +142,12 @@ public class Project implements Serializable {
 		this.relevantPastPeriods = 5;
 		this.periodsToForecast = 3;
 		this.periodsToForecast_deterministic = 3;
+		
+		//Default Wert Berechnungsmethode (APV, weil oben in der RadioButton-Liste im UI)
+		this.setCalculationMethod(new APV());
+		
+		//Default Wert Eingabemethode (FCF, weil oben in der RadioButton-Liste im UI)
+		this.setStochasticPeriods(new CashFlowPeriodContainer());
 
 	}
 

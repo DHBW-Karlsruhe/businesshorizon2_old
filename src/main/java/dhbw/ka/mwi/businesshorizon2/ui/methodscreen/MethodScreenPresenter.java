@@ -138,7 +138,6 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 		default:
 			break;
 		}
-		
 	}
 
 }
