@@ -138,7 +138,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 				if(method.equals("sto")){
 					stochastic = true;
 					deterministic = false;
-					presenter.setPrognoseMethode(deterministic);
+					presenter.setPrognoseMethode(deterministic); //Übergabewert ist so korrekt --> siehe implementierte Methode setPrognoseMethode
 				}else if(method.equals("det")){
 					stochastic = false;
 					deterministic = true;
