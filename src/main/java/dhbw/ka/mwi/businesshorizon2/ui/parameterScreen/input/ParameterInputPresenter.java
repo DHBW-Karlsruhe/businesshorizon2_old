@@ -185,7 +185,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 		errorMessageBorrowedCapitalStepRange = "Bitte geben Sie die Schrittweite des Fremdkapital g\u00f6\u00dfrer oder gleich 0 an. Beispiel: 100000";
 		errorMessageBorrowedCapitalProbabilityOfRise = "Bitte geben Sie die Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung zwischen 0 und 100 an. Beispiel: 50";
 		errorMessagePeriodsToForecast = "Bitte geben Sie die Anzahl vorherzusehender Perioden in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
-		errorMessagePeriodsToForecast_deterministic = "Bitte geben Sie die Anzahl vorherzusehender Perioden (deterministische Verfahren) in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
+		errorMessagePeriodsToForecast_deterministic = "Bitte geben Sie die Anzahl Perioden (deterministische Verfahren) in einer Ganzzahl gr\u00F6\u00DFer 0 an. Beispiel: 5";
 		errorMessageSpecifiedPastPeriods = "Bitte geben Sie die Anzahl der anzugebenden vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer als 3 und als die Anzahl der einbezogenen vergangenen Perioden.";
 		errorMessageRelevantPastPeriods = "Bitte geben Sie die Anzahl der relevanten vergangenen Perioden in einer Ganzzahl gr\u00F6\u00DFer 2 an.";
 		errorMessageIterations = "Bitte w\u00E4hlen Sie die Anzahl der Wiederholungen als Ganzzahl zwischen 1000 und 100000 an. Beispiel: 10000";
@@ -589,6 +589,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 			if (periodsToForecast_deterministicInt > 0) {
 				periodsToForecast_deterministicValid = true;
 				getView().setComponentError(false, "periodsToForecast_deterministic", "");
+				logger.debug("periodsToForecast deterministic=" + periodsToForecast_deterministicInt);
 				this.projectProxy.getSelectedProject().setPeriodsToForecast_deterministic(
 						periodsToForecast_deterministicInt);
 				eventBus.fireEvent(new ValidationEvent(true));
