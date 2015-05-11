@@ -25,8 +25,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.List;
-import java.util.TreeSet;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -34,40 +32,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
-import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
-import dhbw.ka.mwi.businesshorizon2.models.InputType;
-import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
+
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
-import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des
  * Berechnungsszenarios.
  * 
- * @author Julius Hacker
+ * @author Julius Hacker, Tobias Lindner
  * 
  */
 
 public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ScenarioPresenter.class");
+	private static final Logger logger = Logger.getLogger("ScenarioScreenPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -75,8 +66,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	@Autowired
 	private ProjectProxy projectProxy;
 	
-	private Project project;
-
 	private boolean showErrors = false;
 
 	/**
@@ -91,9 +80,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		eventBus.addHandler(this);
 	}
 	
-	public void getBerechnungMethod () {
+//	public void getBerechnungMethod () {
 //		project = projectProxy.getSelectedProject();
-	}
+//	}
 
 	/**
 	 * Diese Methode ueberprueft, ob die im Screen getaetigten Eingaben valide
@@ -155,12 +144,12 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 				Double.toString(scenario.getBusinessTax()),
 				scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
+		
 		//Szenarioseite aktualisieren
 		eventBus.fireEvent(new ShowScenarioViewEvent());
 		
-		//Event, dass den "Weiter"-Button ausgraut, dass der Nutzer zuerst valide Eingaben für das neue Szenario machen muss
+		//Event, dass den "Weiter"-Button ausgraut, sodass der Nutzer zuerst valide Eingaben für das neue Szenario machen muss
 		eventBus.fireEvent(new ValidationEvent(false));
-		
 	}
 
 	/**
@@ -213,30 +202,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		}
 	}
 	
-//	/**
-//	 * Diese Methode setzt, sobald der Folgeschritt des Prozesses aufgerufen
-//	 * wird, den internen Fehlermarker so, dass Fehler ab sofort angezeigt
-//	 * werden. Der erzielte Effekt ist der, dass beim ersten Durchlauf des
-//	 * Prozesses noch keine Fehler angezeigt werden sollen, da der Screen erst
-//	 * befuellt werden muss. Sobald dieser erste Durchlauf einmal gemacht wurde
-//	 * und in den Screens vor und zurueck gegangen wird, sollen Fehlermeldungen
-//	 * angezeigt werden, um dem Nutzer zu verdeutlichen, wo durch etwaige
-//	 * Querverbindungen zwischen den Eingaben auf anderen Screens noch
-//	 * Korrekturen noetig sind.
-//	 * 
-//	 * @param event
-//	 *            Das gefeuerte ShowOutputViewEvent, das die Anzeige des
-//	 *            naechsten Screens ausloest
-//	 * @author Julius Hacker
-//	 */
-//	@Override
-//	@EventHandler
-//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-//		if (event.getStep() == NavigationSteps.SCENARIO) {
-//			this.showErrors = true;
-//		}
-//	}
-
 //	/**
 //	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen
 //	 * Inhalt validieren soll. Er bedient sich dabei der Methode isValid und
@@ -456,26 +421,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		
 	}
 	
-//	public void changeCalcMethod(String value) {
-//		switch (value) {
-//		case "fte":
-//			project.setCalculationMethod(new FTE());
-//			break;
-//
-//		case "apv":
-//			project.setCalculationMethod(new APV());
-//			break;
-//			
-//		case "wacc":
-//			
-//			break;
-//			
-//		default:
-//			break;
-//		}
-//		
-//	}
-
 //	public boolean isShowErrors() {
 //		return showErrors;
 //	}
