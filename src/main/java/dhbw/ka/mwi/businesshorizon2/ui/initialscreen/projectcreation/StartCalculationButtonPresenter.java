@@ -40,9 +40,4 @@ public class StartCalculationButtonPresenter extends Presenter<StartCalculationB
 		
 	}
 
-	public void showMethodselectionScreen() {
-		eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
-		
-	}
-
 }

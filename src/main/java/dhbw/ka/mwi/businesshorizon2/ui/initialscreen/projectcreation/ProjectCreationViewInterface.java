@@ -10,9 +10,9 @@ public interface ProjectCreationViewInterface extends View {
 
 	public void showErrorMessage(String message);
 	
-	public void addProject();
+	public void addProject(int nextStep);
 	
-	public void editProject();
+	public void editProject(int nextStep);
 	
 	public void setProjectData();
 	
