@@ -61,7 +61,7 @@ public class TestPrognoseBerechnen extends TestCase {
 		int durchlaeufe = 10000;
 		double mittelwert = 8.166666666666666;
 		boolean isfremdkapital = true;
-		double[][] prognosewerte = new double[zuberechnendeperioden][durchlaeufe];
+		double[] prognosewerte = new double[zuberechnendeperioden];
 		
 		cashflows.add (7);
 		cashflows.add (9);
@@ -88,16 +88,16 @@ public class TestPrognoseBerechnen extends TestCase {
 		
 		prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
 		
-		logger.debug("prognosewerte[0][0] " + prognosewerte[0][0]);
-		logger.debug("prognosewerte[0][1] " + prognosewerte[0][1]);
-		logger.debug("prognosewerte[0][2] " + prognosewerte[0][2]);
-		logger.debug("prognosewerte[0][3] " + prognosewerte[0][3]);
-		logger.debug("prognosewerte[0][4] " + prognosewerte[0][4]);
-		logger.debug("prognosewerte[1][0] " + prognosewerte[1][0]);
-		logger.debug("prognosewerte[1][1] " + prognosewerte[1][1]);
-		logger.debug("prognosewerte[1][2] " + prognosewerte[1][2]);
-		logger.debug("prognosewerte[1][3] " + prognosewerte[1][3]);
-		logger.debug("prognosewerte[1][4] " + prognosewerte[1][4]);
+		logger.debug("prognosewerte[0] " + prognosewerte[0]);
+//		logger.debug("prognosewerte[0][1] " + prognosewerte[0]]);
+//		logger.debug("prognosewerte[0][2] " + prognosewerte[0][2]);
+//		logger.debug("prognosewerte[0][3] " + prognosewerte[0][3]);
+//		logger.debug("prognosewerte[0][4] " + prognosewerte[0][4]);
+//		logger.debug("prognosewerte[1][0] " + prognosewerte[1][0]);
+//		logger.debug("prognosewerte[1][1] " + prognosewerte[1][1]);
+//		logger.debug("prognosewerte[1][2] " + prognosewerte[1][2]);
+//		logger.debug("prognosewerte[1][3] " + prognosewerte[1][3]);
+//		logger.debug("prognosewerte[1][4] " + prognosewerte[1][4]);
 		
 		assertNotNull(prognosewerte);
 		

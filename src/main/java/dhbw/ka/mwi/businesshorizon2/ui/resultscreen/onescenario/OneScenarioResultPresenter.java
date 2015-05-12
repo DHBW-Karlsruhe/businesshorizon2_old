@@ -24,7 +24,6 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Locale;
@@ -40,37 +39,29 @@ import org.vaadin.vaadinvisualizations.LineChart;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
+import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.ConsideredPeriodsOfPastException;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
-import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.VarianceNegativeException;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.OneScenarioCalculationEvent;
 
 /**
@@ -80,7 +71,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.OneScenarioCalculationEvent;
  * 
  */
 
-public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewInterface> {
+public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewInterface> implements CallbackInterface{
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -112,7 +103,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 	}
 
 	@EventHandler
-	public void onCalculateOneScenario(OneScenarioCalculationEvent event){
+	public void onCalculateOneScenario(OneScenarioCalculationEvent event) throws ConsideredPeriodsOfPastException, VarianceNegativeException, StochasticMethodException, InterruptedException{
 		project = event.getProject();
 		double[] cashflow;
 		double[] fremdkapital;
@@ -122,7 +113,24 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		double steuervorteile = 0;
 		double uwSteuerfrei = 0;
 		Szenario scenario = project.getIncludedScenarios().get(0);
-		AbstractPeriodContainer periodContainer = project.getDeterministicPeriods();
+		
+		AbstractPeriodContainer periodContainer = null;
+		
+		logger.debug("IsStochastic:" + project.getProjectInputType().isStochastic());
+		
+		if (project.getProjectInputType().isStochastic()){
+			logger.debug("Stochastische Berechnung");
+			//periodContainer = project.getStochasticPeriods();
+			TimeseriesCalculator tsCalc = new TimeseriesCalculator();
+			StochasticResultContainer stochasticResults = tsCalc.calculate(project, this);
+			periodContainer = stochasticResults.getPeriodContainers().first();
+			logger.debug("StochasticPeriods:" + project.getStochasticPeriods().toString());
+			//Stochastische Berechnung ausführen
+			//Werte für Berechnung weitergeben
+		}
+		else {
+			periodContainer = project.getDeterministicPeriods();
+		}
 		if(periodContainer instanceof CashFlowPeriodContainer){
 
 		}else if(periodContainer instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
@@ -218,6 +226,25 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		}
 		getView().setCapitalChart(cc);
 		getView().setCashFlowChart(lc);
+	}
+
+	@Override
+	public void onComplete(StochasticResultContainer result,
+			AbstractStochasticMethod method) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProgressChange(float progress) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onError(Throwable t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

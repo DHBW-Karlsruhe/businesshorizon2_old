@@ -116,6 +116,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                         cfPeriod.setFreeCashFlow(cashflows[i - 1]);
                         cfPeriod.setCapitalStock(fremdkapital[i - 1]);
                         cFContainer.getPeriods().add(cfPeriod);
+                        logger.debug("Cashflows:" + i);
                 }
 
 
@@ -148,6 +149,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                         ConsideredPeriodsOfPastException, VarianceNegativeException,
                         StochasticMethodException {
 
+        		logger.debug("TimeseriesCalculator.calculate aufrufen");
                 TreeSet<AbstractPeriodContainer> resultPeriods = new TreeSet<AbstractPeriodContainer>();
                 StochasticResultContainer resultContainer = null;
 
@@ -188,8 +190,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
 
 
                 // Umwandlung der Perioden in ein Double-Arrays
-                for (Period period : (TreeSet<Period>) project
-                                .getStochasticPeriods().getPeriods()) {
+                for (Period period : (TreeSet<Period>) project.getStochasticPeriods().getPeriods()) {
                         previousFremdkapital[counter] = period.getCapitalStock();
                         logger.debug("Fremdkapital: " + previousFremdkapital[counter]);
                         previousCashflows[counter] = period.getFreeCashFlow();
@@ -197,12 +198,12 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                         counter++;
                 }
                 // Durchfuehrung der Zeitreihenanalyse
-                double[][] resultTimeseriesBorrowedCapital = timeseries.calculate(
+                double[] resultTimeseriesBorrowedCapital = timeseries.calculate(
                                 previousFremdkapital, project.getRelevantPastPeriods(),
                                 project.getPeriodsToForecast(), project.getIterations(),
                                 callback, true);
                 double abweichungfk = timeseries.getAbweichung();
-                double[][] resultTimeseries = timeseries.calculate(previousCashflows,
+                double[] resultTimeseries = timeseries.calculate(previousCashflows,
                                 project.getRelevantPastPeriods(),
                                 project.getPeriodsToForecast(), project.getIterations(),
                                 callback, false);
@@ -235,7 +236,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                         // prognostiziert werden sollen
                         // resultTimeseries.length = Anzahl der zu prognostizierenden
                         // Perioden (Wert im ersten Array)
-                        for (int periode = 0; periode < resultTimeseries[0].length; periode++) {
+                        for (int periode = 0; periode < resultTimeseries.length; periode++) {
 
                                 // eine neue Cashflow-Periode wird erstellt und mit dem Jahr
                                 // der aktuellen Periode initialisiert
@@ -243,10 +244,10 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                                                 project.getBasisYear() + (periode + 1));
                                 // der Cashflow des aktuellen Prognosedurchlauf pro Periode
                                 // wird gesetzt
-                                cfPeriod.setFreeCashFlow(resultTimeseries[prognosedurchlauf][periode]);
+                                cfPeriod.setFreeCashFlow(resultTimeseries[periode]);
                                 // das Fremdkapital des aktuellen Prognosedurchlauf pro
                                 // Periode wird gesetzt
-                                cfPeriod.setCapitalStock(resultTimeseriesBorrowedCapital[prognosedurchlauf][periode]);
+                                cfPeriod.setCapitalStock(resultTimeseriesBorrowedCapital[periode]);
                                 // die Periode mit den gesetzten Werten wird dem
                                 // Cashflow-Perioden-Container hinzugefügt
                                 cFContainer.getPeriods().add(cfPeriod);

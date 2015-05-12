@@ -26,6 +26,9 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.security.InvalidParameterException;
 
+import org.apache.log4j.Logger;
+
+
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 
@@ -39,6 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 public class MethodRunner extends Thread {
 
 	private AbstractStochasticMethod method;
+	private static final Logger logger = Logger.getLogger("MethodRunner.class");
 
 	private CallbackInterface callback;
 	private Project project;
@@ -78,6 +82,7 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run(){
 		try {
+			logger.debug("Werte berechnen??");
 			StochasticResultContainer result = method.calculate(project, callback);
 			callback.onComplete(result, method);
 		} catch (InterruptedException e) {

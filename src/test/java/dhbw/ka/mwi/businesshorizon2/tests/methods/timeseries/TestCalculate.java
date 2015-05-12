@@ -58,7 +58,7 @@ public class TestCalculate extends TestCase {
 		int durchlaeufe = 10000;
 		CallbackInterface callback = null; 
 		boolean isfremdkapital = true;
-		double[][] prognosewerte = new double[zuberechnendeperioden][durchlaeufe];
+		double[] prognosewerte = new double[zuberechnendeperioden];
 		
 		zeitreihe [0]= 7;
 		zeitreihe [1]= 9;

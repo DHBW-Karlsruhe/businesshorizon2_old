@@ -350,7 +350,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 		if(project.getProjectInputType().isStochastic()){
 			
 		}
-		if(project.getProjectInputType().isDeterministic()){
+		//if(project.getProjectInputType().isDeterministic()){
 			
 			onProgressChange(0.5f);
 			if(project.getIncludedScenarios().size() == 1){
@@ -391,7 +391,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 			onProgressChange(1f);
 		}
 		
-	}
+	//}
 
 //	@Override
 //	public boolean isValid() {
