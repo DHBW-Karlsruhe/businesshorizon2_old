@@ -44,10 +44,13 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
+import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.ConsideredPeriodsOfPastException;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.VarianceNegativeException;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
@@ -113,23 +116,49 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 	@EventHandler
 	public void onMoreScenarioCalculation (MoreScenarioCalculationEvent event) {
 		
-		calculateScenario (0, event.getProject());
-		calculateScenario (1, event.getProject());
+		try {
+			calculateScenario (0, event.getProject());
+			calculateScenario (1, event.getProject());
+		} catch (StochasticMethodException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		if (event.anzScenarios()==3) {
 			getView().addScenario3ToLayout();
-			calculateScenario (2, event.getProject());
+			try {
+				calculateScenario (2, event.getProject());
+			} catch (StochasticMethodException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public void calculateScenario (int numScenario, Project project) {
+	public void calculateScenario (int numScenario, Project project) throws ConsideredPeriodsOfPastException, VarianceNegativeException, StochasticMethodException, InterruptedException {
 //		project = event.getProject();
 		double[] cashflow;
 		double[] fremdkapital;
 		double dFremdkapital = 0;
 		double unternehmenswert = 0;
 		Szenario scenario = project.getIncludedScenarios().get(numScenario);
-		AbstractPeriodContainer periodContainer = project.getDeterministicPeriods();
+		AbstractPeriodContainer periodContainer = null;
+		
+		if (project.getProjectInputType().isStochastic()){
+			logger.debug("Stochastische Berechnung");
+			//periodContainer = project.getStochasticPeriods();
+			TimeseriesCalculator tsCalc = new TimeseriesCalculator();
+			StochasticResultContainer stochasticResults = tsCalc.calculate(project, this);
+			periodContainer = stochasticResults.getPeriodContainers().first();
+			logger.debug("StochasticPeriods:" + project.getStochasticPeriods().toString());
+			//Stochastische Berechnung ausführen
+			//Werte für Berechnung weitergeben
+		}
+		else {
+			periodContainer = project.getDeterministicPeriods();
+		}
+		
 		if(periodContainer instanceof CashFlowPeriodContainer){
 	
 		}else if(periodContainer instanceof UmsatzkostenVerfahrenCashflowPeriodContainer){
