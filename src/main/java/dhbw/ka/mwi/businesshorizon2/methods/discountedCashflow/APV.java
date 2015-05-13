@@ -124,13 +124,13 @@ public class APV extends AbstractDeterministicMethod {
 			if (durchlauf == 0) { // Basisjahr
 				first_period_cashflow = cashflow[durchlauf];
 				first_period_fremdkapital = fremdkapital[durchlauf];
-			}
+			
 
-//			} else if (durchlauf + 1 == cashflow.length) { // letztes Jahr wird
-//															// nach der Schleife
-//															// extra berechnet
-//
-//			} 
+			} else if (durchlauf + 1 == cashflow.length) { // letztes Jahr wird
+															// nach der Schleife
+															// extra berechnet
+
+			} 
 			else {
 				gk += abzinsen(cashflow[durchlauf], sEK, durchlauf);
 				v += (sSteuersatz * sZinsen * fremdkapital[durchlauf - 1])
@@ -144,13 +144,13 @@ public class APV extends AbstractDeterministicMethod {
 			jahr = durchlauf;
 		}
 
-//		// Jahr -1, denn im letzten Durchlauf wird von der Schleife 1 addiert
-//		jahr = jahr - 1;
-//
-//		// Berechnung des letzten Jahres
-//		gk = gk + lastPeriod_cashflow / (sEK * Math.pow(1 + sEK, jahr));
-//		v = v + (sSteuersatz * sZinsen * lastPeriod_fremdkapital)
-//				/ (sZinsen * Math.pow(1 + sZinsen, jahr));
+		// Jahr -1, denn im letzten Durchlauf wird von der Schleife 1 addiert
+		jahr = jahr - 1;
+
+		// Berechnung des letzten Jahres
+		gk = gk + lastPeriod_cashflow / (sEK * Math.pow(1 + sEK, jahr));
+		v = v + (sSteuersatz * sZinsen * lastPeriod_fremdkapital)
+			/ (sZinsen * Math.pow(1 + sZinsen, jahr));
 		
 		// Unternehmenswert gesamt berechnen
 		unternehmenswert = gk + v - first_period_fremdkapital;
