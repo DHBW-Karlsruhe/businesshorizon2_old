@@ -173,7 +173,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		project.setCompanyValue(Double.parseDouble(nfUS.format(unternehmenswert).replace(",", "")));
 		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
 		nfDE.setMaximumFractionDigits(2);
-		nfDE.setMaximumFractionDigits(2);
+		nfDE.setMinimumFractionDigits(1);
 
 		if(method.getName().equals("Flow-to-Equity (FTE)")){
 			FTE fte = new FTE();

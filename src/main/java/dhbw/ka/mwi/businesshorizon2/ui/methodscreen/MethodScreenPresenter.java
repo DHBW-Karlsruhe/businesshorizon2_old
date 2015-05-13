@@ -18,7 +18,10 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
 
 public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 
@@ -52,50 +55,58 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 		project = projectProxy.getSelectedProject();
 		getView().setProject(project);
 	}
+	
+	@EventHandler
+	public void onShowMethodScreen (ShowProcessStepEvent e) {
+		if (e.getScreen().equals(screen.METHODSELECTION)) {
+			eventBus.fireEvent(new ValidationEvent(true));
+		}
+	}
 
 	public void setInputMethod(InputType value, boolean deterministic) {
+		logger.debug("setInputMethod aufgerufen");
 		if(deterministic){
 			project.getProjectInputType().setDeterministicInput(value);
-			if(project.getDeterministicPeriods() == null){
 				switch (value) {
 				case DIRECT:
 					project.setDeterministicPeriods(new CashFlowPeriodContainer());
 					break;
 
 				case GESAMTKOSTENVERFAHREN:
+					logger.debug("GKV Methode gesetzt");
 					project.setDeterministicPeriods(new GesamtkostenVerfahrenCashflowPeriodContainer());
 					break;
 
 				case UMSATZKOSTENVERFAHREN:
+					logger.debug("UKV Methode gesetzt");
 					project.setDeterministicPeriods(new UmsatzkostenVerfahrenCashflowPeriodContainer());
 					break;
 
 				default:
 					break;
 				}
-			}
 
 		}
 		else{
 			project.getProjectInputType().setStochasticInput(value);
-			if(project.getStochasticPeriods() == null){
 				switch (value) {
 				case DIRECT:
 					project.setStochasticPeriods(new CashFlowPeriodContainer());
 					break;
 
 				case GESAMTKOSTENVERFAHREN:
+					logger.debug("GKV Methode gesetzt");
 					project.setStochasticPeriods(new GesamtkostenVerfahrenCashflowPeriodContainer());
 					break;
 
 				case UMSATZKOSTENVERFAHREN:
+					logger.debug("UKV Methode gesetzt");
 					project.setStochasticPeriods(new UmsatzkostenVerfahrenCashflowPeriodContainer());
 					break;
 
 				default:
 					break;
 				}
-			}
 		}
 
 	}
@@ -128,7 +139,6 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 		default:
 			break;
 		}
-		
 	}
 
 }

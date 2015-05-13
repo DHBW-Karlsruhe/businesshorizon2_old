@@ -41,6 +41,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -183,13 +184,27 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 				@Override
 				public void valueChange(ValueChangeEvent event) {
 					String value = (String) event.getProperty().getValue();
-					double dValue = Double.parseDouble(value);
+					double dValue;
+					try {
+						dValue = Double.parseDouble(value);
+						presenter.setValid();
+					}
+					catch (Exception e){
+						dValue = 0.0;
+						getWindow().showNotification((String) "", "Ihre Eingabe des Cashlflows/der Ausschüttung für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.",
+								Notification.TYPE_WARNING_MESSAGE);
+						presenter.setInvalid();	
+					}
+						
 					presenter.setCashFlowValue(dValue, year);
+//					presenter.checkValid();
 
 				}
 
 			});
 			field1.setValue(presenter.getCashFlow(year));
+			
+			
 			TextField field2 = new TextField();
 			field2.setWidth(50, UNITS_PIXELS);
 			field2.setImmediate(true);
@@ -200,8 +215,19 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 				@Override
 				public void valueChange(ValueChangeEvent event) {
 					String value = (String) event.getProperty().getValue();
-					double dValue = Double.parseDouble(value);
+					double dValue;
+					try {
+						dValue = Double.parseDouble(value);
+						presenter.setValid();						
+					}
+					catch (Exception e) {
+						dValue = 0.0;
+						getWindow().showNotification((String) "", "Ihre Eingabe des Bilanzwertes für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.",
+								Notification.TYPE_WARNING_MESSAGE);
+						presenter.setInvalid();
+					}
 					presenter.setCapitalStockValue(dValue, year);
+//					presenter.checkValid();
 					
 				}
 			});

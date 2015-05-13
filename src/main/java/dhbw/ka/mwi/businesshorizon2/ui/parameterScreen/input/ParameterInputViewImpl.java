@@ -299,7 +299,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		// Deterministische Parameter
 		
 		//Anzahl anzugebender Perioden
-		labelNumPeriods_deterministic = new Label("Anzahl zukünftiger Perioden");
+		labelNumPeriods_deterministic = new Label("Anzahl Perioden");
 		gridLayout.addComponent(labelNumPeriods_deterministic, 0, 7);
 		
 		textfieldNumPeriodsToForecast_deterministic = new TextField();

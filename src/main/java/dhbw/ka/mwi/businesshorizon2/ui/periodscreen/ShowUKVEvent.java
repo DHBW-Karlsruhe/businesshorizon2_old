@@ -41,7 +41,11 @@ public class ShowUKVEvent extends Event implements ShowInputViewEventInterface{
                 this.period = period;
         }
 
-        public UmsatzkostenVerfahrenCashflowPeriod getPeriod() {
+        public ShowUKVEvent() {
+			// TODO Auto-generated constructor stub
+		}
+
+		public UmsatzkostenVerfahrenCashflowPeriod getPeriod() {
                 return period;
         }
 

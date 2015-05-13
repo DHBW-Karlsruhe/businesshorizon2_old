@@ -206,7 +206,7 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 
 		NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
 		nfDE.setMaximumFractionDigits(2);
-		nfDE.setMaximumFractionDigits(2);
+		nfDE.setMinimumFractionDigits(1);
 		
 		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert));
 		

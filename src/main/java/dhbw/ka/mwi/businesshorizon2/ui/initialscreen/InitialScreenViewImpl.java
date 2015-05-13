@@ -178,6 +178,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private Label progressBarGap;
 
+	private Label splitterVertical;
+
 
 
 	/**
@@ -491,25 +493,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		};
 		addTopButton(addProjectButton, addProjectButtonListener);
 		
-		createImportButton();
-		topRightLayout.addComponent(importButton);
-		topRightLayout.setComponentAlignment(importButton, Alignment.MIDDLE_CENTER);
-		
-		exportButton = new TopBarButton("exportButton", "Projekte");
-		exportButton.addLabel("exportieren");
-		exportButtonListener = new ClickListener(){
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				File exportFile = presenter.exportProjects();
-				event.getButton().getWindow().open(new Downloader(exportFile, getApplication()));
-			}
-			
-		};
-		addTopButton(exportButton, exportButtonListener);
-		
 		editProjectButton = new TopBarButton("editProjectButton", "Projekt bearbeiten");
 		editProjectButtonListener = new ClickListener(){
 
@@ -558,6 +541,25 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		};
 		addTopButton(deleteProjectButton, deleteProjectButtonListener);
+		
+		createImportButton();
+		topRightLayout.addComponent(importButton);
+		topRightLayout.setComponentAlignment(importButton, Alignment.MIDDLE_CENTER);
+		
+		exportButton = new TopBarButton("exportButton", "Projekte");
+		exportButton.addLabel("exportieren");
+		exportButtonListener = new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				File exportFile = presenter.exportProjects();
+				event.getButton().getWindow().open(new Downloader(exportFile, getApplication()));
+			}
+			
+		};
+		addTopButton(exportButton, exportButtonListener);
 
 		topBarSpacing = new VerticalLayout();
 		topBarSpacing.setSizeFull();
@@ -765,7 +767,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	}
 	
 	public void setImportButton(){
-		int index = 1;
+		int index = 3;
 		int maxIndex = topRightLayout.getComponentCount() - 1; //1 abziehen wegen dem Spacing rechts
 		if(index < maxIndex){
 			Component comp = topRightLayout.getComponent(index);
@@ -788,10 +790,10 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	 */
 	public void setInitialTopButtons(){
 		setTopButton(addProjectButton, 0, addProjectButtonListener);
+		setTopButton(editProjectButton, 1, editProjectButtonListener);
+		setTopButton(deleteProjectButton, 2, deleteProjectButtonListener);
 		setImportButton();
-		setTopButton(exportButton, 2, exportButtonListener);
-		setTopButton(editProjectButton, 3, editProjectButtonListener);
-		setTopButton(deleteProjectButton, 4, deleteProjectButtonListener);
+		setTopButton(exportButton, 4, exportButtonListener);
 		clearUnusedButtons(5);
 	}
 	

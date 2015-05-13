@@ -74,4 +74,11 @@ public class ProjectListViewMock implements ProjectListViewInterface {
 		
 	}
 
+
+	@Override
+	public void clearProjectList() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

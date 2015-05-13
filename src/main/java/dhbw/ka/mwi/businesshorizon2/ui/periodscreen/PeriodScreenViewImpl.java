@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.view.View;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -75,7 +76,7 @@ public class PeriodScreenViewImpl extends VerticalLayout implements
 	 */
 	private void generateUi() {
 		setWidth(95, UNITS_PERCENTAGE);
-		setHeight(100, UNITS_PERCENTAGE);
+		setHeight(Sizeable.SIZE_UNDEFINED, 0);
 		setStyleName("projectDetailsLayout");
 		
 	}

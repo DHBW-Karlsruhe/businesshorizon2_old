@@ -34,6 +34,8 @@ public interface UmsatzkostenVerfahrenViewInterface extends View {
 
 	void setProject(Project project);
 
+	void generateTable();
+
         
 
 }

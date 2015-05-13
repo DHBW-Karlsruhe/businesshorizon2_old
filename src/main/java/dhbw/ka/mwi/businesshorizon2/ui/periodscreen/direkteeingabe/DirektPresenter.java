@@ -41,6 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 
@@ -53,7 +54,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
 
 public class DirektPresenter extends Presenter<DirektViewInterface> {
 	private static final long serialVersionUID = 1L;
-
+	
+	private static final Logger logger = Logger.getLogger("DirektPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -229,6 +231,69 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 			}
 		}
 		return String.valueOf(value);
+	}
+	
+	public void setValid () {
+		eventBus.fireEvent(new ValidationEvent(true));
+		logger.debug("ValidationEvent(true) geworfen"); 
+	}
+	
+	public void setInvalid () {
+		eventBus.fireEvent(new ValidationEvent(false));
+		logger.debug("ValidationEvent(true) geworfen");
+	}
+	
+	/**
+	 * Die Methode überprüft, ob im Perioden Objekt alle Werte zu Cashflow/Ausschüttung und Capital Stock ausgefüllt wurden
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void checkValid () {
+		int fehlercounter = 0;
+
+		//Check, ob zu allen Jahren Cashflows oder Ausschüttung angegeben ist.
+//		double value = 0.0;
+//		project = projectProxy.getSelectedProject();
+//		stochastic = project.getProjectInputType().isStochastic();
+//		if(stochastic){
+//			periodContainer = (CashFlowPeriodContainer) project.getStochasticPeriods();
+//		}
+//		else{
+//			periodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
+//		}
+//
+//		if(periodContainer != null){
+//			CashFlowPeriod period;
+//			TreeSet<CashFlowPeriod> periods = periodContainer.getPeriods();
+//			Iterator<CashFlowPeriod> it = periods.iterator();
+//			while(it.hasNext()){
+//				period = it.next();
+//
+//				value = period.getFreeCashFlow();
+//				if (value == 0.0) {
+//					fehlercounter++;
+//				}
+//				
+//				value = period.getCapitalStock();
+//				if (value == 0.0) {
+//					fehlercounter++;
+//				}
+//			}
+//		}
+//		
+//		logger.debug("fehlercounter=" + fehlercounter);
+//		
+		
+		if (fehlercounter == 0) {
+			eventBus.fireEvent(new ValidationEvent(true));
+			logger.debug("ValidationEvent(true) geworfen"); 
+		}
+		
+		else {
+			eventBus.fireEvent(new ValidationEvent(false));
+			logger.debug("ValidationEvent(true) geworfen");
+		}
+		
 	}
 
 }

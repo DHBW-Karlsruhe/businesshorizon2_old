@@ -26,6 +26,8 @@ import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialTopButtonsEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectAddEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
@@ -36,7 +38,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectList
  * Dieser Presenter ist für die Darstellung des Projekterstellungs Screens zuständig.
  * Der Projekterstellungs Screen wird auch für das Bearbeiten eines Projektes verwendet.
  *
- * @author Marco Glaser
+ * @author Marco Glaser, Tobias Lindner
  */
 public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInterface>{
 
@@ -84,7 +86,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	 * @param event
 	 * : ShowProjectEditButtonsEvent
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
 	@EventHandler
 	public void onShowEditScreen(ShowProjectEditButtonsEvent event){
@@ -98,8 +100,8 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getView().editProject();
-				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+				getView().editProject(0);
+//				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
 			}
 
 		});
@@ -132,10 +134,10 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	@EventHandler
 	public void onSaveProject(SaveProjectEvent event){
 		if(edit == true){
-			getView().editProject();
+			getView().editProject(1);
 		}
 		else{
-			getView().addProject();
+			getView().addProject(1);
 		}
 	}
 
@@ -147,7 +149,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	 * @param event
 	 * : ShowProjectCreationButtonsEvent
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
 	@EventHandler
 	public void onShowCreationScreen(ShowProjectCreationButtonsEvent event){
@@ -161,8 +163,8 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getView().addProject();
-				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+				getView().addProject(0);
+//				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
 			}
 
 		});
@@ -215,15 +217,29 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	 * @param description
 	 * : Projektbeschreibung
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
-	public void addProject(String name, String description) {
+	public void addProject(String name, String description, int nextStep) {
 
 		Project project = new Project(name, description);
 		project.setLastChanged(new Date());
 		project.setCreatedFrom(this.theUser);
 		try {
 			persistenceService.addProject(this.theUser, project);
+			
+			projectListView.setProjects(theUser.getProjects());
+			
+			if (nextStep == 0) {
+				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+				eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
+			}
+			
+			if (nextStep == 1) {
+				eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));	
+			}
+			
+			
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
 			logger.debug("Projektname bereits vorhanden.");
@@ -231,11 +247,10 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		}
 		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
 
-		projectListView.setProjects(theUser.getProjects());
+		
 
 		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
 
-		eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
 		//		eventBus.fireEvent(new ProjectAddEvent(project));
 		logger.debug("ShowAddEvent gefeuert");
 
@@ -252,9 +267,9 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 	 * @param description
 	 * : Projektbeschreibung
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
-	public boolean editProject(Project project, String name, String description) {
+	public boolean editProject(Project project, String name, String description, int nextStep) {
 
 
 		try {
@@ -280,7 +295,18 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 			project.setLastChanged(new Date());
 			persistenceService.saveProjects();
 			projectListView.setProjects(theUser.getProjects());
-			eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
+			
+			if (nextStep == 0) {
+				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+				eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
+			}
+			
+			if (nextStep == 1) {
+				eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
+				eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));	
+			}
+			
+			logger.debug ("ShowInitialScreenViewEvent geworfen.");
 			return true;
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());

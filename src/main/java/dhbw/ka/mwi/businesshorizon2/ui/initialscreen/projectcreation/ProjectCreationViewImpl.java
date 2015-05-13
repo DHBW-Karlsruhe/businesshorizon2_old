@@ -24,7 +24,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
  * da sich diese beiden Prozesse im UI nicht unterscheiden.
  * Sie wird in den rechten Teil des horizontalen SplitPanels der InitialScreenView eingefügt.
  *
- * @author Marco Glaser
+ * @author Marco Glaser, Tobias Lindner
  */
 public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCreationViewInterface{
 
@@ -125,25 +125,25 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 	 * Diese Methode zieht die Werte aus den Inputfeldern und übergibt sie an den Presenter,
 	 * um dort das Projekt anlegen zu lassen.
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
-	public void addProject(){
+	public void addProject(int nextStep){
 		String projectName = (String) projectNameInput.getValue();
 		String projectDescription = (String) projectDescriptionInput.getValue();
-		presenter.addProject(projectName, projectDescription);
+		presenter.addProject(projectName, projectDescription, nextStep);
 	}
 	
 	/**
 	 * Diese Methode zieht die Werte aus den Inputfeldern und übergibt sie an den Presenter,
 	 * um dort das Projekt bearbeiten zu lassen.
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
-	public void editProject(){
+	public void editProject(int nextStep){
 		String projectName = (String) projectNameInput.getValue();
 		String projectDescription = (String) projectDescriptionInput.getValue();
 		Project project = projectProxy.getSelectedProject();
-		presenter.editProject(project, projectName, projectDescription);
+		presenter.editProject(project, projectName, projectDescription, nextStep);
 	}
 	
 	/**

@@ -27,12 +27,18 @@ package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input;
 
 import com.mvplite.event.Event;
 
-public class ParameterValidationEvent extends Event {
+/**
+ * Dieses Event wird im Zusammehang mit der Überprüfung, von Eingabefelder verwendet. Es dient dazu den "Weiter"-Button ggfs. zu deaktivieren. 
+ * 
+ * @author Tobias Lindner
+ *
+ */
+public class ValidationEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	
 	private boolean valid;
 	
-	public ParameterValidationEvent (boolean valid) {
+	public ValidationEvent (boolean valid) {
 		this.valid = valid;
 	}
 	

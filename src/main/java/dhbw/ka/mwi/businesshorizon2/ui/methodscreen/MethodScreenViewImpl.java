@@ -138,7 +138,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 				if(method.equals("sto")){
 					stochastic = true;
 					deterministic = false;
-					presenter.setPrognoseMethode(deterministic);
+					presenter.setPrognoseMethode(deterministic); //Übergabewert ist so korrekt --> siehe implementierte Methode setPrognoseMethode
 				}else if(method.equals("det")){
 					stochastic = false;
 					deterministic = true;
@@ -220,16 +220,17 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		}else if(stochastic){
 			inp = project.getProjectInputType().getStochasticInput();
 		}
+		logger.debug ("inp=" + inp);
 		if(inp != null){
 			switch (inp) {
-			case DIRECT:
-				eingabeGroup.setValue("fcf");
+			case DIRECT :
+				eingabeGroup.setValue(InputType.DIRECT);
 				break;
 			case GESAMTKOSTENVERFAHREN:
-				eingabeGroup.setValue("gkv");
+				eingabeGroup.setValue(InputType.GESAMTKOSTENVERFAHREN);
 				break;
 			case UMSATZKOSTENVERFAHREN:
-				eingabeGroup.setValue("ukv");
+				eingabeGroup.setValue(InputType.UMSATZKOSTENVERFAHREN);
 				break;
 
 			default:
@@ -239,8 +240,10 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 	}
 
 	public void setBerechnung(){
+		logger.debug("Methode setzen der Default Werte für die Berechnungaufgerufen");
 		AbstractDeterministicMethod method = project.getCalculationMethod();
 		if(method != null){
+			logger.debug ("Im Projekt Objekt ist eine Methode angegeben");
 			if(method.getName().equals("Flow-to-Equity (FTE)")){
 				berechnungGroup.setValue("fte");
 			}else if(method.getName().equals("Adjusted-Present-Value (APV)")){

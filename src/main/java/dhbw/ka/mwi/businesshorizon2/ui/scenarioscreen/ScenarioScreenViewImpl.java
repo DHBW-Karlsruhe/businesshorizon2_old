@@ -40,7 +40,6 @@ import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.AbstractComponent;
@@ -49,12 +48,9 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Embedded;
-import com.vaadin.ui.Form;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -67,20 +63,14 @@ import com.vaadin.ui.VerticalLayout;
 public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioScreenViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ScenarioViewImpl.class");
+	private static final Logger logger = Logger.getLogger("ScenarioScreenViewImpl.class");
 
 	@Autowired
 	private ScenarioScreenPresenter presenter;
 	
-	private Form berechnungForm;
-	
-	private OptionGroup berechnungGroup;
-	
-	private Label gap1;
-	private Label gap2;
 	private Label gap3;
 	private Label gap4;
-	private Label splitter;
+
 	private Label addLabel;
 	
 	private Embedded addIcon;
@@ -110,30 +100,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	 * @author Julius Hacker, Tobias Lindner
 	 */
 	private void generateUi() {
-		
-		berechnungForm = new Form();
-		berechnungGroup = new OptionGroup();
-		
-		berechnungForm.setWidth(90, UNITS_PERCENTAGE);
-		berechnungForm.setCaption("Berechnungsmethode");
-		
-		berechnungGroup.addItem("apv");
-		berechnungGroup.addItem("fte");
-		berechnungGroup.addItem("wac");
-		berechnungGroup.setItemCaption("apv", "APV (Adjusted Present Value)");
-		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
-		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
-		
-		berechnungForm.addField("berechnungGroup", berechnungGroup);
-		
-		gap1 = new Label();
-		gap1.setHeight(35, UNITS_PIXELS);
-		
-		splitter = new Label("<hr style='border:none;background-color:black;height:2px'>", Label.CONTENT_XHTML);
-		
-		gap2 = new Label();
-		gap2.setHeight(20, UNITS_PIXELS);
-		
+				
 		addScenarioLayout = new HorizontalLayout();
 		
 		addIcon = new Embedded (null, new ThemeResource ("./images/icons/newIcons/1418766077_circle_add_plus_-128_green.png"));
@@ -144,11 +111,14 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		addLabel.addStyleName("addScenario");
 		
 		addScenarioLayout.addComponent(addIcon);
+		
 		gap3 = new Label();
 		gap3.setWidth(10, UNITS_PIXELS);
+		
 		addScenarioLayout.addComponent(gap3);
 		addScenarioLayout.addComponent(addLabel);
 		addScenarioLayout.setComponentAlignment(addLabel, Alignment.MIDDLE_CENTER);
+		
 		addScenarioLayout.addListener(new LayoutClickListener () {
 			private static final long serialVersionUID = 1L;
 
@@ -158,19 +128,13 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 			}
 		});
 		
-		gap4 = new Label ();
+		gap4 = new Label();
 		gap4.setHeight(15, UNITS_PIXELS);
 		
 		this.vlScenarios = new VerticalLayout();
 		this.vlScenarios.setSizeFull();
-//		this.setStyleName("small");
 		this.setMargin(true);
 		
-//		addComponent(berechnungForm);
-//		setComponentAlignment(berechnungForm, Alignment.MIDDLE_CENTER);
-//		addComponent(gap1);
-//		addComponent(splitter);
-//		addComponent(gap2);
 		addComponent(addScenarioLayout);
 		setComponentAlignment(addScenarioLayout, Alignment.MIDDLE_LEFT);
 		addComponent(gap4);
@@ -178,35 +142,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		vlScenarios.addStyleName("scenarios");
 	}
-	
-	/**
-	 * Setzt den Radio-Button auf APV
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setAPVSelected () {
-		berechnungGroup.setValue("apv");
-	}
-	
-	/**
-	 * Setzt den Radio-Button auf FTE
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setFTESelected () {
-		berechnungGroup.setValue("fte");
 		
-	}
-	
-	/**
-	 * Setzt den Radio-Button auf WACC
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setWACCSelected () {
-		berechnungGroup.setValue("wacc");
-	}
-	
 	/**
 	 * Die Methode fuegt der View ein Szenario hinzu. Sie baut hierzu saemtliche
 	 * notwendigen GUI-Elemente und entsprechenden Listener hinzu.
@@ -233,6 +169,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 				presenter.updateScenario(number);
 				logger.debug("TextChange ausgeloest");
 				logger.debug("ChangeListener " + System.identityHashCode(this));
+				presenter.isValid();
 			}
 		};
 		
@@ -249,33 +186,16 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		logger.debug("SzenarioName: " + scenarioName);
 		gl.addComponent(scenarioName, 0, 0);
-		
-//		formLeft.addComponent(scenarioName);
-//		scenarioName.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-		
-//		final CheckBox cbBerechnungEinbezug = new CheckBox("In Berechnung einbeziehen");
-//		cbBerechnungEinbezug.setValue(isIncludeInCalculation);
-//		cbBerechnungEinbezug.setImmediate(true);
-//		cbBerechnungEinbezug.addListener(new ClickListener() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//				presenter.updateScenario(number);
-//				logger.debug("ChangeListener " + System.identityHashCode(this));
-//			}
-//			
-//		});
-//		scenarioComponents.put("isIncludeInCalculation", cbBerechnungEinbezug);
-//		formLeft.addComponent(cbBerechnungEinbezug);
-		
+				
 		final Label textEigenkapital = new Label ("Renditeforderung Eigenkapital: ");
 		textEigenkapital.setSizeFull();
 		
 		final TextField tfEigenkapital = new TextField();
+		
 		if(!"0.0".equals(rateReturnEquity)) {
 			tfEigenkapital.setValue(rateReturnEquity);
 		}
+		
 		tfEigenkapital.setImmediate(true);
 		tfEigenkapital.addStyleName("scenario");
 		tfEigenkapital.addListener(changeListener);
@@ -288,9 +208,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		final Label textFremdkapitel = new Label ("Renditeforderung FK: ");
 		
 		final TextField tfFremdkapital = new TextField();
+		
 		if(!"0.0".equals(rateReturnCapitalStock)) {
 			tfFremdkapital.setValue(rateReturnCapitalStock);
 		}
+		
 		tfFremdkapital.setImmediate(true);
 		tfFremdkapital.addStyleName("scenario");
 		tfFremdkapital.addListener(changeListener);
@@ -302,9 +224,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		final Label textGewerbesteuer = new Label ("Gewerbesteuer:");
 		final TextField tfGewerbesteuer = new TextField();
+		
 		if(!"0.0".equals(businessTax)) {
 			tfGewerbesteuer.setValue(businessTax);
 		}
+		
 		tfGewerbesteuer.setImmediate(true);
 		tfGewerbesteuer.addStyleName("scenario");
 		tfGewerbesteuer.addListener(changeListener);
@@ -317,9 +241,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		final Label textKoerperschaftssteuer = new Label ("Körperschaftssteuer mit Solidaritätszuschlag: ");
 		
 		final TextField tfKoerperschaftssteuer = new TextField();
+		
 		if(!"0.0".equals(corporateAndSolitaryTax)) {
 			tfKoerperschaftssteuer.setValue(corporateAndSolitaryTax);
 		}
+		
 		tfKoerperschaftssteuer.setImmediate(true);
 		tfKoerperschaftssteuer.addStyleName("scenario");
 		tfKoerperschaftssteuer.addListener(changeListener);
@@ -328,23 +254,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		gl.addComponent(tfKoerperschaftssteuer, 1, 4);
 		
 		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
-		
-//		final Button removeScenario = new Button("Szenario entfernen");
-//		removeScenario.addListener(new ClickListener() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//				presenter.removeScenario(number);
-//			}
-//			
-//		});
-//		formLeft.addComponent(removeScenario);
-//		gl.addComponent(removeScenario, 0, 5);
-		
+				
 		deleteIcon = new Embedded (null, new ThemeResource ("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png"));
 		deleteIcon.setHeight(60, UNITS_PIXELS);
 		deleteIcon.addStyleName("deleteScenario");
+		
 		deleteIcon.addListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -400,10 +314,8 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	}
 	
 	public Boolean getIncludeInCalculation(int scenarioNumber) {
-//		return (Boolean) ((CheckBox) this.scenarios.get(scenarioNumber-1).get("isIncludeInCalculation")).getValue();
-		return true;
+		return true; 		//Die Checkbox zum ausschließen eines Szenarios aus der Berechnung ist im neuen UI nicht mehr vorhanden.
 	}
-	
 	
 	public void setIncludedInCalculation(int scenarioNumber, boolean newValue) {
 		((CheckBox) this.scenarios.get(scenarioNumber-1).get("isIncludeInCalculation")).setValue(newValue);
@@ -459,10 +371,20 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		scenarios.clear();
 	}
 	
+	/**
+	 * Diese Methode deaktiviert den Button, um ein neues Szenario hinzuzufügen.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void deactivateAddScenario () {
 		addScenarioLayout.setEnabled(false);
 	}
 	
+	/**
+	 * Diese Methode aktiviert den Button, um ein neues Szenario hinzuzufügen.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void activateAddScenario () {
 		addScenarioLayout.setEnabled(true);
 	}

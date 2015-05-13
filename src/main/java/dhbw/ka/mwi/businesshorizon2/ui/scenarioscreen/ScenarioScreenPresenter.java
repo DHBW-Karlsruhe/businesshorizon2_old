@@ -25,8 +25,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.List;
-import java.util.TreeSet;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -35,38 +33,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
-import dhbw.ka.mwi.businesshorizon2.models.InputType;
-import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
+
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
+
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
+
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
-import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des
  * Berechnungsszenarios.
  * 
- * @author Julius Hacker
+ * @author Julius Hacker, Tobias Lindner
  * 
  */
 
 public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger
-			.getLogger("ScenarioPresenter.class");
+	private static final Logger logger = Logger.getLogger("ScenarioScreenPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -74,8 +66,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	@Autowired
 	private ProjectProxy projectProxy;
 	
-	private Project project;
-
 	private boolean showErrors = false;
 
 	/**
@@ -90,16 +80,16 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		eventBus.addHandler(this);
 	}
 	
-	public void getBerechnungMethod () {
+//	public void getBerechnungMethod () {
 //		project = projectProxy.getSelectedProject();
-	}
+//	}
 
 	/**
 	 * Diese Methode ueberprueft, ob die im Screen getaetigten Eingaben valide
 	 * und somit korrekt sind. Er nutzt hierbei die Validierungsmethoden zur
 	 * Ueberpruefung der einzelnen Dateneingabefelder.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Tobias Lindner
 	 * @return true: Die Eingabewerte der Maske sind insgesamt korrekt false:
 	 *         Die Eingabewerte der Maske sind an mindestens einer Stelle nicht
 	 *         korrekt.
@@ -125,14 +115,25 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			scenarioNumber++;
 		}
 
-		return isValid;
+		//ValidationEvent mit entsprechendem Übergabewert werfen
+		
+		if (isValid) {
+			eventBus.fireEvent(new ValidationEvent(true));
+			logger.debug("Validationevent(true) geworfen.");
+			return isValid;
+		}
+		else {
+			eventBus.fireEvent(new ValidationEvent(false));
+			logger.debug("Validationevent(false) geworfen.");
+			return isValid;
+		}
 	}
 
 	/**
 	 * Diese Methode fuegt dem Projekt ein neues Szenario hinzu und zeigt die
 	 * dazugehoerigen Eingabefelder auf dem Screen an.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Tobias Lindner
 	 */
 	public void addScenario() {
 		Szenario scenario = new Szenario(0.0, 0.0, 0.0, 0.0, true);
@@ -143,11 +144,20 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 				Double.toString(scenario.getBusinessTax()),
 				scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
+		
 		//Szenarioseite aktualisieren
 		eventBus.fireEvent(new ShowScenarioViewEvent());
 		
+		//Event, dass den "Weiter"-Button ausgraut, sodass der Nutzer zuerst valide Eingaben für das neue Szenario machen muss
+		eventBus.fireEvent(new ValidationEvent(false));
 	}
 
+	/**
+	 * Diese Methode entfernt ein Szenario und aktualisiert den Screen.
+	 * 
+	 * @author Tobias Lindner
+	 * @param number Nummer des zu löschenden Szenarios
+	 */
 	public void removeScenario(int number) {
 		logger.debug("Es gibt " + this.projectProxy.getSelectedProject().getScenarios().size() + " Szenarios");
 		logger.debug("Lösche Szenario Nummer: " + number);
@@ -155,8 +165,8 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 				.remove(number - 1);
 		getView().removeScenario(number - 1);
 		getView().updateLabels();
+		
 		//Szenarioseite aktualisieren
-		//eventBus.fireEvent(new ShowScenarioViewEvent());
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.SCENARIOS));
 	}
 
@@ -164,7 +174,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Dieser EventHandler reagiert auf die Nachricht, dass der Prozesschritt
 	 * zur Szenarienanzeige angezeigt werden soll. Er legt hierbei, falls noch
 	 * kein Szenario existiert, zunaechst das im Fachkonzept angegebene
-	 * Standardszenario an und baut den Screen danach komplett neu auf.
+	 * Standardszenario an.
+	 * 
+	 * @author Tobias Lindner
 	 */
 	@EventHandler
 	public void handleShowView(ShowProcessStepEvent event) {
@@ -186,59 +198,31 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 						Double.toString(scenario.getBusinessTax()),
 						scenario.isIncludeInCalculation(), numberOfScenario);
 				numberOfScenario++;
-			}
-			
+			}	
 		}
-		
-//		eventBus.fireEvent(new ScreenSelectableEvent(NavigationSteps.SCENARIO,
-//				true));
 	}
 	
-	/**
-	 * Diese Methode setzt, sobald der Folgeschritt des Prozesses aufgerufen
-	 * wird, den internen Fehlermarker so, dass Fehler ab sofort angezeigt
-	 * werden. Der erzielte Effekt ist der, dass beim ersten Durchlauf des
-	 * Prozesses noch keine Fehler angezeigt werden sollen, da der Screen erst
-	 * befuellt werden muss. Sobald dieser erste Durchlauf einmal gemacht wurde
-	 * und in den Screens vor und zurueck gegangen wird, sollen Fehlermeldungen
-	 * angezeigt werden, um dem Nutzer zu verdeutlichen, wo durch etwaige
-	 * Querverbindungen zwischen den Eingaben auf anderen Screens noch
-	 * Korrekturen noetig sind.
-	 * 
-	 * @param event
-	 *            Das gefeuerte ShowOutputViewEvent, das die Anzeige des
-	 *            naechsten Screens ausloest
-	 * @author Julius Hacker
-	 */
-	@Override
-	@EventHandler
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		if (event.getStep() == NavigationSteps.SCENARIO) {
-			this.showErrors = true;
-		}
-	}
-
-	/**
-	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen
-	 * Inhalt validieren soll. Er bedient sich dabei der Methode isValid und
-	 * setzt den Status des Screens entsprechend des Ergebnisses auf valide oder
-	 * invalide.
-	 * 
-	 * @author Julius Hacker
-	 */
-	@Override
-	@EventHandler
-	public void validate(ValidateContentStateEvent event) {
-		logger.debug(this.isValid());
-		if (!this.isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO,
-					this.showErrors));
-			logger.debug("Scenario not valid, InvalidStateEvent fired");
-		} else {
-			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.SCENARIO));
-			logger.debug("Scenario valid, ValidStateEvent fired");
-		}
-	}
+//	/**
+//	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen
+//	 * Inhalt validieren soll. Er bedient sich dabei der Methode isValid und
+//	 * setzt den Status des Screens entsprechend des Ergebnisses auf valide oder
+//	 * invalide.
+//	 * 
+//	 * @author Julius Hacker
+//	 */
+//	@Override
+//	@EventHandler
+//	public void validate(ValidateContentStateEvent event) {
+//		logger.debug(this.isValid());
+//		if (!this.isValid()) {
+//			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO,
+//					this.showErrors));
+//			logger.debug("Scenario not valid, InvalidStateEvent fired");
+//		} else {
+//			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.SCENARIO));
+//			logger.debug("Scenario valid, ValidStateEvent fired");
+//		}
+//	}
 
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
@@ -423,32 +407,22 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(
 				scenarioNumber));
-
-//		eventBus.fireEvent(new ValidateContentStateEvent());
 	}
-	
-	public void changeCalcMethod(String value) {
-		switch (value) {
-		case "fte":
-			project.setCalculationMethod(new FTE());
-			break;
 
-		case "apv":
-			project.setCalculationMethod(new APV());
-			break;
-			
-		case "wacc":
-			
-			break;
-			
-		default:
-			break;
-		}
+	@Override
+	public void validate(ValidateContentStateEvent event) {
+		// TODO Auto-generated method stub
 		
 	}
 
-	public boolean isShowErrors() {
-		return showErrors;
+	@Override
+	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
+	
+//	public boolean isShowErrors() {
+//		return showErrors;
+//	}
 
 }
