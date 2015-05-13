@@ -148,7 +148,7 @@ public class LogInScreenViewImplv2 extends Window implements
 		welcome.setStyleName("welcomeSlogan");
 		
 		//Erezeugt ein Label mit dem Beschreibungstext
-		welcomeText = new Label("Mithilfe dieser Software können Sie Ihren zukünftige Unternehmenswerte berechnen lassen. Hierzu stehen Ihnen verschiedene Methoden zur Verfügung, die Ihnen unterschiedliche Herangehensweisen ermöglichen – je nachdem, welche Daten Ihnen zur Verfügung stehen. ");
+		welcomeText = new Label("Mithilfe dieser Software können Sie Ihre zukünftige Unternehmenswerte berechnen lassen. Hierzu stehen Ihnen verschiedene Methoden zur Verfügung, die Ihnen unterschiedliche Herangehensweisen ermöglichen – je nachdem, welche Daten Ihnen zur Verfügung stehen. ");
 		welcomeText.setStyleName("welcomeText");
 		welcomeText.setSizeFull();
 		

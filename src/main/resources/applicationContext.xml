@@ -178,7 +178,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		scope="session" /> 
 
 
-	<!-- Periode-Gesamtkostenverfahren -->
+<!-- 	 Periode-Gesamtkostenverfahren -->
 	<bean name="gesamtkostenVerfahrenPresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter"
 		scope="session" />

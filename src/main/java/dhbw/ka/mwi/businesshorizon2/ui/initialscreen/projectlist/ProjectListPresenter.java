@@ -126,6 +126,9 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		if(projects.size() != 0){
 			getView().setProjects(projects);
 		}
+		else{
+			getView().clearProjectList();
+		}
 
 	}
 

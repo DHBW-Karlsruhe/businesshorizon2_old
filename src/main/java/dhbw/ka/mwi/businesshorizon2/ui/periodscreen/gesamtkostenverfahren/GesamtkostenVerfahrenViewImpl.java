@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -67,6 +68,14 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 		private Table inputTable;
 
 		private Label expandingGap;
+
+		private Table capitalStockInput;
+
+		private Label gap2;
+
+		private Label headerLabel2;
+
+		private Label gap3;
         
         private static final Logger logger = Logger.getLogger("GesamtkostenVerfahrenViewImpl.class");
         
@@ -81,9 +90,9 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 
         @PostConstruct
         public void init() {
-        	setSizeFull();
+        	setHeight(Sizeable.SIZE_UNDEFINED, 0);
                 presenter.setView(this);
-                logger.debug("Umsatz presenter set");
+                logger.debug("Gesamt presenter set");
                 generateUi();
                 
         }
@@ -92,24 +101,44 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 		private void generateUi() {
 			logger.debug("GenerateUi aufgerufen");
 			headerLabel = new Label("Eingabe der Werte zur Cash-Flow-Berechnung (in EUR)");
+			headerLabel2 = new Label("Eingabe des Fremdkapitals (in EUR)");
 			gap = new Label();
 			inputTable = new Table();
+			gap2 = new Label();
+			gap3 = new Label();
+			capitalStockInput = new Table();
 			expandingGap = new Label();
 
 			headerLabel.setStyleName("periodHeaderLabel");
+			headerLabel2.setStyleName("periodHeaderLabel");
 			gap.setHeight("15px");
+			gap2.setHeight("15px");
+			gap3.setHeight("15px");
 			inputTable.setWidth(100, UNITS_PERCENTAGE);
 			inputTable.setStyleName("fcfTable");
-			inputTable.setPageLength(16);
+			inputTable.setPageLength(15);
+			capitalStockInput.setWidth(100, UNITS_PERCENTAGE);
+			capitalStockInput.setStyleName("fcfTable");
+			capitalStockInput.setPageLength(1);
 			expandingGap.setHeight(100, UNITS_PERCENTAGE);
 
 			addComponent(headerLabel);
 			addComponent(gap);
 			addComponent(inputTable);
-			addComponent(expandingGap);
+			addComponent(gap2);
+			addComponent(headerLabel2);
+			addComponent(gap3);
+			addComponent(capitalStockInput);
+//			addComponent(expandingGap);
 
-			setExpandRatio(expandingGap, 1.0f);
+//			setExpandRatio(expandingGap, 1.0f);
 			
+		}
+		
+		public void setColumnWidth(){
+			int columnWidth = inputTable.getColumnWidth("first");
+			logger.debug("Breite der Spalte: "+columnWidth);
+			capitalStockInput.setColumnWidth("first", columnWidth);
 		}
 		
 		public void generateTable(){
@@ -132,12 +161,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			for(Object o : tempProp){
 				logger.debug("Property "+o+" wurde entfernt");
 				inputTable.removeContainerProperty(o);
+				capitalStockInput.removeContainerProperty(o);
 			}
 
 			inputTable.removeAllItems();
+			capitalStockInput.removeAllItems();
 
 			inputTable.addContainerProperty("first", String.class, null);
 			inputTable.setColumnHeader("first", "");
+			
+			capitalStockInput.addContainerProperty("first", String.class, null);
+			capitalStockInput.setColumnHeader("first", "");
 			if(project.getProjectInputType().isStochastic()){
 				createStochasticTable(pastPeriods, baseYear, pastYear);
 			}else if(project.getProjectInputType().isDeterministic()){
@@ -191,18 +225,43 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			itemId = inputTable.addItem();
 			Item row15 = inputTable.getItem(itemId);
 			row15.getItemProperty("first").setValue("Außerordentliche Aufwendungen");
+			
+			Object capitalItemId = capitalStockInput.addItem();
+			Item rowCapital = capitalStockInput.getItem(capitalItemId);
+			rowCapital.getItemProperty("first").setValue("Fremdkapital");
+			
 			if(project.getProjectInputType().isStochastic()){
 				currYear = pastYear;
-				currYear = createTextFields((pastPeriods+1), currYear, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15);
+				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15);
 			}else if(project.getProjectInputType().isDeterministic()){
 				currYear = baseYear;
-				createTextFields(periodsToForecast, currYear, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15);
+				createTextFields(periodsToForecast, currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15);
 			}
+			
 		}
 
-		private int createTextFields(int pastPeriods, int currYear, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15) {
+		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15) {
 			for(int i = 0; i < pastPeriods; i++){
 				final int year = currYear;
+				TextField field0 = new TextField();
+				field0.setWidth(50, UNITS_PIXELS);
+				field0.setImmediate(true);
+				field0.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						double dValue = Double.parseDouble(value);
+						presenter.setFremdkapital(dValue, year);
+
+					}
+
+				});
+				field0.setValue(presenter.getFremdkapital(year));
+				capitalRow.getItemProperty(currYear).setValue(field0);
+				
 				TextField field1 = new TextField();
 				field1.setWidth(50, UNITS_PIXELS);
 				field1.setImmediate(true);
@@ -219,7 +278,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field1.setValue(presenter.getUmsatzerloese(year));
 				TextField field2 = new TextField();
 				field2.setWidth(50, UNITS_PIXELS);
 				field2.setImmediate(true);
@@ -235,7 +294,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						
 					}
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field2.setValue(presenter.getBestanderhoehung(year));
 				TextField field3 = new TextField();
 				field3.setWidth(50, UNITS_PIXELS);
 				field3.setImmediate(true);
@@ -252,7 +311,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field3.setValue(presenter.getBestandminderung(year));
 				TextField field4 = new TextField();
 				field4.setWidth(50, UNITS_PIXELS);
 				field4.setImmediate(true);
@@ -269,7 +328,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field4.setValue(presenter.getMaterialaufwand(year));
 				TextField field5 = new TextField();
 				field5.setWidth(50, UNITS_PIXELS);
 				field5.setImmediate(true);
@@ -286,7 +345,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field5.setValue(presenter.getLoehne(year));
 				TextField field6 = new TextField();
 				field6.setWidth(50, UNITS_PIXELS);
 				field6.setImmediate(true);
@@ -303,7 +362,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field6.setValue(presenter.getEinstellungskosten(year));
 				TextField field7 = new TextField();
 				field7.setWidth(50, UNITS_PIXELS);
 				field7.setImmediate(true);
@@ -320,7 +379,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field7.setValue(presenter.getPensionsrueckstellungen(year));
 				TextField field8 = new TextField();
 				field8.setWidth(50, UNITS_PIXELS);
 				field8.setImmediate(true);
@@ -337,7 +396,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field8.setValue(presenter.getSonstigPersonalkosten(year));
 				TextField field9 = new TextField();
 				field9.setWidth(50, UNITS_PIXELS);
 				field9.setImmediate(true);
@@ -354,7 +413,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field9.setValue(presenter.getAbschreibungen(year));
 				TextField field10 = new TextField();
 				field10.setWidth(50, UNITS_PIXELS);
 				field10.setImmediate(true);
@@ -371,7 +430,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field10.setValue(presenter.getSonstigAufwand(year));
 				TextField field11 = new TextField();
 				field11.setWidth(50, UNITS_PIXELS);
 				field11.setImmediate(true);
@@ -388,7 +447,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field11.setValue(presenter.getSonstigErtrag(year));
 				TextField field12 = new TextField();
 				field12.setWidth(50, UNITS_PIXELS);
 				field12.setImmediate(true);
@@ -405,7 +464,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field12.setValue(presenter.getWertpapierErtrag(year));
 				TextField field13 = new TextField();
 				field13.setWidth(50, UNITS_PIXELS);
 				field13.setImmediate(true);
@@ -422,7 +481,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field13.setValue(presenter.getZinsaufwand(year));
 				TextField field14 = new TextField();
 				field14.setWidth(50, UNITS_PIXELS);
 				field14.setImmediate(true);
@@ -439,7 +498,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field1.setValue(presenter.getCashFlow(year));
+				field14.setValue(presenter.getAusserordentlichErtrag(year));
 				TextField field15 = new TextField();
 				field15.setWidth(50, UNITS_PIXELS);
 				field15.setImmediate(true);
@@ -456,7 +515,8 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-//				field2.setValue(presenter.getCapitalStock(year));
+				field15.setValue(presenter.getAusserordentlichAufwand(year));
+				
 				row1.getItemProperty(currYear).setValue(field1);
 				row2.getItemProperty(currYear).setValue(field2);
 				row3.getItemProperty(currYear).setValue(field3);
@@ -483,6 +543,8 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			for(int i = 0; i < periodsToForecast; i++){
 				inputTable.addContainerProperty(currYear, TextField.class, null);
 				inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
+				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
+				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
 				logger.debug("Property "+currYear+" wurde hinzugefügt");
 			}
@@ -494,11 +556,15 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			for(int i = 0; i < pastPeriods; i++){
 				inputTable.addContainerProperty(currYear, TextField.class, null);
 				inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
+				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
+				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
 				logger.debug("Property "+currYear+" wurde hinzugefügt");
 			}
 			inputTable.addContainerProperty(baseYear, TextField.class, null);
 			inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
+			capitalStockInput.addContainerProperty(baseYear, TextField.class, null);
+			capitalStockInput.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
 		}
 
 

@@ -49,5 +49,7 @@ public interface ProjectListViewInterface extends View {
 
 	public void showErrorMessage(String message);
 
+	public void clearProjectList();
+
 }
 

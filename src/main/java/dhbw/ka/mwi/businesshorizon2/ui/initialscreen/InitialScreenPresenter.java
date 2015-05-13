@@ -176,6 +176,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		//getView().showUserData(user.getFullName());
 		getView().showView(projectListView, projectDetailsView);
 		getView().clearProgressBar();
+		projectDetailsView.clearProjectDetails();
 		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));
 		logger.debug("ShowProjectListEvent gefeuert");
@@ -193,7 +194,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
 			authenticationService.doLogout(userProxy.getSelectedUser());
 			logger.debug("LogoutEvent gefeuert");
-			eventBus.fireEvent(new LogoutEvent());	
+			eventBus.fireEvent(new LogoutEvent());
 		} catch (UserNotLoggedInException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

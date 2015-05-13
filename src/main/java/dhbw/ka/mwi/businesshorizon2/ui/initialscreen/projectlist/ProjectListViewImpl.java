@@ -172,6 +172,10 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 		logger.debug("Projekt-Element-Liste erzeugt");
 	}
+	
+	public void clearProjectList(){
+		removeAllComponents();
+	}
 
 	/**
 	 * Konkrete Ausprogrammierung der Darstellung eines einzelnen Projekts.

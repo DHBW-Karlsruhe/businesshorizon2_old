@@ -39,10 +39,13 @@ import com.mvplite.presenter.Presenter;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.GesamtkostenVerfahrenCashflowPeriod;
+import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
+import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowGKVEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter.Type;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
@@ -55,7 +58,7 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 	private static final long serialVersionUID = 1L;
 	
 	public enum Type {
-		UMSATZERLOESE, BESTANDERHOEHUNG, BESTANDMINDERUNG, MATERIALAUFWAND, LOEHNE, EINSTELLUNGKOSTEN, PENSIONRUECKSTELLUNG, SONSTIGPERSONAL, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, ZINSAUFWAND, AUSSERORDERTRAG, AUSSERORDAUFWAND
+		FREMDKAPITAL, UMSATZERLOESE, BESTANDERHOEHUNG, BESTANDMINDERUNG, MATERIALAUFWAND, LOEHNE, EINSTELLUNGKOSTEN, PENSIONRUECKSTELLUNG, SONSTIGPERSONAL, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, ZINSAUFWAND, AUSSERORDERTRAG, AUSSERORDAUFWAND
 	}
 
 	@Autowired
@@ -125,6 +128,10 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		getView().generateTable();
 	}
 	
+	public void setFremdkapital(double value, int year){
+		setValue(value, year, Type.FREMDKAPITAL);
+	}
+	
 	public void setUmsatzerloese(double value, int year){
 		setValue(value, year, Type.UMSATZERLOESE);
 	}
@@ -184,6 +191,164 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 	public void setAusserordentlichAufwand(double value, int year){
 		setValue(value, year, Type.AUSSERORDAUFWAND);
 	}
+	
+	public String getUmsatzerloese(int year){
+		return getValue(year, Type.UMSATZERLOESE);
+	}
+	
+	public String getBestanderhoehung(int year){
+		return getValue(year, Type.BESTANDERHOEHUNG);
+	}
+	
+	public String getBestandminderung(int year){
+		return getValue(year, Type.BESTANDMINDERUNG);
+	}
+	
+	public String getMaterialaufwand(int year){
+		return getValue(year, Type.MATERIALAUFWAND);
+	}
+	
+	public String getLoehne(int year){
+		return getValue(year, Type.LOEHNE);
+	}
+	
+	public String getEinstellungskosten(int year){
+		return getValue(year, Type.EINSTELLUNGKOSTEN);
+	}
+	
+	public String getPensionsrueckstellungen(int year){
+		return getValue(year, Type.PENSIONRUECKSTELLUNG);
+	}
+	
+	public String getSonstigPersonalkosten(int year){
+		return getValue(year, Type.SONSTIGPERSONAL);
+	}
+	
+	public String getAbschreibungen(int year){
+		return getValue(year, Type.ABSCHREIBUNGEN);
+	}
+	
+	public String getSonstigAufwand(int year){
+		return getValue(year, Type.SONSTIGAUFWAND);
+	}
+	
+	public String getSonstigErtrag(int year){
+		return getValue(year, Type.SONSTIGERTRAG);
+	}
+	
+	public String getWertpapierErtrag(int year){
+		return getValue(year, Type.WERTPAPIERERTRAG);
+	}
+	
+	public String getZinsaufwand(int year){
+		return getValue(year, Type.ZINSAUFWAND);
+	}
+	
+	public String getAusserordentlichErtrag(int year){
+		return getValue(year, Type.AUSSERORDERTRAG);
+	}
+	
+	public String getAusserordentlichAufwand(int year){
+		return getValue(year, Type.AUSSERORDAUFWAND);
+	}
+	
+	public String getFremdkapital(int year){
+		return getValue(year, Type.FREMDKAPITAL);
+	}
+	
+	public String getValue(int year, Type typ) {
+		double value = 0.0;
+		if(project == null){
+		project = projectProxy.getSelectedProject();
+		stochastic = project.getProjectInputType().isStochastic();
+		}
+		if(stochastic){
+			logger.debug(project.getProjectInputType().getStochasticInput());
+			periodContainer = (GesamtkostenVerfahrenCashflowPeriodContainer) project.getStochasticPeriods();
+		}
+		else{
+			logger.debug(project.getProjectInputType().getDeterministicInput());
+			periodContainer = (GesamtkostenVerfahrenCashflowPeriodContainer) project.getDeterministicPeriods();
+		}
+
+		if(periodContainer != null){
+			GesamtkostenVerfahrenCashflowPeriod period;
+			TreeSet<GesamtkostenVerfahrenCashflowPeriod> periods = periodContainer.getPeriods();
+			Iterator<GesamtkostenVerfahrenCashflowPeriod> it = periods.iterator();
+			while(it.hasNext()){
+				period = it.next();
+				if(period.getYear() == year){
+					switch (typ) {
+					case FREMDKAPITAL:
+						value = period.getCapitalStock();
+						break;
+					
+					case UMSATZERLOESE:
+						value = period.getUmsatzerlöse();
+						break;
+
+					case BESTANDERHOEHUNG:
+						value = period.getBestandserhöhung();
+						break;
+						
+					case BESTANDMINDERUNG:
+						value = period.getBestandsverminderung();
+						break;
+						
+					case MATERIALAUFWAND:
+						value = period.getMaterialaufwand();
+						break;
+					
+					case LOEHNE:
+						value = period.getLöhne();
+						break;
+						
+					case EINSTELLUNGKOSTEN:
+						value = period.getEinstellungskosten();
+						break;
+						
+					case PENSIONRUECKSTELLUNG:
+						value = period.getPensionsrückstellungen();
+						break;
+						
+					case SONSTIGPERSONAL:
+						value = period.getSonstigepersonalkosten();
+						break;
+						
+					case ABSCHREIBUNGEN:
+						value = period.getAbschreibungen();
+						break;
+						
+					case SONSTIGAUFWAND:
+						value = period.getSonstigeraufwand();
+						break;
+						
+					case SONSTIGERTRAG:
+						value = period.getSonstigerertrag();
+						break;
+						
+					case WERTPAPIERERTRAG:
+						value = period.getWertpapiererträge();
+						break;
+						
+					case ZINSAUFWAND:
+						value = period.getZinsenundaufwendungen();
+						break;
+						
+					case AUSSERORDERTRAG:
+						value = period.getAußerordentlicheerträge();
+						break;
+						
+					case AUSSERORDAUFWAND:
+						value = period.getAußerordentlicheaufwände();
+						break;
+					}
+					break;
+				}
+			}
+		}
+		return String.valueOf(value);
+	}
 
 	private void setValue(double value, int year, Type typ) {
 		if(project == null){
@@ -191,6 +356,13 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 			stochastic = project.getProjectInputType().isStochastic();
 		}
 
+		if(stochastic){
+			periodContainer = (GesamtkostenVerfahrenCashflowPeriodContainer) project.getStochasticPeriods();
+		}
+		else{
+			periodContainer = (GesamtkostenVerfahrenCashflowPeriodContainer) project.getDeterministicPeriods();
+		}
+		
 		if(periodContainer == null){
 			periodContainer = new GesamtkostenVerfahrenCashflowPeriodContainer();
 		}
@@ -202,6 +374,9 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 			period = it.next();
 			if(period.getYear() == year){
 				switch (typ) {
+				case FREMDKAPITAL:
+					period.setCapitalStock(value);
+					break;
 				case UMSATZERLOESE:
 					period.setUmsatzerlöse(value);
 					break;
@@ -270,6 +445,10 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		if(isNew){
 			period = new GesamtkostenVerfahrenCashflowPeriod(year);
 			switch (typ) {
+			case FREMDKAPITAL:
+				period.setCapitalStock(value);
+				break;
+				
 			case UMSATZERLOESE:
 				period.setUmsatzerlöse(value);
 				break;
