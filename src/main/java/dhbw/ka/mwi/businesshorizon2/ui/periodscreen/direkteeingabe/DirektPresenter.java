@@ -42,8 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.ShowDirektViewEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowDirektViewEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
