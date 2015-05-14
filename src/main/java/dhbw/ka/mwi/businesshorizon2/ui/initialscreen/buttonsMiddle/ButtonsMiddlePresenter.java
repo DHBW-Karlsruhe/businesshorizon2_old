@@ -83,30 +83,30 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 		logger.debug("Eventhandler Hinzugefügt");
 	}
 	
-	@EventHandler
-	public void onShowParameterScreen (ShowParameterScreenViewEvent event) {
-		project = projectProxy.getSelectedProject();
-		logger.debug("Project TypMethod: " + project.getTypMethod());
-		
-		if (project.getProjectInputType().isStochastic()) {
-			getView().setStochasticParameter();
-			logger.debug("Stochastische Buttons gesetzt");
-		}
-		
-		else {
-			getView().setDeterministicParameter();
-			logger.debug ("Deterministische Buttons gesetzt");
-		}
-	}
+//	@EventHandler
+//	public void onShowParameterScreen (ShowParameterScreenViewEvent event) {
+//		project = projectProxy.getSelectedProject();
+//		logger.debug("Project TypMethod: " + project.getTypMethod());
+//		
+//		if (project.getProjectInputType().isStochastic()) {
+//			getView().setStochasticParameter();
+//			logger.debug("Stochastische Buttons gesetzt");
+//		}
+//		
+//		else {
+//			getView().setDeterministicParameter();
+//			logger.debug ("Deterministische Buttons gesetzt");
+//		}
+//	}
 	
-	@EventHandler
-	public void onShowMethodScreen (ShowProcessStepEvent event) {
-		if (event.getScreen().equals(screen.METHODSELECTION)) {
-			getView().setInitialButtons();
-			logger.debug("Initial Buttons gesetzt");
-		}
-		
-	}
+//	@EventHandler
+//	public void onShowMethodScreen (ShowProcessStepEvent event) {
+//		if (event.getScreen().equals(screen.METHODSELECTION)) {
+//			getView().setInitialButtons();
+//			logger.debug("Initial Buttons gesetzt");
+//		}
+//		
+//	}
 	
 	@EventHandler
 	public void onShowPeriodScreen (ShowProcessStepEvent event) {

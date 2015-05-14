@@ -283,6 +283,8 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		project = projectProxy.getSelectedProject();
 		persistenceService.saveProjects();
 		
+		logger.debug("ShowProcessStepEvent catched:" + event.getScreen());
+		
 		switch (event.getScreen()) {
 		case METHODSELECTION:
 			buttonsMiddleView.setInitialButtons();

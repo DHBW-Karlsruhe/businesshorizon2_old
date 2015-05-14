@@ -64,7 +64,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ShowParameterViewEvent;
 public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewInterface> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ParameterPresenter.class");
+	private static final Logger logger = Logger.getLogger("ParameterInputPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;

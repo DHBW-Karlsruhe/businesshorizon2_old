@@ -379,6 +379,7 @@ ButtonsMiddleViewInterface {
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
+				logger.debug("Button Middle 3 LayoutClickEvent im Listener 2 gefeuert");
 				presenter.showParameterScreen();
 				button2.setDeactivated();
 				button1.setActivated();
@@ -395,6 +396,7 @@ ButtonsMiddleViewInterface {
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
+				logger.debug("Button Middle 3 LayoutClickEvent im Listener 3 gefeuert");
 				presenter.showPeriodScreen();
 				button2.setDeactivated();
 				button1.setActivated();
@@ -411,6 +413,7 @@ ButtonsMiddleViewInterface {
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
+				logger.debug("Button Middle 3 LayoutClickEvent im Listener 4 gefeuert");
 				presenter.showScenarioScreen();
 				button2.setDeactivated();
 				button1.setActivated();
@@ -427,6 +430,7 @@ ButtonsMiddleViewInterface {
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
+				logger.debug("Button Middle 3 LayoutClickEvent im Listener 4 gefeuert");
 				presenter.showResultScreen();
 				button2.setDeactivated();
 				button1.setActivated();
