@@ -678,6 +678,8 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 				getView().setComponentError(false, "relevantPastPeriods", "");
 				this.projectProxy.getSelectedProject().setRelevantPastPeriods(
 						relevantPastPeriodsInt);
+				this.projectProxy.getSelectedProject().setSpecifiedPastPeriods( //Feld specifiedPastPeriods nicht mehr vorhanden
+						relevantPastPeriodsInt);
 				eventBus.fireEvent(new ValidationEvent(true));
 				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
 			} else {
