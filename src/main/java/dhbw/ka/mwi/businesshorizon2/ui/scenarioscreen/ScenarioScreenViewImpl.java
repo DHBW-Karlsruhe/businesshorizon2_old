@@ -286,6 +286,8 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		if (number == 3) {
 			deactivateAddScenario();
 		}
+		
+		presenter.isValid();
 	}
 	
 	public void updateLabels() {
