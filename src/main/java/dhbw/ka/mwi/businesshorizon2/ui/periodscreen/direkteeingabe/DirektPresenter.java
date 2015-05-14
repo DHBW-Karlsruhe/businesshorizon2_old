@@ -232,11 +232,21 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 		return String.valueOf(value);
 	}
 	
+	/**
+	 * Wirft das entsprechende ValidationEvent.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setValid () {
 		eventBus.fireEvent(new ValidationEvent(true));
 		logger.debug("ValidationEvent(true) geworfen"); 
 	}
 	
+	/**
+	 * Wirft das entsprechende ValidationEvent.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setInvalid () {
 		eventBus.fireEvent(new ValidationEvent(false));
 		logger.debug("ValidationEvent(true) geworfen");

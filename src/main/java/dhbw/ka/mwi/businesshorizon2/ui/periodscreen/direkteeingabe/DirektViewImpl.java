@@ -191,12 +191,13 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					}
 					catch (Exception e){
 						dValue = 0.0;
-						getWindow().showNotification((String) "", "Ihre Eingabe des Cashlflows/der Ausschüttung für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.",
-								Notification.TYPE_WARNING_MESSAGE);
+						notificateWarning("Ihre Eingabe des Cashlflows/der Ausschüttung für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 						presenter.setInvalid();	
 					}
 						
 					presenter.setCashFlowValue(dValue, year);
+					logger.debug("Cashlflow-Wert für das Jahr " +year+ " auf den Wert " + dValue + " gesetzt.");
+					
 //					presenter.checkValid();
 
 				}
@@ -222,8 +223,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					}
 					catch (Exception e) {
 						dValue = 0.0;
-						getWindow().showNotification((String) "", "Ihre Eingabe des Bilanzwertes für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.",
-								Notification.TYPE_WARNING_MESSAGE);
+						notificateWarning("Ihre Eingabe des Bilanzwertes für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 						presenter.setInvalid();
 					}
 					presenter.setCapitalStockValue(dValue, year);
@@ -263,6 +263,16 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
 	}
 
+	/**
+	 * Diese Methode zeigt eine Notification vom Type Warning_Message an.
+	 * 
+	 * @author Tobias Lindner
+	 * @param warningText
+	 * 			Textinhalt der Warnmeldung
+	 */
+	private void notificateWarning (String warningText) {
+		getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
+	}
 
 }
 

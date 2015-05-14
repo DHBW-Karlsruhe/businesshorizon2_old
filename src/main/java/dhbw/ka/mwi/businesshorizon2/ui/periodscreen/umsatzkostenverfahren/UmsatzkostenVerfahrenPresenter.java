@@ -45,6 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContain
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowGKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowUKVEvent;
 
@@ -450,6 +451,26 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		else{
 			project.setDeterministicPeriods(periodContainer);
 		}
+	}
+	
+	/**
+	 * Wirft das entsprechende ValidationEvent.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setValid () {
+		eventBus.fireEvent(new ValidationEvent(true));
+		logger.debug("ValidationEvent(true) geworfen"); 
+	}
+	
+	/**
+	 * Wirft das entsprechende ValidationEvent.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void setInvalid () {
+		eventBus.fireEvent(new ValidationEvent(false));
+		logger.debug("ValidationEvent(true) geworfen");
 	}
 
 }

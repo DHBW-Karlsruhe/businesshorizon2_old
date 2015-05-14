@@ -41,6 +41,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -240,6 +241,9 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			
 		}
 
+		/**
+		 * @author Marco Glaser, Tobias Lindner
+		 */
 		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15) {
 			for(int i = 0; i < pastPeriods; i++){
 				final int year = currYear;
@@ -253,8 +257,16 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setFremdkapital(dValue, year);
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setFremdkapital(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe des Fremdkapitals für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 
 					}
 
@@ -272,8 +284,16 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setUmsatzerloese(dValue, year);
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setUmsatzerloese(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Umsatzerlöse für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 
 					}
 
@@ -289,9 +309,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setBestanderhoehung(dValue, year);
 						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setBestanderhoehung(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Umsatzerlöse für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 				});
 				field2.setValue(presenter.getBestanderhoehung(year));
@@ -305,8 +333,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setBestandverminderung(dValue, year);
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setBestandverminderung(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Bestandsverminderung für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 
 					}
 
@@ -322,9 +359,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setMaterialaufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setMaterialaufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe des Materialaufwands für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -339,9 +384,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setLoehne(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setLoehne(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Löhne für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -356,9 +409,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setEinstellungskosten(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setEinstellungskosten(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Einstellungskosten für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -373,9 +434,16 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setPensionrueckstellungen(dValue, year);
-
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setPensionrueckstellungen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Pensionsrückstellungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -390,9 +458,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setSonstigPersonal(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSonstigPersonal(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Sonstigen Personalkosten für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -407,9 +483,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setAbschreibungen(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAbschreibungen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Abschreibungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -424,9 +508,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setSonstigAufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSonstigAufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der sonstigen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -441,9 +533,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setSonstigErtrag(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSonstigErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe Sonstigen Erträge für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -458,9 +558,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setWertpapierErtrag(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setWertpapierErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Wertpapiererträge für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -475,9 +583,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setZinsaufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setZinsaufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Zinsen und sonstigen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -492,9 +608,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setAusserordentlichErtrag(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAusserordentlichErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der außerordentlichen Erträge für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -509,9 +633,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setAusserordentlichAufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAusserordentlichAufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe außerordentlichen Aufwändefür das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -572,6 +704,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 		public void setProject(Project project) {
 			this.project = project;
 			
+		}
+		
+		/**
+		 * Diese Methode zeigt eine Notification vom Type Warning_Message an.
+		 * 
+		 * @author Tobias Lindner
+		 * @param warningText
+		 * 			Textinhalt der Warnmeldung
+		 */
+		private void notificateWarning (String warningText) {
+			getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
 		}
 }
 

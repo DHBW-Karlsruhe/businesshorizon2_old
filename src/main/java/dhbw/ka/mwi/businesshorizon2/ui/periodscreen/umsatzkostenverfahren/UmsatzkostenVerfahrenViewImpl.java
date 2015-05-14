@@ -41,6 +41,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -243,9 +244,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setFremdkapital(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setFremdkapital(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe des Fremdkapitals im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -262,9 +271,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setUmsatzerloese(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setUmsatzerloese(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Umsatzerlöse im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -279,9 +296,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setHerstellkosten(dValue, year);
 						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setHerstellkosten(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe Herstellungskosten im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 				});
 				field2.setValue(presenter.getHerstellkosten(year));
@@ -295,9 +320,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setVertriebskosten(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setVertriebskosten(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Vertriebskosten im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -312,9 +345,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setForschungskosten(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setForschungskosten(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Forschungskosten im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -329,9 +370,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setVerwaltungskosten(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setVerwaltungskosten(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Verwaltungskosten im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -346,9 +395,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setPensionrueckstellungen(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setPensionrueckstellungen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Pensionsrückstellungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -363,9 +420,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setAbschreibungen(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAbschreibungen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Abschreibungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -380,9 +445,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setSonstigAufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSonstigAufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der sonstigen Aufwendungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -397,9 +470,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setSonstigErtrag(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSonstigErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der sonstigen Erträge Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -414,9 +495,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setWertpapierErtrag(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setWertpapierErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Wertpapiererträge im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -431,9 +520,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setZinsaufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setZinsaufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Zinsen und änhlichen Aufwendungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -448,9 +545,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setAusserordentlichErtrag(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAusserordentlichErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der außerordentlichen Erträge im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -465,9 +570,17 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						double dValue = Double.parseDouble(value);
-						presenter.setAusserordentlichAufwand(dValue, year);
-
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAusserordentlichAufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der außerordentlichen Aufwendungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
 					}
 
 				});
@@ -518,5 +631,16 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
 			capitalStockInput.addContainerProperty(baseYear, TextField.class, null);
 			capitalStockInput.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
+		}
+		
+		/**
+		 * Diese Methode zeigt eine Notification vom Type Warning_Message an.
+		 * 
+		 * @author Tobias Lindner
+		 * @param warningText
+		 * 			Textinhalt der Warnmeldung
+		 */
+		private void notificateWarning (String warningText) {
+			getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
 		}
 }
