@@ -100,9 +100,12 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 		List<Szenario> scenarios = this.projectProxy.getSelectedProject()
 				.getScenarios();
+		
+		logger.debug("isValid Scenarios.size() = " + scenarios.size());
 
 		int scenarioNumber = 1;
 		for (Szenario scenario : scenarios) {
+			logger.debug ("Scenario = " + scenario);
 			if (scenario.isIncludeInCalculation()) {
 				if (!isValidCorporateAndSolitaryTax(scenarioNumber)
 						|| !isValidBusinessTax(scenarioNumber)
@@ -127,6 +130,39 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			logger.debug("Validationevent(false) geworfen.");
 			return isValid;
 		}
+	}
+	
+	/**
+	 * Diese Methode validiert die Eingabe des Szenarios mit der übergebenen Nummer.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @param scenarioNumber
+	 * 			Nummer des zu validierenden Szenarios
+	 * @return boolean isValid
+	 * 		Ergebnis der Validierung
+	 */
+	public boolean isValid (int scenarioNumber) {
+		boolean isValid = true;
+		
+		if (!isValidCorporateAndSolitaryTax(scenarioNumber)
+				|| !isValidBusinessTax(scenarioNumber)
+				|| !isValidRateReturnCapitalStock(scenarioNumber)
+				|| !isValidRateReturnEquity(scenarioNumber)) {
+			isValid = false;
+		}
+		
+		if (isValid) {
+			eventBus.fireEvent(new ValidationEvent(true));
+			logger.debug("Validationevent(true) geworfen.");
+			return isValid;
+		}
+		else {
+			eventBus.fireEvent(new ValidationEvent(false));
+			logger.debug("Validationevent(false) geworfen.");
+			return isValid;
+		}
+		
 	}
 
 	/**
@@ -183,6 +219,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		if (event.getScreen().equals(screen.SCENARIOS)) {
 			List<Szenario> scenarios = this.projectProxy.getSelectedProject()
 					.getScenarios();
+			logger.debug("handleShowView (ShowProcessStepEvent(screen.SCENRIOS) = " + scenarios.size());
 			if (scenarios.size() < 1) {
 				scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
 			}
@@ -246,9 +283,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 			getView().setValid(scenarioNumber, "rateReturnEquity");
 		} catch (Exception exception) {
-			if (showErrors) {
+			//if (showErrors) {
 				getView().setInvalid(scenarioNumber, "rateReturnEquity");
-			}
+			//}
 			isValid = false;
 		}
 
@@ -277,9 +314,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 			getView().setValid(scenarioNumber, "rateReturnCapitalStock");
 		} catch (Exception exception) {
-			if (showErrors) {
+			//if (showErrors) {
 				getView().setInvalid(scenarioNumber, "rateReturnCapitalStock");
-			}
+			//}
 			isValid = false;
 		}
 
@@ -309,9 +346,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			getView().setValid(scenarioNumber, "businessTax");
 
 		} catch (Exception exception) {
-			if (showErrors) {
+			//if (showErrors) {
 				getView().setInvalid(scenarioNumber, "businessTax");
-			}
+			//}
 			isValid = false;
 		}
 
@@ -340,9 +377,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
 		} catch (Exception exception) {
-			if (showErrors) {
+			//if (showErrors) {
 				getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
-			}
+			//}
 			isValid = false;
 		}
 
