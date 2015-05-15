@@ -164,7 +164,15 @@ public class AnalysisTimeseries {
 
 		// Matrix mit Modellparametern (Phi)
 		DoubleMatrix2D matrixPhi = null;
-
+		
+		//Überprüfen der Matrix auf Singularität
+		//Wenn ja, Rückgabe der Matrix unverändert
+		//TODO Überprüfen wie die Matrix angepasst werden muss
+		//author Felix Schlosser
+		if (!lUDecomp.isNonsingular()){
+			return matrixERG;
+		}
+		
 		try {
 			matrixPhi = lUDecomp.solve(matrixERG);
 			logger.debug("C-Values of Yule-Walker-Equitation calculated.");

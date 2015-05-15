@@ -96,6 +96,12 @@ public class APV extends AbstractDeterministicMethod {
 	public double calculateValues(double[] cashflow, double[] fremdkapital,
 			Szenario szenario) {
 
+		//Workaround für vertauschte Berechnungswerte
+		//Der letzte und vorletzte Wert werden vertauscht, da sonst die berechnung nicht stimmt.
+		double help = fremdkapital[fremdkapital.length-1];
+		fremdkapital[fremdkapital.length-1] = fremdkapital[fremdkapital.length-2];
+		fremdkapital[fremdkapital.length-2] = help;
+			
 		double gk = 0;
 		double v = 0;
 		double unternehmenswert = 0;
