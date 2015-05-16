@@ -566,24 +566,52 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		}
 	}
 	
-	/**
-	 * Wirft das entsprechende ValidationEvent.
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setValid () {
-		eventBus.fireEvent(new ValidationEvent(true));
-		logger.debug("ValidationEvent(true) geworfen"); 
-	}
+//	/**
+//	 * Wirft das entsprechende ValidationEvent.
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void setValid () {
+//		eventBus.fireEvent(new ValidationEvent(true));
+//		logger.debug("ValidationEvent(true) geworfen"); 
+//	}
+//	
+//	/**
+//	 * Wirft das entsprechende ValidationEvent.
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void setInvalid () {
+//		eventBus.fireEvent(new ValidationEvent(false));
+//		logger.debug("ValidationEvent(true) geworfen");
+//	}
 	
 	/**
-	 * Wirft das entsprechende ValidationEvent.
-	 * 
+	 * Die Methode überrüft, ob die Eingaben in allen Textfeldern korrekt sind.
 	 * @author Tobias Lindner
+	 * 
+	 * @return boolean
+	 * 			Sind die Eingaben valide?
 	 */
-	public void setInvalid () {
-		eventBus.fireEvent(new ValidationEvent(false));
-		logger.debug("ValidationEvent(true) geworfen");
+	public boolean validateGKVInput () {
+		if (getView().isComponentError()) {
+			eventBus.fireEvent(new ValidationEvent(false));
+			logger.debug("ValidationEvent(false) geworfen"); 
+			return false;
+		}
+		else {
+			if (getView().oneTextFieldIsSet()) {
+				eventBus.fireEvent(new ValidationEvent(true));
+				logger.debug("ValidationEvent(true) geworfen"); 
+				return true;
+			}
+			else {
+				eventBus.fireEvent(new ValidationEvent(false));
+				logger.debug("ValidationEvent(false) geworfen"); 
+				return false;
+			}
+		}
+
 	}
 
 }
