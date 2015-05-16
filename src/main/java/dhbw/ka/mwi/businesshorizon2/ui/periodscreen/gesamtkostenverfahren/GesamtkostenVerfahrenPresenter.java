@@ -59,7 +59,7 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 	private static final long serialVersionUID = 1L;
 	
 	public enum Type {
-		FREMDKAPITAL, UMSATZERLOESE, BESTANDERHOEHUNG, BESTANDMINDERUNG, MATERIALAUFWAND, LOEHNE, EINSTELLUNGKOSTEN, PENSIONRUECKSTELLUNG, SONSTIGPERSONAL, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, ZINSAUFWAND, AUSSERORDERTRAG, AUSSERORDAUFWAND
+		FREMDKAPITAL, UMSATZERLOESE, BESTANDERHOEHUNG, BESTANDMINDERUNG, AKTIVEIGENLEISTUNG, MATERIALAUFWAND, PERSONALAUFWAND, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, BETEILIGUNGENERTRAG, ZINSERTRAG, ZINSAUFWAND, ABSCHREIBUNGENFINANZANLAGEN, AUSSERORDERTRAG, AUSSERORDAUFWAND, STEUERAUFWAND, BRUTTOINVESTITIONEN
 	}
 
 	@Autowired
@@ -149,20 +149,12 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		setValue(value, year, Type.MATERIALAUFWAND);
 	}
 	
-	public void setLoehne(double value, int year){
-		setValue(value, year, Type.LOEHNE);
+	public void setPersonalaufwand(double value, int year){
+		setValue(value, year, Type.PERSONALAUFWAND);
 	}
 	
-	public void setEinstellungskosten(double value, int year){
-		setValue(value, year, Type.EINSTELLUNGKOSTEN);
-	}
-	
-	public void setPensionrueckstellungen(double value, int year){
-		setValue(value, year, Type.PENSIONRUECKSTELLUNG);
-	}
-	
-	public void setSonstigPersonal(double value, int year){
-		setValue(value, year, Type.SONSTIGPERSONAL);
+	public void setAktivEigenleistung(double value, int year){
+		setValue(value, year, Type.AKTIVEIGENLEISTUNG);
 	}
 	
 	public void setAbschreibungen(double value, int year){
@@ -185,12 +177,32 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		setValue(value, year, Type.ZINSAUFWAND);
 	}
 	
+	public void setZinsertrag(double value, int year){
+		setValue(value, year, Type.ZINSERTRAG);
+	}
+	
+	public void setBeteiligungenErtrag(double value, int year){
+		setValue(value, year, Type.BETEILIGUNGENERTRAG);
+	}
+	
+	public void setAbschreibungenFinanzanlagen(double value, int year){
+		setValue(value, year, Type.ABSCHREIBUNGENFINANZANLAGEN);
+	}
+	
+	public void setSteueraufwand(double value, int year){
+		setValue(value, year, Type.STEUERAUFWAND);
+	}
+	
 	public void setAusserordentlichErtrag(double value, int year){
 		setValue(value, year, Type.AUSSERORDERTRAG);
 	}
 	
 	public void setAusserordentlichAufwand(double value, int year){
 		setValue(value, year, Type.AUSSERORDAUFWAND);
+	}
+	
+	public void setBruttoinvestitionen(double value, int year){
+		setValue(value, year, Type.BRUTTOINVESTITIONEN);
 	}
 	
 	public String getUmsatzerloese(int year){
@@ -209,20 +221,12 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		return getValue(year, Type.MATERIALAUFWAND);
 	}
 	
-	public String getLoehne(int year){
-		return getValue(year, Type.LOEHNE);
+	public String getPersonalaufwand(int year){
+		return getValue(year, Type.PERSONALAUFWAND);
 	}
 	
-	public String getEinstellungskosten(int year){
-		return getValue(year, Type.EINSTELLUNGKOSTEN);
-	}
-	
-	public String getPensionsrueckstellungen(int year){
-		return getValue(year, Type.PENSIONRUECKSTELLUNG);
-	}
-	
-	public String getSonstigPersonalkosten(int year){
-		return getValue(year, Type.SONSTIGPERSONAL);
+	public String getAktivEigenleistung(int year){
+		return getValue(year, Type.AKTIVEIGENLEISTUNG);
 	}
 	
 	public String getAbschreibungen(int year){
@@ -245,12 +249,32 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		return getValue(year, Type.ZINSAUFWAND);
 	}
 	
+	public String getZinsertrag(int year){
+		return getValue(year, Type.ZINSERTRAG);
+	}
+	
+	public String getBeteiligungenErtrag(int year){
+		return getValue(year, Type.BETEILIGUNGENERTRAG);
+	}
+	
+	public String getAbschreibungenFinanzanlagen(int year){
+		return getValue(year, Type.ABSCHREIBUNGENFINANZANLAGEN);
+	}
+	
+	public String getSteueraufwand(int year){
+		return getValue(year, Type.STEUERAUFWAND);
+	}
+	
 	public String getAusserordentlichErtrag(int year){
 		return getValue(year, Type.AUSSERORDERTRAG);
 	}
 	
 	public String getAusserordentlichAufwand(int year){
 		return getValue(year, Type.AUSSERORDAUFWAND);
+	}
+	
+	public String getBruttoinvestitionen(int year){
+		return getValue(year, Type.BRUTTOINVESTITIONEN);
 	}
 	
 	public String getFremdkapital(int year){
@@ -299,22 +323,6 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 					case MATERIALAUFWAND:
 						value = period.getMaterialaufwand();
 						break;
-					
-					case LOEHNE:
-						value = period.getLöhne();
-						break;
-						
-					case EINSTELLUNGKOSTEN:
-						value = period.getEinstellungskosten();
-						break;
-						
-					case PENSIONRUECKSTELLUNG:
-						value = period.getPensionsrückstellungen();
-						break;
-						
-					case SONSTIGPERSONAL:
-						value = period.getSonstigepersonalkosten();
-						break;
 						
 					case ABSCHREIBUNGEN:
 						value = period.getAbschreibungen();
@@ -342,6 +350,34 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 						
 					case AUSSERORDAUFWAND:
 						value = period.getAußerordentlicheaufwände();
+						break;
+						
+					case ABSCHREIBUNGENFINANZANLAGEN:
+						value = period.getAbschreibungenFinanzanlagen();
+						break;
+						
+					case AKTIVEIGENLEISTUNG:
+						value = period.getAktivEigenleistung();
+						break;
+						
+					case BETEILIGUNGENERTRAG:
+						value = period.getBeteiligungenErtraege();
+						break;
+						
+					case BRUTTOINVESTITIONEN:
+						value = period.getBruttoinvestitionen();
+						break;
+						
+					case PERSONALAUFWAND:
+						value = period.getPersonalaufwand();
+						break;
+						
+					case STEUERAUFWAND:
+						value = period.getSteueraufwand();
+						break;
+						
+					case ZINSERTRAG:
+						value = period.getZinsertraege();
 						break;
 					}
 					break;
@@ -376,66 +412,79 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 			if(period.getYear() == year){
 				switch (typ) {
 				case FREMDKAPITAL:
-					period.setCapitalStock(value);
+					value = period.getCapitalStock();
 					break;
+				
 				case UMSATZERLOESE:
-					period.setUmsatzerlöse(value);
+					value = period.getUmsatzerlöse();
 					break;
 
 				case BESTANDERHOEHUNG:
-					period.setBestandserhöhung(value);
+					value = period.getBestandserhöhung();
 					break;
 					
 				case BESTANDMINDERUNG:
-					period.setBestandsverminderung(value);
+					value = period.getBestandsverminderung();
 					break;
 					
 				case MATERIALAUFWAND:
-					period.setMaterialaufwand(value);
-					break;
-				
-				case LOEHNE:
-					period.setLöhne(value);
-					break;
-					
-				case EINSTELLUNGKOSTEN:
-					period.setEinstellungskosten(value);
-					break;
-					
-				case PENSIONRUECKSTELLUNG:
-					period.setPensionsrückstellungen(value);
-					break;
-					
-				case SONSTIGPERSONAL:
-					period.setSonstigepersonalkosten(value);
+					value = period.getMaterialaufwand();
 					break;
 					
 				case ABSCHREIBUNGEN:
-					period.setAbschreibungen(value);
+					value = period.getAbschreibungen();
 					break;
 					
 				case SONSTIGAUFWAND:
-					period.setSonstigeraufwand(value);
+					value = period.getSonstigeraufwand();
 					break;
 					
 				case SONSTIGERTRAG:
-					period.setSonstigerertrag(value);
+					value = period.getSonstigerertrag();
 					break;
 					
 				case WERTPAPIERERTRAG:
-					period.setWertpapiererträge(value);
+					value = period.getWertpapiererträge();
 					break;
 					
 				case ZINSAUFWAND:
-					period.setZinsenundaufwendungen(value);
+					value = period.getZinsenundaufwendungen();
 					break;
 					
 				case AUSSERORDERTRAG:
-					period.setAußerordentlicheerträge(value);
+					value = period.getAußerordentlicheerträge();
 					break;
 					
 				case AUSSERORDAUFWAND:
-					period.setAußerordentlicheaufwände(value);
+					value = period.getAußerordentlicheaufwände();
+					break;
+					
+				case ABSCHREIBUNGENFINANZANLAGEN:
+					value = period.getAbschreibungenFinanzanlagen();
+					break;
+					
+				case AKTIVEIGENLEISTUNG:
+					value = period.getAktivEigenleistung();
+					break;
+					
+				case BETEILIGUNGENERTRAG:
+					value = period.getBeteiligungenErtraege();
+					break;
+					
+				case BRUTTOINVESTITIONEN:
+					value = period.getBruttoinvestitionen();
+					break;
+					
+				case PERSONALAUFWAND:
+					value = period.getPersonalaufwand();
+					break;
+					
+				case STEUERAUFWAND:
+					value = period.getSteueraufwand();
+					break;
+					
+				case ZINSERTRAG:
+					value = period.getZinsertraege();
 					break;
 				}
 				periodContainer.removePeriod(period);
@@ -447,67 +496,79 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 			period = new GesamtkostenVerfahrenCashflowPeriod(year);
 			switch (typ) {
 			case FREMDKAPITAL:
-				period.setCapitalStock(value);
+				value = period.getCapitalStock();
 				break;
-				
+			
 			case UMSATZERLOESE:
-				period.setUmsatzerlöse(value);
+				value = period.getUmsatzerlöse();
 				break;
 
 			case BESTANDERHOEHUNG:
-				period.setBestandserhöhung(value);
+				value = period.getBestandserhöhung();
 				break;
 				
 			case BESTANDMINDERUNG:
-				period.setBestandsverminderung(value);
+				value = period.getBestandsverminderung();
 				break;
 				
 			case MATERIALAUFWAND:
-				period.setMaterialaufwand(value);
-				break;
-			
-			case LOEHNE:
-				period.setLöhne(value);
-				break;
-				
-			case EINSTELLUNGKOSTEN:
-				period.setEinstellungskosten(value);
-				break;
-				
-			case PENSIONRUECKSTELLUNG:
-				period.setPensionsrückstellungen(value);
-				break;
-				
-			case SONSTIGPERSONAL:
-				period.setSonstigepersonalkosten(value);
+				value = period.getMaterialaufwand();
 				break;
 				
 			case ABSCHREIBUNGEN:
-				period.setAbschreibungen(value);
+				value = period.getAbschreibungen();
 				break;
 				
 			case SONSTIGAUFWAND:
-				period.setSonstigeraufwand(value);
+				value = period.getSonstigeraufwand();
 				break;
 				
 			case SONSTIGERTRAG:
-				period.setSonstigerertrag(value);
+				value = period.getSonstigerertrag();
 				break;
 				
 			case WERTPAPIERERTRAG:
-				period.setWertpapiererträge(value);
+				value = period.getWertpapiererträge();
 				break;
 				
 			case ZINSAUFWAND:
-				period.setZinsenundaufwendungen(value);
+				value = period.getZinsenundaufwendungen();
 				break;
 				
 			case AUSSERORDERTRAG:
-				period.setAußerordentlicheerträge(value);
+				value = period.getAußerordentlicheerträge();
 				break;
 				
 			case AUSSERORDAUFWAND:
-				period.setAußerordentlicheaufwände(value);
+				value = period.getAußerordentlicheaufwände();
+				break;
+				
+			case ABSCHREIBUNGENFINANZANLAGEN:
+				value = period.getAbschreibungenFinanzanlagen();
+				break;
+				
+			case AKTIVEIGENLEISTUNG:
+				value = period.getAktivEigenleistung();
+				break;
+				
+			case BETEILIGUNGENERTRAG:
+				value = period.getBeteiligungenErtraege();
+				break;
+				
+			case BRUTTOINVESTITIONEN:
+				value = period.getBruttoinvestitionen();
+				break;
+				
+			case PERSONALAUFWAND:
+				value = period.getPersonalaufwand();
+				break;
+				
+			case STEUERAUFWAND:
+				value = period.getSteueraufwand();
+				break;
+				
+			case ZINSERTRAG:
+				value = period.getZinsertraege();
 				break;
 			}
 		}

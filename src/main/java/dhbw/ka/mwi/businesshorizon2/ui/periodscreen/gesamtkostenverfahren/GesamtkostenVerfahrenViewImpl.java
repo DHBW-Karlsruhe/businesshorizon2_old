@@ -117,7 +117,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			gap3.setHeight("15px");
 			inputTable.setWidth(100, UNITS_PERCENTAGE);
 			inputTable.setStyleName("fcfTable");
-			inputTable.setPageLength(15);
+			inputTable.setPageLength(18);
 			capitalStockInput.setWidth(100, UNITS_PERCENTAGE);
 			capitalStockInput.setStyleName("fcfTable");
 			capitalStockInput.setPageLength(1);
@@ -195,37 +195,48 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			row4.getItemProperty("first").setValue("Materialaufwand");
 			itemId = inputTable.addItem();
 			Item row5 = inputTable.getItem(itemId);
-			row5.getItemProperty("first").setValue("Löhne/Gehälter");
+			row5.getItemProperty("first").setValue("Personalaufwand");
 			itemId = inputTable.addItem();
 			Item row6 = inputTable.getItem(itemId);
-			row6.getItemProperty("first").setValue("Einstellungskosten");
+			row6.getItemProperty("first").setValue("Aktivierte Eigenleistungen");
 			itemId = inputTable.addItem();
 			Item row7 = inputTable.getItem(itemId);
-			row7.getItemProperty("first").setValue("Pensionsrückstellungen");
+			row7.getItemProperty("first").setValue("Abschreibungen");
 			itemId = inputTable.addItem();
 			Item row8 = inputTable.getItem(itemId);
-			row8.getItemProperty("first").setValue("Sonstige Personalkosten");
+			row8.getItemProperty("first").setValue("Sonstige betriebliche Aufwendungen");
 			itemId = inputTable.addItem();
 			Item row9 = inputTable.getItem(itemId);
-			row9.getItemProperty("first").setValue("Abschreibungen");
+			row9.getItemProperty("first").setValue("Sonstige betriebliche Erträge");
+			
 			itemId = inputTable.addItem();
 			Item row10 = inputTable.getItem(itemId);
-			row10.getItemProperty("first").setValue("Sonstige Aufwendungen");
+			row10.getItemProperty("first").setValue("Erträge aus Beteiligungen");
 			itemId = inputTable.addItem();
 			Item row11 = inputTable.getItem(itemId);
-			row11.getItemProperty("first").setValue("Sonstige Erträge");
+			row11.getItemProperty("first").setValue("Erträge aus Wertpapieren");
 			itemId = inputTable.addItem();
 			Item row12 = inputTable.getItem(itemId);
-			row12.getItemProperty("first").setValue("Wertpapiererträge");
+			row12.getItemProperty("first").setValue("Sonstige Zinsen und ähnliche Erträge");
 			itemId = inputTable.addItem();
 			Item row13 = inputTable.getItem(itemId);
-			row13.getItemProperty("first").setValue("Zinsen und ähnliche Aufwendungen");
+			row13.getItemProperty("first").setValue("Abschreibungen auf Finanzanlagen");
 			itemId = inputTable.addItem();
 			Item row14 = inputTable.getItem(itemId);
-			row14.getItemProperty("first").setValue("Außerordentliche Erträge");
+			row14.getItemProperty("first").setValue("Zinsen und ähnliche Aufwendungen");
 			itemId = inputTable.addItem();
 			Item row15 = inputTable.getItem(itemId);
-			row15.getItemProperty("first").setValue("Außerordentliche Aufwendungen");
+			row15.getItemProperty("first").setValue("Außerordentliche Erträge");
+			itemId = inputTable.addItem();
+			Item row16 = inputTable.getItem(itemId);
+			row16.getItemProperty("first").setValue("Außerordentliche Aufwendungen");
+			itemId = inputTable.addItem();
+			Item row17 = inputTable.getItem(itemId);
+			row17.getItemProperty("first").setValue("Steueraufwand");
+			
+			itemId = inputTable.addItem();
+			Item row18 = inputTable.getItem(itemId);
+			row18.getItemProperty("first").setValue("Brutto-Investitionen");
 			
 			Object capitalItemId = capitalStockInput.addItem();
 			Item rowCapital = capitalStockInput.getItem(capitalItemId);
@@ -233,10 +244,10 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			
 			if(project.getProjectInputType().isStochastic()){
 				currYear = pastYear;
-				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15);
+				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16, row17, row18);
 			}else if(project.getProjectInputType().isDeterministic()){
 				currYear = baseYear;
-				createTextFields(periodsToForecast, currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15);
+				createTextFields(periodsToForecast, currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16, row17, row18);
 			}
 			
 		}
@@ -244,7 +255,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 		/**
 		 * @author Marco Glaser, Tobias Lindner
 		 */
-		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15) {
+		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15, Item row16, Item row17, Item row18) {
 			for(int i = 0; i < pastPeriods; i++){
 				final int year = currYear;
 				TextField field0 = new TextField();
@@ -317,7 +328,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Umsatzerlöse für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der Bestandserhöhung für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
@@ -387,18 +398,18 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						
 						try {
 							double dValue = Double.parseDouble(value);
-							presenter.setLoehne(dValue, year);
+							presenter.setPersonalaufwand(dValue, year);
 							presenter.setValid();
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Löhne für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe des Personalaufwands für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field5.setValue(presenter.getLoehne(year));
+				field5.setValue(presenter.getPersonalaufwand(year));
 				TextField field6 = new TextField();
 				field6.setWidth(50, UNITS_PIXELS);
 				field6.setImmediate(true);
@@ -412,18 +423,18 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						
 						try {
 							double dValue = Double.parseDouble(value);
-							presenter.setEinstellungskosten(dValue, year);
+							presenter.setAktivEigenleistung(dValue, year);
 							presenter.setValid();
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Einstellungskosten für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der aktivierten Eigenleistungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field6.setValue(presenter.getEinstellungskosten(year));
+				field6.setValue(presenter.getAktivEigenleistung(year));
 				TextField field7 = new TextField();
 				field7.setWidth(50, UNITS_PIXELS);
 				field7.setImmediate(true);
@@ -434,56 +445,6 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						String value = (String) event.getProperty().getValue();
-						try {
-							double dValue = Double.parseDouble(value);
-							presenter.setPensionrueckstellungen(dValue, year);
-							presenter.setValid();
-						}
-						
-						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Pensionsrückstellungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-							presenter.setInvalid();
-						}
-					}
-
-				});
-				field7.setValue(presenter.getPensionsrueckstellungen(year));
-				TextField field8 = new TextField();
-				field8.setWidth(50, UNITS_PIXELS);
-				field8.setImmediate(true);
-				field8.addListener(new Property.ValueChangeListener(){
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void valueChange(ValueChangeEvent event) {
-						String value = (String) event.getProperty().getValue();
-						
-						try {
-							double dValue = Double.parseDouble(value);
-							presenter.setSonstigPersonal(dValue, year);
-							presenter.setValid();
-						}
-						
-						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Sonstigen Personalkosten für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-							presenter.setInvalid();
-						}
-					}
-
-				});
-				field8.setValue(presenter.getSonstigPersonalkosten(year));
-				TextField field9 = new TextField();
-				field9.setWidth(50, UNITS_PIXELS);
-				field9.setImmediate(true);
-				field9.addListener(new Property.ValueChangeListener(){
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void valueChange(ValueChangeEvent event) {
-						String value = (String) event.getProperty().getValue();
-						
 						try {
 							double dValue = Double.parseDouble(value);
 							presenter.setAbschreibungen(dValue, year);
@@ -497,11 +458,11 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-				field9.setValue(presenter.getAbschreibungen(year));
-				TextField field10 = new TextField();
-				field10.setWidth(50, UNITS_PIXELS);
-				field10.setImmediate(true);
-				field10.addListener(new Property.ValueChangeListener(){
+				field7.setValue(presenter.getAbschreibungen(year));
+				TextField field8 = new TextField();
+				field8.setWidth(50, UNITS_PIXELS);
+				field8.setImmediate(true);
+				field8.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -516,17 +477,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der sonstigen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der sonstigen betrieblichen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field10.setValue(presenter.getSonstigAufwand(year));
-				TextField field11 = new TextField();
-				field11.setWidth(50, UNITS_PIXELS);
-				field11.setImmediate(true);
-				field11.addListener(new Property.ValueChangeListener(){
+				field8.setValue(presenter.getSonstigAufwand(year));
+				TextField field9 = new TextField();
+				field9.setWidth(50, UNITS_PIXELS);
+				field9.setImmediate(true);
+				field9.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -541,17 +502,42 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe Sonstigen Erträge für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der sonstigen betrieblichen Erträge für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field11.setValue(presenter.getSonstigErtrag(year));
-				TextField field12 = new TextField();
-				field12.setWidth(50, UNITS_PIXELS);
-				field12.setImmediate(true);
-				field12.addListener(new Property.ValueChangeListener(){
+				field9.setValue(presenter.getSonstigErtrag(year));
+				TextField field10 = new TextField();
+				field10.setWidth(50, UNITS_PIXELS);
+				field10.setImmediate(true);
+				field10.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setBeteiligungenErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Erträge aus Beteiligungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field10.setValue(presenter.getBeteiligungenErtrag(year));
+				TextField field11 = new TextField();
+				field11.setWidth(50, UNITS_PIXELS);
+				field11.setImmediate(true);
+				field11.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -566,17 +552,67 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Wertpapiererträge für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe Erträge aus Wertpapieren für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field12.setValue(presenter.getWertpapierErtrag(year));
+				field11.setValue(presenter.getWertpapierErtrag(year));
+				TextField field12 = new TextField();
+				field12.setWidth(50, UNITS_PIXELS);
+				field12.setImmediate(true);
+				field12.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setZinsertrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der sonstigen Zinsen und ähnlichen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field12.setValue(presenter.getZinsertrag(year));
 				TextField field13 = new TextField();
 				field13.setWidth(50, UNITS_PIXELS);
 				field13.setImmediate(true);
 				field13.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAbschreibungenFinanzanlagen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Abschreibungen auf Finanzanlagen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field13.setValue(presenter.getAbschreibungenFinanzanlagen(year));
+				TextField field14 = new TextField();
+				field14.setWidth(50, UNITS_PIXELS);
+				field14.setImmediate(true);
+				field14.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -591,17 +627,17 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Zinsen und sonstigen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der Zinsen und ähnlichen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field13.setValue(presenter.getZinsaufwand(year));
-				TextField field14 = new TextField();
-				field14.setWidth(50, UNITS_PIXELS);
-				field14.setImmediate(true);
-				field14.addListener(new Property.ValueChangeListener(){
+				field14.setValue(presenter.getZinsaufwand(year));
+				TextField field15 = new TextField();
+				field15.setWidth(50, UNITS_PIXELS);
+				field15.setImmediate(true);
+				field15.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -622,11 +658,11 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-				field14.setValue(presenter.getAusserordentlichErtrag(year));
-				TextField field15 = new TextField();
-				field15.setWidth(50, UNITS_PIXELS);
-				field15.setImmediate(true);
-				field15.addListener(new Property.ValueChangeListener(){
+				field15.setValue(presenter.getAusserordentlichErtrag(year));
+				TextField field16 = new TextField();
+				field16.setWidth(50, UNITS_PIXELS);
+				field16.setImmediate(true);
+				field16.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -641,13 +677,63 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe außerordentlichen Aufwändefür das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der außerordentlichen Aufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field15.setValue(presenter.getAusserordentlichAufwand(year));
+				field16.setValue(presenter.getAusserordentlichAufwand(year));
+				TextField field17 = new TextField();
+				field17.setWidth(50, UNITS_PIXELS);
+				field17.setImmediate(true);
+				field17.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSteueraufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Steueraufwendungen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field17.setValue(presenter.getSteueraufwand(year));
+				TextField field18 = new TextField();
+				field18.setWidth(50, UNITS_PIXELS);
+				field18.setImmediate(true);
+				field18.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setBruttoinvestitionen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Brutto-Investitionen für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field18.setValue(presenter.getBruttoinvestitionen(year));
 				
 				row1.getItemProperty(currYear).setValue(field1);
 				row2.getItemProperty(currYear).setValue(field2);
@@ -664,6 +750,9 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 				row13.getItemProperty(currYear).setValue(field13);
 				row14.getItemProperty(currYear).setValue(field14);
 				row15.getItemProperty(currYear).setValue(field15);
+				row16.getItemProperty(currYear).setValue(field16);
+				row17.getItemProperty(currYear).setValue(field17);
+				row18.getItemProperty(currYear).setValue(field18);
 				currYear++;
 			}
 			return currYear;

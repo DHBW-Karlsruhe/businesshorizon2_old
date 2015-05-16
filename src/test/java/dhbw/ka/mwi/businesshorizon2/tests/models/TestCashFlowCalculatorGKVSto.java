@@ -66,7 +66,7 @@ public class TestCashFlowCalculatorGKVSto extends TestCase {
 		gkvcfp.setBestandserhöhung(0);
 		gkvcfp.setBestandsverminderung(20.68);
 		gkvcfp.setMaterialaufwand(25.50);
-		gkvcfp.setLöhne(38.67);
+		gkvcfp.setPersonalaufwand(38.67);
 		gkvcfp.setEinstellungskosten(2.76);
 		gkvcfp.setPensionsrückstellungen(1.93);
 		gkvcfp.setSonstigepersonalkosten(16.24);

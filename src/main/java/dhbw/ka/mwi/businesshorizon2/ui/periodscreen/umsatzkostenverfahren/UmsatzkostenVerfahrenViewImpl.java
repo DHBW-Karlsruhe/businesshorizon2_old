@@ -114,7 +114,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			gap3.setHeight("15px");
 			inputTable.setWidth(100, UNITS_PERCENTAGE);
 			inputTable.setStyleName("fcfTable");
-			inputTable.setPageLength(13);
+			inputTable.setPageLength(16);
 			capitalStockInput.setWidth(100, UNITS_PERCENTAGE);
 			capitalStockInput.setStyleName("fcfTable");
 			capitalStockInput.setPageLength(1);
@@ -188,34 +188,45 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			row3.getItemProperty("first").setValue("Vertriebskosten");
 			itemId = inputTable.addItem();
 			Item row4 = inputTable.getItem(itemId);
-			row4.getItemProperty("first").setValue("Forschungskosten");
+			row4.getItemProperty("first").setValue("Allgemeine Verwaltungskosten");
 			itemId = inputTable.addItem();
 			Item row5 = inputTable.getItem(itemId);
-			row5.getItemProperty("first").setValue("Verwaltungskosten");
+			row5.getItemProperty("first").setValue("Sonstige betriebliche Aufwendungen");
+			itemId = inputTable.addItem();
+			Item row6 = inputTable.getItem(itemId);
+			row6.getItemProperty("first").setValue("Sonstige betriebliche Erträge");
+			
 			itemId = inputTable.addItem();
 			Item row7 = inputTable.getItem(itemId);
-			row7.getItemProperty("first").setValue("Pensionsrückstellungen");
+			row7.getItemProperty("first").setValue("Erträge aus Beteiligungen");
+			itemId = inputTable.addItem();
+			Item row8 = inputTable.getItem(itemId);
+			row8.getItemProperty("first").setValue("Erträge aus Wertpapieren");
 			itemId = inputTable.addItem();
 			Item row9 = inputTable.getItem(itemId);
-			row9.getItemProperty("first").setValue("Abschreibungen");
+			row9.getItemProperty("first").setValue("Sonstige Zinsen und ähnliche Erträge");
 			itemId = inputTable.addItem();
 			Item row10 = inputTable.getItem(itemId);
-			row10.getItemProperty("first").setValue("Sonstige Aufwendungen");
+			row10.getItemProperty("first").setValue("Abschreibungen auf Finanzanlagen");
 			itemId = inputTable.addItem();
 			Item row11 = inputTable.getItem(itemId);
-			row11.getItemProperty("first").setValue("Sonstige Erträge");
+			row11.getItemProperty("first").setValue("Zinsen und ähnliche Aufwendungen");
 			itemId = inputTable.addItem();
 			Item row12 = inputTable.getItem(itemId);
-			row12.getItemProperty("first").setValue("Wertpapiererträge");
+			row12.getItemProperty("first").setValue("Außerordentliche Erträge");
 			itemId = inputTable.addItem();
 			Item row13 = inputTable.getItem(itemId);
-			row13.getItemProperty("first").setValue("Zinsen und ähnliche Aufwendungen");
+			row13.getItemProperty("first").setValue("Außerordentliche Aufwendungen");
 			itemId = inputTable.addItem();
 			Item row14 = inputTable.getItem(itemId);
-			row14.getItemProperty("first").setValue("Außerordentliche Erträge");
+			row14.getItemProperty("first").setValue("Steueraufwand");
+			
 			itemId = inputTable.addItem();
 			Item row15 = inputTable.getItem(itemId);
-			row15.getItemProperty("first").setValue("Außerordentliche Aufwendungen");
+			row15.getItemProperty("first").setValue("Abschreibungen");
+			itemId = inputTable.addItem();
+			Item row16 = inputTable.getItem(itemId);
+			row16.getItemProperty("first").setValue("Brutto-Investitionen");
 			
 			Object capitalItemId = capitalStockInput.addItem();
 			Item rowCapital = capitalStockInput.getItem(capitalItemId);
@@ -223,15 +234,15 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			
 			if(project.getProjectInputType().isStochastic()){
 				currYear = pastYear;
-				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, row1, row2, row3, row4, row5, row7, row9, row10, row11, row12, row13, row14, row15);
+				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16);
 			}else if(project.getProjectInputType().isDeterministic()){
 				currYear = baseYear;
-				createTextFields(periodsToForecast, currYear, rowCapital, row1, row2, row3, row4, row5, row7, row9, row10, row11, row12, row13, row14, row15);
+				createTextFields(periodsToForecast, currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16);
 			}
 			
 		}
 		
-		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row7, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15) {
+		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15, Item row16) {
 			for(int i = 0; i < pastPeriods; i++){
 				final int year = currYear;
 				TextField field0 = new TextField();
@@ -348,31 +359,6 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 						
 						try {
 							double dValue = Double.parseDouble(value);
-							presenter.setForschungskosten(dValue, year);
-							presenter.setValid();
-						}
-						
-						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Forschungskosten im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-							presenter.setInvalid();
-						}
-					}
-
-				});
-				field4.setValue(presenter.getForschungskosten(year));
-				TextField field5 = new TextField();
-				field5.setWidth(50, UNITS_PIXELS);
-				field5.setImmediate(true);
-				field5.addListener(new Property.ValueChangeListener(){
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void valueChange(ValueChangeEvent event) {
-						String value = (String) event.getProperty().getValue();
-						
-						try {
-							double dValue = Double.parseDouble(value);
 							presenter.setVerwaltungskosten(dValue, year);
 							presenter.setValid();
 						}
@@ -384,61 +370,11 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					}
 
 				});
-				field5.setValue(presenter.getVerwaltungskosten(year));
-				TextField field7 = new TextField();
-				field7.setWidth(50, UNITS_PIXELS);
-				field7.setImmediate(true);
-				field7.addListener(new Property.ValueChangeListener(){
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void valueChange(ValueChangeEvent event) {
-						String value = (String) event.getProperty().getValue();
-						
-						try {
-							double dValue = Double.parseDouble(value);
-							presenter.setPensionrueckstellungen(dValue, year);
-							presenter.setValid();
-						}
-						
-						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Pensionsrückstellungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-							presenter.setInvalid();
-						}
-					}
-
-				});
-				field7.setValue(presenter.getPensionsrueckstellungen(year));
-				TextField field9 = new TextField();
-				field9.setWidth(50, UNITS_PIXELS);
-				field9.setImmediate(true);
-				field9.addListener(new Property.ValueChangeListener(){
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void valueChange(ValueChangeEvent event) {
-						String value = (String) event.getProperty().getValue();
-						
-						try {
-							double dValue = Double.parseDouble(value);
-							presenter.setAbschreibungen(dValue, year);
-							presenter.setValid();
-						}
-						
-						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Abschreibungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-							presenter.setInvalid();
-						}
-					}
-
-				});
-				field9.setValue(presenter.getAbschreibungen(year));
-				TextField field10 = new TextField();
-				field10.setWidth(50, UNITS_PIXELS);
-				field10.setImmediate(true);
-				field10.addListener(new Property.ValueChangeListener(){
+				field4.setValue(presenter.getVerwaltungskosten(year));
+				TextField field5 = new TextField();
+				field5.setWidth(50, UNITS_PIXELS);
+				field5.setImmediate(true);
+				field5.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -459,11 +395,11 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					}
 
 				});
-				field10.setValue(presenter.getSonstigAufwand(year));
-				TextField field11 = new TextField();
-				field11.setWidth(50, UNITS_PIXELS);
-				field11.setImmediate(true);
-				field11.addListener(new Property.ValueChangeListener(){
+				field5.setValue(presenter.getSonstigAufwand(year));
+				TextField field6 = new TextField();
+				field6.setWidth(50, UNITS_PIXELS);
+				field6.setImmediate(true);
+				field6.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -478,17 +414,42 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der sonstigen Erträge Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der sonstigen Eträge im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field11.setValue(presenter.getSonstigErtrag(year));
-				TextField field12 = new TextField();
-				field12.setWidth(50, UNITS_PIXELS);
-				field12.setImmediate(true);
-				field12.addListener(new Property.ValueChangeListener(){
+				field6.setValue(presenter.getSonstigErtrag(year));
+				TextField field7 = new TextField();
+				field7.setWidth(50, UNITS_PIXELS);
+				field7.setImmediate(true);
+				field7.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setBeteiligungenErtrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Erträge aus Beteiligungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field7.setValue(presenter.getBeteiligungenErtrag(year));
+				TextField field8 = new TextField();
+				field8.setWidth(50, UNITS_PIXELS);
+				field8.setImmediate(true);
+				field8.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -503,17 +464,67 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der Wertpapiererträge im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der Erträge aus Wertpapieren im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field12.setValue(presenter.getWertpapierErtrag(year));
-				TextField field13 = new TextField();
-				field13.setWidth(50, UNITS_PIXELS);
-				field13.setImmediate(true);
-				field13.addListener(new Property.ValueChangeListener(){
+				field8.setValue(presenter.getWertpapierErtrag(year));
+				TextField field9 = new TextField();
+				field9.setWidth(50, UNITS_PIXELS);
+				field9.setImmediate(true);
+				field9.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setZinsertrag(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Zinserträge im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field9.setValue(presenter.getZinsertrag(year));
+				TextField field10 = new TextField();
+				field10.setWidth(50, UNITS_PIXELS);
+				field10.setImmediate(true);
+				field10.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAbschreibungenFinanzanlagen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Abschreibungen auf Finanzanlagen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field10.setValue(presenter.getAbschreibungenFinanzanlagen(year));
+				TextField field11 = new TextField();
+				field11.setWidth(50, UNITS_PIXELS);
+				field11.setImmediate(true);
+				field11.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -534,11 +545,36 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					}
 
 				});
-				field13.setValue(presenter.getZinsaufwand(year));
-				TextField field14 = new TextField();
-				field14.setWidth(50, UNITS_PIXELS);
-				field14.setImmediate(true);
-				field14.addListener(new Property.ValueChangeListener(){
+				field11.setValue(presenter.getZinsaufwand(year));
+				TextField field13 = new TextField();
+				field13.setWidth(50, UNITS_PIXELS);
+				field13.setImmediate(true);
+				field13.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setAusserordentlichAufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der ausserordentlichen Aufwendungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field13.setValue(presenter.getAusserordentlichAufwand(year));
+				TextField field12 = new TextField();
+				field12.setWidth(50, UNITS_PIXELS);
+				field12.setImmediate(true);
+				field12.addListener(new Property.ValueChangeListener(){
 
 					private static final long serialVersionUID = 1L;
 
@@ -559,7 +595,32 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 					}
 
 				});
-				field14.setValue(presenter.getAusserordentlichErtrag(year));
+				field12.setValue(presenter.getAusserordentlichErtrag(year));
+				TextField field14 = new TextField();
+				field14.setWidth(50, UNITS_PIXELS);
+				field14.setImmediate(true);
+				field14.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setSteueraufwand(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Steueraufwendungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field14.setValue(presenter.getSteueraufwand(year));
 				TextField field15 = new TextField();
 				field15.setWidth(50, UNITS_PIXELS);
 				field15.setImmediate(true);
@@ -573,24 +634,52 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 						
 						try {
 							double dValue = Double.parseDouble(value);
-							presenter.setAusserordentlichAufwand(dValue, year);
+							presenter.setAbschreibungen(dValue, year);
 							presenter.setValid();
 						}
 						
 						catch (Exception e) {
-							notificateWarning("Ihre Eingabe der außerordentlichen Aufwendungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							notificateWarning("Ihre Eingabe der Abschreibungen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 							presenter.setInvalid();
 						}
 					}
 
 				});
-				field15.setValue(presenter.getAusserordentlichAufwand(year));
+				field15.setValue(presenter.getAbschreibungen(year));
+				TextField field16 = new TextField();
+				field16.setWidth(50, UNITS_PIXELS);
+				field16.setImmediate(true);
+				field16.addListener(new Property.ValueChangeListener(){
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						String value = (String) event.getProperty().getValue();
+						
+						try {
+							double dValue = Double.parseDouble(value);
+							presenter.setBruttoinvestitionen(dValue, year);
+							presenter.setValid();
+						}
+						
+						catch (Exception e) {
+							notificateWarning("Ihre Eingabe der Brutto-Investitionen im Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+							presenter.setInvalid();
+						}
+					}
+
+				});
+				field16.setValue(presenter.getBruttoinvestitionen(year));
+				
 				row1.getItemProperty(currYear).setValue(field1);
 				row2.getItemProperty(currYear).setValue(field2);
 				row3.getItemProperty(currYear).setValue(field3);
 				row4.getItemProperty(currYear).setValue(field4);
 				row5.getItemProperty(currYear).setValue(field5);
+				row6.getItemProperty(currYear).setValue(field6);
 				row7.getItemProperty(currYear).setValue(field7);
+				row8.getItemProperty(currYear).setValue(field8);
 				row9.getItemProperty(currYear).setValue(field9);
 				row10.getItemProperty(currYear).setValue(field10);
 				row11.getItemProperty(currYear).setValue(field11);
@@ -598,6 +687,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 				row13.getItemProperty(currYear).setValue(field13);
 				row14.getItemProperty(currYear).setValue(field14);
 				row15.getItemProperty(currYear).setValue(field15);
+				row16.getItemProperty(currYear).setValue(field16);
 				currYear++;
 			}
 			return currYear;

@@ -6,6 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
+ * 2014-2015 Marco Glaser, Tobias Lindner
  * 
  *
  *
@@ -52,7 +53,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowUKVEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Marcel Rosenberger
+ * @author Marco Glaser
  * 
  */
 
@@ -60,7 +61,7 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 	private static final long serialVersionUID = 1L;
 	
 	public enum Type {
-		FREMDKAPITAL, UMSATZERLOESE, HERSTELLKOSTEN, VERTRIEBSKOSTEN, FORSCHUNGSKOSTEN, VERWALTUNGSKOSTEN, PENSIONRUECKSTELLUNG, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, ZINSAUFWAND, AUSSERORDERTRAG, AUSSERORDAUFWAND
+		FREMDKAPITAL, UMSATZERLOESE, HERSTELLKOSTEN, VERTRIEBSKOSTEN, VERWALTUNGSKOSTEN, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, BETEILIGUNGENERTRAG, ZINSERTRAG, ZINSAUFWAND, ABSCHREIBUNGENFINANZANLAGEN, AUSSERORDERTRAG, AUSSERORDAUFWAND, STEUERAUFWAND, BRUTTOINVESTITIONEN
 	}
 
 	@Autowired
@@ -82,7 +83,7 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Marcel Rosenberger
+	 * @author Marco Glaser
 	 */
 
 	@PostConstruct
@@ -118,16 +119,8 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		setValue(value, year, Type.VERTRIEBSKOSTEN);
 	}
 	
-	public void setForschungskosten(double value, int year){
-		setValue(value, year, Type.FORSCHUNGSKOSTEN);
-	}
-	
 	public void setVerwaltungskosten(double value, int year){
 		setValue(value, year, Type.VERWALTUNGSKOSTEN);
-	}
-	
-	public void setPensionrueckstellungen(double value, int year){
-		setValue(value, year, Type.PENSIONRUECKSTELLUNG);
 	}
 	
 	public void setAbschreibungen(double value, int year){
@@ -150,12 +143,32 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		setValue(value, year, Type.ZINSAUFWAND);
 	}
 	
+	public void setZinsertrag(double value, int year){
+		setValue(value, year, Type.ZINSERTRAG);
+	}
+	
+	public void setBeteiligungenErtrag(double value, int year){
+		setValue(value, year, Type.BETEILIGUNGENERTRAG);
+	}
+	
+	public void setAbschreibungenFinanzanlagen(double value, int year){
+		setValue(value, year, Type.ABSCHREIBUNGENFINANZANLAGEN);
+	}
+	
+	public void setSteueraufwand(double value, int year){
+		setValue(value, year, Type.STEUERAUFWAND);
+	}
+	
 	public void setAusserordentlichErtrag(double value, int year){
 		setValue(value, year, Type.AUSSERORDERTRAG);
 	}
 	
 	public void setAusserordentlichAufwand(double value, int year){
 		setValue(value, year, Type.AUSSERORDAUFWAND);
+	}
+	
+	public void setBruttoinvestitionen(double value, int year){
+		setValue(value, year, Type.BRUTTOINVESTITIONEN);
 	}
 	
 	public String getFremdkapital(int year){
@@ -174,16 +187,8 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		return getValue(year, Type.VERTRIEBSKOSTEN);
 	}
 	
-	public String getForschungskosten(int year){
-		return getValue(year, Type.FORSCHUNGSKOSTEN);
-	}
-	
 	public String getVerwaltungskosten(int year){
 		return getValue(year, Type.VERWALTUNGSKOSTEN);
-	}
-	
-	public String getPensionsrueckstellungen(int year){
-		return getValue(year, Type.PENSIONRUECKSTELLUNG);
 	}
 	
 	public String getAbschreibungen(int year){
@@ -206,12 +211,32 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		return getValue(year, Type.ZINSAUFWAND);
 	}
 	
+	public String getZinsertrag(int year){
+		return getValue(year, Type.ZINSERTRAG);
+	}
+	
+	public String getBeteiligungenErtrag(int year){
+		return getValue(year, Type.BETEILIGUNGENERTRAG);
+	}
+	
+	public String getAbschreibungenFinanzanlagen(int year){
+		return getValue(year, Type.ABSCHREIBUNGENFINANZANLAGEN);
+	}
+	
+	public String getSteueraufwand(int year){
+		return getValue(year, Type.STEUERAUFWAND);
+	}
+	
 	public String getAusserordentlichErtrag(int year){
 		return getValue(year, Type.AUSSERORDERTRAG);
 	}
 	
 	public String getAusserordentlichAufwand(int year){
 		return getValue(year, Type.AUSSERORDAUFWAND);
+	}
+	
+	public String getBruttoinvestitionen(int year){
+		return getValue(year, Type.BRUTTOINVESTITIONEN);
 	}
 	
 	public String getValue(int year, Type typ) {
@@ -252,17 +277,9 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 					case VERTRIEBSKOSTEN:
 						value = period.getVertriebskosten();
 						break;
-						
-					case FORSCHUNGSKOSTEN:
-						value = period.getForschungskosten();
-						break;
 					
 					case VERWALTUNGSKOSTEN:
 						value = period.getVerwaltungskosten();
-						break;
-						
-					case PENSIONRUECKSTELLUNG:
-						value = period.getPensionsrückstellungen();
 						break;
 						
 					case ABSCHREIBUNGEN:
@@ -285,12 +302,32 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 						value = period.getZinsenundaufwendungen();
 						break;
 						
+					case ZINSERTRAG:
+						value = period.getZinsertraege();
+						break;
+						
+					case BETEILIGUNGENERTRAG:
+						value = period.getBeteiligungenErtraege();
+						break;
+						
+					case ABSCHREIBUNGENFINANZANLAGEN:
+						value = period.getAbschreibungenFinanzanlagen();
+						break;
+						
+					case STEUERAUFWAND:
+						value = period.getSteueraufwand();
+						break;
+						
 					case AUSSERORDERTRAG:
 						value = period.getAußerordentlicheerträge();
 						break;
 						
 					case AUSSERORDAUFWAND:
 						value = period.getAußerordentlicheaufwände();
+						break;
+						
+					case BRUTTOINVESTITIONEN:
+						value = period.getBruttoinvestitionen();
 						break;
 					}
 					break;
@@ -324,59 +361,71 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 			if(period.getYear() == year){
 				switch (typ) {
 				case FREMDKAPITAL:
-					period.setCapitalStock(value);
+					value = period.getCapitalStock();
 					break;
 					
 				case UMSATZERLOESE:
-					period.setUmsatzerlöse(value);
+					value = period.getUmsatzerlöse();
 					break;
 
 				case HERSTELLKOSTEN:
-					period.setHerstellungskosten(value);
+					value = period.getHerstellungskosten();
 					break;
 					
 				case VERTRIEBSKOSTEN:
-					period.setVertriebskosten(value);
-					break;
-					
-				case FORSCHUNGSKOSTEN:
-					period.setForschungskosten(value);
+					value = period.getVertriebskosten();
 					break;
 				
 				case VERWALTUNGSKOSTEN:
-					period.setVerwaltungskosten(value);
-					break;
-					
-				case PENSIONRUECKSTELLUNG:
-					period.setPensionsrückstellungen(value);
+					value = period.getVerwaltungskosten();
 					break;
 					
 				case ABSCHREIBUNGEN:
-					period.setAbschreibungen(value);
+					value = period.getAbschreibungen();
 					break;
 					
 				case SONSTIGAUFWAND:
-					period.setSonstigeraufwand(value);
+					value = period.getSonstigeraufwand();
 					break;
 					
 				case SONSTIGERTRAG:
-					period.setSonstigerertrag(value);
+					value = period.getSonstigerertrag();
 					break;
 					
 				case WERTPAPIERERTRAG:
-					period.setWertpapiererträge(value);
+					value = period.getWertpapiererträge();
 					break;
 					
 				case ZINSAUFWAND:
-					period.setZinsenundaufwendungen(value);
+					value = period.getZinsenundaufwendungen();
+					break;
+					
+				case ZINSERTRAG:
+					value = period.getZinsertraege();
+					break;
+					
+				case BETEILIGUNGENERTRAG:
+					value = period.getBeteiligungenErtraege();
+					break;
+					
+				case ABSCHREIBUNGENFINANZANLAGEN:
+					value = period.getAbschreibungenFinanzanlagen();
+					break;
+					
+				case STEUERAUFWAND:
+					value = period.getSteueraufwand();
 					break;
 					
 				case AUSSERORDERTRAG:
-					period.setAußerordentlicheerträge(value);
+					value = period.getAußerordentlicheerträge();
 					break;
 					
 				case AUSSERORDAUFWAND:
-					period.setAußerordentlicheaufwände(value);
+					value = period.getAußerordentlicheaufwände();
+					break;
+					
+				case BRUTTOINVESTITIONEN:
+					value = period.getBruttoinvestitionen();
 					break;
 				}
 				periodContainer.removePeriod(period);
@@ -388,59 +437,71 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 			period = new UmsatzkostenVerfahrenCashflowPeriod(year);
 			switch (typ) {
 			case FREMDKAPITAL:
-				period.setCapitalStock(value);
+				value = period.getCapitalStock();
 				break;
 				
 			case UMSATZERLOESE:
-				period.setUmsatzerlöse(value);
+				value = period.getUmsatzerlöse();
 				break;
 
 			case HERSTELLKOSTEN:
-				period.setHerstellungskosten(value);
+				value = period.getHerstellungskosten();
 				break;
 				
 			case VERTRIEBSKOSTEN:
-				period.setVertriebskosten(value);
-				break;
-				
-			case FORSCHUNGSKOSTEN:
-				period.setForschungskosten(value);
+				value = period.getVertriebskosten();
 				break;
 			
 			case VERWALTUNGSKOSTEN:
-				period.setVerwaltungskosten(value);
-				break;
-				
-			case PENSIONRUECKSTELLUNG:
-				period.setPensionsrückstellungen(value);
+				value = period.getVerwaltungskosten();
 				break;
 				
 			case ABSCHREIBUNGEN:
-				period.setAbschreibungen(value);
+				value = period.getAbschreibungen();
 				break;
 				
 			case SONSTIGAUFWAND:
-				period.setSonstigeraufwand(value);
+				value = period.getSonstigeraufwand();
 				break;
 				
 			case SONSTIGERTRAG:
-				period.setSonstigerertrag(value);
+				value = period.getSonstigerertrag();
 				break;
 				
 			case WERTPAPIERERTRAG:
-				period.setWertpapiererträge(value);
+				value = period.getWertpapiererträge();
 				break;
 				
 			case ZINSAUFWAND:
-				period.setZinsenundaufwendungen(value);
+				value = period.getZinsenundaufwendungen();
+				break;
+				
+			case ZINSERTRAG:
+				value = period.getZinsertraege();
+				break;
+				
+			case BETEILIGUNGENERTRAG:
+				value = period.getBeteiligungenErtraege();
+				break;
+				
+			case ABSCHREIBUNGENFINANZANLAGEN:
+				value = period.getAbschreibungenFinanzanlagen();
+				break;
+				
+			case STEUERAUFWAND:
+				value = period.getSteueraufwand();
 				break;
 				
 			case AUSSERORDERTRAG:
-				period.setAußerordentlicheerträge(value);
+				value = period.getAußerordentlicheerträge();
 				break;
 				
 			case AUSSERORDAUFWAND:
-				period.setAußerordentlicheaufwände(value);
+				value = period.getAußerordentlicheaufwände();
+				break;
+				
+			case BRUTTOINVESTITIONEN:
+				value = period.getBruttoinvestitionen();
 				break;
 			}
 		}

@@ -37,10 +37,6 @@ public class UmsatzkostenVerfahrenCashflowPeriod extends Period {
 
         private static final long serialVersionUID = 1L;
         
-        
-        
-        
-        
         /**
          * Umsatzerlöse
          */
@@ -119,13 +115,78 @@ public class UmsatzkostenVerfahrenCashflowPeriod extends Period {
         private boolean pensionsrückstellungenSet;
         private double pensionsrückstellungen;
 
+        /**
+         *Erträge aus Beteiligungen
+         */
+        private double beteiligungenErtraege;
+        
+        /**
+         *Sonstige Zinsen und ähnliche Erträge
+         */
+        private double zinsertraege;
+        
+        /**
+         *Steueraufwand
+         */
+        private double steueraufwand;
+        
+        /**
+         *Abschreibungen auf Finanzanlagen
+         */
+        private double abschreibungenFinanzanlagen;
+        
+        /**
+         *Bruttoinvestitionen
+         */
+        private double bruttoinvestitionen;
        
 
         public UmsatzkostenVerfahrenCashflowPeriod(int year) {
                 super(year);
         }
+        
+        public double getBruttoinvestitionen(){
+        	return bruttoinvestitionen;
+        }
+        
+        public void setBruttoinvestitionen(double bruttoinvestitionen){
+        	this.bruttoinvestitionen = bruttoinvestitionen;
+        }
+        
+        public double getBeteiligungenErtraege(){
+        	return beteiligungenErtraege;
+        }
+        
+        public void setBeteiligungenErtraege(double beteiligungenErtraege){
+        	this.beteiligungenErtraege = beteiligungenErtraege;
+        }
+        
+        public double getZinsertraege(){
+        	return zinsertraege;
+        }
+        
+        public void setZinsertraege(double zinsertraege){
+        	this.zinsertraege = zinsertraege;
+        }
 
- 
+        public double getAbschreibungenFinanzanlagen(){
+        	return abschreibungenFinanzanlagen;
+        }
+        
+        public void setAbschreibungenFinanzanlagen(double abschreibungenFinanzanlagen){
+        	this.abschreibungenFinanzanlagen = abschreibungenFinanzanlagen;
+        }
+        
+        public double getSteueraufwand(){
+        	return steueraufwand;
+        }
+        
+        public void setSteueraufwand(double steueraufwand){
+        	this.steueraufwand = steueraufwand;
+        }
+        
+        
+        
 		/**
 		 * @return the umsatzerlöseSet
 		 */

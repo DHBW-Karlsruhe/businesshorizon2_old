@@ -61,10 +61,10 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
         private double materialaufwand;
         
         /**
-         * Löhne/Gehälter
+         * Personalaufwand
          */
-        private boolean löhneSet;
-        private double löhne;
+        private boolean personalaufwandSet;
+        private double personalaufwand;
         
         /**
          * Einstellungs-/Entlassungskosten
@@ -126,7 +126,35 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
         private boolean außerordentlicheaufwändeSet;
         private double außerordentlicheaufwände;
 
-
+        /**
+         *Erträge aus Beteiligungen
+         */
+        private double beteiligungenErtraege;
+        
+        /**
+         *Sonstige Zinsen und ähnliche Erträge
+         */
+        private double zinsertraege;
+        
+        /**
+         *Steueraufwand
+         */
+        private double steueraufwand;
+        
+        /**
+         *Abschreibungen auf Finanzanlagen
+         */
+        private double abschreibungenFinanzanlagen;
+        
+        /**
+         *Bruttoinvestitionen
+         */
+        private double bruttoinvestitionen;
+        
+        /**
+         *Aktivierte Eigenleistungen
+         */
+        private double aktivEigenleistung;
 
         /**
          * Der Konstruktor erstellt eine Methode für das Jahr year
@@ -139,6 +167,54 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
 
         public GesamtkostenVerfahrenCashflowPeriod(int year) {
                 super(year);
+        }
+        
+        public double getAktivEigenleistung(){
+        	return aktivEigenleistung;
+        }
+        
+        public void setAktivEigenleistung(double aktivEigenleistung){
+        	this.aktivEigenleistung = aktivEigenleistung;
+        }
+        
+        public double getBruttoinvestitionen(){
+        	return bruttoinvestitionen;
+        }
+        
+        public void setBruttoinvestitionen(double bruttoinvestitionen){
+        	this.bruttoinvestitionen = bruttoinvestitionen;
+        }
+        
+        public double getBeteiligungenErtraege(){
+        	return beteiligungenErtraege;
+        }
+        
+        public void setBeteiligungenErtraege(double beteiligungenErtraege){
+        	this.beteiligungenErtraege = beteiligungenErtraege;
+        }
+        
+        public double getZinsertraege(){
+        	return zinsertraege;
+        }
+        
+        public void setZinsertraege(double zinsertraege){
+        	this.zinsertraege = zinsertraege;
+        }
+
+        public double getAbschreibungenFinanzanlagen(){
+        	return abschreibungenFinanzanlagen;
+        }
+        
+        public void setAbschreibungenFinanzanlagen(double abschreibungenFinanzanlagen){
+        	this.abschreibungenFinanzanlagen = abschreibungenFinanzanlagen;
+        }
+        
+        public double getSteueraufwand(){
+        	return steueraufwand;
+        }
+        
+        public void setSteueraufwand(double steueraufwand){
+        	this.steueraufwand = steueraufwand;
         }
 
         /**
@@ -269,33 +345,33 @@ public class GesamtkostenVerfahrenCashflowPeriod extends Period {
 		/**
 		 * @return the löhneSet
 		 */
-		public boolean isLöhneSet() {
-			return löhneSet;
+		public boolean isPersonalaufwandSet() {
+			return personalaufwandSet;
 		}
 
 
 		/**
 		 * @param löhneSet the löhneSet to set
 		 */
-		public void setLöhneSet(boolean löhneSet) {
-			this.löhneSet = löhneSet;
+		public void setPersonalaufwandSet(boolean personalaufwandSet) {
+			this.personalaufwandSet = personalaufwandSet;
 		}
 
 
 		/**
 		 * @return the löhne
 		 */
-		public double getLöhne() {
-			return löhne;
+		public double getPersonalaufwand() {
+			return personalaufwand;
 		}
 
 
 		/**
 		 * @param löhne the löhne to set
 		 */
-		public void setLöhne(double löhne) {
-			this.löhne = löhne;
-			this.setLöhneSet(true);
+		public void setPersonalaufwand(double personalaufwand) {
+			this.personalaufwand = personalaufwand;
+			this.setPersonalaufwandSet(true);
 		}
 
 
