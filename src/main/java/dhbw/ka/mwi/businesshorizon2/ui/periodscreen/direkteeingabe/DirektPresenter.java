@@ -47,7 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowDirektViewEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  *
- * @author Daniel Dengler
+ * @author Daniel Dengler, Tobias Lindner
  *
  */
 
@@ -237,29 +237,29 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 	 * 
 	 * @author Tobias Lindner
 	 */
-	public void setValid () {
-		eventBus.fireEvent(new ValidationEvent(true));
-		logger.debug("ValidationEvent(true) geworfen"); 
-	}
+//	public void setValid () {
+//		eventBus.fireEvent(new ValidationEvent(true));
+//		logger.debug("ValidationEvent(true) geworfen"); 
+//	}
+//	
+//	/**
+//	 * Wirft das entsprechende ValidationEvent.
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void setInvalid () {
+//		eventBus.fireEvent(new ValidationEvent(false));
+//		logger.debug("ValidationEvent(true) geworfen");
+//	}
 	
-	/**
-	 * Wirft das entsprechende ValidationEvent.
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void setInvalid () {
-		eventBus.fireEvent(new ValidationEvent(false));
-		logger.debug("ValidationEvent(true) geworfen");
-	}
-	
-	/**
-	 * Die Methode überprüft, ob im Perioden Objekt alle Werte zu Cashflow/Ausschüttung und Capital Stock ausgefüllt wurden
-	 * 
-	 * @author Tobias Lindner
-	 */
-	public void checkValid () {
-		int fehlercounter = 0;
-
+//	/**
+//	 * Die Methode überprüft, ob im Perioden Objekt alle Werte zu Cashflow/Ausschüttung und Capital Stock ausgefüllt wurden
+//	 * 
+//	 * @author Tobias Lindner
+//	 */
+//	public void checkValid () {
+//		int fehlercounter = 0;
+//
 		//Check, ob zu allen Jahren Cashflows oder Ausschüttung angegeben ist.
 //		double value = 0.0;
 //		project = projectProxy.getSelectedProject();
@@ -292,17 +292,45 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 //		
 //		logger.debug("fehlercounter=" + fehlercounter);
 //		
-		
-		if (fehlercounter == 0) {
-			eventBus.fireEvent(new ValidationEvent(true));
-			logger.debug("ValidationEvent(true) geworfen"); 
-		}
-		
-		else {
+//		
+//		if (fehlercounter == 0) {
+//			eventBus.fireEvent(new ValidationEvent(true));
+//			logger.debug("ValidationEvent(true) geworfen"); 
+//		}
+//		
+//		else {
+//			eventBus.fireEvent(new ValidationEvent(false));
+//			logger.debug("ValidationEvent(false) geworfen");
+//		}
+//		
+//	}
+	
+	/**
+	 * Die Methode überrüft, ob die Eingaben in allen Textfeldern korrekt sind.
+	 * @author Tobias Lindner
+	 * 
+	 * @return boolean
+	 * 			Sind die Eingaben valide?
+	 */
+	public boolean validateDirectInput () {
+		if (getView().isComponentError()) {
 			eventBus.fireEvent(new ValidationEvent(false));
-			logger.debug("ValidationEvent(true) geworfen");
+			logger.debug("ValidationEvent(false) geworfen"); 
+			return false;
 		}
-		
+		else {
+			if (getView().oneTextFieldIsSet()) {
+				eventBus.fireEvent(new ValidationEvent(true));
+				logger.debug("ValidationEvent(true) geworfen"); 
+				return true;
+			}
+			else {
+				eventBus.fireEvent(new ValidationEvent(false));
+				logger.debug("ValidationEvent(false) geworfen"); 
+				return false;
+			}
+		}
+
 	}
 
 }

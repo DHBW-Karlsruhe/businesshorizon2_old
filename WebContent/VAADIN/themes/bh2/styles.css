@@ -736,3 +736,9 @@ textarea.projectNameInput{
    -ms-filter: alpha(opacity=80);  
    filter: alpha(opacity=80);  
  }  
+ 
+input.showErrors {
+ 	border-color: red;
+ 	border-radius: 10px;
+ 	background-color: #FFD700;
+ }

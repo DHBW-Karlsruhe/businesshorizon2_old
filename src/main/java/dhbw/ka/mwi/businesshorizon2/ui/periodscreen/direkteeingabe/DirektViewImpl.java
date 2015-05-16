@@ -25,6 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -36,7 +37,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.ui.Alignment;
+import com.vaadin.terminal.UserError;
+
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -45,13 +47,12 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
  * Vaadin.
  * 
- * @author Daniel Dengler
+ * @author Daniel Dengler, Tobias Lindner
  * 
  */
 public class DirektViewImpl extends VerticalLayout implements DirektViewInterface {
@@ -69,8 +70,10 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	private Label expandingGap;
 
 	private Project project;
-
+	
 	private static final Logger logger = Logger.getLogger("DirektViewImpl.class");
+	
+	private ArrayList<TextField> allTextFields = new ArrayList<TextField>();
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
@@ -162,6 +165,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		itemId = inputTable.addItem();
 		Item row2 = inputTable.getItem(itemId);
 		row2.getItemProperty("first").setValue("Bilanzwert Fremdkapital");
+		
 		if(project.getProjectInputType().isStochastic()){
 			currYear = pastYear;
 			currYear = createTextFields((pastPeriods+1), currYear, row1, row2);
@@ -169,12 +173,14 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 			currYear = baseYear;
 			createTextFields(periodsToForecast, currYear, row1, row2);
 		}
+
 	}
 
 	private int createTextFields(int pastPeriods, int currYear, Item row1, Item row2) {
 		for(int i = 0; i < pastPeriods; i++){
 			final int year = currYear;
-			TextField field1 = new TextField();
+			final TextField field1 = new TextField();
+			allTextFields.add(field1);
 			field1.setWidth(50, UNITS_PIXELS);
 			field1.setImmediate(true);
 			field1.addListener(new Property.ValueChangeListener(){
@@ -184,15 +190,20 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 				@Override
 				public void valueChange(ValueChangeEvent event) {
 					String value = (String) event.getProperty().getValue();
+					value = value.replace(',', '.');
 					double dValue;
 					try {
 						dValue = Double.parseDouble(value);
-						presenter.setValid();
+						field1.setComponentError(null);
+						field1.removeStyleName("showErrors");
+						presenter.validateDirectInput();
 					}
 					catch (Exception e){
 						dValue = 0.0;
 						notificateWarning("Ihre Eingabe des Cashlflows/der Ausschüttung für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-						presenter.setInvalid();	
+						field1.setComponentError(new UserError("Bitte geben Sie eine Kommazahl an."));
+						field1.addStyleName("showErrors");
+						presenter.validateDirectInput();	
 					}
 						
 					presenter.setCashFlowValue(dValue, year);
@@ -206,9 +217,11 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 			field1.setValue(presenter.getCashFlow(year));
 			
 			
-			TextField field2 = new TextField();
+			final TextField field2 = new TextField();
+			allTextFields.add(field2);
 			field2.setWidth(50, UNITS_PIXELS);
 			field2.setImmediate(true);
+
 			field2.addListener(new Property.ValueChangeListener() {
 				
 				private static final long serialVersionUID = 1L;
@@ -216,15 +229,21 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 				@Override
 				public void valueChange(ValueChangeEvent event) {
 					String value = (String) event.getProperty().getValue();
+					value = value.replace(',', '.');
 					double dValue;
 					try {
 						dValue = Double.parseDouble(value);
-						presenter.setValid();						
+						field2.setComponentError(null);
+						field2.removeStyleName("showErrors");
+						presenter.validateDirectInput();						
 					}
 					catch (Exception e) {
 						dValue = 0.0;
-						notificateWarning("Ihre Eingabe des Bilanzwertes für das Jahr" + year + "ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
-						presenter.setInvalid();
+						notificateWarning("Ihre Eingabe des Bilanzwertes für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
+						field2.setComponentError(new UserError("Bitte geben Sie eine Kommazahl an."));
+						field2.addStyleName("showErrors");
+						logger.debug("Field2 Component Error: " + field2.getComponentError());
+						presenter.validateDirectInput();
 					}
 					presenter.setCapitalStockValue(dValue, year);
 //					presenter.checkValid();
@@ -273,6 +292,41 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	private void notificateWarning (String warningText) {
 		getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
 	}
-
+	
+	/**
+	 * Diese Methode überprüft, ob für ein Textfeld der Tabelle ein Fehlermarker gesetzt ist. Falls dies der Falls ist wird true zurückgegeben, anderenfalls false. 
+	 * 
+	 * @author Tobias Lindner
+	 * @return boolean
+	 * 			Besteht ein Component Error?: Ja --> true, nein --> false
+	 */
+	public boolean isComponentError () {
+		Iterator<TextField> it = allTextFields.iterator();
+		while(it.hasNext()){
+			TextField temp = (TextField) it.next();
+			if (temp.getComponentError()!=null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Diese Methode überprüft, ob in mindestens einem Textfeld durch den User ein Wert gesetzt wurde.
+	 * 
+	 * @author Tobias Lindner
+	 * @return boolean
+	 * 			Wurde mindestens der Wert eines Textfeldes gesetzt?: Ja --> true, nein --> false
+	 */
+	public boolean oneTextFieldIsSet () {
+		Iterator<TextField> it = allTextFields.iterator();
+		while(it.hasNext()){
+			TextField temp = (TextField) it.next();
+			if (!temp.getValue().equals("0.0")) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 

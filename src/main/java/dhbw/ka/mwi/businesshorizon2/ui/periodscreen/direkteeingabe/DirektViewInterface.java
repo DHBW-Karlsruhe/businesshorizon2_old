@@ -28,12 +28,15 @@ package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.direkteeingabe;
 import com.mvplite.view.View;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
 public interface DirektViewInterface extends View{
 
 	public void setProject(Project project);
 	
 	public void generateTable();
+	
+	public boolean isComponentError ();
+	
+	public boolean oneTextFieldIsSet ();
 
 }
