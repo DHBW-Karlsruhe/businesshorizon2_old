@@ -25,9 +25,14 @@
 
 package dhbw.ka.mwi.businesshorizon2.services.proxies;
 
+import org.apache.log4j.Logger;
+
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 
 public class ProjectProxy {
+	
+	private static final Logger logger = Logger.getLogger("ProjectProxy.class");
+	
 	private Project selectedProject;
 	
 	public ProjectProxy() {
@@ -40,7 +45,13 @@ public class ProjectProxy {
 
 	public void setSelectedProject(Project selectedProject) {
 		this.selectedProject = selectedProject;
+		if (selectedProject!=null) {
+			logger.debug("Projekt im ProjectProxy gesetzt: " + selectedProject.getName());
+		}
+		else {
+			logger.debug("Projektreferenz NULL im ProjektProxy gesetzt.");
+		}
+
 	}
-	
-	
+
 }
