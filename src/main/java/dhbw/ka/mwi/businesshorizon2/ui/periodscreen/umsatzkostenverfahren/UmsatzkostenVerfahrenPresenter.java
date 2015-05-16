@@ -59,16 +59,16 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowUKVEvent;
 
 public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfahrenViewInterface> {
 	private static final long serialVersionUID = 1L;
-	
+
 	public enum Type {
 		FREMDKAPITAL, UMSATZERLOESE, HERSTELLKOSTEN, VERTRIEBSKOSTEN, VERWALTUNGSKOSTEN, ABSCHREIBUNGEN, SONSTIGAUFWAND, SONSTIGERTRAG, WERTPAPIERERTRAG, BETEILIGUNGENERTRAG, ZINSERTRAG, ZINSAUFWAND, ABSCHREIBUNGENFINANZANLAGEN, AUSSERORDERTRAG, AUSSERORDAUFWAND, STEUERAUFWAND, BRUTTOINVESTITIONEN
 	}
 
 	@Autowired
 	EventBus eventBus;
-	
-private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPresenter.class");
-	
+
+	private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPresenter.class");
+
 	@Autowired
 	private ProjectProxy projectProxy;
 
@@ -91,26 +91,28 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		eventBus.addHandler(this);
 		logger.debug("Logger initialisiert");
 	}
-	
-	public String getHelp(){
-		return "Der Richtige!";
-	}
-	
+
+	/**
+     * @author Marco Glaser
+     */
 	@EventHandler
 	public void onShowUKVEvent(ShowUKVEvent event) {
 		//                processEvent(event);
 		logger.debug("ShowUKVEvent abgefangen");
 		getView().generateTable();
 	}
-	
+
+	/**
+     * @author Marco Glaser
+     */
 	public void setFremdkapital(double value, int year){
 		setValue(value, year, Type.FREMDKAPITAL);
 	}
-	
+
 	public void setUmsatzerloese(double value, int year){
 		setValue(value, year, Type.UMSATZERLOESE);
 	}
-	
+
 	public void setHerstellkosten(double value, int year){
 		setValue(value, year, Type.HERSTELLKOSTEN);
 	}
@@ -118,132 +120,135 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 	public void setVertriebskosten(double value, int year){
 		setValue(value, year, Type.VERTRIEBSKOSTEN);
 	}
-	
+
 	public void setVerwaltungskosten(double value, int year){
 		setValue(value, year, Type.VERWALTUNGSKOSTEN);
 	}
-	
+
 	public void setAbschreibungen(double value, int year){
 		setValue(value, year, Type.ABSCHREIBUNGEN);
 	}
-	
+
 	public void setSonstigAufwand(double value, int year){
 		setValue(value, year, Type.SONSTIGAUFWAND);
 	}
-	
+
 	public void setSonstigErtrag(double value, int year){
 		setValue(value, year, Type.SONSTIGERTRAG);
 	}
-	
+
 	public void setWertpapierErtrag(double value, int year){
 		setValue(value, year, Type.WERTPAPIERERTRAG);
 	}
-	
+
 	public void setZinsaufwand(double value, int year){
 		setValue(value, year, Type.ZINSAUFWAND);
 	}
-	
+
 	public void setZinsertrag(double value, int year){
 		setValue(value, year, Type.ZINSERTRAG);
 	}
-	
+
 	public void setBeteiligungenErtrag(double value, int year){
 		setValue(value, year, Type.BETEILIGUNGENERTRAG);
 	}
-	
+
 	public void setAbschreibungenFinanzanlagen(double value, int year){
 		setValue(value, year, Type.ABSCHREIBUNGENFINANZANLAGEN);
 	}
-	
+
 	public void setSteueraufwand(double value, int year){
 		setValue(value, year, Type.STEUERAUFWAND);
 	}
-	
+
 	public void setAusserordentlichErtrag(double value, int year){
 		setValue(value, year, Type.AUSSERORDERTRAG);
 	}
-	
+
 	public void setAusserordentlichAufwand(double value, int year){
 		setValue(value, year, Type.AUSSERORDAUFWAND);
 	}
-	
+
 	public void setBruttoinvestitionen(double value, int year){
 		setValue(value, year, Type.BRUTTOINVESTITIONEN);
 	}
-	
+
 	public String getFremdkapital(int year){
 		return getValue(year, Type.FREMDKAPITAL);
 	}
-	
+
 	public String getUmsatzerloese(int year){
 		return getValue(year, Type.UMSATZERLOESE);
 	}
-	
+
 	public String getHerstellkosten(int year){
 		return getValue(year, Type.HERSTELLKOSTEN);
 	}
-	
+
 	public String getVertriebskosten(int year){
 		return getValue(year, Type.VERTRIEBSKOSTEN);
 	}
-	
+
 	public String getVerwaltungskosten(int year){
 		return getValue(year, Type.VERWALTUNGSKOSTEN);
 	}
-	
+
 	public String getAbschreibungen(int year){
 		return getValue(year, Type.ABSCHREIBUNGEN);
 	}
-	
+
 	public String getSonstigAufwand(int year){
 		return getValue(year, Type.SONSTIGAUFWAND);
 	}
-	
+
 	public String getSonstigErtrag(int year){
 		return getValue(year, Type.SONSTIGERTRAG);
 	}
-	
+
 	public String getWertpapierErtrag(int year){
 		return getValue(year, Type.WERTPAPIERERTRAG);
 	}
-	
+
 	public String getZinsaufwand(int year){
 		return getValue(year, Type.ZINSAUFWAND);
 	}
-	
+
 	public String getZinsertrag(int year){
 		return getValue(year, Type.ZINSERTRAG);
 	}
-	
+
 	public String getBeteiligungenErtrag(int year){
 		return getValue(year, Type.BETEILIGUNGENERTRAG);
 	}
-	
+
 	public String getAbschreibungenFinanzanlagen(int year){
 		return getValue(year, Type.ABSCHREIBUNGENFINANZANLAGEN);
 	}
-	
+
 	public String getSteueraufwand(int year){
 		return getValue(year, Type.STEUERAUFWAND);
 	}
-	
+
 	public String getAusserordentlichErtrag(int year){
 		return getValue(year, Type.AUSSERORDERTRAG);
 	}
-	
+
 	public String getAusserordentlichAufwand(int year){
 		return getValue(year, Type.AUSSERORDAUFWAND);
 	}
-	
+
 	public String getBruttoinvestitionen(int year){
 		return getValue(year, Type.BRUTTOINVESTITIONEN);
 	}
-	
+
+	/**
+     * @author Marco Glaser
+     */
 	public String getValue(int year, Type typ) {
 		double value = 0.0;
 		if(project == null){
-		project = projectProxy.getSelectedProject();
-		stochastic = project.getProjectInputType().isStochastic();
+			project = projectProxy.getSelectedProject();
+			stochastic = project.getProjectInputType().isStochastic();
 		}
 		if(stochastic){
 			logger.debug(project.getProjectInputType().getStochasticInput());
@@ -265,7 +270,7 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 					case FREMDKAPITAL:
 						value = period.getCapitalStock();
 						break;
-						
+
 					case UMSATZERLOESE:
 						value = period.getUmsatzerlöse();
 						break;
@@ -273,59 +278,59 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 					case HERSTELLKOSTEN:
 						value = period.getHerstellungskosten();
 						break;
-						
+
 					case VERTRIEBSKOSTEN:
 						value = period.getVertriebskosten();
 						break;
-					
+
 					case VERWALTUNGSKOSTEN:
 						value = period.getVerwaltungskosten();
 						break;
-						
+
 					case ABSCHREIBUNGEN:
 						value = period.getAbschreibungen();
 						break;
-						
+
 					case SONSTIGAUFWAND:
 						value = period.getSonstigeraufwand();
 						break;
-						
+
 					case SONSTIGERTRAG:
 						value = period.getSonstigerertrag();
 						break;
-						
+
 					case WERTPAPIERERTRAG:
 						value = period.getWertpapiererträge();
 						break;
-						
+
 					case ZINSAUFWAND:
 						value = period.getZinsenundaufwendungen();
 						break;
-						
+
 					case ZINSERTRAG:
 						value = period.getZinsertraege();
 						break;
-						
+
 					case BETEILIGUNGENERTRAG:
 						value = period.getBeteiligungenErtraege();
 						break;
-						
+
 					case ABSCHREIBUNGENFINANZANLAGEN:
 						value = period.getAbschreibungenFinanzanlagen();
 						break;
-						
+
 					case STEUERAUFWAND:
 						value = period.getSteueraufwand();
 						break;
-						
+
 					case AUSSERORDERTRAG:
 						value = period.getAußerordentlicheerträge();
 						break;
-						
+
 					case AUSSERORDAUFWAND:
 						value = period.getAußerordentlicheaufwände();
 						break;
-						
+
 					case BRUTTOINVESTITIONEN:
 						value = period.getBruttoinvestitionen();
 						break;
@@ -337,6 +342,9 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		return String.valueOf(value);
 	}
 
+	/**
+     * @author Marco Glaser
+     */
 	private void setValue(double value, int year, Type typ) {
 		if(project == null){
 			project = projectProxy.getSelectedProject();
@@ -348,7 +356,7 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 		else{
 			periodContainer = (UmsatzkostenVerfahrenCashflowPeriodContainer) project.getDeterministicPeriods();
 		}
-		
+
 		if(periodContainer == null){
 			periodContainer = new UmsatzkostenVerfahrenCashflowPeriodContainer();
 		}
@@ -363,7 +371,7 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 				case FREMDKAPITAL:
 					value = period.getCapitalStock();
 					break;
-					
+
 				case UMSATZERLOESE:
 					value = period.getUmsatzerlöse();
 					break;
@@ -371,59 +379,59 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 				case HERSTELLKOSTEN:
 					value = period.getHerstellungskosten();
 					break;
-					
+
 				case VERTRIEBSKOSTEN:
 					value = period.getVertriebskosten();
 					break;
-				
+
 				case VERWALTUNGSKOSTEN:
 					value = period.getVerwaltungskosten();
 					break;
-					
+
 				case ABSCHREIBUNGEN:
 					value = period.getAbschreibungen();
 					break;
-					
+
 				case SONSTIGAUFWAND:
 					value = period.getSonstigeraufwand();
 					break;
-					
+
 				case SONSTIGERTRAG:
 					value = period.getSonstigerertrag();
 					break;
-					
+
 				case WERTPAPIERERTRAG:
 					value = period.getWertpapiererträge();
 					break;
-					
+
 				case ZINSAUFWAND:
 					value = period.getZinsenundaufwendungen();
 					break;
-					
+
 				case ZINSERTRAG:
 					value = period.getZinsertraege();
 					break;
-					
+
 				case BETEILIGUNGENERTRAG:
 					value = period.getBeteiligungenErtraege();
 					break;
-					
+
 				case ABSCHREIBUNGENFINANZANLAGEN:
 					value = period.getAbschreibungenFinanzanlagen();
 					break;
-					
+
 				case STEUERAUFWAND:
 					value = period.getSteueraufwand();
 					break;
-					
+
 				case AUSSERORDERTRAG:
 					value = period.getAußerordentlicheerträge();
 					break;
-					
+
 				case AUSSERORDAUFWAND:
 					value = period.getAußerordentlicheaufwände();
 					break;
-					
+
 				case BRUTTOINVESTITIONEN:
 					value = period.getBruttoinvestitionen();
 					break;
@@ -439,7 +447,7 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 			case FREMDKAPITAL:
 				value = period.getCapitalStock();
 				break;
-				
+
 			case UMSATZERLOESE:
 				value = period.getUmsatzerlöse();
 				break;
@@ -447,59 +455,59 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 			case HERSTELLKOSTEN:
 				value = period.getHerstellungskosten();
 				break;
-				
+
 			case VERTRIEBSKOSTEN:
 				value = period.getVertriebskosten();
 				break;
-			
+
 			case VERWALTUNGSKOSTEN:
 				value = period.getVerwaltungskosten();
 				break;
-				
+
 			case ABSCHREIBUNGEN:
 				value = period.getAbschreibungen();
 				break;
-				
+
 			case SONSTIGAUFWAND:
 				value = period.getSonstigeraufwand();
 				break;
-				
+
 			case SONSTIGERTRAG:
 				value = period.getSonstigerertrag();
 				break;
-				
+
 			case WERTPAPIERERTRAG:
 				value = period.getWertpapiererträge();
 				break;
-				
+
 			case ZINSAUFWAND:
 				value = period.getZinsenundaufwendungen();
 				break;
-				
+
 			case ZINSERTRAG:
 				value = period.getZinsertraege();
 				break;
-				
+
 			case BETEILIGUNGENERTRAG:
 				value = period.getBeteiligungenErtraege();
 				break;
-				
+
 			case ABSCHREIBUNGENFINANZANLAGEN:
 				value = period.getAbschreibungenFinanzanlagen();
 				break;
-				
+
 			case STEUERAUFWAND:
 				value = period.getSteueraufwand();
 				break;
-				
+
 			case AUSSERORDERTRAG:
 				value = period.getAußerordentlicheerträge();
 				break;
-				
+
 			case AUSSERORDAUFWAND:
 				value = period.getAußerordentlicheaufwände();
 				break;
-				
+
 			case BRUTTOINVESTITIONEN:
 				value = period.getBruttoinvestitionen();
 				break;
@@ -513,25 +521,25 @@ private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenPres
 			project.setDeterministicPeriods(periodContainer);
 		}
 	}
-	
+
 	/**
 	 * Wirft das entsprechende ValidationEvent.
 	 * 
 	 * @author Tobias Lindner
 	 */
-	public void setValid () {
+	 public void setValid () {
 		eventBus.fireEvent(new ValidationEvent(true));
 		logger.debug("ValidationEvent(true) geworfen"); 
 	}
-	
+
 	/**
 	 * Wirft das entsprechende ValidationEvent.
 	 * 
 	 * @author Tobias Lindner
 	 */
-	public void setInvalid () {
-		eventBus.fireEvent(new ValidationEvent(false));
-		logger.debug("ValidationEvent(true) geworfen");
-	}
+	 public void setInvalid () {
+		 eventBus.fireEvent(new ValidationEvent(false));
+		 logger.debug("ValidationEvent(true) geworfen");
+	 }
 
 }

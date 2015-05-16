@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.Umsatz
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Marcel Rosenberger
+ * @author Marco Glaser
  * 
  */
 
@@ -82,44 +82,20 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
 	 * einen EventHandler.
 	 * 
-	 * @author Marcel Rosenberger
+	 * @author Marco Glaser
 	 */
 
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-//		shownProperties = new String[] { "capitalStock", "umsatzerlöse",
-//				"bestandserhöhung", "bestandsverminderung", "materialaufwand",
-//				"löhne", "einstellungskosten", "pensionsrückstellungen",
-//				"sonstigepersonalkosten", "abschreibungen", "sonstigerertrag",
-//				"sonstigeraufwand", "wertpapiererträge",
-//				"zinsenundaufwendungen", "außerordentlicheerträge",
-//				"außerordentlicheaufwände" };
-//		germanNamesProperties = new String[] { "Fremdkapital",
-//				"Umsatzerl\u00f6se", "Bestandserh\u00f6hung",
-//				"Bestandsverminderung", "Materialaufwand",
-//				"L\u00f6hne und Geh\u00e4lter",
-//				"Einstellungs-/Entlassungskosten",
-//				"Pensionsr\u00fcckstellungen", "Sonstige Personalkosten",
-//				"Abschreibungen", "Sonstiger Ertrag", "Sonstiger Aufwand",
-//				"Ertr\u00e4ge aus Wertpapieren",
-//				"Zinsen und \u00e4hnliche Aufwendungen",
-//				"Außerordentliche Ertr\u00e4ge",
-//				"Außerordentliche Aufwendungen" };
 	}
 	
 
 	/**
 	 * Faengt das ShowEvent ab und sorgt dafuecr das die View die benoetigten
 	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
-	 * <p>
-	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
-	 * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
-	 * Eingabefelder zur verfuegung gestellt.
-	 * <p>
-	 * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
-	 * der anzuzeigenden Felder.
 	 * 
+	 * @author Marco Glaser
 	 * @param event
 	 */
 	@EventHandler
@@ -129,6 +105,9 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		getView().generateTable();
 	}
 	
+	/**
+     * @author Marco Glaser
+     */
 	public void setFremdkapital(double value, int year){
 		setValue(value, year, Type.FREMDKAPITAL);
 	}
@@ -281,6 +260,9 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		return getValue(year, Type.FREMDKAPITAL);
 	}
 	
+	/**
+     * @author Marco Glaser
+     */
 	public String getValue(int year, Type typ) {
 		double value = 0.0;
 		if(project == null){
@@ -387,6 +369,9 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		return String.valueOf(value);
 	}
 
+	/**
+     * @author Marco Glaser
+     */
 	private void setValue(double value, int year, Type typ) {
 		if(project == null){
 			project = projectProxy.getSelectedProject();

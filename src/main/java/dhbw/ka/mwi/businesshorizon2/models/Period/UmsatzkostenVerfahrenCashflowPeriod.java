@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ package dhbw.ka.mwi.businesshorizon2.models.Period;
 /**
 * Diese Klasse bildet eine Periode der direkten Cashflow Ermittlung ab.
 *
-* @author Marcel Rosenberger
+* @author Marcel Rosenberger, Marco Glaser
 *
 */
 

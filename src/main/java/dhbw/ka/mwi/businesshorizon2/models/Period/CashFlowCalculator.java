@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahren
 
 /**
  * 
- * @author Marcel Rosenberger
+ * @author Marcel Rosenberger, Marco Glaser
  * 
  */
 public class CashFlowCalculator {
@@ -106,7 +106,7 @@ public class CashFlowCalculator {
 	/**
 	 * Free-Cash-Flow Ermittlung Gesamtkostenverfahren
 	 * 
-	 * @author Marcel Rosenberger
+	 * @author Marco Glaser
 	 * 
 	 */
 
@@ -173,7 +173,7 @@ public class CashFlowCalculator {
 	/**
 	 * Free-Cash-Flow Ermittlung Umsatzkostenverfahren
 	 * 
-	 * @author Marcel Rosenberger
+	 * @author Marco Glaser
 	 * 
 	 */
 

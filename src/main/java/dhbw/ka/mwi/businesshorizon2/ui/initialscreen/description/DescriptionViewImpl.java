@@ -44,7 +44,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddle
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 
 /**
- * Dies ist die Vaadin-Implementierung der ParameterDescrition Bereicht. Sie stellt den rechten Bereich mit der Beschreibung dar.
+ * Dies ist die Vaadin-Implementierung des ParameterDescription Bereich. Sie stellt den rechten Bereich mit der Beschreibung dar.
  * 
  * @author Tobias Lindner
  * 

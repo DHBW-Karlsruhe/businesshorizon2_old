@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
 * Vaadin.
 *
-* @author Marcel Rosenberger
+* @author Marco Glaser
 *
 */
 public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements GesamtkostenVerfahrenViewInterface {
@@ -86,7 +86,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
          * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
          * einen EventHandler.
          *
-         * @author Marcel Rosenberger
+         * @author Marco Glaser
          */
 
         @PostConstruct
@@ -99,6 +99,10 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
         }
 
 
+        /**
+         * @author Marco Glaser
+         */
+        
 		private void generateUi() {
 			logger.debug("GenerateUi aufgerufen");
 			headerLabel = new Label("Eingabe der Werte zur Cash-Flow-Berechnung (in EUR)");
@@ -136,12 +140,18 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			
 		}
 		
+		/**
+         * @author Marco Glaser
+         */
 		public void setColumnWidth(){
 			int columnWidth = inputTable.getColumnWidth("first");
 			logger.debug("Breite der Spalte: "+columnWidth);
 			capitalStockInput.setColumnWidth("first", columnWidth);
 		}
 		
+		/**
+         * @author Marco Glaser
+         */
 		public void generateTable(){
 
 			logger.debug("generateTable aufgerufen");
@@ -758,6 +768,9 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 			return currYear;
 		}
 		
+		/**
+         * @author Marco Glaser
+         */
 		private void createDeterministicTable(int periodsToForecast, int baseYear){
 			int currYear = baseYear;
 
@@ -772,6 +785,9 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 
 		}
 
+		/**
+         * @author Marco Glaser
+         */
 		private void createStochasticTable(int pastPeriods, int baseYear, int pastYear){
 			int currYear = pastYear;
 			for(int i = 0; i < pastPeriods; i++){
@@ -789,6 +805,9 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 		}
 
 
+		/**
+         * @author Marco Glaser
+         */
 		@Override
 		public void setProject(Project project) {
 			this.project = project;

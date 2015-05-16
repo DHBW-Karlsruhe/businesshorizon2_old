@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
 * Vaadin.
 *
-* @author Marcel Rosenberger
+* @author Marco Glaser
 *
 */
 public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements UmsatzkostenVerfahrenViewInterface{
@@ -85,7 +85,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
          * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
          * einen EventHandler.
          *
-         * @author Marcel Rosenberger
+         * @author Marco Glaser
          */
 
         @PostConstruct
@@ -96,6 +96,9 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
             generateUi();
         }
 
+        /**
+         * @author Marco Glaser
+         */
 		private void generateUi() {
 			logger.debug("GenerateUi aufgerufen");
 			headerLabel = new Label("Eingabe der Werte zur Cash-Flow-Berechnung (in EUR)");
@@ -133,12 +136,18 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			
 		}
 
+		/**
+         * @author Marco Glaser
+         */
 		@Override
 		public void setProject(Project project) {
 			this.project = project;
 			
 		}
 
+		/**
+         * @author Marco Glaser
+         */
 		@Override
 		public void generateTable() {
 			logger.debug("generateTable aufgerufen");
@@ -242,6 +251,9 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			
 		}
 		
+		/**
+         * @author Marco Glaser
+         */
 		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15, Item row16) {
 			for(int i = 0; i < pastPeriods; i++){
 				final int year = currYear;
@@ -693,6 +705,9 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			return currYear;
 		}
 		
+		/**
+         * @author Marco Glaser
+         */
 		private void createDeterministicTable(int periodsToForecast, int baseYear){
 			int currYear = baseYear;
 
@@ -707,6 +722,9 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 
 		}
 
+		/**
+         * @author Marco Glaser
+         */
 		private void createStochasticTable(int pastPeriods, int baseYear, int pastYear){
 			int currYear = pastYear;
 			for(int i = 0; i < pastPeriods; i++){

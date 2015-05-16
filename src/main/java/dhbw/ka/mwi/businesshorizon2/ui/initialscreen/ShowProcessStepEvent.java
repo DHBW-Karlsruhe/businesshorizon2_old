@@ -2,6 +2,9 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import com.mvplite.event.Event;
 
+/**
+ * @author Marco Glaser
+ */
 public class ShowProcessStepEvent extends Event {
 
 	private static final long serialVersionUID = 1L;
