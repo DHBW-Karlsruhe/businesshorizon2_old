@@ -167,9 +167,10 @@ public class AnalysisTimeseries {
 		
 		//Überprüfen der Matrix auf Singularität
 		//Wenn ja, Rückgabe der Matrix unverändert
-		//TODO Überprüfen wie die Matrix angepasst werden muss
+		//TODO Überprüfen wie die Berechnung angepasst werden muss
 		//author Felix Schlosser
 		if (!lUDecomp.isNonsingular()){
+			logger.debug("Matrix ist singular, wird unverändert zurückgeben");
 			return matrixERG;
 		}
 		
