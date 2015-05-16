@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,15 +28,21 @@ package dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren;
 import com.mvplite.view.View;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.InputViewInterface;
 
+/**
+ * 
+ * @author Marco Glaser, Tobias Lindner
+ *
+ */
 public interface UmsatzkostenVerfahrenViewInterface extends View {
 
 	void setProject(Project project);
 
 	void generateTable();
 
-        
+	public boolean isComponentError ();
+	
+	public boolean oneTextFieldIsSet ();
 
 }
 

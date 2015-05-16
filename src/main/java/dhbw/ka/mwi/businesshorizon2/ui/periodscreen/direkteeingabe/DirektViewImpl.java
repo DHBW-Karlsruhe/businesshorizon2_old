@@ -175,7 +175,12 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @author Marco Glaser, Tobias Lindner
+	 * 
+	 */
 	private int createTextFields(int pastPeriods, int currYear, Item row1, Item row2) {
 		for(int i = 0; i < pastPeriods; i++){
 			final int year = currYear;

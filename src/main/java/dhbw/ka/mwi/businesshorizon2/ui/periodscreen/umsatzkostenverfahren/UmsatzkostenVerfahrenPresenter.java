@@ -522,24 +522,33 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 		}
 	}
 
-	/**
-	 * Wirft das entsprechende ValidationEvent.
-	 * 
-	 * @author Tobias Lindner
-	 */
-	 public void setValid () {
-		eventBus.fireEvent(new ValidationEvent(true));
-		logger.debug("ValidationEvent(true) geworfen"); 
-	}
+		/**
+		 * Die Methode überrüft, ob die Eingaben in allen Textfeldern korrekt sind.
+		 * @author Tobias Lindner
+		 * 
+		 * @return boolean
+		 * 			Sind die Eingaben valide?
+		 */
+		public boolean validateUKVInput () {
+			if (getView().isComponentError()) {
+				eventBus.fireEvent(new ValidationEvent(false));
+				logger.debug("ValidationEvent(false) geworfen"); 
+				return false;
+			}
+			else {
+				if (getView().oneTextFieldIsSet()) {
+					eventBus.fireEvent(new ValidationEvent(true));
+					logger.debug("ValidationEvent(true) geworfen"); 
+					return true;
+				}
+				else {
+					eventBus.fireEvent(new ValidationEvent(false));
+					logger.debug("ValidationEvent(false) geworfen"); 
+					return false;
+				}
+			}
 
-	/**
-	 * Wirft das entsprechende ValidationEvent.
-	 * 
-	 * @author Tobias Lindner
-	 */
-	 public void setInvalid () {
-		 eventBus.fireEvent(new ValidationEvent(false));
-		 logger.debug("ValidationEvent(true) geworfen");
-	 }
+		}
+
 
 }

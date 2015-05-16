@@ -903,6 +903,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 				row17.getItemProperty(currYear).setValue(field17);
 				row18.getItemProperty(currYear).setValue(field18);
 				
+				allTextFields.add(field0);
 				allTextFields.add(field1);
 				allTextFields.add(field2);
 				allTextFields.add(field3);
