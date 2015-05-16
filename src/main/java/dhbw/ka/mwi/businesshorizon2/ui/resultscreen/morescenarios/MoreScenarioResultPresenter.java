@@ -134,6 +134,9 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 				e.printStackTrace();
 			}
 		}
+		else {
+			getView().removeScenario3FromLayout();
+		}
 	}
 	
 	public void calculateScenario (int numScenario, Project project) throws ConsideredPeriodsOfPastException, VarianceNegativeException, StochasticMethodException, InterruptedException {

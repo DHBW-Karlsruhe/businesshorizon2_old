@@ -243,8 +243,17 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 		row1.getItemProperty("scenario3").setValue(planningGridScenario3);
 		row2.getItemProperty("scenario3").setValue(companyValueLayoutScenario3);
-		row3.getItemProperty("scenario3").setValue(capitalStructureChartScenario3);
-		
+		row3.getItemProperty("scenario3").setValue(capitalStructureChartScenario3);	
+	}
+	
+	/**
+	 * Diese Methode entfernt die 3. Spalte der Tabelle
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 */
+	public void removeScenario3FromLayout() {
+		planningTable.removeContainerProperty("scenario3");
 	}
 	
 	

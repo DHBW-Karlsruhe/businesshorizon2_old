@@ -77,6 +77,8 @@ public interface MoreScenarioResultViewInterface extends View {
 	
 	public void addScenario3ToLayout ();
 	
+	public void removeScenario3FromLayout();
+	
 	public void addChartScenario(int numScenario, ColumnChart chart);
 
 
