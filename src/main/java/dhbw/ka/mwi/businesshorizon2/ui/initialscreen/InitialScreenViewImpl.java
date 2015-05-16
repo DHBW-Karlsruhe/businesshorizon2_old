@@ -54,6 +54,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
@@ -500,11 +501,15 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				presenter.showProjectEditScreen();
-				String[] desc = new String[2];
-				desc[0] = "Ändern Sie hier Name oder";
-				desc[1] = "Beschreibung des Projekts";
-				setPageDescription("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png", "Projekt bearbeiten", desc);
+				if (presenter.showProjectEditScreen()) {
+					String[] desc = new String[2];
+					desc[0] = "Ändern Sie hier Name oder";
+					desc[1] = "Beschreibung des Projekts";
+					setPageDescription("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png", "Projekt bearbeiten", desc);
+				}
+				else {
+					//Ausgabe einer Warnmeldung erfolgt in der Presenter-Methode
+				}
 			}
 
 		};
@@ -520,22 +525,28 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 				final Project project = projectProxy.getSelectedProject();
 
 				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen.");
+				
+				if (project==null) {
+					getWindow().showNotification((String) "", "Kein Projekt zum Löschen vorhanden.",	Notification.TYPE_WARNING_MESSAGE);
+				}
+				
+				else {
+					ConfirmDialog.show(getWindow(), project.getName()
+							+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
+							"Ja", "Nein", new ConfirmDialog.Listener() {
 
-				ConfirmDialog.show(getWindow(), project.getName()
-						+ " löschen?", "Wollen sie das Projekt wirklich löschen?",
-						"Ja", "Nein", new ConfirmDialog.Listener() {
+						private static final long serialVersionUID = 1L;
 
-					private static final long serialVersionUID = 1L;
+						@Override
+						public void onClose(ConfirmDialog dialog) {
+							if (dialog.isConfirmed()) {
+								presenter.removeProject(project);
+							} else {
 
-					@Override
-					public void onClose(ConfirmDialog dialog) {
-						if (dialog.isConfirmed()) {
-							presenter.removeProject(project);
-						} else {
-
+							}
 						}
-					}
-				});
+					});
+				}
 
 			}
 
@@ -881,5 +892,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	public void clearProgressBar(){
 		progressBar.setSource(null);
 		progressBar.setVisible(false);
+	}
+	
+	/**
+	 * Diese Methode zeigt eine Meldung vom Typ Warning auf dem Screen an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void showNotification (String warningText) {
+		getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
 	}
 }

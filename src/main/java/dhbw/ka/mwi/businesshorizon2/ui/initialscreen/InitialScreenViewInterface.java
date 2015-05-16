@@ -87,4 +87,6 @@ public interface InitialScreenViewInterface extends View {
 	
 	public void showExtendedView(View exView);
 	
+	public void showNotification (String warningText);
+	
 }

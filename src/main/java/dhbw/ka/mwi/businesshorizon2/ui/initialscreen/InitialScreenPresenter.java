@@ -215,6 +215,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		persistenceService.removeProject(this.user, project);
 		logger.debug("Projekt aus User entfernt");
 		projectListView.setProjects(user.getProjects());
+		if (user.getProjects().size()==0) {
+			projectProxy.setSelectedProject(null);
+		}
 		//		eventBus.fireEvent(new ProjectRemoveEvent(project));
 		getView().showView(projectListView, projectDetailsView);
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
@@ -240,12 +243,19 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 * in den rechten Bereich und feuert ein Event um die Buttons in der Buttonleiste
 	 * anzupassen.
 	 *
-	 * @author Marco Glaser
+	 * @author Marco Glaser, Tobias Lindner
 	 */
-	public void showProjectEditScreen(){
-		getView().showView(startCalculationButtonView, projectCreationView);
-		projectCreationView.setInitialScreen(this.getView());
-		eventBus.fireEvent(new ShowProjectEditButtonsEvent(userProxy.getSelectedUser()));
+	public boolean showProjectEditScreen(){
+		if (projectProxy.getSelectedProject()==null) {
+			getView().showNotification("Kein Projekt vorhanden. Bitte legen Sie zuerst ein neues an.");
+			return false;
+		}
+		else {
+			getView().showView(startCalculationButtonView, projectCreationView);
+			projectCreationView.setInitialScreen(this.getView());
+			eventBus.fireEvent(new ShowProjectEditButtonsEvent(userProxy.getSelectedUser()));
+			return true;
+		}
 	}
 
 	/**
