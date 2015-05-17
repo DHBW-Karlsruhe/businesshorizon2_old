@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@
 package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -32,20 +33,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
-
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
-
 import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des
@@ -55,7 +50,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
  * 
  */
 
-public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewInterface> {
+public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ScenarioScreenPresenter.class");
@@ -66,8 +61,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	@Autowired
 	private ProjectProxy projectProxy;
 	
-	private boolean showErrors = false;
-
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
 	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
@@ -80,10 +73,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		eventBus.addHandler(this);
 	}
 	
-//	public void getBerechnungMethod () {
-//		project = projectProxy.getSelectedProject();
-//	}
-
 	/**
 	 * Diese Methode ueberprueft, ob die im Screen getaetigten Eingaben valide
 	 * und somit korrekt sind. Er nutzt hierbei die Validierungsmethoden zur
@@ -94,7 +83,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 *         Die Eingabewerte der Maske sind an mindestens einer Stelle nicht
 	 *         korrekt.
 	 */
-	@Override
 	public boolean isValid() {
 		boolean isValid = true;
 
@@ -238,28 +226,6 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			}	
 		}
 	}
-	
-//	/**
-//	 * Dieser Handler reagiert auf die Nachricht, dass der Prozesschritt seinen
-//	 * Inhalt validieren soll. Er bedient sich dabei der Methode isValid und
-//	 * setzt den Status des Screens entsprechend des Ergebnisses auf valide oder
-//	 * invalide.
-//	 * 
-//	 * @author Julius Hacker
-//	 */
-//	@Override
-//	@EventHandler
-//	public void validate(ValidateContentStateEvent event) {
-//		logger.debug(this.isValid());
-//		if (!this.isValid()) {
-//			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.SCENARIO,
-//					this.showErrors));
-//			logger.debug("Scenario not valid, InvalidStateEvent fired");
-//		} else {
-//			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.SCENARIO));
-//			logger.debug("Scenario valid, ValidStateEvent fired");
-//		}
-//	}
 
 	/**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
@@ -346,9 +312,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			getView().setValid(scenarioNumber, "businessTax");
 
 		} catch (Exception exception) {
-			//if (showErrors) {
 				getView().setInvalid(scenarioNumber, "businessTax");
-			//}
 			isValid = false;
 		}
 
@@ -377,9 +341,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
 		} catch (Exception exception) {
-			//if (showErrors) {
 				getView().setInvalid(scenarioNumber, "corporateAndSolitaryTax");
-			//}
 			isValid = false;
 		}
 
@@ -445,21 +407,5 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(
 				scenarioNumber));
 	}
-
-	@Override
-	public void validate(ValidateContentStateEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-//	public boolean isShowErrors() {
-//		return showErrors;
-//	}
 
 }

@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -293,6 +293,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 	}
 	
+	/**
+	 * Diese Methode passt die Überschriften der Szenarios beim Löschen eines Szenarios an.
+	 * 
+	 * @author Julius Hacker, Tobias Lindner
+	 */
 	public void updateLabels() {
 		int number = 1;
 		
@@ -302,16 +307,17 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		}
 	}
 	
+	/**
+	 * Diese Methode entfernt ein Szenario aus dem UI.
+	 * 
+	 * @author Julius Hacker, Tobias Lindner
+	 */
 	public void removeScenario(final int number) {
 		logger.debug("Removing scenario from view");
 		this.vlScenarios.removeComponent(this.scenarios.get(number).get("scenario"));
 		this.scenarios.remove(number);
 		
 		activateAddScenario();
-	}
-	
-	public boolean getIncludedInCalculation(int scenarioNumber) {
-		return (boolean) ((CheckBox) this.scenarios.get(scenarioNumber-1).get("isIncludeInCalculation")).getValue();
 	}
 	
 	public String getValue(int scenarioNumber, String identifier) {
