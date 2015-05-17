@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner 
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,17 +34,9 @@ import org.vaadin.vaadinvisualizations.ColumnChart;
 import com.vaadin.data.Item;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window.Notification;
-
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
@@ -60,14 +52,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 
 	@Autowired
 	private MoreScenarioResultPresenter presenter;
-	
-	private VerticalLayout vl = new VerticalLayout();
-	
-	private ProgressIndicator progressIndicator;
-
-	private GridLayout grid;
-
-	private Label planningLabel;
 	
 	private Label renditeEKLabel1;
 	private Label renditeFKLabel1;
@@ -99,9 +83,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	private Label koerperSt3;
 	private Label companyValue3;
 
-	private Label companyValueLabel;
-
-	private GridLayout planningLayout;
 	private GridLayout planningGridScenario1;
 	private GridLayout planningGridScenario2;
 	private GridLayout planningGridScenario3;
@@ -113,8 +94,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	private GridLayout capitalStructureChartScenario1;
 	private GridLayout capitalStructureChartScenario2;
 	private GridLayout capitalStructureChartScenario3;
-	
-	private Label companyValue;
 	
 	private Table planningTable;
 	
@@ -146,8 +125,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	 */
 	private void generateUi() {
 		setSizeFull();
-		
-		planningLayout = new GridLayout (4, 3);
 		
 		planningTable = new Table();
 		
@@ -182,7 +159,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		companyValueLayoutScenario3 = new GridLayout();
 		
 		capitalStructureChartScenario1 = new GridLayout(1, 1);
-//		capitalStructureChartScenario1.setSizeFull();
 		capitalStructureChartScenario2 = new GridLayout();
 		capitalStructureChartScenario3 = new GridLayout();
 		
@@ -201,7 +177,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 		addComponent(planningTable);
 		
-
 		planningTable.setCellStyleGenerator(new Table.CellStyleGenerator() {
 			private static final long serialVersionUID = 1L;
 
@@ -353,7 +328,12 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		
 	}
 	
-	public void addChartScenario(int numScenario, ColumnChart chart) {
+	/**
+	 * Die Methode für die Charts zur Kapitalstruktur hinzu.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void addCapitalChartScenario(int numScenario, ColumnChart chart) {
 		switch (numScenario) {
 		case 0:
 			chart.setSizeFull();
@@ -418,101 +398,6 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 			break;			
 
 		}
-	}
-	
-	public void createLayout() {
-		logger.debug ("createLayout");
-		
-		grid = new GridLayout(2, 4);
-		planningLabel = new Label("Planungsprämissen:");
-		companyValueLabel = new Label("Unternehmenswert:");
-		planningLayout = new GridLayout();
-		companyValue = new Label("30.000.000€");
-		
-		grid.setSizeFull();
-		grid.setColumnExpandRatio(1, 5);
-		
-		grid.addComponent(planningLabel, 0, 0);
-		grid.addComponent(planningLayout, 1, 0);
-		grid.addComponent(companyValueLabel, 0, 1);
-		grid.addComponent(companyValue, 1, 1);
-		
-		addComponent(grid);
-		
-	}
-
-	@Override
-
-	public void showOutputView() {
-		this.removeAllComponents();
-		generateUi();
-		
-	}
-
-
-	public void addHeadline(Label head) {
-		vl.addComponent(head);
-	}
-	
-	
-	public void addSubline(Label head) {
-		vl.addComponent(head);
-	}
-	
-	public void addSubline(Label head, Label abw) {
-		vl.addComponent(head);
-		vl.addComponent(abw);
-	}
-	
-	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {
-		this.addSubline(new Label("Szenario " + number), chartArea.getModulAbweichung());
-		
-		HorizontalLayout outputArea = new HorizontalLayout();
-		outputArea.addComponent(chartArea);
-		vl.addComponent(outputArea);
-	}
-
-
-	@Override
-	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
-		this.addSubline(new Label("Szenario " + number));
-		
-		HorizontalLayout outputArea = new HorizontalLayout();
-		outputArea.addComponent(chartArea);
-		vl.addComponent(outputArea);
-	}
-	
-	
-	
-
-	
-	@Override
-	public void showErrorMessge(String message) {
-		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
-
-	}
-
-	@Override
-	public void changeProgress(float progress) {
-		if (progress == 1) {
-			progressIndicator.setEnabled(false);
-			removeComponent(progressIndicator);
-		} else {
-			progressIndicator.setEnabled(true);
-			
-		}
-
-	}
-	
-	/**
-	 * @author Annika Weis
-	 * @param Label
-	 * @return	void
-	 * 
-	 * Gibt das angegebene Label aus
-	 */
-	public void addLabel(Label label){
-		addComponent(label);		
 	}
 
 }
