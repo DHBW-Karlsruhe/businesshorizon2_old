@@ -40,7 +40,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImplv2;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
 /**
@@ -56,8 +56,8 @@ public class BHApplication extends Application {
 	
 	private static final Logger logger = Logger.getLogger("BHApplication.class");
 
-	@Autowired
-	private ProcessViewImpl processView;
+//	@Autowired
+//	private ProcessViewImpl processView;
 	
 	@Autowired
 	private InitialScreenViewImpl initialScreenView;
@@ -105,7 +105,7 @@ public class BHApplication extends Application {
 	 */
 	@EventHandler
 	public void showInitialView(ShowUserEvent event) {
-		this.removeWindow(processView);
+//		this.removeWindow(processView);
 		this.removeWindow(initialScreenView);
 //		this.removeWindow(parameterScreenView);
 		initialScreenView.setName("overview");
@@ -128,10 +128,10 @@ public class BHApplication extends Application {
 	@EventHandler
 	public void showProcessView(ShowProjectEvent event) {
 		
-		processView.setName("process");
-		addWindow(processView);
-		setMainWindow(processView);
-		initialScreenView.open(new ExternalResource(processView.getURL()));
+//		processView.setName("process");
+//		addWindow(processView);
+//		setMainWindow(processView);
+//		initialScreenView.open(new ExternalResource(processView.getURL()));
 
 		eventBus.fireEvent(new ShowProcessViewEvent());
 	}
@@ -154,7 +154,7 @@ public class BHApplication extends Application {
 		addWindow(logInScreenView);
 		setMainWindow(logInScreenView);
 		logInScreenView.open(new ExternalResource(logInScreenView.getURL()));
-		this.removeWindow(processView);
+//		this.removeWindow(processView);
 		this.removeWindow(initialScreenView);
 		eventBus.fireEvent(new ShowLogInScreenEvent());
 		logger.debug("ShowLogInScreenEvent gefeuert");
