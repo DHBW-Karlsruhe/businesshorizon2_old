@@ -344,6 +344,7 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 
 	/**
      * @author Marco Glaser
+     * 
      */
 	private void setValue(double value, int year, Type typ) {
 		if(project == null){
