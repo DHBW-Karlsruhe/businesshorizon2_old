@@ -105,7 +105,9 @@ public class AnalysisTimeseries {
 	 * @return Autokovarianzen der Zeitreihe
 	 */
 	public DoubleArrayList berechneAutokovarianz(DoubleArrayList zeitreihe) {
-
+		
+		logger.debug("BerechneAutokovarianz");
+		
 		DoubleArrayList autokovarianz = new DoubleArrayList();
 
 		// DoubleArrayList zu einer List casten, die von der
@@ -115,11 +117,14 @@ public class AnalysisTimeseries {
 		for (int i = 0; i < zeitreihe.size(); i++) {
 			t = zeitreihe.get(i);
 			lokalereihe.add(t);
+			//logger.debug("Lokalreihe: " + zeitreihe.get(i));
+		
 		}
 
 		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
 		for (int j = 0; j < zeitreihe.size(); j++) {
 			autokovarianz.add(AutoCovariance.autoCovariance(lokalereihe, j));
+			//logger.debug("Autokorvarianz: " + AutoCovariance.autoCovariance(lokalereihe, j));
 		}
 		return autokovarianz;
 	}
@@ -137,9 +142,8 @@ public class AnalysisTimeseries {
 	 *         Vergangenheitswerte) zurück.
 	 * @throws StochasticMethodException
 	 */
-	public DoubleMatrix2D berechneModellparameter(
-			DoubleArrayList autokovarianzen, int p)
-			throws StochasticMethodException {
+	public DoubleMatrix2D berechneModellparameter(DoubleArrayList autokovarianzen, int p)	throws StochasticMethodException {
+		logger.debug("BerechneModellparameter");
 
 		// linke Seite des Gleichungssystems
 		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, p);
@@ -161,6 +165,7 @@ public class AnalysisTimeseries {
 		}
 
 		LUDecomposition lUDecomp = new LUDecomposition(matrixValuations);
+		logger.debug("MatrixValuations:" + matrixValuations.toString());
 
 		// Matrix mit Modellparametern (Phi)
 		DoubleMatrix2D matrixPhi = null;
@@ -171,12 +176,14 @@ public class AnalysisTimeseries {
 		//author Felix Schlosser
 		if (!lUDecomp.isNonsingular()){
 			logger.debug("Matrix ist singular, wird unverändert zurückgeben");
+			logger.debug("MatrixErg: " + matrixERG.toString());
 			return matrixERG;
 		}
 		
 		try {
 			matrixPhi = lUDecomp.solve(matrixERG);
 			logger.debug("C-Values of Yule-Walker-Equitation calculated.");
+			logger.debug("MatrixPhi:" + matrixPhi.toString());
 		} catch (IllegalArgumentException exception) {
 
 			logger.debug("Calculation of C-Values failed!");
@@ -200,8 +207,7 @@ public class AnalysisTimeseries {
 	 * @return Gibt die Standardabweichung zurück.
 	 */
 	//
-	public double berechneStandardabweichung(DoubleArrayList autokovarianzen,
-			DoubleMatrix2D matrixPhi) {
+	public double berechneStandardabweichung(DoubleArrayList autokovarianzen, DoubleMatrix2D matrixPhi) {
 		double standardabweichung = 0;
 		double s2 = autokovarianzen.get(0);
 
@@ -210,9 +216,13 @@ public class AnalysisTimeseries {
 			s2 = s2 - (matrixPhi.get(i, 0) * autokovarianzen.get(i + 1));
 		}
 
+		logger.debug("Varianz: " + s2);
+		
 		// Berechnung der Standardabweichung aus der Varianz
 		standardabweichung = Math.sqrt(s2);
 
+		logger.debug("Standardabweichung:" + standardabweichung);
+		
 		return standardabweichung;
 	}
 
@@ -242,11 +252,10 @@ public class AnalysisTimeseries {
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */
 
-	public double[] prognoseBerechnen(
-			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
-			double standardabweichung, int zuberechnendeperioden,
-			int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
+	public double[] prognoseBerechnen(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, double standardabweichung, int zuberechnendeperioden, int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
 
+		logger.debug("PrognoseBerechnen");
+		
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
 		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 		double[] erwarteteWerte = new double[zuberechnendeperioden];
@@ -282,14 +291,22 @@ public class AnalysisTimeseries {
 				}
 
 				zNull = zufall.nextGaussian() * standardabweichung;
+				//logger.debug("zNull: " + zNull);
+				
 				prognosewert = prognosewert + zNull;
+				//logger.debug("Prognosewert: " + prognosewert);
+				
 				vergangeneUndZukuenftigeWerte.add(prognosewert);
 				prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
+				//logger.debug("Prognosewert + Mittelwert: " + prognosewert);
+				
 				erwarteteWerte[j] = prognosewert;
 
 				prognosewert = 0;
 			}
 	
+			logger.debug("Erwartete Werte: " + erwarteteWerte.toString());
+			
 			if(isfremdkapital){
 				this.erwartetesFremdkapital = erwarteteWerte;
 			}else{
@@ -380,9 +397,8 @@ public class AnalysisTimeseries {
 	 * 
 	 * @author Nina Brauch
 	 */
-	public void erwarteteWerteBerechnen(
-			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
-			int zuberechnendeperioden, int p, double mittelwert, boolean isfremdkapital) {
+	public void erwarteteWerteBerechnen(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,	int zuberechnendeperioden, int p, double mittelwert, boolean isfremdkapital) {
+		logger.debug("ErwarteteWerteBerechnen");
 		double[] erwarteteWerte = new double[zuberechnendeperioden];
 		double prognosewert = 0;
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
@@ -403,6 +419,7 @@ public class AnalysisTimeseries {
 			vergangeneUndZukuenftigeWerte.add(prognosewert);
 			prognosewert = prognosewert + mittelwert;
 			erwarteteWerte[j] = prognosewert;
+			logger.debug("ErwarteteWerte"+ j+ ": " + erwarteteWerte[j]);
 
 			prognosewert = 0;
 		}
