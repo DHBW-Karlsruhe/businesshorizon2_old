@@ -32,13 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.view.View;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
-
-import dhbw.ka.mwi.businesshorizon2.models.InputType;
 
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in

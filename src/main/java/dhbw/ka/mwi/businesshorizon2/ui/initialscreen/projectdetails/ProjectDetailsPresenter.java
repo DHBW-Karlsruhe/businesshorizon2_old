@@ -31,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;

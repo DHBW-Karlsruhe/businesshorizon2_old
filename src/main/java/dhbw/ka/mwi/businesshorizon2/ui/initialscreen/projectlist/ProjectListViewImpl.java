@@ -26,7 +26,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
@@ -35,7 +34,6 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.dialogs.ConfirmDialog;
 
 import com.mvplite.event.EventBus;
 import com.vaadin.data.validator.StringLengthValidator;
@@ -52,11 +50,9 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 

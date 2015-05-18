@@ -46,13 +46,10 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.parameter.ShowParameterViewEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.

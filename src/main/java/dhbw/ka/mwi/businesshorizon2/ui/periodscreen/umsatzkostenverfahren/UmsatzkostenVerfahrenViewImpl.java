@@ -47,7 +47,6 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
 * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in

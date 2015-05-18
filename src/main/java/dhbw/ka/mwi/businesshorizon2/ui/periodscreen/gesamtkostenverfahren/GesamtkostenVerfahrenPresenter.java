@@ -37,16 +37,11 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.GesamtkostenVerfahrenCashflowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowGKVEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter.Type;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.

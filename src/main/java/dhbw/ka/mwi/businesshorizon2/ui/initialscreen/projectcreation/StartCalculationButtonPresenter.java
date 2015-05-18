@@ -28,9 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.presenter.Presenter;
 
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
-
 /**
  * Dieser Presenter ist für die Darstellung des Projekterstellungs Screens zuständig.
  * Der Projekterstellungs Screen wird auch für das Bearbeiten eines Projektes verwendet.

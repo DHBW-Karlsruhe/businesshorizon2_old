@@ -26,7 +26,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.login;
 
 import com.mvplite.view.View;
-import com.vaadin.ui.Window;
 
 /**
  * Dieses Interface zeigt die von der View zur Verfuegung stehenden Methoden,

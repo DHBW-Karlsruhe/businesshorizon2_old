@@ -24,7 +24,6 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
-import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -36,35 +35,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
-import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
