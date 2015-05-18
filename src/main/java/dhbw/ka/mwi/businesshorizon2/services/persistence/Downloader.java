@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ import com.vaadin.terminal.FileResource;
 /**
  * Klasse, die ermöglich Downloads auf den Clients zu starten.
  * 
- * @author Tobias Linder
+ * @author Tobias Lindner
  *
  */
 public class Downloader extends FileResource{
