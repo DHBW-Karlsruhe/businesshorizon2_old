@@ -25,7 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.periodscreen;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
+import dhbw.ka.mwi.businesshorizon2.ui.ContentView;
 
 public interface InputViewInterface extends ContentView {
 
