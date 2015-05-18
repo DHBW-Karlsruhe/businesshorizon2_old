@@ -326,6 +326,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 							field1.setComponentError(null);
 							field1.removeStyleName("showErrors");
 							presenter.validateGKVInput();
+							logger.debug("Value Change: " + presenter.getUmsatzerloese(year));
 						}
 						
 						catch (Exception e) {
@@ -338,6 +339,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
+				logger.debug("umsatzerlöse: "+ presenter.getUmsatzerloese(year));
 				field1.setValue(presenter.getUmsatzerloese(year));
 				
 				//Bestandserhöhung

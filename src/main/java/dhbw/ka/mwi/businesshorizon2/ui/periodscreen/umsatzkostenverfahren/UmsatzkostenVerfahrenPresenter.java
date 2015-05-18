@@ -369,71 +369,71 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 			if(period.getYear() == year){
 				switch (typ) {
 				case FREMDKAPITAL:
-					value = period.getCapitalStock();
+					period.setCapitalStock(value);
 					break;
 
 				case UMSATZERLOESE:
-					value = period.getUmsatzerlöse();
+					period.setUmsatzerlöse(value);
 					break;
 
 				case HERSTELLKOSTEN:
-					value = period.getHerstellungskosten();
+					period.setHerstellungskosten(value);
 					break;
 
 				case VERTRIEBSKOSTEN:
-					value = period.getVertriebskosten();
+					period.setVertriebskosten(value);
 					break;
 
 				case VERWALTUNGSKOSTEN:
-					value = period.getVerwaltungskosten();
+					period.setVerwaltungskosten(value);
 					break;
 
 				case ABSCHREIBUNGEN:
-					value = period.getAbschreibungen();
+					period.setAbschreibungen(value);
 					break;
 
 				case SONSTIGAUFWAND:
-					value = period.getSonstigeraufwand();
+					period.setSonstigeraufwand(value);
 					break;
 
 				case SONSTIGERTRAG:
-					value = period.getSonstigerertrag();
+					period.setSonstigerertrag(value);
 					break;
 
 				case WERTPAPIERERTRAG:
-					value = period.getWertpapiererträge();
+					period.setWertpapiererträge(value);
 					break;
 
 				case ZINSAUFWAND:
-					value = period.getZinsenundaufwendungen();
+					period.setZinsenundaufwendungen(value);
 					break;
 
 				case ZINSERTRAG:
-					value = period.getZinsertraege();
+					period.setZinsertraege(value);
 					break;
 
 				case BETEILIGUNGENERTRAG:
-					value = period.getBeteiligungenErtraege();
+					period.setBeteiligungenErtraege(value);
 					break;
 
 				case ABSCHREIBUNGENFINANZANLAGEN:
-					value = period.getAbschreibungenFinanzanlagen();
+					period.setAbschreibungenFinanzanlagen(value);
 					break;
 
 				case STEUERAUFWAND:
-					value = period.getSteueraufwand();
+					period.setSteueraufwand(value);
 					break;
 
 				case AUSSERORDERTRAG:
-					value = period.getAußerordentlicheerträge();
+					period.setAußerordentlicheerträge(value);
 					break;
 
 				case AUSSERORDAUFWAND:
-					value = period.getAußerordentlicheaufwände();
+					period.setAußerordentlicheaufwände(value);
 					break;
 
 				case BRUTTOINVESTITIONEN:
-					value = period.getBruttoinvestitionen();
+					period.setBruttoinvestitionen(value);
 					break;
 				}
 				periodContainer.removePeriod(period);
@@ -445,71 +445,71 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 			period = new UmsatzkostenVerfahrenCashflowPeriod(year);
 			switch (typ) {
 			case FREMDKAPITAL:
-				value = period.getCapitalStock();
+				period.setCapitalStock(value);
 				break;
 
 			case UMSATZERLOESE:
-				value = period.getUmsatzerlöse();
+				period.setUmsatzerlöse(value);
 				break;
 
 			case HERSTELLKOSTEN:
-				value = period.getHerstellungskosten();
+				period.setHerstellungskosten(value);
 				break;
 
 			case VERTRIEBSKOSTEN:
-				value = period.getVertriebskosten();
+				period.setVertriebskosten(value);
 				break;
 
 			case VERWALTUNGSKOSTEN:
-				value = period.getVerwaltungskosten();
+				period.setVerwaltungskosten(value);
 				break;
 
 			case ABSCHREIBUNGEN:
-				value = period.getAbschreibungen();
+				period.setAbschreibungen(value);
 				break;
 
 			case SONSTIGAUFWAND:
-				value = period.getSonstigeraufwand();
+				period.setSonstigeraufwand(value);
 				break;
 
 			case SONSTIGERTRAG:
-				value = period.getSonstigerertrag();
+				period.setSonstigerertrag(value);
 				break;
 
 			case WERTPAPIERERTRAG:
-				value = period.getWertpapiererträge();
+				period.setWertpapiererträge(value);
 				break;
 
 			case ZINSAUFWAND:
-				value = period.getZinsenundaufwendungen();
+				period.setZinsenundaufwendungen(value);
 				break;
 
 			case ZINSERTRAG:
-				value = period.getZinsertraege();
+				period.setZinsertraege(value);
 				break;
 
 			case BETEILIGUNGENERTRAG:
-				value = period.getBeteiligungenErtraege();
+				period.setBeteiligungenErtraege(value);
 				break;
 
 			case ABSCHREIBUNGENFINANZANLAGEN:
-				value = period.getAbschreibungenFinanzanlagen();
+				period.setAbschreibungenFinanzanlagen(value);
 				break;
 
 			case STEUERAUFWAND:
-				value = period.getSteueraufwand();
+				period.setSteueraufwand(value);
 				break;
 
 			case AUSSERORDERTRAG:
-				value = period.getAußerordentlicheerträge();
+				period.setAußerordentlicheerträge(value);
 				break;
 
 			case AUSSERORDAUFWAND:
-				value = period.getAußerordentlicheaufwände();
+				period.setAußerordentlicheaufwände(value);
 				break;
 
 			case BRUTTOINVESTITIONEN:
-				value = period.getBruttoinvestitionen();
+				period.setBruttoinvestitionen(value);
 				break;
 			}
 		}
