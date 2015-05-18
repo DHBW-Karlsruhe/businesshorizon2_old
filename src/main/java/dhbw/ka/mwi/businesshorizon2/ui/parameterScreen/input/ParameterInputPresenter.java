@@ -42,7 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;

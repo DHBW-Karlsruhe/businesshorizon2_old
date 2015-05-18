@@ -36,7 +36,7 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
@@ -185,7 +185,7 @@ public class ContentContainerPresenter extends
 			
 			//Hier wird des neue ParameterScreen angezeigt (für Testzwecke) //Tobias Lindner
 			if (nextScreen.getNumber() == 2) {
-				this.eventBus.fireEvent(new ShowParameterScreenViewEvent());
+//				this.eventBus.fireEvent(new ShowParameterScreenViewEvent());
 				logger.debug("ShowParameterScreenViewEvent gefeuert");
 			}
 			

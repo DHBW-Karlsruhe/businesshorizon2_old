@@ -225,14 +225,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl"
 		scope="session" />
 		
-	<!-- Parameter Screen -->
-	<bean name="parameterScreenPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenPresenter"
-		scope="session" />
-	<bean name="parameterScreenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl"
-		scope="session" />
-	
 	<!-- Buttons Middle -->
 	<bean name="ButtonsMiddlePresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddlePresenter"
