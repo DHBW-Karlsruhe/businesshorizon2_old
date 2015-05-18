@@ -305,7 +305,7 @@ public class AnalysisTimeseries {
 				prognosewert = 0;
 			}
 	
-			logger.debug("Erwartete Werte: " + erwarteteWerte.toString());
+			//logger.debug("Erwartete Werte: " + erwarteteWerte.toString());
 			
 			if(isfremdkapital){
 				this.erwartetesFremdkapital = erwarteteWerte;
