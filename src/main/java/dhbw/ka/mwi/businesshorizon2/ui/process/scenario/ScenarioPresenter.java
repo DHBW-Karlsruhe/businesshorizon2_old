@@ -38,7 +38,6 @@ import com.mvplite.event.EventHandler;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
@@ -46,6 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.IllegalValueException;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des

@@ -25,15 +25,13 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
-import com.mvplite.event.Event;
+import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
 
-/**
- * Der Event, der zum Anzeigen des Szenario-Prozessschrittes z.B. im ContentContainer
- * abgesetzt wird.
- * 
- * @author Julius Hacker
- */
-public class ShowScenarioViewEvent extends Event {
+public class IllegalValueException extends BusinessHorizonException {
 	private static final long serialVersionUID = 1L;
+
+	public IllegalValueException(String s) {
+		super(s);
+	}
 
 }

@@ -40,7 +40,6 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des
@@ -169,8 +168,7 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 				scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
 		
-		//Szenarioseite aktualisieren
-		eventBus.fireEvent(new ShowScenarioViewEvent());
+		//Szenarioseite aktualisieren??
 		
 		//Event, dass den "Weiter"-Button ausgraut, sodass der Nutzer zuerst valide Eingaben für das neue Szenario machen muss
 		eventBus.fireEvent(new ValidationEvent(false));
