@@ -43,8 +43,6 @@ public class CashFlowCalculator {
 	private static final Logger logger = Logger
 			.getLogger("CashFlowCalculator.class");
 
-	private static Period periodBefore;
-
 	/**
 	 * Mit Hilfe dieser Methode wird der 'Free Cashflow' aus den direkten und
 	 * indirekten Berechnungsmethoden ermitteln. Der 'Free Cashflow' wird
@@ -114,6 +112,7 @@ public class CashFlowCalculator {
 			GesamtkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
 		logger.debug("Cash-Flow-Ermittlung nach Gesamtkostenverfahren");
+		Period periodBefore = null;
 		for (GesamtkostenVerfahrenCashflowPeriod period : container
 				.getPeriods()) {
 			logger.debug("=================================================");
@@ -195,6 +194,8 @@ public class CashFlowCalculator {
 			UmsatzkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
 		logger.debug("Cash-Flow-Ermittlung nach Umsatzkostenverfahren");
+		
+		Period periodBefore = null;
 		for (UmsatzkostenVerfahrenCashflowPeriod period : container
 				.getPeriods()) {
 			logger.debug("=================================================");
