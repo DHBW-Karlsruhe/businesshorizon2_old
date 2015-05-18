@@ -129,7 +129,10 @@ public class CashFlowCalculator {
 					- period.getAbschreibungen() 
 					+ period.getSonstigerertrag()
 					- period.getSonstigeraufwand();
-			logger.debug("Betriebsergebnis: " + freeCashFlow);
+			logger.debug("Umsatzerlöse: " + period.getUmsatzerlöse());
+			logger.debug("- Materialaufwand: " + period.getMaterialaufwand());
+			logger.debug("- Abschreibungen: " + period.getAbschreibungen());
+			logger.debug("= Betriebsergebnis: " + freeCashFlow);
 
 			// Ergebnis der gewöhnlichen Geschäftstätigkeit
 			freeCashFlow = freeCashFlow 
@@ -138,7 +141,8 @@ public class CashFlowCalculator {
 					+ period.getZinsertraege()
 					- period.getAbschreibungenFinanzanlagen()
 					- period.getZinsenundaufwendungen();
-			logger.debug("Ergebnis der gewöhnlichen Geschäftstätigkeit: "
+			logger.debug("- Zinsen und ähn. : " + period.getZinsenundaufwendungen());
+			logger.debug("= Ergebnis der gewöhnlichen Geschäftstätigkeit: "
 					+ freeCashFlow);
 
 			// Außerordentliches Ergebnis
@@ -146,20 +150,30 @@ public class CashFlowCalculator {
 					+ period.getAußerordentlicheerträge()
 					- period.getAußerordentlicheaufwände()
 					- period.getSteueraufwand();
-			logger.debug("Jahresüberschuss: " + freeCashFlow);
+			logger.debug("- Steueraufwand: " + period.getSteueraufwand());
+			logger.debug("= Jahresüberschuss: " + freeCashFlow);
 
 			
 			double taxshield = 0;
 			if(periodBefore != null){
 				double fkVorjahr = periodBefore.getCapitalStock();
-				taxshield = (0.75*scenario.getBusinessTax()+scenario.getCorporateAndSolitaryTax())*scenario.getRateReturnCapitalStock()*period.getCapitalStock();
+				double businessTax = scenario.getBusinessTax() / 100;
+				double corporateTax = scenario.getCorporateAndSolitaryTax() / 100;
+				double rFK = scenario.getRateReturnCapitalStock() / 100;
+				logger.debug("--- TaxShield: (0.75 * "+businessTax+" + "+corporateTax+") * "+rFK+ " * "+ fkVorjahr);
+				taxshield = (0.75 * businessTax + corporateTax) * rFK * fkVorjahr;
 			}
+			
 			freeCashFlow = freeCashFlow 
 					- taxshield
 					- period.getBruttoinvestitionen()
 					+ period.getZinsenundaufwendungen()
 					+ period.getAbschreibungen();
-			logger.debug("Free Cash Flow: " + freeCashFlow);
+			logger.debug("+ Zinsen: " + period.getZinsenundaufwendungen());
+			logger.debug("- TaxShield: " + taxshield);
+			logger.debug("+ Abschreibungen: " + period.getAbschreibungen());
+			logger.debug("- Brutto-Investitionen: " + period.getBruttoinvestitionen());
+			logger.debug("= Free Cash Flow: " + freeCashFlow);
 
 
 			period.setFreeCashFlow(freeCashFlow);
@@ -216,7 +230,11 @@ public class CashFlowCalculator {
 			double taxshield = 0;
 			if(periodBefore != null){
 				double fkVorjahr = periodBefore.getCapitalStock();
-				taxshield = (0.75*scenario.getBusinessTax()+scenario.getCorporateAndSolitaryTax())*scenario.getRateReturnCapitalStock()*period.getCapitalStock();
+				double businessTax = scenario.getBusinessTax() / 100;
+				double corporateTax = scenario.getCorporateAndSolitaryTax() / 100;
+				double rFK = scenario.getRateReturnCapitalStock() / 100;
+				logger.debug("--- TaxShield: (0.75 * "+businessTax+" + "+corporateTax+") * "+rFK+ " * "+ fkVorjahr);
+				taxshield = (0.75 * businessTax + corporateTax) * rFK * fkVorjahr;
 			}
 			freeCashFlow = freeCashFlow 
 					- taxshield
