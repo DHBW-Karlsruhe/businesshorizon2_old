@@ -35,10 +35,8 @@ import org.vaadin.dialogs.ConfirmDialog;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.mvplite.view.View;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
@@ -54,7 +52,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddle
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectCreationButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectEditButtonsEvent;
@@ -62,12 +59,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalcul
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ShowProjectDetailsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectRemoveEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewInterface;
@@ -80,7 +74,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterfac
  * setzen. Somit ist es notwenig, dass er fuer jedes Anzuzeigende (Teil-)Fenster
  * einen entsprechenden EventHandler fuer den jeweiligen Show*Event registriert.
  *
- * @author Christian Scherer, Marcel Rosenberger, Marco Glaser
+ * @author Christian Scherer, Marcel Rosenberger, Marco Glaser, Tobias Lindner
  *
  */
 
@@ -173,15 +167,12 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 		logger.debug("ShowInitialScreenViewEvent empfangen");
 		user = userProxy.getSelectedUser();
-		//getView().showUserData(user.getFullName());
 		getView().showView(projectListView, projectDetailsView);
 		getView().clearProgressBar();
 		projectDetailsView.clearProjectDetails();
 		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));
 		logger.debug("ShowProjectListEvent gefeuert");
-		//eventBus.fireEvent(new ShowInfosEvent());
-		logger.debug("ShowInfosEvent gefeuert");
 
 	}
 
@@ -196,11 +187,8 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			logger.debug("LogoutEvent gefeuert");
 			eventBus.fireEvent(new LogoutEvent());
 		} catch (UserNotLoggedInException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 
 	}
 
@@ -218,7 +206,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		if (user.getProjects().size()==0) {
 			projectProxy.setSelectedProject(null);
 		}
-		//		eventBus.fireEvent(new ProjectRemoveEvent(project));
+
 		getView().showView(projectListView, projectDetailsView);
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
 		logger.debug("ProjekteRemove Event gefeuert");
