@@ -125,7 +125,7 @@ public class MoreScenarioResultPresenter extends Presenter<MoreScenarioResultVie
 	/**
 	 * Diese Methode für die Berechnung für ein Szenario durch.
 	 * 
-	 * @author Marco Glaser, Tobias Lindner
+	 * @author Marco Glaser, Tobias Lindner, Felix Schlosser
 	 * 	 
 	*/
 	public void calculateScenario (int numScenario, Project project) throws ConsideredPeriodsOfPastException, VarianceNegativeException, StochasticMethodException, InterruptedException {
