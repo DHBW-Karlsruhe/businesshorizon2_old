@@ -38,7 +38,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
@@ -237,14 +237,14 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	}
 
 
-	@Override
-	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
+//	@Override
+//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
 		//		this.addSubline(new Label("Szenario " + number));
 		//		
 		//		HorizontalLayout outputArea = new HorizontalLayout();
 		//		outputArea.addComponent(chartArea);
 		//		vl.addComponent(outputArea);
-	}
+//	}
 
 	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
 		this.renditeEK.setValue(renditeEK);

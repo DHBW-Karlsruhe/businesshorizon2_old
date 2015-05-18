@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
+import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
@@ -44,12 +45,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 //import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.InvalidStateEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.ValidStateEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Parameter.
@@ -58,7 +59,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
  * 
  */
 
-public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewInterface> {
+public class ParameterInputPresenter extends Presenter<ParameterInputViewInterface> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger("ParameterInputPresenter.class");
@@ -352,7 +353,7 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 * @return Ob alle Validierungspruefungen der Eingabefelder positiv gelaufen
 	 *         verlaufen ist
 	 */
-	@Override
+//	@Override
 	public boolean isValid() {
 		
 		
@@ -1046,42 +1047,42 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 * 
 	 * @author Christian Scherer
 	 */
-	@Override
-	@EventHandler
-	public void validate(ValidateContentStateEvent event) {
-
-		stochMethod = false;
-		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
-			stochMethod = this.projectProxy.getSelectedProject()
-					.getProjectInputType().isStochastic();
-		} 
-
-		randomWalk = false;
-		wienerProcess = false;
-		timeSeries = false;
-		methods = this.projectProxy.getSelectedProject().getMethods();
-		methodIterator = methods.iterator();
-		while (methodIterator.hasNext()) {
-			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
-					.next();
-			if (m.getName().equals("Random Walk") && m.getSelected()) {
-				randomWalk = true;
-			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
-				wienerProcess = true;
-			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
-				timeSeries = true;
-			}
-		}
-		
-		if (!firstCall && !isValid()) {
-			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,
-					showError));
-			logger.debug("Parameter not valid, InvalidStateEvent fired");
-		} else {
-			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));
-			logger.debug("Parameter valid, ValidStateEvent fired");
-		}
-	}
+//	@Override
+//	@EventHandler
+//	public void validate(ValidateContentStateEvent event) {
+//
+//		stochMethod = false;
+//		if (this.projectProxy.getSelectedProject().getProjectInputType() != null) {
+//			stochMethod = this.projectProxy.getSelectedProject()
+//					.getProjectInputType().isStochastic();
+//		} 
+//
+//		randomWalk = false;
+//		wienerProcess = false;
+//		timeSeries = false;
+//		methods = this.projectProxy.getSelectedProject().getMethods();
+//		methodIterator = methods.iterator();
+//		while (methodIterator.hasNext()) {
+//			AbstractStochasticMethod m = (AbstractStochasticMethod) methodIterator
+//					.next();
+//			if (m.getName().equals("Random Walk") && m.getSelected()) {
+//				randomWalk = true;
+//			} else if (m.getName().equals("Wiener Prozess") && m.getSelected()){
+//				wienerProcess = true;
+//			} else if (m.getName().equals("Zeitreihenanalyse") && m.getSelected()){
+//				timeSeries = true;
+//			}
+//		}
+//		
+//		if (!firstCall && !isValid()) {
+//			eventBus.fireEvent(new InvalidStateEvent(NavigationSteps.PARAMETER,
+//					showError));
+//			logger.debug("Parameter not valid, InvalidStateEvent fired");
+//		} else {
+//			eventBus.fireEvent(new ValidStateEvent(NavigationSteps.PARAMETER));
+//			logger.debug("Parameter valid, ValidStateEvent fired");
+//		}
+//	}
 
 	/**
 	 * 
@@ -1091,13 +1092,13 @@ public class ParameterInputPresenter extends ScreenPresenter<ParameterInputViewI
 	 * 
 	 * @author Christian Scherer
 	 */
-	@Override
-	@EventHandler
-	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
-		if (event.getStep() == NavigationSteps.PARAMETER) {
-			showError = true;
-		}
-	}
+//	@Override
+//	@EventHandler
+//	public void handleShowErrors(ShowErrorsOnScreenEvent event) {
+//		if (event.getStep() == NavigationSteps.PARAMETER) {
+//			showError = true;
+//		}
+//	}
 
 	/**
 	 * Methode die sich nach der Auswahl der Schritte pro Periode

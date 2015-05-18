@@ -40,7 +40,7 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 /**
@@ -172,14 +172,14 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 	}
 
 
-	@Override
-	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
-		this.addSubline(new Label("Szenario " + number));
-		
-		HorizontalLayout outputArea = new HorizontalLayout();
-		outputArea.addComponent(chartArea);
-		vl.addComponent(outputArea);
-	}
+//	@Override
+//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
+//		this.addSubline(new Label("Szenario " + number));
+//		
+//		HorizontalLayout outputArea = new HorizontalLayout();
+//		outputArea.addComponent(chartArea);
+//		vl.addComponent(outputArea);
+//	}
 	
 	
 	
