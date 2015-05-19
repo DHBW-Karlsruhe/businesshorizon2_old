@@ -115,6 +115,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		logger.debug("init beendet");
 		generateUi();
 	}
 

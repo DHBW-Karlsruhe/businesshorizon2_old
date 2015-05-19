@@ -77,7 +77,7 @@ public class DescriptionPresenter extends Presenter<DescriptionViewInterface> {
 	@EventHandler
 	public void setActualScreen (ShowProcessStepEvent event) {
 		this.actualScreen = event.getScreen();
-		logger.debug("actualScreen im DescriptionPresenter gesetzt");
+		logger.debug("actualScreen " + this.actualScreen + "im DescriptionPresenter gesetzt");
 	}
 	
 	/**

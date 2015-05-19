@@ -57,7 +57,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("InitialScreenPresenter.class");
+	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -255,17 +255,11 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 			
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Projektname bereits vorhanden.");
 
 		}
 		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
 
-		
-
-		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
-
 		//		eventBus.fireEvent(new ProjectAddEvent(project));
-		logger.debug("ShowAddEvent gefeuert");
 
 	}
 
@@ -288,7 +282,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		try {
 			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
 			if (project.getName().equals(name)) {
-				logger.debug("nur Projekt-Beschreibung geändert");
+				
 			}
 			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
 			else {
@@ -318,12 +312,10 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 				eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
 				eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));	
 			}
-			
-			logger.debug ("ShowInitialScreenViewEvent geworfen.");
+		
 			return true;
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Projektname bereits vorhanden.");
 			return false;
 		}
 

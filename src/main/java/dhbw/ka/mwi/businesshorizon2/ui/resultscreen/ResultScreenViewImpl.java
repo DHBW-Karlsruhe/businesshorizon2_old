@@ -82,6 +82,7 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		logger.debug("init beendet");
 	}
 
 	/**
@@ -91,6 +92,8 @@ public class ResultScreenViewImpl extends VerticalLayout implements ResultScreen
 	 */
 	private void generateUi() {
 
+		logger.debug("ui generiert");
+		
 		progressIndicator = new ProgressIndicator();
 		progressIndicator.setIndeterminate(true);
 		progressIndicator.setEnabled(true);

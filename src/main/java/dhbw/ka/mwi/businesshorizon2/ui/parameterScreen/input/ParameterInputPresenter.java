@@ -136,6 +136,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	@PostConstruct
 	public void init() {
 
+		logger.debug("Initialisierung beendet");
 		eventBus.addHandler(this);
 		
 		initializeErrorStrings();
@@ -499,8 +500,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				getView().setComponentError(false, "iterations", "");
 				this.projectProxy.getSelectedProject().setIterations(iterations);
 				eventBus.fireEvent(new ValidationEvent(true));
-				logger.debug("Iterationen in Objekten gesetzt: "
-						+ this.projectProxy.getSelectedProject().getName());
+
 
 			} else {
 				throw new NumberFormatException();
@@ -514,7 +514,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 			getView()
 					.showErrorMessage(errorMessageIterations);
 			eventBus.fireEvent(new ValidationEvent(false));
-			logger.debug("Keine gueltige Eingabe in Feld 'Wiederholungen'");
+
 		}
 
 		//eventBus.fireEvent(new ValidateContentStateEvent());
@@ -533,7 +533,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 *            Anzahl der Perioden die in die Vorhergesagt werden sollen
 	 */
 	public void numberPeriodsToForecastChosen(String periodsToForecast) {
-		logger.debug("Anwender-Eingabe zu Perioden die vorherzusagen sind");
+
 
 		int periodsToForecastInt;
 		try {
@@ -544,7 +544,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				this.projectProxy.getSelectedProject().setPeriodsToForecast(
 						periodsToForecastInt);
 				eventBus.fireEvent(new ValidationEvent(true));
-				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
+				
 			} else {
 				throw new NumberFormatException();
 			}
@@ -558,7 +558,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 			getView()
 					.showErrorMessage(errorMessagePeriodsToForecast);
 			eventBus.fireEvent(new ValidationEvent(false));
-			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden'");
+			
 		}
 
 		//eventBus.fireEvent(new ValidateContentStateEvent());
@@ -579,7 +579,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 *            Anzahl der Perioden die in die Vorhergesagt werden sollen
 	 */
 	public void numberPeriodsToForecastChosen_deterministic(String periodsToForecast_deterministic) {
-		logger.debug("Anwender-Eingabe zu deterministischen Perioden die vorherzusagen sind");
+		
 
 		int periodsToForecast_deterministicInt;
 		try {
@@ -587,11 +587,11 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 			if (periodsToForecast_deterministicInt > 0) {
 				periodsToForecast_deterministicValid = true;
 				getView().setComponentError(false, "periodsToForecast_deterministic", "");
-				logger.debug("periodsToForecast deterministic=" + periodsToForecast_deterministicInt);
+				
 				this.projectProxy.getSelectedProject().setPeriodsToForecast_deterministic(
 						periodsToForecast_deterministicInt);
 				eventBus.fireEvent(new ValidationEvent(true));
-				logger.debug("Anzahl Perioden die vorherzusagen sind in das Projekt-Objekten gesetzt");
+				
 			} else {
 				throw new NumberFormatException();
 			}
@@ -605,7 +605,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 			getView()
 					.showErrorMessage(errorMessagePeriodsToForecast_deterministic);
 			eventBus.fireEvent(new ValidationEvent(false));
-			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl zu prognostizierender Perioden' bei den deterministischen Verfahren");
+		
 		}
 
 		////eventBus.fireEvent(new ValidateContentStateEvent());
@@ -622,7 +622,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 *            die Anzahl der Perioden der Vergangenheit die angegeben werden müssen
 	 */
 	public void specifiedPastPeriodsChosen(String specifiedPastPeriods) {
-		logger.debug("Anwender-Eingabe zu anzugebenden Perioden der Vergangenheit ");
+		
 
 		int specifiedPastPeriodsInt;
 		int relevantPastPeriodsInt;
@@ -634,7 +634,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				getView().setComponentError(false, "specifiedPastPeriods", "");
 				this.projectProxy.getSelectedProject().setSpecifiedPastPeriods(
 						specifiedPastPeriodsInt);
-				logger.debug("Anzahl anzugebender Vergangenheits-Perioden sind in das Projekt-Objekten gesetzt");
+				
 			} else {
 				throw new NumberFormatException();
 			}
@@ -646,7 +646,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 							"specifiedPastPeriods", errorMessageSpecifiedPastPeriods);
 			getView()
 					.showErrorMessage(errorMessageSpecifiedPastPeriods);
-			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl anzugebender, vergangener Perioden'");
+		
 		}
 
 		////eventBus.fireEvent(new ValidateContentStateEvent());
@@ -664,8 +664,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 *            werden sollen
 	 */
 	public void relevantPastPeriodsChosen(String relevantPastPeriods) {
-		logger.debug("Anwender-Eingabe zu relevanter Perioden der Vergangenheit ");
-
+		
 		int relevantPastPeriodsInt;
 		int specifiedPastPeriodsInt;
 		try {
@@ -679,7 +678,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				this.projectProxy.getSelectedProject().setSpecifiedPastPeriods( //Feld specifiedPastPeriods nicht mehr vorhanden
 						relevantPastPeriodsInt);
 				eventBus.fireEvent(new ValidationEvent(true));
-				logger.debug("Anzahl relevanter Perioden der Vergangenheit sind in das Projekt-Objekten gesetzt");
+			
 			} else {
 				throw new NumberFormatException();
 			}
@@ -692,7 +691,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 			getView()
 					.showErrorMessage(errorMessageRelevantPastPeriods);
 			eventBus.fireEvent(new ValidationEvent(false));
-			logger.debug("Keine gueltige Eingabe in Feld 'Anzahl einbezogener, vergangener Perioden'");
+			
 		}
 
 		////eventBus.fireEvent(new ValidateContentStateEvent());
@@ -708,7 +707,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 *            das Basis-Jahr, auf das die Cashflows abgezinst werden
 	 */
 	public void basisYearChosen(String basisYear) {
-		logger.debug("Anwender-Eingabe zu relevanter Perioden der Vergangenheit ");
+		
 
 		int basisYearInt;
 		try {
@@ -720,7 +719,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				this.projectProxy.getSelectedProject().setBasisYear(
 						basisYearInt);
 				eventBus.fireEvent(new ValidationEvent(true));
-				logger.debug("Basisjahr in das Projekt-Objekten gesetzt");
+		
 			} else {
 				throw new NumberFormatException();
 			}
@@ -733,7 +732,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 			getView()
 					.showErrorMessage(errorMessageBasisYear);
 			eventBus.fireEvent(new ValidationEvent(false));
-			logger.debug("Keine gueltige Eingabe in Feld 'Wahl des Basisjahr'");
+		
 		}
 
 		////eventBus.fireEvent(new ValidateContentStateEvent());
@@ -787,7 +786,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 *            Schrittgröße der Cashflows fuer die RandomWalk Methode
 	 */
 	public void cashFlowStepRangeChosen(String cashFlowStepRangeString) {
-		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
+	
 
 		try {
 			cashFlowStepRange = Double.parseDouble(cashFlowStepRangeString);
@@ -796,7 +795,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				getView().setComponentError(false, "cashFlowStepRange", "");
 				this.projectProxy.getSelectedProject().setCashFlowStepRange(
 						this.cashFlowStepRange);
-				logger.debug("Schrittweite des Cashflows in das Projekt-Objekten gesetzt");
+				
 			} else {
 				throw new NumberFormatException();
 			}
@@ -808,7 +807,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 							"cashFlowStepRange", errorMessageCashFlowStepRange);
 			getView()
 					.showErrorMessage(errorMessageCashFlowStepRange);
-			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Cashflows'");
+			
 		}
 
 		//eventBus.fireEvent(new ValidateContentStateEvent());
@@ -831,7 +830,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 */
 	public void cashFlowProbabilityOfRiseChosen(
 			String cashFlowProbabilityOfRiseString) {
-		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+	
 
 		try {
 			cashFlowProbabilityOfRise = Double
@@ -844,7 +843,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				this.projectProxy.getSelectedProject()
 						.setCashFlowProbabilityOfRise(
 								(this.cashFlowProbabilityOfRise/100));
-				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung in das Projekt-Objekten gesetzt");
+			
 			} else {
 				throw new NumberFormatException();
 			}
@@ -856,7 +855,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 							"cashFlowProbabilityOfRise", errorMessageCashFlowProbabilityOfRise);
 			getView()
 					.showErrorMessage(errorMessageCashFlowProbabilityOfRise);
-			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Cashflowentwicklung");
+		
 		}
 
 		//eventBus.fireEvent(new ValidateContentStateEvent());
@@ -875,7 +874,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 */
 	public void borrowedCapitalStepRangeChosen(
 			String borrowedCapitalStepRangeString) {
-		logger.debug("Anwender-Eingabe zu Schrittweite Cashflow");
+	
 
 		try {
 			borrowedCapitalStepRange = Double
@@ -887,7 +886,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				this.projectProxy.getSelectedProject()
 						.setBorrowedCapitalStepRange(
 								this.borrowedCapitalStepRange);
-				logger.debug("Schrittweite des Fremdkapital in das Projekt-Objekten gesetzt");
+				
 			} else {
 				throw new NumberFormatException();
 			}
@@ -900,7 +899,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 							 errorMessageBorrowedCapitalStepRange);
 			getView()
 					.showErrorMessage(errorMessageBorrowedCapitalStepRange);
-			logger.debug("Keine gueltige Eingabe in Feld 'Schrittweite Fremdkapital'");
+	
 		}
 
 		//eventBus.fireEvent(new ValidateContentStateEvent());
@@ -923,7 +922,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 	 */
 	public void borrowedCapitalProbabilityOfRiseChosen(
 			String borrowedCapitalProbabilityOfRiseString) {
-		logger.debug("Anwender-Eingabe zu Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+	
 
 		try {
 			borrowedCapitalProbabilityOfRise = Double
@@ -936,7 +935,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 				this.projectProxy.getSelectedProject()
 						.setBorrowedCapitalProbabilityOfRise(
 								(this.borrowedCapitalProbabilityOfRise/100));
-				logger.debug("Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung in das Projekt-Objekten gesetzt");
+	
 			} else {
 				throw new NumberFormatException();
 			}
@@ -948,7 +947,7 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 							"borrowedCapitalProbabilityOfRise",errorMessageBorrowedCapitalProbabilityOfRise);
 			getView()
 					.showErrorMessage(errorMessageBorrowedCapitalProbabilityOfRise);
-			logger.debug("Keine gueltige Eingabe in Feld 'Wahrscheinlichkeit f\u00fcr steigende Fremdkapitalentwicklung");
+		
 		}
 
 		//eventBus.fireEvent(new ValidateContentStateEvent());
@@ -1029,8 +1028,6 @@ public class ParameterInputPresenter extends Presenter<ParameterInputViewInterfa
 		Calendar now = Calendar.getInstance();
 		getView().setValueBasisYear("" + (now.get(Calendar.YEAR) - 1));
 		basisYearValid = true;
-		logger.debug("Initialjahr " + (now.get(Calendar.YEAR) - 1)
-				+ " gesetzt.");
 
 	}
 

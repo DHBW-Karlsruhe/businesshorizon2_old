@@ -182,7 +182,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(true);
 
-		logger.debug("View: setStochasticParameter");
 	}
 
 
@@ -211,7 +210,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(true);
 
-		logger.debug ("View: setDeterministicParameter");
 	}
 	
 	
@@ -235,8 +233,7 @@ ButtonsMiddleViewInterface {
 
 		this.button2.setVisible(true);
 //		setExpandRatio(gap, 1.0f);
-		
-		logger.debug ("View: setFCFButton");
+
 		
 	}
 	
@@ -259,8 +256,7 @@ ButtonsMiddleViewInterface {
 		});
 
 		this.button2.setVisible(true);
-		
-		logger.debug ("View: setGKVButton");
+
 	}
 	
 	/**
@@ -282,8 +278,7 @@ ButtonsMiddleViewInterface {
 		});
 
 		this.button2.setVisible(true);
-		
-		logger.debug ("View: setUKVButton");
+
 	}
 	
 	/**
@@ -306,7 +301,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(true);
 
-		logger.debug ("View: setScenarioButton");
 	}
 	
 	/**
@@ -329,7 +323,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(false);
 
-		logger.debug ("View: setResultButton");
 	}
 	
 	public void hideStepButton(){

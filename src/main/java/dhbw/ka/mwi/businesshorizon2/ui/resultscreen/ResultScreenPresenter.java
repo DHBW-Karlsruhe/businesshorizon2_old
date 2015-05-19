@@ -96,6 +96,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		logger.debug("init beendet");
 	}
 
 //	@SuppressWarnings("unchecked")
@@ -338,7 +339,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 			
 			onProgressChange(0.5f);
 			if(project.getIncludedScenarios().size() == 1){
-				logger.debug("scenarios: "+project.getIncludedScenarios().size());
+
 				logger.debug("OneScenarioCalculationEvent gefeuert");
 				eventBus.fireEvent(new OneScenarioCalculationEvent(project));
 				getView().showView(oneScenarioView);
@@ -473,7 +474,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 					companyValues.addCompanyValue(unternehmenswert);
 
 				}
-				logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
+			
 			} catch (NullPointerException e) {
 				getView()
 						.showErrorMessge(
@@ -491,7 +492,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 					.getPeriodContainers().first().getPeriods();
 
 			validierung = timeseriesCalculator.getModellabweichung();
-			logger.debug("Modellabweichung: " + validierung);
+
 
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
 				stochasticChartArea = new StochasticChartArea(method.getName(),

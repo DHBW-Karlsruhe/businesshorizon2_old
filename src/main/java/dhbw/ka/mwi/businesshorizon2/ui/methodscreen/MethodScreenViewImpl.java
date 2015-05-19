@@ -144,7 +144,6 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug("ValueChangeEvent in Prognosemethode geworfen");
 				String method = (String) event.getProperty().getValue();
 				if(method.equals("sto")){
 					stochastic = true;
@@ -171,7 +170,6 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug("ValueChangeEvent in Eingabemethode geworfen");
 				presenter.setInputMethod((InputType)event.getProperty().getValue(), deterministic);
 
 			}
@@ -191,7 +189,6 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug("ValueChangeEvent in Berechnungsmethode geworfen");
 				switchRadiobuttonEnablement(event);
 				presenter.setCalcMethod((String)event.getProperty().getValue());
 
@@ -231,7 +228,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		}else if(stochastic){
 			inp = project.getProjectInputType().getStochasticInput();
 		}
-		logger.debug ("inp=" + inp);
+
 		if(inp != null){
 			switch (inp) {
 			case DIRECT :
@@ -251,10 +248,10 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 	}
 
 	public void setBerechnung(){
-		logger.debug("Methode setzen der Default Werte für die Berechnungaufgerufen");
+		
 		AbstractDeterministicMethod method = project.getCalculationMethod();
 		if(method != null){
-			logger.debug ("Im Projekt Objekt ist eine Methode angegeben");
+
 			if(method.getName().equals("Flow-to-Equity (FTE)")){
 				berechnungGroup.setValue("fte");
 			}else if(method.getName().equals("Adjusted-Present-Value (APV)")){

@@ -61,7 +61,7 @@ public class ProjectCreationViewImpl extends VerticalLayout implements ProjectCr
 
 	private Label secondGap;
 	
-	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
+	private static final Logger logger = Logger.getLogger("ProjectCreationViewImpl.class");
 	
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der

@@ -100,6 +100,7 @@ public class PeriodScreenPresenter extends Presenter<PeriodScreenViewInterface> 
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		logger.debug("Initialisierung beendet");
 	}
 
 	@EventHandler
@@ -160,11 +161,11 @@ public class PeriodScreenPresenter extends Presenter<PeriodScreenViewInterface> 
 			inputType = project.getProjectInputType().getDeterministicInput();
 			stoch = false;
 		}
-		logger.debug("inputType: "+inputType.toString());
+
 		type = inputType;
 		switch (inputType) {
 		case DIRECT:
-			logger.debug("showView aufgerufen");
+
 			getView().showView(direktView);
 			direktView.setProject(project);
 			eventBus.fireEvent(new ShowDirektViewEvent());

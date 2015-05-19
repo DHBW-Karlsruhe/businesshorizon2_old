@@ -60,6 +60,7 @@ public class PeriodScreenViewImpl extends VerticalLayout implements
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		logger.debug("Initialisierung abgeschlossen");
 		generateUi();
 	}
 

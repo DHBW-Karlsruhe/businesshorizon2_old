@@ -44,7 +44,7 @@ public class StartCalculationButtonViewImpl extends VerticalLayout implements St
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
+	private static final Logger logger = Logger.getLogger("StartCalculationButtonViewImpl.class");
 
 	@Autowired
 	private StartCalculationButtonPresenter presenter;

@@ -69,6 +69,7 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	@PostConstruct
 	public void init() {
+		logger.debug("init beendet");
 		eventBus.addHandler(this);
 	}
 	
@@ -87,12 +88,9 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 
 		List<Szenario> scenarios = this.projectProxy.getSelectedProject()
 				.getScenarios();
-		
-		logger.debug("isValid Scenarios.size() = " + scenarios.size());
 
 		int scenarioNumber = 1;
 		for (Szenario scenario : scenarios) {
-			logger.debug ("Scenario = " + scenario);
 			if (scenario.isIncludeInCalculation()) {
 				if (!isValidCorporateAndSolitaryTax(scenarioNumber)
 						|| !isValidBusinessTax(scenarioNumber)
@@ -181,8 +179,6 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 * @param number Nummer des zu löschenden Szenarios
 	 */
 	public void removeScenario(int number) {
-		logger.debug("Es gibt " + this.projectProxy.getSelectedProject().getScenarios().size() + " Szenarios");
-		logger.debug("Lösche Szenario Nummer: " + number);
 		this.projectProxy.getSelectedProject().getScenarios()
 				.remove(number - 1);
 		getView().removeScenario(number - 1);
@@ -363,43 +359,24 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 		if (isValidRateReturnEquity(scenarioNumber)) {
 			scenario.setRateReturnEquity(Double.parseDouble(getView().getValue(
 					scenarioNumber, "rateReturnEquity")));
-			logger.debug("Renditeforderung Eigenkapital Szenario "
-					+ scenarioNumber + " auf " + scenario.getRateReturnEquity()
-					+ " ("
-					+ getView().getValue(scenarioNumber, "rateReturnEquity")
-					+ ")");
 		}
 
 		if (isValidRateReturnCapitalStock(scenarioNumber)) {
 			scenario.setRateReturnCapitalStock(Double.parseDouble(getView()
 					.getValue(scenarioNumber, "rateReturnCapitalStock")));
-			logger.debug("Renditeforderung Fremdkapital Szenario "
-					+ scenarioNumber
-					+ " auf "
-					+ scenario.getRateReturnCapitalStock()
-					+ " ("
-					+ getView().getValue(scenarioNumber,
-							"rateReturnCapitalStock") + ")");
+
 		}
 
 		if (isValidBusinessTax(scenarioNumber)) {
 			scenario.setBusinessTax(Double.parseDouble(getView().getValue(
 					scenarioNumber, "businessTax")));
-			logger.debug("Gewerbesteuer Szenario " + scenarioNumber + " auf "
-					+ scenario.getBusinessTax() + " ("
-					+ getView().getValue(scenarioNumber, "businessTax") + ")");
+
 		}
 
 		if (isValidCorporateAndSolitaryTax(scenarioNumber)) {
 			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView()
 					.getValue(scenarioNumber, "corporateAndSolitaryTax")));
-			logger.debug("Koerperschaftssteuer und Solidaritaetszuschlag Szenario "
-					+ scenarioNumber
-					+ " auf "
-					+ scenario.getCorporateAndSolitaryTax()
-					+ " ("
-					+ getView().getValue(scenarioNumber,
-							"corporateAndSolitaryTax") + ")");
+		
 		}
 
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(

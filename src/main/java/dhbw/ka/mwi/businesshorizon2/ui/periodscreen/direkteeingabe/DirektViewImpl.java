@@ -120,7 +120,6 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	}
 
 	public void generateTable(){
-
 		logger.debug("generateTable aufgerufen");
 		int pastPeriods = project.getRelevantPastPeriods();
 		int baseYear = project.getBasisYear();
@@ -137,7 +136,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 			a++;
 		}
 		for(Object o : tempProp){
-			logger.debug("Property "+o+" wurde entfernt");
+
 			inputTable.removeContainerProperty(o);
 		}
 
@@ -212,7 +211,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					}
 						
 					presenter.setCashFlowValue(dValue, year);
-					logger.debug("Cashlflow-Wert für das Jahr " +year+ " auf den Wert " + dValue + " gesetzt.");
+				
 					
 //					presenter.checkValid();
 
@@ -247,7 +246,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 						notificateWarning("Ihre Eingabe des Bilanzwertes für das Jahr " + year + " ist keine valide Kommazahl. Bitte überprüfen Sie ihre Eingabe.");
 						field2.setComponentError(new UserError("Bitte geben Sie eine Kommazahl an."));
 						field2.addStyleName("showErrors");
-						logger.debug("Field2 Component Error: " + field2.getComponentError());
+					
 						presenter.validateDirectInput();
 					}
 					presenter.setCapitalStockValue(dValue, year);
@@ -270,7 +269,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 			inputTable.addContainerProperty(currYear, TextField.class, null);
 			inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 			currYear++;
-			logger.debug("Property "+currYear+" wurde hinzugefügt");
+
 		}
 
 	}
@@ -281,7 +280,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 			inputTable.addContainerProperty(currYear, TextField.class, null);
 			inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 			currYear++;
-			logger.debug("Property "+currYear+" wurde hinzugefügt");
+
 		}
 		inputTable.addContainerProperty(baseYear, TextField.class, null);
 		inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);

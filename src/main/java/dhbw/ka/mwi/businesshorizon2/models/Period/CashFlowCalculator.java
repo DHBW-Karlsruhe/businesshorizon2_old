@@ -111,12 +111,11 @@ public class CashFlowCalculator {
 	public static void calculateGKVCashflows(
 			GesamtkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
-		logger.debug("Cash-Flow-Ermittlung nach Gesamtkostenverfahren");
+		
 		Period periodBefore = null;
 		for (GesamtkostenVerfahrenCashflowPeriod period : container
 				.getPeriods()) {
-			logger.debug("=================================================");
-			logger.debug("Jahr: " + period.getYear());
+			
 
 			// Betriebsergebnis
 			double freeCashFlow = period.getUmsatzerlöse()
@@ -128,10 +127,6 @@ public class CashFlowCalculator {
 					- period.getAbschreibungen() 
 					+ period.getSonstigerertrag()
 					- period.getSonstigeraufwand();
-			logger.debug("Umsatzerlöse: " + period.getUmsatzerlöse());
-			logger.debug("- Materialaufwand: " + period.getMaterialaufwand());
-			logger.debug("- Abschreibungen: " + period.getAbschreibungen());
-			logger.debug("= Betriebsergebnis: " + freeCashFlow);
 
 			// Ergebnis der gewöhnlichen Geschäftstätigkeit
 			freeCashFlow = freeCashFlow 
@@ -140,17 +135,13 @@ public class CashFlowCalculator {
 					+ period.getZinsertraege()
 					- period.getAbschreibungenFinanzanlagen()
 					- period.getZinsenundaufwendungen();
-			logger.debug("- Zinsen und ähn. : " + period.getZinsenundaufwendungen());
-			logger.debug("= Ergebnis der gewöhnlichen Geschäftstätigkeit: "
-					+ freeCashFlow);
+			
 
 			// Außerordentliches Ergebnis
 			freeCashFlow = freeCashFlow 
 					+ period.getAußerordentlicheerträge()
 					- period.getAußerordentlicheaufwände()
 					- period.getSteueraufwand();
-			logger.debug("- Steueraufwand: " + period.getSteueraufwand());
-			logger.debug("= Jahresüberschuss: " + freeCashFlow);
 
 			
 			double taxshield = 0;
@@ -159,7 +150,7 @@ public class CashFlowCalculator {
 				double businessTax = scenario.getBusinessTax() / 100;
 				double corporateTax = scenario.getCorporateAndSolitaryTax() / 100;
 				double rFK = scenario.getRateReturnCapitalStock() / 100;
-				logger.debug("--- TaxShield: (0.75 * "+businessTax+" + "+corporateTax+") * "+rFK+ " * "+ fkVorjahr);
+				
 				taxshield = (0.75 * businessTax + corporateTax) * rFK * fkVorjahr;
 			}
 			
@@ -168,11 +159,6 @@ public class CashFlowCalculator {
 					- period.getBruttoinvestitionen()
 					+ period.getZinsenundaufwendungen()
 					+ period.getAbschreibungen();
-			logger.debug("+ Zinsen: " + period.getZinsenundaufwendungen());
-			logger.debug("- TaxShield: " + taxshield);
-			logger.debug("+ Abschreibungen: " + period.getAbschreibungen());
-			logger.debug("- Brutto-Investitionen: " + period.getBruttoinvestitionen());
-			logger.debug("= Free Cash Flow: " + freeCashFlow);
 
 
 			period.setFreeCashFlow(freeCashFlow);
@@ -193,14 +179,10 @@ public class CashFlowCalculator {
 	public static void calculateUKVCashflows(
 			UmsatzkostenVerfahrenCashflowPeriodContainer container,
 			Szenario scenario) {
-		logger.debug("Cash-Flow-Ermittlung nach Umsatzkostenverfahren");
 		
 		Period periodBefore = null;
 		for (UmsatzkostenVerfahrenCashflowPeriod period : container
 				.getPeriods()) {
-			logger.debug("=================================================");
-			logger.debug("Jahr: " + period.getYear());
-
 
 			// Betriebsergebnis
 			double freeCashFlow = period.getUmsatzerlöse()
@@ -209,7 +191,6 @@ public class CashFlowCalculator {
 					- period.getVerwaltungskosten()
 					+ period.getSonstigerertrag()
 					- period.getSonstigeraufwand();
-			logger.debug("Betriebsergebnis: " + freeCashFlow);
 
 			// Ergebnis der gewöhnlichen Geschäftstätigkeit
 			freeCashFlow = freeCashFlow 
@@ -218,15 +199,14 @@ public class CashFlowCalculator {
 					+ period.getZinsertraege()
 					- period.getAbschreibungenFinanzanlagen()
 					- period.getZinsenundaufwendungen();
-			logger.debug("Ergebnis der gewöhnlichen Geschäftstätigkeit: " + freeCashFlow);
+			
 
 			// Außerordentliches Ergebnis
 			freeCashFlow = freeCashFlow 
 					+ period.getAußerordentlicheerträge()
 					- period.getAußerordentlicheaufwände()
 					- period.getSteueraufwand();
-			logger.debug("Jahresüberschuss: " + freeCashFlow);
-
+			
 			// Periodenüberschuss/-fehlbetrag
 			double taxshield = 0;
 			if(periodBefore != null){
@@ -234,7 +214,7 @@ public class CashFlowCalculator {
 				double businessTax = scenario.getBusinessTax() / 100;
 				double corporateTax = scenario.getCorporateAndSolitaryTax() / 100;
 				double rFK = scenario.getRateReturnCapitalStock() / 100;
-				logger.debug("--- TaxShield: (0.75 * "+businessTax+" + "+corporateTax+") * "+rFK+ " * "+ fkVorjahr);
+				
 				taxshield = (0.75 * businessTax + corporateTax) * rFK * fkVorjahr;
 			}
 			freeCashFlow = freeCashFlow 
@@ -242,7 +222,6 @@ public class CashFlowCalculator {
 					- period.getBruttoinvestitionen()
 					+ period.getZinsenundaufwendungen()
 					+ period.getAbschreibungen();
-			logger.debug("Free Cash Flow: " + freeCashFlow);
 
 			period.setFreeCashFlow(freeCashFlow);
 
