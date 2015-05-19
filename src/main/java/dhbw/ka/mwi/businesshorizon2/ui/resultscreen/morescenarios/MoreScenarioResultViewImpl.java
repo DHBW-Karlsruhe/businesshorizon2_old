@@ -115,6 +115,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		logger.debug("init beendet");
 		generateUi();
 	}
 
@@ -376,7 +377,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 			this.gewerbeSt1.setValue(gewerbeSt);
 			this.koerperSt1.setValue(koerperSt);
 			this.companyValue1.setValue(companyValue);
-			logger.debug("Values von Szenario 1 gesetzt");
+
 			break;
 			
 		case 1:
@@ -385,7 +386,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 			this.gewerbeSt2.setValue(gewerbeSt);
 			this.koerperSt2.setValue(koerperSt);
 			this.companyValue2.setValue(companyValue);
-			logger.debug("Values von Szenario 2 gesetzt");
+
 			break;
 			
 		case 2:
@@ -394,7 +395,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 			this.gewerbeSt3.setValue(gewerbeSt);
 			this.koerperSt3.setValue(koerperSt);
 			this.companyValue3.setValue(companyValue);
-			logger.debug("Values von Szenario 3 gesetzt");
+
 			break;			
 
 		}

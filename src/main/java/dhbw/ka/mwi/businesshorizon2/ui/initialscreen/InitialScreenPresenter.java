@@ -170,9 +170,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		getView().showView(projectListView, projectDetailsView);
 		getView().clearProgressBar();
 		projectDetailsView.clearProjectDetails();
-		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));
-		logger.debug("ShowProjectListEvent gefeuert");
 
 	}
 
@@ -180,11 +178,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void doLogout() {
 		//speichert die Projekte in der externen Datei
 		persistenceService.saveProjects();
-		logger.debug("Projekte gespeichert");
 		try {
 			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
 			authenticationService.doLogout(userProxy.getSelectedUser());
-			logger.debug("LogoutEvent gefeuert");
 			eventBus.fireEvent(new LogoutEvent());
 		} catch (UserNotLoggedInException e) {
 			e.printStackTrace();
@@ -201,7 +197,6 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 */
 	public void removeProject(Project project) {
 		persistenceService.removeProject(this.user, project);
-		logger.debug("Projekt aus User entfernt");
 		projectListView.setProjects(user.getProjects());
 		if (user.getProjects().size()==0) {
 			projectProxy.setSelectedProject(null);
@@ -209,7 +204,6 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 		getView().showView(projectListView, projectDetailsView);
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
-		logger.debug("ProjekteRemove Event gefeuert");
 
 	}
 
@@ -298,13 +292,12 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			if (projectProxy.getSelectedProject().getProjectInputType().isStochastic()) {
 				buttonsMiddleView.setStochasticParameter();
 				getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
-				logger.debug("Stochastische Buttons gesetzt");
 			}
 			
 			else {
 				buttonsMiddleView.setDeterministicParameter();
 				getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Deterministische Methode", "Bitte geben Sie die Parameter ein"});
-				logger.debug ("Deterministische Buttons gesetzt");
+				
 			}
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setProgress("./images/progressBar/progress_2.png");
@@ -589,7 +582,6 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		logger.debug("ImportUploadFinishedEvent empfangen");
 		
 		notImported = persistenceService.importAllProjects(user, event.getfileName());
-		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
 		
 //		//Ausgabe der Fehlermeldung, falls nicht alle Projekte importiert werden konnten
 //		if (notImported != null) {
@@ -598,7 +590,6 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		
 		//Aktualisieren der Antwort
 		eventBus.fireEvent(new ShowProjectListEvent (user));
-		logger.debug ("ShowProjectListEvent geworfen");
 	}
 	
 	/**

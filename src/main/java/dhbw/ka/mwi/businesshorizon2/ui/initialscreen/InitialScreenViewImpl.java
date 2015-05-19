@@ -513,7 +513,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			public void buttonClick(ClickEvent event) {
 				final Project project = projectProxy.getSelectedProject();
 
-				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen.");
+				
 				
 				if (project==null) {
 					getWindow().showNotification((String) "", "Kein Projekt zum Löschen vorhanden.",	Notification.TYPE_WARNING_MESSAGE);
@@ -809,7 +809,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		if(componentCount > (count + 1)){
 			for(int i = count; i < (componentCount - 1); i++){
 				topRightLayout.removeComponent(topRightLayout.getComponent(count));
-				logger.debug("Komponente an Stelle "+i+" gelöscht");
 			}
 		}
 	}

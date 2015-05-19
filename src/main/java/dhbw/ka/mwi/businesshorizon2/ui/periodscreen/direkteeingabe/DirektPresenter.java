@@ -85,6 +85,7 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 		eventBus.addHandler(this);
 		//                shownProperties = new String[] { "freeCashFlow", "capitalStock" };
 		//                germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
+		logger.debug("Initialisierung beendet");
 	}
 
 

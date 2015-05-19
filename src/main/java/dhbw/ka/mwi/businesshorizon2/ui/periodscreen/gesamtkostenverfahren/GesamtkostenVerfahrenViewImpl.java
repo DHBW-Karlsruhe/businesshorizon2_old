@@ -96,7 +96,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
         public void init() {
         	setHeight(Sizeable.SIZE_UNDEFINED, 0);
                 presenter.setView(this);
-                logger.debug("Gesamt presenter set");
+                logger.debug("init beendet");
                 generateUi();
                 
         }
@@ -148,7 +148,6 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
          */
 		public void setColumnWidth(){
 			int columnWidth = inputTable.getColumnWidth("first");
-			logger.debug("Breite der Spalte: "+columnWidth);
 			capitalStockInput.setColumnWidth("first", columnWidth);
 		}
 		
@@ -173,7 +172,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 				a++;
 			}
 			for(Object o : tempProp){
-				logger.debug("Property "+o+" wurde entfernt");
+
 				inputTable.removeContainerProperty(o);
 				capitalStockInput.removeContainerProperty(o);
 			}
@@ -325,7 +324,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 							field1.setComponentError(null);
 							field1.removeStyleName("showErrors");
 							presenter.validateGKVInput();
-							logger.debug("Value Change: " + presenter.getUmsatzerloese(year));
+				
 						}
 						
 						catch (Exception e) {
@@ -338,7 +337,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 					}
 
 				});
-				logger.debug("umsatzerlöse: "+ presenter.getUmsatzerloese(year));
+			
 				field1.setValue(presenter.getUmsatzerloese(year));
 				
 				//Bestandserhöhung
@@ -941,7 +940,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
 				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
-				logger.debug("Property "+currYear+" wurde hinzugefügt");
+			
 			}
 
 		}
@@ -957,7 +956,7 @@ public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements Ges
 				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
 				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
-				logger.debug("Property "+currYear+" wurde hinzugefügt");
+			
 			}
 			inputTable.addContainerProperty(baseYear, TextField.class, null);
 			inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);

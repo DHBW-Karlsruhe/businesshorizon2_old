@@ -91,6 +91,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	@PostConstruct
 	public void init() {
 		presenter.setView(this);
+		logger.debug("init beendet");
 		generateUi();
 	}
 
@@ -167,8 +168,6 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				presenter.updateScenario(number);
-				logger.debug("TextChange ausgeloest");
-				logger.debug("ChangeListener " + System.identityHashCode(this));
 				presenter.isValid();
 			}
 		};
@@ -184,7 +183,6 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		scenarioName.setContentMode(Label.CONTENT_XHTML);
 		scenarioComponents.put("label", scenarioName);
 		
-		logger.debug("SzenarioName: " + scenarioName);
 		gl.addComponent(scenarioName, 0, 0);
 				
 		final Label textEigenkapital = new Label ("Renditeforderung Eigenkapital: ");
@@ -313,7 +311,6 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	 * @author Julius Hacker, Tobias Lindner
 	 */
 	public void removeScenario(final int number) {
-		logger.debug("Removing scenario from view");
 		this.vlScenarios.removeComponent(this.scenarios.get(number).get("scenario"));
 		this.scenarios.remove(number);
 		

@@ -84,7 +84,7 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		logger.debug("Logger initialisiert");
+		logger.debug("Initialisierung beendet");
 	}
 
 	/**
@@ -246,11 +246,11 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 			stochastic = project.getProjectInputType().isStochastic();
 		}
 		if(stochastic){
-			logger.debug(project.getProjectInputType().getStochasticInput());
+			
 			periodContainer = (UmsatzkostenVerfahrenCashflowPeriodContainer) project.getStochasticPeriods();
 		}
 		else{
-			logger.debug(project.getProjectInputType().getDeterministicInput());
+			
 			periodContainer = (UmsatzkostenVerfahrenCashflowPeriodContainer) project.getDeterministicPeriods();
 		}
 

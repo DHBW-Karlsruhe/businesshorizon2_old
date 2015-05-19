@@ -50,7 +50,7 @@ import com.vaadin.ui.Window.Notification;
 public class ParameterInputViewImpl extends VerticalLayout implements ParameterInputViewInterface {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("ParameterViewImpl.class");
+	private static final Logger logger = Logger.getLogger("ParameterInputViewImpl.class");
 	
 	private GridLayout gridLayout;
 
@@ -216,7 +216,7 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 			private static final long serialVersionUID = 1L;
 
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug(textfieldIterations.getValue());
+
 				presenter.iterationChosen((String) textfieldIterations
 						.getValue());
 			}

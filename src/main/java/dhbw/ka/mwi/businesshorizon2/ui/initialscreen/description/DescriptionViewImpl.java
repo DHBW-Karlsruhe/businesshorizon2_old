@@ -164,7 +164,6 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 			break;
 			
 		default:
-			logger.debug("keine Case-Übereinstimmung in setTexts");
 			break;
 			
 		}

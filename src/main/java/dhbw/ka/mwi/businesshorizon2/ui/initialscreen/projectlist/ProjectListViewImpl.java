@@ -148,7 +148,6 @@ public class ProjectListViewImpl extends VerticalLayout implements
 		this.projects = projects;
 		logger.debug("Projektliste aktualisiert");
 		removeAllComponents();
-		logger.debug("Projekt-Element-Liste geleert");
 
 		singleProjectList = new ArrayList<VerticalLayout>();
 		
@@ -166,7 +165,6 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 		}
 
-		logger.debug("Projekt-Element-Liste erzeugt");
 	}
 	
 	public void clearProjectList(){
@@ -248,7 +246,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 //		singleProject.addListener(this);
 //		projectListPanel.addComponent(singleProject);
-		logger.debug("Einzelnes Projektelement erzeugt");
+
 
 		return singleProject;
 	}
@@ -329,7 +327,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 		//Dialog dem Hauptfenster hinzufügen
 		getWindow().addWindow(addDialog);
-		logger.debug("Hinzufuege-Dialog erzeugt");
+
 	}
 	
 	/**Methode zur Implementierung des Dialogfensters für Projekt-Änderungen.
@@ -383,7 +381,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 					boolean succed = presenter.editProject(projects.get(indexEditBtn), (String) tfName.getValue(), (String) taDescription.getValue());
 					if (succed) {
 						getWindow().removeWindow(editDialog);
-						logger.debug("Projekt-bearbeiten Dialog geschlossen");
+						
 						
 					}
 						
@@ -401,7 +399,7 @@ public class ProjectListViewImpl extends VerticalLayout implements
 
 		//Dialog dem Hauptfenster hinzufügen
 		getWindow().addWindow(editDialog);
-		logger.debug("Bearbeiten-Dialog erzeugt");
+	
 		
 	}
 
@@ -427,17 +425,17 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	public void buttonClick(ClickEvent event) {
 		
 		if (event.getButton() == addProjectBtn) {
-			logger.debug("Projekt-hinzufügen Button aus dem Hauptfenster aufgerufen");
+		
 			presenter.addProjectDialog();
 
 		} else if (event.getButton() == dialogAddBtn) {
-			logger.debug("Projekt-hinzufügen Button aus dem Dialogfenster aufgerufen");
+			
 
 			if (tfName.isValid()) {
 				presenter.addProject((String) tfName.getValue(), (String) taDescription.getValue());
 				//TODO: Fenster nur schließen, wenn das Hinzufügen erfolgreich war (s. Projekt Bearbeiten).
 				getWindow().removeWindow(addDialog);
-				logger.debug("Projekt-hinzufügen Dialog geschlossen");
+			
 			} else {
 				getWindow()
 						.showNotification(
@@ -463,7 +461,6 @@ public class ProjectListViewImpl extends VerticalLayout implements
 	@Override
 	public void click(MouseEvents.ClickEvent event) {
 		int index = singleProjectList.indexOf(event.getComponent());
-		logger.debug("Projekt ausgewaehlt. Projektnummer: " + (index + 1));
 		presenter.projectSelected(projects.get(index));
 	}
 

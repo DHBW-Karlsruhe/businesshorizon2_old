@@ -83,6 +83,7 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		logger.debug("init beendet");
 	}
 	
 
@@ -265,11 +266,11 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 		stochastic = project.getProjectInputType().isStochastic();
 		}
 		if(stochastic){
-			logger.debug(project.getProjectInputType().getStochasticInput());
+
 			periodContainer = (GesamtkostenVerfahrenCashflowPeriodContainer) project.getStochasticPeriods();
 		}
 		else{
-			logger.debug(project.getProjectInputType().getDeterministicInput());
+			
 			periodContainer = (GesamtkostenVerfahrenCashflowPeriodContainer) project.getDeterministicPeriods();
 		}
 
