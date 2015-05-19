@@ -361,6 +361,32 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 
 		});
+		
+		getView().setTopButton(new TopBarButton("homeButton", "zurück zur Startseite"), 3, new ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Möchten Sie zur Startseite zurückkehren?",
+						"Ja", "Nein", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+				
+			}
+			
+		});
 	}
 	
 	private void setScreen4Buttons(){
@@ -371,6 +397,32 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			@Override
 			public void buttonClick(ClickEvent event) {
 				eventBus.fireEvent(new ShowProcessStepEvent(screen.PERIODS));
+
+			}
+
+		});
+		
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 3, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
 
 			}
 
@@ -389,6 +441,36 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 
 		});
+		
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 3, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+
+			}
+
+		});
+		
+		
+		
+		
 	}
 
 	private void setScreen2Buttons() {
@@ -440,7 +522,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			@Override
 			public void buttonClick(ClickEvent event) {
 				persistenceService.saveProjects();
-
+				getView().showInfoNotification("Projekt wurde gespeichert.");
 			}
 
 		});

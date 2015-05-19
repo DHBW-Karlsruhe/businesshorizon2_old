@@ -418,7 +418,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren! Möchten Sie zur Startseite zurückkehren?",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Möchten Sie zur Startseite zurückkehren?",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -433,6 +433,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 					}
 				});
 				
+
 			}
 			
 		});
@@ -897,4 +898,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	public void showNotification (String warningText) {
 		getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
 	}
+	
+	/**
+	 * Diese Methode zeigt eine Meldung vom Typ Humanzized Message auf dem Screen an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void showInfoNotification (String notificationText) {
+		getWindow().showNotification((String) "", notificationText, Notification.TYPE_TRAY_NOTIFICATION);
+	}
+
 }
