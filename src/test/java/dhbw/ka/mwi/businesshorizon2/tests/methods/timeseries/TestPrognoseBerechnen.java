@@ -86,7 +86,7 @@ public class TestPrognoseBerechnen extends TestCase {
 		autokovarianzVorgabe.add (0.032407407407407274);
 		
 		
-		prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
+		prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
 		
 		logger.debug("prognosewerte[0] " + prognosewerte[0]);
 //		logger.debug("prognosewerte[0][1] " + prognosewerte[0]]);

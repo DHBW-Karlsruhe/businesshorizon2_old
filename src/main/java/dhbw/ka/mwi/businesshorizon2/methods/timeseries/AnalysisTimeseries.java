@@ -207,19 +207,28 @@ public class AnalysisTimeseries {
 	 * @return Gibt die Standardabweichung zurück.
 	 */
 	//
-	public double berechneStandardabweichung(DoubleArrayList autokovarianzen, DoubleMatrix2D matrixPhi) {
+	public double berechneStandardabweichung(DoubleArrayList zeitreihe, int einbezogenePerioden) {
 		double standardabweichung = 0;
-		double s2 = autokovarianzen.get(0);
-
-		// Berechnung der Varianz
-		for (int i = 0; i < matrixPhi.size(); i++) {
-			s2 = s2 - (matrixPhi.get(i, 0) * autokovarianzen.get(i + 1));
+		int durchlauf = zeitreihe.size() - einbezogenePerioden; 
+		
+		// Berechnung Mittelwert
+		double mw= 0;
+		for (int i = 0; i < durchlauf; i++){
+			mw += zeitreihe.get(i);
 		}
+		mw = mw / durchlauf;
+		// Berechnung der Varianz
+		
+		double variance = 0;
+		for (int i = 0; i < durchlauf; i++){
+			variance += Math.pow((zeitreihe.get(i)-mw), 2);	
+		}
+		variance = variance / durchlauf;
 
-		logger.debug("Varianz: " + s2);
+		logger.debug("Varianz: " + variance);
 		
 		// Berechnung der Standardabweichung aus der Varianz
-		standardabweichung = Math.sqrt(s2);
+		standardabweichung = Math.sqrt(variance);
 
 		logger.debug("Standardabweichung:" + standardabweichung);
 		
@@ -252,7 +261,7 @@ public class AnalysisTimeseries {
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */
 
-	public double[] prognoseBerechnen(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, double standardabweichung, int zuberechnendeperioden, int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
+	public double[] prognoseBerechnen(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, int zuberechnendeperioden, int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
 
 		logger.debug("PrognoseBerechnen");
 		
@@ -268,39 +277,50 @@ public class AnalysisTimeseries {
 	//	this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
 	//			zuberechnendeperioden, p, mittelwert, isfremdkapital);
 		
-		//Modellgenauigkeit validieren
-		if(this.tide != null){
-			this.validierung( trendbereinigtezeitreihe,
-				 matrixPhi,  p);
-		}
+	
 	
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
-		for (int i = 0; i < durchlaeufe; i++) {
+		for (int i = zuberechnendeperioden; i > 0; i--) {
 			// Ein Durchlauf entspricht der Prognose eines Jahres j
-			for (int j = 0; j < zuberechnendeperioden; j++) {
+			//logger.debug("Durchlauf:" + i);
+//			for (int j = 0; j < zuberechnendeperioden; j++) {
+//				//logger.debug("Zuberechnende Periode: " + j);
+//				// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
+//				// passenden Vergangenheitswert.
+//				for (int t = 0; t < p; t++) {
+//					prognosewert = prognosewert
+//							+ matrixPhi.get(t, 0)
+//							* vergangeneUndZukuenftigeWerte
+//									.get(vergangeneUndZukuenftigeWerte.size()
+//											- (t + 1));
+//					//Ausgabe der Werte für Debugging 
+//					//if ((i % 100) == 0){
+//					//logger.debug("prognosewert: " + prognosewert);
+//					//TODO Hier gehen die Werte auseinander !!
+//					//}
+//				}
 
-				// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
-				// passenden Vergangenheitswert.
-				for (int t = 0; t < p; t++) {
-					prognosewert = prognosewert
-							+ matrixPhi.get(t, 0)
-							* vergangeneUndZukuenftigeWerte
-									.get(vergangeneUndZukuenftigeWerte.size()
-											- (t + 1));
+				standardabweichung = this.berechneStandardabweichung(vergangeneUndZukuenftigeWerte, i);
+			
+				double z = Math.random();
+				if (Math.random() < 0.5){
+					z += -1;
 				}
-
-				zNull = zufall.nextGaussian() * standardabweichung;
-				//logger.debug("zNull: " + zNull);
+				logger.debug("Zufallszahl:" + z);
+				zNull = z * standardabweichung;
+				logger.debug("zNull: " + zNull);
 				
-				prognosewert = prognosewert + zNull;
-				//logger.debug("Prognosewert: " + prognosewert);
+				prognosewert = vergangeneUndZukuenftigeWerte.get(vergangeneUndZukuenftigeWerte.size()-i) + zNull;  //prognosewert + zNull;
+				logger.debug("Prognosewert: " + prognosewert);
 				
-				vergangeneUndZukuenftigeWerte.add(prognosewert);
-				prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
+				vergangeneUndZukuenftigeWerte.set(vergangeneUndZukuenftigeWerte.size()-i, prognosewert);
+				
+				//vergangeneUndZukuenftigeWerte.add(prognosewert);
+				//prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
 				//logger.debug("Prognosewert + Mittelwert: " + prognosewert);
 				
-				erwarteteWerte[j] = prognosewert;
+				erwarteteWerte[zuberechnendeperioden-i] = prognosewert;
 
 				prognosewert = 0;
 			}
@@ -312,9 +332,7 @@ public class AnalysisTimeseries {
 			}else{
 				this.erwarteteCashFlows = erwarteteWerte;
 			}
-	
 		
-		}
 		
 		return erwarteteWerte;
 	}
@@ -345,17 +363,21 @@ public class AnalysisTimeseries {
 			int zuberechnendePerioden, int durchlaeufe,
 			CallbackInterface callback, boolean isfremdkapital) throws InterruptedException,
 			StochasticMethodException {
-
+		logger.debug("AnalysisTimeseries Calculate");
+		logger.debug("Zeitreihe: " + zeitreihe.toString());
+		
 		// vorbereitende Initialisierung
 		double[] alteUndPrognosewerte = new double[zuberechnendePerioden];
 
+		
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		//Der Stationaritätstest ist nicht implementiert und liefert zurück dass die Zeitreihe nicht stationär ist
 		tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
-			zeitreihe = tide.reduceTide(zeitreihe);
+			zeitreihe = tide.reduceTide(zeitreihe, zuberechnendePerioden);
 		}
+		logger.debug("Bereinigte Zeitreihe: " + zeitreihe.toString());
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
 		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
@@ -371,15 +393,11 @@ public class AnalysisTimeseries {
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
-		this.autokovarianzen = berechneAutokovarianz(bereinigteZeitreihe);
-		this.modellparameter = berechneModellparameter(autokovarianzen, p);
-		this.standardabweichung = berechneStandardabweichung(autokovarianzen,
-				modellparameter);
+		//this.standardabweichung = berechneStandardabweichung(bereinigteZeitreihe);
 		logger.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
 
 		// Start der Prognose
-		alteUndPrognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
-				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
+		alteUndPrognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter, zuberechnendePerioden, durchlaeufe, p,
 				mittelwert, isfremdkapital);
 		logger.debug("Berechnung der Prognosewerte abgeschlossen.");
 		
@@ -446,32 +464,32 @@ public class AnalysisTimeseries {
 	 * @author: Nina Brauch
 	 */
 
-	public void validierung(DoubleArrayList trendbereinigtezeitreihe,
-			DoubleMatrix2D matrixPhi, int p) {		
-		
-		double prognosewert = 0;
-		double realisierungsWert = trendbereinigtezeitreihe
-				.get(trendbereinigtezeitreihe.size() - 1);
-		realisierungsWert = realisierungsWert + tide.getTideValue(p);
-		logger.debug("Realisierungswert: " + realisierungsWert);
-		
-		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
-		// Vergangenheitswert.
-		// Hier wird der Prognosewert für den Zeitpunkt 0 berechnet
-		for (int t = 0; t < p; t++) {
-			prognosewert = prognosewert
-					+ (matrixPhi.get(t, 0)
-					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
-							.size() - (t + 2)));			
-		}
-		prognosewert = prognosewert + tide.getTideValue(p);
-		// Berechnung der prozentualen Abweichung
-		double h = prognosewert / (realisierungsWert / 100);
-		// Die Variable abweichung enthält die Abweichung in %, abweichung =1
-		// --> Die Abweichung beträgt 1%
-		double abweichung = Math.abs(h - 100);
-		setAbweichung(abweichung);
-	}
+//	public void validierung(DoubleArrayList trendbereinigtezeitreihe,
+//			DoubleMatrix2D matrixPhi, int p) {		
+//		
+//		double prognosewert = 0;
+//		double realisierungsWert = trendbereinigtezeitreihe
+//				.get(trendbereinigtezeitreihe.size() - 1);
+//		realisierungsWert = realisierungsWert + tide.getTideValue(p);
+//		logger.debug("Realisierungswert: " + realisierungsWert);
+//		
+//		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
+//		// Vergangenheitswert.
+//		// Hier wird der Prognosewert für den Zeitpunkt 0 berechnet
+//		for (int t = 0; t < p; t++) {
+//			prognosewert = prognosewert
+//					+ (matrixPhi.get(t, 0)
+//					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
+//							.size() - (t + 2)));			
+//		}
+//		prognosewert = prognosewert + tide.getTideValue(p);
+//		// Berechnung der prozentualen Abweichung
+//		double h = prognosewert / (realisierungsWert / 100);
+//		// Die Variable abweichung enthält die Abweichung in %, abweichung =1
+//		// --> Die Abweichung beträgt 1%
+//		double abweichung = Math.abs(h - 100);
+//		setAbweichung(abweichung);
+//	}
 
 	public double getAbweichung() {
 		return abweichung;

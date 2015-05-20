@@ -207,6 +207,11 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                                 project.getRelevantPastPeriods(),
                                 project.getPeriodsToForecast(), project.getIterations(),
                                 callback, false);
+                //Debugging Methode
+                for (double rT: resultTimeseries){
+                	logger.debug("ResultTimeseries: " + rT);
+                }
+                
                 double abweichungcf = timeseries.getAbweichung();
 
                 // Modellabweichung berechnen (Durchschnitt Abweichung Fremdkapital

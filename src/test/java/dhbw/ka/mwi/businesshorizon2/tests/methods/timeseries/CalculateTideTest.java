@@ -50,7 +50,8 @@ public class CalculateTideTest extends TestCase {
 		timeseries[4] = 154857000.00;
 		timeseries[5] = 162117000.00;
 		CalculateTide tide = new CalculateTide();
-		timeseries = tide.reduceTide(timeseries);
+		//TODO anpassen
+		timeseries = tide.reduceTide(timeseries, 2);
 		double[] results = new double[timeseries.length];
 		results[0] = -3969476.190476209;
 		results[1] = 7802980.952380925;

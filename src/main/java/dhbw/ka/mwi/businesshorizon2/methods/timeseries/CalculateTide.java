@@ -60,18 +60,20 @@ public class CalculateTide implements CalculateTideInterface {
 	 * @result Trendbereinigte Zeitreihe
 	 */
 
-	public double[] reduceTide(double[] timeseries) {
+	public double[] reduceTide(double[] timeseries, int zuberechnendePerioden) {
 		this.timeseries = timeseries;
+		double[] rueckZeitreihe = new double[timeseries.length+zuberechnendePerioden];
+		
+		
+		this.reduceTideParameterB = this.calculateTideParameterB(timeseries);
+		this.reduceTideParameterA = this.calculateTideParameterA(reduceTideParameterB);
 
-		double parameterB = this.calculateTideParameterB(timeseries);
-		this.reduceTideParameterB = parameterB;
-		this.reduceTideParameterA = this.calculateTideParameterA(parameterB);
-
-		for (int i = 0; i < timeseries.length; i++) {
-			timeseries[i] = (timeseries[i] - this.getTideValue(i));
+		
+		for (int i = 0; i < timeseries.length+zuberechnendePerioden; i++) {
+			rueckZeitreihe[i] = this.getTideValue(i+1);
 		}
 		logger.debug("Timeseries reduced.");
-		return timeseries;
+		return rueckZeitreihe;
 	}
 
 	/**
@@ -104,6 +106,7 @@ public class CalculateTide implements CalculateTideInterface {
 
 			this.averageTimeseries = (sum / (timeseries.length));
 		}
+		logger.debug("Zeitreiehen Mittelwert: " + averageTimeseries);
 		return this.averageTimeseries;
 	}
 
