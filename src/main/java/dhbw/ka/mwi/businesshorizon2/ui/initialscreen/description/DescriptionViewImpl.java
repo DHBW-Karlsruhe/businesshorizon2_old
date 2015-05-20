@@ -356,8 +356,14 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		ukvHeadline = new Label ("<h3>UKV</h3>");
 		ukvHeadline.setContentMode (Label.CONTENT_XHTML);
 		ukvHeadline.addStyleName ("descriptionHeadline");
-		ukvText = new Label ("Beim Umsatz-Kosten-Verfahren wird der Cashflow aus Werten aus GuV und Bilanz berechnet. Die dafür notwendigen Posten sind: "
-				+ "Umsatzerlöse, Herstellkosten des Umsatzes, Kosten F&E, Verwaltungskosten, Sonstiger Aufwand, Ertrag, Erträge aus Wertpapieren, Zinsen und ähnliche Aufwendungen, Außerordentliche Erträge & Aufwendungen, Abschreibungen, Pensionsrückstellungen");
+		ukvText = new Label ("Das Umsatzkostenverfahren (UKV) ist ein Verfahren zur Aufstellung der Gewinn- und Verlustrechnung (GuV). "
+				+ "Nach dem Handelsgesetzbuch kann entweder das UKV oder das Gesamtkostenverfahren (GKV) angewendet werden. "
+				+ "Das UKV stellt eine Umsatzerfolgsrechnung dar. Zur Abgrenzung der Erträge und Aufwendungen werden nur die abgesetzten "
+				+ "Mengeneinheiten herangezogen werden. Demnach werden die Erträge und Aufwendungen erst beim Absatz der Erzeugnisse aufgestellt. "
+				+ "Erhöhungen des Bestands an fertigen und unfertigen Erzeugnissen werden nicht als Erträge und die entsprechenden Aufwendungen "
+				+ "nicht als Aufwendungen erfasst. Verminderungen des Bestands an fertigen und unfertigen Erzeugnissen werden als Aufwendungen "
+				+ "für abgesetzte Erzeugnisse ausgewiesen. Im Unterschied zum GKV werden Aufwendungen nicht nach ihrer "
+				+ "Art (Material, Personal, Abschreibungen), sondern nach ihrer Funktion (Herstellung, Verwaltung, Vertrieb) gegliedert.");
 		ukvText.addStyleName ("wrap");
 		ukvText.addStyleName ("descriptionText");
 		iconUKV = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
@@ -382,10 +388,12 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		gkvHeadline = new Label ("<h3>GKV</h3>");
 		gkvHeadline.setContentMode(Label.CONTENT_XHTML);
 		gkvHeadline.setStyleName("descriptionHeadline");
-		gkvText = new Label ("Beim Gesamt-Kosten-Verfahren wird der Cashflow aus Werten aus GuV und Bilanz berechnet. Die dafür notwendigen Posten sind: "
-				+ "Umsatzerlöse, Erhöhung des Bestandes an fertigen Erzeugnissen, Verminderung des Bestandes an fertigen Erzeugnissen, Materialaufwand, Personalaufwand mit Löhne/Gehälter, "
-				+ "Einstellungs-/Entlassungskosten, Pensionsrückstellungen, Sonstige Personalkosten, Abschreibungen, Sonstiger Aufwand, Ertrag, Erträge aus Wertpapieren, Zinsen und ähnliche Aufwendungen, "
-				+ "Außerordentliche Erträge, Außerordentliche Aufwendungen, Ertragssteuern, Abschreibungen, Pensionsrückstellungen");
+		gkvText = new Label ("Das Gesamtkostenverfahren (GKV) ist ein Verfahren zur Aufstellung der Gewinn- und Verlustrechnung (GuV). "
+				+ "Nach dem Handelsgesetzbuch kann entweder das GKV oder das Umsatzkostenverfahren (UKV) angewendet werden. "
+				+ "Das GKV folgt einer Produktionserfolgsrechnung. In die Abgrenzung der Erträge und Aufwendungen fließen alle in der Periode "
+				+ "produzierten Mengeneinheiten ein. Erhöhungen des Bestands an fertigen und unfertigen Erzeugnissen werden als Erträge erfasst. "
+				+ "Die entsprechenden Aufwendungen werden über die produzierten Mengeneinheiten ausgewiesen. Aufwendungen werden nach ihren "
+				+ "Arten untergliedert (Material, Personal, Abschreibungen).");
 		gkvText.addStyleName("wrap");
 		gkvText.addStyleName("descriptionText");
 		iconGKV = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));

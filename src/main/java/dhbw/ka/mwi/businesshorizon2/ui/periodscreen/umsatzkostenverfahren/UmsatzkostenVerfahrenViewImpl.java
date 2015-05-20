@@ -81,6 +81,14 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 		private Table capitalStockInput;
 		
 		private ArrayList<TextField> allTextFields = new ArrayList<TextField>();
+
+		private Table cashFlowValues;
+
+		private Label gap4;
+
+		private Label headerLabel3;
+
+		private Label gap5;
         
         private static final Logger logger = Logger.getLogger("UmsatzkostenVerfahrenViewImpl.class");
 
@@ -105,23 +113,33 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
          */
 		private void generateUi() {
 			logger.debug("GenerateUi aufgerufen");
-			headerLabel = new Label("Eingabe der Werte zur Cash-Flow-Berechnung (in EUR)");
+			headerLabel = new Label("Eingabe der Werte zur Jahresüberschuss-Berechnung (in EUR)");
 			headerLabel2 = new Label("Eingabe des Fremdkapitals (in EUR)");
+			headerLabel3 = new Label("Eingabe der Werte zur Cash-Flow-Berechnung (in EUR)");
 			gap = new Label();
 			inputTable = new Table();
 			gap2 = new Label();
 			gap3 = new Label();
+			gap4 = new Label();
+			gap5 = new Label();
+			cashFlowValues = new Table();
 			capitalStockInput = new Table();
 			expandingGap = new Label();
 
 			headerLabel.setStyleName("periodHeaderLabel");
 			headerLabel2.setStyleName("periodHeaderLabel");
-			gap.setHeight("15px");
+			headerLabel3.setStyleName("periodHeaderLabel");
+			gap.setHeight("5px");
 			gap2.setHeight("15px");
-			gap3.setHeight("15px");
+			gap3.setHeight("5px");
+			gap4.setHeight("15px");
+			gap5.setHeight("5px");
 			inputTable.setWidth(100, UNITS_PERCENTAGE);
 			inputTable.setStyleName("fcfTable");
-			inputTable.setPageLength(16);
+			inputTable.setPageLength(14);
+			cashFlowValues.setWidth(100, UNITS_PERCENTAGE);
+			cashFlowValues.setStyleName("fcfTable");
+			cashFlowValues.setPageLength(2);
 			capitalStockInput.setWidth(100, UNITS_PERCENTAGE);
 			capitalStockInput.setStyleName("fcfTable");
 			capitalStockInput.setPageLength(1);
@@ -131,8 +149,12 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			addComponent(gap);
 			addComponent(inputTable);
 			addComponent(gap2);
-			addComponent(headerLabel2);
+			addComponent(headerLabel3);
 			addComponent(gap3);
+			addComponent(cashFlowValues);
+			addComponent(gap4);
+			addComponent(headerLabel2);
+			addComponent(gap5);
 			addComponent(capitalStockInput);
 //			addComponent(expandingGap);
 //
@@ -173,15 +195,20 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 				logger.debug("Property "+o+" wurde entfernt");
 				inputTable.removeContainerProperty(o);
 				capitalStockInput.removeContainerProperty(o);
+				cashFlowValues.removeContainerProperty(o);
 			}
 
 			inputTable.removeAllItems();
 			capitalStockInput.removeAllItems();
+			cashFlowValues.removeAllItems();
 
 			inputTable.addContainerProperty("first", String.class, null);
 			inputTable.setColumnHeader("first", "");
+			cashFlowValues.addContainerProperty("first", String.class, null);
+			cashFlowValues.setColumnHeader("first", "");
 			capitalStockInput.addContainerProperty("first", String.class, null);
 			capitalStockInput.setColumnHeader("first", "");
+			
 			if(project.getProjectInputType().isStochastic()){
 				createStochasticTable(pastPeriods, baseYear, pastYear);
 			}else if(project.getProjectInputType().isDeterministic()){
@@ -234,23 +261,23 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			Item row14 = inputTable.getItem(itemId);
 			row14.getItemProperty("first").setValue("Steueraufwand");
 			
-			itemId = inputTable.addItem();
-			Item row15 = inputTable.getItem(itemId);
-			row15.getItemProperty("first").setValue("Abschreibungen");
-			itemId = inputTable.addItem();
-			Item row16 = inputTable.getItem(itemId);
-			row16.getItemProperty("first").setValue("Brutto-Investitionen");
-			
 			Object capitalItemId = capitalStockInput.addItem();
 			Item rowCapital = capitalStockInput.getItem(capitalItemId);
 			rowCapital.getItemProperty("first").setValue("Fremdkapital");
 			
+			Object cashFlowItemId = cashFlowValues.addItem();
+			Item rowCashflow = cashFlowValues.getItem(cashFlowItemId);
+			rowCashflow.getItemProperty("first").setValue("Abschreibungen");
+			cashFlowItemId = cashFlowValues.addItem();
+			Item rowCashflow2 = cashFlowValues.getItem(cashFlowItemId);
+			rowCashflow2.getItemProperty("first").setValue("Brutto-Investitionen");
+			
 			if(project.getProjectInputType().isStochastic()){
 				currYear = pastYear;
-				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16);
+				currYear = createTextFields((pastPeriods+1), currYear, rowCapital, rowCashflow, rowCashflow2, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14);
 			}else if(project.getProjectInputType().isDeterministic()){
 				currYear = baseYear;
-				createTextFields(periodsToForecast, currYear, rowCapital, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16);
+				createTextFields(periodsToForecast, currYear, rowCapital, rowCashflow, rowCashflow2, row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14);
 			}
 			
 		}
@@ -258,7 +285,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 		/**
          * @author Marco Glaser, Tobias Lindner
          */
-		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14, Item row15, Item row16) {
+		private int createTextFields(int pastPeriods, int currYear, Item capitalRow, Item rowCashflow, Item rowCashflow2, Item row1, Item row2, Item row3, Item row4, Item row5, Item row6, Item row7, Item row8, Item row9, Item row10, Item row11, Item row12, Item row13, Item row14) {
 			for(int i = 0; i < pastPeriods; i++){
 				final int year = currYear;
 				
@@ -820,8 +847,9 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 				row12.getItemProperty(currYear).setValue(field12);
 				row13.getItemProperty(currYear).setValue(field13);
 				row14.getItemProperty(currYear).setValue(field14);
-				row15.getItemProperty(currYear).setValue(field15);
-				row16.getItemProperty(currYear).setValue(field16);
+				
+				rowCashflow.getItemProperty(currYear).setValue(field15);
+				rowCashflow2.getItemProperty(currYear).setValue(field16);
 				
 				allTextFields.add(field0);
 				allTextFields.add(field1);
@@ -855,6 +883,8 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			for(int i = 0; i < periodsToForecast; i++){
 				inputTable.addContainerProperty(currYear, TextField.class, null);
 				inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
+				cashFlowValues.addContainerProperty(currYear, TextField.class, null);
+				cashFlowValues.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
 				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
@@ -871,6 +901,8 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			for(int i = 0; i < pastPeriods; i++){
 				inputTable.addContainerProperty(currYear, TextField.class, null);
 				inputTable.setColumnAlignment(currYear, Table.ALIGN_CENTER);
+				cashFlowValues.addContainerProperty(currYear, TextField.class, null);
+				cashFlowValues.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
 				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
@@ -878,6 +910,8 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 			}
 			inputTable.addContainerProperty(baseYear, TextField.class, null);
 			inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
+			cashFlowValues.addContainerProperty(baseYear, TextField.class, null);
+			cashFlowValues.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
 			capitalStockInput.addContainerProperty(baseYear, TextField.class, null);
 			capitalStockInput.setColumnAlignment(baseYear, Table.ALIGN_CENTER);
 		}
