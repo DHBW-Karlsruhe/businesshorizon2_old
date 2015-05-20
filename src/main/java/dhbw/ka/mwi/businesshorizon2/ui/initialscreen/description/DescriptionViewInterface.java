@@ -2,10 +2,6 @@
  * BusinessHorizon2
  *
  * Copyright (C) 
- * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
- * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
- * Volker Meier
  * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
@@ -38,13 +34,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen
  */
 public interface DescriptionViewInterface extends View {
 	
-	/**
-	 * Diese Methode wird vom Presenter aufgerufen und ändert die Anzeige Texte.
-	 * 
-	 * @author Tobias Lindner
-	 * @param screen
-	 * 		der aktuelle Schritt
-	 */
 	public void setTexts(screen e);
 
 }

@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -150,7 +150,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		String heightQuestionIcon = "20px";
 
 		// Basisjahr
-
 		labelBasisYear = new Label("Basisjahr");
 		gridLayout.addComponent(labelBasisYear, 0, 1);
 		
@@ -359,13 +358,11 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		gridLayout.removeComponent(textfieldNumPeriodsToForecast_deterministic);
 		gridLayout.removeComponent(questionIconNumPeriods_deterministic);
 	}
-	
-	
 
 	/**
 	 * Gibt eine Fehlermeldung an den Benutzer aus.
 	 * 
-	 * @author Christian Scherer
+	 * @author Christian Scherer, Tobias Lindner
 	 * @param message
 	 *            Fehlermeldung die der Methode zur Ausgabe uebergeben wird
 	 */
@@ -373,75 +370,6 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 	public void showErrorMessage(String message) {
 		getWindow().showNotification((String) "", message,
 				Notification.TYPE_WARNING_MESSAGE);
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldNumPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activatePeriodsToForecast(boolean enabled) {
-		this.textfieldNumPeriodsToForecast.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld
-	 * 'textfieldNumPeriodsToForecast_deterministic' aus.
-	 * 
-	 * @author Annika Weis
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activatePeriodsToForecast_deterministic(boolean enabled) {
-		this.textfieldNumPeriodsToForecast_deterministic.setEnabled(enabled);
-
-	}
-
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldNumSpecifiedPastPeriods' aus.
-	 * 
-	 * @author Marcel Rosenberger
-	 * @param enabled
-	 *            true aktiviert die Komponente, false deaktiviert (graut aus)
-	 *            die Komponenten
-	 */
-	@Override
-	public void activateSpecifiedPastPeriods(boolean enabled) {
-		this.textfieldNumSpecifiedPastPeriods.setEnabled(enabled);
-	}
-	
-	/**
-	 * Diese Methode graut das Textfeld 'textfieldNumPastPeriods' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateRelevantPastPeriods(boolean enabled) {
-		this.textfieldNumPastPeriods.setEnabled(enabled);
-	}
-
-	/**
-	 * Diese Methode graut die ComboBox 'comboBoxIteraions' aus.
-	 * 
-	 * @author Christian Scherer
-	 * @param enabled
-	 *            true aktiviert den Kombonenten, false deaktiviert (graut aus)
-	 *            den Komponenten
-	 */
-	@Override
-	public void activateIterations(boolean enabled) {
-		this.textfieldIterations.setEnabled(enabled);
-
 	}
 
 	/**
@@ -562,17 +490,17 @@ public class ParameterInputViewImpl extends VerticalLayout implements ParameterI
 		this.textfieldIterations.setValue(iterations);
 	}
 	
-	/**
-	 * Setzt den Wert des Texfelds 'Anzahl anzugebender, vergangener Perioden'
-	 * 
-	 * @author Marcel Rosenberger
-	 * @param specifiedPastPeriods
-	 *            Anzahl einbezogener, vergangener Perioden
-	 */
-	@Override
-	public void setSpecifiedPastPeriods(String specifiedPastPeriods) {
-		this.textfieldNumSpecifiedPastPeriods.setValue(specifiedPastPeriods);
-	}
+//	/**
+//	 * Setzt den Wert des Texfelds 'Anzahl anzugebender, vergangener Perioden'
+//	 * 
+//	 * @author Marcel Rosenberger
+//	 * @param specifiedPastPeriods
+//	 *            Anzahl einbezogener, vergangener Perioden
+//	 */
+//	@Override
+//	public void setSpecifiedPastPeriods(String specifiedPastPeriods) {
+//		this.textfieldNumSpecifiedPastPeriods.setValue(specifiedPastPeriods);
+//	}
 
 	/**
 	 * Setzt den Wert des Texfelds 'Anzahl einbezogener, vergangener Perioden'

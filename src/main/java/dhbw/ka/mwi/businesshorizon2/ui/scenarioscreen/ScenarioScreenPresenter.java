@@ -39,7 +39,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ValidationEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des

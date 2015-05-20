@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,13 +41,13 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ValidationEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowDirektViewEvent;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  *
- * @author Daniel Dengler, Tobias Lindner
+ * @author Daniel Dengler, Tobias Lindner, Marco Glaser
  *
  */
 
@@ -83,8 +83,6 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		//                shownProperties = new String[] { "freeCashFlow", "capitalStock" };
-		//                germanNamesProperties = new String[] { "Cash Flow", "Fremdkapital" };
 		logger.debug("Initialisierung beendet");
 	}
 
@@ -92,19 +90,11 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 	/**
 	 * Faengt das ShowEvent ab und sorgt dafuer das die View die benoetigten
 	 * Eingabefelder erstellt und mit den bisherigen Daten befuellt.
-	 * <p>
-	 * Hierzu wird die Periode aus dem Event genommen und auf ihre Propertys mit
-	 * vorhandenen Gettern&Settern geprueft. Die gefundenen Propertys werden als
-	 * Eingabefelder zur verfuegung gestellt.
-	 * <p>
-	 * Wichtig ist das Stringarray "shownProperties". Dieses enthaelt die Namen
-	 * der anzuzeigenden Felder.
 	 *
-	 * @param event
+	 *@author Marco Glaser
 	 */
 	@EventHandler
 	public void onShowEvent(ShowDirektViewEvent event) {
-		//                processEvent(event);
 		getView().generateTable();
 	}
 
@@ -234,79 +224,6 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 	}
 	
 	/**
-	 * Wirft das entsprechende ValidationEvent.
-	 * 
-	 * @author Tobias Lindner
-	 */
-//	public void setValid () {
-//		eventBus.fireEvent(new ValidationEvent(true));
-//		logger.debug("ValidationEvent(true) geworfen"); 
-//	}
-//	
-//	/**
-//	 * Wirft das entsprechende ValidationEvent.
-//	 * 
-//	 * @author Tobias Lindner
-//	 */
-//	public void setInvalid () {
-//		eventBus.fireEvent(new ValidationEvent(false));
-//		logger.debug("ValidationEvent(true) geworfen");
-//	}
-	
-//	/**
-//	 * Die Methode überprüft, ob im Perioden Objekt alle Werte zu Cashflow/Ausschüttung und Capital Stock ausgefüllt wurden
-//	 * 
-//	 * @author Tobias Lindner
-//	 */
-//	public void checkValid () {
-//		int fehlercounter = 0;
-//
-		//Check, ob zu allen Jahren Cashflows oder Ausschüttung angegeben ist.
-//		double value = 0.0;
-//		project = projectProxy.getSelectedProject();
-//		stochastic = project.getProjectInputType().isStochastic();
-//		if(stochastic){
-//			periodContainer = (CashFlowPeriodContainer) project.getStochasticPeriods();
-//		}
-//		else{
-//			periodContainer = (CashFlowPeriodContainer) project.getDeterministicPeriods();
-//		}
-//
-//		if(periodContainer != null){
-//			CashFlowPeriod period;
-//			TreeSet<CashFlowPeriod> periods = periodContainer.getPeriods();
-//			Iterator<CashFlowPeriod> it = periods.iterator();
-//			while(it.hasNext()){
-//				period = it.next();
-//
-//				value = period.getFreeCashFlow();
-//				if (value == 0.0) {
-//					fehlercounter++;
-//				}
-//				
-//				value = period.getCapitalStock();
-//				if (value == 0.0) {
-//					fehlercounter++;
-//				}
-//			}
-//		}
-//		
-//		logger.debug("fehlercounter=" + fehlercounter);
-//		
-//		
-//		if (fehlercounter == 0) {
-//			eventBus.fireEvent(new ValidationEvent(true));
-//			logger.debug("ValidationEvent(true) geworfen"); 
-//		}
-//		
-//		else {
-//			eventBus.fireEvent(new ValidationEvent(false));
-//			logger.debug("ValidationEvent(false) geworfen");
-//		}
-//		
-//	}
-	
-	/**
 	 * Die Methode überrüft, ob die Eingaben in allen Textfeldern korrekt sind.
 	 * @author Tobias Lindner
 	 * 
@@ -331,9 +248,7 @@ public class DirektPresenter extends Presenter<DirektViewInterface> {
 				return false;
 			}
 		}
-
 	}
-
 }
 
 

@@ -2,7 +2,7 @@
  * BusinessHorizon2
  *
  * Copyright (C) 
- * 2014-2015 Tobias Lindner
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle;
 
 import com.mvplite.view.View;
@@ -40,39 +39,14 @@ public interface ButtonsMiddleViewInterface extends View {
 	
 	public void setInitialButtons();
 	
-	/**
-	 * Diese Methode passt die Beschriftung des mittleren Buttons an FCF an.
-	 * 
-	 * @author Tobias Lindner
-	 */
 	public void setFCFButton();
 	
-	/**
-	 * Diese Methode passt die Beschriftung des mittleren Buttons an GKV an.
-	 * 
-	 * @author Tobias Lindner
-	 */
 	public void setGKVButton();
 	
-	/**
-	 * Diese Methode passt die Beschriftung des mittleren Buttons an UKV an.
-	 * 
-	 * @author Tobias Lindner
-	 */
 	public void setUKVButton();
 	
-	/**
-	 * Diese Methode passt die Beschriftung des mittleren Buttons für den ScenarioScreen an.
-	 * 
-	 * @author Tobias Lindner
-	 */
 	public void setScenarioButton();
 	
-	/**
-	 * Diese Methode passt die Beschriftung des mittleren Buttons für den Result an.
-	 * 
-	 * @author Tobias Lindner
-	 */
 	public void setResultButton();
 	
 	public void hideStepButton();

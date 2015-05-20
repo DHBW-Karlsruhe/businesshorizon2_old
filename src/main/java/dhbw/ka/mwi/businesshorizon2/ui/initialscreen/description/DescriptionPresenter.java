@@ -2,10 +2,6 @@
  * BusinessHorizon2
  *
  * Copyright (C) 
- * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
- * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
- * Volker Meier
  * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
@@ -37,7 +33,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 
 /**
- * 
+ * Dies ist der Presenter der Beschreibungs-View auf der rechten Seite, die bei Auswahl des entsprechenden Buttons in der Mitte angezeigt wird.
  *  
  * @author Tobias Lindner
  * 
@@ -82,6 +78,8 @@ public class DescriptionPresenter extends Presenter<DescriptionViewInterface> {
 	
 	/**
 	 * Diese Methode sorgt für die Anpassung der Texte durch Aufruf der entsprechenden View Methode.
+	 * 
+	 * @author Tobias Lindner
 	 * 
 	 * @param event
 	 * 		ShowDescriptionEvent

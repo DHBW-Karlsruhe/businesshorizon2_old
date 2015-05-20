@@ -2,10 +2,6 @@
  * BusinessHorizon2
  *
  * Copyright (C) 
- * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
- * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
- * Volker Meier
  * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
@@ -32,7 +28,6 @@ import com.mvplite.event.Event;
  * @author Tobias Lindner
  * 
  */
-
 public class ShowDescriptionEvent extends Event{
 	private static final long serialVersionUID = 1L;
 

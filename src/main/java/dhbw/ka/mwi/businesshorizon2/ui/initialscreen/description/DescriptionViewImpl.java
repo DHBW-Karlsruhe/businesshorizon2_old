@@ -2,10 +2,6 @@
  * BusinessHorizon2
  *
  * Copyright (C) 
- * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
- * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
- * Volker Meier
  * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
@@ -22,7 +18,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description;
 
 import javax.annotation.PostConstruct;
@@ -119,9 +114,7 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		setStyleName("projectDetailsLayout");
 		info = new Label ("setTexts nicht ausgeführt");
 		addComponent(info);
-
-	}
-	
+	}	
 	
 	/**
 	 * Diese Methode wird vom Presenter aufgerufen und ändert die Anzeige Texte.
@@ -143,8 +136,7 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 			addComponent(getEingabeMethodeInfo());
 			Label gap2 = new Label();
 			gap2.setHeight(10, UNITS_PIXELS);
-			addComponent(getBerechnungsMethodeInfo());
-			
+			addComponent(getBerechnungsMethodeInfo());		
 			break;
 			
 		case PARAMETER:
@@ -169,6 +161,13 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		}
 	}
 	
+	/**
+	 * Diese Methode stellt die BeschreibungsTexte für die Prognosemethoden zusammen und liefert Sie in einem VerticalLayout angeordnet zurück.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @return VerticalLayout
+	 */
 	private VerticalLayout getPrognoseMethodenInfos () {
 		VerticalLayout vl = new VerticalLayout();
 		infoText0 = new Label ("<h1>Prognosemethode</h1>");
@@ -197,6 +196,13 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		return vl;
 	}
 	
+	/**
+	 * Diese Methode stellt die BeschreibungsTexte für die Eingabemethoden zusammen und liefert Sie in einem VerticalLayout angeordnet zurück.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @return VerticalLayout
+	 */
 	private VerticalLayout getEingabeMethodeInfo () {
 		VerticalLayout vl = new VerticalLayout();
 		headline0 = new Label ("<h1>Eingabemethode</h1>");
@@ -230,6 +236,13 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		return vl;
 	}
 	
+	/**
+	 * Diese Methode stellt die BeschreibungsTexte für die Berechnungsmethoden zusammen und liefert Sie in einem VerticalLayout angeordnet zurück.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 * @return VerticalLayout
+	 */
 	private VerticalLayout getBerechnungsMethodeInfo () {
 		VerticalLayout vl = new VerticalLayout();
 		headline0 = new Label ("<h1>Berechnungsmethoden</h1>");

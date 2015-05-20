@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input;
+package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle;
 
 import com.mvplite.event.Event;
 
@@ -45,6 +45,4 @@ public class ValidationEvent extends Event {
 	public boolean getValid () {
 		return this.valid;
 	}
-	
-
 }

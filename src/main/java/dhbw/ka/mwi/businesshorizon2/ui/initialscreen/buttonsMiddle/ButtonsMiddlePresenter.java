@@ -35,7 +35,6 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
 
 /**
  * Dies ist der Presenter der mittleren View. Er ist für die Anpassung der ButtonLayouts, sowie der TopBarButtons zuständig.
@@ -96,6 +95,12 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 //		
 //	}
 	
+	/**
+	 * Dieser EventHandler passt die Button nach den Erfordernissen des Periodscreen an.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 */
 	@EventHandler
 	public void onShowPeriodScreen (ShowProcessStepEvent event) {
 		if (event.getScreen().equals(screen.PERIODS)) {
@@ -126,6 +131,12 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 		}
 	}
 	
+	/**
+	 * Dieser EventHandler passt die Button nach den Erfordernissen des Scenariosscreens an.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 */
 	@EventHandler
 	public void onShowScenarioScreen (ShowProcessStepEvent event) {
 		if (event.getScreen().equals(screen.SCENARIOS)) {
@@ -133,6 +144,11 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 		}
 	}
 	
+	/**
+	 * Diese Eventhandler setzt den Weiterbutton ggfs. auf Disabled bzw. Enabled.
+	 * @author Tobias Lindner
+	 *
+	 */
 	@EventHandler
 	public void onParameterValidation (ValidationEvent event) {
 		if (event.getValid()) {
@@ -144,6 +160,12 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 		}
 	}
 	
+	/**
+	 * Dieser EventHandler passt die Button nach den Erfordernissen des Resultscreens an.
+	 * 
+	 * @author Tobias Lindner
+	 * 
+	 */
 	@EventHandler
 	public void onShowResultScreen (ShowProcessStepEvent event) {
 		if (event.getScreen().equals(screen.RESULT)) {
@@ -151,26 +173,50 @@ public class ButtonsMiddlePresenter extends Presenter<ButtonsMiddleViewInterface
 		}
 	}
 
+	/**
+	 * Methode für den Listener des obersten Buttons.
+	 * @author Tobias Lindner
+	 */
 	public void showParameterScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.PARAMETER));
 	}
 	
+	/**
+	 * Methode für den Listener des obersten Buttons.
+	 * @author Tobias Lindner
+	 */
 	public void showMethodScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));
 	}
 	
+	/**
+	 * Methode für den Listener des obersten Buttons.
+	 * @author Tobias Lindner
+	 */
 	public void showPeriodScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.PERIODS));
 	}
 	
+	/**
+	 * Methode für den Listener des obersten Buttons.
+	 * @author Tobias Lindner
+	 */
 	public void showScenarioScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.SCENARIOS));
 	}
 	
+	/**
+	 * Methode für den Listener des obersten Buttons.
+	 * @author Tobias Lindner
+	 */
 	public void showResultScreen() {
 		eventBus.fireEvent(new ShowProcessStepEvent(screen.RESULT));
 	}
 	
+	/**
+	 * Methode für den Listener des obersten Buttons.
+	 * @author Tobias Lindner
+	 */
 	public void showDescription () {
 		eventBus.fireEvent(new ShowDescriptionEvent());
 	}

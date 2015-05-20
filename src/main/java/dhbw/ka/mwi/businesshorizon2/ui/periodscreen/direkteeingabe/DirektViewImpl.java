@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,13 +77,10 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 
 	/**
 	 * Dies ist der Konstruktor, der von Spring nach der Initialierung der
-	 * Dependencies aufgerufen wird. Er registriert lediglich sich selbst als
-	 * einen EventHandler.
+	 * Dependencies aufgerufen wird. 
 	 * 
 	 * @author Daniel Dengler
 	 */
-
-
 	@PostConstruct
 	public void init() {
 		setSizeFull();
@@ -112,7 +109,6 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 		addComponent(expandingGap);
 
 		setExpandRatio(expandingGap, 1.0f);
-
 	}
 
 	public void setProject(Project project){
@@ -176,6 +172,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 	}
 	
 	/**
+	 * Generiert die Textfelder.
 	 * 
 	 * @author Marco Glaser, Tobias Lindner
 	 * 
@@ -211,10 +208,6 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 					}
 						
 					presenter.setCashFlowValue(dValue, year);
-				
-					
-//					presenter.checkValid();
-
 				}
 
 			});
@@ -251,8 +244,6 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 						presenter.validateDirectInput();
 					}
 					presenter.setCapitalStockValue(dValue, year);
-//					presenter.checkValid();
-					
 				}
 			});
 			field2.setValue(presenter.getCapitalStock(year));

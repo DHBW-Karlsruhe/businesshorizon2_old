@@ -2,11 +2,7 @@
  * BusinessHorizon2
  *
  * Copyright (C) 
- * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
- * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
- * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
- * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +18,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle;
 
 import javax.annotation.PostConstruct;
@@ -138,6 +133,11 @@ ButtonsMiddleViewInterface {
 
 	}
 	
+	/**
+	 * Setzt die Button aus den Initialen Zustand.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void setInitialButtons() {
 		this.button1.setDetails("./images/icons/newIcons/1418831828_editor_memo_note_pad-128.png", "Methodenauswahl", new LayoutClickListener() {
 
@@ -184,7 +184,6 @@ ButtonsMiddleViewInterface {
 
 	}
 
-
 	/**
 	 * Ändert die Buttons für die Eingabe der Deterministischen Parameter.
 	 * 
@@ -209,10 +208,8 @@ ButtonsMiddleViewInterface {
 		});
 		
 		this.button2.setVisible(true);
-
 	}
-	
-	
+		
 	/**
 	 * Diese Methode passt die Beschriftung des mittleren Buttons an FCF an.
 	 * 
@@ -278,7 +275,6 @@ ButtonsMiddleViewInterface {
 		});
 
 		this.button2.setVisible(true);
-
 	}
 	
 	/**
@@ -300,7 +296,6 @@ ButtonsMiddleViewInterface {
 		});
 		
 		this.button2.setVisible(true);
-
 	}
 	
 	/**
@@ -322,13 +317,22 @@ ButtonsMiddleViewInterface {
 		});
 		
 		this.button2.setVisible(false);
-
 	}
 	
+	/**
+	 * Diese Methode setzt den untersten Button auf unsichtbar.
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void hideStepButton(){
 		button3.setVisible(false);
 	}
-
+	
+	/**
+	 * Hinterlegt beim Weiter-Button den entsprechenden Listener.
+	 * 
+	 * @author Marco Glaser, Tobias Lindner
+	 */
 	public void setGoToStep(int step){
 		LayoutClickListener lcl;
 		switch (step) {
@@ -421,10 +425,18 @@ ButtonsMiddleViewInterface {
 		return lcl;
 	}
 	
+	/**
+	 * Aktiviert den Weiter-Button
+	 * 
+	 * @author Tobias Lindner
+	 */
 	public void enableNext () {
 		button3.setEnabled(true);
 	}
 	
+	/**
+	 * Deaktiviert den Weiter-Button
+	 */
 	public void disableNext() {
 		button3.setEnabled(false);
 	}
