@@ -401,7 +401,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -441,7 +441,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -485,7 +485,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -535,7 +535,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -583,9 +583,9 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		notImported = persistenceService.importAllProjects(user, event.getfileName());
 		
 //		//Ausgabe der Fehlermeldung, falls nicht alle Projekte importiert werden konnten
-//		if (notImported != null) {
-//			getView().showErrorMessage(notImported);
-//		}
+		if (notImported != null) {
+			getView().showNotification(notImported);
+		}
 		
 		//Aktualisieren der Antwort
 		eventBus.fireEvent(new ShowProjectListEvent (user));
