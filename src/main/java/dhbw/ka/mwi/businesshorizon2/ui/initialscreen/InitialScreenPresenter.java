@@ -35,10 +35,8 @@ import org.vaadin.dialogs.ConfirmDialog;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.mvplite.view.View;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.VerticalLayout;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
@@ -54,7 +52,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddle
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.ShowInfosEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectCreationButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectEditButtonsEvent;
@@ -62,12 +59,9 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalcul
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ShowProjectDetailsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectRemoveEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.methodscreen.MethodScreenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.PeriodScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.ResultScreenViewInterface;
@@ -80,7 +74,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen.ScenarioScreenViewInterfac
  * setzen. Somit ist es notwenig, dass er fuer jedes Anzuzeigende (Teil-)Fenster
  * einen entsprechenden EventHandler fuer den jeweiligen Show*Event registriert.
  *
- * @author Christian Scherer, Marcel Rosenberger, Marco Glaser
+ * @author Christian Scherer, Marcel Rosenberger, Marco Glaser, Tobias Lindner
  *
  */
 
@@ -173,15 +167,10 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void onShowInitialScreen(ShowInitialScreenViewEvent event) {
 		logger.debug("ShowInitialScreenViewEvent empfangen");
 		user = userProxy.getSelectedUser();
-		//getView().showUserData(user.getFullName());
 		getView().showView(projectListView, projectDetailsView);
 		getView().clearProgressBar();
 		projectDetailsView.clearProjectDetails();
-		logger.debug("Views mit Projekt und Infoview geladen");
 		eventBus.fireEvent(new ShowProjectListEvent(user));
-		logger.debug("ShowProjectListEvent gefeuert");
-		//eventBus.fireEvent(new ShowInfosEvent());
-		logger.debug("ShowInfosEvent gefeuert");
 
 	}
 
@@ -189,18 +178,13 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	public void doLogout() {
 		//speichert die Projekte in der externen Datei
 		persistenceService.saveProjects();
-		logger.debug("Projekte gespeichert");
 		try {
 			//ruft doLogout im Authentication Service auf und entfernt User aus allen eingeloggten Usern
 			authenticationService.doLogout(userProxy.getSelectedUser());
-			logger.debug("LogoutEvent gefeuert");
 			eventBus.fireEvent(new LogoutEvent());
 		} catch (UserNotLoggedInException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 
 	}
 
@@ -213,15 +197,13 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	 */
 	public void removeProject(Project project) {
 		persistenceService.removeProject(this.user, project);
-		logger.debug("Projekt aus User entfernt");
 		projectListView.setProjects(user.getProjects());
 		if (user.getProjects().size()==0) {
 			projectProxy.setSelectedProject(null);
 		}
-		//		eventBus.fireEvent(new ProjectRemoveEvent(project));
+
 		getView().showView(projectListView, projectDetailsView);
 		eventBus.fireEvent(new ShowProjectDetailsEvent());
-		logger.debug("ProjekteRemove Event gefeuert");
 
 	}
 
@@ -310,13 +292,12 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			if (projectProxy.getSelectedProject().getProjectInputType().isStochastic()) {
 				buttonsMiddleView.setStochasticParameter();
 				getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Stochastische Methode", "Bitte geben Sie die Parameter ein"});
-				logger.debug("Stochastische Buttons gesetzt");
 			}
 			
 			else {
 				buttonsMiddleView.setDeterministicParameter();
 				getView().setPageDescription("./images/icons/newIcons/1418831298_common_calendar_month-128.png", "Schritt 2", new String[] {"Deterministische Methode", "Bitte geben Sie die Parameter ein"});
-				logger.debug ("Deterministische Buttons gesetzt");
+				
 			}
 			getView().showView(buttonsMiddleView, parameterInputView);
 			getView().setProgress("./images/progressBar/progress_2.png");
@@ -373,6 +354,32 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 
 		});
+		
+		getView().setTopButton(new TopBarButton("homeButton", "zurück zur Startseite"), 3, new ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Möchten Sie zur Startseite zurückkehren?",
+						"Ja", "Nein", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+				
+			}
+			
+		});
 	}
 	
 	private void setScreen4Buttons(){
@@ -383,6 +390,32 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			@Override
 			public void buttonClick(ClickEvent event) {
 				eventBus.fireEvent(new ShowProcessStepEvent(screen.PERIODS));
+
+			}
+
+		});
+		
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 3, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
 
 			}
 
@@ -401,6 +434,36 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			}
 
 		});
+		
+		getView().setTopButton(new TopBarButton("cancelButton", "Abbrechen"), 3, new ClickListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
+						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClose(ConfirmDialog dialog) {
+						if (dialog.isConfirmed()) {
+							eventBus.fireEvent(new ShowInitialScreenViewEvent(user));
+							eventBus.fireEvent(new ShowInitialTopButtonsEvent());
+						} else {
+
+						}
+					}
+				});
+
+			}
+
+		});
+		
+		
+		
+		
 	}
 
 	private void setScreen2Buttons() {
@@ -422,7 +485,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -452,7 +515,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 			@Override
 			public void buttonClick(ClickEvent event) {
 				persistenceService.saveProjects();
-
+				getView().showInfoNotification("Projekt wurde gespeichert.");
 			}
 
 		});
@@ -462,8 +525,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-
-
+				getView().showNotification("Diese Funktion ist noch nicht implementiert");
 			}
 
 		});
@@ -473,7 +535,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren!",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch können Eingaben verloren gehen!",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -519,16 +581,14 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 		logger.debug("ImportUploadFinishedEvent empfangen");
 		
 		notImported = persistenceService.importAllProjects(user, event.getfileName());
-		logger.debug ("PersistenceService Import-Funktion im Presenter aufgerufen");
 		
 //		//Ausgabe der Fehlermeldung, falls nicht alle Projekte importiert werden konnten
-//		if (notImported != null) {
-//			getView().showErrorMessage(notImported);
-//		}
+		if (notImported != null) {
+			getView().showNotification(notImported);
+		}
 		
 		//Aktualisieren der Antwort
 		eventBus.fireEvent(new ShowProjectListEvent (user));
-		logger.debug ("ShowProjectListEvent geworfen");
 	}
 	
 	/**

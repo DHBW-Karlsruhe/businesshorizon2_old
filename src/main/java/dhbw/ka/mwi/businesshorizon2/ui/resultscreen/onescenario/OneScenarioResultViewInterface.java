@@ -29,11 +29,8 @@ import org.vaadin.vaadinvisualizations.ColumnChart;
 import org.vaadin.vaadinvisualizations.LineChart;
 
 import com.mvplite.view.View;
-import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 public interface OneScenarioResultViewInterface extends View {
@@ -55,7 +52,7 @@ public interface OneScenarioResultViewInterface extends View {
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
 
-	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
+//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
 
 	public void setCompanyValue(String valueOf);
 

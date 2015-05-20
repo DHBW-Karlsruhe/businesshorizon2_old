@@ -23,18 +23,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+package dhbw.ka.mwi.businesshorizon2.ui;
 
-package dhbw.ka.mwi.businesshorizon2.ui.parameterScreen;
-
-import com.mvplite.event.Event;
+import com.mvplite.view.View;
 
 /**
- * Der Event, der zum Anzeigen des Parameterscreen geworfen.
+ * Dieses Interface zeigt die von bezueglich der Masken zur Verfuegung
+ * stehenden Methoden, mit denen der Presenter mit der View kommunizieren kann.
  * 
- * @author Tobias Lindner
- * 
+ * @author Julius Hacker
+ *
  */
-public class ShowParameterScreenViewEvent extends Event {
-	private static final long serialVersionUID = 1L;
-
+public interface ContentView extends View {
 }

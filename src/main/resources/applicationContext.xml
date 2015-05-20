@@ -117,86 +117,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewImpl"
 		scope="session" />
 
-	<!-- Process -->
-	<bean name="processPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessPresenter"
-		scope="session" />
-	<bean name="processView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl" scope="session" />
-
-	<!-- Process-Navigation -->
-	<bean name="navigationPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationPresenter"
-		scope="session" />
-	<bean name="navigationView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationViewImpl"
-		scope="session" />
-
-
-	<!-- ContentContainer -->
-	<bean name="contentContainerPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerPresenter"
-		scope="session" />
-	<bean name="contentContainerView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentContainerViewImpl"
-		scope="session" />
-
-
-
-	<!-- Methodenmaske -->
-	<bean name="methodPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodPresenter"
-		scope="session" />
-	<bean name="methodView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.method.MethodViewImpl"
-		scope="session" />
-
-
-
-	<!-- Periodenmaske -->
-	<bean name="periodPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodPresenter"
-		scope="session" />
-	<bean name="periodView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.PeriodViewImpl"
-		scope="session" />
-
-	<!-- Periode-Timeline -->
-	<bean name="timelinePresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelinePresenter"
-		scope="session" />
-	<bean name="timelineView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline.TimelineViewImpl"
-		scope="session" />
-
-	<!-- Periode-DirektEingabe -->
-	<bean name="direktPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektPresenter"
-		scope="session" />
-	<bean name="direktView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.direkteeingabe.DirektViewImpl"
-		scope="session" /> 
-
-
-<!-- 	 Periode-Gesamtkostenverfahren -->
-	<bean name="gesamtkostenVerfahrenPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenPresenter"
-		scope="session" />
-	<bean name="gesamtkostenVerfahrenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.gesamtkostenverfahren.GesamtkostenVerfahrenViewImpl"
-		scope="session" />
-
-
-
-	<!-- Periode-Umsatzkostenverfahren -->
-	<bean name="umsatzkostenVerfahrenPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenPresenter"
-		scope="session" />
-	<bean name="umsatzkostenVerfahrenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.period.input.umsatzkostenverfahren.UmsatzkostenVerfahrenViewImpl"
-		scope="session" /> 
-
-
 	<!-- Parameter-Input -->
 	<bean name="parameterInputPresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputPresenter"
@@ -205,34 +125,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputViewImpl"
 		scope="session" />
 
-
-
-	<!-- Szenarien-Maske -->
-	<bean name="scenarioPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioPresenter"
-		scope="session" />
-	<bean name="scenarioView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.scenario.ScenarioViewImpl"
-		scope="session" />
-
-
-
-	<!-- Ausgabe-Maske -->
-	<bean name="outputPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputPresenter"
-		scope="session" />
-	<bean name="outputView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.process.output.OutputViewImpl"
-		scope="session" />
-		
-	<!-- Parameter Screen -->
-	<bean name="parameterScreenPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenPresenter"
-		scope="session" />
-	<bean name="parameterScreenView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl"
-		scope="session" />
-	
 	<!-- Buttons Middle -->
 	<bean name="ButtonsMiddlePresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddlePresenter"

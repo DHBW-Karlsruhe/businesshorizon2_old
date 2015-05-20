@@ -87,6 +87,7 @@ public class MoreScenarioResultPresenter extends Presenter<MoreScenarioResultVie
 	 */
 	@PostConstruct
 	public void init() {
+		logger.debug("init beendet");
 		eventBus.addHandler(this);
 	}
 	
@@ -143,7 +144,6 @@ public class MoreScenarioResultPresenter extends Presenter<MoreScenarioResultVie
 			TimeseriesCalculator tsCalc = new TimeseriesCalculator();
 			StochasticResultContainer stochasticResults = tsCalc.calculate(project, this);
 			periodContainer = stochasticResults.getPeriodContainers().first();
-			logger.debug("StochasticPeriods:" + project.getStochasticPeriods().toString());
 			//Stochastische Berechnung ausführen
 			//Werte für Berechnung weitergeben
 		}

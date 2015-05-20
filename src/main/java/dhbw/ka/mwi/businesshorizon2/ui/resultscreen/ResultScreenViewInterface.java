@@ -28,11 +28,8 @@ package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 import com.mvplite.view.View;
 import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
+//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
 
 public interface ResultScreenViewInterface extends View {
 
@@ -56,7 +53,7 @@ public interface ResultScreenViewInterface extends View {
 	 *            Eine ChartArea mit deterministischen Ergebnissen
 	 */
 
-	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
+//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
 	
 	public void addHeadline(Label head);
 	

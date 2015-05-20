@@ -35,16 +35,10 @@ import com.vaadin.terminal.ExternalResource;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewImplv2;
-import dhbw.ka.mwi.businesshorizon2.ui.login.LogInScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.login.LogoutEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowLogInScreenEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.login.ShowUserEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ParameterScreenViewImpl;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ProcessViewImpl;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowProcessViewEvent;
 
 /**
  * Das ist die Haupt-Einstiegsklasse der Anwendung. Es ist vergleichbar mit der
@@ -60,18 +54,11 @@ public class BHApplication extends Application {
 	private static final Logger logger = Logger.getLogger("BHApplication.class");
 
 	@Autowired
-	private ProcessViewImpl processView;
-	
-	@Autowired
 	private InitialScreenViewImpl initialScreenView;
 	
 	@Autowired
 	private LogInScreenViewImplv2 logInScreenView;
 	
-	@Autowired
-	private ParameterScreenViewImpl parameterScreenView;
-
-
 	@Autowired
 	private EventBus eventBus;
 	
@@ -112,9 +99,7 @@ public class BHApplication extends Application {
 	 */
 	@EventHandler
 	public void showInitialView(ShowUserEvent event) {
-		this.removeWindow(processView);
 		this.removeWindow(initialScreenView);
-		this.removeWindow(parameterScreenView);
 		initialScreenView.setName("overview");
 		addWindow(initialScreenView);
 		setMainWindow(initialScreenView);
@@ -122,46 +107,6 @@ public class BHApplication extends Application {
 
 		eventBus.fireEvent(new ShowInitialScreenViewEvent(event.getUser()));
 		logger.debug("ShowInitialScreenViewEvent gefeuert");
-	}
-	
-	/**
-	 * Die Methode triggert die Anzeige des ParameterScreen entspricht Schritt 2.
-	 * 
-	 * 
-	 * @author Tobias Lindner
-	 * @param event Der ausgeloest ShowParameterScreenViewEvent
-	 */
-	@EventHandler
-	public void showParameterScreenView (ShowParameterScreenViewEvent event) {
-		this.removeWindow(processView);
-		this.removeWindow(logInScreenView);
-		parameterScreenView.setName("parameterScreen");
-		addWindow(parameterScreenView);
-		setMainWindow(parameterScreenView);
-		initialScreenView.open(new ExternalResource(parameterScreenView.getURL()));
-		logger.debug("ParameterScreenView gesetzt");
-	}
-
-	/**
-	 * Die Methode triggert die Anzeige der Prozessansicht, sobald an einer
-	 * Stelle des Programmes ein Projekt angezeigt wurde. 
-	 * 
-	 * @author Julius Hacker, Marcel Rosenberger
-	 * @param event
-	 *            Der ausgeloeste ShowProjectEvent
-	 */
-	@EventHandler
-	public void showProcessView(ShowProjectEvent event) {
-		//
-			this.removeWindow(parameterScreenView);
-		//
-		
-		processView.setName("process");
-		addWindow(processView);
-		setMainWindow(processView);
-		initialScreenView.open(new ExternalResource(processView.getURL()));
-
-		eventBus.fireEvent(new ShowProcessViewEvent());
 	}
 	
 	/**
@@ -182,7 +127,6 @@ public class BHApplication extends Application {
 		addWindow(logInScreenView);
 		setMainWindow(logInScreenView);
 		logInScreenView.open(new ExternalResource(logInScreenView.getURL()));
-		this.removeWindow(processView);
 		this.removeWindow(initialScreenView);
 		eventBus.fireEvent(new ShowLogInScreenEvent());
 		logger.debug("ShowLogInScreenEvent gefeuert");

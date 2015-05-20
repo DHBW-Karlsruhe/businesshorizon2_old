@@ -27,9 +27,6 @@ package dhbw.ka.mwi.businesshorizon2.ui.periodscreen;
 
 import com.mvplite.view.View;
 
-import dhbw.ka.mwi.businesshorizon2.models.InputType;
-import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
-
 public interface PeriodScreenViewInterface extends View{
 	
 	public void showView(View view);

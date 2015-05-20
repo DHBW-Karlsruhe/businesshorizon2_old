@@ -84,7 +84,7 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 	}
 
 	public void setInputMethod(InputType value, boolean deterministic) {
-		logger.debug("setInputMethod aufgerufen");
+
 		if(deterministic){
 			project.getProjectInputType().setDeterministicInput(value);
 				switch (value) {
@@ -93,12 +93,12 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 					break;
 
 				case GESAMTKOSTENVERFAHREN:
-					logger.debug("GKV Methode gesetzt");
+
 					project.setDeterministicPeriods(new GesamtkostenVerfahrenCashflowPeriodContainer());
 					break;
 
 				case UMSATZKOSTENVERFAHREN:
-					logger.debug("UKV Methode gesetzt");
+
 					project.setDeterministicPeriods(new UmsatzkostenVerfahrenCashflowPeriodContainer());
 					break;
 
@@ -115,12 +115,12 @@ public class MethodScreenPresenter extends Presenter<MethodScreenViewInterface>{
 					break;
 
 				case GESAMTKOSTENVERFAHREN:
-					logger.debug("GKV Methode gesetzt");
+
 					project.setStochasticPeriods(new GesamtkostenVerfahrenCashflowPeriodContainer());
 					break;
 
 				case UMSATZKOSTENVERFAHREN:
-					logger.debug("UKV Methode gesetzt");
+
 					project.setStochasticPeriods(new UmsatzkostenVerfahrenCashflowPeriodContainer());
 					break;
 

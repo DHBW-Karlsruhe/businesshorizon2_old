@@ -28,22 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.ButtonMiddle;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialTopButtonsEvent;
 
 /**
  * Diese View ist zuständig für das Erstellen eines Projektes und das Bearbeiten eines Projektes,
@@ -56,7 +44,7 @@ public class StartCalculationButtonViewImpl extends VerticalLayout implements St
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
+	private static final Logger logger = Logger.getLogger("StartCalculationButtonViewImpl.class");
 
 	@Autowired
 	private StartCalculationButtonPresenter presenter;

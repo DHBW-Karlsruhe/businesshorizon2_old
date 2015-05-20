@@ -40,7 +40,6 @@ import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.IllegalValueException;
 
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe des
@@ -70,6 +69,7 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	@PostConstruct
 	public void init() {
+		logger.debug("init beendet");
 		eventBus.addHandler(this);
 	}
 	
@@ -88,12 +88,9 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 
 		List<Szenario> scenarios = this.projectProxy.getSelectedProject()
 				.getScenarios();
-		
-		logger.debug("isValid Scenarios.size() = " + scenarios.size());
 
 		int scenarioNumber = 1;
 		for (Szenario scenario : scenarios) {
-			logger.debug ("Scenario = " + scenario);
 			if (scenario.isIncludeInCalculation()) {
 				if (!isValidCorporateAndSolitaryTax(scenarioNumber)
 						|| !isValidBusinessTax(scenarioNumber)
@@ -169,8 +166,7 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 				scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
 		
-		//Szenarioseite aktualisieren
-		eventBus.fireEvent(new ShowScenarioViewEvent());
+		//Szenarioseite aktualisieren??
 		
 		//Event, dass den "Weiter"-Button ausgraut, sodass der Nutzer zuerst valide Eingaben für das neue Szenario machen muss
 		eventBus.fireEvent(new ValidationEvent(false));
@@ -183,8 +179,6 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 * @param number Nummer des zu löschenden Szenarios
 	 */
 	public void removeScenario(int number) {
-		logger.debug("Es gibt " + this.projectProxy.getSelectedProject().getScenarios().size() + " Szenarios");
-		logger.debug("Lösche Szenario Nummer: " + number);
 		this.projectProxy.getSelectedProject().getScenarios()
 				.remove(number - 1);
 		getView().removeScenario(number - 1);
@@ -237,10 +231,11 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidRateReturnEquity(int scenarioNumber) {
 		boolean isValid = true;
+		String rreValue = getView().getValue(scenarioNumber, "rateReturnEquity");
+		rreValue = rreValue.replace(',', '.');
 
 		try {
-			Double rateReturnEquity = Double.parseDouble(getView().getValue(
-					scenarioNumber, "rateReturnEquity"));
+			Double rateReturnEquity = Double.parseDouble(rreValue);
 
 			if (rateReturnEquity < 0 || rateReturnEquity > 100) {
 				throw new IllegalValueException(
@@ -268,10 +263,11 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidRateReturnCapitalStock(int scenarioNumber) {
 		boolean isValid = true;
+		String rrcValue = getView().getValue(scenarioNumber, "rateReturnCapitalStock");
+		rrcValue = rrcValue.replace(',', '.');
 
 		try {
-			Double rateReturnCapitalStock = Double.parseDouble(getView()
-					.getValue(scenarioNumber, "rateReturnCapitalStock"));
+			Double rateReturnCapitalStock = Double.parseDouble(rrcValue);
 
 			if (rateReturnCapitalStock < 0 || rateReturnCapitalStock > 100) {
 				throw new IllegalValueException(
@@ -299,10 +295,11 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidBusinessTax(int scenarioNumber) {
 		boolean isValid = true;
+		String btValue = getView().getValue(scenarioNumber, "businessTax");
+		btValue = btValue.replace(',', '.');
 
 		try {
-			Double businessTax = Double.parseDouble(getView().getValue(
-					scenarioNumber, "businessTax"));
+			Double businessTax = Double.parseDouble(btValue);
 
 			if (businessTax < 0 || businessTax > 100) {
 				throw new IllegalValueException(
@@ -329,10 +326,12 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidCorporateAndSolitaryTax(int scenarioNumber) {
 		boolean isValid = true;
+		String cstValue = getView().getValue(scenarioNumber, "corporateAndSolitaryTax");
+		cstValue = cstValue.replace(',', '.');
+
 
 		try {
-			Double corporateAndSolitaryTax = Double.parseDouble(getView()
-					.getValue(scenarioNumber, "corporateAndSolitaryTax"));
+			Double corporateAndSolitaryTax = Double.parseDouble(cstValue);
 
 			if (corporateAndSolitaryTax < 0 || corporateAndSolitaryTax > 100) {
 				throw new IllegalValueException(
@@ -363,45 +362,33 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 				.getScenarios().get(scenarioNumber - 1);
 
 		if (isValidRateReturnEquity(scenarioNumber)) {
-			scenario.setRateReturnEquity(Double.parseDouble(getView().getValue(
-					scenarioNumber, "rateReturnEquity")));
-			logger.debug("Renditeforderung Eigenkapital Szenario "
-					+ scenarioNumber + " auf " + scenario.getRateReturnEquity()
-					+ " ("
-					+ getView().getValue(scenarioNumber, "rateReturnEquity")
-					+ ")");
+			String rreValue = getView().getValue(scenarioNumber, "rateReturnEquity");
+			rreValue = rreValue.replace(',', '.');
+			
+			scenario.setRateReturnEquity(Double.parseDouble(rreValue));
 		}
 
 		if (isValidRateReturnCapitalStock(scenarioNumber)) {
-			scenario.setRateReturnCapitalStock(Double.parseDouble(getView()
-					.getValue(scenarioNumber, "rateReturnCapitalStock")));
-			logger.debug("Renditeforderung Fremdkapital Szenario "
-					+ scenarioNumber
-					+ " auf "
-					+ scenario.getRateReturnCapitalStock()
-					+ " ("
-					+ getView().getValue(scenarioNumber,
-							"rateReturnCapitalStock") + ")");
+			String rrcValue = getView().getValue(scenarioNumber, "rateReturnCapitalStock");
+			rrcValue = rrcValue.replace(',', '.');
+			
+			scenario.setRateReturnCapitalStock(Double.parseDouble(rrcValue));
 		}
 
 		if (isValidBusinessTax(scenarioNumber)) {
-			scenario.setBusinessTax(Double.parseDouble(getView().getValue(
-					scenarioNumber, "businessTax")));
-			logger.debug("Gewerbesteuer Szenario " + scenarioNumber + " auf "
-					+ scenario.getBusinessTax() + " ("
-					+ getView().getValue(scenarioNumber, "businessTax") + ")");
+			String btValue = getView().getValue(scenarioNumber, "businessTax");
+			btValue = btValue.replace(',', '.');
+			
+			scenario.setBusinessTax(Double.parseDouble(btValue));
+
 		}
 
 		if (isValidCorporateAndSolitaryTax(scenarioNumber)) {
-			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView()
-					.getValue(scenarioNumber, "corporateAndSolitaryTax")));
-			logger.debug("Koerperschaftssteuer und Solidaritaetszuschlag Szenario "
-					+ scenarioNumber
-					+ " auf "
-					+ scenario.getCorporateAndSolitaryTax()
-					+ " ("
-					+ getView().getValue(scenarioNumber,
-							"corporateAndSolitaryTax") + ")");
+			String cstValue = getView().getValue(scenarioNumber, "corporateAndSolitaryTax");
+			cstValue = cstValue.replace(',', '.');
+			
+			scenario.setCorporateAndSolitaryTax(Double.parseDouble(cstValue));
+		
 		}
 
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(

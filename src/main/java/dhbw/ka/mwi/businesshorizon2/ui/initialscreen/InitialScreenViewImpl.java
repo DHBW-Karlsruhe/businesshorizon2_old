@@ -34,34 +34,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.User;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.Downloader;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.UploadReceiver;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
 
 import com.mvplite.event.EventBus;
 import com.mvplite.view.View;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Window.Notification;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
@@ -178,9 +169,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	private Embedded progressBar;
 
 	private Label progressBarGap;
-
-	private Label splitterVertical;
-
 
 
 	/**
@@ -430,7 +418,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Beim Abbruch gehen Ihre Eingaben verloren! Möchten Sie zur Startseite zurückkehren?",
+				ConfirmDialog.show(event.getButton().getWindow(), "Warnung", "Möchten Sie zur Startseite zurückkehren?",
 						"Okay", "Abbrechen", new ConfirmDialog.Listener() {
 
 					private static final long serialVersionUID = 1L;
@@ -445,6 +433,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 					}
 				});
 				
+
 			}
 			
 		});
@@ -524,7 +513,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 			public void buttonClick(ClickEvent event) {
 				final Project project = projectProxy.getSelectedProject();
 
-				logger.debug("Projekt-loeschen Button aus dem Hauptfenster aufgerufen.");
+				
 				
 				if (project==null) {
 					getWindow().showNotification((String) "", "Kein Projekt zum Löschen vorhanden.",	Notification.TYPE_WARNING_MESSAGE);
@@ -658,6 +647,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	}
 	
 	/**
+	 * Diese Methode entfernt die Splittung der zwei rechten View und fasst die zu einem großen Bereich zusammen in welchen dann die übergebene View gesetzt wird.
+	 * 
 	 * @author Tobias Lindner
 	 */
 	public void showExtendedView (View exView) {
@@ -743,6 +734,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		}
 	}
 	
+	/**
+	 * Diese Methode erzeugt einen Button für das Hochladen eine Files zum import von Projekten.
+	 * 
+	 * @author Marco Glaser, Tobias Lindner
+	 */
 	public void createImportButton(){
 		importButton = new VerticalLayout();
 		importButton.setWidth(150, com.vaadin.terminal.Sizeable.UNITS_PIXELS);
@@ -813,7 +809,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		if(componentCount > (count + 1)){
 			for(int i = count; i < (componentCount - 1); i++){
 				topRightLayout.removeComponent(topRightLayout.getComponent(count));
-				logger.debug("Komponente an Stelle "+i+" gelöscht");
 			}
 		}
 	}
@@ -902,4 +897,14 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	public void showNotification (String warningText) {
 		getWindow().showNotification((String) "", warningText,	Notification.TYPE_WARNING_MESSAGE);
 	}
+	
+	/**
+	 * Diese Methode zeigt eine Meldung vom Typ Humanzized Message auf dem Screen an.
+	 * 
+	 * @author Tobias Lindner
+	 */
+	public void showInfoNotification (String notificationText) {
+		getWindow().showNotification((String) "", notificationText, Notification.TYPE_TRAY_NOTIFICATION);
+	}
+
 }

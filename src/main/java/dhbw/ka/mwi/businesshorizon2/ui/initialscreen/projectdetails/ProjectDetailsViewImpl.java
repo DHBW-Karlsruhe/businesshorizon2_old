@@ -36,8 +36,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
-
 /**
  * Diese View ist zuständig für das Anzeigen der Details zu einem Projekt.
  * Sie wird in den rechten Bereich des horizontalen SplitPanels der

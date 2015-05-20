@@ -21,7 +21,6 @@
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -34,25 +33,19 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialScreenViewEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowInitialTopButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectdetails.ProjectDetailsViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectAddEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
 
 /**
  * Dieser Presenter ist für die Darstellung des Projekterstellungs Screens zuständig.
@@ -64,7 +57,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = Logger.getLogger("InitialScreenPresenter.class");
+	private static final Logger logger = Logger.getLogger("ProjectCreationPresenter.class");
 
 	@Autowired
 	private EventBus eventBus;
@@ -262,17 +255,11 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 			
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Projektname bereits vorhanden.");
 
 		}
 		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
 
-		
-
-		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
-
 		//		eventBus.fireEvent(new ProjectAddEvent(project));
-		logger.debug("ShowAddEvent gefeuert");
 
 	}
 
@@ -295,7 +282,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 		try {
 			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
 			if (project.getName().equals(name)) {
-				logger.debug("nur Projekt-Beschreibung geändert");
+				
 			}
 			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
 			else {
@@ -325,12 +312,10 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 				eventBus.fireEvent(new ShowInitialScreenViewEvent(this.theUser));
 				eventBus.fireEvent(new ShowProcessStepEvent(screen.METHODSELECTION));	
 			}
-			
-			logger.debug ("ShowInitialScreenViewEvent geworfen.");
+		
 			return true;
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Projektname bereits vorhanden.");
 			return false;
 		}
 

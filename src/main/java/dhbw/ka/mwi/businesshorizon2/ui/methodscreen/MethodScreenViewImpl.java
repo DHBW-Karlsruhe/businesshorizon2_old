@@ -27,15 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Form;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
@@ -44,7 +36,6 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 
 /**
  * Diese View ist zuständig für das Anzeigen der Details zu einem Projekt.
@@ -153,7 +144,6 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug("ValueChangeEvent in Prognosemethode geworfen");
 				String method = (String) event.getProperty().getValue();
 				if(method.equals("sto")){
 					stochastic = true;
@@ -180,7 +170,6 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug("ValueChangeEvent in Eingabemethode geworfen");
 				presenter.setInputMethod((InputType)event.getProperty().getValue(), deterministic);
 
 			}
@@ -200,7 +189,6 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				logger.debug("ValueChangeEvent in Berechnungsmethode geworfen");
 				switchRadiobuttonEnablement(event);
 				presenter.setCalcMethod((String)event.getProperty().getValue());
 
@@ -240,7 +228,7 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		}else if(stochastic){
 			inp = project.getProjectInputType().getStochasticInput();
 		}
-		logger.debug ("inp=" + inp);
+
 		if(inp != null){
 			switch (inp) {
 			case DIRECT :
@@ -260,10 +248,10 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 	}
 
 	public void setBerechnung(){
-		logger.debug("Methode setzen der Default Werte für die Berechnungaufgerufen");
+		
 		AbstractDeterministicMethod method = project.getCalculationMethod();
 		if(method != null){
-			logger.debug ("Im Projekt Objekt ist eine Methode angegeben");
+
 			if(method.getName().equals("Flow-to-Equity (FTE)")){
 				berechnungGroup.setValue("fte");
 			}else if(method.getName().equals("Adjusted-Present-Value (APV)")){

@@ -25,8 +25,6 @@
 
 package dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle;
 
-import java.io.File;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
@@ -34,16 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.terminal.FileResource;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Embedded;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
@@ -194,7 +182,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(true);
 
-		logger.debug("View: setStochasticParameter");
 	}
 
 
@@ -223,7 +210,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(true);
 
-		logger.debug ("View: setDeterministicParameter");
 	}
 	
 	
@@ -247,8 +233,7 @@ ButtonsMiddleViewInterface {
 
 		this.button2.setVisible(true);
 //		setExpandRatio(gap, 1.0f);
-		
-		logger.debug ("View: setFCFButton");
+
 		
 	}
 	
@@ -271,8 +256,7 @@ ButtonsMiddleViewInterface {
 		});
 
 		this.button2.setVisible(true);
-		
-		logger.debug ("View: setGKVButton");
+
 	}
 	
 	/**
@@ -294,8 +278,7 @@ ButtonsMiddleViewInterface {
 		});
 
 		this.button2.setVisible(true);
-		
-		logger.debug ("View: setUKVButton");
+
 	}
 	
 	/**
@@ -318,7 +301,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(true);
 
-		logger.debug ("View: setScenarioButton");
 	}
 	
 	/**
@@ -341,7 +323,6 @@ ButtonsMiddleViewInterface {
 		
 		this.button2.setVisible(false);
 
-		logger.debug ("View: setResultButton");
 	}
 	
 	public void hideStepButton(){

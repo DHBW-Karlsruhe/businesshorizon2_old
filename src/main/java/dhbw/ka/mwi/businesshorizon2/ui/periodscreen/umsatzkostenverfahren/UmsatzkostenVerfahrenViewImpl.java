@@ -47,7 +47,6 @@ import com.vaadin.ui.Window.Notification;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.ui.process.period.input.AbstractInputView;
 
 /**
 * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
@@ -104,7 +103,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
         public void init() {
         	setHeight(Sizeable.SIZE_UNDEFINED, 0);
             presenter.setView(this);
-            logger.debug("Umsatz presenter set");
+            logger.debug("init beendet");
             generateUi();
         }
 
@@ -192,7 +191,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 				a++;
 			}
 			for(Object o : tempProp){
-				logger.debug("Property "+o+" wurde entfernt");
+
 				inputTable.removeContainerProperty(o);
 				capitalStockInput.removeContainerProperty(o);
 				cashFlowValues.removeContainerProperty(o);
@@ -888,7 +887,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
 				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
-				logger.debug("Property "+currYear+" wurde hinzugefügt");
+
 			}
 
 		}
@@ -906,7 +905,7 @@ public class UmsatzkostenVerfahrenViewImpl extends VerticalLayout implements Ums
 				capitalStockInput.addContainerProperty(currYear, TextField.class, null);
 				capitalStockInput.setColumnAlignment(currYear, Table.ALIGN_CENTER);
 				currYear++;
-				logger.debug("Property "+currYear+" wurde hinzugefügt");
+
 			}
 			inputTable.addContainerProperty(baseYear, TextField.class, null);
 			inputTable.setColumnAlignment(baseYear, Table.ALIGN_CENTER);

@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,6 @@ import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 
 /**
  * 
@@ -78,7 +77,7 @@ public class DescriptionPresenter extends Presenter<DescriptionViewInterface> {
 	@EventHandler
 	public void setActualScreen (ShowProcessStepEvent event) {
 		this.actualScreen = event.getScreen();
-		logger.debug("actualScreen im DescriptionPresenter gesetzt");
+		logger.debug("actualScreen " + this.actualScreen + "im DescriptionPresenter gesetzt");
 	}
 	
 	/**

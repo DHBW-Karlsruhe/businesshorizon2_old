@@ -39,15 +39,10 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.GesamtkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ValidationEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowGKVEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowUKVEvent;
 
 /**
@@ -89,7 +84,7 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
-		logger.debug("Logger initialisiert");
+		logger.debug("Initialisierung beendet");
 	}
 
 	/**
@@ -251,11 +246,11 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
 			stochastic = project.getProjectInputType().isStochastic();
 		}
 		if(stochastic){
-			logger.debug(project.getProjectInputType().getStochasticInput());
+			
 			periodContainer = (UmsatzkostenVerfahrenCashflowPeriodContainer) project.getStochasticPeriods();
 		}
 		else{
-			logger.debug(project.getProjectInputType().getDeterministicInput());
+			
 			periodContainer = (UmsatzkostenVerfahrenCashflowPeriodContainer) project.getDeterministicPeriods();
 		}
 

@@ -42,7 +42,7 @@ import dhbw.ka.mwi.businesshorizon2.models.User;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.PersistenceServiceInterface;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
+//import dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.ShowParameterScreenViewEvent;
 
 /**
  * 
@@ -147,7 +147,6 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		logger.debug("Projekt aus User entfernt");
 		getView().setProjects(user.getProjects());
 		eventBus.fireEvent(new ProjectRemoveEvent(project));
-		logger.debug("ProjekteRemove Event gefeuert");
 
 	}
 
@@ -175,17 +174,15 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 			persistenceService.addProject(this.user, project);
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Projektname bereits vorhanden.");
+		
 
 		}
 		logger.debug("Neues Projekt wurde dem User hinzugefuegt");
 
 		getView().setProjects(user.getProjects());
 
-		logger.debug("Neues Projekt an hinterster Stelle eingefuegt");
 
 //		eventBus.fireEvent(new ProjectAddEvent(project));
-		logger.debug("ShowAddEvent gefeuert");
 
 	}
 
@@ -195,7 +192,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 		try {
 			//Wenn der Name beibehalten wurde, erfolgt keine Überprüfung.
 			if (project.getName().equals(name)) {
-				logger.debug("nur Projekt-Beschreibung geändert");
+
 			}
 			//Andernfalls muss überprüft werben, ob es den Namen bereits gibt.
 			else {
@@ -218,7 +215,7 @@ public class ProjectListPresenter extends Presenter<ProjectListViewInterface> {
 			return true;
 		} catch (ProjectAlreadyExistsException e) {
 			getView().showErrorMessage(e.getMessage());
-			logger.debug("Projektname bereits vorhanden.");
+
 			return false;
 		}
 

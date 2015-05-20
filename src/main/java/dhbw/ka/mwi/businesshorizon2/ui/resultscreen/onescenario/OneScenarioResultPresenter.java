@@ -100,6 +100,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 	@PostConstruct
 	public void init() {
 		eventBus.addHandler(this);
+		logger.debug("init beendet");
 	}
 
 	@EventHandler
@@ -116,15 +117,12 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		
 		AbstractPeriodContainer periodContainer = null;
 		
-		logger.debug("IsStochastic:" + project.getProjectInputType().isStochastic());
-		
 		if (project.getProjectInputType().isStochastic()){
 			logger.debug("Stochastische Berechnung");
 			//periodContainer = project.getStochasticPeriods();
 			TimeseriesCalculator tsCalc = new TimeseriesCalculator();
 			StochasticResultContainer stochasticResults = tsCalc.calculate(project, this);
 			periodContainer = stochasticResults.getPeriodContainers().first();
-			logger.debug("StochasticPeriods:" + project.getStochasticPeriods().toString());
 			//Stochastische Berechnung ausführen
 			//Werte für Berechnung weitergeben
 		}

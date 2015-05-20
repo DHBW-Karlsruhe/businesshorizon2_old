@@ -23,36 +23,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package dhbw.ka.mwi.businesshorizon2.ui.process.period.timeline;
+package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
-import com.vaadin.ui.Button;
+import dhbw.ka.mwi.businesshorizon2.BusinessHorizonException;
 
-import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
-
-/**
- * 
- * Erweiterung eines Buttons um sich die Periode die zum Button gehoert zu merken
- * @author daniel dengler
- */
-public class PeriodButton extends Button {
-
-	Period period;
-
-	public PeriodButton(String string, ClickListener clickListener) {
-		super(string, clickListener);
-	}
-
-	public Period getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(Period period) {
-		this.period = period;
-	}
-
-	/**
-	 * 
-	 */
+public class IllegalValueException extends BusinessHorizonException {
 	private static final long serialVersionUID = 1L;
+
+	public IllegalValueException(String s) {
+		super(s);
+	}
 
 }
