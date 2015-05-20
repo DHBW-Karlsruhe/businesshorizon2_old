@@ -219,6 +219,7 @@ public class DirektViewImpl extends VerticalLayout implements DirektViewInterfac
 
 			});
 			field1.setValue(presenter.getCashFlow(year));
+			logger.debug("Cashflow für das Jahr " + year + " bei der Generierung ausgelesen: "+ presenter.getCashFlow(year));
 			
 			
 			final TextField field2 = new TextField();
