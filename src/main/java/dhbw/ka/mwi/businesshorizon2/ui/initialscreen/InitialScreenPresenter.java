@@ -525,8 +525,7 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-
-
+				getView().showNotification("Diese Funktion ist noch nicht implementiert");
 			}
 
 		});

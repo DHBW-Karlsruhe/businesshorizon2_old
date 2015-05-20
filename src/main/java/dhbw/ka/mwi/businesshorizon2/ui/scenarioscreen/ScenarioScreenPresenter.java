@@ -231,10 +231,11 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidRateReturnEquity(int scenarioNumber) {
 		boolean isValid = true;
+		String rreValue = getView().getValue(scenarioNumber, "rateReturnEquity");
+		rreValue = rreValue.replace(',', '.');
 
 		try {
-			Double rateReturnEquity = Double.parseDouble(getView().getValue(
-					scenarioNumber, "rateReturnEquity"));
+			Double rateReturnEquity = Double.parseDouble(rreValue);
 
 			if (rateReturnEquity < 0 || rateReturnEquity > 100) {
 				throw new IllegalValueException(
@@ -262,10 +263,11 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidRateReturnCapitalStock(int scenarioNumber) {
 		boolean isValid = true;
+		String rrcValue = getView().getValue(scenarioNumber, "rateReturnCapitalStock");
+		rrcValue = rrcValue.replace(',', '.');
 
 		try {
-			Double rateReturnCapitalStock = Double.parseDouble(getView()
-					.getValue(scenarioNumber, "rateReturnCapitalStock"));
+			Double rateReturnCapitalStock = Double.parseDouble(rrcValue);
 
 			if (rateReturnCapitalStock < 0 || rateReturnCapitalStock > 100) {
 				throw new IllegalValueException(
@@ -293,10 +295,11 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidBusinessTax(int scenarioNumber) {
 		boolean isValid = true;
+		String btValue = getView().getValue(scenarioNumber, "businessTax");
+		btValue = btValue.replace(',', '.');
 
 		try {
-			Double businessTax = Double.parseDouble(getView().getValue(
-					scenarioNumber, "businessTax"));
+			Double businessTax = Double.parseDouble(btValue);
 
 			if (businessTax < 0 || businessTax > 100) {
 				throw new IllegalValueException(
@@ -323,10 +326,12 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 	 */
 	public boolean isValidCorporateAndSolitaryTax(int scenarioNumber) {
 		boolean isValid = true;
+		String cstValue = getView().getValue(scenarioNumber, "corporateAndSolitaryTax");
+		cstValue = cstValue.replace(',', '.');
+
 
 		try {
-			Double corporateAndSolitaryTax = Double.parseDouble(getView()
-					.getValue(scenarioNumber, "corporateAndSolitaryTax"));
+			Double corporateAndSolitaryTax = Double.parseDouble(cstValue);
 
 			if (corporateAndSolitaryTax < 0 || corporateAndSolitaryTax > 100) {
 				throw new IllegalValueException(
@@ -357,25 +362,32 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 				.getScenarios().get(scenarioNumber - 1);
 
 		if (isValidRateReturnEquity(scenarioNumber)) {
-			scenario.setRateReturnEquity(Double.parseDouble(getView().getValue(
-					scenarioNumber, "rateReturnEquity")));
+			String rreValue = getView().getValue(scenarioNumber, "rateReturnEquity");
+			rreValue = rreValue.replace(',', '.');
+			
+			scenario.setRateReturnEquity(Double.parseDouble(rreValue));
 		}
 
 		if (isValidRateReturnCapitalStock(scenarioNumber)) {
-			scenario.setRateReturnCapitalStock(Double.parseDouble(getView()
-					.getValue(scenarioNumber, "rateReturnCapitalStock")));
-
+			String rrcValue = getView().getValue(scenarioNumber, "rateReturnCapitalStock");
+			rrcValue = rrcValue.replace(',', '.');
+			
+			scenario.setRateReturnCapitalStock(Double.parseDouble(rrcValue));
 		}
 
 		if (isValidBusinessTax(scenarioNumber)) {
-			scenario.setBusinessTax(Double.parseDouble(getView().getValue(
-					scenarioNumber, "businessTax")));
+			String btValue = getView().getValue(scenarioNumber, "businessTax");
+			btValue = btValue.replace(',', '.');
+			
+			scenario.setBusinessTax(Double.parseDouble(btValue));
 
 		}
 
 		if (isValidCorporateAndSolitaryTax(scenarioNumber)) {
-			scenario.setCorporateAndSolitaryTax(Double.parseDouble(getView()
-					.getValue(scenarioNumber, "corporateAndSolitaryTax")));
+			String cstValue = getView().getValue(scenarioNumber, "corporateAndSolitaryTax");
+			cstValue = cstValue.replace(',', '.');
+			
+			scenario.setCorporateAndSolitaryTax(Double.parseDouble(cstValue));
 		
 		}
 
