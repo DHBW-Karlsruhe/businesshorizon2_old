@@ -237,7 +237,7 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 		try {
 			Double rateReturnEquity = Double.parseDouble(rreValue);
 
-			if (rateReturnEquity < 0 || rateReturnEquity > 100) {
+			if (rateReturnEquity < -100 || rateReturnEquity > 100) {
 				throw new IllegalValueException(
 						"corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
@@ -269,7 +269,7 @@ public class ScenarioScreenPresenter extends Presenter<ScenarioScreenViewInterfa
 		try {
 			Double rateReturnCapitalStock = Double.parseDouble(rrcValue);
 
-			if (rateReturnCapitalStock < 0 || rateReturnCapitalStock > 100) {
+			if (rateReturnCapitalStock < -100 || rateReturnCapitalStock > 100) {
 				throw new IllegalValueException(
 						"corporateAndSolitaryTax nicht zwischen 0 und 100");
 			}
