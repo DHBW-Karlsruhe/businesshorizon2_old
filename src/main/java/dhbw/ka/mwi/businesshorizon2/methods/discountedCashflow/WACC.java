@@ -1,6 +1,4 @@
 
- * 
- */
 package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 
 import java.util.TreeSet;
