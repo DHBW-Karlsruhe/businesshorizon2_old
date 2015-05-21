@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;

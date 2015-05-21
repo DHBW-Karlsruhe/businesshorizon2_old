@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package dhbw.ka.mwi.businesshorizon2.tests.methods.discountedCashflow;
 
 import junit.framework.TestCase;

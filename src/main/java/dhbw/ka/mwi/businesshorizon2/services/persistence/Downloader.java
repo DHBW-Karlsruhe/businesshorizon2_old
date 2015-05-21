@@ -41,15 +41,14 @@ import com.vaadin.terminal.FileResource;
 public class Downloader extends FileResource{
 
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Konstruktor
-	 * 
-	 * @param sourceFile
-	 * 			File, dass heruntergeladen werden soll.
-	 * @param application
-	 * 			Application Context
+	 * Konstruktor.
+	 *
+	 * @param sourceFile 			File, dass heruntergeladen werden soll.
+	 * @param application 			Application Context
 	 */
 	public Downloader(File sourceFile, Application application) {
 		super(sourceFile, application);

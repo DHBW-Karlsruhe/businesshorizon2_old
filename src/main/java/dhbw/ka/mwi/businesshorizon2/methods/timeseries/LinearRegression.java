@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
 /**
  * Berechnung der Modellparameter für die Zeitreihenanalyse
- * @author felix
+ * @author Felix Schlosser
  *
  */
 public class LinearRegression {

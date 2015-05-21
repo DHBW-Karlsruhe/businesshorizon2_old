@@ -46,60 +46,88 @@ import com.vaadin.ui.VerticalLayout;
  * 
  */
 public class OneScenarioResultViewImpl extends VerticalLayout implements OneScenarioResultViewInterface {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The Constant logger. */
 	private static final Logger logger = Logger
 			.getLogger("OneScenarioResultViewImpl.class");
 
+	/** The presenter. */
 	@Autowired
 	private OneScenarioResultPresenter presenter;
 
+	/** The planning label. */
 	private Label planningLabel;
 
+	/** The company value label. */
 	private Label companyValueLabel;
 
+	/** The planning layout. */
 	private HorizontalLayout planningLayout;
 
+	/** The company value. */
 	private Label companyValue;
 
+	/** The scenario layout. */
 	private GridLayout scenarioLayout;
 
+	/** The rendite ek label. */
 	private Label renditeEKLabel;
 
+	/** The rendite fk label. */
 	private Label renditeFKLabel;
 
+	/** The gewerbe st label. */
 	private Label gewerbeStLabel;
 
+	/** The koerper st label. */
 	private Label koerperStLabel;
 
+	/** The company value layout. */
 	private HorizontalLayout companyValueLayout;
 
+	/** The rendite ek. */
 	private Label renditeEK;
 
+	/** The rendite fk. */
 	private Label renditeFK;
 
+	/** The gewerbe st. */
 	private Label gewerbeSt;
 
+	/** The koerper st. */
 	private Label koerperSt;
 
+	/** The gap. */
 	private Label gap;
 
+	/** The gap2. */
 	private Label gap2;
 
+	/** The expanding gap. */
 	private Label expandingGap;
 
+	/** The gap3. */
 	private Label gap3;
 
+	/** The expanding gap2. */
 	private Label expandingGap2;
 
+	/** The expanding gap3. */
 	private Label expandingGap3;
 
+	/** The capital chart layout. */
 	private VerticalLayout capitalChartLayout;
 
+	/** The cashflow chart layout. */
 	private VerticalLayout cashflowChartLayout;
 
+	/** The gap4. */
 	private Label gap4;
 
+	/** The chart area. */
 	private HorizontalLayout chartArea;
 
 	/**
@@ -117,8 +145,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	}
 
 	/**
-	 * Erstelle das GUI zum Prozessschritt "Ausgabe"
-	 * 
+	 * Erstelle das GUI zum Prozessschritt "Ausgabe".
+	 *
 	 * @author Florian Stier
 	 */
 	private void generateUi() {
@@ -226,6 +254,9 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		setExpandRatio(expandingGap, 1.0f);
 	}
 
+	/* (non-Javadoc)
+	 * @see dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewInterface#setScenarioValue(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
 		this.renditeEK.setValue(renditeEK);
 		this.renditeFK.setValue(renditeFK);
@@ -234,11 +265,17 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		logger.debug("Planungsprämissen im UI gesetzt");
 	}
 
+	/* (non-Javadoc)
+	 * @see dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewInterface#setCompanyValue(java.lang.String)
+	 */
 	public void setCompanyValue(String companyValue){
 		this.companyValue.setValue(companyValue);
 		logger.debug("Unternehmenswert im UI gesetzt");
 	}
 
+	/* (non-Javadoc)
+	 * @see dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewInterface#setCapitalChart(org.vaadin.vaadinvisualizations.ColumnChart)
+	 */
 	@Override
 	public void setCapitalChart(ColumnChart chart) {
 		chart.setSizeFull();
@@ -247,6 +284,9 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewInterface#setCashFlowChart(org.vaadin.vaadinvisualizations.LineChart)
+	 */
 	public void setCashFlowChart(LineChart chart) {
 		chart.setSizeFull();
 		cashflowChartLayout.removeAllComponents();

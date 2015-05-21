@@ -27,22 +27,39 @@ package dhbw.ka.mwi.businesshorizon2.models;
 
 import java.io.Serializable;
 
+
+/**
+ * The Class Szenario.
+ */
 public class Szenario implements Serializable {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -9003657837833197321L;
 
+	/** The rate return equity. */
 	private double rateReturnEquity;
 	
+	/** The rate return capital stock. */
 	private double rateReturnCapitalStock;
 	
+	/** The business tax. */
 	private double businessTax;
 	
+	/** The corporate and solitary tax. */
 	private double corporateAndSolitaryTax;
 	
+	/** The include in calculation. */
 	private boolean includeInCalculation;
 
+	/**
+	 * Instantiates a new szenario.
+	 *
+	 * @param rateReturnEquity the rate return equity
+	 * @param rateReturnCapitalStock the rate return capital stock
+	 * @param businessTax the business tax
+	 * @param corporateAndSolitaryTax the corporate and solitary tax
+	 * @param includeInCalculation the include in calculation
+	 */
 	public Szenario(double rateReturnEquity, double rateReturnCapitalStock,
 			double businessTax, double corporateAndSolitaryTax, boolean includeInCalculation) {
 		super();
@@ -53,46 +70,99 @@ public class Szenario implements Serializable {
 		this.includeInCalculation = includeInCalculation;
 	}
 	
+	/**
+	 * Instantiates a new szenario.
+	 */
 	public Szenario() {
 		super();
 	}
 
+	/**
+	 * Gets the rate return equity.
+	 *
+	 * @return the rate return equity
+	 */
 	public double getRateReturnEquity() {
 		return rateReturnEquity;
 	}
 
+	/**
+	 * Sets the rate return equity.
+	 *
+	 * @param rateReturnEquity the new rate return equity
+	 */
 	public void setRateReturnEquity(double rateReturnEquity) {
 		this.rateReturnEquity = rateReturnEquity;
 	}
 
+	/**
+	 * Gets the rate return capital stock.
+	 *
+	 * @return the rate return capital stock
+	 */
 	public double getRateReturnCapitalStock() {
 		return rateReturnCapitalStock;
 	}
 
+	/**
+	 * Sets the rate return capital stock.
+	 *
+	 * @param rateReturnCapitalStock the new rate return capital stock
+	 */
 	public void setRateReturnCapitalStock(double rateReturnCapitalStock) {
 		this.rateReturnCapitalStock = rateReturnCapitalStock;
 	}
 
+	/**
+	 * Gets the business tax.
+	 *
+	 * @return the business tax
+	 */
 	public double getBusinessTax() {
 		return businessTax;
 	}
 
+	/**
+	 * Sets the business tax.
+	 *
+	 * @param businessTax the new business tax
+	 */
 	public void setBusinessTax(double businessTax) {
 		this.businessTax = businessTax;
 	}
 
+	/**
+	 * Gets the corporate and solitary tax.
+	 *
+	 * @return the corporate and solitary tax
+	 */
 	public double getCorporateAndSolitaryTax() {
 		return corporateAndSolitaryTax;
 	}
 
+	/**
+	 * Sets the corporate and solitary tax.
+	 *
+	 * @param corporateAndSolitaryTax the new corporate and solitary tax
+	 */
 	public void setCorporateAndSolitaryTax(double corporateAndSolitaryTax) {
 		this.corporateAndSolitaryTax = corporateAndSolitaryTax;
 	}
 
+	/**
+	 * Checks if is include in calculation.
+	 *
+	 * @return true, if is include in calculation
+	 */
 	public boolean isIncludeInCalculation() {
 		return includeInCalculation;
 	}
 
+	/**
+	 * Sets the include in calculation.
+	 *
+	 * @param includeInCalculation the new include in calculation
+	 */
 	public void setIncludeInCalculation(boolean includeInCalculation) {
 		this.includeInCalculation = includeInCalculation;
 	}

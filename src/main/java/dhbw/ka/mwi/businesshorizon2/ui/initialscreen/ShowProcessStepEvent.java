@@ -26,23 +26,51 @@ package dhbw.ka.mwi.businesshorizon2.ui.initialscreen;
 
 import com.mvplite.event.Event;
 
+
 /**
+ * The Class ShowProcessStepEvent.
+ *
  * @author Marco Glaser
  */
 public class ShowProcessStepEvent extends Event {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * The Enum screen.
+	 */
 	public enum screen {
-		METHODSELECTION, PARAMETER, PERIODS, SCENARIOS, RESULT
+		
+		/** The methodselection. */
+		METHODSELECTION, 
+ /** The parameter. */
+ PARAMETER, 
+ /** The periods. */
+ PERIODS, 
+ /** The scenarios. */
+ SCENARIOS, 
+ /** The result. */
+ RESULT
 	}
 	
+	/** The screen. */
 	private screen screen;
 	
+	/**
+	 * Instantiates a new show process step event.
+	 *
+	 * @param screen the screen
+	 */
 	public ShowProcessStepEvent(screen screen){
 		this.screen = screen;
 	}
 
+	/**
+	 * Gets the screen.
+	 *
+	 * @return the screen
+	 */
 	public screen getScreen() {
 		return this.screen;
 	}

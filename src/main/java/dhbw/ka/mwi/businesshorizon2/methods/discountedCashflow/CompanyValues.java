@@ -30,6 +30,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow;
 import java.util.Map;
 import java.util.TreeMap;
 
+// TODO: Auto-generated Javadoc
 /**
  * Diese Klasse speichert die Unternehmenswerte und ihre jeweiligen Häufigkeiten
  * in einer Map ab.
@@ -39,34 +40,68 @@ import java.util.TreeMap;
  */
 public class CompanyValues {
 
+	/**
+	 * The Class Couple.
+	 */
 	public class Couple {
+		
+		/** The company value. */
 		private final double companyValue;
+		
+		/** The count. */
 		private int count;
 
+		/**
+		 * Instantiates a new couple.
+		 *
+		 * @param companyValue the company value
+		 */
 		public Couple(double companyValue) {
 			this.companyValue = companyValue;
 			count = 1;
 		}
 
+		/**
+		 * Gets the company value.
+		 *
+		 * @return the company value
+		 */
 		public double getCompanyValue() {
 			return companyValue;
 		}
 
+		/**
+		 * Gets the count.
+		 *
+		 * @return the count
+		 */
 		public int getCount() {
 			return count;
 		}
 
+		/**
+		 * Increase count.
+		 */
 		private void increaseCount() {
 			count++;
 		}
 	}
 
+	/** The map. */
 	private final TreeMap<Double, Couple> map;
 
+	/**
+	 * Instantiates a new company values.
+	 */
 	public CompanyValues() {
 		map = new TreeMap<>();
 	}
 
+	/**
+	 * Adds the company value.
+	 *
+	 * @param companyValue the company value
+	 */
 	public void addCompanyValue(double companyValue) {
 		if (map.containsKey(companyValue)) {
 			map.get(companyValue).increaseCount();

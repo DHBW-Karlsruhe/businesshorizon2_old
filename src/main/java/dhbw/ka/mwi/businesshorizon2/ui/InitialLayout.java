@@ -1,3 +1,4 @@
+
 package dhbw.ka.mwi.businesshorizon2.ui;
 
 import com.vaadin.ui.Alignment;
