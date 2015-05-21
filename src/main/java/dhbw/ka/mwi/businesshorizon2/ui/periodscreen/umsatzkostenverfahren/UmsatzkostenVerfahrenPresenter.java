@@ -48,7 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowUKVEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Marco Glaser
+ * @author Marco Glaser, Tobias Lindner
  * 
  */
 
@@ -92,7 +92,6 @@ public class UmsatzkostenVerfahrenPresenter extends Presenter<UmsatzkostenVerfah
      */
 	@EventHandler
 	public void onShowUKVEvent(ShowUKVEvent event) {
-		//                processEvent(event);
 		logger.debug("ShowUKVEvent abgefangen");
 		getView().generateTable();
 	}

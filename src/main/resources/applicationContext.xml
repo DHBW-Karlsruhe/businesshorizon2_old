@@ -109,14 +109,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.StartCalculationButtonViewImpl"
 		scope="session"	/>
 
-	<!-- Infos -->
-	<bean name="infosViewPresenter"
-		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosPresenter"
-		scope="session" />
-	<bean name="infosView"
-		class="dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewImpl"
-		scope="session" />
-
 	<!-- Parameter-Input -->
 	<bean name="parameterInputPresenter"
 		class="dhbw.ka.mwi.businesshorizon2.ui.parameterScreen.input.ParameterInputPresenter"

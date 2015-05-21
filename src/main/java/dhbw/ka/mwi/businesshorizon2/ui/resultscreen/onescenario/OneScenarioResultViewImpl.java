@@ -38,9 +38,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
  * Vaadin.
@@ -229,24 +226,6 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		setExpandRatio(expandingGap, 1.0f);
 	}
 
-	public void addStochasticChartArea(StochasticChartArea chartArea, int number) {
-		//		this.addSubline(new Label("Szenario " + number), chartArea.getModulAbweichung());
-		//		
-		//		HorizontalLayout outputArea = new HorizontalLayout();
-		//		outputArea.addComponent(chartArea);
-		//		vl.addComponent(outputArea);
-	}
-
-
-//	@Override
-//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number) {
-		//		this.addSubline(new Label("Szenario " + number));
-		//		
-		//		HorizontalLayout outputArea = new HorizontalLayout();
-		//		outputArea.addComponent(chartArea);
-		//		vl.addComponent(outputArea);
-//	}
-
 	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
 		this.renditeEK.setValue(renditeEK);
 		this.renditeFK.setValue(renditeFK);
@@ -258,24 +237,6 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	public void setCompanyValue(String companyValue){
 		this.companyValue.setValue(companyValue);
 		logger.debug("Unternehmenswert im UI gesetzt");
-	}
-
-	//	@Override
-	//	public void showErrorMessge(String message) {
-	//		getWindow().showNotification((String) "Berechnung fehlgeschlagen", message, Notification.TYPE_ERROR_MESSAGE);
-	//
-	//	}
-
-
-	/**
-	 * @author Annika Weis
-	 * @param Label
-	 * @return	void
-	 * 
-	 * Gibt das angegebene Label aus
-	 */
-	public void addLabel(Label label){
-		addComponent(label);		
 	}
 
 	@Override

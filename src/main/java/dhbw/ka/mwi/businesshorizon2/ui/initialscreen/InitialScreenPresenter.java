@@ -51,7 +51,6 @@ import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.ShowProcessStepEvent.screen
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.buttonsMiddle.ButtonsMiddleViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.DescriptionViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.description.ShowDescriptionEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.infos.InfosViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ProjectCreationViewInterface;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectCreationButtonsEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectcreation.ShowProjectEditButtonsEvent;
@@ -122,9 +121,6 @@ public class InitialScreenPresenter extends Presenter<InitialScreenViewInterface
 	
 	@Autowired
 	private ResultScreenViewInterface resultScreenView;
-
-	@Autowired
-	private InfosViewInterface infosView;
 
 	@Autowired
 	private AuthenticationServiceInterface authenticationService;

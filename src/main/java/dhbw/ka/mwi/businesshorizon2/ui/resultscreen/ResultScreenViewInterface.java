@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,53 +26,17 @@
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
 import com.mvplite.view.View;
-import com.vaadin.ui.Label;
-
-//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
 public interface ResultScreenViewInterface extends View {
 
-
 	public void showOutputView();
-
-	/**
-	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des stochastischen
-	 * Verfahrens hinzu
-	 * 
-	 * @param chartArea
-	 *            Eine ChartArea mit stochastischen Ergebnissen
-	 */
-	public void addStochasticChartArea(StochasticChartArea chartArea, int number);
-
-	/**
-	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des
-	 * deterministischen Verfahrens hinzu
-	 * 
-	 * @param chartArea
-	 *            Eine ChartArea mit deterministischen Ergebnissen
-	 */
-
-//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
-	
-	public void addHeadline(Label head);
-	
-	public void addSubline(Label head);
-	
-	public void addSubline(Label head, Label abw);
-	
-	public void addLabel(Label label);
 	
 	public void showErrorMessge(String message);
 
 	public void changeProgress(float progress);
 
-//	public void createLayout();
-
 	public void showView(View oneScenarioView);
 	
 	public void removeStyle ();
-
-
 
 }

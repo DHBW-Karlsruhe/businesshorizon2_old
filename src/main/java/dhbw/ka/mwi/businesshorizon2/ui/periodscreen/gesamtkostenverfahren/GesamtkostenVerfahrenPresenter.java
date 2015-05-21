@@ -46,7 +46,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.periodscreen.ShowGKVEvent;
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Eingabe der Perioden.
  * 
- * @author Marco Glaser
+ * @author Marco Glaser, Tobias Lindner
  * 
  */
 
@@ -96,7 +96,6 @@ public class GesamtkostenVerfahrenPresenter extends Presenter<GesamtkostenVerfah
 	 */
 	@EventHandler
 	public void onShowEvent(ShowGKVEvent event) {
-		//                processEvent(event);
 		logger.debug("ShowGKVEvent abgefangen");
 		getView().generateTable();
 	}

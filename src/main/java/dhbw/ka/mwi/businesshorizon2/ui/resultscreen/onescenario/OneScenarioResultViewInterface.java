@@ -6,7 +6,7 @@
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
- * 
+ * 2014-2015 Marco Glaser, Tobias Lindner
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,29 +30,7 @@ import org.vaadin.vaadinvisualizations.LineChart;
 
 import com.mvplite.view.View;
 
-//import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
-
 public interface OneScenarioResultViewInterface extends View {
-
-	/**
-	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des stochastischen
-	 * Verfahrens hinzu
-	 * 
-	 * @param chartArea
-	 *            Eine ChartArea mit stochastischen Ergebnissen
-	 */
-	public void addStochasticChartArea(StochasticChartArea chartArea, int number);
-
-	/**
-	 * Fügt der View einen Ausgabebereich mit den Ergebnissen des
-	 * deterministischen Verfahrens hinzu
-	 * 
-	 * @param chartArea
-	 *            Eine ChartArea mit deterministischen Ergebnissen
-	 */
-
-//	public void addDeterministicChartArea(DeterministicChartArea chartArea, int number);
 
 	public void setCompanyValue(String valueOf);
 

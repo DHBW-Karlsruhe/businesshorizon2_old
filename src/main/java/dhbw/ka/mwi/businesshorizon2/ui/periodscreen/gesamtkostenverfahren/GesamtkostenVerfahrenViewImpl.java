@@ -52,7 +52,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 * Diese Klasse implementiert das GUI fuer den Prozessschritt "Methoden" in
 * Vaadin.
 *
-* @author Marco Glaser
+* @author Marco Glaser, Tobias Lindner
 *
 */
 public class GesamtkostenVerfahrenViewImpl extends VerticalLayout implements GesamtkostenVerfahrenViewInterface {
