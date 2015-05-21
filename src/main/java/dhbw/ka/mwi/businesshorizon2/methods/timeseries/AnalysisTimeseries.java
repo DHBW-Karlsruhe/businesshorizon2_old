@@ -233,7 +233,7 @@ public class AnalysisTimeseries {
 	 * einem AR-Modell. Sie berechnet die jeweiligen Prognosewerte und gibt sie
 	 * in einem zweidimensionalen Array zurück.
 	 * 
-	 * @author Nina Brauch, Mirko Göpfrich, Raffaele Cipolla, Marcel Rosenberger
+	 * @author Nina Brauch, Mirko Göpfrich, Raffaele Cipolla, Marcel Rosenberger, Felix Schlosser
 	 * 
 	 * @param trendbereinigtezeitreihe
 	 *            , die bereits trendbereinigte Zeitreihe
