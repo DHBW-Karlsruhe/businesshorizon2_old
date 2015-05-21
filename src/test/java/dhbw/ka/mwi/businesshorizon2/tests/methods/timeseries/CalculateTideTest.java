@@ -46,20 +46,20 @@ public class CalculateTideTest extends TestCase {
 	@Test
 	public void testReduceTide() {
 		double[] timeseries = new double[3];
-		timeseries[0] = 130594000.00;
-		timeseries[1] = 147552000.00;
-		timeseries[2] = 144040000.00;
+		timeseries[0] = 1210;
+		timeseries[1] = 2320;
+		timeseries[2] = 3120;
 		CalculateTide tide = new CalculateTide();
 		for (int i = 0; i < timeseries.length; i++){
-			timeseries = tide.reduceTide(timeseries, timeseries.length-i);
+			timeseries = tide.reduceTide(timeseries, 0);
 		}
 		logger.debug("Timeseries: " + timeseries[0]);
 		logger.debug("Timeseries: " + timeseries[1]);
 		logger.debug("Timeseries: " + timeseries[2]);
 		double[] results = new double[timeseries.length];
-		results[0] = 1.345634761904765E8;
-		results[1] = 1.3974901904761934E8;
-		results[2] = 1.4493456190476218E8;
+		results[0] = 1261.6666666666665;
+		results[1] = 2216.6666666666665;
+		results[2] = 3171.6666666666665;
 		//System.out.println(timeseries[0]);
 		//System.out.println(results[0]);
 		for (int i = 0; i < timeseries.length-1; i++) {

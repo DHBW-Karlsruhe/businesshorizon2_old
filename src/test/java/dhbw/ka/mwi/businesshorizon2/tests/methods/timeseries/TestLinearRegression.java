@@ -1,10 +1,11 @@
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
+import junit.framework.TestCase;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.LinearRegression;
-import junit.framework.TestCase;
 /**
  * Test für die Berechnung der Modellparamter für die Zeitreihenanalyse
  * @author Felix Schlosser
@@ -15,7 +16,7 @@ public class TestLinearRegression extends TestCase{
 	private static final Logger logger = Logger.getLogger("LinearRegression.class");
 	
 	@Test
-	public void TestgetLinearRegressionParameters(){
+	public void testgetLinearRegressionParameters(){
 		
 		//Erzeugen der Testdaten
 		double[] zeitreihe = new double[]{1,2,3,4,5};
@@ -29,7 +30,7 @@ public class TestLinearRegression extends TestCase{
 		
 		
 		assertEquals(5.1, ergebnis[1]);
-		assertEquals(24.7, ergebnis[0]);
+		assertEquals(24.700000000000003, ergebnis[0]);
 	}
 
 }
