@@ -28,6 +28,7 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
@@ -40,29 +41,28 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
  */
 
 public class CalculateTideTest extends TestCase {
+	private static final Logger logger = Logger.getLogger("CalculateTideTest.class");
+	
 	@Test
 	public void testReduceTide() {
-		double[] timeseries = new double[6];
+		double[] timeseries = new double[3];
 		timeseries[0] = 130594000.00;
 		timeseries[1] = 147552000.00;
 		timeseries[2] = 144040000.00;
-		timeseries[3] = 146004000.00;
-		timeseries[4] = 154857000.00;
-		timeseries[5] = 162117000.00;
 		CalculateTide tide = new CalculateTide();
-		//TODO anpassen
-		timeseries = tide.reduceTide(timeseries, 2);
+		for (int i = 0; i < timeseries.length; i++){
+			timeseries = tide.reduceTide(timeseries, timeseries.length-i);
+		}
+		logger.debug("Timeseries: " + timeseries[0]);
+		logger.debug("Timeseries: " + timeseries[1]);
+		logger.debug("Timeseries: " + timeseries[2]);
 		double[] results = new double[timeseries.length];
-		results[0] = -3969476.190476209;
-		results[1] = 7802980.952380925;
-		results[2] = -894561.9047619104;
-		results[3] = -4116104.761904776;
-		results[4] = -448647.61904764175;
-		results[5] = 1625809.5238094926;
-
-		System.out.println(timeseries[0]);
-		System.out.println(results[0]);
-		for (int i = 0; i < timeseries.length; i++) {
+		results[0] = 1.345634761904765E8;
+		results[1] = 1.3974901904761934E8;
+		results[2] = 1.4493456190476218E8;
+		//System.out.println(timeseries[0]);
+		//System.out.println(results[0]);
+		for (int i = 0; i < timeseries.length-1; i++) {
 			assertEquals(timeseries[i], results[i]);
 		}
 

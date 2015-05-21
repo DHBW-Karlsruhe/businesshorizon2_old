@@ -18,7 +18,7 @@ public class TestFTE extends TestCase{
 	private static final Logger logger = Logger.getLogger("TestFTE.class");
 
 	@Test
-	public void testWacc() {
+	public void testFTE() {
 		double[] cashflow = new double[5];
 		double[] fremdkapital = new double[5];
 		double rateReturnEquity = 9.969137;  
@@ -27,7 +27,7 @@ public class TestFTE extends TestCase{
 		double corporateAndSolitaryTax = 5.325;
 		boolean includeInCalculation = true;
 		Szenario szenario = new Szenario(rateReturnEquity, rateReturnCapitalStock, businessTax, corporateAndSolitaryTax, includeInCalculation);
-		double ergebnisVorgabe= 1055.21;
+		double ergebnisVorgabe= 1055.25;
 		double ergebnis;
 
 		cashflow[0] = 0.0;

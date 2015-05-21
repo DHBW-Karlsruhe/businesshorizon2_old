@@ -25,19 +25,14 @@
 
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import org.apache.log4j.Logger;
 import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
-
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.LUDecomposition;
-import cern.jet.stat.Descriptive;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
@@ -55,7 +50,6 @@ public class AnalysisTimeseries {
 
 	private static final Logger logger = Logger
 			.getLogger("AnalysisTimeseries.class");
-	private DoubleArrayList autokovarianzen;
 	private DoubleArrayList bereinigteZeitreihe;
 	private DoubleMatrix2D modellparameter;;
 	private double standardabweichung;
@@ -165,7 +159,7 @@ public class AnalysisTimeseries {
 		}
 
 		LUDecomposition lUDecomp = new LUDecomposition(matrixValuations);
-		logger.debug("MatrixValuations:" + matrixValuations.toString());
+		//logger.debug("MatrixValuations:" + matrixValuations.toString());
 
 		// Matrix mit Modellparametern (Phi)
 		DoubleMatrix2D matrixPhi = null;
@@ -176,14 +170,14 @@ public class AnalysisTimeseries {
 		//author Felix Schlosser
 		if (!lUDecomp.isNonsingular()){
 			logger.debug("Matrix ist singular, wird unverändert zurückgeben");
-			logger.debug("MatrixErg: " + matrixERG.toString());
+			//logger.debug("MatrixErg: " + matrixERG.toString());
 			return matrixERG;
 		}
 		
 		try {
 			matrixPhi = lUDecomp.solve(matrixERG);
 			logger.debug("C-Values of Yule-Walker-Equitation calculated.");
-			logger.debug("MatrixPhi:" + matrixPhi.toString());
+			//logger.debug("MatrixPhi:" + matrixPhi.toString());
 		} catch (IllegalArgumentException exception) {
 
 			logger.debug("Calculation of C-Values failed!");
@@ -195,15 +189,14 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Methode zur Berechung der Standardabweichung einer Zeitreihe (mithilfe
-	 * des Yule-Walker-Schätzer).
+	 * Methode zur Berechung der Standardabweichung einer Zeitreihe 
 	 * 
-	 * @author Nina Brauch, Mirko Göpfrich, Raffaele Cipolla, Marcel Rosenberger
+	 * @author Felix Schlosser
 	 * 
-	 * @param Autokovarianzen
-	 *            die zuvor in einer eigenen Methode berechnet wurden
-	 * @param matrixPhi
-	 *            Vektor der Phi-Werte ( =Modellparameter)
+	 * @param Zeitreihe
+	 *            die aktuelle Zeitreihe
+	 * @param einbezogenePerioden
+	 *            Verrechnungsparameter, wie viele Perioden nicht in die Berechnung einbezogen werden
 	 * @return Gibt die Standardabweichung zurück.
 	 */
 	//
@@ -225,12 +218,12 @@ public class AnalysisTimeseries {
 		}
 		variance = variance / durchlauf;
 
-		logger.debug("Varianz: " + variance);
+		//logger.debug("Varianz: " + variance);
 		
 		// Berechnung der Standardabweichung aus der Varianz
 		standardabweichung = Math.sqrt(variance);
 
-		logger.debug("Standardabweichung:" + standardabweichung);
+		//logger.debug("Standardabweichung:" + standardabweichung);
 		
 		return standardabweichung;
 	}
@@ -246,8 +239,6 @@ public class AnalysisTimeseries {
 	 *            , die bereits trendbereinigte Zeitreihe
 	 * @param matrixPhi
 	 *            die ermittelte Matrix Phi
-	 * @param standardabweichung
-	 *            die ermittelte Standardabweichung der Zeitreihe
 	 * @param Ordnung
 	 *            p die Anzahl der mit einbezogenen, vergangenen Perioden
 	 * @param zuberechnendeperioden
@@ -270,56 +261,28 @@ public class AnalysisTimeseries {
 		double[] erwarteteWerte = new double[zuberechnendeperioden];
 		double prognosewert = 0;
 		double zNull = 0;
-		Random zufall = new Random(); //stattdessen hier white noise einbauen
 
-		// Erwartete Cashflows ausrechnen
-		//Berechnung Fehlerhaft weil doppelt die prognostizierten Werte angefügt werden (vergangeneUndZukünftigeWerte.add(prognose))
-	//	this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
-	//			zuberechnendeperioden, p, mittelwert, isfremdkapital);
-		
-	
-	
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
 		for (int i = zuberechnendeperioden; i > 0; i--) {
-			// Ein Durchlauf entspricht der Prognose eines Jahres j
-			//logger.debug("Durchlauf:" + i);
-//			for (int j = 0; j < zuberechnendeperioden; j++) {
-//				//logger.debug("Zuberechnende Periode: " + j);
-//				// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
-//				// passenden Vergangenheitswert.
-//				for (int t = 0; t < p; t++) {
-//					prognosewert = prognosewert
-//							+ matrixPhi.get(t, 0)
-//							* vergangeneUndZukuenftigeWerte
-//									.get(vergangeneUndZukuenftigeWerte.size()
-//											- (t + 1));
-//					//Ausgabe der Werte für Debugging 
-//					//if ((i % 100) == 0){
-//					//logger.debug("prognosewert: " + prognosewert);
-//					//TODO Hier gehen die Werte auseinander !!
-//					//}
-//				}
 
 				standardabweichung = this.berechneStandardabweichung(vergangeneUndZukuenftigeWerte, i);
-			
+				
+				//Berechnen einer Zufallszahl zwischen -1 und 1
 				double z = Math.random();
 				if (Math.random() < 0.5){
-					z += -1;
+					z *= -1;
 				}
-				logger.debug("Zufallszahl:" + z);
+				
+				//logger.debug("Zufallszahl:" + z);
 				zNull = z * standardabweichung;
-				logger.debug("zNull: " + zNull);
+				//logger.debug("zNull: " + zNull);
 				
 				prognosewert = vergangeneUndZukuenftigeWerte.get(vergangeneUndZukuenftigeWerte.size()-i) + zNull;  //prognosewert + zNull;
 				logger.debug("Prognosewert: " + prognosewert);
 				
 				vergangeneUndZukuenftigeWerte.set(vergangeneUndZukuenftigeWerte.size()-i, prognosewert);
-				
-				//vergangeneUndZukuenftigeWerte.add(prognosewert);
-				//prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
-				//logger.debug("Prognosewert + Mittelwert: " + prognosewert);
-				
+								
 				erwarteteWerte[zuberechnendeperioden-i] = prognosewert;
 
 				prognosewert = 0;

@@ -98,7 +98,7 @@ public class TestCashFlowCalculatorGKVDet extends TestCase{
 				includeInCalculation);
 
 		// Erwartete Ausgabe CashFlow
-		double ergebnisVorgabe =9.685000000000006;
+		double ergebnisVorgabe =29.53;
 
 		CashFlowCalculator.calculateCashflows(drc, szenario);
 

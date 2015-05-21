@@ -268,10 +268,6 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                 StochasticResultContainer src = new StochasticResultContainer(
                                 resultPeriods);
 
-                // bereits auskommentierter Code vom Vorjahr, Verwendung noch unklar
-                // if (callback != null) {
-                // callback.onComplete(src);
-                // }
                 return src;
 
         }

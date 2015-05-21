@@ -95,7 +95,7 @@ public class TestCashFlowCalculatorUKVDet extends TestCase {
 				includeInCalculation);
 
 		// Erwartete Ausgabe CashFlow
-		double ergebnisVorgabe = 9.679500000000013;
+		double ergebnisVorgabe = 14.310000000000022;
 
 		CashFlowCalculator.calculateCashflows(drc, szenario);
 

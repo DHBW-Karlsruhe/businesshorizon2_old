@@ -27,7 +27,7 @@ public class TestWACC extends TestCase{
 		double corporateAndSolitaryTax = 5.325;
 		boolean includeInCalculation = true;
 		Szenario szenario = new Szenario(rateReturnEquity, rateReturnCapitalStock, businessTax, corporateAndSolitaryTax, includeInCalculation);
-		double ergebnisVorgabe= 1055.25;
+		double ergebnisVorgabe = 1055.25;
 		double ergebnis;
 		
 		cashflow[0] = 0.0;

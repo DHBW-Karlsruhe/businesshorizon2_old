@@ -57,6 +57,8 @@ public class CalculateTide implements CalculateTideInterface {
 	 * 
 	 * @param Zeitreihe
 	 *            der Zeitreihe
+	 * @param zuberechnendePerioden
+	 * 			  Anzahl der zuprognostizierenden Perioden
 	 * @result Trendbereinigte Zeitreihe
 	 */
 
@@ -68,7 +70,6 @@ public class CalculateTide implements CalculateTideInterface {
 		this.reduceTideParameterB = this.calculateTideParameterB(timeseries);
 		this.reduceTideParameterA = this.calculateTideParameterA(reduceTideParameterB);
 
-		
 		for (int i = 0; i < timeseries.length+zuberechnendePerioden; i++) {
 			rueckZeitreihe[i] = this.getTideValue(i+1);
 		}
@@ -143,7 +144,6 @@ public class CalculateTide implements CalculateTideInterface {
 			zeitarray[i] = i+1;
 		}
 		
-		//TODO oben Klasse einbinden
 		//Klasse erzeugen
 		LinearRegression regression = new LinearRegression();
 		
@@ -169,7 +169,6 @@ public class CalculateTide implements CalculateTideInterface {
 			zeitarray[i] = i+1;
 		}
 		
-		//TODO oben Klasse einbinden
 		//Klasse erzeugen
 		LinearRegression regression = new LinearRegression();
 		

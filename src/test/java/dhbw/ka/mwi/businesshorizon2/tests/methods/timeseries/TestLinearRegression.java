@@ -24,6 +24,10 @@ public class TestLinearRegression extends TestCase{
 		LinearRegression regression = new LinearRegression();
 		
 		ergebnis = regression.getLinearRegressionParameters(zeitreihe, timeseries);
+		logger.debug("ParameterA: " + ergebnis[0]);
+		logger.debug("ParameterB: " + ergebnis[1]);
+		
+		
 		assertEquals(5.1, ergebnis[1]);
 		assertEquals(24.7, ergebnis[0]);
 	}
