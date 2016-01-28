@@ -211,12 +211,12 @@
 					<compileReport>false</compileReport>
 				</configuration>
 				<executions>
-				<!-- 	<execution>
+					<execution>
 						<goals>
 							<goal>resources</goal>
 							<goal>compile</goal>
 						</goals>
-					</execution> -->
+					</execution>
 				</executions>
 				<dependencies>
 					<dependency>
@@ -236,13 +236,13 @@
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>1.0.2</version>
 				<executions>
-				<!-- 	<execution>
+				 	<execution>
 						<configuration>
 						</configuration>
 						<goals>
 							<goal>update-widgetset</goal>
 						</goals>
-					</execution> -->
+					</execution>
 				</executions>
 			</plugin>
 
@@ -288,6 +288,44 @@
 										</versionRange>
 										<goals>
 											<goal>add-jars</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.vaadin</groupId>
+										<artifactId>
+											vaadin-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.2,)
+										</versionRange>
+										<goals>
+											<goal>
+												update-widgetset
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											gwt-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.2.0,)
+										</versionRange>
+										<goals>
+											<goal>resources</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
