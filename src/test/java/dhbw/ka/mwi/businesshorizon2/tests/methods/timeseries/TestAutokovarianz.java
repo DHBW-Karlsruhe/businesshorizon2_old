@@ -28,10 +28,10 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import cern.colt.list.DoubleArrayList;
-
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
 /**
@@ -41,7 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
  * 
  */
 
-
+@Ignore //FIXME seazzle
 public class TestAutokovarianz extends TestCase {
 	
 	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");

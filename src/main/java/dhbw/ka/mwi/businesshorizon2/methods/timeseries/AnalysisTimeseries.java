@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
-import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
+//import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
 
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
@@ -118,8 +118,8 @@ public class AnalysisTimeseries {
 		}
 
 		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
-		for (int j = 0; j < zeitreihe.size(); j++) {
-			autokovarianz.add(AutoCovariance.autoCovariance(lokalereihe, j));
+		for (int j = 0; j < zeitreihe.size(); j++) {//FIXME update reference
+//			autokovarianz.add(AutoCovariance.autoCovariance(lokalereihe, j));
 		}
 		return autokovarianz;
 	}

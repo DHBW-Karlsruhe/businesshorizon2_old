@@ -118,11 +118,11 @@
 			<version>1.2.0</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.jamesii</groupId>
 			<artifactId>core</artifactId>
 			<version>0.9.4</version>
-		</dependency>
+		</dependency>-->
 		<!-- ... -->
 	</dependencies>
 
@@ -211,12 +211,12 @@
 					<compileReport>false</compileReport>
 				</configuration>
 				<executions>
-					<execution>
+				<!-- 	<execution>
 						<goals>
 							<goal>resources</goal>
 							<goal>compile</goal>
 						</goals>
-					</execution>
+					</execution> -->
 				</executions>
 				<dependencies>
 					<dependency>
@@ -236,13 +236,13 @@
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>1.0.2</version>
 				<executions>
-					<execution>
+				<!-- 	<execution>
 						<configuration>
 						</configuration>
 						<goals>
 							<goal>update-widgetset</goal>
 						</goals>
-					</execution>
+					</execution> -->
 				</executions>
 			</plugin>
 
